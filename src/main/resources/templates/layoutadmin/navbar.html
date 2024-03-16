@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <!-- logo trang chủ-->
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <!--end-->
+    </ul>
+    <!--navbar bên phải -->
+    <ul class="navbar-nav ml-auto">
+        <!-- thông báo -->
+        <li class="nav-item dropdown">
+            <a class="nav-link" data-toggle="dropdown" href="#">
+                <i class="far fa-bell"></i>
+                <span class="badge badge-warning navbar-badge">15</span>
+            </a>
+        </li>
+        <!--end -->
+        <!--phóng to màn hình-->
+        <li class="nav-item">
+            <a class="nav-link">
+                <b>Duy</b>
+            </a>
+        </li>
+        <!--end -->
+        <!--avata -->
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="avatarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img src="/images/avata.jpg" class="img-circle" height="30px" width="30px">
+            </a>
+            <div class="dropdown-menu" aria-labelledby="avatarDropdown">
+                <!-- Các mục trong menu sổ xuống -->
+                <a class="dropdown-item" th:href="@{/same/login}">ĐĂNG XUẤT</a>
+            </div>
+        </li>
+
+        <!--end -->
+    </ul>
+</nav>
+</body>
+</html>

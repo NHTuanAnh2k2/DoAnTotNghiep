@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="index3.html" class="brand-link">
+        <img src="/dist/img/logo_t&t.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+             style="opacity: .8">
+        <span class="brand-text font-weight-light"><b>T&T SHOE</b></span>
+    </a>
+
+
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <!-- Add icons to the links using the .nav-icon class
+                 with font-awesome or any other icon font library -->
+            <!--thống kê-->
+            <li class="nav-item">
+                <a th:href="@{/admin/qlthongke}" class="nav-link">
+                    <i class="nav-icon fas fa-th"></i>
+                    <p>
+                        Thống kê
+                    </p>
+                </a>
+            </li>
+            <!--bán hàng tại quầy-->
+            <li class="nav-item">
+                <a th:href="@{/admin/banhangtaiquay}" class="nav-link">
+                    <i class="nav-icon fas fa-th"></i>
+                    <p>
+                        Bán hàng tại quầy
+                    </p>
+                </a>
+            </li>
+            <!--quản lý hóa đơn-->
+            <li class="nav-item">
+                <a href="pages/widgets.html" class="nav-link">
+                    <i class="nav-icon fas fa-th"></i>
+                    <p>
+                        Quản lý hóa đơn
+                    </p>
+                </a>
+            </li>
+            <!--trả hàng-->
+            <li class="nav-item">
+                <a href="pages/widgets.html" class="nav-link">
+                    <i class="nav-icon fas fa-th"></i>
+                    <p>
+                        Trả hàng
+                    </p>
+                </a>
+            </li>
+
+
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-chart-pie"></i>
+                    <p>
+                        Quản lý sản phẩm
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <!--quản lý sản phẩm-->
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a th:href="@{/admin/qlsanpham}" class="nav-link">
+                            <i class="far nav-icon"></i>
+                            <p>Sản phẩm </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/admin/qltheloai}" class="nav-link">
+                            <i class="far nav-icon"></i>
+                            <p>Thể loại</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="pages/charts/inline.html" class="nav-link">
+                            <i class="far nav-icon"></i>
+                            <p>Đế giày</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="pages/charts/uplot.html" class="nav-link">
+                            <i class="far nav-icon"></i>
+                            <p>Thương hiệu</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="pages/charts/uplot.html" class="nav-link">
+                            <i class="far nav-icon"></i>
+                            <p>Chất liệu</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <!--quản lý tài khoản-->
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-tree"></i>
+                    <p>
+                        Quản lý tài khoản
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a th:href="@{/admin/qlnhanvien}" class="nav-link">
+                            <i class="far nav-icon"></i>
+                            <p>Nhân viên</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/admin/qlkhachhang}"  class="nav-link">
+                            <i class="far nav-icon"></i>
+                            <p>Khách hàng</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <!--giảm giá-->
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-edit"></i>
+                    <p>
+                        Giảm giá
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a th:href="@{/admin/qldotgiamgia}" class="nav-link">
+                            <i class="far nav-icon"></i>
+                            <p>Đợt giảm giá</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/admin/qlphieugiamgia}" class="nav-link">
+                            <i class="far nav-icon"></i>
+                            <p>Phiếu giảm giá</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!--ảnh-->
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-edit"></i>
+                    <p>
+                        Tài nguyên ảnh
+                    </p>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+
+    <!-- /.sidebar -->
+</aside>
+</body>
+</html>
