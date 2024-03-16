@@ -1,0 +1,352 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<!--thư viện-->
+<nav th:replace="~{/layout/head.html}"></nav>
+<!--end-->
+<body>
+
+<!-- header section start -->
+<nav th:replace="~{/layout/header.html}"></nav>
+<!-- header section end -->
+
+<!-- page banner area start -->
+<nav th:replace="~{/layout/banner.html}"></nav>
+<!-- page banner area end -->
+
+<!-- cart page content section start -->
+<section class="content" style="margin-top: 50px">
+    <!-- /.container-fluid -->
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2">
+                <div class="card-header" style="height: 407px">
+                    <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist"
+                         aria-orientation="vertical">
+                        <button class="nav-link active text-start" id="v-pills-home-tab" data-bs-toggle="pill"
+                                data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home"
+                                aria-selected="true">Hồ sơ
+                        </button>
+                        <button class="nav-link text-start" id="v-pills-profile-tab" data-bs-toggle="pill"
+                                data-bs-target="#v-pills-profile" type="button" role="tab"
+                                aria-controls="v-pills-profile" aria-selected="false">Địa chỉ
+                        </button>
+                        <button class="nav-link text-start" id="v-pills-disabled-tab" data-bs-toggle="pill"
+                                data-bs-target="#v-pills-disabled" type="button" role="tab"
+                                aria-controls="v-pills-disabled" aria-selected="false">Đổi mật khẩu
+                        </button>
+                        <button class="nav-link text-start" id="v-pills-messages-tab" data-bs-toggle="pill"
+                                data-bs-target="#v-pills-messages" type="button" role="tab"
+                                aria-controls="v-pills-messages" aria-selected="false">Đơn hàng đã mua
+                        </button>
+                    </div>
+
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+            <div class="col-10">
+                <div class="card" style="margin-right: 150px">
+                    <div class="card-header">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <!--hồ sơ cá nhân-->
+                            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+                                 aria-labelledby="v-pills-home-tab" tabindex="0">
+                                <h3>Hồ sơ của tôi</h3>
+                                <p>Email:
+                                    <input class="form-control">
+                                </p>
+                                <p>SĐT:
+                                    <input class="form-control">
+                                </p>
+                                <p>Giới tính:
+                                    <input type="radio" checked="true">Nam
+                                    <input type="radio" checked="true">Nữ
+                                </p>
+                                <p>Ngày sinh:
+                                    <input type="date" class="form-control">
+                                </p>
+                                <p>
+                                    <button class="btn btn-primary">Lưu</button>
+                                </p>
+                            </div>
+                            <!--end-->
+
+                            <!--địa chỉ của tôi-->
+                            <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
+                                 aria-labelledby="v-pills-profile-tab" tabindex="0">
+                                <h3>Địa chỉ của tôi</h3>
+                                <table class="table">
+                                    <tr>
+                                        <th>Tỉnh/Thành phố</th>
+                                        <th>Quận/Huyện</th>
+                                        <th>Xã/Phường</th>
+                                        <th>Địa chỉ cụ thể</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Hà Nội</td>
+                                        <td>Hà Nội</td>
+                                        <td>Hà Nội</td>
+                                        <td>Hà Nội</td>
+                                        <td>
+                                            <a href="#" class="btn btn-danger" data-bs-toggle="modal"
+                                               data-bs-target="#capnhatdiachi">Cập nhật</a>
+                                            <a href="#" class="btn btn-danger">Thiết lập mặc định</a>
+                                            <a href="#" class="btn btn-danger">Xóa</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <!--Modal-->
+                                <div class="modal fade" id="capnhatdiachi" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Cập nhật địa chỉ</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Họ và tên:
+                                                    <input class="form-control">
+                                                </p>
+                                                </p>
+                                                <p>SĐT:
+                                                    <input class="form-control">
+                                                </p>
+                                                <p>Quận/Huyện:
+                                                    <select class="form-control">
+                                                        <option>Hà Nội</option>
+                                                        <option>Hà Nội</option>
+                                                        <option>Hà Nội</option>
+                                                    </select>
+                                                </p>
+                                                <p>Xã/Phường:
+                                                    <select class="form-control">
+                                                        <option>Hà Nội</option>
+                                                        <option>Hà Nội</option>
+                                                        <option>Hà Nội</option>
+                                                    </select>
+                                                </p>
+                                                <p>Địa chỉ cụ thể:
+                                                    <input class="form-control">
+                                                </p>
+                                                <p>
+                                                    <button class="btn btn-primary">Hoàn thành</button>
+                                                </p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end -->
+                                <p>
+                                    <button class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#themdiachimoi">Thêm địa chỉ mới
+                                    </button>
+                                </p>
+                                <!-- Modal -->
+                                <div class="modal fade" id="themdiachimoi" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm địa chỉ</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Họ và tên:
+                                                    <input class="form-control">
+                                                </p>
+                                                </p>
+                                                <p>SĐT:
+                                                    <input class="form-control">
+                                                </p>
+                                                <p>Quận/Huyện:
+                                                    <select class="form-control">
+                                                        <option>Hà Nội</option>
+                                                        <option>Hà Nội</option>
+                                                        <option>Hà Nội</option>
+                                                    </select>
+                                                </p>
+                                                <p>Xã/Phường:
+                                                    <select class="form-control">
+                                                        <option>Hà Nội</option>
+                                                        <option>Hà Nội</option>
+                                                        <option>Hà Nội</option>
+                                                    </select>
+                                                </p>
+                                                <p>Địa chỉ cụ thể:
+                                                    <input class="form-control">
+                                                </p>
+                                                <p>
+                                                    <button class="btn btn-primary">Hoàn thành</button>
+                                                </p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end -->
+
+                            </div>
+                            <!--end-->
+
+                            <!--đổi mật khẩu-->
+                            <div class="tab-pane fade" id="v-pills-disabled" role="tabpanel"
+                                 aria-labelledby="v-pills-disabled-tab" tabindex="0">
+                                <h3>Đổi mật khẩu</h3>
+                                <p>Mật khẩu hiện tại:
+                                    <input type="password" class="form-control">
+                                </p>
+                                <p>Mật khẩu mới:
+                                    <input type="password" class="form-control">
+                                </p>
+                                <p>Xác nhận mật khẩu mới:
+                                    <input type="password" class="form-control">
+                                </p>
+                                <p>
+                                    <button class="btn btn-warning">Đổi mật khẩu</button>
+                                </p>
+                            </div>
+                            <!--end-->
+
+                            <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
+                                 aria-labelledby="v-pills-messages-tab" tabindex="0">
+                                <h3>Đơn hàng của tôi</h3>
+
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Tất cả</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Chờ thanh toán</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Vận chuyển</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="disabled-tab1" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false">Chờ giao hàng</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="disabled-tab2" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false">Hoàn thành</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="disabled-tab3" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false">Đã hủy</button>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                                        <table class="table">
+                                            <tr>
+                                                <th>Tỉnh/Thành phố</th>
+                                                <th>Quận/Huyện</th>
+                                                <th>Xã/Phường</th>
+                                                <th>Địa chỉ cụ thể</th>
+                                                <th>Action</th>
+                                            </tr>
+                                            <tr>
+                                                <td>Hà Nội</td>
+                                                <td>Hà Nội</td>
+                                                <td>Hà Nội</td>
+                                                <td>Hà Nội</td>
+                                                <td>
+                                                    <a href="#" class="btn btn-danger">Xóa</a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <button class="btn btn-primary">Mua lại</button>
+                                        <button class="btn btn-warning">Đánh giá</button>
+                                    </div>
+                                    <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                                        <table class="table">
+                                            <tr>
+                                                <th>Tỉnh/Thành phố</th>
+                                                <th>Quận/Huyện</th>
+                                                <th>Xã/Phường</th>
+                                                <th>Địa chỉ cụ thể</th>
+                                                <th>Action</th>
+                                            </tr>
+                                            <tr>
+                                                <td>Hà Nội</td>
+                                                <td>Hà Nội</td>
+                                                <td>Hà Nội</td>
+                                                <td>Hà Nội</td>
+                                                <td>
+                                                    <a href="#" class="btn btn-danger">Xóa</a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <button class="btn btn-primary">Mua lại</button>
+                                        <button class="btn btn-warning">Đánh giá</button>
+                                    </div>
+                                    <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+                                        <table class="table">
+                                            <tr>
+                                                <th>Tỉnh/Thành phố</th>
+                                                <th>Quận/Huyện</th>
+                                                <th>Xã/Phường</th>
+                                                <th>Địa chỉ cụ thể</th>
+                                                <th>Action</th>
+                                            </tr>
+                                            <tr>
+                                                <td>Hà Nội</td>
+                                                <td>Hà Nội</td>
+                                                <td>Hà Nội</td>
+                                                <td>Hà Nội</td>
+                                                <td>
+                                                    <a href="#" class="btn btn-danger">Xóa</a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <button class="btn btn-primary">Mua lại</button>
+                                        <button class="btn btn-warning">Đánh giá</button>
+                                    </div>
+                                    <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">
+                                        <table class="table">
+                                            <tr>
+                                                <th>Tỉnh/Thành phố</th>
+                                                <th>Quận/Huyện</th>
+                                                <th>Xã/Phường</th>
+                                                <th>Địa chỉ cụ thể</th>
+                                                <th>Action</th>
+                                            </tr>
+                                            <tr>
+                                                <td>Hà Nội</td>
+                                                <td>Hà Nội</td>
+                                                <td>Hà Nội</td>
+                                                <td>Hà Nội</td>
+                                                <td>
+                                                    <a href="#" class="btn btn-danger">Xóa</a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <button class="btn btn-primary">Mua lại</button>
+                                        <button class="btn btn-warning">Đánh giá</button>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+<!-- cart page content section end -->
+
+<!-- footer section start -->
+<nav th:replace="~{/layout/footer.html}"></nav>
+<!-- footer section end -->
+
+</body>
+</html>
+

@@ -1,0 +1,57 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<!--thư viện-->
+<nav th:replace="~{/layout/head.html}"></nav>
+<!--end-->
+
+<body>
+
+<!-- header section start -->
+<nav th:replace="~{/layout/header.html}"></nav>
+<!-- header section end -->
+
+<!-- page banner area start -->
+<nav th:replace="~{/layout/banner.html}"></nav>
+<!-- page banner area end -->
+
+<!--Nội dung -->
+<section class="login-page section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="single-check">
+                        <form action="my-account.html">
+                            <div class="single-input p-bottom50 clearfix">
+                                <div class="col-12">
+                                    <div class="check-title">
+                                        <h3>Quên mật khẩu</h3>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <label>Email:</label>
+                                    <div class="input-text">
+                                        <input type="text" name="email" class="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="submit-text">
+                                        <button class="text-dark"> <a th:href="@{/trangchu}">TIẾP THEO</a></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--end -->
+
+<!-- footer section start -->
+<nav th:replace="~{/layout/footer.html}"></nav>
+<!-- footer section end -->
+
+</body>
+</html>
