@@ -28,6 +28,10 @@ public class CustomerController {
         return "same/quenmatkhau";
     }
 
+    @GetMapping("/hosokhachhang")
+    public String hosokhachhang() {
+        return "customer/hosokhachhang";
+    }
 
 
 }
