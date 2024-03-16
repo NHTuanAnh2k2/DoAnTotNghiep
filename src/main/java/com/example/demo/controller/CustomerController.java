@@ -23,5 +23,15 @@ public class CustomerController {
         return "customer/cart";
     }
 
+    @GetMapping("/quenmatkhau")
+    public String quenmatkhau() {
+        return "same/quenmatkhau";
+    }
+
+    @GetMapping("/hosokhachhang")
+    public String hosokhachhang() {
+        return "customer/hosokhachhang";
+    }
+
 
 }
