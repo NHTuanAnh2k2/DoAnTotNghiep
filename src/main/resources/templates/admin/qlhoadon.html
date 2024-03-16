@@ -1,13 +1,403 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>T&T</title>
+    <link rel="icon" type="image/png" href="../dist/img/logo_tt.png">
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!--Nhúng Bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+            crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="../plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="../plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="../plugins/jqvmap/jqvmap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../dist/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="../plugins/daterangepicker/daterangepicker.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="../plugins/summernote/summernote-bs4.min.css">
 </head>
-<body>
-<h1>Nguyen Hoang Tuan Anh</h1>
-<p>TEST</p>
-<p>TUÂN ẬNHDJDJGSDJSDMKFNSHV 1234567890</p>
-<p>SNDJSBFJDSJ     jshdjb </p>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+
+<div class="wrapper">
+    <!-- Ban đầu mở là hiển thị logo thương hiệu -->
+    <div class="preloader flex-column justify-content-center align-items-center">
+        <img class="animation__shake" src="../dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+    </div>
+    <!-- end -->
+
+    <!-- navbar-->
+    <nav th:replace="~{/layoutadmin/navbar.html}"></nav>
+    <!-- End navbar -->
+
+    <!--menu bán hàng -->
+    <nav th:replace="~{/layoutadmin/menu.html}"></nav>
+    <!--end menu -->
+
+
+    <!-- narbar home/quản lý hóa đơn -->
+    <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">QUẢN LÝ HÓA ĐƠN</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Quản lý hóa đơn</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Bộ lọc hóa đơn -->
+        <!---filter-->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
+                                        <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
+                                    </svg>
+                                    Bộ lọc
+                                </h3>
+                                <br>
+                                <hr class="border border-danger border-2 opacity-50">
+                                <form>
+                                    <div class="row g-3">
+                                        <div class=" align-items-center col-lg-6 col-md-6">
+                                            <div class="col-auto">
+                                                <label class="col-form-label">Tìm kiếm</label>
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="text" class="form-control" th:placeholder="Nhập">
+                                            </div>
+                                        </div>
+                                        <div class="align-items-center col-lg-6 col-md-6">
+                                            <div class="col-auto">
+                                                <label class="col-form-label">Loại hóa đơn</label>
+                                            </div>
+                                            <div class="col-auto">
+                                                <select class="form-control" >
+                                                    <option>Chờ xác nhận</option>
+                                                    <option>Đã xác nhận</option>
+                                                    <option>Chờ vận chuyển</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class=" align-items-center col-lg-6 col-md-6">
+                                            <div class="col-auto">
+                                                <label class="col-form-label">Ngày bắt đầu</label>
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="date" class="form-control" >
+                                            </div>
+                                        </div>
+                                        <div class=" align-items-center col-lg-6 col-md-6">
+                                            <div class="col-auto">
+                                                <label class="col-form-label">Ngày kết thúc</label>
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="date" class="form-control" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="d-flex justify-content-between" style="margin-right: 35%; margin-left: 35%;">
+                                        <button type="button" class="btn btn-success">Tìm kiếm</button>
+                                        <button type="button" class="btn btn-danger">Làm mới</button>
+                                    </div>
+                                </form>
+
+
+                            </div>
+
+                        </div>
+                        <!-- /.card -->
+
+
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+
+        <!--Nội dung chính hóa đơn-->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                         class="bi bi-card-list" viewBox="0 0 16 16">
+                                        <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"/>
+                                        <path d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8m0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0M4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"/>
+                                    </svg>
+                                    <h5>Danh sách hóa đơn</h5>
+                                </h3>
+                                <hr class="border border-danger border-2 opacity-50">
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <!--Tab hiện thị tất cả hóa đơn-->
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active position-relative" id="tatCaHoaDon-tab" data-bs-toggle="tab" data-bs-target="#tatCaHoaDon-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">
+                                            Tất cả
+                                            <span class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
+                                                12
+                                            </span>
+                                        </button>
+                                    </li>
+                                    <!--Tab hiện thị hóa đơn chờ xác nhận-->
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link position-relative" id="hoaDonChoXacNhan-tab" data-bs-toggle="tab" data-bs-target="#hoaDonChoXacNhan-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">
+                                            Chờ xác nhận
+                                            <span class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
+                                                13
+                                            </span>
+                                        </button>
+                                    </li>
+                                    <!--Tab hiện thị hóa đơn đã xác nhận-->
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link position-relative" id="hoaDonDaXacNhan-tab" data-bs-toggle="tab" data-bs-target="#hoaDonDaXacNhan-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">
+                                            Đã xác nhận
+                                            <span class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
+                                                14
+                                            </span>
+                                        </button>
+                                    </li>
+                                    <!--Tab hiện thị hóa đơn chờ giao hàng-->
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link position-relative" id="hoaDonChoGiaoHang-tab" data-bs-toggle="tab" data-bs-target="#hoaDonChoGiaoHang-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false">
+                                            Chờ giao hàng
+                                            <span class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
+                                                15
+                                            </span>
+                                        </button>
+                                    </li>
+                                    <!--Tab hiện thị hóa đơn đang giao hang-->
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link position-relative" id="hoaDonDangGiaoHang-tab" data-bs-toggle="tab" data-bs-target="#hoaDonDangGiaoHang-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false">
+                                            Đang giao hàng
+                                            <span class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
+                                                16
+                                            </span>
+                                        </button>
+                                    </li>
+                                    <!--Tab hiện thị hóa đơn đã thanh toán-->
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link position-relative" id="hoaDonDaThanhToan-tab" data-bs-toggle="tab" data-bs-target="#hoaDonDaThanhToan-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false">
+                                            Đã thanh toán
+                                            <span class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
+                                                20
+                                            </span>
+                                        </button>
+                                    </li>
+                                    <!--Tab hiện thị hóa đơn đã hoàn thành-->
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link position-relative" id="hoaDonDaHoanThanh-tab" data-bs-toggle="tab" data-bs-target="#hoaDonDaHoanThanh-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false">
+                                            Đã hoàn thành
+                                            <span class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
+                                                99+
+                                            </span>
+                                        </button>
+                                    </li>
+                                    <!--Tab hiện thị hóa đơn đã hủy-->
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link position-relative" id="hoaDonDaHuy-tab" data-bs-toggle="tab" data-bs-target="#hoaDonDaHuy-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false">
+                                            Đã hủy
+                                            <span class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
+                                                5
+                                            </span>
+                                        </button>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="myTabContent">
+                                    <!--Tab hiện thị tất cả hóa đơn-->
+                                    <div class="tab-pane fade show active" id="tatCaHoaDon-tab-pane" role="tabpanel" aria-labelledby="tatCaHoaDon-tab" tabindex="0">
+                                        <br>
+                                        <div class="card-body">
+                                            <table class="table table-bordered table-hover text-center">
+                                                <thead class="table table-danger">
+                                                <tr>
+                                                    <th>STT</th>
+                                                    <th>Mã hóa đơn</th>
+                                                    <th>Tên khách hàng</th>
+                                                    <th>Tên nhân viên</th>
+                                                    <th>Loại hóa đơn</th>
+                                                    <th>Ngày tạo</th>
+                                                    <th>Tiền đã giảm</th>
+                                                    <th>Tổng tiền</th>
+                                                    <th>Thao tác</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>InternetExplorer</td>
+                                                    <td>Tuan Anh</td>
+                                                    <td>Van Duy</td>
+                                                    <td>Online</td>
+                                                    <td>23/06/2024</td>
+                                                    <td>150.000</td>
+                                                    <td>6.450.000</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-warning">Xem</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>InternetExplorer</td>
+                                                    <td>Tuan Anh</td>
+                                                    <td>Van Duy</td>
+                                                    <td>Online</td>
+                                                    <td>23/06/2024</td>
+                                                    <td>150.000</td>
+                                                    <td>6.450.000</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-warning">Xem</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>3</td>
+                                                    <td>InternetExplorer</td>
+                                                    <td>Tuan Anh</td>
+                                                    <td>Van Duy</td>
+                                                    <td>Online</td>
+                                                    <td>23/06/2024</td>
+                                                    <td>150.000</td>
+                                                    <td>6.450.000</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-warning">Xem</button>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            <br>
+                                            <nav aria-label="Page navigation example">
+                                                <ul class="pagination">
+                                                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                    <!--Tab hiện thị hóa đơn chờ xác nhận-->
+                                    <div class="tab-pane fade" id="hoaDonChoXacNhan-tab-pane" role="tabpanel" aria-labelledby="hoaDonChoXacNhan-tab" tabindex="0">
+                                        Cho xac nhan
+                                    </div>
+                                    <!--Tab hiện thị hóa đơn đã xác nhận-->
+                                    <div class="tab-pane fade" id="hoaDonDaXacNhan-tab-pane" role="tabpanel" aria-labelledby="hoaDonDaXacNhan-tab" tabindex="0">
+                                        Da xac nhan
+                                    </div>
+                                    <!--Tab hiện thị hóa đơn chờ giao hàng-->
+                                    <div class="tab-pane fade" id="hoaDonChoGiaoHang-tab-pane" role="tabpanel" aria-labelledby="hoaDonChoGiaoHang-tab" tabindex="0">
+                                        Cho giao hang
+                                    </div>
+                                    <!--Tab hiện thị hóa đơn dang giao hàng-->
+                                    <div class="tab-pane fade" id="hoaDonDangGiaoHang-tab-pane" role="tabpanel" aria-labelledby="hoaDonDangGiaoHang-tab" tabindex="0">
+                                        Dang giao hang
+                                    </div>
+                                    <!--Tab hiện thị hóa đơn đã thanh toán-->
+                                    <div class="tab-pane fade" id="hoaDonDaThanhToan-tab-pane" role="tabpanel" aria-labelledby="hoaDonDaThanhToan-tab" tabindex="0">
+                                        Da thanh toan
+                                    </div>
+                                    <!--Tab hiện thị hóa đơn đã hoàn thành-->
+                                    <div class="tab-pane fade" id="hoaDonDaHoanThanh-tab-pane" role="tabpanel" aria-labelledby="hoaDonDaHoanThanh-tab" tabindex="0">
+                                        Da hoan thanh
+                                    </div>
+                                    <!--Tab hiện thị hóa đơn đã hủy-->
+                                    <div class="tab-pane fade" id="hoaDonDaHuy-tab-pane" role="tabpanel" aria-labelledby="hoaDonDaHuy-tab" tabindex="0">
+                                        Da huy
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <!-- /.card -->
+
+
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+    </div>
+    <!--end -->
+    <nav th:replace="~{/layoutadmin/footer.html}"></nav>
+
+</div>
+
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="../plugins/jquery/jquery.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+    $.widget.bridge('uibutton', $.ui.button)
+</script>
+<!-- Bootstrap 4 -->
+<script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- ChartJS -->
+<script src="../plugins/chart.js/Chart.min.js"></script>
+<!-- Sparkline -->
+<script src="../plugins/sparklines/sparkline.js"></script>
+<!-- JQVMap -->
+<script src="../plugins/jqvmap/jquery.vmap.min.js"></script>
+<script src="../plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+<!-- jQuery Knob Chart -->
+<script src="../plugins/jquery-knob/jquery.knob.min.js"></script>
+<!-- daterangepicker -->
+<script src="../plugins/moment/moment.min.js"></script>
+<script src="../plugins/daterangepicker/daterangepicker.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- Summernote -->
+<script src="../plugins/summernote/summernote-bs4.min.js"></script>
+<!-- overlayScrollbars -->
+<script src="../plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../dist/js/adminlte.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../dist/js/demo.js"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="../dist/js/pages/dashboard.js"></script>
 </body>
+
 </html>
+
+
