@@ -9,6 +9,12 @@ public class AdminController {
     public String qlhoadon() {
         return "admin/qlhoadon";
     }
+
+    @GetMapping("/admin/qlchitiethoadon")
+    public String qlchitiethoadon() {
+        return "admin/qlchitiethoadon";
+    }
+
     @GetMapping("/admin/qlthongke")
     public String admin() {
         return "admin/qlthongke";
