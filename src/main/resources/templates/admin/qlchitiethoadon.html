@@ -33,7 +33,52 @@
     <!-- summernote -->
     <link rel="stylesheet" href="../plugins/summernote/summernote-bs4.min.css">
 </head>
+<style>
+    .timeline {
+        display: flex;
+        overflow-x: auto;
+        overflow-y: hidden;
+        white-space: nowrap;
+    }
 
+    .timeline-item {
+        flex-shrink: 0;
+        width: 200px;
+        padding: 10px;
+        margin: 0 10px;
+        background-color: #f4f4f4;
+        /* Màu nền mặc định */
+        border-radius: 6px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        display: flex;
+        /* Thêm dòng này để sử dụng flexbox */
+        flex-direction: column;
+        /* Canh chỉnh các phần tử theo chiều dọc */
+        align-items: center;
+        /* Canh chỉnh các phần tử theo chiều ngang */
+    }
+
+    .badge-primary {
+        background-color: #007bff;
+    }
+
+    /* Optional: Adjust image size */
+    .status-icon {
+        width: 50px;
+        height: auto;
+        margin-bottom: 10px;
+    }
+
+    .timeline-item:nth-child(odd) {
+        background-color: #ffd700;
+        /* Màu vàng */
+    }
+
+    .timeline-item:nth-child(even) {
+        background-color: #7CFC00;
+        /* Màu xanh lá */
+    }
+</style>
 <body class="hold-transition sidebar-mini layout-fixed">
 
 <div class="wrapper">
@@ -58,9 +103,9 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h5 class="m-0" style="color: grey">< Đơn hàng</h5>
-                        <!--Tên hóa đơn-->
-                        <p><h2 class="m-0">HD123456</h2> <h5 class="m-0" style="color: grey">25/11/2023 15:40 </h5></p>
+<!--                        <h5 class="m-0" style="color: grey">< Đơn hàng</h5>-->
+<!--                        &lt;!&ndash;Tên hóa đơn&ndash;&gt;-->
+<!--                        <p><h2 class="m-0">HD123456</h2> <h5 class="m-0" style="color: grey">25/11/2023 15:40 </h5></p>-->
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -72,6 +117,215 @@
             </div>
         </div>
         <!-- /.content-header -->
+
+        <!--timeline-->
+        <div class="row g-3 container-fluid">
+                <!--Nội dung chính timeline-->
+                <section class="content">
+                    <div class="container-fluid" >
+                        <div class="row" >
+                            <div class="col-12" >
+                                <div class="card" style="height: 350px;">
+                                    <div class="card-header">
+                                        <hr class="border border-danger border-2 opacity-50">
+                                        <!--smkds-->
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div id="timeline" class="timeline">
+                                                        <div class="timeline-item">
+                                                            <img class="status-icon"
+                                                                 src="https://static.vecteezy.com/system/resources/previews/000/423/742/original/vector-truck-icon.jpg"
+                                                                 alt="Status Icon">
+                                                            <h3>Chờ xác nhận</h3>
+                                                            <p>12-02-2022 10:00:00</p>
+                                                        </div>
+                                                    </div>
+                                                    <p></p>
+                                                    <button class="btn btn-danger">Hủy</button>
+                                                    <button class="btn btn-primary" data-bs-toggle="modal"
+                                                            data-bs-target="#xacnhan">Xác nhận</button>
+                                                    <button class="btn btn-warning">In hóa đơn</button>
+                                                    <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#lichsu" style="margin-left: 805px">Lịch sử</button>
+                                                    <!-- Button trigger modal lịch sử -->
+
+                                                    <!-- Modal lịch sử -->
+                                                    <div class="modal fade" id="lichsu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Lịch sử</h1>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <table id="example2" class="table table-bordered table-hover text-center">
+                                                                        <thead class="table table-danger">
+                                                                        <tr>
+                                                                            <th>STT</th>
+                                                                            <th>Trạng thái</th>
+                                                                            <th>Ngày</th>
+                                                                            <th>Người xác nhận</th>
+                                                                            <th>Ghi chú</th>
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        <tr>
+                                                                            <td>1</td>
+                                                                            <td>Chờ xác nhận</td>
+                                                                            <td>15/02/2022 15:37:05</td>
+                                                                            <td>Nguyễn Văn Duy</td>
+                                                                            <td>Đồng ý xác nhận</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>1</td>
+                                                                            <td>Chờ xác nhận</td>
+                                                                            <td>15/02/2022 15:37:05</td>
+                                                                            <td>Nguyễn Văn Duy</td>
+                                                                            <td>Đồng ý xác nhận</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>1</td>
+                                                                            <td>Chờ xác nhận</td>
+                                                                            <td>15/02/2022 15:37:05</td>
+                                                                            <td>Nguyễn Văn Duy</td>
+                                                                            <td>Đồng ý xác nhận</td>
+                                                                        </tr>
+
+                                                                        </tfoot>
+                                                                    </table>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                                    <button type="button" class="btn btn-primary">Xác nhận</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Button trigger modal xac nhan -->
+
+                                                    <!-- Modal xác nhận -->
+                                                    <div class="modal fade" id="xacnhan" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                                         aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Xác nhận</h1>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                            aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p>Nhập ghi chú:
+                                                                        <input placeholder="Ghi chú" class="form-control">
+                                                                    </p>
+                                                                    <p>Nhập ghi chú:
+                                                                        <select class="form-control">
+                                                                            <option>Chờ giao</option>
+                                                                            <option>Đã giao</option>
+                                                                        </select>
+                                                                    </p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                                    <button id="changeStatusButton" type="button" class="btn btn-primary">Xác nhận</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--smkds-->
+                                    </div>
+                                </div>
+                                <!-- /.card -->
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.container-fluid -->
+                </section>
+            <!--end-->
+            </div>
+        <!--end-->
+
+        <!--lịch sử thanh toán-->
+        <div class="row g-3 container-fluid">
+            <!--Nội dung chính lịch sử thanh toán-->
+            <section class="content">
+                <div class="container-fluid" >
+                    <div class="row" >
+                        <div class="col-12" >
+                            <div class="card" style="height: 350px;">
+                                <div class="card-header">
+                                    <hr class="border border-danger border-2 opacity-50">
+                                    <!--smkds-->
+                                 <h3>Lịch sử thanh toán</h3>
+                                    <table id="example2" class="table table-bordered table-hover text-center">
+                                        <thead class="table table-danger">
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Mã giao dịch</th>
+                                            <th>Số tiền</th>
+                                            <th>Trạng thái</th>
+                                            <th>Thời gian</th>
+                                            <th>Loại giao dịch</th>
+                                            <th>Phương thức thanh toán</th>
+                                            <th>Ghi chú</th>
+                                            <th>Người xác nhận</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>12345</td>
+                                            <td>1.000.000 VNĐ</td>
+                                            <td>Tiền mặt</td>
+                                            <td>25-12-2022</td>
+                                            <td>Thanh toán</td>
+                                            <td>Tiền mặt</td>
+                                            <td>ok</td>
+                                            <td>Duy</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>12345</td>
+                                            <td>1.000.000 VNĐ</td>
+                                            <td>Tiền mặt</td>
+                                            <td>25-12-2022</td>
+                                            <td>Thanh toán</td>
+                                            <td>Tiền mặt</td>
+                                            <td>ok</td>
+                                            <td>Duy</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>12345</td>
+                                            <td>1.000.000 VNĐ</td>
+                                            <td>Tiền mặt</td>
+                                            <td>25-12-2022</td>
+                                            <td>Thanh toán</td>
+                                            <td>Tiền mặt</td>
+                                            <td>ok</td>
+                                            <td>Duy</td>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                    <!--smkds-->
+                                </div>
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.container-fluid -->
+            </section>
+            <!--end-->
+        </div>
+        <!--end-->
 
         <div class="row g-3 container-fluid">
             <div class="col-lg-8 col-md-8">
@@ -346,6 +600,7 @@
                 </section>
             </div>
         </div>
+
         <!--Thông tin sản phẩm mua-->
         <section class="content">
             <div class="container-fluid">
@@ -650,6 +905,82 @@
 <script src="../dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="../dist/js/pages/dashboard.js"></script>
+
+<script>
+    document.getElementById("changeStatusButton").addEventListener("click", function () {
+        var timeline = document.getElementById("timeline");
+        var newItemNumber = timeline.childElementCount + 1;
+        if (newItemNumber <= 8) { // Check if the maximum number of statuses has been reached
+            var newItem = document.createElement("div");
+            newItem.classList.add("timeline-item");
+            newItem.innerHTML = `
+                    <img class="status-icon" src="${getStatusIcon(newItemNumber)}" alt="Status Icon">
+                    <h3>${getStatusName(newItemNumber)}</h3>
+                    <p>${getDateTime()}</p>
+                `;
+            timeline.appendChild(newItem);
+            // Scroll to the end of timeline
+            timeline.scrollLeft = timeline.scrollWidth;
+        } else {
+            alert("Maximum number of statuses reached!");
+        }
+    });
+
+    function getStatusName(number) {
+        // Trả về tên trạng thái dựa trên số trạng thái đã tạo
+        switch (number) {
+            case 1:
+                return "Chờ xác nhận";
+            case 2:
+                return "Đã xác nhận";
+            case 3:
+                return "Chờ vận chuyển";
+            case 4:
+                return "Đã xác nhận";
+            case 5:
+                return "Chờ vận chuyển";
+            case 6:
+                return "Đang vận chuyển";
+            case 7:
+                return "Đã thanh toán";
+            case 8:
+                return "Thành công";
+            default:
+                return "Trạng thái mới " + number;
+        }
+    }
+
+    function getDateTime() {
+        var now = new Date();
+        var date = now.toLocaleDateString('en-US');
+        var time = now.toLocaleTimeString('en-US');
+        return date + ' ' + time;
+    }
+
+    function getStatusIcon(number) {
+        // Trả về đường dẫn của biểu tượng hình ảnh tương ứng với trạng thái
+        switch (number) {
+            case 1:
+                return "https://static.vecteezy.com/system/resources/previews/000/423/742/original/vector-truck-icon.jpg";
+            case 2:
+                return "https://png.pngtree.com/png-vector/20190725/ourlarge/pngtree-invoice-icon-design-vector-png-image_1586820.jpg";
+            case 3:
+                return "https://static.vecteezy.com/system/resources/previews/000/423/742/original/vector-truck-icon.jpg";
+            case 4:
+                return "https://png.pngtree.com/png-vector/20190725/ourlarge/pngtree-invoice-icon-design-vector-png-image_1586820.jpg";
+            case 5:
+                return "https://static.vecteezy.com/system/resources/previews/000/423/742/original/vector-truck-icon.jpg";
+            case 6:
+                return "https://static.vecteezy.com/system/resources/previews/000/423/742/original/vector-truck-icon.jpg";
+            case 7:
+                return "https://png.pngtree.com/png-vector/20190725/ourlarge/pngtree-invoice-icon-design-vector-png-image_1586820.jpg";
+            case 8:
+                return "https://png.pngtree.com/png-vector/20190725/ourlarge/pngtree-invoice-icon-design-vector-png-image_1586820.jpg";
+            default:
+                return "https://png.pngtree.com/png-vector/20190725/ourlarge/pngtree-invoice-icon-design-vector-png-image_1586820.jpg";
+        }
+    }
+</script>
 </body>
 
 </html>
