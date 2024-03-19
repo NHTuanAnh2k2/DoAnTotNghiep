@@ -6,6 +6,8 @@ import com.example.demo.service.DeGiayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +23,18 @@ public class DeGiayImp implements DeGiayService {
 
     @Override
     public DeGiay add(DeGiay deGiay) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            Date ngayTao = dateFormat.parse("21-12-2022");
+            deGiay.setNgay_tao(ngayTao);
+            deGiay.setLan_cap_nhat_cuoi(ngayTao);
+        } catch (ParseException e) {
+            // Xử lý ngoại lệ nếu không thể chuyển đổi chuỗi thành ngày
+            e.printStackTrace();
+        }
+        deGiay.setNguoi_tao("duy");
+        deGiay.setNguoi_cap_nhat("tùng");
+        deGiay.setTrang_thai(true);
         return deGiayRepository.save(deGiay);
     }
 
