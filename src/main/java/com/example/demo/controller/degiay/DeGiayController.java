@@ -21,7 +21,7 @@ public class DeGiayController {
     @GetMapping("/listdegiay")
     public String listdegiay(Model model, @ModelAttribute("degiay") DeGiay deGiay, @ModelAttribute("tim") DeGiayInfo info) {
         List<DeGiay> page = null;
-        if (info.getKey() != null) {
+        if (info.getKey() != null && !info.getKey().isEmpty()) {
             page = deGiayImp.getDeGiayByTen(info.getKey());
         } else {
             page = deGiayImp.getAll();
@@ -29,6 +29,7 @@ public class DeGiayController {
         model.addAttribute("list", page);
         return "admin/qldegiay";
     }
+
 
     @PostMapping("/addSave")
     public String addSave(Model model, @ModelAttribute("degiay") DeGiay deGiay) {

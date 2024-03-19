@@ -120,23 +120,19 @@
                                                     Tên đế giày:
                                                     <input class="form-control" th:field="*{ten}">
                                                 </p>
-                                                <p>Trạng thái:
+<!--                                              <!- -->
+                                                <p>
+                                                    Trạng thái:
                                                     <select th:field="*{trang_thai}" class="form-control">
-                                                        <option th:each="dg : ${dsdg}" th:value="${dg.id}">
-                                                            <span th:text="${dg.trang_thai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></span>
-                                                        </option>
+                                                        <option th:value="1">Đang kinh doanh</option>
+                                                        <option th:value="0">Ngừng kinh doanh</option>
                                                     </select>
                                                 </p>
 
-                                                <button class="btn btn-primary">add</button>
+                                                <button class="btn btn-primary" >Thêm</button>
                                             </form>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                Hủy
-                                            </button>
-                                            <button type="button" class="btn btn-primary">Thêm</button>
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>
