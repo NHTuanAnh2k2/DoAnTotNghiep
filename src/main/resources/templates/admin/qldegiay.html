@@ -107,17 +107,21 @@
                                                     aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <p>
-                                                Tên đế giày:
-                                                <input class="form-control">
-                                            </p>
-                                            <p>
-                                                Trạng thái:
-                                                <select class="form-control">
-                                                    <option>Đang kinh doanh</option>
-                                                    <option>Ngừng kinh doanh</option>
-                                                </select>
-                                            </p>
+                                            <form th:method="post" th:object="${degiay}" th:action="@{/addSave}">
+                                                <p>
+                                                    Tên đế giày:
+                                                    <input class="form-control" th:field="*{ten}">
+                                                </p>
+                                                <p>Trạng thái:
+                                                    <select th:field="*{trang_thai}" class="form-control">
+                                                        <option th:each="dg : ${dsdg}" th:value="${dg.id}">
+                                                            <span th:text="${dg.trang_thai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></span>
+                                                        </option>
+                                                    </select>
+                                                </p>
+
+                                                <button class="btn btn-primary">add</button>
+                                            </form>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
@@ -136,20 +140,24 @@
                                     <tr>
                                         <th>STT</th>
                                         <th>Tên đế giày</th>
-                                        <th>Ngày tạo</th>
                                         <th>Người tạo</th>
+                                        <th>Người cập nhật</th>
+                                        <th>Lần cập nhật cuối</th>
+                                        <th>Ngày tạo</th>
                                         <th>Trạng thái</th>
                                         <th>Hành động</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>Trident</td>
-                                        <td>Internet Explorer 4.0</td>
-                                        <td>Win 95+</td>
-                                        <td>4</td>
+                                    <tr th:each="dg,stt:${list}">
+                                        <td th:text="${stt.index+1}"></td>
+                                        <td th:text="${dg.ten}"></td>
+                                        <td th:text="${dg.nguoi_tao}"></td>
+                                        <td th:text="${dg.nguoi_cap_nhat}"></td>
+                                        <td th:text="${dg.lan_cap_nhat_cuoi}"></td>
+                                        <td th:text="${dg.ngay_tao}"></td>
                                         <td>
-                                            <button class=" btn btn-primary btn-xs">Đang kinh doanh</button>
+                                            <button class="btn btn-primary btn-xs" th:text="${dg.trang_thai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>
                                         </td>
                                         <td>
                                             <a class="btn btn-danger">
@@ -165,50 +173,8 @@
                                             </a>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>Trident</td>
-                                        <td>Internet Explorer 4.0</td>
-                                        <td>Win 95+</td>
-                                        <td>4</td>
-                                        <td>
-                                            <button class=" btn btn-primary btn-xs">Đang kinh doanh</button>
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-danger">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
-                                                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
-                                                </svg>
-                                            </a>
-                                            <a class="btn btn-warning">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
-                                                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001"/>
-                                                </svg>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Trident</td>
-                                        <td>Internet Explorer 4.0</td>
-                                        <td>Win 95+</td>
-                                        <td>4</td>
-                                        <td>
-                                            <button class=" btn btn-primary btn-xs">Đang kinh doanh</button>
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-danger">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
-                                                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
-                                                </svg>
-                                            </a>
-                                            <a class="btn btn-warning">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
-                                                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001"/>
-                                                </svg>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                    </tbody>
+
                                     </tfoot>
                                 </table>
                             </div>
