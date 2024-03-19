@@ -50,20 +50,28 @@
                                     Bộ lọc
                                 </h3>
                                 <br>
-                                <h3 class="card-title">Tìm kiếm:
-                                    <input type="text" placeholder="Tìm kiếm đế giày" class="form-control">
-                                </h3>
-                                <h3 class="card-title" style="margin-left: 20px">Trạng thái:
-                                    <select class="form-control">
-                                        <option>Đang kinh doanh</option>
-                                        <option>Ngừng kinh doanh</option>
-                                    </select>
-                                </h3>
-                                <br>
-                                <br>
-                                <br>
-                                <button style="margin-left: 100px" class="btn btn-primary">Tìm kiếm</button>
-                                <button class="btn btn-danger">Làm mới bộ lọc</button>
+                                <form th:method="get" th:object="${tim}">
+                                    <h3 class="card-title">Tìm kiếm:
+                                        <input type="text" placeholder="Tìm kiếm đế giày" class="form-control" th:field="*{key}">
+                                    </h3>
+
+<!--                                    <h3 class="card-title" style="margin-left: 20px">Trạng thái:-->
+<!--                                        <select th:field="*{trangthai}" class="form-control">-->
+<!--                                            <option th:each="dg : ${dsdg}" th:value="${dg.id}">-->
+<!--                                                <span th:text="${dg.trangthai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></span>-->
+<!--                                            </option>-->
+<!--                                        </select>-->
+<!--                                    <input type="date" class="form-control" th:field="*{ngaybd}">-->
+<!--                                    </h3>-->
+<!--                                    <h3>Ngày cập nhật:-->
+<!--                                        <input type="date" class="form-control" th:field="*{ngaykt}">-->
+<!--                                    </h3>-->
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <button style="margin-left: 100px" class="btn btn-primary">Tìm kiếm</button>
+<!--                                    <button class="btn btn-danger">Làm mới bộ lọc</button>-->
+                                </form>
 
                             </div>
 
