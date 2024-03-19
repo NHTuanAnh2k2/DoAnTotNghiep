@@ -120,13 +120,14 @@
                                                     Tên đế giày:
                                                     <input class="form-control" th:field="*{ten}">
                                                 </p>
-<!--                                                <p>Trạng thái:-->
-<!--                                                    <select th:field="*{trang_thai}" class="form-control">-->
-<!--                                                        <option th:each="dg : ${dsdg}" th:value="${dg.id}">-->
-<!--                                                            <span th:text="${dg.trang_thai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></span>-->
-<!--                                                        </option>-->
-<!--                                                    </select>-->
-<!--                                                </p>-->
+<!--                                              <!- -->
+                                                <p>
+                                                    Trạng thái:
+                                                    <select th:field="*{trang_thai}" class="form-control">
+                                                        <option th:value="1">Đang kinh doanh</option>
+                                                        <option th:value="0">Ngừng kinh doanh</option>
+                                                    </select>
+                                                </p>
 
                                                 <button class="btn btn-primary" >Thêm</button>
                                             </form>
