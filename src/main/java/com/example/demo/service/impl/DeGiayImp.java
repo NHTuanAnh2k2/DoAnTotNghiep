@@ -6,6 +6,7 @@ import com.example.demo.service.DeGiayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,4 +23,11 @@ public class DeGiayImp implements DeGiayService {
     public DeGiay add(DeGiay deGiay) {
         return deGiayRepository.save(deGiay);
     }
+
+    @Override
+    public List<DeGiay> getDeGiayByTen(String ten) {
+        return deGiayRepository.getDeGiayByTen(ten);
+    }
+
+
 }
