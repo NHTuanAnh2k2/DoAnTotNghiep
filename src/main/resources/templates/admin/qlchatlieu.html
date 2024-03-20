@@ -51,20 +51,25 @@
                                     Bộ lọc
                                 </h3>
                                 <br>
-                                <h3 class="card-title">Tìm kiếm:
-                                    <input type="text" placeholder="Tìm kiếm chất liệu" class="form-control">
-                                </h3>
-                                <h3 class="card-title" style="margin-left: 20px">Trạng thái:
-                                    <select class="form-control">
-                                        <option>Đang kinh doanh</option>
-                                        <option>Ngừng kinh doanh</option>
-                                    </select>
-                                </h3>
-                                <br>
-                                <br>
-                                <br>
-                                <button style="margin-left: 100px" class="btn btn-primary">Tìm kiếm</button>
-                                <button class="btn btn-danger">Làm mới bộ lọc</button>
+                                <form th:method="get" th:action="@{/chatlieu/timkiem}" th:object="${chatlieu}">
+                                    <h3 class="card-title">Tìm kiếm:
+                                        <input type="text" placeholder="Tìm kiếm chất liệu" th:name="tensearch"
+                                               class="form-control">
+                                    </h3>
+                                    <h3 class="card-title" style="margin-left: 20px">Trạng thái:
+                                        <select class="form-control" th:name="trangthaisearch">
+                                            <option></option>
+                                            <option th:value="true ? 1 : 0">Đang kinh doanh</option>
+                                            <option th:value="true ? 0 : 1">Ngừng kinh doanh</option>
+                                        </select>
+                                    </h3>
+
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <button style="margin-left: 100px" class="btn btn-primary">Tìm kiếm</button>
+                                    <button class="btn btn-danger">Làm mới bộ lọc</button>
+                                </form>
                             </div>
 
                         </div>
@@ -117,7 +122,7 @@
                                                 </p>
                                                 <p>
                                                     Trạng thái:
-                                                    <select th:field="*{trang_thai}" class="form-control">
+                                                    <select th:field="*{trangthai}" class="form-control">
                                                         <option th:value="1">Đang kinh doanh</option>
                                                         <option th:value="0">Ngừng kinh doanh</option>
                                                     </select>
@@ -152,11 +157,11 @@
                                     <tr th:each="cl,stt:${lstChatLieu}">
                                         <td th:text="${stt.index+1}"></td>
                                         <td th:text="${cl.ten}"></td>
-                                        <td th:text="${cl.ngay_tao}"></td>
-                                        <td th:text="${cl.nguoi_tao}"></td>
+                                        <td th:text="${cl.ngaytao}"></td>
+                                        <td th:text="${cl.nguoitao}"></td>
                                         <td>
                                             <button class="btn btn-primary btn-xs"
-                                                    th:text="${cl.trang_thai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>
+                                                    th:text="${cl.trangthai? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>
                                         </td>
                                         <td>
                                             <a class="btn btn-danger">

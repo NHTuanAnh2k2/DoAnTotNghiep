@@ -22,10 +22,11 @@ public class ChatLieuImp implements ChatLieuService {
 
     @Override
     public void add(ChatLieu chatLieu) {
-        chatLieu.setNguoi_tao("admin");
-        chatLieu.setNguoi_cap_nhat("admin");
-        chatLieu.setLan_cap_nhat_cuoi(new Date());
-        chatLieu.setNgay_tao(new Date());
         chatLieuRepository.save(chatLieu);
+    }
+
+    @Override
+    public List<ChatLieu> findByTen(String ten, Boolean trangthai) {
+        return chatLieuRepository.findByTenVaTrangThai(ten, trangthai);
     }
 }

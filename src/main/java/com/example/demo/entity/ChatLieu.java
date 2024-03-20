@@ -20,13 +20,13 @@ public class ChatLieu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     String ten;
-    String nguoi_tao;
-    String nguoi_cap_nhat;
+    String nguoitao;
+    String nguoicapnhat;
     @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "yyy-MM-dd")
-    Date lan_cap_nhat_cuoi;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    Date lancapnhatcuoi;
     @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "yyy-MM-dd")
-    Date ngay_tao;
-    Boolean trang_thai;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    Date ngaytao;
+    Boolean trangthai;
 }
