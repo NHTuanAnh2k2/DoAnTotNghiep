@@ -38,4 +38,10 @@ public class ChatLieuController {
         model.addAttribute("lstChatLieu", lstTimKiem);
         return "admin/qlchatlieu";
     }
+
+    @GetMapping("/chatlieu/delete/{id}")
+    public String delete(@PathVariable int id) {
+        chatLieuService.deleteById(id);
+        return "redirect:/chatlieu";
+    }
 }

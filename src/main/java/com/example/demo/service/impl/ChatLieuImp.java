@@ -29,4 +29,15 @@ public class ChatLieuImp implements ChatLieuService {
     public List<ChatLieu> findByTen(String ten, Boolean trangthai) {
         return chatLieuRepository.findByTenVaTrangThai(ten, trangthai);
     }
+
+    @Override
+    public void deleteById(int id) {
+        chatLieuRepository.deleteById(id);
+    }
+
+    @Override
+    public ChatLieu getById(int id) {
+        return chatLieuRepository.getReferenceById(id);
+    }
+
 }

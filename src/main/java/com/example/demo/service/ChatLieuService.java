@@ -10,4 +10,8 @@ public interface ChatLieuService {
     void add(ChatLieu chatLieu);
 
     List<ChatLieu> findByTen(String ten, Boolean trangthai);
+
+    void deleteById(int id);
+
+    ChatLieu getById(int id);
 }
