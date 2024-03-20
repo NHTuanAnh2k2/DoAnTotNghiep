@@ -26,21 +26,21 @@ public class DeGiayImp implements DeGiayService {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         try {
             Date ngayTao = dateFormat.parse("21-12-2022");
-            deGiay.setNgay_tao(ngayTao);
-            deGiay.setLan_cap_nhat_cuoi(ngayTao);
+            deGiay.setNgaytao(ngayTao);
+            deGiay.setLancapnhatcuoi(ngayTao);
         } catch (ParseException e) {
             // Xử lý ngoại lệ nếu không thể chuyển đổi chuỗi thành ngày
             e.printStackTrace();
         }
-        deGiay.setNguoi_tao("duy");
-        deGiay.setNguoi_cap_nhat("tùng");
-        deGiay.setTrang_thai(true);
+        deGiay.setNguoitao("duy");
+        deGiay.setNguoicapnhat("tùng");
+        deGiay.setTrangthai(true);
         return deGiayRepository.save(deGiay);
     }
 
     @Override
-    public List<DeGiay> getDeGiayByTen(String ten) {
-        return deGiayRepository.getDeGiayByTen(ten);
+    public List<DeGiay> getDeGiayByTenOrTrangthai(String ten, Boolean trangthai) {
+        return deGiayRepository.getDeGiayByTenOrTrangthai(ten,trangthai);
     }
 
 

@@ -20,14 +20,14 @@ public class DeGiay {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     String ten;
-    String nguoi_tao;
-    String nguoi_cap_nhat;
+    String nguoitao;
+    String nguoicapnhat;
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyy-MM-dd")
-    Date lan_cap_nhat_cuoi;
+    Date lancapnhatcuoi;
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyy-MM-dd")
-    Date ngay_tao;
-    Boolean trang_thai;
+    Date ngaytao;
+    Boolean trangthai;
 
 }

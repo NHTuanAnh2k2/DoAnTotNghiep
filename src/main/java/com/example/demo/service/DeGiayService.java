@@ -15,7 +15,7 @@ public interface DeGiayService {
 
     DeGiay add(DeGiay deGiay);
 
-    List<DeGiay> getDeGiayByTen(String ten);
+    List<DeGiay> getDeGiayByTenOrTrangthai(String ten,Boolean trangthai);
 
 
 }

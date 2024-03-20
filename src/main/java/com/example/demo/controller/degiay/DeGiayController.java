@@ -21,8 +21,8 @@ public class DeGiayController {
     @GetMapping("/listdegiay")
     public String listdegiay(Model model, @ModelAttribute("degiay") DeGiay deGiay, @ModelAttribute("tim") DeGiayInfo info) {
         List<DeGiay> page = null;
-        if (info.getKey() != null && !info.getKey().isEmpty()) {
-            page = deGiayImp.getDeGiayByTen(info.getKey());
+        if (info.getKey() != null && info.getTrangthai() != null) {
+            page = deGiayImp.getDeGiayByTenOrTrangthai(info.getKey(), info.getTrangthai());
         } else {
             page = deGiayImp.getAll();
         }
