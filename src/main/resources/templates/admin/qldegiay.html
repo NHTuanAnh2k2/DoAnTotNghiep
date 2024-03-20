@@ -50,28 +50,24 @@
                                     Bộ lọc
                                 </h3>
                                 <br>
-                                <form th:method="get" th:object="${tim}">
+                                <form method="get">
                                     <h3 class="card-title">Tìm kiếm:
-                                        <input type="text" placeholder="Tìm kiếm đế giày" class="form-control" th:field="*{key}">
+                                        <input type="text" placeholder="Tìm kiếm đế giày" class="form-control" name="key">
                                     </h3>
 
-<!--                                    <h3 class="card-title" style="margin-left: 20px">Trạng thái:-->
-<!--                                        <select th:field="*{trangthai}" class="form-control">-->
-<!--                                            <option th:each="dg : ${dsdg}" th:value="${dg.id}">-->
-<!--                                                <span th:text="${dg.trangthai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></span>-->
-<!--                                            </option>-->
-<!--                                        </select>-->
-<!--                                    <input type="date" class="form-control" th:field="*{ngaybd}">-->
-<!--                                    </h3>-->
-<!--                                    <h3>Ngày cập nhật:-->
-<!--                                        <input type="date" class="form-control" th:field="*{ngaykt}">-->
-<!--                                    </h3>-->
+                                    <h3 class="card-title" style="margin-left: 20px">Trạng thái:
+                                        <select class="form-control" name="trangthai" style="color: red">
+                                            <option value="">-----</option>
+                                            <option value="1" style="color: red">Đang kinh doanh</option>
+                                            <option value="0" style="color: red">Ngừng kinh doanh</option>
+                                        </select>
+                                    </h3>
                                     <br>
                                     <br>
                                     <br>
-                                    <button style="margin-left: 100px" class="btn btn-primary">Tìm kiếm</button>
-<!--                                    <button class="btn btn-danger">Làm mới bộ lọc</button>-->
+                                    <button type="submit" style="margin-left: 100px" class="btn btn-primary">Tìm kiếm</button>
                                 </form>
+
 
                             </div>
 
@@ -123,7 +119,7 @@
 <!--                                              <!- -->
                                                 <p>
                                                     Trạng thái:
-                                                    <select th:field="*{trang_thai}" class="form-control">
+                                                    <select th:field="*{trangthai}" class="form-control">
                                                         <option th:value="1">Đang kinh doanh</option>
                                                         <option th:value="0">Ngừng kinh doanh</option>
                                                     </select>
@@ -156,12 +152,12 @@
                                     <tr th:each="dg,stt:${list}">
                                         <td th:text="${stt.index+1}"></td>
                                         <td th:text="${dg.ten}"></td>
-                                        <td th:text="${dg.nguoi_tao}"></td>
-                                        <td th:text="${dg.nguoi_cap_nhat}"></td>
-                                        <td th:text="${dg.lan_cap_nhat_cuoi}"></td>
-                                        <td th:text="${dg.ngay_tao}"></td>
+                                        <td th:text="${dg.nguoitao}"></td>
+                                        <td th:text="${dg.nguoicapnhat}"></td>
+                                        <td th:text="${dg.lancapnhatcuoi}"></td>
+                                        <td th:text="${dg.ngaytao}"></td>
                                         <td>
-                                            <button class="btn btn-primary btn-xs" th:text="${dg.trang_thai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>
+                                            <button class="btn btn-primary btn-xs" th:text="${dg.trangthai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>
                                         </td>
                                         <td>
                                             <a class="btn btn-danger">

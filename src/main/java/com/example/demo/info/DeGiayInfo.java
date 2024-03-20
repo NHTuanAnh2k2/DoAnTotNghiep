@@ -22,4 +22,5 @@ public class DeGiayInfo {
 //    @Temporal(TemporalType.DATE)
 //    @DateTimeFormat(pattern = "yyy-MM-dd")
 //    Date ngaykt;
+    Boolean trangthai;
 }

@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface DeGiayRepository extends JpaRepository<DeGiay, Integer> {
-    List<DeGiay> getDeGiayByTen(String ten);
+    List<DeGiay> getDeGiayByTenOrTrangthai(String ten,Boolean trangthai);
 }
