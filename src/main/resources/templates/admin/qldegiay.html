@@ -1,7 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <nav th:replace="~{/layoutadmin/head.html}"></nav>
+<style>
+    /* Màu chính cho trạng thái ngừng kinh doanh */
+    .btn-custom-warning {
+        background-color: rgb(221, 100, 0); /* Màu xanh lá cây */
+        color: #fff; /* Màu chữ trắng */
+        border-color: rgb(60, 179, 113); /* Màu viền là màu xanh lá cây */
+    }
+
+    .btn-custom-info {
+        background-color: rgb(86, 100, 234); /* Màu xanh lá cây */
+        color: #fff; /* Màu chữ trắng */
+        border-color: rgb(60, 179, 113); /* Màu viền là màu xanh lá cây */
+    }
+</style>
 <body class="hold-transition sidebar-mini">
+
 <div class="wrapper">
     <!-- Navbar -->
     <nav th:replace="~{/layoutadmin/navbar.html}"></nav>
@@ -50,16 +65,16 @@
                                     Bộ lọc
                                 </h3>
                                 <br>
-                                <form method="get">
+                                <form method="get" th:object="${tim}">
                                     <h3 class="card-title">Tìm kiếm:
                                         <input type="text" placeholder="Tìm kiếm đế giày" class="form-control" name="key">
                                     </h3>
 
                                     <h3 class="card-title" style="margin-left: 20px">Trạng thái:
-                                        <select class="form-control" name="trangthai" style="color: red">
+                                        <select class="form-control" name="trangthai" style="color:rgb(86,158,43)">
                                             <option value="">-----</option>
-                                            <option value="1" style="color: red">Đang kinh doanh</option>
-                                            <option value="0" style="color: red">Ngừng kinh doanh</option>
+                                            <option value="1" style="color:rgb(86,158,43)">Đang kinh doanh</option>
+                                            <option value="0" style="color:rgb(86,158,43)">Ngừng kinh doanh</option>
                                         </select>
                                     </h3>
                                     <br>
@@ -101,34 +116,33 @@
                             </div>
 
                             <!-- Modal -->
-                            <div class="modal fade" id="themdegiay" tabindex="-1"
-                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="themdegiay" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm đế giày</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form th:method="post" th:object="${degiay}" th:action="@{/addSave}">
+                                            <form id="addForm" th:method="post" th:object="${degiay}" th:action="@{/addSave}">
                                                 <p>
                                                     Tên đế giày:
-                                                    <input class="form-control" th:field="*{ten}">
+                                                    <input id="tenInput" class="form-control" th:field="*{ten}" />
+                                                    <!-- Hiển thị thông báo lỗi -->
+                                                <p id="tenError" class="text-danger"></p>
                                                 </p>
-<!--                                              <!- -->
                                                 <p>
                                                     Trạng thái:
-                                                    <select th:field="*{trangthai}" class="form-control">
-                                                        <option th:value="1">Đang kinh doanh</option>
-                                                        <option th:value="0">Ngừng kinh doanh</option>
+                                                    <select id="trangthaiSelect" class="form-control" th:field="*{trangthai}">
+                                                        <option value="1">Đang kinh doanh</option>
+                                                        <option value="0">Ngừng kinh doanh</option>
                                                     </select>
+                                                    <!-- Hiển thị thông báo lỗi -->
+                                                <p id="trangthaiError" class="text-danger"></p>
                                                 </p>
-
-                                                <button class="btn btn-primary" >Thêm</button>
+                                                <button id="submitButton" class="btn btn-primary">Thêm</button>
                                             </form>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -157,8 +171,11 @@
                                         <td th:text="${dg.lancapnhatcuoi}"></td>
                                         <td th:text="${dg.ngaytao}"></td>
                                         <td>
-                                            <button class="btn btn-primary btn-xs" th:text="${dg.trangthai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>
+                                            <button style="border-radius: 50px" class="btn btn-xs custom-button no-border-button" th:classappend="${dg.trangthai ? 'btn-custom-info' : 'btn-custom-warning'}" th:text="${dg.trangthai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>
                                         </td>
+
+
+
                                         <td>
                                             <a class="btn btn-danger">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
@@ -198,5 +215,50 @@
 <!--script-->
 <nav th:replace="~{/layoutadmin/script.html}"></nav>
 <!--end-->
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // Đối tượng JavaScript để lưu trạng thái của các tên đã được nhập
+    var daNhap = {};
+
+    document.getElementById("submitButton").addEventListener("click", function(event) {
+        // Kiểm tra dữ liệu nhập vào trước khi submit form
+        var tenValue = document.getElementById("tenInput").value.trim();
+        var trangthaiValue = document.getElementById("trangthaiSelect").value.trim();
+        var tenError = document.getElementById("tenError");
+        var trangthaiError = document.getElementById("trangthaiError");
+
+        // Xóa thông báo lỗi cũ
+        tenError.innerText = "";
+        trangthaiError.innerText = "";
+
+        // Biểu thức chính quy để kiểm tra chuỗi chỉ chứa chữ cái
+        var regex = /^[a-zA-Z]+$/;
+
+        // Kiểm tra dữ liệu và hiển thị thông báo lỗi nếu cần
+        if (tenValue === "") {
+            tenError.innerText = "Tên không được để trống";
+            event.preventDefault(); // Ngăn chặn submit form nếu có lỗi
+        } else if (!regex.test(tenValue)) {
+            tenError.innerText = "Tên phải chứa ít nhất một chữ cái và không có ký tự đặc biệt";
+            event.preventDefault(); // Ngăn chặn submit form nếu có lỗi
+        } else if (daNhap[tenValue]) {
+            tenError.innerText = "Tên đã được nhập trước đó";
+            event.preventDefault(); // Ngăn chặn submit form nếu có lỗi
+        } else {
+            // Đánh dấu rằng tên đã được nhập
+            daNhap[tenValue] = true;
+        }
+
+        if (trangthaiValue === "") {
+            trangthaiError.innerText = "Trạng thái không được để trống";
+            event.preventDefault(); // Ngăn chặn submit form nếu có lỗi
+        }
+    });
+    /*]]>*/
+</script>
+
+
+
 </body>
 </html>

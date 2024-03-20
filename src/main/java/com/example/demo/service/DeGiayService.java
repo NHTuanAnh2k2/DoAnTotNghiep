@@ -15,6 +15,10 @@ public interface DeGiayService {
 
     DeGiay add(DeGiay deGiay);
 
+    DeGiay findById(Integer id);
+
+    void delete(Integer id);
+
     List<DeGiay> getDeGiayByTenOrTrangthai(String ten,Boolean trangthai);
 
 
