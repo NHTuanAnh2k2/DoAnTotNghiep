@@ -39,8 +39,19 @@ public class DeGiayImp implements DeGiayService {
     }
 
     @Override
+    public DeGiay findById(Integer id) {
+        return deGiayRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        deGiayRepository.deleteById(id);
+
+    }
+
+    @Override
     public List<DeGiay> getDeGiayByTenOrTrangthai(String ten, Boolean trangthai) {
-        return deGiayRepository.getDeGiayByTenOrTrangthai(ten,trangthai);
+        return deGiayRepository.getDeGiayByTenOrTrangthai(ten, trangthai);
     }
 
 
