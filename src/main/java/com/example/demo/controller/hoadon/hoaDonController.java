@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("admin")
 public class hoaDonController {
-    @GetMapping("qlhoadon")
+    @GetMapping("hoadon")
     public String admin() {
         return "admin/qlhoadon";
     }
