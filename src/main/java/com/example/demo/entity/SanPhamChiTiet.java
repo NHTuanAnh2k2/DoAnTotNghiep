@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -23,9 +24,9 @@ public class SanPhamChiTiet {
     String mota;
     Boolean gioitinh;
     BigDecimal giatien;
-    Date ngaytao;
+    Timestamp ngaytao;
     String nguoitao;
-    Date lancapnhatcuoi;
+    Timestamp lancapnhatcuoi;
     String nguoicapnhat;
     Boolean trangthai;
     @ManyToOne

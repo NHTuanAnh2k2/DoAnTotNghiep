@@ -5,9 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 @Getter
@@ -15,15 +13,15 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "loaigiay")
-public class LoaiGiay {
+@Table(name = "giohang")
+public class GioHang {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    String ten;
     Timestamp ngaytao;
-    String nguoitao;
-    Timestamp lancapnhatcuoi;
-    String nguoicapnhat;
     Boolean trangthai;
+    @OneToOne
+    @JoinColumn(name = "idkhachhang")
+    KhachHang khachhang;
+
 }

@@ -5,9 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.sql.Date;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Getter
@@ -15,15 +14,23 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "loaigiay")
-public class LoaiGiay {
+@Table(name = "phieugiamgiachitiet")
+public class PhieuGiamGiaChiTiet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    String ten;
+    BigDecimal giabandau;
+    BigDecimal giasauapdung;
+    BigDecimal tiengiam;
     Timestamp ngaytao;
     String nguoitao;
     Timestamp lancapnhatcuoi;
     String nguoicapnhat;
-    Boolean trangthai;
+    @ManyToOne
+    @JoinColumn(name = "idhoadon")
+    HoaDon hoadon;
+    @ManyToOne
+    @JoinColumn(name = "idmagiamgia")
+    PhieuGiamGia phieugiamgia;
+
 }

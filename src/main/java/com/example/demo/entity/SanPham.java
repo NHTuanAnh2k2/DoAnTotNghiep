@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -20,9 +21,9 @@ public class SanPham {
     Integer id;
     String qrcode;
     String tensanpham;
-    Date ngaytao;
+    Timestamp ngaytao;
     String nguoitao;
-    Date lancapnhatcuoi;
+    Timestamp lancapnhatcuoi;
     String nguoicapnhat;
     Boolean trangthai;
 }
