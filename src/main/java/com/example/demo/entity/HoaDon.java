@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Getter
@@ -13,16 +14,31 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "sanpham")
+@Table(name = "hoadon")
 public class HoaDon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    String qrcode;
-    String tensanpham;
+    String maqr;
+    String sdt;
+    String tenkhachhang;
+    String diachi;
+    String email;
+    BigDecimal tongtien;
+    Timestamp ngayxacnhan;
+    Timestamp ngayvanchuyen;
+    Integer loaihoadon;
+    BigDecimal phivanchuyen;
     Timestamp ngaytao;
     String nguoitao;
     Timestamp lancapnhatcuoi;
     String nguoicapnhat;
+    String ghichu;
     Boolean trangthai;
+    @ManyToOne
+    @JoinColumn(name = "idnhanvien")
+    NhanVien nhanvien;
+    @ManyToOne
+    @JoinColumn(name = "idkhachhang")
+    KhachHang khachhang;
 }

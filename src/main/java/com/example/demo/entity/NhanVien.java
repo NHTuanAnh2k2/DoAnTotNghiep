@@ -13,11 +13,12 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "khachhang")
-public class KhachHang {
+@Table(name = "nhanvien")
+public class NhanVien {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+    Boolean vaitro;
     Timestamp ngaytao;
     String nguoitao;
     Timestamp lancapnhatcuoi;

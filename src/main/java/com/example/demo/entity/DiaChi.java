@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Getter
@@ -13,11 +14,18 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "khachhang")
-public class KhachHang {
+@Table(name = "diachi")
+public class DiaChi {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+    Integer soduong;
+    String tenduong;
+    String xaphuong;
+    String quanhuyen;
+    String tinhthanhpho;
+    String sdtnguoinhan;
+    String hotennguoinhan;
     Timestamp ngaytao;
     String nguoitao;
     Timestamp lancapnhatcuoi;

@@ -13,8 +13,8 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "khachhang")
-public class KhachHang {
+@Table(name = "khachhangphieugiam")
+public class KhachHangPhieuGiam {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
@@ -24,6 +24,10 @@ public class KhachHang {
     String nguoicapnhat;
     Boolean trangthai;
     @ManyToOne
-    @JoinColumn(name = "idnguoidung")
-    NguoiDung nguoidung;
+    @JoinColumn(name = "idkhachhang")
+    KhachHang khachhang;
+    @ManyToOne
+    @JoinColumn(name = "idphieugiam")
+    PhieuGiamGia phieugiamgia;
+
 }

@@ -13,17 +13,18 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "khachhang")
-public class KhachHang {
+@Table(name = "sanphamtrahang")
+public class SanPhamTraHang {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    Timestamp ngaytao;
+    Integer soluong;
+    String ghichu;
+    Timestamp thoigiantoithieu;
     String nguoitao;
-    Timestamp lancapnhatcuoi;
-    String nguoicapnhat;
+    Timestamp ngaytao;
     Boolean trangthai;
     @ManyToOne
-    @JoinColumn(name = "idnguoidung")
-    NguoiDung nguoidung;
+    @JoinColumn(name = "idsanphamchitiet")
+    SanPhamChiTiet sanphamchitiet;
 }

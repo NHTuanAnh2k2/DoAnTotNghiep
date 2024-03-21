@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Getter
@@ -13,8 +14,8 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "khachhang")
-public class KhachHang {
+@Table(name = "lichsuhoadon")
+public class LichSuHoaDon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
@@ -22,8 +23,13 @@ public class KhachHang {
     String nguoitao;
     Timestamp lancapnhatcuoi;
     String nguoicapnhat;
+    String ghichu;
     Boolean trangthai;
     @ManyToOne
-    @JoinColumn(name = "idnguoidung")
-    NguoiDung nguoidung;
+    @JoinColumn(name = "idhoadon")
+    HoaDon hoadon;
+    @ManyToOne
+    @JoinColumn(name = "idnhanvien")
+    NhanVien nhanvien;
+
 }
