@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.DeGiay;
+import com.example.demo.exception.NotFoundException;
 import com.example.demo.repository.DeGiayRepository;
 import com.example.demo.service.DeGiayService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,13 +41,15 @@ public class DeGiayImp implements DeGiayService {
 
     @Override
     public DeGiay findById(Integer id) {
-        return deGiayRepository.findById(id).orElse(null);
+        return deGiayRepository.findById(id).orElseThrow(() -> new NotFoundException("id không tồn tại"));
     }
 
     @Override
     public void delete(Integer id) {
+        if (id == null) {
+            throw new NotFoundException("ID không tồn tại");
+        }
         deGiayRepository.deleteById(id);
-
     }
 
     @Override
