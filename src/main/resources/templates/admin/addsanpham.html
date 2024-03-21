@@ -64,7 +64,15 @@
                             <div class="card-header">
                                 <h5>
                                     Tên sản phẩm:
-                                    <input class="form-control">
+                                    <select class="form-control select2 select2-primary" data-dropdown-css-class="select2-primary" style="width: 100%;">
+                                        <option selected="selected">Alabama</option>
+                                        <option>Alaska</option>
+                                        <option>California</option>
+                                        <option>Delaware</option>
+                                        <option>Tennessee</option>
+                                        <option>Texas</option>
+                                        <option>Washington</option>
+                                    </select>
                                 </h5>
                                 <h5>
                                     Mô tả:
@@ -176,10 +184,13 @@
                             <!--abc-->
                             <div class="d-flex">
                                 <p style="margin-left: 100px">Kích cỡ:
-                                    <select class="form-control" style="width: 400px">
-                                        <option>Thương hiệu A</option>
-                                        <option>Thương hiệu B</option>
-                                        <option>Thương hiệu C</option>
+                                    <select class="select2" multiple="multiple" data-placeholder="Kích cỡ"
+                                            style="width: 400px;">
+                                        <option>36</option>
+                                        <option>37</option>
+                                        <option>38</option>
+                                        <option>39</option>
+                                        <option>40</option>
                                     </select>
                                 </p>
                                 <button class="btn btn-primary" style="margin:2%">+</button>
