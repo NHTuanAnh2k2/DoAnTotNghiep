@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class SanPhamController {
+
     @Autowired
     SanPhamImp sanPhamImp;
 
@@ -23,13 +24,13 @@ public class SanPhamController {
     public String hienthi(@RequestParam(defaultValue = "0") int p, @ModelAttribute("tim") SanPhamInfo info, Model model) {
         Pageable pageable = PageRequest.of(p, 5);
         Page<SanPham> page = null;
-        if (info.getKey() != null && info.getTrangthai() != null && info.getSoluong() != null) {
-            page = sanPhamImp.findAllByTensanphamAndTrangthaiAndSpctSoluong(info.getKey(), info.getTrangthai(), info.getSoluong(), pageable);
+        if (info.getKey() != null) {
+            page = sanPhamImp.findAllByTensanphamOrTrangthai(info.getKey(), info.getTrangthai(), pageable);
         } else {
             page = sanPhamImp.getAll(pageable);
         }
-        model.addAttribute("list", page.getContent());
-        return "/admin/qlsanpham";
+        model.addAttribute("page", page);
+        return "admin/qlsanpham";
     }
 
 }
