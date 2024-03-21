@@ -23,6 +23,7 @@ public class SanPhamChiTiet {
     String qrcode;
     String mota;
     Boolean gioitinh;
+    Integer soluong;
     BigDecimal giatien;
     Timestamp ngaytao;
     String nguoitao;
