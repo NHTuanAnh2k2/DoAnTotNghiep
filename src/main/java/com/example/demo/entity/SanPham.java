@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,4 +27,6 @@ public class SanPham {
     Timestamp lancapnhatcuoi;
     String nguoicapnhat;
     Boolean trangthai;
+    @OneToMany(mappedBy = "sanpham")
+    private List<SanPhamChiTiet> spct;
 }
