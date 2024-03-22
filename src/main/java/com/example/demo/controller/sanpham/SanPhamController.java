@@ -64,7 +64,7 @@ public class SanPhamController {
     public String viewaddSP(Model model) {
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<SanPhamChiTiet> listSPCT = sanPhamChiTietImp.findAll();
-        List<LoaiGiay> listThuongHieu = thuongHieuImp.findAll();
+        List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
         List<MauSac> listMauSac = mauSacImp.findAll();
         List<KichCo> listKichCo = kichCoImp.findAll();
         List<DeGiay> listDeGiay = deGiayImp.findAll();

@@ -8,7 +8,6 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Date;
 
 @Getter
@@ -57,7 +56,7 @@ public class SanPhamChiTiet {
 
     @ManyToOne
     @JoinColumn(name = "idloaigiay")
-    LoaiGiay loaigiay;
+    ThuongHieu loaigiay;
 
     @ManyToOne
     @JoinColumn(name = "iddegiay")

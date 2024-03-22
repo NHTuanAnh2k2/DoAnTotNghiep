@@ -2,13 +2,11 @@ package com.example.demo.controller.degiay;
 
 
 import com.example.demo.entity.DeGiay;
-import com.example.demo.info.DeGiayInfo;
+import com.example.demo.info.ThuocTinhInfo;
 import com.example.demo.service.impl.DeGiayImp;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -20,7 +18,7 @@ public class DeGiayController {
     DeGiayImp deGiayImp;
 
     @GetMapping("/listdegiay")
-    public String listdegiay(Model model, @ModelAttribute("degiay") DeGiay deGiay, @ModelAttribute("tim") DeGiayInfo info) {
+    public String listdegiay(Model model, @ModelAttribute("degiay") DeGiay deGiay, @ModelAttribute("tim") ThuocTinhInfo info) {
         List<DeGiay> page = null;
         if (info.getKey() != null) {
             page = deGiayImp.getDeGiayByTenOrTrangthai(info.getKey(), info.getTrangthai());
