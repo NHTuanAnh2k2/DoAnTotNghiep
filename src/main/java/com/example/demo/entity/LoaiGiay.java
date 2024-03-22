@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -21,9 +21,14 @@ public class LoaiGiay {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     String ten;
-    Timestamp ngaytao;
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    Date ngaytao;
     String nguoitao;
-    Timestamp lancapnhatcuoi;
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    Date lancapnhatcuoi;
     String nguoicapnhat;
     Boolean trangthai;
 }
+

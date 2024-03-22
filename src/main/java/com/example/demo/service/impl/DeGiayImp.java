@@ -18,7 +18,7 @@ public class DeGiayImp implements DeGiayService {
     DeGiayRepository deGiayRepository;
 
     @Override
-    public List<DeGiay> getAll() {
+    public List<DeGiay> findAll() {
         return deGiayRepository.findAll();
     }
 

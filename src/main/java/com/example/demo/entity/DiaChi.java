@@ -5,9 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -26,9 +27,13 @@ public class DiaChi {
     String tinhthanhpho;
     String sdtnguoinhan;
     String hotennguoinhan;
-    Timestamp ngaytao;
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    Date ngaytao;
     String nguoitao;
-    Timestamp lancapnhatcuoi;
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    Date lancapnhatcuoi;
     String nguoicapnhat;
     Boolean trangthai;
     @ManyToOne

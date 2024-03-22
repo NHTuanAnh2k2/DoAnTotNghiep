@@ -26,10 +26,10 @@ public class DeGiay {
     String nguoitao;
     String nguoicapnhat;
     @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "yyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date lancapnhatcuoi;
     @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "yyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date ngaytao;
 //    @NotNull(message = "Trạng thái không được để trống")
     Boolean trangthai;

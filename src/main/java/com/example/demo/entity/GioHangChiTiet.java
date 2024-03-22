@@ -5,9 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -20,7 +21,9 @@ public class GioHangChiTiet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     Integer soluong;
-    Timestamp ngaytao;
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    Date ngaytao;
     Boolean trangthai;
     @ManyToOne
     @JoinColumn(name = "idsanphamchitiet")
