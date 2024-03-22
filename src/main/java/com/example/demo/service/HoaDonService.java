@@ -9,6 +9,5 @@ import java.util.List;
 
 public interface HoaDonService {
     Page<HoaDon> findAll(Pageable p);
-
     Page<HoaDon> Loc(Integer trangThai, Boolean loaihd, Date tu, Date den, Pageable p);
 }

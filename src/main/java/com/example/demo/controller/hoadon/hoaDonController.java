@@ -10,6 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +26,8 @@ public class hoaDonController {
     HoaDonService dao;
 
     @GetMapping("hien-thi")
-    public String hienThi(Model model, @RequestParam("page") Optional<Integer> pageParam) {
+    public String hienThi(Model model, @RequestParam("page") Optional<Integer> pageParam,
+                          @ModelAttribute("hdcustom") HoaDonCustom info) {
         int page = pageParam.orElse(0);
         Pageable p = PageRequest.of(page, 5);
         Page<HoaDon> lst = dao.findAll(p);
@@ -34,9 +37,16 @@ public class hoaDonController {
     }
 
     @GetMapping("loc")
-    public String Loc(Model model, @RequestParam("page") Optional<Integer> pageParam, @ModelAttribute("hdtim") HoaDonCustom HDinfo) {
+    public String Loc(Model model, @RequestParam("page") Optional<Integer> pageParam,
+                      @Validated @ModelAttribute("hdcustom") HoaDonCustom HDinfo, Errors er) {
         int page = pageParam.orElse(0);
         Pageable p = PageRequest.of(page, 5);
+        if (er.hasErrors()) {
+            Page<HoaDon> fixErr=dao.findAll(p);
+            model.addAttribute("lst", fixErr);
+            model.addAttribute("pageNo", page);
+            return "admin/qlhoadon";
+        }
         Integer trangThai = -1;
         if (HDinfo.getKey().equalsIgnoreCase("chờ xác nhận")) {
             trangThai = 0;
@@ -66,9 +76,12 @@ public class hoaDonController {
                 }
             }
         }
+
         Page<HoaDon> lst = dao.Loc(trangThai,
                 HDinfo.getLoaiHD(), HDinfo.getTu(), HDinfo.getDen(), p);
         model.addAttribute("lst", lst);
+        model.addAttribute("pageNo", page);
+        System.out.println("aaaa"+lst.getSize());
         return "admin/qlhoadon";
     }
 }
