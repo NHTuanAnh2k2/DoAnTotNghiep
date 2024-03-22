@@ -64,31 +64,23 @@
                                     Bộ lọc
                                 </h3>
                                 <br>
-                               <form method="get" th:object="${tim}">
-                                   <h3 class="card-title">Tìm kiếm tên sản phẩm
-                                       <input type="text" placeholder="Tìm kiếm" class="form-control" name="key">
-                                   </h3>
-                                   <h3 class="card-title" style="margin-left: 20px">Trạng thái:
-                                       <select class="form-control" name="trangthai" style="color:rgb(86,158,43)">
-                                           <option value="">-----</option>
-                                           <option value="1" style="color:rgb(86,158,43)">Đang kinh doanh</option>
-                                           <option value="0" style="color:rgb(86,158,43)">Ngừng kinh doanh</option>
-                                       </select>
-                                   </h3>
-<!--                                   <h3 class="card-title" style="margin-left: 20px">Số lượng:-->
-<!--                                       <select class="form-control" name="trangthai" style="color:rgb(86,158,43)">-->
-<!--                                           <option value="">-----</option>-->
-<!--                                           <option value="1" style="color:rgb(86,158,43)">Đang kinh doanh</option>-->
-<!--                                           <option value="0" style="color:rgb(86,158,43)">Ngừng kinh doanh</option>-->
-<!--                                       </select>-->
-<!--                                   </h3>-->
-                                   <br>
-                                   <br>
-                                   <br>
-                                   <button style="margin-left: 100px" class="btn btn-primary">Tìm kiếm</button>
-                               </form>
-
-
+                                <form method="get" th:object="${tim}">
+                                    <h3 class="card-title">Tìm kiếm tên sản phẩm
+                                        <input type="text" id="searchInput" placeholder="Tìm kiếm" class="form-control" name="key">
+                                    </h3>
+                                    <h3 class="card-title" style="margin-left: 20px">Trạng thái:
+                                        <select id="statusSelect" class="form-control" name="trangthai" style="color:rgb(86,158,43)">
+                                            <option value="">-----</option>
+                                            <option value="1" style="color:rgb(86,158,43)">Đang kinh doanh</option>
+                                            <option value="0" style="color:rgb(86,158,43)">Ngừng kinh doanh</option>
+                                        </select>
+                                    </h3>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <button th:formaction="@{/listsanpham}" style="margin-left: 100px" class="btn btn-primary">Tìm kiếm</button>
+                                </form>
+                                <button style="margin-left: 100px;margin-top: 10px" class="btn btn-danger" onclick="clearSearch()">Làm mới bộ lọc</button>
                             </div>
 
                         </div>
@@ -117,7 +109,7 @@
                                     </svg>
                                     Danh sách sản phẩm
                                 </h3>
-                                <a href="/admin/addsanpham" class="card-title btn btn-primary" style="margin-left: 850px">Tạo sản phẩm</a>
+                                <a href="/viewaddSP" class="card-title btn btn-primary" style="margin-left: 850px">Tạo sản phẩm</a>
                             </div>
 
                             <!-- /.card-header -->
@@ -128,7 +120,7 @@
                                         <th>STT</th>
                                         <th>Mã Sản phẩm</th>
                                         <th>Tên sản phẩm</th>
-<!--                                        <th>Số lượng tồn</th>-->
+                                        <th>Số lượng tồn</th>
                                         <th>Trạng thái</th>
                                         <th>Hành động</th>
                                     </tr>
@@ -138,7 +130,11 @@
                                         <td th:text="${stt.index+1}"></td>
                                         <td th:text="${sp.id}"></td>
                                         <td th:text="${sp.tensanpham}"></td>
-<!--                                        <td th:text="${sp.spct.soluong}"></td>-->
+                                        <td>
+                                            <th:block th:each="spct : ${sp.spct}">
+                                                <span th:text="${spct.soluong}"></span>
+                                            </th:block>
+                                        </td>
                                         <td>
                                             <button style="border-radius: 50px"
                                                     class="btn btn-xs custom-button no-border-button"
@@ -182,6 +178,15 @@
 </div>
 <!--script-->
 <nav th:replace="~{/layoutadmin/script.html}"></nav>
+
+<!--làm mới bộ lọc-->
+<script>
+    function clearSearch() {
+        document.getElementById("searchInput").value = "";
+        document.getElementById("statusSelect").selectedIndex = 0;
+    }
+</script>
+
 <!--end-->
 </body>
 </html>

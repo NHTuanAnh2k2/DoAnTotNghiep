@@ -25,7 +25,7 @@ public class DeGiayController {
         if (info.getKey() != null) {
             page = deGiayImp.getDeGiayByTenOrTrangthai(info.getKey(), info.getTrangthai());
         } else {
-            page = deGiayImp.getAll();
+            page = deGiayImp.findAll();
         }
         model.addAttribute("list", page);
         return "admin/qldegiay";
@@ -62,7 +62,7 @@ public class DeGiayController {
 
     @ModelAttribute("dsdg")
     public List<DeGiay> getDS() {
-        return deGiayImp.getAll();
+        return deGiayImp.findAll();
     }
 
 

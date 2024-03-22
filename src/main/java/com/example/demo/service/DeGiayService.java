@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface DeGiayService {
 
-    List<DeGiay> getAll();
+    List<DeGiay> findAll();
 
     DeGiay add(DeGiay deGiay);
 

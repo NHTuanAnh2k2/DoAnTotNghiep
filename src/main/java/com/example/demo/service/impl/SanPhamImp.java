@@ -8,11 +8,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SanPhamImp implements SanPhamService {
     @Autowired
     SanPhamRepositoty sanPhamRepositoty;
 
+
+    @Override
+    public List<SanPham> findAll() {
+        return sanPhamRepositoty.findAll();
+    }
 
     @Override
     public Page<SanPham> getAll(Pageable pageable) {
