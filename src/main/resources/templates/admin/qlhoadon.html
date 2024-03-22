@@ -298,14 +298,20 @@
                                                 </thead>
                                                 <tbody>
                                                 <tr th:each="a:${lst}">
-                                                    <td th:text="${aStat.index}"></td>
+                                                    <td th:text="${aStat.index+1}"></td>
                                                     <td th:text="${a.mahoadon}"></td>
                                                     <td th:text="${a.khachhang.nguoidung.hovaten}"></td>
                                                     <td th:text="${a.nhanvien.nguoidung.hovaten}"></td>
                                                     <td th:text="${a.loaihoadon==1?'online':'offline'}"></td>
                                                     <td th:text="${a.ngaytao}"></td>
                                                     <td th:text="${a.tongtien}"></td>
-                                                    <td th:text="${a.trangthai}"></td>
+                                                    <td th:if="${a.trangthai==0}">chờ xác nhận</td>
+                                                    <td th:if="${a.trangthai==1}">đã xác nhận</td>
+                                                    <td th:if="${a.trangthai==2}">chờ giao hàng</td>
+                                                    <td th:if="${a.trangthai==3}">đang giao hàng</td>
+                                                    <td th:if="${a.trangthai==4}">đã thanh toán</td>
+                                                    <td th:if="${a.trangthai==5}">đã hoàn thành</td>
+                                                    <td th:if="${a.trangthai==6}">đã hủy</td>
                                                     <td>
                                                         <button type="button" class="btn btn-warning">
                                                             <a href="chiTiet/${a.id}">Xem</a>
@@ -317,12 +323,11 @@
                                             <br>
                                             <nav aria-label="Page navigation example">
                                                 <ul class="pagination">
-                                                    <li class="page-item"><a class="page-link" href="#">Previous</a>
+                                                    <li class="page-item"><a class="page-link" th:href= "@{'?page='+${lst.number-1}}">Previous</a>
                                                     </li>
-                                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#">Next</a>
+                                                    <li class="page-item" th:each= "i:${#numbers.sequence(1,lst.totalPages)}" th:classappend="${pageNo==i-1?'active':''}"
+                                                    ><a class="page-link" th:href= "@{'?page='+${i-1}}" th:text="${i}"></a></li>
+                                                    <li class="page-item"><a class="page-link" th:href= "@{'?page='+${lst.number+1}}">Next</a>
                                                     </li>
                                                 </ul>
                                             </nav>

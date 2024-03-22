@@ -30,6 +30,7 @@ public class hoaDonController {
         model.addAttribute("lst",lst);
         trangthaihienthi="hien-thi";
         model.addAttribute("tth",trangthaihienthi);
+        model.addAttribute("pageNo",page);
         return "admin/qlhoadon";
     }
 
