@@ -1,0 +1,14 @@
+package com.example.demo.service;
+
+import com.example.demo.entity.HoaDon;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.sql.Date;
+import java.util.List;
+
+public interface HoaDonService {
+    Page<HoaDon> findAll(Pageable p);
+
+    Page<HoaDon> Loc(Integer trangThai, Boolean loaihd, Date tu, Date den, Pageable p);
+}

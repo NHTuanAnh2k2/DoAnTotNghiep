@@ -3,6 +3,7 @@ package com.example.demo.controller.hoadon;
 import com.example.demo.entity.HoaDon;
 import com.example.demo.info.HoaDonCustom;
 import com.example.demo.repository.hoadon.HoaDonRepository;
+import com.example.demo.service.HoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,22 +20,20 @@ import java.util.Optional;
 @Controller
 @RequestMapping("hoa-don")
 public class hoaDonController {
-    String trangthaihienthi;
     @Autowired
-    HoaDonRepository dao;
+    HoaDonService dao;
+
     @GetMapping("hien-thi")
     public String hienThi(Model model, @RequestParam("page") Optional<Integer> pageParam) {
         int page = pageParam.orElse(0);
         Pageable p = PageRequest.of(page, 5);
-        Page<HoaDon> lst=dao.findAll(p);
-        model.addAttribute("lst",lst);
-        trangthaihienthi="hien-thi";
-        model.addAttribute("tth",trangthaihienthi);
-        model.addAttribute("pageNo",page);
+        Page<HoaDon> lst = dao.findAll(p);
+        model.addAttribute("lst", lst);
+        model.addAttribute("pageNo", page);
         return "admin/qlhoadon";
     }
 
-    @GetMapping("Loc")
+    @GetMapping("loc")
     public String Loc(Model model, @RequestParam("page") Optional<Integer> pageParam, @ModelAttribute("hdtim") HoaDonCustom HDinfo) {
         int page = pageParam.orElse(0);
         Pageable p = PageRequest.of(page, 5);
@@ -67,11 +66,9 @@ public class hoaDonController {
                 }
             }
         }
-        Page<HoaDon> lst = dao.findAllByTrangthaiAndLoaihoadonAndNgaytaoGreaterThanEqualAndNgaytaoLessThanEqual(trangThai,
+        Page<HoaDon> lst = dao.Loc(trangThai,
                 HDinfo.getLoaiHD(), HDinfo.getTu(), HDinfo.getDen(), p);
-        trangthaihienthi = "Loc";
         model.addAttribute("lst", lst);
-        model.addAttribute("tth",trangthaihienthi);
         return "admin/qlhoadon";
     }
 }
