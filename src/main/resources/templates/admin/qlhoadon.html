@@ -142,7 +142,7 @@
                                         <div class="d-flex justify-content-between"
                                             style="margin-right: 35%; margin-left: 35%;">
                                             <button type="submit" class="btn btn-success">Tìm kiếm</button>
-                                            <button type="submit" class="btn btn-danger">Làm mới</button>
+                                            <button type="reset" class="btn btn-danger">Làm mới</button>
                                         </div>
                                     </form>
 
@@ -181,15 +181,15 @@
                                     <hr class="border border-danger border-2 opacity-50">
                                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                                         <!--Tab hiện thị tất cả hóa đơn-->
-                                        <li class="nav-item" role="presentation">
+                                        <li class="nav-item" role="presentation" >
                                             <button class="nav-link active position-relative" id="tatCaHoaDon-tab"
                                                 data-bs-toggle="tab" data-bs-target="#tatCaHoaDon-tab-pane"
                                                 type="button" role="tab" aria-controls="home-tab-pane"
                                                 aria-selected="true">
-                                                Tất cả
-                                                <span
+                                                <a th:href= "@{/hoa-don/hien-thi}">Tất cả</a>
+                                                <span th:text="${lst.TotalElements}"
                                                     class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
-                                                    12
+                                                  
                                                 </span>
                                             </button>
                                         </li>
@@ -199,10 +199,11 @@
                                                 data-bs-toggle="tab" data-bs-target="#hoaDonChoXacNhan-tab-pane"
                                                 type="button" role="tab" aria-controls="profile-tab-pane"
                                                 aria-selected="false">
-                                                Chờ xác nhận
-                                                <span
+                                        
+                                                <a th:href= "@{/hoa-don/tim-kiem/0}"> Chờ xác nhận</a>
+                                                <span th:text="${lst.TotalElements}"
                                                     class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
-                                                    13
+                                                    
                                                 </span>
                                             </button>
                                         </li>
@@ -212,10 +213,10 @@
                                                 data-bs-toggle="tab" data-bs-target="#hoaDonDaXacNhan-tab-pane"
                                                 type="button" role="tab" aria-controls="contact-tab-pane"
                                                 aria-selected="false">
-                                                Đã xác nhận
+                                                  <a th:href= "@{/hoa-don/tim-kiem/1}">Đã xác nhận</a>
                                                 <span
                                                     class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
-                                                    14
+                                                    
                                                 </span>
                                             </button>
                                         </li>
@@ -225,10 +226,10 @@
                                                 data-bs-toggle="tab" data-bs-target="#hoaDonChoGiaoHang-tab-pane"
                                                 type="button" role="tab" aria-controls="disabled-tab-pane"
                                                 aria-selected="false">
-                                                Chờ giao hàng
+                                                  <a th:href= "@{/hoa-don/tim-kiem/2}">Chờ giao hàng</a>
                                                 <span
                                                     class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
-                                                    15
+                                                
                                                 </span>
                                             </button>
                                         </li>
@@ -238,10 +239,10 @@
                                                 data-bs-toggle="tab" data-bs-target="#hoaDonDangGiaoHang-tab-pane"
                                                 type="button" role="tab" aria-controls="disabled-tab-pane"
                                                 aria-selected="false">
-                                                Đang giao hàng
+                                                  <a th:href= "@{/hoa-don/tim-kiem/3}">Đang giao hàng</a>
                                                 <span
                                                     class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
-                                                    16
+                                        
                                                 </span>
                                             </button>
                                         </li>
@@ -251,10 +252,10 @@
                                                 data-bs-toggle="tab" data-bs-target="#hoaDonDaThanhToan-tab-pane"
                                                 type="button" role="tab" aria-controls="disabled-tab-pane"
                                                 aria-selected="false">
-                                                Đã thanh toán
+                                                <a th:href= "@{/hoa-don/tim-kiem/4}"> Đã thanh toán</a>
                                                 <span
                                                     class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
-                                                    20
+                                              11
                                                 </span>
                                             </button>
                                         </li>
@@ -264,7 +265,7 @@
                                                 data-bs-toggle="tab" data-bs-target="#hoaDonDaHoanThanh-tab-pane"
                                                 type="button" role="tab" aria-controls="disabled-tab-pane"
                                                 aria-selected="false">
-                                                Đã hoàn thành
+                                                <a th:href= "@{/hoa-don/tim-kiem/5}">Đã hoàn thành</a>
                                                 <span
                                                     class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
                                                     99+
@@ -277,10 +278,10 @@
                                                 data-bs-toggle="tab" data-bs-target="#hoaDonDaHuy-tab-pane"
                                                 type="button" role="tab" aria-controls="disabled-tab-pane"
                                                 aria-selected="false">
-                                                Đã hủy
+                                                 <a th:href= "@{/hoa-don/tim-kiem/6}">Đã hủy</a>
                                                 <span
                                                     class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
-                                                    5
+                                                    
                                                 </span>
                                             </button>
                                         </li>

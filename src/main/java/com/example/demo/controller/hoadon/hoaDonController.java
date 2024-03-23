@@ -12,10 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -79,6 +76,17 @@ public class hoaDonController {
 
         Page<HoaDon> lst = dao.Loc(trangThai,
                 HDinfo.getLoaiHD(), HDinfo.getTu(), HDinfo.getDen(), p);
+        model.addAttribute("lst", lst);
+        model.addAttribute("pageNo", page);
+        return "admin/qlhoadon";
+    }
+
+    @GetMapping("tim-kiem/{trangThai}")
+    public String timKiem(Model model, @RequestParam("page") Optional<Integer> pageParam,
+                          @PathVariable("trangThai") Integer trangThai, @ModelAttribute("hdcustom") HoaDonCustom info) {
+        int page = pageParam.orElse(0);
+        Pageable p = PageRequest.of(page, 5);
+        Page<HoaDon> lst = dao.timKiemTT(trangThai, p);
         model.addAttribute("lst", lst);
         model.addAttribute("pageNo", page);
         return "admin/qlhoadon";
