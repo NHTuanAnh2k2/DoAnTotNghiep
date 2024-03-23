@@ -98,7 +98,8 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <input th:field="*{key}" type="text" class="form-control"
-                                                        th:placeholder="Nhập"> <br> <i th:errors="*{key}" class="text-danger"></i>
+                                                        th:placeholder="Nhập trạng thái đơn..."> <i th:errors="*{key}"
+                                                        class="text-danger"></i>
                                                 </div>
                                             </div>
                                             <div class="align-items-center col-lg-6 col-md-6">
@@ -111,6 +112,7 @@
                                                         <option value="true">Online</option>
                                                         <option value="false">Offline</option>
                                                     </select>
+                                                    <i th:errors="*{loaiHD}" class="text-danger"></i>
                                                 </div>
                                             </div>
                                             <div class=" align-items-center col-lg-6 col-md-6">
@@ -119,6 +121,10 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <input type="date" class="form-control" th:field="*{tu}">
+
+                                                    <i th:if="${#fields.hasErrors('tu')}" class="text-danger">Vui lòng
+                                                        không để trống!!</i>
+
                                                 </div>
                                             </div>
                                             <div class=" align-items-center col-lg-6 col-md-6">
@@ -127,6 +133,8 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <input type="date" class="form-control" th:field="*{den}">
+                                                    <i th:if="${#fields.hasErrors('den')}" class="text-danger">Vui lòng
+                                                        không để trống!!</i>
                                                 </div>
                                             </div>
                                         </div>
@@ -322,7 +330,7 @@
                                                     </tbody>
                                                 </table>
                                                 <br>
-                                                <nav aria-label="Page navigation example">
+                                                <nav aria-label="Page navigation example" th:if="${lst.totalPages>1}">
                                                     <ul class="pagination">
                                                         <li class="page-item" th:if="${lst.number>0}"><a
                                                                 class="page-link"
