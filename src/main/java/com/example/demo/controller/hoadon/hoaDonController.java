@@ -42,7 +42,7 @@ public class hoaDonController {
         int page = pageParam.orElse(0);
         Pageable p = PageRequest.of(page, 5);
         if (er.hasErrors()) {
-            Page<HoaDon> fixErr=dao.findAll(p);
+            Page<HoaDon> fixErr = dao.findAll(p);
             model.addAttribute("lst", fixErr);
             model.addAttribute("pageNo", page);
             return "admin/qlhoadon";
@@ -81,7 +81,6 @@ public class hoaDonController {
                 HDinfo.getLoaiHD(), HDinfo.getTu(), HDinfo.getDen(), p);
         model.addAttribute("lst", lst);
         model.addAttribute("pageNo", page);
-        System.out.println("aaaa"+lst.getSize());
         return "admin/qlhoadon";
     }
 }

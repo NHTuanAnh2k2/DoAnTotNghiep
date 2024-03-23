@@ -27,7 +27,7 @@ public class HoaDon {
     BigDecimal tongtien;
     Timestamp ngayxacnhan;
     Timestamp ngayvanchuyen;
-    Integer loaihoadon;
+    Boolean loaihoadon;
     BigDecimal phivanchuyen;
     Timestamp ngaytao;
     String nguoitao;
