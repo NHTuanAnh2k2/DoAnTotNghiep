@@ -60,137 +60,95 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5 style="font-family: 'Times New Roman'" >
-                                    Tên sản phẩm:
-                                    <select class="form-control select2 select2-primary" data-dropdown-css-class="select2-primary" style="width: 100%;">
-                                        <option value="" selected disabled hidden>Nhập tên sản phẩm</option>
-                                        <option th:each="sp : ${sp}" th:value="${sp.id}" th:text="${sp.tensanpham}"></option>
-                                    </select>
-                                </h5>
-                                <h5>
-                                    Mô tả:
-                                    <textarea rows="4" cols="164" class="form-control"></textarea>
-                                </h5>
-                            </div>
-                            <!--abc-->
-                            <div class="d-flex">
-                                <p style="margin-left: 100px">Thương hiệu:
-                                    <select class="form-control" style="width: 400px">
-                                        <option value="" selected disabled hidden>Chọn thương hiệu</option>
-                                        <option th:each="th : ${th}" th:value="${th.id}" th:text="${th.ten}"></option>
-                                    </select>
-                                </p>
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#themsanpham"
-                                        style="margin:2%">+
-                                </button>
-                                <!-- Modal -->
-                                <div class="modal fade" id="themsanpham" tabindex="-1"
-                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm sản phẩm</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>
-                                                    Tên sản phẩm:
-                                                    <input class="form-control">
-                                                </p>
-                                                <p>
-                                                    Tên số lượng:
-                                                    <input type="number" class="form-control">
-                                                </p>
-                                                <p>
-                                                    Trạng thái:
-                                                    <select class="form-control">
-                                                        <option>Đang sử dụng</option>
-                                                        <option>Chưa sử dụng</option>
-                                                    </select>
-                                                </p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                    Hủy
-                                                </button>
-                                                <button type="button" class="btn btn-primary">Thêm</button>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <form action="/addProduct" method="post">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 style="font-family: 'Times New Roman'">
+                                        Tên sản phẩm:
+                                        <select class="form-control select2 select2-primary" data-dropdown-css-class="select2-primary" style="width: 100%;" name="tensp">
+                                            <option value="" selected disabled hidden>Nhập tên sản phẩm</option>
+                                            <option th:each="sp : ${sp}" th:value="${sp.id}" th:text="${sp.tensanpham}"></option>
+                                        </select>
+                                    </h5>
+                                    <h5>
+                                        Mô tả:
+                                        <textarea rows="4" cols="164" class="form-control" name="mota"></textarea>
+                                    </h5>
                                 </div>
-
-                                <p style="margin-left: 100px">Trạng thái:
-                                    <select class="form-control" style="width: 400px">
-                                        <option value="" selected disabled hidden>Chọn trạng thái</option>
-                                        <option>Đang kinh doanh</option>
-                                        <option>Ngừng kinh doanh</option>
-                                    </select>
-                                </p>
-                                <button class="btn btn-primary" style="margin:2%">+</button>
+                                <!--abc-->
+                                <div class="d-flex">
+                                    <p style="margin-left: 100px">Thương hiệu:
+                                        <select class="form-control" style="width: 400px" name="idThuongHieu">
+                                            <option value="" selected disabled hidden>Chọn thương hiệu</option>
+                                            <option th:each="th : ${th}" th:value="${th.id}" th:text="${th.ten}"></option>
+                                        </select>
+                                    </p>
+                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#themsanpham" style="margin:2%">+</button>
+                                    <p style="margin-left: 100px">Trạng thái:
+                                        <input type="hidden" name="trangthai" id="trangthaiHidden">
+                                        <select class="form-control" style="width: 400px" onchange="updateTrangThai()" name="trangthaiSelect">
+                                            <option value="" selected disabled hidden>Chọn trạng thái</option>
+                                            <option value="true">Đang kinh doanh</option>
+                                            <option value="false">Ngừng kinh doanh</option>
+                                        </select>
+                                    </p>
+                                    <button class="btn btn-primary" style="margin:2%">+</button>
+                                </div>
+                                <!--end-->
+                                <!--abc-->
+                                <div class="d-flex">
+                                    <p style="margin-left: 100px">Chất liệu:
+                                        <select class="form-control" style="width: 400px" name="idChatLieu">
+                                            <option value="" selected disabled hidden>Chọn chất liệu</option>
+                                            <option th:each="cl : ${cl}" th:value="${cl.id}" th:text="${cl.ten}"></option>
+                                        </select>
+                                    </p>
+                                    <button class="btn btn-primary" style="margin:2%">+</button>
+                                    <p style="margin-left: 100px">Đế giày:
+                                        <select class="form-control" style="width: 400px" name="idDeGiay">
+                                            <option value="" selected disabled hidden>Chọn đế giày</option>
+                                            <option th:each="dg : ${dg}" th:value="${dg.id}" th:text="${dg.ten}"></option>
+                                        </select>
+                                    </p>
+                                    <button class="btn btn-primary" style="margin:2%">+</button>
+                                </div>
+                                <!--end-->
+                                <!--abc-->
+                                <div class="d-flex">
+                                    <p style="margin-left: 100px">Giới tính:
+                                        <select class="form-control" style="width: 400px" name="gioitinh">
+                                            <option value="" selected disabled hidden>Chọn giới tính</option>
+                                            <option value="true">Nam</option>
+                                            <option value="false">Nữ</option>
+                                        </select>
+                                    </p>
+                                    <button class="btn btn-primary" style="margin:2%">+</button>
+                                    <p style="margin-left: 100px">Màu sắc:
+                                        <select class="select2" multiple="multiple" data-placeholder="Màu sắc" style="width: 400px;" name="idMauSac">
+                                            <option th:each="ms : ${ms}" th:value="${ms.id}" th:text="${ms.ten}"></option>
+                                        </select>
+                                    </p>
+                                    <p>
+                                    </p>
+                                    <button class="btn btn-primary" style="margin:2%">+</button>
+                                </div>
+                                <!--end-->
+                                <!--abc-->
+                                <div class="d-flex">
+                                    <p style="margin-left: 100px">Kích cỡ:
+                                        <select class="select2" multiple="multiple" data-placeholder="Kích cỡ" style="width: 400px;" name="idKichCo">
+                                            <option th:each="kc : ${kc}" th:value="${kc.id}" th:text="${kc.ten}"></option>
+                                        </select>
+                                    </p>
+                                    <button class="btn btn-primary" style="margin:2%">+</button>
+                                </div>
+                                <!--end-->
                             </div>
-                            <!--end-->
+                            <button type="submit" class="btn btn-primary" style="margin:2%; width: 200px;">Thêm</button>
+                        </form>
 
-                            <!--abc-->
-                            <div class="d-flex">
-                                <p style="margin-left: 100px">Chất liệu:
-                                    <select class="form-control" style="width: 400px">
-                                        <option value="" selected disabled hidden>Chọn chất liệu</option>
-                                        <option th:each="cl : ${cl}" th:value="${cl.id}" th:text="${cl.ten}"></option>
-                                    </select>
-                                </p>
-                                <button class="btn btn-primary" style="margin:2%">+</button>
-                                <p style="margin-left: 100px">Đế giày:
-                                    <select class="form-control" style="width: 400px">
-                                        <option value="" selected disabled hidden>Chọn đế giày</option>
-                                        <option th:each="dg : ${dg}" th:value="${dg.id}" th:text="${dg.ten}"></option>
-                                    </select>
-                                </p>
-                                <button class="btn btn-primary" style="margin:2%">+</button>
-                            </div>
-                            <!--end-->
 
-                            <!--abc-->
-                            <div class="d-flex">
-                                <p style="margin-left: 100px">Giới tính:
-                                    <select class="form-control" style="width: 400px">
-                                        <option value="" selected disabled hidden>Chọn giới tính</option>
-                                        <option value="true">Nam</option>
-                                        <option value="false">Nữ</option>
-                                    </select>
 
-                                </p>
-                                <button class="btn btn-primary" style="margin:2%">+</button>
-                                <p style="margin-left: 100px">Màu sắc:
-                                    <select class="select2" multiple="multiple" data-placeholder="Màu sắc"
-                                            style="width: 400px;">
-                                        <option th:each="ms : ${ms}" th:value="${ms.id}" th:text="${ms.ten}"></option>
-                                    </select>
-                                </p>
-                                <p>
-                                </p>
-                                <button class="btn btn-primary" style="margin:2%">+</button>
-                            </div>
-                            <!--end-->
-
-                            <!--abc-->
-                            <div class="d-flex">
-                                <p style="margin-left: 100px">Kích cỡ:
-                                    <select class="select2" multiple="multiple" data-placeholder="Kích cỡ"
-                                            style="width: 400px;">
-                                        <option th:each="kc : ${kc}" th:value="${kc.id}" th:text="${kc.ten}"></option>
-                                    </select>
-                                </p>
-                                <button class="btn btn-primary" style="margin:2%">+</button>
-                                <p style="margin-left: 100px;padding-top: 23px">
-                                    <button class="btn btn-primary" style="margin:2%; width: 200px;">Thêm</button>
-                                </p>
-                                <br>
-                            </div>
-                            <!--end-->
-                        </div>
                         <!-- /.card -->
                     </div>
                     <!-- /.col -->
@@ -215,72 +173,57 @@
                                         <th>STT</th>
                                         <th>Tên sản phẩm</th>
                                         <th>Số lượng</th>
-                                        <th>Giá nhập</th>
                                         <th>Giá bán</th>
                                         <th>Hành động</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
+                                    <tr th:each="hi,stt:${page.content}">
                                         <td>
                                             <input type="checkbox">
                                         </td>
-                                        <td>Trident</td>
-                                        <td>Internet Explorer 4.0</td>
+                                        <td th:text="${stt.index+1}"></td>
+                                        <td th:text="${hi.sanpham.tensanpham}"></td>
                                         <td>
-                                            <input type="number" width="50px">
+                                            <input type="number" style="width: 70px; height: 30px" class="form-control"
+                                                   th:value="${hi.soluong}">
                                         </td>
                                         <td>
-                                            <input type="number" width="50px">
+                                            <input type="number" style="width: 150px; height: 30px" class="form-control"
+                                                   th:value="${hi.giatien}">
                                         </td>
+<!--                                        <td>-->
+<!--                                            <div class="card-body">-->
+<!--                              <span class="fileinput-button"><span>+ Upload</span><input type="file" id="fileInput" multiple="multiple" style="display: none;"></span>-->
+<!--                                                <div class="table table-striped files" id="previews">-->
+<!--                                                    <div id="template" class="row mt-2">-->
+<!--                                                        <div class="col-auto">-->
+<!--                                                <span class="preview"><img src="data:," alt=""-->
+<!--                                                                           data-dz-thumbnail/></span>-->
+<!--                                                        </div>-->
+<!--                                                        <div class="col-auto d-flex align-items-center">-->
+<!--                                                            <button data-dz-remove-->
+<!--                                                                    class="btn btn-danger delete cancel start">-->
+<!--                                                                <i class="fas fa-trash"></i>-->
+<!--                                                                <span>Delete</span>-->
+<!--                                                            </button>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+
+<!--                                        </td>-->
                                         <td>
-                                            <button class=" btn btn-primary btn-xs">Đang kinh doanh</button>
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-danger">delete</button>
-                                            <button class="btn btn-warning">detail</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox">
-                                        </td>
-                                        <td>Trident</td>
-                                        <td>Internet Explorer 4.0</td>
-                                        <td>
-                                            <input type="number" width="50px">
-                                        </td>
-                                        <td>
-                                            <input type="number" width="50px">
-                                        </td>
-                                        <td>
-                                            <button class=" btn btn-primary btn-xs">Đang kinh doanh</button>
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-danger">delete</button>
-                                            <button class="btn btn-warning">detail</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox">
-                                        </td>
-                                        <td>Trident</td>
-                                        <td>Internet Explorer 4.0</td>
-                                        <td>
-                                            <input type="number" width="50px">
-                                        </td>
-                                        <td>
-                                            <input type="number" width="50px">
-                                        </td>
-                                        <td>
-                                            <button class=" btn btn-primary btn-xs">Đang kinh doanh</button>
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-danger">delete</button>
-                                            <button class="btn btn-warning">detail</button>
+                                            <a class="btn btn-danger">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                     fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                                                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                                </svg>
+                                            </a>
                                         </td>
                                     </tr>
+
                                     </tfoot>
                                 </table>
 
