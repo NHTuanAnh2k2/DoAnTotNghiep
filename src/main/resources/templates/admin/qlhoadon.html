@@ -110,7 +110,7 @@
                                                     <select class="form-control" th:field="*{loaiHD}">
                                                         <option value="">Chọn Loại đơn</option>
                                                         <option value="true">Online</option>
-                                                        <option value="false">Offline</option>
+                                                        <option value="false">Tại quầy</option>
                                                     </select>
                                                     <i th:errors="*{loaiHD}" class="text-danger"></i>
                                                 </div>
@@ -317,7 +317,7 @@
                                                             <td th:text="${a.mahoadon}"></td>
                                                             <td th:text="${a.khachhang.nguoidung.hovaten}"></td>
                                                             <td th:text="${a.nhanvien.nguoidung.hovaten}"></td>
-                                                            <td th:text="${a.loaihoadon==true?'online':'offline'}"></td>
+                                                            <td th:text="${a.loaihoadon==true?'online':'tại quầy'}"></td>
                                                             <td th:text="${a.ngaytao}"></td>
                                                             <td th:text="${a.tongtien}"></td>
                                                             <td th:if="${a.trangthai==0}">chờ xác nhận</td>
@@ -329,7 +329,7 @@
                                                             <td th:if="${a.trangthai==6}">đã hủy</td>
                                                             <td>
                                                                 <button type="button" class="btn btn-warning">
-                                                                    <a href="chiTiet/${a.id}">Xem</a>
+                                                                    <a th:href= "@{chi-tiet/{id}(id=${a.id})}">Xem</a>
                                                                 </button>
                                                             </td>
                                                         </tr>

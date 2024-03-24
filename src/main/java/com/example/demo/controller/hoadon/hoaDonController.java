@@ -4,6 +4,7 @@ import com.example.demo.entity.HoaDon;
 import com.example.demo.info.HoaDonCustom;
 import com.example.demo.repository.hoadon.HoaDonRepository;
 import com.example.demo.service.HoaDonService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +23,7 @@ import java.util.Optional;
 public class hoaDonController {
     @Autowired
     HoaDonService dao;
+    Integer idhd = null;
 
     @GetMapping("hien-thi")
     public String hienThi(Model model, @RequestParam("page") Optional<Integer> pageParam,
@@ -165,5 +167,16 @@ public class hoaDonController {
         model.addAttribute("pageNo", page);
         model.addAttribute("checkTT", 6);
         return "admin/qlhoadon";
+    }
+
+    @GetMapping("chi-tiet/{id}")
+    public String chiTiet(Model model, @PathVariable("id") Integer id) {
+        idhd = id;
+        return "redirect:/hoa-don/showDetail";
+    }
+    @GetMapping("showDetail")
+    public String show(Model model) {
+
+        return "admin/qlchitiethoadon";
     }
 }
