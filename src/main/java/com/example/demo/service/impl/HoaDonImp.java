@@ -27,7 +27,7 @@ public class HoaDonImp implements HoaDonService {
     }
 
     @Override
-    public Page<HoaDon> timKiemTT(Integer trangThai,Pageable p) {
-        return  dao.findAllByTrangthai(trangThai,p);
+    public Page<HoaDon> timKiemTT(Integer trangThai, Pageable p) {
+        return dao.findAllByTrangthai(trangThai, p);
     }
 }
