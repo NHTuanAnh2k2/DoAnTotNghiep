@@ -13,4 +13,6 @@ public interface SanPhamChiTietService {
     Page<SanPhamChiTiet> finAllPage(Pageable pageable);
 
     SanPhamChiTiet addSPCT(SanPhamChiTiet sanPhamChiTiet);
+
+    void deleteSPCT(Integer id);
 }

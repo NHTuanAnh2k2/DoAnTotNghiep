@@ -18,7 +18,7 @@ public class SanPhamChiTietImp implements SanPhamChiTietService {
 
     @Override
     public List<SanPhamChiTiet> findAll() {
-       return sanPhamChiTietRepository.findAll();
+        return sanPhamChiTietRepository.findAll();
     }
 
     @Override
@@ -29,5 +29,10 @@ public class SanPhamChiTietImp implements SanPhamChiTietService {
     @Override
     public SanPhamChiTiet addSPCT(SanPhamChiTiet sanPhamChiTiet) {
         return sanPhamChiTietRepository.save(sanPhamChiTiet);
+    }
+
+    @Override
+    public void deleteSPCT(Integer id) {
+        sanPhamChiTietRepository.deleteById(id);
     }
 }
