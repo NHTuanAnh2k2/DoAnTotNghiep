@@ -4,6 +4,7 @@ import com.example.demo.entity.HoaDon;
 import com.example.demo.info.HoaDonCustom;
 import com.example.demo.repository.hoadon.HoaDonRepository;
 import com.example.demo.service.HoaDonService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +23,7 @@ import java.util.Optional;
 public class hoaDonController {
     @Autowired
     HoaDonService dao;
+    Integer idhd = null;
 
     @GetMapping("hien-thi")
     public String hienThi(Model model, @RequestParam("page") Optional<Integer> pageParam,
@@ -32,6 +34,15 @@ public class hoaDonController {
         model.addAttribute("lst", lst);
         model.addAttribute("pageNo", page);
         model.addAttribute("checkTT", 7);
+        //hiển thị tổng số hd theo tt
+        model.addAttribute("tt0", dao.tinhTong(0));
+        model.addAttribute("tt1", dao.tinhTong(1));
+        model.addAttribute("tt2", dao.tinhTong(2));
+        model.addAttribute("tt3", dao.tinhTong(3));
+        model.addAttribute("tt4", dao.tinhTong(4));
+        model.addAttribute("tt5", dao.tinhTong(5));
+        model.addAttribute("tt6", dao.tinhTong(6));
+        model.addAttribute("tt7", dao.findAll(p).getTotalElements());
         return "admin/qlhoadon";
     }
 
@@ -80,6 +91,15 @@ public class hoaDonController {
                 HDinfo.getLoaiHD(), HDinfo.getTu(), HDinfo.getDen(), p);
         model.addAttribute("lst", lst);
         model.addAttribute("pageNo", page);
+        //hiển thị số hd theo tt
+        model.addAttribute("tt0", dao.tinhTong(0));
+        model.addAttribute("tt1", dao.tinhTong(1));
+        model.addAttribute("tt2", dao.tinhTong(2));
+        model.addAttribute("tt3", dao.tinhTong(3));
+        model.addAttribute("tt4", dao.tinhTong(4));
+        model.addAttribute("tt5", dao.tinhTong(5));
+        model.addAttribute("tt6", dao.tinhTong(6));
+        model.addAttribute("tt7", dao.findAll(p).getTotalElements());
         return "admin/qlhoadon";
     }
 
@@ -92,6 +112,14 @@ public class hoaDonController {
         model.addAttribute("lst", lst);
         model.addAttribute("pageNo", page);
         model.addAttribute("checkTT", 0);
+        model.addAttribute("tt0", dao.tinhTong(0));
+        model.addAttribute("tt1", dao.tinhTong(1));
+        model.addAttribute("tt2", dao.tinhTong(2));
+        model.addAttribute("tt3", dao.tinhTong(3));
+        model.addAttribute("tt4", dao.tinhTong(4));
+        model.addAttribute("tt5", dao.tinhTong(5));
+        model.addAttribute("tt6", dao.tinhTong(6));
+        model.addAttribute("tt7", dao.findAll(p).getTotalElements());
         return "admin/qlhoadon";
     }
 
@@ -104,6 +132,14 @@ public class hoaDonController {
         model.addAttribute("lst", lst);
         model.addAttribute("pageNo", page);
         model.addAttribute("checkTT", 1);
+        model.addAttribute("tt0", dao.tinhTong(0));
+        model.addAttribute("tt1", dao.tinhTong(1));
+        model.addAttribute("tt2", dao.tinhTong(2));
+        model.addAttribute("tt3", dao.tinhTong(3));
+        model.addAttribute("tt4", dao.tinhTong(4));
+        model.addAttribute("tt5", dao.tinhTong(5));
+        model.addAttribute("tt6", dao.tinhTong(6));
+        model.addAttribute("tt7", dao.findAll(p).getTotalElements());
         return "admin/qlhoadon";
     }
 
@@ -116,6 +152,14 @@ public class hoaDonController {
         model.addAttribute("lst", lst);
         model.addAttribute("pageNo", page);
         model.addAttribute("checkTT", 2);
+        model.addAttribute("tt0", dao.tinhTong(0));
+        model.addAttribute("tt1", dao.tinhTong(1));
+        model.addAttribute("tt2", dao.tinhTong(2));
+        model.addAttribute("tt3", dao.tinhTong(3));
+        model.addAttribute("tt4", dao.tinhTong(4));
+        model.addAttribute("tt5", dao.tinhTong(5));
+        model.addAttribute("tt6", dao.tinhTong(6));
+        model.addAttribute("tt7", dao.findAll(p).getTotalElements());
         return "admin/qlhoadon";
     }
 
@@ -128,6 +172,14 @@ public class hoaDonController {
         model.addAttribute("lst", lst);
         model.addAttribute("pageNo", page);
         model.addAttribute("checkTT", 3);
+        model.addAttribute("tt0", dao.tinhTong(0));
+        model.addAttribute("tt1", dao.tinhTong(1));
+        model.addAttribute("tt2", dao.tinhTong(2));
+        model.addAttribute("tt3", dao.tinhTong(3));
+        model.addAttribute("tt4", dao.tinhTong(4));
+        model.addAttribute("tt5", dao.tinhTong(5));
+        model.addAttribute("tt6", dao.tinhTong(6));
+        model.addAttribute("tt7", dao.findAll(p).getTotalElements());
         return "admin/qlhoadon";
     }
 
@@ -140,6 +192,14 @@ public class hoaDonController {
         model.addAttribute("lst", lst);
         model.addAttribute("pageNo", page);
         model.addAttribute("checkTT", 4);
+        model.addAttribute("tt0", dao.tinhTong(0));
+        model.addAttribute("tt1", dao.tinhTong(1));
+        model.addAttribute("tt2", dao.tinhTong(2));
+        model.addAttribute("tt3", dao.tinhTong(3));
+        model.addAttribute("tt4", dao.tinhTong(4));
+        model.addAttribute("tt5", dao.tinhTong(5));
+        model.addAttribute("tt6", dao.tinhTong(6));
+        model.addAttribute("tt7", dao.findAll(p).getTotalElements());
         return "admin/qlhoadon";
     }
 
@@ -152,6 +212,14 @@ public class hoaDonController {
         model.addAttribute("lst", lst);
         model.addAttribute("pageNo", page);
         model.addAttribute("checkTT", 5);
+        model.addAttribute("tt0", dao.tinhTong(0));
+        model.addAttribute("tt1", dao.tinhTong(1));
+        model.addAttribute("tt2", dao.tinhTong(2));
+        model.addAttribute("tt3", dao.tinhTong(3));
+        model.addAttribute("tt4", dao.tinhTong(4));
+        model.addAttribute("tt5", dao.tinhTong(5));
+        model.addAttribute("tt6", dao.tinhTong(6));
+        model.addAttribute("tt7", dao.findAll(p).getTotalElements());
         return "admin/qlhoadon";
     }
 
@@ -164,6 +232,26 @@ public class hoaDonController {
         model.addAttribute("lst", lst);
         model.addAttribute("pageNo", page);
         model.addAttribute("checkTT", 6);
+        model.addAttribute("tt0", dao.tinhTong(0));
+        model.addAttribute("tt1", dao.tinhTong(1));
+        model.addAttribute("tt2", dao.tinhTong(2));
+        model.addAttribute("tt3", dao.tinhTong(3));
+        model.addAttribute("tt4", dao.tinhTong(4));
+        model.addAttribute("tt5", dao.tinhTong(5));
+        model.addAttribute("tt6", dao.tinhTong(6));
+        model.addAttribute("tt7", dao.findAll(p).getTotalElements());
         return "admin/qlhoadon";
+    }
+
+    @GetMapping("chi-tiet/{id}")
+    public String chiTiet(Model model, @PathVariable("id") Integer id) {
+        idhd = id;
+        return "redirect:/hoa-don/showDetail";
+    }
+
+    @GetMapping("showDetail")
+    public String show(Model model) {
+
+        return "admin/qlchitiethoadon";
     }
 }
