@@ -164,8 +164,6 @@
                                         <th>STT</th>
                                         <th>Tên đế giày</th>
                                         <th>Người tạo</th>
-                                        <th>Người cập nhật</th>
-                                        <th>Lần cập nhật cuối</th>
                                         <th>Ngày tạo</th>
                                         <th>Trạng thái</th>
                                         <th>Hành động</th>
@@ -176,17 +174,13 @@
                                         <td th:text="${stt.index+1}"></td>
                                         <td th:text="${dg.ten}"></td>
                                         <td th:text="${dg.nguoitao}"></td>
-                                        <td th:text="${dg.nguoicapnhat}"></td>
-                                        <td th:text="${dg.lancapnhatcuoi}"></td>
-                                        <td th:text="${dg.ngaytao}"></td>
+                                        <td th:text="${#dates.format(dg.ngaytao, 'yyyy-MM-dd HH:mm:ss')}"></td>
                                         <td>
                                             <button style="border-radius: 50px"
                                                     class="btn btn-xs custom-button no-border-button"
                                                     th:classappend="${dg.trangthai ? 'btn-custom-info' : 'btn-custom-warning'}"
                                                     th:text="${dg.trangthai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>
                                         </td>
-
-
                                         <td>
                                             <a class="btn btn-danger">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"

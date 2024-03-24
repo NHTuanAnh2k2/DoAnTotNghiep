@@ -31,5 +31,10 @@ public class SanPhamImp implements SanPhamService {
         return sanPhamRepositoty.findAllByTensanphamOrTrangthai(tensanpham,trangthai,pageable);
     }
 
+    @Override
+    public SanPham add(SanPham sanPham) {
+        return sanPhamRepositoty.save(sanPham);
+    }
+
 
 }

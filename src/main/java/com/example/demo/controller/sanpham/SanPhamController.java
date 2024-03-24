@@ -12,10 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-///
+
+
 @Controller
 public class SanPhamController {
 
@@ -49,7 +51,7 @@ public class SanPhamController {
 
     @GetMapping("/listsanpham")
     public String hienthi(@RequestParam(defaultValue = "0") int p, @ModelAttribute("tim") SanPhamInfo info, Model model) {
-        Pageable pageable = PageRequest.of(p, 5);
+        Pageable pageable = PageRequest.of(p, 10);
         Page<SanPham> page = null;
         if (info.getKey() != null) {
             page = sanPhamImp.findAllByTensanphamOrTrangthai(info.getKey(), info.getTrangthai(), pageable);
@@ -61,7 +63,7 @@ public class SanPhamController {
     }
 
     @GetMapping("/viewaddSP")
-    public String viewaddSP(Model model) {
+    public String viewaddSP(Model model, @RequestParam(defaultValue = "0") int p) {
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<SanPhamChiTiet> listSPCT = sanPhamChiTietImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
@@ -78,7 +80,40 @@ public class SanPhamController {
         model.addAttribute("dg", listDeGiay);
         model.addAttribute("cl", listChatLieu);
         model.addAttribute("a", listAnh);
+        Pageable pageable = PageRequest.of(p, 20);
+        Page<SanPhamChiTiet> page = sanPhamChiTietImp.finAllPage(pageable);
+        model.addAttribute("page", page);
         return "admin/addsanpham";
     }
 
+    @PostMapping("/addProduct")
+    public String addProduct(Model model, @RequestParam String tensp,
+                             @RequestParam List<MauSac> idMauSac,
+                             @RequestParam List<KichCo> idKichCo,
+                             @RequestParam ThuongHieu idThuongHieu,
+                             @RequestParam ChatLieu idChatLieu,
+                             @RequestParam DeGiay idDeGiay,
+                             @RequestParam Boolean trangthai,
+                             @RequestParam String mota,
+                             @RequestParam Boolean gioitinh) {
+        SanPham sanPham = new SanPham();
+        sanPham.setTensanpham(tensp);
+        sanPham.setTrangthai(trangthai);
+        sanPhamImp.add(sanPham);
+        for (MauSac colorId : idMauSac) {
+            for (KichCo sizeId : idKichCo) {
+                SanPhamChiTiet spct = new SanPhamChiTiet();
+                spct.setSanpham(sanPham);
+                spct.setMota(mota);
+                spct.setLoaigiay(idThuongHieu);
+                spct.setChatlieu(idChatLieu);
+                spct.setGioitinh(gioitinh);
+                spct.setKichco(sizeId);
+                spct.setDegiay(idDeGiay);
+                spct.setMausac(colorId);
+                sanPhamChiTietImp.addSPCT(spct);
+            }
+        }
+        return "redirect:/viewaddSP";
+    }
 }
