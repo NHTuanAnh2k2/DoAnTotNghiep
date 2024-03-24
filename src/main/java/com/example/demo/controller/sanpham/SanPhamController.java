@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-
+///
 @Controller
 public class SanPhamController {
 
@@ -51,7 +51,7 @@ public class SanPhamController {
 
     @GetMapping("/listsanpham")
     public String hienthi(@RequestParam(defaultValue = "0") int p, @ModelAttribute("tim") SanPhamInfo info, Model model) {
-        Pageable pageable = PageRequest.of(p, 10);
+        Pageable pageable = PageRequest.of(p, 20);
         Page<SanPham> page = null;
         if (info.getKey() != null) {
             page = sanPhamImp.findAllByTensanphamOrTrangthai(info.getKey(), info.getTrangthai(), pageable);
@@ -88,14 +88,15 @@ public class SanPhamController {
 
     @PostMapping("/addProduct")
     public String addProduct(Model model, @RequestParam String tensp,
-                             @RequestParam List<MauSac> idMauSac,
-                             @RequestParam List<KichCo> idKichCo,
+                             @RequestParam String mota,
+                             @RequestParam Boolean trangthai,
                              @RequestParam ThuongHieu idThuongHieu,
                              @RequestParam ChatLieu idChatLieu,
+                             @RequestParam Boolean gioitinh,
+                             @RequestParam List<KichCo> idKichCo,
                              @RequestParam DeGiay idDeGiay,
-                             @RequestParam Boolean trangthai,
-                             @RequestParam String mota,
-                             @RequestParam Boolean gioitinh) {
+                             @RequestParam List<MauSac> idMauSac
+                          ) {
         SanPham sanPham = new SanPham();
         sanPham.setTensanpham(tensp);
         sanPham.setTrangthai(trangthai);
@@ -105,7 +106,7 @@ public class SanPhamController {
                 SanPhamChiTiet spct = new SanPhamChiTiet();
                 spct.setSanpham(sanPham);
                 spct.setMota(mota);
-                spct.setLoaigiay(idThuongHieu);
+                spct.setThuonghieu(idThuongHieu);
                 spct.setChatlieu(idChatLieu);
                 spct.setGioitinh(gioitinh);
                 spct.setKichco(sizeId);
