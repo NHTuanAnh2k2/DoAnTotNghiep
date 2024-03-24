@@ -67,7 +67,7 @@
                                         Tên sản phẩm:
                                         <select class="form-control select2 select2-primary" data-dropdown-css-class="select2-primary" style="width: 100%;" name="tensp">
                                             <option value="" selected disabled hidden>Nhập tên sản phẩm</option>
-                                            <option th:each="sp : ${sp}" th:value="${sp.id}" th:text="${sp.tensanpham}"></option>
+                                            <option th:each="sp : ${sp}" th:value="${sp.tensanpham}" th:text="${sp.tensanpham}"></option>
                                         </select>
                                     </h5>
                                     <h5>
@@ -83,10 +83,9 @@
                                             <option th:each="th : ${th}" th:value="${th.id}" th:text="${th.ten}"></option>
                                         </select>
                                     </p>
-                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#themsanpham" style="margin:2%">+</button>
+                                    <button class="btn btn-primary" data-bs-toggle="modal" style="margin:2%">+</button>
                                     <p style="margin-left: 100px">Trạng thái:
-                                        <input type="hidden" name="trangthai" id="trangthaiHidden">
-                                        <select class="form-control" style="width: 400px" onchange="updateTrangThai()" name="trangthaiSelect">
+                                        <select class="form-control" style="width: 400px" name="trangthai">
                                             <option value="" selected disabled hidden>Chọn trạng thái</option>
                                             <option value="true">Đang kinh doanh</option>
                                             <option value="false">Ngừng kinh doanh</option>
