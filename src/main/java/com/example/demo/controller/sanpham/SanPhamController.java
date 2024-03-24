@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 ///
@@ -88,6 +89,8 @@ public class SanPhamController {
 
     @PostMapping("/addProduct")
     public String addProduct(Model model, @RequestParam String tensp,
+                             @RequestParam Integer soluong,
+                             @RequestParam BigDecimal giatien,
                              @RequestParam String mota,
                              @RequestParam Boolean trangthai,
                              @RequestParam ThuongHieu idThuongHieu,
@@ -105,6 +108,8 @@ public class SanPhamController {
             for (KichCo sizeId : idKichCo) {
                 SanPhamChiTiet spct = new SanPhamChiTiet();
                 spct.setSanpham(sanPham);
+                spct.setSoluong(soluong);
+                spct.setGiatien(giatien);
                 spct.setMota(mota);
                 spct.setThuonghieu(idThuongHieu);
                 spct.setChatlieu(idChatLieu);
