@@ -55,6 +55,29 @@ public class hoaDonController {
             Page<HoaDon> fixErr = dao.findAll(p);
             model.addAttribute("lst", fixErr);
             model.addAttribute("pageNo", page);
+            model.addAttribute("tt0", dao.tinhTong(0));
+            model.addAttribute("tt1", dao.tinhTong(1));
+            model.addAttribute("tt2", dao.tinhTong(2));
+            model.addAttribute("tt3", dao.tinhTong(3));
+            model.addAttribute("tt4", dao.tinhTong(4));
+            model.addAttribute("tt5", dao.tinhTong(5));
+            model.addAttribute("tt6", dao.tinhTong(6));
+            model.addAttribute("tt7", dao.findAll(p).getTotalElements());
+            return "admin/qlhoadon";
+        }
+        if (HDinfo.getTu().compareTo(HDinfo.getDen()) >= 0) {
+            Page<HoaDon> fixErr = dao.findAll(p);
+            model.addAttribute("lst", fixErr);
+            model.addAttribute("pageNo", page);
+            model.addAttribute("errdate",1);
+            model.addAttribute("tt0", dao.tinhTong(0));
+            model.addAttribute("tt1", dao.tinhTong(1));
+            model.addAttribute("tt2", dao.tinhTong(2));
+            model.addAttribute("tt3", dao.tinhTong(3));
+            model.addAttribute("tt4", dao.tinhTong(4));
+            model.addAttribute("tt5", dao.tinhTong(5));
+            model.addAttribute("tt6", dao.tinhTong(6));
+            model.addAttribute("tt7", dao.findAll(p).getTotalElements());
             return "admin/qlhoadon";
         }
         Integer trangThai = -1;
