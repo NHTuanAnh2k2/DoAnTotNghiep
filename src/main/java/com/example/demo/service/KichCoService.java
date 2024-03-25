@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface KichCoService {
     List<KichCo> findAll();
+
+    KichCo addKichCo(KichCo kichCo);
 }

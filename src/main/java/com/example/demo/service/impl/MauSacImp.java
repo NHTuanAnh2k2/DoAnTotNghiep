@@ -17,4 +17,9 @@ public class MauSacImp implements MauSacService {
     public List<MauSac> findAll() {
         return mauSacRepository.findAll();
     }
+
+    @Override
+    public MauSac addMauSac(MauSac mauSac) {
+        return mauSacRepository.save(mauSac);
+    }
 }

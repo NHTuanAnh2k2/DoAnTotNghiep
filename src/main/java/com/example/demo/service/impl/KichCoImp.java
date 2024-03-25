@@ -16,4 +16,9 @@ public class KichCoImp implements KichCoService {
     public List<KichCo> findAll() {
         return kichCoRepository.findAll();
     }
+
+    @Override
+    public KichCo addKichCo(KichCo kichCo) {
+        return kichCoRepository.save(kichCo);
+    }
 }

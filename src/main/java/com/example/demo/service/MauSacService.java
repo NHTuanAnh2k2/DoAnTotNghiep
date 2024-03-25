@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface MauSacService {
     List<MauSac> findAll();
+
+    MauSac addMauSac(MauSac mauSac);
 }

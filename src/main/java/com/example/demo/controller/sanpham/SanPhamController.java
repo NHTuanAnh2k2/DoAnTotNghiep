@@ -64,7 +64,12 @@ public class SanPhamController {
     }
 
     @GetMapping("/viewaddSP")
-    public String viewaddSP(Model model, @RequestParam(defaultValue = "0") int p) {
+    public String viewaddSP(Model model, @RequestParam(defaultValue = "0") int p,@ModelAttribute("thuonghieu") ThuongHieu thuongHieu,
+    @ModelAttribute("chatlieu") ChatLieu chatLieu,
+    @ModelAttribute("kichco") KichCo kichCo,
+    @ModelAttribute("degiay") DeGiay deGiay,
+    @ModelAttribute("mausac") MauSac mauSac
+    ) {
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<SanPhamChiTiet> listSPCT = sanPhamChiTietImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
@@ -88,7 +93,7 @@ public class SanPhamController {
     }
 
     @PostMapping("/addProduct")
-    public String addProduct(Model model, @RequestParam String tensp,
+    public String addProduct(@RequestParam(defaultValue = "0") int p, Model model, @RequestParam String tensp,
                              @RequestParam Integer soluong,
                              @RequestParam BigDecimal giatien,
                              @RequestParam String mota,
@@ -99,7 +104,7 @@ public class SanPhamController {
                              @RequestParam List<KichCo> idKichCo,
                              @RequestParam DeGiay idDeGiay,
                              @RequestParam List<MauSac> idMauSac
-                          ) {
+    ) {
         SanPham sanPham = new SanPham();
         sanPham.setTensanpham(tensp);
         sanPham.setTrangthai(trangthai);
