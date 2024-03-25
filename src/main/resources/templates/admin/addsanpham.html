@@ -188,7 +188,7 @@
                                 </div>
                                 <!--end-->
                                 <button type="submit" class="btn btn-primary"
-                                        style="margin-left: 100px;margin-bottom: 20px; width: 200px;" >Thêm
+                                        style="margin-left: 100px;margin-bottom: 20px; width: 200px;">Thêm
                                 </button>
                             </div>
 
@@ -206,7 +206,8 @@
                                                 aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form method="post" th:action="@{/addThuongHieuModal}" th:object="${thuonghieu}">
+                                        <form method="post" th:action="@{/addThuongHieuModal}"
+                                              th:object="${thuonghieu}">
                                             <p>
                                                 Tên thương hiệu:
                                                 <input class="form-control" th:field="*{ten}"/>
@@ -357,7 +358,6 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-
                                 <table id="example2" class="table table-bordered table-hover text-center">
                                     <thead class="table table-danger">
                                     <tr>
@@ -372,7 +372,7 @@
                                     <tbody>
                                     <tr th:each="spctt,stt:${page.content}">
                                         <td>
-                                            <input type="checkbox">
+                                            <input type="checkbox" class="product-checkbox">
                                         </td>
                                         <td th:text="${stt.index+1}"></td>
                                         <td th:text="${spctt.sanpham.tensanpham}"></td>
@@ -384,47 +384,53 @@
                                             <input type="number" style="width: 150px; height: 30px" class="form-control"
                                                    th:value="${spctt.giatien}">
                                         </td>
-                                        <!--                                        <td>-->
-                                        <!--                                            <div class="card-body">-->
-                                        <!--                              <span class="fileinput-button"><span>+ Upload</span><input type="file" id="fileInput" multiple="multiple" style="display: none;"></span>-->
-                                        <!--                                                <div class="table table-striped files" id="previews">-->
-                                        <!--                                                    <div id="template" class="row mt-2">-->
-                                        <!--                                                        <div class="col-auto">-->
-                                        <!--                                                <span class="preview"><img src="data:," alt=""-->
-                                        <!--                                                                           data-dz-thumbnail/></span>-->
-                                        <!--                                                        </div>-->
-                                        <!--                                                        <div class="col-auto d-flex align-items-center">-->
-                                        <!--                                                            <button data-dz-remove-->
-                                        <!--                                                                    class="btn btn-danger delete cancel start">-->
-                                        <!--                                                                <i class="fas fa-trash"></i>-->
-                                        <!--                                                                <span>Delete</span>-->
-                                        <!--                                                            </button>-->
-                                        <!--                                                        </div>-->
-                                        <!--                                                    </div>-->
-                                        <!--                                                </div>-->
-                                        <!--                                            </div>-->
-
-                                        <!--                                        </td>-->
                                         <td>
-                                            <a th:href="@{/deleteCTSP/{id}(id=${spctt.id})}" onclick="return xoa(event)">
+                                            <a th:href="@{/deleteCTSP/{id}(id=${spctt.id})}"
+                                               onclick="return xoa(event)">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                      fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                                                     <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
                                                 </svg>
                                             </a>
-
+<!--                                            <a th:href="@{/updateCTSP/{id}(id=${spctt.id})}">-->
+<!--                                                update-->
+<!--                                            </a>-->
                                         </td>
                                     </tr>
 
                                     </tfoot>
                                 </table>
+                                <!-- Modal update CTSP -->
+                                <div class="modal fade" id="updateCTSP" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5">Update CTSP</h1>
+                                                <button type="button" class="btn-close"
+                                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="post">
+                                                    <p>
+                                                        Số lượng:
+                                                        <input class="form-control" type="number">
+                                                    </p>
+                                                    <p>
+                                                        Giá bán:
+                                                        <input class="form-control">
+                                                    </p>
+                                                    <button class="btn btn-primary">Cập nhật</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
                             </div>
 
                         </div>
                         <!-- /.card -->
-
-
                     </div>
                     <!-- /.col -->
                 </div>
@@ -622,7 +628,7 @@
         var trangthai = document.forms["addProduct"]["trangthai"].value;
         var degiay = document.forms["addProduct"]["idDeGiay"].value;
         var mausac = document.forms["addProduct"]["idMauSac"].value;
-        var mota=document.forms["addProduct"]["mota"].value;
+        var mota = document.forms["addProduct"]["mota"].value;
 
         // Kiểm tra và cập nhật thông báo lỗi cho mỗi trường dữ liệu
         if (isEmpty(tensp)) {
@@ -635,19 +641,21 @@
         if (isEmpty(soluong)) {
             document.getElementById("soluongError").innerText = "Vui lòng nhập số lượng.";
             return false;
-        } else if(soluong<=0){
+        } else if (soluong <= 0) {
             document.getElementById("soluongError").innerText = "Số lượng phải > 0.";
             return false;
-        } {
+        }
+        {
             document.getElementById("soluongError").innerText = "";
         }
         if (isEmpty(giatien)) {
             document.getElementById("giatienError").innerText = "Vui lòng nhập giá tiền.";
             return false;
-        } else if(giatien <=0){
+        } else if (giatien <= 0) {
             document.getElementById("giatienError").innerText = "Giá tiền phải > 0.";
             return false;
-        }{
+        }
+        {
             document.getElementById("giatienError").innerText = "";
         }
 
@@ -751,13 +759,21 @@
                     showConfirmButton: false // Ẩn nút Xác nhận
                 });
                 // Chờ 3 giây trước khi chuyển hướng đến URL xóa
-                setTimeout(function() {
+                setTimeout(function () {
                     window.location.href = deleteUrl;
                 }, 1000);
             }
         });
     }
 </script>
+
+
+
+
+
+
+
+
 
 
 

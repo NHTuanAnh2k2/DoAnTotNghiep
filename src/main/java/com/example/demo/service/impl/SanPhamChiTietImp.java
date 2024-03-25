@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -35,4 +36,21 @@ public class SanPhamChiTietImp implements SanPhamChiTietService {
     public void deleteSPCT(Integer id) {
         sanPhamChiTietRepository.deleteById(id);
     }
+
+//    @Override
+//    public void updateSoLuongVaGiaTien(List<Integer> ids, Integer soluong, BigDecimal giatien) {
+//        sanPhamChiTietRepository.updateSoLuongVaGiaTien(ids,soluong,giatien);
+//    }
+
+    @Override
+    public void update(Integer id, Integer soLuong, BigDecimal giaTien) {
+        sanPhamChiTietRepository.update(id,soLuong,giaTien);
+    }
+
+    @Override
+    public SanPhamChiTiet findById(Integer id) {
+       return sanPhamChiTietRepository.findById(id).orElse(null);
+    }
+
+
 }
