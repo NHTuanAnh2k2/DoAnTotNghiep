@@ -8,4 +8,6 @@ public interface NguoiDungService {
     NguoiDung findByTaiKhoan(String taikhoan);
 
     List<NguoiDung> findAll();
+
+    void save(NguoiDung nguoiDung);
 }
