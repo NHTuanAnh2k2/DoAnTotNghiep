@@ -57,6 +57,12 @@ public class DeGiayController {
         return "redirect:/listdegiay";
     }
 
+    @PostMapping("/addDeGiayModal")
+    public String addDeGiayModal(@ModelAttribute("degiay") DeGiay deGiay) {
+        deGiayImp.add(deGiay);
+        return "redirect:/viewaddSP";
+    }
+
     @ModelAttribute("dsdg")
     public List<DeGiay> getDS() {
         return deGiayImp.findAll();

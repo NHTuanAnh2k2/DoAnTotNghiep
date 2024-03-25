@@ -36,5 +36,10 @@ public class ThuongHieuController {
         thuongHieuImp.add(thuongHieu);
         return "redirect:/listthuonghieu";
     }
+    @PostMapping("/addThuongHieuModal")
+    public String addThuongHieuModal(@ModelAttribute("thuonghieu") ThuongHieu thuongHieu,@ModelAttribute("th") ThuocTinhInfo info) {
+        thuongHieuImp.add(thuongHieu);
+        return "redirect:/viewaddSP";
+    }
 
 }

@@ -26,6 +26,12 @@ public class ChatLieuController {
         return "redirect:/chatlieu";
     }
 
+    @PostMapping("/addChatLieuModal")
+    public String addChatLieuModal(Model model, @ModelAttribute("chatlieu") ChatLieu chatLieu) {
+        chatLieuService.add(chatLieu);
+        return "redirect:/viewaddSP";
+    }
+
     @GetMapping("/chatlieu/timkiem")
     public String timKiem(Model model,
                           @RequestParam(required = false) String tensearch,
