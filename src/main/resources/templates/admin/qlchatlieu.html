@@ -67,13 +67,14 @@
                                 <br>
                                 <form th:method="get" th:action="@{/chatlieu/timkiem}" th:object="${chatlieu}">
                                     <h3 class="card-title">Tìm kiếm:
-                                        <input type="text" placeholder="Tìm kiếm chất liệu" th:name="tensearch"
+                                        <input type="text" id="searchInput" placeholder="Tìm kiếm chất liệu" th:name="tensearch"
                                                class="form-control">
                                     </h3>
                                     <h3 class="card-title" style="margin-left: 20px">Trạng thái:
-                                        <select class="form-control" th:name="trangthaisearch">
-                                            <option th:value="true ? 1 : 0">Đang kinh doanh</option>
-                                            <option th:value="true ? 0 : 1">Ngừng kinh doanh</option>
+                                        <select class="form-control" id="statusSelect" name="trangthai" style="color:rgb(86,158,43)">
+                                            <option value="">-----</option>
+                                            <option value="1" style="color:rgb(86,158,43)">Đang kinh doanh</option>
+                                            <option value="0" style="color:rgb(86,158,43)">Ngừng kinh doanh</option>
                                         </select>
                                     </h3>
 
@@ -81,7 +82,7 @@
                                     <br>
                                     <br>
                                     <button style="margin-left: 100px" class="btn btn-primary">Tìm kiếm</button>
-                                    <a th:href="@{/chatlieu}" class="btn btn-danger">Làm mới bộ lọc</a>
+                                    <input type="button" class="btn btn-danger" value="Làm mới bộ lọc" onclick="clearSearch()" />
                                 </form>
                             </div>
 
@@ -205,5 +206,11 @@
 <!--script-->
 <nav th:replace="~{/layoutadmin/script.html}"></nav>
 <!--end-->
+<script>
+    function clearSearch() {
+        document.getElementById("searchInput").value = "";
+        document.getElementById("statusSelect").selectedIndex = 0;
+    }
+</script>
 </body>
 </html>

@@ -136,8 +136,4 @@ public class SanPhamController {
         model.addAttribute("sanphamchitiet", sanPham.getSpct());
         return "admin/qlchitietsanpham";
     }
-    @ModelAttribute("trangthai")
-    public List<SanPhamChiTiet> getTrangThai(){
-       return sanPhamChiTietImp.findAll();
-    }
 }
