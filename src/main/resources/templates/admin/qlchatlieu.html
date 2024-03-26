@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <nav th:replace="~{/layoutadmin/head.html}"></nav>
+<style>
+
+    .btn-custom-warning {
+        background-color: rgb(221, 100, 0);
+        color: #fff;
+        border-color: rgb(60, 179, 113);
+    }
+
+    .btn-custom-info {
+        background-color: rgb(86, 100, 234);
+        color: #fff;
+        border-color: rgb(60, 179, 113);
+    }
+</style>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
     <!-- Navbar -->
@@ -126,15 +140,10 @@
                                                         <option th:value="0">Ngừng kinh doanh</option>
                                                     </select>
                                                 </p>
-                                                <button class="btn">Thêm</button>
+                                                <button class="btn btn-primary">Thêm</button>
                                             </form>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                Hủy
-                                            </button>
-                                            <button type="button" class="btn btn-primary">Thêm</button>
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -159,11 +168,13 @@
                                         <td th:text="${cl.ngaytao}"></td>
                                         <td th:text="${cl.nguoitao}"></td>
                                         <td>
-                                            <button class="btn btn-primary btn-xs"
-                                                    th:text="${cl.trangthai? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>
+                                            <button style="border-radius: 50px"
+                                                    class="btn btn-xs custom-button no-border-button"
+                                                    th:classappend="${cl.trangthai ? 'btn-custom-info' : 'btn-custom-warning'}"
+                                                    th:text="${cl.trangthai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>
                                         </td>
                                         <td>
-                                            <a class="btn btn-danger">
+                                            <a class="btn btn-outline-danger">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                      fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
