@@ -87,7 +87,7 @@
                                     </h5>
                                     <h5 style="font-family: 'Times New Roman'">
                                         Giá tiền:
-                                        <input class="form-control" name="giatien">
+                                        <input class="form-control" name="giatien" onkeyup="formatCurrency(this)">
                                         <span id="giatienError" style="color: red;"></span>
                                     </h5>
                                     <h5 style="font-family: 'Times New Roman'">
@@ -385,7 +385,7 @@
                                                    th:value="${spctt.giatien}">
                                         </td>
                                         <td>
-                                            <a th:href="@{/deleteCTSP/{id}(id=${spctt.id})}"
+                                            <a th:href="@{/deleteCTSP/{id}(id=${spctt.id})}" class="btn btn-outline-danger"
                                                onclick="return xoa(event)">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                      fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
@@ -767,7 +767,13 @@
     }
 </script>
 
-
+<script type="text/javascript">
+    function formatCurrency(input) {
+        // Format input number with thousand separators
+        var number = input.value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        input.value = number;
+    }
+</script>
 
 
 

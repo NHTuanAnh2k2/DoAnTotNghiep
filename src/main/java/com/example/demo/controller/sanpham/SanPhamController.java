@@ -2,6 +2,7 @@ package com.example.demo.controller.sanpham;
 
 import com.example.demo.entity.*;
 import com.example.demo.info.SanPhamInfo;
+import com.example.demo.repository.SanPhamRepositoty;
 import com.example.demo.service.impl.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -21,6 +19,8 @@ import java.util.List;
 ///
 @Controller
 public class SanPhamController {
+    @Autowired
+    SanPhamRepositoty sanPhamRepositoty;
 
     @Autowired
     SanPhamImp sanPhamImp;
@@ -64,11 +64,11 @@ public class SanPhamController {
     }
 
     @GetMapping("/viewaddSP")
-    public String viewaddSP(Model model, @RequestParam(defaultValue = "0") int p,@ModelAttribute("thuonghieu") ThuongHieu thuongHieu,
-    @ModelAttribute("chatlieu") ChatLieu chatLieu,
-    @ModelAttribute("kichco") KichCo kichCo,
-    @ModelAttribute("degiay") DeGiay deGiay,
-    @ModelAttribute("mausac") MauSac mauSac
+    public String viewaddSP(Model model, @RequestParam(defaultValue = "0") int p, @ModelAttribute("thuonghieu") ThuongHieu thuongHieu,
+                            @ModelAttribute("chatlieu") ChatLieu chatLieu,
+                            @ModelAttribute("kichco") KichCo kichCo,
+                            @ModelAttribute("degiay") DeGiay deGiay,
+                            @ModelAttribute("mausac") MauSac mauSac
     ) {
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<SanPhamChiTiet> listSPCT = sanPhamChiTietImp.findAll();
@@ -119,6 +119,7 @@ public class SanPhamController {
                 spct.setThuonghieu(idThuongHieu);
                 spct.setChatlieu(idChatLieu);
                 spct.setGioitinh(gioitinh);
+                spct.setTrangthai(trangthai);
                 spct.setKichco(sizeId);
                 spct.setDegiay(idDeGiay);
                 spct.setMausac(colorId);
@@ -126,5 +127,17 @@ public class SanPhamController {
             }
         }
         return "redirect:/viewaddSP";
+    }
+
+    @GetMapping("/detailsanpham/{id}")
+    public String detailsanpham(@PathVariable Integer id,Model model) {
+     SanPham sanPham=sanPhamRepositoty.findById(id).orElse(null);
+        model.addAttribute("sanpham",sanPham);
+        model.addAttribute("sanphamchitiet", sanPham.getSpct());
+        return "admin/qlchitietsanpham";
+    }
+    @ModelAttribute("trangthai")
+    public List<SanPhamChiTiet> getTrangThai(){
+       return sanPhamChiTietImp.findAll();
     }
 }
