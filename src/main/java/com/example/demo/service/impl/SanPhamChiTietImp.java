@@ -47,6 +47,8 @@ public class SanPhamChiTietImp implements SanPhamChiTietService {
         sanPhamChiTietRepository.update(id,soLuong,giaTien);
     }
 
+
+
     @Override
     public SanPhamChiTiet findById(Integer id) {
        return sanPhamChiTietRepository.findById(id).orElse(null);
