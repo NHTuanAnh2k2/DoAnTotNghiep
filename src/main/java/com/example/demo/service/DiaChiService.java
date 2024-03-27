@@ -8,4 +8,8 @@ import java.util.List;
 public interface DiaChiService {
     List<DiaChi> getAll();
     public DiaChi add(DiaChiNVInfo diaChi);
+    public List<String> TimTinh();
+    public List<String> TimHuyen();
+    public List<String> TimXa();
+
 }

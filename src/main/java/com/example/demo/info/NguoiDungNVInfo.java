@@ -1,5 +1,6 @@
 package com.example.demo.info;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class NguoiDungNVInfo {
     Integer id;
+    @NotBlank(message = "Vui lòng nhập tài khoản")
     String taikhoan;
     String email;
     String hovaten;

@@ -36,4 +36,19 @@ public class DiaChiImpl implements DiaChiService {
         dc.setNguoidung(diaChi.getIdnguoidung());
         return diaChiRepository.save(dc);
     }
+
+    @Override
+    public List<String> TimTinh() {
+        return diaChiRepository.TimTinh();
+    }
+
+    @Override
+    public List<String> TimHuyen() {
+        return diaChiRepository.TimHuyen();
+    }
+
+    @Override
+    public List<String> TimXa() {
+        return diaChiRepository.TimXa();
+    }
 }

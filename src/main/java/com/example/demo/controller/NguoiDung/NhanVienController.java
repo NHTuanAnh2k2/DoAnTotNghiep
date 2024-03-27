@@ -8,9 +8,11 @@ import com.example.demo.info.NhanVienInfo;
 import com.example.demo.service.impl.DiaChiImpl;
 import com.example.demo.service.impl.NguoiDungImpl1;
 import com.example.demo.service.impl.NhanVienImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +29,7 @@ public class NhanVienController {
     @Autowired
     NguoiDungImpl1 nguoiDung;
 
+
     @GetMapping("/listnv")
     public String listnv(Model model) {
         List<DiaChi> page = diaChi.getAll();
@@ -42,14 +45,30 @@ public class NhanVienController {
         return "admin/addnhanvien";
     }
     @PostMapping("/addnv")
-    public String addSave(@ModelAttribute("nv1") NhanVienInfo nv,
-                          @ModelAttribute("nv") NguoiDungNVInfo nd,
-                          @ModelAttribute("dc") DiaChiNVInfo dc,
-                          Model model, RedirectAttributes redirectAttributes) {
-//        if (deGiay.getTen().equals("")) {
-//            model.addAttribute("err", "Tên không được để trống");
-//            return "admin/qldegiay";
-//        }
+    public String addSave(
+                           @Valid @ModelAttribute("nv") NguoiDungNVInfo nd,
+                           @ModelAttribute("nv1") NhanVienInfo nv,
+                           @ModelAttribute("dc") DiaChiNVInfo dc,
+                          Model model, RedirectAttributes redirectAttributes,
+                          Errors error ) {
+        if (nd.getTaikhoan()=="") {
+            model.addAttribute("tkErr", "Tên không được để trống");
+//            return "admin/addnhanvien";
+        }else if(nd.getHovaten() == ""){
+            model.addAttribute("tkErr", "Không được để trống");
+//        }else if(nd.getNgaysinh(). == ""){
+//            model.addAttribute("tkErr", "Không được để trống");
+        }else if(nd.getCccd() == ""){
+            model.addAttribute("tkErr", "Không được để trống");
+        }else if(nd.getEmail() == ""){
+            model.addAttribute("tkErr", "Không được để trống");
+        }else if(nd.getSodienthoai() == ""){
+            model.addAttribute("tkErr", "Không được để trống");
+//        }else if(nd.getHovaten() == ""){
+//            model.addAttribute("tkErr", "Không được để trống");
+//        }else if(nd.getHovaten() == ""){
+//            model.addAttribute("tkErr", "Không được để trống");
+        }
         nguoiDung.add(nd);
         NguoiDung n = nguoiDung.search(nd.getEmail());
         nv.setIdnguoidung(n);
