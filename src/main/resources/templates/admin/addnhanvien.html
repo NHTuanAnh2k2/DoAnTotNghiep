@@ -2,6 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <nav th:replace="~{/layoutadmin/head.html}"></nav>
 <script src="../sweetalert2/dist/sweetalert2.min.js/"></script>
+<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/he/1.2.0/he.js"></script>
+<script src="https://unpkg.com/firamono"></script>
 <link rel="stylesheet" type="text/css" href="../sweetalert2/dist/sweetalert2.min.css">
 <style>
     .file-input-wrapper {
@@ -100,21 +103,26 @@
                             <div class="card-body">
                                 <section class="content">
                                     <div class="container">
+                                        <div>
+                                            <video id="preview" width="40%"></video>
+                                            <button onclick="scan()">Scan</button>
+                                        </div>
                                         <form th:method="post" th:object="${nd}" th:action="@{/addnv}">
                                         <div class="d-flex">
                                             <p>Tài khoản:
-                                                <input placeholder="Tài khoản" class="form-control"  th:field="*{taikhoan}" th:errorClass="is-invalid"
+                                                <input placeholder="Tài khoản" id="a" name="a" class="form-control"  th:field="*{taikhoan}" th:errorClass="is-invalid"
                                                        style="width: 500px">
                                                 <span th:if="${#fields.hasErrors('taikhoan')}" th:errors="*{taikhoan}">er</span>
                                             </p>
                                             <span th:text="${taikhoanErr}"></span>
                                             <p>
-                                                <button class="btn btn-danger" style="margin-left: 100px">Quét QR</button>
+<!--                                                <video id="preview" width="100%"></video>-->
+                                                <button class="btn btn-danger"  style="margin-left: 100px">Quét QR</button>
                                             </p>
                                         </div>
                                         <div class="d-flex">
                                             <p>Tên nhân viên:
-                                                <input placeholder="Tên nhân viên" class="form-control"  th:field="*{hovaten}"
+                                                <input placeholder="Tên nhân viên" id="name" name="name" class="form-control"  th:field="*{hovaten}"
                                                        style="width: 500px">
                                             </p>
                                             <p th:text="${tenErr}"></p>
@@ -131,7 +139,7 @@
                                         <div class="d-flex">
 
                                             <p>Căn cước công dân:
-                                                <input placeholder="Căn cước công dân" class="form-control"
+                                                <input placeholder="Căn cước công dân" id="citizenID" name="citizenID" class="form-control"
                                                        style="width: 500px" th:field="*{cccd}"></p>
                                             <p th:text="${cccdErr}"></p>
                                             <p style="margin-left: 20px">Giới tính:
@@ -288,6 +296,104 @@
 
         reader.readAsDataURL(file);
     });
+</script>
+<script>
+    function decodeUTF8(text) {
+        // Chuyển đổi các ký tự không hợp lệ
+        var decodedText = text.replace(/Ã¹/g, "ù")
+            .replace(/á»/g, "ị")
+            .replace(/á»/g, "ỉ")
+            .replace(/á»/g, "ệ")
+            .replace(/á»/g, "ộ")
+            .replace(/á»‹/g, "ị")
+            .replace(/á»ˆ/g, "Ẹ")
+            .replace(/á»/g, "Ệ")
+            .replace(/á»”/g, "Ọ")
+            .replace(/á»–/g, "Ộ")
+            .replace(/á»’/g, "Ớ")
+            .replace(/á»œ/g, "Ờ")
+            .replace(/á»ž/g, "Ợ")
+            .replace(/á»˜/g, "Ờ")
+            .replace(/á»´/g, "Ỵ")
+            .replace(/á»ª/g, "Ừ")
+            .replace(/á»¦/g, "Ử")
+            .replace(/á»¨/g, "Ữ")
+            .replace(/á»¬/g, "Ự")
+            .replace(/á»´/g, "Ỵ")
+            .replace(/áº/g, "ấ")
+            .replace(/áºƒ/g, "ầ")
+            .replace(/áº…/g, "ẩ")
+            .replace(/áº‡/g, "ậ")
+            .replace(/áº/g, "ẩ")
+            .replace(/áº‹/g, "ẻ")
+            .replace(/áº/g, "ẽ")
+            .replace(/áº/g, "ế")
+            .replace(/áº“/g, "ề")
+            .replace(/áº—/g, "ệ")
+            .replace(/áº™/g, "ể")
+            .replace(/áº›/g, "ễ")
+            .replace(/áº¡/g, "ạ")
+            .replace(/áºš/g, "Ạ")
+            .replace(/áº¥/g, "ấ")
+            .replace(/áº§/g, "ầ")
+            .replace(/áº©/g, "ẩ")
+            .replace(/áº«/g, "ậ")
+            .replace(/áº­/g, "ặ")
+            .replace(/áº±/g, "ẹ")
+            .replace(/áºµ/g, "ẻ")
+            .replace(/áº¹/g, "ị")
+            .replace(/áº½/g, "ọ")
+            .replace(/áº¿/g, "ỏ")
+            .replace(/á»/g, "ấ")
+            .replace(/á»ƒ/g, "ầ")
+            .replace(/á»…/g, "ẩ")
+            .replace(/á»‡/g, "ậ")
+            .replace(/á»‰/g, "ẻ")
+            .replace(/á»‹/g, "ị")
+            .replace(/á»/g, "ọ")
+            .replace(/á»/g, "ỏ")
+            .replace(/á»/g, "ồ")
+            .replace(/á»’/g, "ố")
+            .replace(/á»”/g, "ộ")
+            .replace(/á»–/g, "ớ")
+            .replace(/á»˜/g, "ờ")
+            .replace(/á»š/g, "ợ")
+            .replace(/á»ž/g, "ợ")
+            .replace(/á» /g, "ụ")
+            .replace(/á»¦/g, "ủ")
+            .replace(/á»¨/g, "ứ")
+            .replace(/á»ª/g, "ừ")
+            .replace(/á»¬/g, "ử")
+            .replace(/á»®/g, "ự")
+            .replace(/á»°/g, "ự")
+            .replace(/á»´/g, "ự")
+            .replace(/á»¶/g, "ự")
+            .replace(/á»¸/g, "ự")
+            .replace(/á»¹/g, "ỷ")
+            .replace(/á»½/g, "ỵ")
+            .replace(/á»¿/g, "ỹ")
+            .replace(/á»±/g, "ỳ");
+        return decodedText;
+    }
+    function scan() {
+        let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+        scanner.addListener('scan', function (content) {
+            let info = content.split("|");
+            document.getElementById('citizenID').value = info[0];
+            document.getElementById('name').innerText = decodeUTF8(info[2]);
+            scanner.stop();
+        });
+        Instascan.Camera.getCameras().then(function (cameras) {
+            if (cameras.length > 0) {
+                scanner.start(cameras[0]);
+            } else {
+                console.error('No cameras found.');
+            }
+        }).catch(function (e) {
+            console.error(e);
+        });
+    }
+    scanAndFillForm();
 </script>
 <!--end-->
 </body>
