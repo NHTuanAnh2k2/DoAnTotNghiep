@@ -5,7 +5,6 @@ import com.example.demo.service.ChatLieuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +24,12 @@ public class ChatLieuController {
     public String add(Model model, @ModelAttribute("chatlieu") ChatLieu chatLieu) {
         chatLieuService.add(chatLieu);
         return "redirect:/chatlieu";
+    }
+
+    @PostMapping("/addChatLieuModal")
+    public String addChatLieuModal(Model model, @ModelAttribute("chatlieu") ChatLieu chatLieu) {
+        chatLieuService.add(chatLieu);
+        return "redirect:/viewaddSP";
     }
 
     @GetMapping("/chatlieu/timkiem")

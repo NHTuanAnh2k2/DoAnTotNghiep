@@ -14,4 +14,5 @@ public interface SanPhamService {
 
     Page<SanPham> findAllByTensanphamOrTrangthai(String tensanpham, Boolean trangthai, Pageable pageable);
 
+    SanPham add(SanPham sanPham);
 }

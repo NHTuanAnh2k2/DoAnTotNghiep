@@ -98,7 +98,7 @@
                                     </svg>
                                     Danh sách nhân viên
                                 </h3>
-                                <a th:href="@{/admin/addkhachhang}" class="card-title btn btn-primary"
+                                <a th:href="@{/khachhang/add}" class="card-title btn btn-primary"
                                    style="margin-left: 850px">Thêm khách hàng</a>
                             </div>
 
@@ -121,14 +121,16 @@
                                     <tr th:each="kh,stt:${lstKhachHang}">
                                         <td th:text="${stt.index+1}"></td>
                                         <td>
-                                            <img th:src="@{/image/{fileName}(fileName=${kh.nguoidung.anh})}" width="100" height="100">
+                                            <img th:src="@{/image/{fileName}(fileName=${kh.nguoidung.anh})}" width="100"
+                                                 height="100">
                                         </td>
                                         <td th:text="${kh.nguoidung.hovaten}"></td>
                                         <td th:text="${kh.nguoidung.cccd}"></td>
                                         <td th:text="${kh.nguoidung.sodienthoai}"></td>
                                         <td th:text="${kh.nguoidung.ngaysinh}"></td>
                                         <td>
-                                            <button class=" btn btn-primary btn-xs" th:text="${kh.trangthai == 1 ? 'Đã kích hoạt' : 'Chưa kích hoạt'}"></button>
+                                            <button class=" btn btn-primary btn-xs"
+                                                    th:text="${kh.trangthai == 1 ? 'Đã kích hoạt' : 'Chưa kích hoạt'}"></button>
                                         </td>
                                         <td>
                                             <button class="btn btn-danger">delete</button>
@@ -141,8 +143,6 @@
                             <!-- /.card-body -->
                         </div>
                         <!-- /.card -->
-
-
                     </div>
                     <!-- /.col -->
                 </div>

@@ -110,7 +110,7 @@
                                                     <select class="form-control" th:field="*{loaiHD}">
                                                         <option value="">Chọn Loại đơn</option>
                                                         <option value="true">Online</option>
-                                                        <option value="false">Offline</option>
+                                                        <option value="false">Tại quầy</option>
                                                     </select>
                                                     <i th:errors="*{loaiHD}" class="text-danger"></i>
                                                 </div>
@@ -124,7 +124,7 @@
 
                                                     <i th:if="${#fields.hasErrors('tu')}" class="text-danger">Vui lòng
                                                         không để trống!!</i>
-
+                                                        <i th:if="${errdate==1}" class="text-danger">Ngày bắt đầu không lớn hơn ngày kết thúc!!</i>
                                                 </div>
                                             </div>
                                             <div class=" align-items-center col-lg-6 col-md-6">
@@ -181,109 +181,114 @@
                                     <hr class="border border-danger border-2 opacity-50">
                                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                                         <!--Tab hiện thị tất cả hóa đơn-->
-                                        <li class="nav-item" role="presentation" >
-                                            <button class="nav-link active position-relative" id="tatCaHoaDon-tab"
-                                                data-bs-toggle="tab" data-bs-target="#tatCaHoaDon-tab-pane"
-                                                type="button" role="tab" aria-controls="home-tab-pane"
-                                                aria-selected="true">
-                                                <a th:href= "@{/hoa-don/hien-thi}">Tất cả</a>
-                                                <span th:text="${lst.TotalElements}"
-                                                    class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
-                                                  
-                                                </span>
-                                            </button>
+                                        <li class="nav-item" role="presentation">
+                                            <a th:href="@{/hoa-don/hien-thi}"> <button
+                                                    class="nav-link active position-relative" id="tatCaHoaDon-tab"
+                                                    data-bs-toggle="tab" data-bs-target="#tatCaHoaDon-tab-pane"
+                                                    type="button" role="tab" aria-controls="home-tab-pane"
+                                                    aria-selected="true" th:classappend="${checkTT==7?'btn btn-warning':''}">
+                                                    Tất cả
+                                                    <span th:text="${tt7}"
+                                                        class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
+
+                                                    </span>
+                                                </button> </a>
                                         </li>
                                         <!--Tab hiện thị hóa đơn chờ xác nhận-->
-                                        <li class="nav-item" role="presentation">
-                                            <button class="nav-link position-relative" id="hoaDonChoXacNhan-tab"
-                                                data-bs-toggle="tab" data-bs-target="#hoaDonChoXacNhan-tab-pane"
-                                                type="button" role="tab" aria-controls="profile-tab-pane"
-                                                aria-selected="false">
-                                        
-                                                <a th:href= "@{/hoa-don/tim-kiem/0}"> Chờ xác nhận</a>
-                                                <span th:text="${lst.TotalElements}"
-                                                    class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
-                                                    
-                                                </span>
-                                            </button>
+                                        <li class="nav-item " role="presentation">
+                                            <a th:href="@{/hoa-don/cho-xac-nhan}"> <button
+                                                    class="nav-link position-relative " id="hoaDonChoXacNhan-tab"
+                                                    data-bs-toggle="tab" data-bs-target="#hoaDonChoXacNhan-tab-pane"
+                                                    type="button" role="tab" aria-controls="profile-tab-pane"
+                                                    aria-selected="false" th:classappend="${checkTT==0?'btn btn-warning':''}">
+                                                    Chờ xác nhận
+                                                    <span th:text="${tt0}"
+                                                        class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
+                                                    </span>
+                                                </button> </a>
                                         </li>
                                         <!--Tab hiện thị hóa đơn đã xác nhận-->
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link position-relative" id="hoaDonDaXacNhan-tab"
-                                                data-bs-toggle="tab" data-bs-target="#hoaDonDaXacNhan-tab-pane"
-                                                type="button" role="tab" aria-controls="contact-tab-pane"
-                                                aria-selected="false">
-                                                  <a th:href= "@{/hoa-don/tim-kiem/1}">Đã xác nhận</a>
-                                                <span
-                                                    class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
-                                                    
-                                                </span>
-                                            </button>
+                                            <a th:href="@{/hoa-don/da-xac-nhan}"> <button
+                                                    class="nav-link position-relative" id="hoaDonDaXacNhan-tab"
+                                                    data-bs-toggle="tab" data-bs-target="#hoaDonDaXacNhan-tab-pane"
+                                                    type="button" role="tab" aria-controls="contact-tab-pane"
+                                                    aria-selected="false" th:classappend="${checkTT==1?'btn btn-warning':''}">
+                                                    Đã xác nhận
+                                                    <span th:text="${tt1}"
+                                                        class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
+
+                                                    </span>
+                                                </button> </a>
                                         </li>
                                         <!--Tab hiện thị hóa đơn chờ giao hàng-->
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link position-relative" id="hoaDonChoGiaoHang-tab"
-                                                data-bs-toggle="tab" data-bs-target="#hoaDonChoGiaoHang-tab-pane"
-                                                type="button" role="tab" aria-controls="disabled-tab-pane"
-                                                aria-selected="false">
-                                                  <a th:href= "@{/hoa-don/tim-kiem/2}">Chờ giao hàng</a>
-                                                <span
-                                                    class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
-                                                
-                                                </span>
-                                            </button>
+                                            <a th:href="@{/hoa-don/cho-giao-hang}"> <button
+                                                    class="nav-link position-relative" id="hoaDonChoGiaoHang-tab"
+                                                    data-bs-toggle="tab" data-bs-target="#hoaDonChoGiaoHang-tab-pane"
+                                                    type="button" role="tab" aria-controls="disabled-tab-pane"
+                                                    aria-selected="false" th:classappend="${checkTT==2?'btn btn-warning':''}">
+                                                    Chờ giao hàng
+                                                    <span th:text="${tt2}"
+                                                        class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
+
+                                                    </span>
+                                                </button> </a>
                                         </li>
                                         <!--Tab hiện thị hóa đơn đang giao hang-->
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link position-relative" id="hoaDonDangGiaoHang-tab"
-                                                data-bs-toggle="tab" data-bs-target="#hoaDonDangGiaoHang-tab-pane"
-                                                type="button" role="tab" aria-controls="disabled-tab-pane"
-                                                aria-selected="false">
-                                                  <a th:href= "@{/hoa-don/tim-kiem/3}">Đang giao hàng</a>
-                                                <span
-                                                    class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
-                                        
-                                                </span>
-                                            </button>
+                                            <a th:href="@{/hoa-don/dang-giao-hang}"> <button
+                                                    class="nav-link position-relative" id="hoaDonDangGiaoHang-tab"
+                                                    data-bs-toggle="tab" data-bs-target="#hoaDonDangGiaoHang-tab-pane"
+                                                    type="button" role="tab" aria-controls="disabled-tab-pane"
+                                                    aria-selected="false" th:classappend="${checkTT==3?'btn btn-warning':''}">
+                                                    Đang giao hàng
+                                                    <span th:text="${tt3}"
+                                                        class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
+
+                                                    </span>
+                                                </button> </a>
                                         </li>
                                         <!--Tab hiện thị hóa đơn đã thanh toán-->
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link position-relative" id="hoaDonDaThanhToan-tab"
-                                                data-bs-toggle="tab" data-bs-target="#hoaDonDaThanhToan-tab-pane"
-                                                type="button" role="tab" aria-controls="disabled-tab-pane"
-                                                aria-selected="false">
-                                                <a th:href= "@{/hoa-don/tim-kiem/4}"> Đã thanh toán</a>
-                                                <span
-                                                    class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
-                                              11
-                                                </span>
-                                            </button>
+                                            <a th:href="@{/hoa-don/da-thanh-toan}"> <button
+                                                    class="nav-link position-relative" id="hoaDonDaThanhToan-tab"
+                                                    data-bs-toggle="tab" data-bs-target="#hoaDonDaThanhToan-tab-pane"
+                                                    type="button" role="tab" aria-controls="disabled-tab-pane"
+                                                    aria-selected="false" th:classappend="${checkTT==4?'btn btn-warning':''}">
+                                                    Đã thanh toán
+                                                    <span th:text="${tt4}"
+                                                        class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
+                                                       
+                                                    </span>
+                                                </button> </a>
                                         </li>
                                         <!--Tab hiện thị hóa đơn đã hoàn thành-->
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link position-relative" id="hoaDonDaHoanThanh-tab"
-                                                data-bs-toggle="tab" data-bs-target="#hoaDonDaHoanThanh-tab-pane"
-                                                type="button" role="tab" aria-controls="disabled-tab-pane"
-                                                aria-selected="false">
-                                                <a th:href= "@{/hoa-don/tim-kiem/5}">Đã hoàn thành</a>
-                                                <span
-                                                    class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
-                                                    99+
-                                                </span>
-                                            </button>
+                                            <a th:href="@{/hoa-don/da-hoan-thanh}"> <button
+                                                    class="nav-link position-relative" id="hoaDonDaHoanThanh-tab"
+                                                    data-bs-toggle="tab" data-bs-target="#hoaDonDaHoanThanh-tab-pane"
+                                                    type="button" role="tab" aria-controls="disabled-tab-pane"
+                                                    aria-selected="false" th:classappend="${checkTT==5?'btn btn-warning':''}">
+                                                    Đã hoàn thành
+                                                    <span th:text="${tt5}"
+                                                        class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
+                                                       
+                                                    </span>
+                                                </button> </a>
                                         </li>
                                         <!--Tab hiện thị hóa đơn đã hủy-->
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link position-relative" id="hoaDonDaHuy-tab"
-                                                data-bs-toggle="tab" data-bs-target="#hoaDonDaHuy-tab-pane"
-                                                type="button" role="tab" aria-controls="disabled-tab-pane"
-                                                aria-selected="false">
-                                                 <a th:href= "@{/hoa-don/tim-kiem/6}">Đã hủy</a>
-                                                <span
-                                                    class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
-                                                    
-                                                </span>
-                                            </button>
+                                            <a th:href="@{/hoa-don/da-huy}"> <button class="nav-link position-relative"
+                                                    id="hoaDonDaHuy-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#hoaDonDaHuy-tab-pane" type="button" role="tab"
+                                                    aria-controls="disabled-tab-pane" aria-selected="false" th:classappend="${checkTT==6?'btn btn-warning':''}">
+                                                    Đã hủy
+                                                    <span th:text="${tt6}"
+                                                        class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
+
+                                                    </span>
+                                                </button> </a>
                                         </li>
                                     </ul>
                                     <div class="tab-content" id="myTabContent">
@@ -312,7 +317,7 @@
                                                             <td th:text="${a.mahoadon}"></td>
                                                             <td th:text="${a.khachhang.nguoidung.hovaten}"></td>
                                                             <td th:text="${a.nhanvien.nguoidung.hovaten}"></td>
-                                                            <td th:text="${a.loaihoadon==true?'online':'offline'}"></td>
+                                                            <td th:text="${a.loaihoadon==true?'online':'tại quầy'}"></td>
                                                             <td th:text="${a.ngaytao}"></td>
                                                             <td th:text="${a.tongtien}"></td>
                                                             <td th:if="${a.trangthai==0}">chờ xác nhận</td>
@@ -324,7 +329,7 @@
                                                             <td th:if="${a.trangthai==6}">đã hủy</td>
                                                             <td>
                                                                 <button type="button" class="btn btn-warning">
-                                                                    <a href="chiTiet/${a.id}">Xem</a>
+                                                                    <a th:href= "@{chi-tiet/{id}(id=${a.id})}">Xem</a>
                                                                 </button>
                                                             </td>
                                                         </tr>

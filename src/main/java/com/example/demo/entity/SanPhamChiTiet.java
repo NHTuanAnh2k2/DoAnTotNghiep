@@ -43,10 +43,6 @@ public class SanPhamChiTiet {
     KichCo kichco;
 
     @ManyToOne
-    @JoinColumn(name = "idhang")
-    HangGiay hanggiay;
-
-    @ManyToOne
     @JoinColumn(name = "idmausac")
     MauSac mausac;
 
@@ -55,8 +51,8 @@ public class SanPhamChiTiet {
     ChatLieu chatlieu;
 
     @ManyToOne
-    @JoinColumn(name = "idloaigiay")
-    ThuongHieu loaigiay;
+    @JoinColumn(name = "idthuonghieu")
+    ThuongHieu thuonghieu;
 
     @ManyToOne
     @JoinColumn(name = "iddegiay")

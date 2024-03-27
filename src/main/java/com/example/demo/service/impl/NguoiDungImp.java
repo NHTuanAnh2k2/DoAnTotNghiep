@@ -22,4 +22,9 @@ public class NguoiDungImp implements NguoiDungService {
     public List<NguoiDung> findAll() {
         return nguoiDungRepository.findAll();
     }
+
+    @Override
+    public void save(NguoiDung nguoiDung) {
+        nguoiDungRepository.save(nguoiDung);
+    }
 }
