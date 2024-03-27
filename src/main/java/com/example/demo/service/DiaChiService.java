@@ -7,7 +7,11 @@ import java.util.List;
 
 public interface DiaChiService {
     List<DiaChi> getAll();
+    List<DiaChi> get(String ht, String sdt);
+    List<DiaChi> getTT(Boolean tt);
     public DiaChi add(DiaChiNVInfo diaChi);
+    public DiaChi update(DiaChiNVInfo diaChi, Integer id);
+    DiaChi search(Integer id);
     public List<String> TimTinh();
     public List<String> TimHuyen();
     public List<String> TimXa();

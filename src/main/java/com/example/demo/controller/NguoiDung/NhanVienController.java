@@ -1,5 +1,7 @@
 package com.example.demo.controller.NguoiDung;
 
+import com.example.demo.entity.ChatLieu;
+import com.example.demo.entity.DeGiay;
 import com.example.demo.entity.DiaChi;
 import com.example.demo.entity.NguoiDung;
 import com.example.demo.info.DiaChiNVInfo;
@@ -12,12 +14,15 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -30,15 +35,28 @@ public class NhanVienController {
     NguoiDungImpl1 nguoiDung;
 
 
-    @GetMapping("/listnv")
-    public String listnv(Model model) {
+    @GetMapping("/admin/qlnhanvien")
+    public String listnv(Model model,@ModelAttribute("nd") NguoiDungNVInfo nd) {
         List<DiaChi> page = diaChi.getAll();
         model.addAttribute("list", page);
         return "admin/qlnhanvien";
     }
-    @GetMapping("/admin/addnhanvien1")
-    public String viewAdd(@ModelAttribute("nv1") NhanVienInfo nv,
-                          @ModelAttribute("nv") NguoiDungNVInfo nd,
+    @GetMapping("/timkiem")
+    public String list(Model model,@ModelAttribute("nd") NguoiDungNVInfo nd) {
+        List<DiaChi> page = new ArrayList<>();
+        if (nd.getHovaten()!= null){
+        page = diaChi.get(nd.getHovaten(), nd.getSodienthoai());}
+        else if (nd.getSodienthoai() != null){
+            page = diaChi.get(nd.getHovaten(), nd.getSodienthoai());
+        }else if (nd.getTrangthai() != null){
+            page = diaChi.getTT(nd.getTrangthai());
+        }
+        model.addAttribute("list", page);
+        return "admin/qlnhanvien";
+    }
+    @GetMapping("/admin/addnhanvien")
+    public String viewAdd(
+                          @ModelAttribute("nd") NguoiDungNVInfo nd,
                           @ModelAttribute("dc") DiaChiNVInfo dc,
                           Model model, RedirectAttributes redirectAttributes) {
 
@@ -46,31 +64,17 @@ public class NhanVienController {
     }
     @PostMapping("/addnv")
     public String addSave(
-                           @Valid @ModelAttribute("nv") NguoiDungNVInfo nd,
-                           @ModelAttribute("nv1") NhanVienInfo nv,
-                           @ModelAttribute("dc") DiaChiNVInfo dc,
-                          Model model, RedirectAttributes redirectAttributes,
+                           @ModelAttribute("nd") @Valid  NguoiDungNVInfo nd,
+                           @ModelAttribute("dc") @Valid DiaChiNVInfo dc,
+                          Model model, BindingResult bindingResult,
                           Errors error ) {
-        if (nd.getTaikhoan()=="") {
-            model.addAttribute("tkErr", "Tên không được để trống");
-//            return "admin/addnhanvien";
-        }else if(nd.getHovaten() == ""){
-            model.addAttribute("tkErr", "Không được để trống");
-//        }else if(nd.getNgaysinh(). == ""){
-//            model.addAttribute("tkErr", "Không được để trống");
-        }else if(nd.getCccd() == ""){
-            model.addAttribute("tkErr", "Không được để trống");
-        }else if(nd.getEmail() == ""){
-            model.addAttribute("tkErr", "Không được để trống");
-        }else if(nd.getSodienthoai() == ""){
-            model.addAttribute("tkErr", "Không được để trống");
-//        }else if(nd.getHovaten() == ""){
-//            model.addAttribute("tkErr", "Không được để trống");
-//        }else if(nd.getHovaten() == ""){
-//            model.addAttribute("tkErr", "Không được để trống");
+        if(bindingResult.hasErrors()){
+            System.out.println("lỗi");
+            return "/admin/addnhanvien";
         }
         nguoiDung.add(nd);
         NguoiDung n = nguoiDung.search(nd.getEmail());
+        NhanVienInfo nv = new NhanVienInfo();
         nv.setIdnguoidung(n);
         nhanVien.add(nv);
         dc.setIdnguoidung(n);
@@ -80,7 +84,26 @@ public class NhanVienController {
         String mailType = "";
         String mailContent = "Mật khẩu của bạn là: " + n.getMatkhau();
         nguoiDung.sendEmail(to, subject, mailType, mailContent);
-        return "redirect:/listnv";
+        return "redirect:/admin/qlnhanvien";
     }
-
+    @GetMapping("/updateNhanVien/{id}")
+    public String viewUpdate(@PathVariable Integer id, Model model,
+                             @ModelAttribute("nd") NguoiDungNVInfo nd,
+                             @ModelAttribute("nv") NhanVienInfo nv,
+                             @ModelAttribute("dc") DiaChiNVInfo dc
+                             ) {
+        model.addAttribute("nd", nguoiDung.findById(id));
+        model.addAttribute("dc",diaChi.search(id));
+        return "admin/updatenhanvien";
+    }
+    @PostMapping("/updateNhanVien/{id}")
+    public String update(@PathVariable Integer id, Model model,
+                         @ModelAttribute("nd") NguoiDungNVInfo nd,
+                         @ModelAttribute("nv") NhanVienInfo nv,
+                         @ModelAttribute("dc") DiaChiNVInfo dc) {
+        nguoiDung.update(nd,id);
+        nhanVien.update(nv,id);
+        diaChi.update(dc,id);
+        return "redirect:/admin/qlnhanvien";
+    }
 }

@@ -21,6 +21,16 @@ public class DiaChiImpl implements DiaChiService {
     }
 
     @Override
+    public List<DiaChi> get(String ht, String sdt) {
+        return diaChiRepository.TimhoTenHoacSdt(ht,sdt);
+    }
+
+    @Override
+    public List<DiaChi> getTT(Boolean tt) {
+        return diaChiRepository.TimTrangThai(tt);
+    }
+
+    @Override
     public DiaChi add(DiaChiNVInfo diaChi) {
         DiaChi dc = new DiaChi();
         dc.setSoduong(diaChi.getSoduong());
@@ -35,6 +45,25 @@ public class DiaChiImpl implements DiaChiService {
         dc.setTrangthai(true);
         dc.setNguoidung(diaChi.getIdnguoidung());
         return diaChiRepository.save(dc);
+    }
+
+    @Override
+    public DiaChi update(DiaChiNVInfo diaChi, Integer id) {
+        DiaChi dc = diaChiRepository.TimIdNguoiDung(id);
+        dc.setSoduong(diaChi.getSoduong());
+        dc.setTenduong(diaChi.getTenduong());
+        dc.setXaphuong(diaChi.getXaphuong());
+        dc.setQuanhuyen(diaChi.getQuanhuyen());
+        dc.setTinhthanhpho(diaChi.getTinhthanhpho());
+        dc.setNguoicapnhat("");
+        dc.setLancapnhatcuoi(new Timestamp(new Date().getTime()));
+        dc.setTrangthai(true);
+        return diaChiRepository.save(dc);
+    }
+
+    @Override
+    public DiaChi search(Integer id) {
+        return diaChiRepository.TimIdNguoiDung(id);
     }
 
     @Override

@@ -39,4 +39,19 @@ public class NhanVienImpl implements NhanVienService {
         return nhanVienRepository.save(nv);
     }
 
+    @Override
+    public NhanVien update(NhanVienInfo nhanVien, Integer id) {
+        NhanVien nv = nhanVienRepository.TimIdNguoiDung(id);
+        nv.setVaitro(true);
+        nv.setLancapnhatcuoi(new Timestamp(new Date().getTime()));
+        nv.setNguoicapnhat("");
+        nv.setTrangthai(true);
+        return nhanVienRepository.save(nv);
+    }
+
+    @Override
+    public NhanVien search(Integer id) {
+        return nhanVienRepository.TimIdNguoiDung(id);
+    }
+
 }

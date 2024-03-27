@@ -57,6 +57,24 @@ public class NguoiDungImpl1 implements NguoiDungService1 {
         nd.setTrangthai(true);
         return nguoiDungRepository.save(nd);
     }
+
+    @Override
+    public NguoiDung update(NguoiDungNVInfo nguoiDung, Integer id) {
+        NguoiDung nd = nguoiDungRepository.searchId(id);
+        nd.setTaikhoan(nguoiDung.getTaikhoan());
+        nd.setEmail(nguoiDung.getEmail());
+        nd.setHovaten(nguoiDung.getHovaten());
+        nd.setNgaysinh(nguoiDung.getNgaysinh());
+        nd.setCccd(nguoiDung.getCccd());
+        nd.setSodienthoai(nguoiDung.getSodienthoai());
+        nd.setGioitinh(nguoiDung.getGioitinh());
+        nd.setAnh(nguoiDung.getAnh());
+        nd.setNguoicapnhat("a");
+        nd.setLancapnhatcuoi(new Timestamp(new Date().getTime()));
+        nd.setTrangthai(true);
+        return nguoiDungRepository.save(nd);
+    }
+
     @Override
     public void sendEmail(String to, String subject, String mailType, String mailContent) {
         SimpleMailMessage message = new SimpleMailMessage();
@@ -70,5 +88,10 @@ public class NguoiDungImpl1 implements NguoiDungService1 {
     @Override
     public NguoiDung search(String id) {
         return nguoiDungRepository.searchEmail(id);
+    }
+
+    @Override
+    public NguoiDung findById(Integer id) {
+        return nguoiDungRepository.searchId(id);
     }
 }
