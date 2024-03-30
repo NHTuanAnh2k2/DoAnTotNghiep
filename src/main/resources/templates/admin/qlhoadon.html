@@ -313,8 +313,7 @@
                                                         class="bi bi-emoji-tear"></i>!</i></h3>
                                         </div>
                                         <!--Kết thúc tab hiện thị null nếu tìm kiếm k có kết quả-->
-
-
+                                        
                                         <!--Tab hiện thị tất cả hóa đơn-->
                                         <div class="tab-pane fade show active" id="tatCaHoaDon-tab-pane" role="tabpanel"
                                             aria-labelledby="tatCaHoaDon-tab" tabindex="0"
@@ -340,13 +339,15 @@
                                                         <tr th:each="a:${lst}">
                                                             <td th:text="${aStat.index+1}"></td>
                                                             <td th:text="${a.mahoadon}"></td>
+                                                            <td th:text="${a.nhanvien.manhanvien}"></td>
                                                             <td th:text="${a.khachhang.nguoidung.hovaten}"></td>
-                                                            <td th:text="${a.nhanvien.nguoidung.hovaten}"></td>
-                                                            <td th:text="${a.nhanvien.nguoidung.hovaten}"></td>
+                                                            <td th:text="${a.sdt}"></td>
                                                             <td th:text="${a.loaihoadon==true?'online':'tại quầy'}">
                                                             </td>
+                                                            <td
+                                                                th:text="${a.tongtien+'&#x20ab;'}">
+                                                            </td>
                                                             <td th:text="${a.ngaytao}"></td>
-                                                            <td th:text="${a.tongtien}"></td>
                                                             <td th:if="${a.trangthai==0}">chờ xác nhận</td>
                                                             <td th:if="${a.trangthai==1}">đã xác nhận</td>
                                                             <td th:if="${a.trangthai==2}">chờ giao hàng</td>
