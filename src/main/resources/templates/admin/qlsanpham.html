@@ -129,7 +129,9 @@
                                     <tbody>
                                     <tr th:each="sp,stt:${page.content}">
                                         <td th:text="${stt.index+1}"></td>
-                                        <td th:text="${sp.id}"></td>
+                                        <!-- Tạo số ngẫu nhiên trong template -->
+                                            <td th:text="${randomProductIds[sp.id]}"></td>
+
                                         <td th:text="${sp.tensanpham}"></td>
                                         <td>
                                             <th:block th:each="spct : ${sp.spct}">

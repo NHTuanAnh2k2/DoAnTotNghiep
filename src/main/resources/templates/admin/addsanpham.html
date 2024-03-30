@@ -44,13 +44,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                                 class="bi bi-file-plus-fill" viewBox="0 0 16 16">
-                                <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M8.5 6v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 1 0"/>
-                            </svg>
-                            THÊM SẢN PHẨM
-                        </h1>
+
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -61,13 +55,20 @@
                 </div>
             </div><!-- /.container-fluid -->
         </section>
+
         <!---filter-->
         <section class="content">
+
             <div class="container-fluid">
+
                 <div class="row">
+
                     <div class="col-12">
                         <form action="/addProduct" method="post" name="addProduct" onsubmit="return validateForm()">
                             <div class="card">
+                                <h3 class="text-center" style="font-weight: bold;margin-top: 10px">
+                                    THÊM SẢN PHẨM
+                                </h3>
                                 <div class="card-header">
                                     <h5 style="font-family: 'Times New Roman'">
                                         Tên sản phẩm:
@@ -79,16 +80,6 @@
                                                     th:text="${sp.tensanpham}"></option>
                                         </select>
                                         <span id="tenspError" style="color: red;"></span>
-                                    </h5>
-                                    <h5 style="font-family: 'Times New Roman'">
-                                        Số lượng:
-                                        <input type="number" class="form-control" name="soluong">
-                                        <span id="soluongError" style="color: red;"></span>
-                                    </h5>
-                                    <h5 style="font-family: 'Times New Roman'">
-                                        Giá tiền:
-                                        <input class="form-control" name="giatien" onkeyup="formatCurrency(this)">
-                                        <span id="giatienError" style="color: red;"></span>
                                     </h5>
                                     <h5 style="font-family: 'Times New Roman'">
                                         Giới tính:
@@ -130,6 +121,7 @@
                                     <input type="button" class="btn btn-primary" style="margin:2%" value="+">
                                 </div>
                                 <!--end-->
+
                                 <!--abc-->
                                 <!--chất liệu-->
                                 <div class="d-flex">
@@ -156,9 +148,14 @@
                                            data-bs-toggle="modal" data-bs-target="#themdegiay">
                                 </div>
                                 <!--end-->
+                            </div>
+                            <div class="card">
                                 <!--abc-->
+                                <h3 class="text-center" style="font-weight: bold;margin-top: 10px">
+                                    KÍCH CỠ VÀ MÀU SẮC
+                                </h3>
                                 <div class="d-flex">
-                                    <p style="margin-left: 100px">Kích cỡ:
+                                    <p style="margin-left: 100px;font-weight: bold">Kích cỡ:
                                         <select class="select2" multiple="multiple" data-placeholder="Kích cỡ"
                                                 style="width: 400px;" name="idKichCo">
                                             <option th:each="kc : ${kc}" th:value="${kc.id}"
@@ -168,7 +165,7 @@
                                     </p>
                                     <input type="button" class="btn btn-primary" style="margin:2%" value="+"
                                            data-bs-toggle="modal" data-bs-target="#themkichco">
-                                    <p style="margin-left: 100px">Màu sắc:
+                                    <p style="margin-left: 100px;font-weight: bold">Màu sắc:
                                         <select class="select2" multiple="multiple" data-placeholder="Màu sắc"
                                                 style="width: 400px;" name="idMauSac">
                                             <option th:each="ms : ${ms}" th:value="${ms.id}"
@@ -180,11 +177,6 @@
                                     </p>
                                     <input type="button" class="btn btn-primary" style="margin:2%" value="+"
                                            data-bs-toggle="modal" data-bs-target="#themmausac">
-                                </div>
-                                <!--end-->
-                                <!--abc-->
-                                <div class="d-flex">
-
                                 </div>
                                 <!--end-->
                                 <button type="submit" class="btn btn-primary"
@@ -370,12 +362,13 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="spctt,stt:${page.content}">
+                                    <tr th:each="spctt,stt:${sanphamchitiet}">
                                         <td>
                                             <input type="checkbox" class="product-checkbox">
                                         </td>
                                         <td th:text="${stt.index+1}"></td>
-                                        <td th:text="${spctt.sanpham.tensanpham}"></td>
+                                        <td th:text="${spctt.sanpham.tensanpham} +' '+ '[' + ${spctt.kichco.ten} + '-' + ${spctt.mausac.ten} + ']'"></td>
+
                                         <td>
                                             <input type="number" style="width: 70px; height: 30px" class="form-control"
                                                    th:value="${spctt.soluong}">
@@ -616,8 +609,8 @@
 <script>
     function validateForm() {
         var tensp = document.forms["addProduct"]["tensp"].value;
-        var soluong = document.forms["addProduct"]["soluong"].value;
-        var giatien = document.forms["addProduct"]["giatien"].value;
+        // var soluong = document.forms["addProduct"]["soluong"].value;
+        // var giatien = document.forms["addProduct"]["giatien"].value;
         var gioitinh = document.forms["addProduct"]["gioitinh"].value;
         var thuonghieu = document.forms["addProduct"]["idThuongHieu"].value;
         var chatlieu = document.forms["addProduct"]["idChatLieu"].value;
@@ -635,26 +628,26 @@
             document.getElementById("tenspError").innerText = ""; // Xóa thông báo lỗi nếu trường dữ liệu không trống
         }
 
-        if (isEmpty(soluong)) {
-            document.getElementById("soluongError").innerText = "Vui lòng nhập số lượng.";
-            return false;
-        } else if (soluong <= 0) {
-            document.getElementById("soluongError").innerText = "Số lượng phải > 0.";
-            return false;
-        }
-        {
-            document.getElementById("soluongError").innerText = "";
-        }
-        if (isEmpty(giatien)) {
-            document.getElementById("giatienError").innerText = "Vui lòng nhập giá tiền.";
-            return false;
-        } else if (giatien <= 0) {
-            document.getElementById("giatienError").innerText = "Giá tiền phải > 0.";
-            return false;
-        }
-        {
-            document.getElementById("giatienError").innerText = "";
-        }
+        // if (isEmpty(soluong)) {
+        //     document.getElementById("soluongError").innerText = "Vui lòng nhập số lượng.";
+        //     return false;
+        // } else if (soluong <= 0) {
+        //     document.getElementById("soluongError").innerText = "Số lượng phải > 0.";
+        //     return false;
+        // }
+        // {
+        //     document.getElementById("soluongError").innerText = "";
+        // }
+        // if (isEmpty(giatien)) {
+        //     document.getElementById("giatienError").innerText = "Vui lòng nhập giá tiền.";
+        //     return false;
+        // } else if (giatien <= 0) {
+        //     document.getElementById("giatienError").innerText = "Giá tiền phải > 0.";
+        //     return false;
+        // }
+        // {
+        //     document.getElementById("giatienError").innerText = "";
+        // }
 
         if (isEmpty(gioitinh)) {
             document.getElementById("gioitinhError").innerText = "Vui lòng chọn giới tính.";

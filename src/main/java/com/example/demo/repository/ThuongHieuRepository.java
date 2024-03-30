@@ -6,9 +6,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ThuongHieuRepository extends JpaRepository<ThuongHieu,Integer> {
 //    Page<ThuongHieu> getAll(Pageable pageable);
 
-    Page<ThuongHieu> getThuongHieuByTenOrTrangthai(String ten, Boolean trangthai, Pageable pageable);
+    List<ThuongHieu> getThuongHieuByTenOrTrangthai(String ten, Boolean trangthai);
+
+    List<ThuongHieu> findAllByOrderByNgaytaoDesc();
+
 }

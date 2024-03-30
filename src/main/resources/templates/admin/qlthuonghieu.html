@@ -151,18 +151,17 @@
                                     <tr>
                                         <th>STT</th>
                                         <th>Tên thương hiệu</th>
-                                        <th>Người tạo</th>
                                         <th>Ngày tạo</th>
                                         <th>Trạng thái</th>
                                         <th>Hành động</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="th,stt:${page.content}">
+                                    <tr th:each="th,stt:${page}">
                                         <td th:text="${stt.index+1}"></td>
                                         <td th:text="${th.ten}"></td>
-                                        <td th:text="${th.nguoitao}"></td>
-                                        <td th:text="${#dates.format(th.ngaytao, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                        <td th:text="${#temporals.format(th.ngaytao, 'dd-MM-yyyy HH:mm:ss')}"></td>
+
                                         <td>
                                             <button style="border-radius: 50px"
                                                     class="btn btn-xs custom-button no-border-button"
