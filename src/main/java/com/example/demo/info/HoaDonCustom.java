@@ -18,6 +18,5 @@ public class HoaDonCustom {
     String key;
     Date tu;
     Date den;
-    @NotNull(message = "Vui lòng chọn loại hóa đơn!!")
     Boolean loaiHD;
 }

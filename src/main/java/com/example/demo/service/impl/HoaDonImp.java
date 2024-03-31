@@ -35,4 +35,9 @@ public class HoaDonImp implements HoaDonService {
     public Long tinhTong(Integer tt) {
         return dao.countAllByTrangthai(tt);
     }
+
+    @Override
+    public Page<HoaDon> timKhongTrangThai(Boolean loaihd, Date tu, Date den, Pageable p) {
+        return dao.findAllByLoaihoadonAndNgaytaoGreaterThanEqualAndNgaytaoLessThanEqual(loaihd,tu,den,p);
+    }
 }
