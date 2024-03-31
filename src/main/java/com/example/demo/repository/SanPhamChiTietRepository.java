@@ -23,4 +23,6 @@ public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, 
 
     @Query("SELECT spct FROM SanPhamChiTiet spct WHERE spct.sanpham.id = :idSanPham")
     List<SanPhamChiTiet> findBySanPhamId(@Param("idSanPham") Integer idSanPham);
+
+
 }

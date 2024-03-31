@@ -79,7 +79,7 @@
                                             <option th:each="sp : ${sp}" th:value="${sp.tensanpham}"
                                                     th:text="${sp.tensanpham}"></option>
                                         </select>
-                                        <span id="tenspError" style="color: red;"></span>
+                                        <span id="tenspError" style="color: red;font-style: italic"></span>
                                     </h5>
                                     <h5 style="font-family: 'Times New Roman'">
                                         Giới tính:
@@ -88,35 +88,32 @@
                                             <option value="true">Nam</option>
                                             <option value="false">Nữ</option>
                                         </select>
-                                        <span id="gioitinhError" style="color: red;"></span>
+                                        <span id="gioitinhError" style="color: red;font-style: italic"></span>
                                     </h5>
                                     <h5 style="font-family: 'Times New Roman'">
                                         Mô tả:
                                         <textarea rows="4" cols="164" class="form-control" name="mota"></textarea>
+                                        <span id="motaError" style="color: red;font-style: italic"></span>
                                     </h5>
-                                    <span id="motaError" style="color: red;"></span>
+
                                 </div>
 
                                 <!--abc-->
                                 <div class="d-flex">
                                     <p style="margin-left: 100px">Thương hiệu:
                                         <select class="form-control" style="width: 400px" name="idThuongHieu">
-                                            <option value="" selected disabled hidden>Chọn thương hiệu</option>
                                             <option th:each="th : ${th}" th:value="${th.id}"
                                                     th:text="${th.ten}"></option>
                                         </select>
-                                        <span id="thuonghieuError" style="color: red;"></span>
                                     </p>
                                     <input type="button" class="btn btn-primary" style="margin:2%" value="+"
                                            data-bs-toggle="modal" data-bs-target="#themthuonghieu">
                                     <!--trạng thái-->
                                     <p style="margin-left: 100px">Trạng thái:
                                         <select class="form-control" style="width: 400px" name="trangthai">
-                                            <option value="" selected disabled hidden>Chọn trạng thái</option>
                                             <option value="true">Đang kinh doanh</option>
                                             <option value="false">Ngừng kinh doanh</option>
                                         </select>
-                                        <span id="trangthaiError" style="color: red;"></span>
                                     </p>
                                     <input type="button" class="btn btn-primary" style="margin:2%" value="+">
                                 </div>
@@ -127,22 +124,18 @@
                                 <div class="d-flex">
                                     <p style="margin-left: 100px">Chất liệu:
                                         <select class="form-control" style="width: 400px" name="idChatLieu">
-                                            <option value="" selected disabled hidden>Chọn chất liệu</option>
                                             <option th:each="cl : ${cl}" th:value="${cl.id}"
                                                     th:text="${cl.ten}"></option>
                                         </select>
-                                        <span id="chatlieuError" style="color: red;"></span>
                                     </p>
                                     <input type="button" class="btn btn-primary" style="margin:2%" value="+"
                                            data-bs-toggle="modal" data-bs-target="#themchatlieu">
                                     <!--đế giày-->
                                     <p style="margin-left: 100px">Đế giày:
                                         <select class="form-control" style="width: 400px" name="idDeGiay">
-                                            <option value="" selected disabled hidden>Chọn đế giày</option>
                                             <option th:each="dg : ${dg}" th:value="${dg.id}"
                                                     th:text="${dg.ten}"></option>
                                         </select>
-                                        <span id="degiayError" style="color: red;"></span>
                                     </p>
                                     <input type="button" class="btn btn-primary" style="margin:2%" value="+"
                                            data-bs-toggle="modal" data-bs-target="#themdegiay">
@@ -155,23 +148,13 @@
                                     KÍCH CỠ VÀ MÀU SẮC
                                 </h3>
                                 <div class="d-flex">
-                                    <p style="margin-left: 100px;font-weight: bold">Kích cỡ:
-                                        <select class="select2" multiple="multiple" data-placeholder="Kích cỡ"
-                                                style="width: 400px;" name="idKichCo">
-                                            <option th:each="kc : ${kc}" th:value="${kc.id}"
-                                                    th:text="${kc.ten}"></option>
-                                        </select>
-                                        <span id="kichcoError" style="color: red;"></span>
-                                    </p>
-                                    <input type="button" class="btn btn-primary" style="margin:2%" value="+"
-                                           data-bs-toggle="modal" data-bs-target="#themkichco">
-                                    <p style="margin-left: 100px;font-weight: bold">Màu sắc:
+                                    <p style="margin-left: 100px;font-family: 'Times New Roman'">Màu sắc:
                                         <select class="select2" multiple="multiple" data-placeholder="Màu sắc"
                                                 style="width: 400px;" name="idMauSac">
                                             <option th:each="ms : ${ms}" th:value="${ms.id}"
                                                     th:text="${ms.ten}"></option>
                                         </select>
-                                        <span id="mausacError" style="color: red;"></span>
+                                        <span id="mausacError" style="color: red;font-style: italic"></span>
                                     </p>
                                     <p>
                                     </p>
@@ -179,11 +162,54 @@
                                            data-bs-toggle="modal" data-bs-target="#themmausac">
                                 </div>
                                 <!--end-->
+                                <div class="d-flex align-items-center" style="margin-left: 100px">
+                                    <div style="margin-right: 2%;font-weight: bold">
+                                        Kích cỡ:
+                                    </div>
+                                    <div>
+                                        <h6 id="displayValue"></h6>
+                                    </div>
+                                    <div style="margin-right: 2%;margin-left: 5px">
+                                        <input type="button" class="btn btn-primary" value="+" data-bs-toggle="modal"
+                                               data-bs-target="#themkichco2">
+                                    </div>
+
+                                </div>
+                                <span id="kichcoError" style="color: red;font-family: 'Times New Roman';font-style: italic;margin-left: 100px"></span>
                                 <button type="submit" class="btn btn-primary"
-                                        style="margin-left: 100px;margin-bottom: 20px; width: 200px;">Thêm
+                                        style="margin-left: 100px;margin-bottom: 20px;margin-top: 30px; width: 200px;">
+                                    Thêm
                                 </button>
                             </div>
+                            <!-- Modal thêm kích cỡ 2-->
+                            <div class="modal fade" id="themkichco2" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5">Chọn kích cỡ</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="d-flex flex-wrap">
+                                                <!-- Lặp qua danh sách kích cỡ và tạo các checkbox -->
+                                                <div th:each="size : ${kc}">
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="btn-check"
+                                                               th:id="'btn-check-' + ${size.id}" th:value="${size.ten}"
+                                                               name="kichCoId" autocomplete="off" onchange="handleCheckboxChange()">
+                                                        <label class="btn btn-outline-primary"
+                                                               th:for="'btn-check-' + ${size.id}"
+                                                               th:text="${size.ten}"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </form>
 
                         <!-- Modal thêm thương hiệu-->
@@ -334,6 +360,7 @@
                             </div>
                         </div>
 
+
                         <!-- /.card -->
                     </div>
                     <!-- /.col -->
@@ -353,7 +380,6 @@
                                 <table id="example2" class="table table-bordered table-hover text-center">
                                     <thead class="table table-danger">
                                     <tr>
-                                        <th></th>
                                         <th>STT</th>
                                         <th>Tên sản phẩm</th>
                                         <th>Số lượng</th>
@@ -365,8 +391,8 @@
                                     <tr th:each="spctt,stt:${sanphamchitiet}">
                                         <td>
                                             <input type="checkbox" class="product-checkbox">
+                                            <span style="margin-left: 7px" th:text="${stt.index+1}"></span>
                                         </td>
-                                        <td th:text="${stt.index+1}"></td>
                                         <td th:text="${spctt.sanpham.tensanpham} +' '+ '[' + ${spctt.kichco.ten} + '-' + ${spctt.mausac.ten} + ']'"></td>
 
                                         <td>
@@ -378,7 +404,8 @@
                                                    th:value="${spctt.giatien}">
                                         </td>
                                         <td>
-                                            <a th:href="@{/deleteCTSP/{id}(id=${spctt.id})}" class="btn btn-outline-danger"
+                                            <a th:href="@{/deleteCTSP/{id}(id=${spctt.id})}"
+                                               class="btn btn-outline-danger"
                                                onclick="return xoa(event)">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                      fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
@@ -416,7 +443,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
 
                         </div>
@@ -440,7 +466,6 @@
 </html>
 <!--thư viện để chọn nhiều giá trị trên select -->
 <!-- ./wrapper -->
-
 <!-- jQuery -->
 <script src="../../plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
@@ -609,45 +634,18 @@
 <script>
     function validateForm() {
         var tensp = document.forms["addProduct"]["tensp"].value;
-        // var soluong = document.forms["addProduct"]["soluong"].value;
-        // var giatien = document.forms["addProduct"]["giatien"].value;
-        var gioitinh = document.forms["addProduct"]["gioitinh"].value;
-        var thuonghieu = document.forms["addProduct"]["idThuongHieu"].value;
-        var chatlieu = document.forms["addProduct"]["idChatLieu"].value;
-        var kichco = document.forms["addProduct"]["idKichCo"].value;
-        var trangthai = document.forms["addProduct"]["trangthai"].value;
-        var degiay = document.forms["addProduct"]["idDeGiay"].value;
-        var mausac = document.forms["addProduct"]["idMauSac"].value;
         var mota = document.forms["addProduct"]["mota"].value;
+        var gioitinh = document.forms["addProduct"]["gioitinh"].value;
+        var kichco = document.forms["addProduct"]["kichCoId"].value;
+        var mausac = document.forms["addProduct"]["idMauSac"].value;
 
         // Kiểm tra và cập nhật thông báo lỗi cho mỗi trường dữ liệu
         if (isEmpty(tensp)) {
             document.getElementById("tenspError").innerText = "Vui lòng nhập tên sản phẩm.";
             return false;
         } else {
-            document.getElementById("tenspError").innerText = ""; // Xóa thông báo lỗi nếu trường dữ liệu không trống
+            document.getElementById("tenspError").innerText = "";
         }
-
-        // if (isEmpty(soluong)) {
-        //     document.getElementById("soluongError").innerText = "Vui lòng nhập số lượng.";
-        //     return false;
-        // } else if (soluong <= 0) {
-        //     document.getElementById("soluongError").innerText = "Số lượng phải > 0.";
-        //     return false;
-        // }
-        // {
-        //     document.getElementById("soluongError").innerText = "";
-        // }
-        // if (isEmpty(giatien)) {
-        //     document.getElementById("giatienError").innerText = "Vui lòng nhập giá tiền.";
-        //     return false;
-        // } else if (giatien <= 0) {
-        //     document.getElementById("giatienError").innerText = "Giá tiền phải > 0.";
-        //     return false;
-        // }
-        // {
-        //     document.getElementById("giatienError").innerText = "";
-        // }
 
         if (isEmpty(gioitinh)) {
             document.getElementById("gioitinhError").innerText = "Vui lòng chọn giới tính.";
@@ -662,48 +660,23 @@
         } else {
             document.getElementById("motaError").innerText = "";
         }
-
-        if (isEmpty(thuonghieu)) {
-            document.getElementById("thuonghieuError").innerText = "Vui lòng chọn thương hiệu.";
-            return false;
-        } else {
-            document.getElementById("thuonghieuError").innerText = "";
-        }
-
-        if (isEmpty(chatlieu)) {
-            document.getElementById("chatlieuError").innerText = "Vui lòng chọn chất liệu.";
-            return false;
-        } else {
-            document.getElementById("chatlieuError").innerText = "";
-        }
-
-        if (isEmpty(kichco)) {
-            document.getElementById("kichcoError").innerText = "Vui lòng chọn kích cỡ.";
-            return false;
-        } else {
-            document.getElementById("kichcoError").innerText = "";
-        }
-
-        if (isEmpty(trangthai)) {
-            document.getElementById("trangthaiError").innerText = "Vui lòng chọn trạng thái.";
-            return false;
-        } else {
-            document.getElementById("trangthaiError").innerText = "";
-        }
-
-        if (isEmpty(degiay)) {
-            document.getElementById("degiayError").innerText = "Vui lòng chọn đế giày.";
-            return false;
-        } else {
-            document.getElementById("degiayError").innerText = "";
-        }
-
         if (isEmpty(mausac)) {
             document.getElementById("mausacError").innerText = "Vui lòng chọn màu sắc.";
             return false;
         } else {
             document.getElementById("mausacError").innerText = "";
         }
+        // Lấy tất cả các checkbox có name là "kichCoId" và đã được chọn
+        var checkboxes = document.querySelectorAll('input[name="kichCoId"]:checked');
+
+// Kiểm tra xem có ít nhất một checkbox đã được chọn hay không
+        if (checkboxes.length === 0) {
+            document.getElementById("kichcoError").innerText = "Vui lòng chọn ít nhất một kích cỡ.";
+            return false;
+        } else {
+            document.getElementById("kichcoError").innerText = "";
+        }
+
         // Hiển thị thông báo thêm thành công
         const Toast = Swal.mixin({
             toast: true,
@@ -726,6 +699,10 @@
     function isEmpty(str) {
         return !str.trim();
     }
+    function handleCheckboxChange() {
+        document.getElementById("kichcoError").innerText = "";
+    }
+
 </script>
 
 <script>
@@ -756,7 +733,7 @@
         });
     }
 </script>
-
+<!--format giá tiền-->
 <script type="text/javascript">
     function formatCurrency(input) {
         // Format input number with thousand separators
@@ -764,6 +741,41 @@
         input.value = number;
     }
 </script>
+<!--dùng cho thêm size-->
+<script>
+    $(document).ready(function () {
+        var selectedValues = [];
+
+        // Function to remove a value from selectedValues array
+        function removeValue(value) {
+            selectedValues = selectedValues.filter(function (item) {
+                return item !== value;
+            });
+        }
+
+        // Function to update display of selected values
+        function updateDisplay() {
+            $('#displayValue').empty();
+            selectedValues.forEach(function (val) {
+                var button = $('<button type="button" class="btn mr-2">' + val + '</button>');
+                $('#displayValue').append(button);
+            });
+        }
+
+        $('.btn-check').on('click', function () {
+            var value = $(this).val();
+
+            if ($(this).is(':checked')) {
+                selectedValues.push(value);
+            } else {
+                removeValue(value);
+            }
+
+            updateDisplay();
+        });
+    });
+</script>
+
 
 
 

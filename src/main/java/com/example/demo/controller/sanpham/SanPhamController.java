@@ -2,6 +2,7 @@ package com.example.demo.controller.sanpham;
 
 import com.example.demo.entity.*;
 import com.example.demo.info.SanPhamInfo;
+import com.example.demo.repository.KichCoRepository;
 import com.example.demo.repository.SanPhamChiTietRepository;
 import com.example.demo.repository.SanPhamRepositoty;
 import com.example.demo.service.impl.*;
@@ -24,6 +25,8 @@ import java.util.Random;
 
 @Controller
 public class SanPhamController {
+    @Autowired
+    KichCoRepository kichCoRepository;
     @Autowired
     SanPhamChiTietRepository sanPhamChiTietRepository;
     @Autowired
@@ -56,7 +59,7 @@ public class SanPhamController {
     @Autowired
     HttpServletRequest request;
 
-
+    //Hiển thị list sản phẩm
     @GetMapping("/listsanpham")
     public String hienthi(@RequestParam(defaultValue = "0") int p, @ModelAttribute("tim") SanPhamInfo info, Model model) {
         Pageable pageable = PageRequest.of(p, 20);
@@ -81,9 +84,10 @@ public class SanPhamController {
         return "admin/qlsanpham";
     }
 
-
+    //hiển thị các thuộc tính của sản phẩm thông qua modelAttribute
     @RequestMapping(value = { "/viewaddSP", "/viewaddSP" }, method = { RequestMethod.GET, RequestMethod.POST })
-    public String viewaddSP(Model model, @RequestParam(defaultValue = "0") int p, @ModelAttribute("thuonghieu") ThuongHieu thuongHieu,
+    public String viewaddSP(Model model, @RequestParam(defaultValue = "0") int p,
+                            @ModelAttribute("thuonghieu") ThuongHieu thuongHieu,
                             @ModelAttribute("chatlieu") ChatLieu chatLieu,
                             @ModelAttribute("kichco") KichCo kichCo,
                             @ModelAttribute("degiay") DeGiay deGiay,
@@ -110,16 +114,15 @@ public class SanPhamController {
         model.addAttribute("page", page);
         return "admin/addsanpham";
     }
-
     @PostMapping("/addProduct")
-    @CacheEvict(value = "sanphamCache", allEntries = true)
+//    @CacheEvict(value = "sanphamCache", allEntries = true)
     public String addProduct(@RequestParam(defaultValue = "0") int p, Model model, @RequestParam String tensp,
                              @RequestParam String mota,
                              @RequestParam Boolean trangthai,
                              @RequestParam ThuongHieu idThuongHieu,
                              @RequestParam ChatLieu idChatLieu,
                              @RequestParam Boolean gioitinh,
-                             @RequestParam List<KichCo> idKichCo,
+                             @RequestParam(name = "kichCoId") List<String> kichCoNames,
                              @RequestParam DeGiay idDeGiay,
                              @RequestParam List<MauSac> idMauSac
     ) {
@@ -129,22 +132,26 @@ public class SanPhamController {
         LocalDateTime currentTime = LocalDateTime.now();
         sanPham.setNgaytao(currentTime);
         sanPhamImp.add(sanPham);
-        // Lặp qua danh sách các màu sắc và kích cỡ để tạo các biến thể sản phẩm chi tiết
+
         for (MauSac colorId : idMauSac) {
-            for (KichCo sizeId : idKichCo) {
-                SanPhamChiTiet spct = new SanPhamChiTiet();
-                spct.setSanpham(sanPham);
-                spct.setSoluong(1);
-                spct.setGiatien(BigDecimal.valueOf(1000));
-                spct.setMota(mota);
-                spct.setThuonghieu(idThuongHieu);
-                spct.setChatlieu(idChatLieu);
-                spct.setGioitinh(gioitinh);
-                spct.setTrangthai(trangthai);
-                spct.setKichco(sizeId);
-                spct.setDegiay(idDeGiay);
-                spct.setMausac(colorId);
-                sanPhamChiTietImp.addSPCT(spct);
+            for (String sizeName : kichCoNames) {
+                KichCo kichCo = kichCoRepository.findByTen(sizeName);
+                if (kichCo != null) {
+                    SanPhamChiTiet spct = new SanPhamChiTiet();
+                    spct.setSanpham(sanPham);
+                    spct.setSoluong(1);
+                    spct.setGiatien(BigDecimal.valueOf(1000));
+                    spct.setMota(mota);
+                    spct.setThuonghieu(idThuongHieu);
+                    spct.setChatlieu(idChatLieu);
+                    spct.setGioitinh(gioitinh);
+                    spct.setTrangthai(trangthai);
+                    spct.setKichco(kichCo);
+                    spct.setDegiay(idDeGiay);
+                    spct.setMausac(colorId);
+                    sanPhamChiTietImp.addSPCT(spct);
+                } else {
+                }
             }
         }
         List<SanPhamChiTiet> sanPhamChiTiets = sanPhamChiTietRepository.findBySanPhamId(sanPham.getId());

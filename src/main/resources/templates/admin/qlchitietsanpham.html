@@ -153,9 +153,11 @@
                                     <tr>
                                         <th></th>
                                         <th>STT</th>
-                                        <th>Tên sản phẩm</th>
                                         <th>Số lượng</th>
                                         <th>Giá tiền</th>
+                                        <th>Thương hiệu</th>
+                                        <th>Chất liệu</th>
+                                        <th>Đế giày</th>
                                         <th>Kích cỡ</th>
                                         <th>Màu sắc</th>
                                         <th>Trạng thái</th>
@@ -163,12 +165,14 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="spct, stt : ${sanphamchitiet}">
+                                    <tr th:each="spct, stt : ${sanphamchitietbysanpham}">
                                         <td><input type="checkbox"></td>
                                         <td th:text="${stt.index + 1}"></td>
-                                        <td th:text="${spct.sanpham.tensanpham}"></td>
                                         <td th:text="${spct.soluong}"></td>
                                         <td th:text="${spct.giatien}"></td>
+                                        <td th:text="${spct.thuonghieu.ten}"></td>
+                                        <td th:text="${spct.chatlieu.ten}"></td>
+                                        <td th:text="${spct.degiay.ten}"></td>
                                         <td th:text="${spct.kichco.ten}"></td>
                                         <td th:text="${spct.mausac.ten}"></td>
                                         <td>
