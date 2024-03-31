@@ -1,6 +1,7 @@
 package com.example.demo.controller.sanphamchitiet;
 
 import com.example.demo.entity.*;
+import com.example.demo.repository.SanPhamChiTietRepository;
 import com.example.demo.service.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,8 @@ import java.util.List;
 
 @Controller
 public class SanPhamChiTietController {
+    @Autowired
+    SanPhamChiTietRepository sanPhamChiTietRepository;
     @Autowired
     SanPhamChiTietImp sanPhamChiTietImp;
     @Autowired
@@ -37,10 +40,14 @@ public class SanPhamChiTietController {
     AnhImp anhImp;
 
     @GetMapping("/deleteCTSP/{id}")
-    public String deleteCTSP(@PathVariable Integer id) {
+    public String deleteCTSP(@PathVariable Integer id, Model model) {
         sanPhamChiTietImp.deleteSPCT(id);
-        return "redirect:/viewaddSP";
+        SanPham sanPham = new SanPham();
+        List<SanPhamChiTiet> sanPhamChiTiets = sanPhamChiTietRepository.findBySanPhamId(sanPham.getId());
+        model.addAttribute("sanphamchitiet", sanPhamChiTiets);
+        return "forward:/viewaddSP";
     }
+
 
     @GetMapping("/updateCTSP/{id}")
     public String viewupdateCTSP(@PathVariable Integer id, Model model, @RequestParam(defaultValue = "0") int p, @ModelAttribute("thuonghieu") ThuongHieu thuongHieu,
