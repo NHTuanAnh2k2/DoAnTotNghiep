@@ -2,6 +2,7 @@ package com.example.demo.controller.sanpham;
 
 import com.example.demo.entity.*;
 import com.example.demo.info.SanPhamInfo;
+import com.example.demo.repository.AnhRepository;
 import com.example.demo.repository.KichCoRepository;
 import com.example.demo.repository.SanPhamChiTietRepository;
 import com.example.demo.repository.SanPhamRepositoty;
@@ -55,6 +56,8 @@ public class SanPhamController {
 
     @Autowired
     AnhImp anhImp;
+    @Autowired
+    AnhRepository anhRepository;
 
     @Autowired
     HttpServletRequest request;
@@ -150,6 +153,10 @@ public class SanPhamController {
                     spct.setDegiay(idDeGiay);
                     spct.setMausac(colorId);
                     sanPhamChiTietImp.addSPCT(spct);
+                    Anh anh=new Anh();
+                    anh.setTenanh("https://cdn.tgdd.vn/Products/Images/42/153856/iphone-11-trang-200x200.jpg");
+                    anh.setSanphamchitiet(spct);
+                    anhRepository.save(anh);
                 } else {
                 }
             }

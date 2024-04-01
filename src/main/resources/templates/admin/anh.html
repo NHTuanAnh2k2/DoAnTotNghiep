@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<nav th:replace="~{/layoutadmin/head.html}"></nav>
+
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <!-- Navbar -->
+    <nav th:replace="~{/layoutadmin/navbar.html}"></nav>
+    <!-- End navbar -->
+
+    <!--Menu bán hàng -->
+    <nav th:replace="~{/layoutadmin/menu.html}"></nav>
+    <!--end-->
+
+    <!--Nội dung -->
+    <div class="content-wrapper">
+        <table class="table table-hover table-bordered">
+            <tr>
+                <th>STT</th>
+                <th>Id ảnh</th>
+                <th>Tên ảnh</th>
+                <th>Ảnh</th>
+            </tr>
+            <tr th:each="anh,stt:${listAnh}">
+                <td th:text="${stt.index+1}"></td>
+                <td th:text="${anh.id}"></td>
+                <td th:text="${anh.tenanh}"></td>
+                <td>
+                    <img th:src="${anh.tenanh}" alt="Ảnh" width="300px" height="200px">
+                </td>
+            </tr>
+        </table>
+
+    </div>
+    <!--end-->
+    <nav th:replace="~{/layoutadmin/footer.html}"></nav>
+</div>
+<!--script-->
+<nav th:replace="~{/layoutadmin/script.html}"></nav>
+</body>
+</html>
