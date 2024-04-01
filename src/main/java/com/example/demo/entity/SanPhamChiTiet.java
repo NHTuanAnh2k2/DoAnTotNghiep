@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -58,4 +59,7 @@ public class SanPhamChiTiet {
     @ManyToOne
     @JoinColumn(name = "iddegiay")
     DeGiay degiay;
+
+    @OneToMany(mappedBy = "sanphamchitiet")
+    List<Anh> anh;
 }

@@ -1,6 +1,72 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <nav th:replace="~{/layoutadmin/head.html}"></nav>
+<style>
+    /* CSS cho cột Upload Ảnh */
+    #example2 th:nth-child(6),
+    #example2 td:nth-child(6) {
+        width: 410px; /* Đặt kích thước của cột "Upload Ảnh" tại đây */
+    }
+
+    .container {
+        display: flex;
+        flex-wrap: wrap; /* Cho phép các phần tử con xuống dòng khi không đủ không gian */
+    }
+
+    #image-preview {
+        display: flex;
+        flex-wrap: wrap; /* Cho phép các ảnh xuống dòng khi không đủ không gian */
+    }
+
+    .preview-image-container {
+        position: relative;
+        margin: 10px;
+    }
+
+    .preview-image {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+    }
+
+    .delete-button {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background-color: red;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    #file-input {
+        display: none; /* Ẩn input type file */
+    }
+
+    .custom-upload {
+        display: inline-block;
+        border: 2px dotted blue; /* Thay đổi viền thành viền chấm */
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        width: 100px;
+        height: 100px;
+        margin-top: 10px;
+    }
+
+    .custom-upload::before {
+        content: "+ Upload";
+        display: block;
+        text-align: center;
+        line-height: 85px;
+    }
+</style>
 <script src="../sweetalert2/dist/sweetalert2.min.js/"></script>
 <link rel="stylesheet" type="text/css" href="../sweetalert2/dist/sweetalert2.min.css">
 <!--thư viện để chọn nhiều giá trị trên select -->
@@ -175,7 +241,8 @@
                                     </div>
 
                                 </div>
-                                <span id="kichcoError" style="color: red;font-family: 'Times New Roman';font-style: italic;margin-left: 100px"></span>
+                                <span id="kichcoError"
+                                      style="color: red;font-family: 'Times New Roman';font-style: italic;margin-left: 100px"></span>
                                 <button type="submit" class="btn btn-primary"
                                         style="margin-left: 100px;margin-bottom: 20px;margin-top: 30px; width: 200px;">
                                     Thêm
@@ -198,7 +265,8 @@
                                                     <div class="form-check">
                                                         <input type="checkbox" class="btn-check"
                                                                th:id="'btn-check-' + ${size.id}" th:value="${size.ten}"
-                                                               name="kichCoId" autocomplete="off" onchange="handleCheckboxChange()">
+                                                               name="kichCoId" autocomplete="off"
+                                                               onchange="handleCheckboxChange()">
                                                         <label class="btn btn-outline-primary"
                                                                th:for="'btn-check-' + ${size.id}"
                                                                th:text="${size.ten}"></label>
@@ -371,13 +439,42 @@
         </section>
         <!-- Main content -->
         <h3 class="text-bold text-center" style="padding-left: 15px">CHI TIẾT SẢN PHẨM</h3>
+        <a class="btn btn-primary" style="margin-left: 900px;margin-bottom: 15px" data-bs-toggle="modal"
+           data-bs-target="#chinhsuasoluongvagia">Chỉnh sửa số lượng và giá chung</a>
+        <button class="btn btn-primary" style="margin-left: 20px;margin-bottom: 15px">Hoàn tất</button>
+
+        <!-- Modal chỉnh sửa số lượng và giá -->
+        <div class="modal fade" id="chinhsuasoluongvagia" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Chỉnh sửa giá và số lượng sản phẩm</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Số lượng:
+                            <input type="number" class="form-control">
+                        </p>
+                        <p>Đơn giá:
+                            <input class="form-control">
+                        </p>
+                    </div>
+                   <p style="margin-left: 18px">
+                       <button class="btn btn-primary">Cập nhật</button>
+                   </p>
+                </div>
+            </div>
+        </div>
+
+
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <table id="example2" class="table table-bordered table-hover text-center">
+                                <table id="example2" class="table table-bordered table-hover ">
                                     <thead class="table table-danger">
                                     <tr>
                                         <th>STT</th>
@@ -385,6 +482,7 @@
                                         <th>Số lượng</th>
                                         <th>Giá bán</th>
                                         <th>Hành động</th>
+                                        <th>Upload Ảnh</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -413,8 +511,20 @@
                                                 </svg>
                                             </a>
                                         </td>
-                                    </tr>
+                                        <td>
+                                            <div class="container">
+                                                <div id="image-preview"></div>
+                                                <form action="/upload" method="post" enctype="multipart/form-data">
+                                                    <label for="file-input" class="custom-upload">
+                                                        <input type="file" id="file-input" name="file[]" multiple
+                                                               onchange="previewImages()">
+                                                    </label>
+                                                </form>
+                                            </div>
 
+                                            </form>
+                                        </td>
+                                    </tr>
                                     </tfoot>
                                 </table>
                                 <!-- Modal update CTSP -->
@@ -677,28 +787,22 @@
             document.getElementById("kichcoError").innerText = "";
         }
 
-        // Hiển thị thông báo thêm thành công
-        const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-            }
-        });
-        Toast.fire({
-            icon: "success",
-            title: "Thêm thành công"
-        });
-        return true;
+        return them();
+    }
+
+    function them() {
+        if (confirm("Bạn có muốn thêm không")) {
+            alert("Thêm thành công")
+            return true;
+        } else {
+            return false;
+        }
     }
 
     function isEmpty(str) {
         return !str.trim();
     }
+
     function handleCheckboxChange() {
         document.getElementById("kichcoError").innerText = "";
     }
@@ -776,6 +880,66 @@
     });
 </script>
 
+<!--ảnh-->
+<script>
+    function previewImages() {
+        var preview = document.getElementById('image-preview');
+        var files = document.getElementById('file-input').files;
+
+        // Kiểm tra số lượng ảnh đã chọn và số lượng ảnh hiện có
+        var currentImages = preview.getElementsByClassName('preview-image-container').length;
+        var totalImages = currentImages + files.length;
+
+        // Kiểm tra số lượng ảnh hiện có và ảnh mới
+        if (totalImages > 3) {
+            alert('Bạn chỉ có thể tải lên tối đa 3 ảnh.');
+            return; // Dừng hàm nếu số lượng ảnh vượt quá 3
+        }
+
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var reader = new FileReader();
+
+            reader.onload = function (event) {
+                var imageContainer = document.createElement('div');
+                imageContainer.classList.add('preview-image-container');
+
+                var image = new Image();
+                image.src = event.target.result;
+                image.classList.add('preview-image');
+
+                var deleteButton = document.createElement('button');
+                deleteButton.innerHTML = 'X';
+                deleteButton.classList.add('delete-button');
+                deleteButton.onclick = function () {
+                    deleteImage(imageContainer);
+                };
+
+                imageContainer.appendChild(image);
+                imageContainer.appendChild(deleteButton);
+                preview.appendChild(imageContainer);
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        // Ẩn nút file upload khi đã thêm tối đa 3 ảnh
+        if (totalImages >= 3) {
+            document.getElementById('file-input').parentElement.style.display = 'none';
+        }
+    }
+
+    // Hàm xóa ảnh và hiển thị lại nút file upload
+    function deleteImage(imageContainer) {
+        imageContainer.remove();
+        var preview = document.getElementById('image-preview');
+        var currentImages = preview.getElementsByClassName('preview-image-container').length;
+        // Hiển thị lại nút file upload khi ảnh bị xóa
+        if (currentImages < 3) {
+            document.getElementById('file-input').parentElement.style.display = 'block';
+        }
+    }
+</script>
 
 
 
