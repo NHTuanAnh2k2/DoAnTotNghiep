@@ -29,4 +29,14 @@ public class KhachHangImp implements KhachHangService {
         khachHangRepostory.save(khachHang);
         return khachHang;
     }
+
+    @Override
+    public List<KhachHang> findByAll(String ten, String sdt, int trangthai, Date ngaysinh) {
+        return khachHangRepostory.findByAll(ten, sdt, trangthai, ngaysinh);
+    }
+
+    @Override
+    public KhachHang getOne(int id) {
+        return khachHangRepostory.getReferenceById(id);
+    }
 }
