@@ -12,6 +12,8 @@ public interface HoaDonService {
     Page<HoaDon> Loc(Integer trangThai, Boolean loaihd, Date tu, Date den, Pageable p);
     Page<HoaDon> timKiemTT(Integer trangThai, Pageable p);
     Long tinhTong(Integer tt);
-    Page<HoaDon> timKhongTrangThai(Boolean loaihd, Date tu, Date den, Pageable p);
-
+    List<HoaDon> timall();
+    Page<HoaDon> LockTT(Boolean loaihd, Date tu, Date den, Pageable p);
+    Page<HoaDon> LocKLHD(Integer trangThai, Date tu, Date den, Pageable p);
+    Page<HoaDon> LocKngayTao(Integer trangThai, Boolean loaihd, Pageable p);
 }
