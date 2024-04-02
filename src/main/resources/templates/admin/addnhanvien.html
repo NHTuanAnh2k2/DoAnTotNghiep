@@ -186,12 +186,7 @@
                                                        style="width: 500px"></p>
                                             <p th:text="${tenDuongErr}"></p>
                                         </div>
-                                        <div class="d-flex">
-                                            <p>Số Đường:
-                                                <input th:field="*{soduong}" placeholder="Số Đường" class="form-control"
-                                                       style="width: 500px"></p>
-                                            <p th:text="${soDuongErr}"></p>
-                                        </div>
+
                                         </div>
                                         <button class="btn btn-primary" >Thêm nhân viên</button>
                                         <button class="btn btn-danger">Thoát</button>
@@ -380,7 +375,7 @@
         scanner.addListener('scan', function (content) {
             let info = content.split("|");
             document.getElementById('citizenID').value = info[0];
-            document.getElementById('name').innerText = decodeUTF8(info[2]);
+            document.getElementById('name').innerText = info[2];
             scanner.stop();
         });
         Instascan.Camera.getCameras().then(function (cameras) {

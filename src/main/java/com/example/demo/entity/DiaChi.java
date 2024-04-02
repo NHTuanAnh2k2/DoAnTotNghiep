@@ -20,7 +20,6 @@ public class DiaChi {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    Integer soduong;
     String tenduong;
     String xaphuong;
     String quanhuyen;

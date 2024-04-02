@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NhanVienInfo {
+    String manhanvien;
     Boolean vaitro;
     Timestamp ngaytao;
     String nguoitao;

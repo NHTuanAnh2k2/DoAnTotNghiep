@@ -1,9 +1,6 @@
 package com.example.demo.controller.NguoiDung;
 
-import com.example.demo.entity.ChatLieu;
-import com.example.demo.entity.DeGiay;
-import com.example.demo.entity.DiaChi;
-import com.example.demo.entity.NguoiDung;
+import com.example.demo.entity.*;
 import com.example.demo.info.DiaChiNVInfo;
 import com.example.demo.info.NguoiDungNVInfo;
 import com.example.demo.info.NhanVienInfo;
@@ -38,7 +35,11 @@ public class NhanVienController {
     @GetMapping("/admin/qlnhanvien")
     public String listnv(Model model,@ModelAttribute("nd") NguoiDungNVInfo nd) {
         List<DiaChi> page = diaChi.getAll();
-        model.addAttribute("list", page);
+        List<NguoiDung> listnd = nguoiDung.getAll();
+        List<NhanVien> listnv = nhanVien.getAll();
+        model.addAttribute("items1", page);
+        model.addAttribute("items2", listnd);
+        model.addAttribute("items3", listnv);
         return "admin/qlnhanvien";
     }
     @GetMapping("/timkiem")

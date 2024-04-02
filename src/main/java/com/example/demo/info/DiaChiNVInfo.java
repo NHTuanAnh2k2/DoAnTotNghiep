@@ -16,7 +16,6 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DiaChiNVInfo {
-    Integer soduong;
     String tenduong;
     String xaphuong;
     String quanhuyen;

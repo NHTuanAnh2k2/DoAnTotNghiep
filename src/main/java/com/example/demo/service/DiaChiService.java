@@ -12,8 +12,4 @@ public interface DiaChiService {
     public DiaChi add(DiaChiNVInfo diaChi);
     public DiaChi update(DiaChiNVInfo diaChi, Integer id);
     DiaChi search(Integer id);
-    public List<String> TimTinh();
-    public List<String> TimHuyen();
-    public List<String> TimXa();
-
 }

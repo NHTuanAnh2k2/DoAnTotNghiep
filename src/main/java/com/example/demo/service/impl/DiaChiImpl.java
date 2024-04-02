@@ -33,7 +33,6 @@ public class DiaChiImpl implements DiaChiService {
     @Override
     public DiaChi add(DiaChiNVInfo diaChi) {
         DiaChi dc = new DiaChi();
-        dc.setSoduong(diaChi.getSoduong());
         dc.setTenduong(diaChi.getTenduong());
         dc.setXaphuong(diaChi.getXaphuong());
         dc.setQuanhuyen(diaChi.getQuanhuyen());
@@ -50,7 +49,6 @@ public class DiaChiImpl implements DiaChiService {
     @Override
     public DiaChi update(DiaChiNVInfo diaChi, Integer id) {
         DiaChi dc = diaChiRepository.TimIdNguoiDung(id);
-        dc.setSoduong(diaChi.getSoduong());
         dc.setTenduong(diaChi.getTenduong());
         dc.setXaphuong(diaChi.getXaphuong());
         dc.setQuanhuyen(diaChi.getQuanhuyen());
@@ -66,18 +64,4 @@ public class DiaChiImpl implements DiaChiService {
         return diaChiRepository.TimIdNguoiDung(id);
     }
 
-    @Override
-    public List<String> TimTinh() {
-        return diaChiRepository.TimTinh();
-    }
-
-    @Override
-    public List<String> TimHuyen() {
-        return diaChiRepository.TimHuyen();
-    }
-
-    @Override
-    public List<String> TimXa() {
-        return diaChiRepository.TimXa();
-    }
 }

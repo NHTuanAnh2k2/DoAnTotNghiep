@@ -107,7 +107,7 @@
                                     <thead class="table table-danger">
                                     <tr>
                                         <th>STT</th>
-                                        <th>Ảnh</th>
+                                        <th>Mã nhân viên</th>
                                         <th>Tên nhân viên</th>
                                         <th>CCCD</th>
                                         <th>Số điện thoại</th>
@@ -119,23 +119,23 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="nv,stt:${list}">
-                                    <td th:text="${stt.index+1}"></td>
-                                    <td th:text="${nv.nguoidung.anh}"></td>
-                                    <td th:text="${nv.nguoidung.hovaten}"></td>
-                                    <td th:text="${nv.nguoidung.cccd}"></td>
-                                    <td th:text="${nv.nguoidung.sodienthoai}"></td>
-                                    <td th:text="${nv.nguoidung.ngaysinh}"></td>
-                                    <td th:text="${nv.nguoidung.gioitinh ? 'Nam' : 'Nữ'}"></td>
-                                    <td th:text="${nv.soduong + ' ' + nv.tenduong  + ' ' + nv.xaphuong + ' ' + nv.quanhuyen  + ' ' + nv.tinhthanhpho}"></td>
+                                    <tr th:each="i:${#numbers.sequence(0, #lists.size(items1)-1)}">
+                                    <td th:text="${i+1}"></td>
+                                    <td th:text="${items3[i].manhanvien}"></td>
+                                    <td th:text="${items2[i].hovaten}"></td>
+                                    <td th:text="${items2[i].cccd}"></td>
+                                    <td th:text="${items2[i].sodienthoai}"></td>
+                                    <td th:text="${items2[i].ngaysinh}"></td>
+                                    <td th:text="${items2[i].gioitinh ? 'Nam' : 'Nữ'}"></td>
+                                    <td th:text="${items1[i].tenduong  + ' ' + items1[i].xaphuong + ' ' + items1[i].quanhuyen  + ' ' + items1[i].tinhthanhpho}"></td>
                                     <td>
                                         <button style="border-radius: 50px"
                                                 class="btn btn-xs custom-button no-border-button"
-                                                th:classappend="${nv.trangthai ? 'btn-custom-info' : 'btn-custom-warning'}"
-                                                th:text="${nv.trangthai ? 'Làm việc' : 'Nghỉ'}"></button>
+                                                th:classappend="${items2[i].trangthai ? 'btn-custom-info' : 'btn-custom-warning'}"
+                                                th:text="${items2[i].trangthai ? 'Làm việc' : 'Nghỉ'}"></button>
                                     </td>
                                     <td>
-                                        <a  th:href="@{/updateNhanVien/{id}(id=${nv.nguoidung.id})}" class="btn btn-danger">
+                                        <a  th:href="@{/updateNhanVien/{id}(id=${items2[i].id})}" class="btn btn-danger">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                  fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                                 <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
