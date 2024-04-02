@@ -33,6 +33,8 @@
     <link rel="stylesheet" href="../plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
     <link rel="stylesheet" href="../plugins/summernote/summernote-bs4.min.css">
+    <!-- icon_bootstrap5 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -88,6 +90,7 @@
                                         </svg>
                                         Bộ lọc
                                     </h3>
+                                   <a th:href= "@{/hoa-don/ban-hang}"><button style="margin-left: 1000px;" class="btn btn-success">Tạo mới</button></a>
                                     <br>
                                     <hr class="border border-danger border-2 opacity-50">
                                     <form th:action="@{loc}" method="get" th:object="${hdcustom}">
@@ -98,8 +101,7 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <input th:field="*{key}" type="text" class="form-control"
-                                                        placeholder="Nhập trạng thái đơn ..."> <i th:errors="*{key}"
-                                                        class="text-danger"></i>
+                                                        placeholder="Nhập trạng thái đơn ...">
                                                 </div>
                                             </div>
                                             <div class="align-items-center col-lg-6 col-md-6">
@@ -108,11 +110,10 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <select class="form-control" th:field="*{loaiHD}">
-                                                        <option value="">Chọn Loại đơn</option>
+                                                        <option value="">Tất cả</option>
                                                         <option value="true">Online</option>
                                                         <option value="false">Tại quầy</option>
                                                     </select>
-                                                    <i th:errors="*{loaiHD}" class="text-danger"></i>
                                                 </div>
                                             </div>
                                             <div class=" align-items-center col-lg-6 col-md-6">
@@ -120,11 +121,9 @@
                                                     <label class="col-form-label">Ngày bắt đầu</label>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <input type="date" class="form-control" th:field="*{tu}">
-
-                                                    <i th:if="${#fields.hasErrors('tu')}" class="text-danger">Vui lòng
-                                                        không để trống!!</i>
-                                                        <i th:if="${errdate==1}" class="text-danger">Ngày bắt đầu không lớn hơn ngày kết thúc!!</i>
+                                                    <input type="date" class="form-control" th:field="*{tu}" th:value="${null}">
+                                                    <i th:if="${errdate==1}" class="text-danger">Ngày bắt đầu không lớn
+                                                        hơn ngày kết thúc!!</i>
                                                 </div>
                                             </div>
                                             <div class=" align-items-center col-lg-6 col-md-6">
@@ -133,8 +132,6 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <input type="date" class="form-control" th:field="*{den}">
-                                                    <i th:if="${#fields.hasErrors('den')}" class="text-danger">Vui lòng
-                                                        không để trống!!</i>
                                                 </div>
                                             </div>
                                         </div>
@@ -143,6 +140,7 @@
                                             style="margin-right: 35%; margin-left: 35%;">
                                             <button type="submit" class="btn btn-success">Tìm kiếm</button>
                                             <button type="reset" class="btn btn-danger">Làm mới</button>
+                                         
                                         </div>
                                     </form>
 
@@ -186,7 +184,8 @@
                                                     class="nav-link active position-relative" id="tatCaHoaDon-tab"
                                                     data-bs-toggle="tab" data-bs-target="#tatCaHoaDon-tab-pane"
                                                     type="button" role="tab" aria-controls="home-tab-pane"
-                                                    aria-selected="true" th:classappend="${checkTT==7?'btn btn-warning':''}">
+                                                    aria-selected="true"
+                                                    th:classappend="${checkTT==7?'btn btn-warning':''}">
                                                     Tất cả
                                                     <span th:text="${tt7}"
                                                         class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
@@ -200,7 +199,8 @@
                                                     class="nav-link position-relative " id="hoaDonChoXacNhan-tab"
                                                     data-bs-toggle="tab" data-bs-target="#hoaDonChoXacNhan-tab-pane"
                                                     type="button" role="tab" aria-controls="profile-tab-pane"
-                                                    aria-selected="false" th:classappend="${checkTT==0?'btn btn-warning':''}">
+                                                    aria-selected="false"
+                                                    th:classappend="${checkTT==0?'btn btn-warning':''}">
                                                     Chờ xác nhận
                                                     <span th:text="${tt0}"
                                                         class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
@@ -213,7 +213,8 @@
                                                     class="nav-link position-relative" id="hoaDonDaXacNhan-tab"
                                                     data-bs-toggle="tab" data-bs-target="#hoaDonDaXacNhan-tab-pane"
                                                     type="button" role="tab" aria-controls="contact-tab-pane"
-                                                    aria-selected="false" th:classappend="${checkTT==1?'btn btn-warning':''}">
+                                                    aria-selected="false"
+                                                    th:classappend="${checkTT==1?'btn btn-warning':''}">
                                                     Đã xác nhận
                                                     <span th:text="${tt1}"
                                                         class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
@@ -227,7 +228,8 @@
                                                     class="nav-link position-relative" id="hoaDonChoGiaoHang-tab"
                                                     data-bs-toggle="tab" data-bs-target="#hoaDonChoGiaoHang-tab-pane"
                                                     type="button" role="tab" aria-controls="disabled-tab-pane"
-                                                    aria-selected="false" th:classappend="${checkTT==2?'btn btn-warning':''}">
+                                                    aria-selected="false"
+                                                    th:classappend="${checkTT==2?'btn btn-warning':''}">
                                                     Chờ giao hàng
                                                     <span th:text="${tt2}"
                                                         class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
@@ -241,7 +243,8 @@
                                                     class="nav-link position-relative" id="hoaDonDangGiaoHang-tab"
                                                     data-bs-toggle="tab" data-bs-target="#hoaDonDangGiaoHang-tab-pane"
                                                     type="button" role="tab" aria-controls="disabled-tab-pane"
-                                                    aria-selected="false" th:classappend="${checkTT==3?'btn btn-warning':''}">
+                                                    aria-selected="false"
+                                                    th:classappend="${checkTT==3?'btn btn-warning':''}">
                                                     Đang giao hàng
                                                     <span th:text="${tt3}"
                                                         class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
@@ -255,11 +258,12 @@
                                                     class="nav-link position-relative" id="hoaDonDaThanhToan-tab"
                                                     data-bs-toggle="tab" data-bs-target="#hoaDonDaThanhToan-tab-pane"
                                                     type="button" role="tab" aria-controls="disabled-tab-pane"
-                                                    aria-selected="false" th:classappend="${checkTT==4?'btn btn-warning':''}">
+                                                    aria-selected="false"
+                                                    th:classappend="${checkTT==4?'btn btn-warning':''}">
                                                     Đã thanh toán
                                                     <span th:text="${tt4}"
                                                         class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
-                                                       
+
                                                     </span>
                                                 </button> </a>
                                         </li>
@@ -269,11 +273,12 @@
                                                     class="nav-link position-relative" id="hoaDonDaHoanThanh-tab"
                                                     data-bs-toggle="tab" data-bs-target="#hoaDonDaHoanThanh-tab-pane"
                                                     type="button" role="tab" aria-controls="disabled-tab-pane"
-                                                    aria-selected="false" th:classappend="${checkTT==5?'btn btn-warning':''}">
+                                                    aria-selected="false"
+                                                    th:classappend="${checkTT==5?'btn btn-warning':''}">
                                                     Đã hoàn thành
                                                     <span th:text="${tt5}"
                                                         class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
-                                                       
+
                                                     </span>
                                                 </button> </a>
                                         </li>
@@ -282,7 +287,8 @@
                                             <a th:href="@{/hoa-don/da-huy}"> <button class="nav-link position-relative"
                                                     id="hoaDonDaHuy-tab" data-bs-toggle="tab"
                                                     data-bs-target="#hoaDonDaHuy-tab-pane" type="button" role="tab"
-                                                    aria-controls="disabled-tab-pane" aria-selected="false" th:classappend="${checkTT==6?'btn btn-warning':''}">
+                                                    aria-controls="disabled-tab-pane" aria-selected="false"
+                                                    th:classappend="${checkTT==6?'btn btn-warning':''}">
                                                     Đã hủy
                                                     <span th:text="${tt6}"
                                                         class="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-danger">
@@ -292,9 +298,22 @@
                                         </li>
                                     </ul>
                                     <div class="tab-content" id="myTabContent">
+
+                                        <!--Tab hiện thị null nếu tìm kiếm k có kết quả-->
+                                        <div class="tab-pane fade show active text-center fw-bold"
+                                            id="tatCaHoaDon-tab-pane" role="tabpanel" aria-labelledby="tatCaHoaDon-tab"
+                                            tabindex="0" th:if="${lst.totalElements<1}">
+                                            <br>
+                                            <img src="../dist/img/no_product.png" width="500px" height="300px">
+                                            <h3 class="text text-danger"><i>Không tìm thấy danh sách đã yêu cầu <i
+                                                        class="bi bi-emoji-tear"></i>!</i></h3>
+                                        </div>
+                                        <!--Kết thúc tab hiện thị null nếu tìm kiếm k có kết quả-->
+
                                         <!--Tab hiện thị tất cả hóa đơn-->
                                         <div class="tab-pane fade show active" id="tatCaHoaDon-tab-pane" role="tabpanel"
-                                            aria-labelledby="tatCaHoaDon-tab" tabindex="0">
+                                            aria-labelledby="tatCaHoaDon-tab" tabindex="0"
+                                            th:if="${lst.totalElements>0}">
                                             <br>
                                             <div class="card-body">
                                                 <table class="table table-bordered table-hover text-center">
@@ -302,11 +321,12 @@
                                                         <tr>
                                                             <th>STT</th>
                                                             <th>Mã hóa đơn</th>
+                                                            <th>Mã nhân viên</th>
                                                             <th>Tên khách hàng</th>
-                                                            <th>Tên nhân viên</th>
+                                                            <th>SĐT khách hàng</th>
                                                             <th>Loại hóa đơn</th>
-                                                            <th>Ngày tạo</th>
                                                             <th>Tổng tiền</th>
+                                                            <th>Ngày tạo</th>
                                                             <th>Trạng thái</th>
                                                             <th colspan="2">Thao tác</th>
                                                         </tr>
@@ -315,11 +335,17 @@
                                                         <tr th:each="a:${lst}">
                                                             <td th:text="${aStat.index+1}"></td>
                                                             <td th:text="${a.mahoadon}"></td>
+                                                            <td th:text="${a.nhanvien.manhanvien}"></td>
                                                             <td th:text="${a.khachhang.nguoidung.hovaten}"></td>
-                                                            <td th:text="${a.nhanvien.nguoidung.hovaten}"></td>
-                                                            <td th:text="${a.loaihoadon==true?'online':'tại quầy'}"></td>
-                                                            <td th:text="${a.ngaytao}"></td>
-                                                            <td th:text="${a.tongtien}"></td>
+                                                            <td th:text="${a.sdt}"></td>
+                                                            <td th:text="${a.loaihoadon==true?'online':'tại quầy'}">
+                                                            </td>
+                                                            <td
+                                                                th:text="${#numbers.formatDecimal(a.tongtien, 0, 'COMMA', 3, 'POINT')+'&#x20ab;'}">
+                                                            </td>
+                                                            <td
+                                                                th:text="${ #dates.format(a.ngaytao, 'dd-MM-yyyy HH:mm:ss')}">
+                                                            </td>
                                                             <td th:if="${a.trangthai==0}">chờ xác nhận</td>
                                                             <td th:if="${a.trangthai==1}">đã xác nhận</td>
                                                             <td th:if="${a.trangthai==2}">chờ giao hàng</td>
@@ -329,7 +355,7 @@
                                                             <td th:if="${a.trangthai==6}">đã hủy</td>
                                                             <td>
                                                                 <button type="button" class="btn btn-warning">
-                                                                    <a th:href= "@{chi-tiet/{id}(id=${a.id})}">Xem</a>
+                                                                    <a th:href="@{chi-tiet/{id}(id=${a.id})}">Xem</a>
                                                                 </button>
                                                             </td>
                                                         </tr>
@@ -356,40 +382,40 @@
                                             </div>
                                         </div>
                                         <!--Tab hiện thị hóa đơn chờ xác nhận-->
-                                        <div class="tab-pane fade" id="hoaDonChoXacNhan-tab-pane" role="tabpanel"
+                                        <!-- <div class="tab-pane fade" id="hoaDonChoXacNhan-tab-pane" role="tabpanel"
                                             aria-labelledby="hoaDonChoXacNhan-tab" tabindex="0">
                                             Cho xac nhan 123
-                                        </div>
+                                        </div> -->
                                         <!--Tab hiện thị hóa đơn đã xác nhận-->
-                                        <div class="tab-pane fade" id="hoaDonDaXacNhan-tab-pane" role="tabpanel"
+                                        <!-- <div class="tab-pane fade" id="hoaDonDaXacNhan-tab-pane" role="tabpanel"
                                             aria-labelledby="hoaDonDaXacNhan-tab" tabindex="0">
                                             Da xac nhan
-                                        </div>
+                                        </div> -->
                                         <!--Tab hiện thị hóa đơn chờ giao hàng-->
-                                        <div class="tab-pane fade" id="hoaDonChoGiaoHang-tab-pane" role="tabpanel"
+                                        <!-- <div class="tab-pane fade" id="hoaDonChoGiaoHang-tab-pane" role="tabpanel"
                                             aria-labelledby="hoaDonChoGiaoHang-tab" tabindex="0">
                                             Cho giao hang
-                                        </div>
+                                        </div> -->
                                         <!--Tab hiện thị hóa đơn dang giao hàng-->
-                                        <div class="tab-pane fade" id="hoaDonDangGiaoHang-tab-pane" role="tabpanel"
+                                        <!-- <div class="tab-pane fade" id="hoaDonDangGiaoHang-tab-pane" role="tabpanel"
                                             aria-labelledby="hoaDonDangGiaoHang-tab" tabindex="0">
                                             Dang giao hang
-                                        </div>
+                                        </div> -->
                                         <!--Tab hiện thị hóa đơn đã thanh toán-->
-                                        <div class="tab-pane fade" id="hoaDonDaThanhToan-tab-pane" role="tabpanel"
+                                        <!-- <div class="tab-pane fade" id="hoaDonDaThanhToan-tab-pane" role="tabpanel"
                                             aria-labelledby="hoaDonDaThanhToan-tab" tabindex="0">
                                             Da thanh toan
-                                        </div>
+                                        </div> -->
                                         <!--Tab hiện thị hóa đơn đã hoàn thành-->
-                                        <div class="tab-pane fade" id="hoaDonDaHoanThanh-tab-pane" role="tabpanel"
+                                        <!-- <div class="tab-pane fade" id="hoaDonDaHoanThanh-tab-pane" role="tabpanel"
                                             aria-labelledby="hoaDonDaHoanThanh-tab" tabindex="0">
                                             Da hoan thanh
-                                        </div>
+                                        </div> -->
                                         <!--Tab hiện thị hóa đơn đã hủy-->
-                                        <div class="tab-pane fade" id="hoaDonDaHuy-tab-pane" role="tabpanel"
+                                        <!-- <div class="tab-pane fade" id="hoaDonDaHuy-tab-pane" role="tabpanel"
                                             aria-labelledby="hoaDonDaHuy-tab" tabindex="0">
                                             Da huy
-                                        </div>
+                                        </div> -->
                                     </div>
 
                                 </div>

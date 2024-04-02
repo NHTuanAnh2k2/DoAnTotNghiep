@@ -17,6 +17,6 @@ public interface ThuongHieuService {
 
     void delete(Integer id);
 
-    Page<ThuongHieu> getThuongHieuByTenOrTrangthai(String ten, Boolean trangthai, Pageable pageable);
+    List<ThuongHieu> getThuongHieuByTenOrTrangthai(String ten, Boolean trangthai);
 
 }

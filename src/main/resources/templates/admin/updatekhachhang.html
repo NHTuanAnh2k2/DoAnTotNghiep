@@ -77,15 +77,15 @@
             </div><!-- /.container-fluid -->
         </section>
         <!---filter-->
-        <form th:method="post" th:object="${khachhang}" th:action="@{/khachhang/add}" enctype="multipart/form-data">
+        <form  enctype="multipart/form-data">
             <section class="content" style="margin-left: 525px">
                 <div class="file-input-wrapper">
-                    <input type="file" id="fileInput" th:name="file" class="file-input">
+                    <input type="file" id="fileInput" th:name="file"  class="file-input">
                     <label for="fileInput" class="file-input-label">
                         <span>+</span>
                         <span>Upload</span>
                     </label>
-                    <img id="uploadedImage" src="" alt="Uploaded Image" style="display: none;">
+                    <img id="uploadedImage" th:src="@{/image/{fileName}(fileName=${getone.nguoidung.anh})}" alt="Uploaded Image" style="display: none;">
 
                 </div>
             </section>
@@ -99,21 +99,14 @@
                                 <div class="card-body">
                                     <section class="content">
                                         <div class="container">
-                                            <p>
-                                            <div>
-                                                <button class="btn btn-danger mb-3" style="margin-left: 1000px">Quét QR
-                                                </button>
-                                            </div>
-                                            </p>
                                             <div class="d-flex">
-
                                                 <p>Tên khách hàng:
                                                     <input placeholder="Tên khách hàng" class="form-control"
-                                                           style="width: 550px" th:field="*{hovaten}">
+                                                           style="width: 550px" th:value="${getone.nguoidung.hovaten}">
                                                 </p>
                                                 <p style="margin-left: 20px">Ngày sinh:
                                                     <input type="date" class="form-control"
-                                                           style="width: 550px" th:field="*{ngaysinh}">
+                                                           style="width: 550px" th:value="${getone.nguoidung.ngaysinh}">
                                                 </p>
                                             </div>
 
@@ -121,14 +114,14 @@
 
                                                 <p>Căn cước công dân:
                                                     <input placeholder="Căn cước công dân" class="form-control"
-                                                           style="width: 550px" th:field="*{cccd}">
+                                                           style="width: 550px" th:value="${getone.nguoidung.cccd}">
                                                 </p>
                                                 <p style="margin-left: 20px">Giới tính:
                                                     <br>
-                                                    <input type="radio" style="margin-top: 10px" th:field="*{gioitinh}"
-                                                           th:value="1">Nam
+                                                    <input type="radio" style="margin-top: 10px"
+                                                            th:checked="${getone.nguoidung.gioitinh == true ? 'true' : 'false'} " >Nam
                                                     <input type="radio" style="margin-left: 10px;margin-top: 10px"
-                                                           th:field="*{gioitinh}" th:value="0">Nữ
+                                                            th:checked="${getone.nguoidung.gioitinh == false ? 'true' : 'false'} ">Nữ
                                                 </p>
                                             </div>
 
@@ -136,11 +129,11 @@
 
                                                 <p>Email:
                                                     <input placeholder="Email" class="form-control"
-                                                           style="width: 550px" th:field="*{email}">
+                                                           style="width: 550px" th:value="${getone.nguoidung.email}">
                                                 </p>
                                                 <p style="margin-left: 20px">Số điện thoại:
                                                     <input placeholder="Số điện thoại" class="form-control"
-                                                           style="width: 550px" th:field="*{sodienthoai}">
+                                                           style="width: 550px" th:value="${getone.nguoidung.sodienthoai}">
                                                 </p>
                                             </div>
 
@@ -175,14 +168,13 @@
 
                                             <div class="d-flex">
                                                 <p>Trạng thái:
-                                                    <select class="form-control" style="width: 550px"
-                                                            th:field="*{trangthai}">
-                                                        <option th:value="1">Kích hoạt</option>
-                                                        <option th:value="0">Chưa kích hoạt</option>
+                                                    <select class="form-control" style="width: 550px">
+                                                        <option th:selected="${getone.trangthai == true ? 'true' : 'false'}">Đã kích hoạt</option>
+                                                        <option th:selected="${getone.trangthai == false ? 'true' : 'false'}">Chưa kích hoạt</option>
                                                     </select>
                                                 </p>
                                             </div>
-                                            <button type="submit" class="btn btn-primary">Thêm khách hàng</button>
+                                            <button type="submit" class="btn btn-primary">Cập nhật khách hàng</button>
                                             <a th:href="@{/khachhang}" class="btn btn-danger">Thoát</a>
                                         </div>
                                     </section>

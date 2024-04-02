@@ -16,6 +16,10 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import java.util.Optional;
 
 @Controller
@@ -51,25 +55,29 @@ public class hoaDonController {
                       @Validated @ModelAttribute("hdcustom") HoaDonCustom HDinfo, Errors er) {
         int page = pageParam.orElse(0);
         Pageable p = PageRequest.of(page, 5);
-        if (er.hasErrors()) {
-            Page<HoaDon> fixErr = dao.findAll(p);
-            model.addAttribute("lst", fixErr);
-            model.addAttribute("pageNo", page);
-            model.addAttribute("tt0", dao.tinhTong(0));
-            model.addAttribute("tt1", dao.tinhTong(1));
-            model.addAttribute("tt2", dao.tinhTong(2));
-            model.addAttribute("tt3", dao.tinhTong(3));
-            model.addAttribute("tt4", dao.tinhTong(4));
-            model.addAttribute("tt5", dao.tinhTong(5));
-            model.addAttribute("tt6", dao.tinhTong(6));
-            model.addAttribute("tt7", dao.findAll(p).getTotalElements());
-            return "admin/qlhoadon";
+        Integer trangThai = -1;
+
+        if (er.hasFieldErrors("key")) {
+            trangThai=null;
         }
+        if (er.hasFieldErrors("loaiHD")) {
+
+        }
+
+        if (er.hasFieldErrors("tu")) {
+
+
+        }
+        if (er.hasFieldErrors("den")) {
+
+
+        }
+
         if (HDinfo.getTu().compareTo(HDinfo.getDen()) >= 0) {
             Page<HoaDon> fixErr = dao.findAll(p);
             model.addAttribute("lst", fixErr);
             model.addAttribute("pageNo", page);
-            model.addAttribute("errdate",1);
+            model.addAttribute("errdate", 1);
             model.addAttribute("tt0", dao.tinhTong(0));
             model.addAttribute("tt1", dao.tinhTong(1));
             model.addAttribute("tt2", dao.tinhTong(2));
@@ -80,7 +88,7 @@ public class hoaDonController {
             model.addAttribute("tt7", dao.findAll(p).getTotalElements());
             return "admin/qlhoadon";
         }
-        Integer trangThai = -1;
+
         if (HDinfo.getKey().equalsIgnoreCase("chờ xác nhận")) {
             trangThai = 0;
         } else {
@@ -109,9 +117,9 @@ public class hoaDonController {
                 }
             }
         }
-
-        Page<HoaDon> lst = dao.Loc(trangThai,
+        Page<HoaDon> lst = dao.Loc(null,
                 HDinfo.getLoaiHD(), HDinfo.getTu(), HDinfo.getDen(), p);
+
         model.addAttribute("lst", lst);
         model.addAttribute("pageNo", page);
         //hiển thị số hd theo tt
@@ -276,5 +284,11 @@ public class hoaDonController {
     public String show(Model model) {
 
         return "admin/qlchitiethoadon";
+    }
+
+    @GetMapping("ban-hang")
+    public String taoMoiHoaDon(Model model) {
+
+        return "admin/banhangtaiquay";
     }
 }
