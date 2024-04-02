@@ -18,5 +18,5 @@ public class HoaDonCustom {
     String key;
     Date tu;
     Date den;
-    Boolean loaiHD;
+    String loaiHD;
 }
