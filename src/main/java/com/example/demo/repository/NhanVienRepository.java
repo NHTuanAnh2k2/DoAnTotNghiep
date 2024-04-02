@@ -11,6 +11,7 @@ import java.util.List;
 @Controller
 public interface NhanVienRepository extends JpaRepository<NhanVien,Integer> {
     List<NhanVien> getNhanVienByTrangthai(Boolean trangThai);
+    List<NhanVien> getAllByOrderByIdDesc();
     @Query("SELECT c FROM NhanVien c  WHERE c.nguoidung.id = ?1")
     NhanVien TimIdNguoiDung(Integer id);
 

@@ -24,7 +24,7 @@ public class NhanVienImpl implements NhanVienService {
 
     @Override
     public List<NhanVien> getAll() {
-        return nhanVienRepository.findAll();
+        return nhanVienRepository.getAllByOrderByIdDesc();
     }
 
     @Override

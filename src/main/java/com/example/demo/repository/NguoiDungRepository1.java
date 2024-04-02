@@ -13,5 +13,6 @@ public interface NguoiDungRepository1 extends JpaRepository<NguoiDung, Integer> 
     NguoiDung searchEmail(String email);
     @Query("SELECT c FROM NguoiDung c WHERE c.id = ?1")
     NguoiDung searchId(Integer id);
+    List<NguoiDung> getAllByOrderByIdDesc();
 List<NguoiDung> getNhanVienByTrangthai(Boolean trangThai);
 }

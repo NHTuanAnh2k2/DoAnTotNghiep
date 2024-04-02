@@ -17,8 +17,6 @@ import java.sql.Timestamp;
 @Valid
 public class NguoiDungNVInfo {
     Integer id;
-    @NotBlank(message = "Vui lòng nhập tài khoản")
-    String taikhoan;
     String email;
     String hovaten;
     Date ngaysinh;

@@ -24,7 +24,7 @@ public class NguoiDungImpl1 implements NguoiDungService1 {
     private JavaMailSender emailSender;
     @Override
     public List<NguoiDung> getAll() {
-        return nguoiDungRepository.findAll();
+        return nguoiDungRepository.getAllByOrderByIdDesc();
     }
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+";
 
@@ -37,11 +37,17 @@ public class NguoiDungImpl1 implements NguoiDungService1 {
         }
         return password.toString();
     }
+    public String tk(){
+        List<NguoiDung> l = nguoiDungRepository.getAllByOrderByIdDesc();
+        String tk = "NV" + l.size();
+        return tk;
+    }
 
     @Override
     public NguoiDung add(NguoiDungNVInfo nguoiDung) {
+        List<NguoiDung> l = nguoiDungRepository.getAllByOrderByIdDesc();
         NguoiDung nd = new NguoiDung();
-        nd.setTaikhoan(nguoiDung.getTaikhoan());
+        nd.setTaikhoan(tk());
         nd.setEmail(nguoiDung.getEmail());
         nd.setMatkhau(generatePassword(8));
         nd.setHovaten(nguoiDung.getHovaten());
@@ -61,7 +67,6 @@ public class NguoiDungImpl1 implements NguoiDungService1 {
     @Override
     public NguoiDung update(NguoiDungNVInfo nguoiDung, Integer id) {
         NguoiDung nd = nguoiDungRepository.searchId(id);
-        nd.setTaikhoan(nguoiDung.getTaikhoan());
         nd.setEmail(nguoiDung.getEmail());
         nd.setHovaten(nguoiDung.getHovaten());
         nd.setNgaysinh(nguoiDung.getNgaysinh());
@@ -82,6 +87,7 @@ public class NguoiDungImpl1 implements NguoiDungService1 {
         message.setSubject(subject);
         message.setText(mailType);
         message.setText(mailContent);
+//        message.setText(a);
         emailSender.send(message);
     }
 

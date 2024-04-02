@@ -102,17 +102,6 @@
                                     <div class="container">
                                         <form th:method="post" th:object="${nd}" th:action="@{/updateNhanVien/{id}(id=${nd.id})}">
                                             <div class="d-flex">
-                                                <p>Tài khoản:
-                                                    <input placeholder="Tài khoản" class="form-control"  th:field="*{taikhoan}" th:errorClass="is-invalid"
-                                                           style="width: 500px">
-                                                    <span th:if="${#fields.hasErrors('taikhoan')}" th:errors="*{taikhoan}">er</span>
-                                                </p>
-                                                <span th:text="${taikhoanErr}"></span>
-                                                <p>
-                                                    <button class="btn btn-danger" style="margin-left: 100px">Quét QR</button>
-                                                </p>
-                                            </div>
-                                            <div class="d-flex">
                                                 <p>Tên nhân viên:
                                                     <input placeholder="Tên nhân viên" class="form-control"  th:field="*{hovaten}"
                                                            style="width: 500px">
@@ -176,12 +165,6 @@
                                                         <input th:field="*{tenduong}" placeholder="Tên Đường" class="form-control"
                                                                style="width: 500px"></p>
                                                     <p th:text="${tenDuongErr}"></p>
-                                                </div>
-                                                <div class="d-flex">
-                                                    <p>Số Đường:
-                                                        <input th:field="*{soduong}" placeholder="Số Đường" class="form-control"
-                                                               style="width: 500px"></p>
-                                                    <p th:text="${soDuongErr}"></p>
                                                 </div>
                                             </div>
                                             <button class="btn btn-primary" >Cập nhật nhân viên</button>

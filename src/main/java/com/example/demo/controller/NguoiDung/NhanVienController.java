@@ -83,7 +83,8 @@ public class NhanVienController {
         String to = n.getEmail();
         String subject = "Chúc mừng đã trở thành nhân viên của T&T shop";
         String mailType = "";
-        String mailContent = "Mật khẩu của bạn là: " + n.getMatkhau();
+        String mailContent = "Tài khoản của bạn là: " + n.getTaikhoan() +"\nMật khẩu của bạn là: "+ n.getMatkhau();
+//        String a = "Mật khẩu của bạn là: " + n.getMatkhau();
         nguoiDung.sendEmail(to, subject, mailType, mailContent);
         return "redirect:/admin/qlnhanvien";
     }
