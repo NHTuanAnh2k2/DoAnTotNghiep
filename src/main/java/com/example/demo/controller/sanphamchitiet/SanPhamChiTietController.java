@@ -3,13 +3,20 @@ package com.example.demo.controller.sanphamchitiet;
 import com.example.demo.entity.*;
 import com.example.demo.repository.SanPhamChiTietRepository;
 import com.example.demo.service.impl.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -42,20 +49,15 @@ public class SanPhamChiTietController {
     @GetMapping("/deleteCTSP/{id}")
     public String deleteCTSP(@PathVariable Integer id, Model model) {
         sanPhamChiTietImp.deleteSPCT(id);
-        SanPham sanPham = new SanPham();
-        List<SanPhamChiTiet> sanPhamChiTiets = sanPhamChiTietRepository.findBySanPhamId(sanPham.getId());
+        // Cập nhật lại danh sách sản phẩm chi tiết
+        List<SanPhamChiTiet> sanPhamChiTiets = sanPhamChiTietRepository.findAll();
         model.addAttribute("sanphamchitiet", sanPhamChiTiets);
-        return "forward:/viewaddSP";
+        return "redirect:/viewaddSP"; // Chuyển hướng đến trang hiển thị danh sách sản phẩm chi tiết
     }
 
 
     @GetMapping("/updateCTSP/{id}")
-    public String viewupdateCTSP(@PathVariable Integer id, Model model, @RequestParam(defaultValue = "0") int p, @ModelAttribute("thuonghieu") ThuongHieu thuongHieu,
-                                 @ModelAttribute("chatlieu") ChatLieu chatLieu,
-                                 @ModelAttribute("kichco") KichCo kichCo,
-                                 @ModelAttribute("degiay") DeGiay deGiay,
-                                 @ModelAttribute("mausac") MauSac mauSac
-    ) {
+    public String viewupdateCTSP(@PathVariable Integer id, Model model) {
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<SanPhamChiTiet> listSPCT = sanPhamChiTietImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
@@ -72,18 +74,29 @@ public class SanPhamChiTietController {
         model.addAttribute("dg", listDeGiay);
         model.addAttribute("cl", listChatLieu);
         model.addAttribute("a", listAnh);
-        Pageable pageable = PageRequest.of(p, 20);
-        Page<SanPhamChiTiet> page = sanPhamChiTietImp.finAllPage(pageable);
-        model.addAttribute("page", page);
         model.addAttribute("hehe", sanPhamChiTietImp.findById(id));
         return "admin/detailCTSP";
     }
 
     @PostMapping("/updateCTSP/{id}")
-    public String updateCTSP(@PathVariable Integer id,@ModelAttribute("hehe") SanPhamChiTiet sanPhamChiTiet) {
-       sanPhamChiTiet.setId(id);
-       sanPhamChiTietImp.addSPCT(sanPhamChiTiet);
+    public String updateCTSP(@PathVariable Integer id, @ModelAttribute("hehe") SanPhamChiTiet sanPhamChiTiet) {
+        sanPhamChiTiet.setId(id);
+        sanPhamChiTietImp.addSPCT(sanPhamChiTiet);
         return "redirect:/admin/qlchitietsanpham";
+    }
+    @Transactional
+    @PostMapping("/hehe/hihi")
+    public String updateSanPhamChiTiet(@RequestParam("idSanPham") Integer idSanPham,
+                                       @RequestParam("soLuong") List<Integer> soLuongList,
+                                       @RequestParam("giaTien") List<BigDecimal> giaTienList,
+                                       RedirectAttributes redirectAttributes) {
+        for (int i = 0; i < soLuongList.size(); i++) {
+            Integer soLuong = soLuongList.get(i);
+            BigDecimal giaTien = giaTienList.get(i);
+            sanPhamChiTietRepository.updateByIdSanPham(idSanPham, soLuong, giaTien);
+        }
+        redirectAttributes.addFlashAttribute("message", "Cập nhật thành công");
+        return "forward:/viewaddSP";
     }
 
 }
