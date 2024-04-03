@@ -14,7 +14,7 @@ import java.sql.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class HoaDonCustom {
-    @NotBlank(message = "Vui lòng không để trống!!")
+    @NotBlank
     String key;
     Date tu;
     Date den;

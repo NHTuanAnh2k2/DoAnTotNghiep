@@ -23,5 +23,7 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Integer> {
 
     Page<HoaDon> findAllByTrangthaiAndNgaytaoGreaterThanEqualAndNgaytaoLessThanEqual(Integer trangThai, Date tu, Date den, Pageable p);
     Page<HoaDon> findAllByTrangthaiAndLoaihoadon(Integer trangThai, Boolean loaihd, Pageable p);
+    Page<HoaDon> findAllByNgaytaoGreaterThanEqualAndNgaytaoLessThanEqual(Date tu, Date den, Pageable p);
+
 
 }
