@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <nav th:replace="~{/layoutadmin/head.html}"></nav>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
     <!-- Navbar -->
@@ -50,24 +53,20 @@
                                     Bộ lọc
                                 </h3>
                                 <br>
-                                <h3 class="card-title" style="margin-left: 20px">Mã khuyến mại:
+                                <h3 class="card-title" style="margin-left: 20px">Tên hoặc mã giảm giá:
+                                    <input placeholder="Tên hoặc mã giảm giá" class="form-control">
+                                </h3>
+                                <h3 class="card-title" style="margin-left: 20px">Loại phiếu giảm giá:
                                     <select class="form-control">
-                                        <option>ABC</option>
-                                        <option>ABC</option>
-                                        <option>ABC</option>
+                                        <option>Giảm theo %</option>
+                                        <option>Giảm theo số tiền</option>
                                     </select>
-                                </h3>
-                                <h3 class="card-title" style="margin-left: 20px">Số lượng tồn:
-                                  <input placeholder="Số lượng tồn" class="form-control">
-                                </h3>
-                                <h3 class="card-title" style="margin-left: 20px">Giá trị giảm:
-                                    <input placeholder="Giá trị giảm" class="form-control">
                                 </h3>
                                 <h3 class="card-title" style="margin-left: 20px">Trạng thái:
                                     <select class="form-control">
-                                        <option>ABC</option>
-                                        <option>ABC</option>
-                                        <option>ABC</option>
+                                        <option>Chưa kích hoạt</option>
+                                        <option>Đang kích hoạt</option>
+                                        <option>Ngừng kích hoạt</option>
                                     </select>
                                 </h3>
                                 <h3 class="card-title" style="margin-left: 20px">Từ ngày:
@@ -110,104 +109,214 @@
                                     </svg>
                                     Danh sách phiếu giảm giá
                                 </h3>
-                                <a data-bs-toggle="modal" data-bs-target="#addphieugiamgia" class="card-title btn btn-primary" style="margin-left: 850px">Thêm</a>
-
-                                <!-- Modal -->
-                                <div class="modal fade" id="addphieugiamgia" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" >Thêm phiếu giảm giá</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>Tên phiếu giảm giá:
-                                                <input class="form-control" placeholder="Tên phiếu giảm giá">
-                                                </p>
-                                                <p>Giá trị giảm:
-                                                    <input class="form-control" type="number" placeholder="Giá trị giảm">
-                                                </p>
-                                                <p>Đơn tối thiểu:
-                                                    <input class="form-control" type="number" placeholder="Đơn tối thiểu" >
-                                                </p>
-                                                <p>Số lượng:
-                                                    <input class="form-control" type="number" placeholder="Số lượng">
-                                                </p>
-                                                <p>Ngày bắt đầu:
-                                                    <input class="form-control" type="datetime-local">
-                                                </p>
-                                                <p>Ngày kết thúc:
-                                                    <input class="form-control" type="datetime-local">
-                                                </p>
-
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                                <button type="button" class="btn btn-primary">Thêm</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <a th:href="@{/admin/xem-them-phieu-giam-gia}" class="card-title btn btn-primary" style="margin-left: 800px;">+ Thêm mới</a>
                             </div>
 
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <table id="example2" class="table table-bordered table-hover text-center">
+                                <table id="example1" class="table text-center table-bordered table-hover">
                                     <thead class="table table-danger">
-                                    <tr>
-                                        <th>STT</th>
-                                        <th>Mã khuyến mại</th>
-                                        <th>Tên khuyến mại</th>
-                                        <th>Số lượng tồn</th>
-                                        <th>Giá trị giảm</th>
-                                        <th>Đơn tối thiểu</th>
-                                        <th>Ngày bắt đầu</th>
-                                        <th>Ngày kết thúc</th>
-                                        <th>Ngày cập nhập</th>
-                                        <th>Trạng thái</th>
-                                        <th>Action</th>
-                                    </tr>
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Mã</th>
+                                            <th>Tên</th>
+                                            <th>Kiểu</th>
+                                            <th>Giá trị giảm</th>
+                                            <th>Số lượng</th>
+                                            <th>Ngày bắt đầu</th>
+                                            <th>Ngày kết thúc</th>
+                                            <th>Trạng thái</th>
+                                            <th>Hành động</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>1
-                                        </td>
-                                        <td>Internet Explorer 4.0
-                                        </td>
-                                        <td>Internet Explorer 4.0
-                                        <td>Internet Explorer 4.0
-                                        <td>22/01/2023</td>
-                                        <td>25/01/2023</td>
-                                        <td>Internet Explorer 4.0</td>
-                                        <td>Internet Explorer 4.0</td>
-                                        <td>Internet Explorer 4.0</td>
-                                        <td>
-                                            <button class=" btn btn-primary btn-xs">Đang kinh doanh</button>
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-danger">delete</a>
-                                            <a th:href="@{/admin/qlchitietsanpham/sv.id}" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#detailctsp">detail</a>
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="detailctsp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">UPDATE CHI TIẾT SẢN PHẨM</h1>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">THÔNG TIN SẢN PHẨM</div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                                            <button type="button" class="btn btn-primary">Update</button>
+                                        <tr th:each="pgg,stt:${pagePGG.content}">
+                                            <td th:text="${stt.index+1}"></td>
+                                            <td th:text="${pgg.macode}"></td>
+                                            <td th:text="${pgg.tenphieu}"></td>
+                                            <td>
+                                                <div th:if="${pgg.kieuphieu}">
+                                                    <p style=" font-family: 'Times New Roman'; font-size: 12px; border-radius: 14px; background-color: deepskyblue; padding: 2px 5px 2px 5px; color: white;">Cá nhân</p>
+                                                </div>
+                                                <div th:if="${not pgg.kieuphieu}">
+                                                    <p style=" font-family: 'Times New Roman'; font-size: 12px; border-radius: 14px; background-color: plum; padding: 2px 5px 2px 5px; color: white;">Công khai</p>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div th:if="${pgg.loaiphieu}">
+                                                    <p class="align-middle" th:text="${pgg.giatrigiam}+' %'"></p>
+                                                </div>
+                                                <div th:if="${not pgg.loaiphieu}">
+                                                    <p class="align-middle" th:text="${pgg.giatrigiam}+' VND'"></p>
+                                                </div>
+                                            </td>
+                                            <td th:text="${pgg.soluong}"></td>
+                                            <td th:text="${pgg.ngaybatdau}"></td>
+                                            <td th:text="${pgg.ngayketthuc}"></td>
+                                            <td>
+                                                <div th:if="${pgg.trangthai == 0}">
+                                                    <p style=" font-family: 'Times New Roman'; font-size: 12px; border-radius: 14px; background-color: orange; padding: 2px 5px 2px 5px; color: white;">Chưa kích hoạt</p>
+                                                </div>
+                                                <div th:if="${pgg.trangthai == 1}">
+                                                    <p style=" font-family: 'Times New Roman'; font-size: 12px; border-radius: 14px; background-color: #00bb00; padding: 2px 5px 2px 5px; color: white;">Đang kích hoạt</p>
+                                                </div>
+                                                <div th:if="${ pgg.trangthai == 2}">
+                                                    <p style=" font-family: 'Times New Roman'; font-size: 12px; border-radius: 14px; background-color: crimson; padding: 2px 5px 2px 5px; color: white;">Đã ngừng</p>
+                                                </div>
+
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-warning" style="width: 35px;" th:attr="data-target='#xemChiTietModal'+${pgg.id}" data-toggle="modal">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="10" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                                                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                                    </svg>
+                                                </a>
+                                                <!-- Modal -->
+                                                <div th:each="pgg : ${pagePGG.content}" class="modal fade" th:id="'xemChiTietModal'+${pgg.id}" tabindex="-1" role="dialog">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" th:text="'Phiếu giảm giá '+${pgg.tenphieu}"></h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>Tên phiếu giảm giá:
+                                                                    <input class="form-control" type="text" th:value="${pgg.tenphieu}"/>
+                                                                </p>
+                                                                <p>Mã phiếu giảm giá:
+                                                                    <input class="form-control" type="text"  th:value="*{pgg.macode}"/>
+                                                                </p>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <p style="width: 210px;">Giá trị giảm:
+                                                                        <input class="form-control" type="number" th:value="*{pgg.giatrigiam}"/>
+                                                                    </p>
+                                                                    <p style="width: 210px;">Loại phiếu giảm giá:
+                                                                        <select class="form-control" style="color:rgb(86,158,43)" th:model="*{pgg.loaiphieu}">
+                                                                            <option value="true" style="color:rgb(86,158,43)" th:selected="*{pgg.loaiphieu == true}">Giảm theo %</option>
+                                                                            <option value="false" style="color:rgb(86,158,43)" th:selected="*{pgg.loaiphieu == false}">Giảm theo số tiền</option>
+                                                                        </select>
+                                                                    </p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <p style="width: 210px;">Giá trị hóa đơn tối thiểu:
+                                                                        <input class="form-control" type="number" th:value="*{pgg.dontoithieu}"/>
+                                                                    </p>
+                                                                    <p style="width: 210px;">Giá trị giảm tối đa:
+                                                                        <input class="form-control" type="number" th:value="*{pgg.giatrigiamtoida}"/>
+                                                                    </p>
+                                                                </div>
+                                                                <p>Số lượng:
+                                                                    <input class="form-control" type="number" th:value="*{pgg.soluong}"/>
+                                                                </p>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <p style="width: 210px;">Ngày bắt đầu:
+                                                                        <input class="form-control" th:value="*{pgg.ngaybatdau}" type="datetime-local"/>
+                                                                    </p>
+                                                                    <p style="width: 210px;">Ngày kết thúc:
+                                                                        <input class="form-control" th:value="*{pgg.ngayketthuc}" type="datetime-local"/>
+                                                                    </p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <p style="width: 210px;">Người tạo:
+                                                                        <input class="form-control" th:value="*{pgg.nguoitao}" type="text"/>
+                                                                    </p>
+                                                                    <p style="width: 210px;">Ngày tạo:
+                                                                        <input class="form-control" th:value="*{pgg.ngaytao}" type="datetime-local"/>
+                                                                    </p>
+                                                                </div>
+                                                                <p>Trạng thái:
+                                                                    <select class="form-control" style="color:rgb(86,158,43)" th:model="*{pgg.trangthai}">
+                                                                        <option value="true" style="color:rgb(86,158,43)" th:selected="*{pgg.trangthai == true}">Ngừng kích hoạt</option>
+                                                                        <option value="false" style="color:rgb(86,158,43)" th:selected="*{pgg.trangthai == false}">Đang kích hoạt</option>
+                                                                    </select>
+                                                                </p>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <p style="width: 210px;">Người cập nhật:
+                                                                        <input class="form-control" th:value="*{pgg.nguoicapnhat}" type="text"/>
+                                                                    </p>
+                                                                    <p style="width: 210px;">Lần cập nhật cuối:
+                                                                        <input class="form-control" th:value="*{pgg.lancapnhatcuoi}" type="datetime-local"/>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                                <!---->
 
+                                                <a class="btn btn-success" style="width: 35px;" th:attr="data-target='#capnhatChiTietModal'+${pgg.id}" data-toggle="modal">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="10" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+                                                        <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001"/>
+                                                    </svg>
+                                                </a>
+                                                <!-- Modal -->
+                                                <div th:each="pgg : ${pagePGG.content}" class="modal fade" th:id="'capnhatChiTietModal'+${pgg.id}" tabindex="-1" role="dialog">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" th:text="'Phiếu giảm giá '+${pgg.tenphieu}"></h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>Tên phiếu giảm giá:
+                                                                    <input class="form-control" type="text" th:value="${pgg.tenphieu}"/>
+                                                                </p>
+                                                                <p>Mã phiếu giảm giá:
+                                                                    <input class="form-control" type="text"  th:value="*{pgg.macode}"/>
+                                                                </p>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <p style="width: 210px;">Giá trị giảm:
+                                                                        <input class="form-control" type="number" th:value="*{pgg.giatrigiam}"/>
+                                                                    </p>
+                                                                    <p style="width: 210px;">Loại phiếu giảm giá:
+                                                                        <select class="form-control" style="color:rgb(86,158,43)" th:model="*{pgg.loaiphieu}">
+                                                                            <option value="true" style="color:rgb(86,158,43)" th:selected="*{pgg.loaiphieu == true}">Giảm theo %</option>
+                                                                            <option value="false" style="color:rgb(86,158,43)" th:selected="*{pgg.loaiphieu == false}">Giảm theo số tiền</option>
+                                                                        </select>
+                                                                    </p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <p style="width: 210px;">Giá trị hóa đơn tối thiểu:
+                                                                        <input class="form-control" type="number" th:value="*{pgg.dontoithieu}"/>
+                                                                    </p>
+                                                                    <p style="width: 210px;">Giá trị giảm tối đa:
+                                                                        <input class="form-control" type="number" th:value="*{pgg.giatrigiamtoida}"/>
+                                                                    </p>
+                                                                </div>
+                                                                <p>Số lượng:
+                                                                    <input class="form-control" type="number" th:value="*{pgg.soluong}"/>
+                                                                </p>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <p style="width: 210px;">Ngày bắt đầu:
+                                                                        <input class="form-control" th:value="*{pgg.ngaybatdau}" type="datetime-local"/>
+                                                                    </p>
+                                                                    <p style="width: 210px;">Ngày kết thúc:
+                                                                        <input class="form-control" th:value="*{pgg.ngayketthuc}" type="datetime-local"/>
+                                                                    </p>
+                                                                </div>
+                                                                <p>Trạng thái:
+                                                                    <select class="form-control" style="color:rgb(86,158,43)" th:model="*{pgg.trangthai}">
+                                                                        <option value="true" style="color:rgb(86,158,43)" th:selected="*{pgg.trangthai == true}">Ngừng kích hoạt</option>
+                                                                        <option value="false" style="color:rgb(86,158,43)" th:selected="*{pgg.trangthai == false}">Đang kích hoạt</option>
+                                                                    </select>
+                                                                </p>
+                                                                <div class="d-flex justify-content-end align-items-center ">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                                    <button type="submit" class="btn btn-primary" style="margin-left: 20px;">Cập nhật</button>
+                                                                </div>
+                                                            </div>
 
-                                    </tfoot>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
                                 </table>
                             </div>
                             <!-- /.card-body -->
@@ -227,8 +336,32 @@
     <!--end-->
     <nav th:replace="~{/layoutadmin/footer.html}"></nav>
 </div>
+
+<!--end-->
+
+<script>
+    var table = document.getElementById("example1");
+    for (var i = 1; i < table.rows.length; i++) {
+        var datetime1 = table.rows[i].cells[6].innerHTML;
+        var formattedDateTime1 = formatDateTime(datetime1);
+
+        var datetime2 = table.rows[i].cells[7].innerHTML;
+        var formattedDateTime2 = formatDateTime(datetime2);
+
+        table.rows[i].cells[6].innerHTML = formattedDateTime1;
+        table.rows[i].cells[7].innerHTML = formattedDateTime2;
+    }
+    function formatDateTime(datetimeString) {
+        var date = new Date(datetimeString);
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+        var hours = date.getHours().toString().padStart(2, '0');
+        var minutes = date.getMinutes().toString().padStart(2, '0');
+        return `${day}/${month}/${year} ${hours}:${minutes}`;
+    }
+</script>
 <!--script-->
 <nav th:replace="~{/layoutadmin/script.html}"></nav>
-<!--end-->
 </body>
 </html>
