@@ -91,7 +91,7 @@ public class hoaDonController {
                 if (hdSaveInfoSeachr.getTu().compareTo(hdSaveInfoSeachr.getDen()) >= 0) {
                     Page<HoaDon> fixErr = dao.findAll(p);
                     model.addAttribute("lst", fixErr);
-                    model.addAttribute("hdcustom",hdSaveInfoSeachr);
+                    model.addAttribute("hdcustom", hdSaveInfoSeachr);
                     model.addAttribute("pageNo", page);
                     model.addAttribute("errdate", 1);
                     model.addAttribute("tt0", dao.tinhTong(0));
@@ -112,25 +112,25 @@ public class hoaDonController {
                     && !hdSaveInfoSeachr.getKey().equalsIgnoreCase("null")
                     && !hdSaveInfoSeachr.getTu().equalsIgnoreCase("null")
                     && !hdSaveInfoSeachr.getDen().equalsIgnoreCase("null")) {
-                if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("chờ xác nhận")) {
+                if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("chờ xác nhận")) {
                     trangThai = 0;
                 } else {
-                    if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đã xác nhận")) {
+                    if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("đã xác nhận")) {
                         trangThai = 1;
                     } else {
-                        if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("chờ giao hàng")) {
+                        if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("chờ giao hàng")) {
                             trangThai = 2;
                         } else {
-                            if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đang giao hàng")) {
+                            if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("đang giao hàng")) {
                                 trangThai = 3;
                             } else {
-                                if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đã thanh toán")) {
+                                if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("đã thanh toán")) {
                                     trangThai = 4;
                                 } else {
-                                    if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đã hoàn thành")) {
+                                    if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("đã hoàn thành")) {
                                         trangThai = 5;
                                     } else {
-                                        if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đã hủy")) {
+                                        if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("đã hủy")) {
                                             trangThai = 6;
                                         }
                                     }
@@ -143,7 +143,7 @@ public class hoaDonController {
                 if (hdSaveInfoSeachr.getTu().compareTo(hdSaveInfoSeachr.getDen()) >= 0) {
                     Page<HoaDon> fixErr = dao.findAll(p);
                     model.addAttribute("lst", fixErr);
-                    model.addAttribute("hdcustom",hdSaveInfoSeachr);
+                    model.addAttribute("hdcustom", hdSaveInfoSeachr);
                     model.addAttribute("pageNo", page);
                     model.addAttribute("errdate", 1);
                     model.addAttribute("tt0", dao.tinhTong(0));
@@ -165,25 +165,25 @@ public class hoaDonController {
                     || hdSaveInfoSeachr.getDen().equalsIgnoreCase("null")) {
                 if (!hdSaveInfoSeachr.getKey().equalsIgnoreCase("null")
                         && !hdSaveInfoSeachr.getLoaiHD().equalsIgnoreCase("null")) {
-                    if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("chờ xác nhận")) {
+                    if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("chờ xác nhận")) {
                         trangThai = 0;
                     } else {
-                        if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đã xác nhận")) {
+                        if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("đã xác nhận")) {
                             trangThai = 1;
                         } else {
-                            if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("chờ giao hàng")) {
+                            if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("chờ giao hàng")) {
                                 trangThai = 2;
                             } else {
-                                if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đang giao hàng")) {
+                                if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("đang giao hàng")) {
                                     trangThai = 3;
                                 } else {
-                                    if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đã thanh toán")) {
+                                    if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("đã thanh toán")) {
                                         trangThai = 4;
                                     } else {
-                                        if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đã hoàn thành")) {
+                                        if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("đã hoàn thành")) {
                                             trangThai = 5;
                                         } else {
-                                            if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đã hủy")) {
+                                            if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("đã hủy")) {
                                                 trangThai = 6;
                                             }
                                         }
@@ -207,16 +207,31 @@ public class hoaDonController {
                     && hdSaveInfoSeachr.getLoaiHD().equalsIgnoreCase("null")
                     && !hdSaveInfoSeachr.getTu().equalsIgnoreCase("null")
                     && !hdSaveInfoSeachr.getDen().equalsIgnoreCase("null")) {
-                System.out.println("key and loai hd null");
-                return "redirect:/hoa-don/hien-thi";
+
+                if (hdSaveInfoSeachr.getTu().compareTo(hdSaveInfoSeachr.getDen()) >= 0) {
+                    Page<HoaDon> fixErr = dao.findAll(p);
+                    model.addAttribute("lst", fixErr);
+                    model.addAttribute("hdcustom", hdSaveInfoSeachr);
+                    model.addAttribute("pageNo", page);
+                    model.addAttribute("errdate", 1);
+                    model.addAttribute("tt0", dao.tinhTong(0));
+                    model.addAttribute("tt1", dao.tinhTong(1));
+                    model.addAttribute("tt2", dao.tinhTong(2));
+                    model.addAttribute("tt3", dao.tinhTong(3));
+                    model.addAttribute("tt4", dao.tinhTong(4));
+                    model.addAttribute("tt5", dao.tinhTong(5));
+                    model.addAttribute("tt6", dao.tinhTong(6));
+                    model.addAttribute("tt7", dao.findAll(p).getTotalElements());
+                    return "admin/qlhoadon";
+                }
+                lst = dao.LocTheoKhoangNgay(Date.valueOf(hdSaveInfoSeachr.getTu()), Date.valueOf(hdSaveInfoSeachr.getDen()), p);
             }
             //case key and (tu or den null)
             if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("null")
                     && !hdSaveInfoSeachr.getLoaiHD().equalsIgnoreCase("null")
                     && hdSaveInfoSeachr.getTu().equalsIgnoreCase("null")
                     && hdSaveInfoSeachr.getDen().equalsIgnoreCase("null")) {
-                System.out.println("key end tu or den null");
-                return "redirect:/hoa-don/hien-thi";
+                lst = dao.LocTheoLoaiDon(Boolean.valueOf(hdSaveInfoSeachr.getLoaiHD()), p);
             }
 
             //case loaihd and (tu or den null)
@@ -224,32 +239,59 @@ public class hoaDonController {
                     && hdSaveInfoSeachr.getLoaiHD().equalsIgnoreCase("null")
                     && hdSaveInfoSeachr.getTu().equalsIgnoreCase("null")
                     && hdSaveInfoSeachr.getDen().equalsIgnoreCase("null")) {
-                System.out.println("loaihd end tu or den null");
-                return "redirect:/hoa-don/hien-thi";
+                if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("chờ xác nhận")) {
+                    trangThai = 0;
+                } else {
+                    if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("đã xác nhận")) {
+                        trangThai = 1;
+                    } else {
+                        if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("chờ giao hàng")) {
+                            trangThai = 2;
+                        } else {
+                            if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("đang giao hàng")) {
+                                trangThai = 3;
+                            } else {
+                                if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("đã thanh toán")) {
+                                    trangThai = 4;
+                                } else {
+                                    if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("đã hoàn thành")) {
+                                        trangThai = 5;
+                                    } else {
+                                        if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("đã hủy")) {
+                                            trangThai = 6;
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }
+                lst = dao.timKiemTT(trangThai, p);
             }
 
             // end các case tìm kiếm 2 th null
 
         } else {
-            if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("chờ xác nhận")) {
+            if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("chờ xác nhận")) {
                 trangThai = 0;
             } else {
-                if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đã xác nhận")) {
+                if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("đã xác nhận")) {
                     trangThai = 1;
                 } else {
-                    if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("chờ giao hàng")) {
+                    if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("chờ giao hàng")) {
                         trangThai = 2;
                     } else {
-                        if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đang giao hàng")) {
+                        if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("đang giao hàng")) {
                             trangThai = 3;
                         } else {
-                            if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đã thanh toán")) {
+                            if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("đã thanh toán")) {
                                 trangThai = 4;
                             } else {
-                                if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đã hoàn thành")) {
+                                if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("đã hoàn thành")) {
                                     trangThai = 5;
                                 } else {
-                                    if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đã hủy")) {
+                                    if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("đã hủy")) {
                                         trangThai = 6;
                                     }
                                 }
@@ -262,7 +304,7 @@ public class hoaDonController {
             if (hdSaveInfoSeachr.getTu().compareTo(hdSaveInfoSeachr.getDen()) >= 0) {
                 Page<HoaDon> fixErr = dao.findAll(p);
                 model.addAttribute("lst", fixErr);
-                model.addAttribute("hdcustom",hdSaveInfoSeachr);
+                model.addAttribute("hdcustom", hdSaveInfoSeachr);
                 model.addAttribute("pageNo", page);
                 model.addAttribute("errdate", 1);
                 model.addAttribute("tt0", dao.tinhTong(0));
@@ -280,7 +322,7 @@ public class hoaDonController {
                     Date.valueOf(hdSaveInfoSeachr.getDen()), p);
         }
         model.addAttribute("lst", lst);
-        model.addAttribute("hdcustom",hdSaveInfoSeachr);
+        model.addAttribute("hdcustom", hdSaveInfoSeachr);
         model.addAttribute("pageNo", page);
         //hiển thị số hd theo tt
         model.addAttribute("tt0", dao.tinhTong(0));
