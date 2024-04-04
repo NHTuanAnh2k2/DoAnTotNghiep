@@ -102,10 +102,19 @@
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <section class="content">
-                                    <div class="container">
-                                        <div>
-                                            <video id="preview" width="40%"></video>
-                                            <button onclick="scan()">Scan</button>
+                                    <div class="container" >
+                                        <button id="openCamera"  class="btn btn-primary">Open Camera</button>
+                                        <div class="modal"  id="cameraModal" th:width="200px" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button class="close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <video id="cameraStream" autoplay width="100%"></video>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <form th:method="post" th:object="${nd}" th:action="@{/addnv}">
                                         <div class="d-flex">
@@ -359,12 +368,16 @@
         return decodedText;
     }
     function scan() {
-        let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+        let scanner = new Instascan.Scanner({ video: document.getElementById('cameraStream') });
+        // var modal = document.getElementById('staticBackdrop');
+        // var o = document.getElementById('op');
         scanner.addListener('scan', function (content) {
             let info = content.split("|");
             document.getElementById('citizenID').value = info[0];
-            document.getElementById('name').innerText = info[2];
+            // document.getElementById('name').innerText = info[2];
             scanner.stop();
+            // modal.style.display = 'none';
+            // o.disabled = false;
         });
         Instascan.Camera.getCameras().then(function (cameras) {
             if (cameras.length > 0) {
@@ -378,6 +391,59 @@
     }
     scanAndFillForm();
 </script>
+<!--<script src="https://cdn.jsdelivr.net/npm/quagga"></script>-->
+<!--<script>-->
+<!--    // Lấy phần tử modal và nút mở modal-->
+<!--    var cameraModal = document.getElementById('cameraModal');-->
+<!--    var openCameraButton = document.getElementById('openCamera');-->
+<!--    var closeButton = document.getElementsByClassName('close')[0];-->
+
+<!--    // Khi người dùng nhấp vào nút mở modal, hiển thị modal và mở camera-->
+<!--    openCameraButton.addEventListener('click', function() {-->
+<!--        // Hiển thị modal-->
+<!--        cameraModal.style.display = 'block';-->
+<!--        // Truy cập vào camera và hiển thị luồng video trong modal-->
+<!--        navigator.mediaDevices.getUserMedia({ video: true })-->
+<!--            .then(function(stream) {-->
+<!--                var videoElement = document.getElementById('cameraStream');-->
+<!--                videoElement.srcObject = stream;-->
+<!--                videoElement.play();-->
+<!--                let info = stream.split("|");-->
+<!--                document.getElementById('citizenID').value = info[0];-->
+<!--                // document.getElementById('name').innerText = info[2];-->
+<!--                videoElement.stop();-->
+<!--            })-->
+<!--            .catch(function(error) {-->
+<!--                console.error('Lỗi khi truy cập camera: ' + error);-->
+<!--            });-->
+<!--    });-->
+
+<!--    // Khi người dùng nhấp vào nút đóng modal, đóng modal và dừng luồng video-->
+<!--    closeButton.addEventListener('click', function() {-->
+<!--        cameraModal.style.display = 'none';-->
+<!--        var videoElement = document.getElementById('cameraStream');-->
+<!--        var stream = videoElement.srcObject;-->
+<!--        var tracks = stream.getTracks();-->
+
+<!--        tracks.forEach(function(track) {-->
+<!--            track.stop();-->
+<!--        });-->
+<!--    });-->
+
+<!--    // Khi người dùng nhấp vào bất kỳ vị trí nào bên ngoài modal, đóng modal-->
+<!--    window.addEventListener('click', function(event) {-->
+<!--        if (event.target == cameraModal) {-->
+<!--            cameraModal.style.display = 'none';-->
+<!--            var videoElement = document.getElementById('cameraStream');-->
+<!--            var stream = videoElement.srcObject;-->
+<!--            var tracks = stream.getTracks();-->
+
+<!--            tracks.forEach(function(track) {-->
+<!--                track.stop();-->
+<!--            });-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
 <!--end-->
 </body>
 </html>
