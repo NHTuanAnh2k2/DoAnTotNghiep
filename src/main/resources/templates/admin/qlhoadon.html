@@ -121,7 +121,7 @@
                                                     <label class="col-form-label">Ngày bắt đầu</label>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <input type="date" class="form-control" th:field="*{tu}" th:value="${null}">
+                                                    <input type="date" class="form-control" th:field="*{tu}" value="">
                                                     <i th:if="${errdate==1}" class="text-danger">Ngày bắt đầu không lớn
                                                         hơn ngày kết thúc!!</i>
                                                 </div>
@@ -131,7 +131,7 @@
                                                     <label class="col-form-label">Ngày kết thúc</label>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <input type="date" class="form-control" th:field="*{den}">
+                                                    <input type="date" class="form-control" th:field="*{den}" value="">
                                                 </div>
                                             </div>
                                         </div>
