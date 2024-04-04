@@ -70,7 +70,7 @@ public class SanPhamController {
     @Autowired
     HttpServletRequest request;
 
-    //Hiển thị list sản phẩm
+    /////Hiển thị list sản phẩm
     @GetMapping("/listsanpham")
     public String hienthi(@RequestParam(defaultValue = "0") int p, @ModelAttribute("tim") SanPhamInfo info, Model model) {
         Pageable pageable = PageRequest.of(p, 20);
