@@ -60,4 +60,9 @@ public class HoaDonImp implements HoaDonService {
     public Page<HoaDon> LocTheoKhoangNgay(Date tu, Date den, Pageable p) {
         return dao.findAllByNgaytaoGreaterThanEqualAndNgaytaoLessThanEqual(tu,den,p);
     }
+
+    @Override
+    public Page<HoaDon> LocTheoLoaiDon(Boolean loaihd, Pageable p) {
+        return dao.findAllByLoaihoadon(loaihd,p);
+    }
 }
