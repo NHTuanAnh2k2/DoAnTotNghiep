@@ -11,4 +11,5 @@ public interface PhieuGiamGiaService {
     Page<PhieuGiamGia> findAll(Pageable pageable);
     PhieuGiamGia AddPhieuGiamGia(PhieuGiamGia phieuGiamGia);
     Optional<PhieuGiamGia> findPhieuGiamGiaById(Integer Id);
+    PhieuGiamGia findFirstByOrderByNgaytaoDesc();
 }

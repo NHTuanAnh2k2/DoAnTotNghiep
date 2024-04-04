@@ -27,7 +27,32 @@ public class HoaDonImp implements HoaDonService {
     }
 
     @Override
-    public Page<HoaDon> timKiemTT(Integer trangThai,Pageable p) {
-        return  dao.findAllByTrangthai(trangThai,p);
+    public Page<HoaDon> timKiemTT(Integer trangThai, Pageable p) {
+        return dao.findAllByTrangthai(trangThai, p);
+    }
+
+    @Override
+    public Long tinhTong(Integer tt) {
+        return dao.countAllByTrangthai(tt);
+    }
+
+    @Override
+    public List<HoaDon> timall() {
+        return dao.findAll();
+    }
+
+    @Override
+    public Page<HoaDon> LockTT(Boolean loaihd, Date tu, Date den, Pageable p) {
+        return dao.findAllByLoaihoadonAndNgaytaoGreaterThanEqualAndNgaytaoLessThanEqual(loaihd,tu,den,p);
+    }
+
+    @Override
+    public Page<HoaDon> LocKLHD(Integer trangThai, Date tu, Date den, Pageable p) {
+        return dao.findAllByTrangthaiAndNgaytaoGreaterThanEqualAndNgaytaoLessThanEqual(trangThai,tu,den,p);
+    }
+
+    @Override
+    public Page<HoaDon> LocKngayTao(Integer trangThai, Boolean loaihd, Pageable p) {
+        return dao.findAllByTrangthaiAndLoaihoadon(trangThai,loaihd,p);
     }
 }

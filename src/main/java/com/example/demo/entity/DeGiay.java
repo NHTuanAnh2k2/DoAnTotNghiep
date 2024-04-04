@@ -28,9 +28,9 @@ public class DeGiay {
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date lancapnhatcuoi;
-    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    Date ngaytao;
+    @Temporal(TemporalType.TIMESTAMP) // Sử dụng TemporalType.TIMESTAMP thay vì TemporalType.DATE
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") // Định dạng cho ngày giờ
+    private Date ngaytao;
 //    @NotNull(message = "Trạng thái không được để trống")
     Boolean trangthai;
 

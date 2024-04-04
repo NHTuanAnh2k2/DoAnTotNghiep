@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <nav th:replace="~{/layoutadmin/head.html}"></nav>
+<style>
+
+    .btn-custom-warning {
+        background-color: rgb(221, 100, 0);
+        color: #fff;
+        border-color: rgb(60, 179, 113);
+    }
+
+    .btn-custom-info {
+        background-color: rgb(86, 100, 234);
+        color: #fff;
+        border-color: rgb(60, 179, 113);
+    }
+</style>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
     <!-- Navbar -->
@@ -53,14 +67,14 @@
                                 <br>
                                 <form th:method="get" th:action="@{/chatlieu/timkiem}" th:object="${chatlieu}">
                                     <h3 class="card-title">Tìm kiếm:
-                                        <input type="text" placeholder="Tìm kiếm chất liệu" th:name="tensearch"
+                                        <input type="text" id="searchInput" placeholder="Tìm kiếm chất liệu" th:name="tensearch"
                                                class="form-control">
                                     </h3>
                                     <h3 class="card-title" style="margin-left: 20px">Trạng thái:
-                                        <select class="form-control" th:name="trangthaisearch">
-                                            <option></option>
-                                            <option th:value="true ? 1 : 0">Đang kinh doanh</option>
-                                            <option th:value="true ? 0 : 1">Ngừng kinh doanh</option>
+                                        <select class="form-control" id="statusSelect" name="trangthai" style="color:rgb(86,158,43)">
+                                            <option value="">-----</option>
+                                            <option value="1" style="color:rgb(86,158,43)">Đang kinh doanh</option>
+                                            <option value="0" style="color:rgb(86,158,43)">Ngừng kinh doanh</option>
                                         </select>
                                     </h3>
 
@@ -68,7 +82,7 @@
                                     <br>
                                     <br>
                                     <button style="margin-left: 100px" class="btn btn-primary">Tìm kiếm</button>
-                                    <button class="btn btn-danger">Làm mới bộ lọc</button>
+                                    <input type="button" class="btn btn-danger" value="Làm mới bộ lọc" onclick="clearSearch()" />
                                 </form>
                             </div>
 
@@ -127,15 +141,10 @@
                                                         <option th:value="0">Ngừng kinh doanh</option>
                                                     </select>
                                                 </p>
-                                                <button class="btn">Thêm</button>
+                                                <button class="btn btn-primary">Thêm</button>
                                             </form>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                Hủy
-                                            </button>
-                                            <button type="button" class="btn btn-primary">Thêm</button>
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -155,26 +164,22 @@
                                     </thead>
                                     <tbody>
                                     <tr th:each="cl,stt:${lstChatLieu}">
-                                        <td th:text="${cl.id}"></td>
+                                        <td th:text="${stt.index+1}"></td>
                                         <td th:text="${cl.ten}"></td>
                                         <td th:text="${cl.ngaytao}"></td>
                                         <td th:text="${cl.nguoitao}"></td>
                                         <td>
-                                            <button class="btn btn-primary btn-xs"
-                                                    th:text="${cl.trangthai? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>
+                                            <button style="border-radius: 50px"
+                                                    class="btn btn-xs custom-button no-border-button"
+                                                    th:classappend="${cl.trangthai ? 'btn-custom-info' : 'btn-custom-warning'}"
+                                                    th:text="${cl.trangthai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>
                                         </td>
                                         <td>
-                                            <a class="btn btn-danger">
+                                            <a class="btn btn-outline-danger">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                      fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
                                                     <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
-                                                </svg>
-                                            </a>
-                                            <a th:href="@{/chatlieu/delete/{id}(id=${cl.id})}" class="btn btn-warning">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                     fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
-                                                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001"/>
                                                 </svg>
                                             </a>
                                         </td>
@@ -201,5 +206,11 @@
 <!--script-->
 <nav th:replace="~{/layoutadmin/script.html}"></nav>
 <!--end-->
+<script>
+    function clearSearch() {
+        document.getElementById("searchInput").value = "";
+        document.getElementById("statusSelect").selectedIndex = 0;
+    }
+</script>
 </body>
 </html>

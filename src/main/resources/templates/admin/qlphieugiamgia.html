@@ -109,70 +109,12 @@
                                     </svg>
                                     Danh sách phiếu giảm giá
                                 </h3>
-                                <a th:href="@{/admin/xem-them-phieu-giam-gia}" class="card-title btn btn-primary" style="margin-left: 850px">+ Thêm mới</a>
-                                <!--data-bs-toggle="modal" data-bs-target="#addphieugiamgia"-->
-                                <!-- Modal -->
-                                <div class="modal fade" id="addphieugiamgia" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel1">Thêm phiếu giảm giá</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form th:action="@{/admin/them-phieu-giam-gia}" th:object="${phieuGiamGia}" method="post">
-                                                    <p>Tên phiếu giảm giá:
-                                                        <input class="form-control" type="text" th:field="*{tenphieu}" placeholder="Tên phiếu giảm giá" />
-                                                    </p>
-                                                    <p>Mã phiếu giảm giá:
-                                                        <input class="form-control" type="text" th:field="*{macode}" placeholder="Mã phiếu giảm giá"/>
-                                                    </p>
-                                                    <div class="d-flex justify-content-between">
-                                                        <p style="width: 210px;">Giá trị giảm:
-                                                            <input class="form-control" type="number" th:field="*{giatrigiam}" placeholder="Giá trị giảm" />
-                                                        </p>
-                                                        <p style="width: 210px;">Loại phiếu giảm giá:
-                                                            <select class="form-control" th:field="*{loaiphieu}" style="color:rgb(86,158,43)">
-                                                                <option value="true" style="color:rgb(86,158,43)" selected>Giảm theo %</option>
-                                                                <option value="false" style="color:rgb(86,158,43)">Giảm theo số tiền</option>
-                                                            </select>
-                                                        </p>
-                                                    </div>
-                                                    <div class="d-flex justify-content-between">
-                                                        <p style="width: 210px;">Giá trị hóa đơn tối thiểu:
-                                                            <input class="form-control" type="number" th:field="*{dontoithieu}" placeholder="Đơn tối thiểu" />
-                                                        </p>
-                                                        <p style="width: 210px;">Giá trị giảm tối đa:
-                                                            <input class="form-control" type="number" th:field="*{giatrigiamtoida}" placeholder="Giá trị giảm tối đa" />
-                                                        </p>
-                                                    </div>
-                                                    <p>Số lượng:
-                                                        <input class="form-control" type="number" th:field="*{soluong}" placeholder="Số lượng" />
-                                                    </p>
-                                                    <div class="d-flex justify-content-between">
-                                                        <p style="width: 210px;">Ngày bắt đầu:
-                                                            <input class="form-control" name="ngayBatDau" type="datetime-local"/>
-                                                        </p>
-                                                        <p style="width: 210px;">Ngày kết thúc:
-                                                            <input class="form-control" name="ngayKetThuc" type="datetime-local"/>
-                                                        </p>
-                                                    </div>
-
-                                                    <div class="d-flex justify-content-end align-items-center ">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                                        <button type="submit" class="btn btn-primary" style="margin-left: 20px;">Thêm</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
+                                <a th:href="@{/admin/xem-them-phieu-giam-gia}" class="card-title btn btn-primary" style="margin-left: 800px;">+ Thêm mới</a>
                             </div>
 
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <table id="myTable0" class="table text-center table-bordered table-hover">
+                                <table id="example1" class="table text-center table-bordered table-hover">
                                     <thead class="table table-danger">
                                         <tr>
                                             <th>STT</th>
@@ -398,7 +340,7 @@
 <!--end-->
 
 <script>
-    var table = document.getElementById("myTable0");
+    var table = document.getElementById("example1");
     for (var i = 1; i < table.rows.length; i++) {
         var datetime1 = table.rows[i].cells[6].innerHTML;
         var formattedDateTime1 = formatDateTime(datetime1);

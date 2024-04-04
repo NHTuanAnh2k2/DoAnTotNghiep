@@ -24,18 +24,6 @@ public class DeGiayImp implements DeGiayService {
 
     @Override
     public DeGiay add(DeGiay deGiay) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        try {
-            Date ngayTao = dateFormat.parse("21-12-2022");
-            deGiay.setNgaytao(ngayTao);
-            deGiay.setLancapnhatcuoi(ngayTao);
-        } catch (ParseException e) {
-            // Xử lý ngoại lệ nếu không thể chuyển đổi chuỗi thành ngày
-            e.printStackTrace();
-        }
-        deGiay.setNguoitao("duy");
-        deGiay.setNguoicapnhat("tùng");
-        deGiay.setTrangthai(true);
         return deGiayRepository.save(deGiay);
     }
 

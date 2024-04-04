@@ -45,7 +45,7 @@ public class ThuongHieuImp implements ThuongHieuService {
     }
 
     @Override
-    public Page<ThuongHieu> getThuongHieuByTenOrTrangthai(String ten, Boolean trangthai, Pageable pageable) {
-        return thuongHieuRepository.getThuongHieuByTenOrTrangthai(ten, trangthai, pageable);
+    public List<ThuongHieu> getThuongHieuByTenOrTrangthai(String ten, Boolean trangthai) {
+        return thuongHieuRepository.getThuongHieuByTenOrTrangthai(ten, trangthai);
     }
 }

@@ -77,123 +77,129 @@
             </div><!-- /.container-fluid -->
         </section>
         <!---filter-->
-        <section class="content" style="margin-left: 525px">
-            <div class="file-input-wrapper">
-                <input type="file" id="fileInput" class="file-input">
-                <label for="fileInput" class="file-input-label">
-                    <span>+</span>
-                    <span>Upload</span>
-                </label>
-                <img id="uploadedImage" src="" alt="Uploaded Image" style="display: none;">
+        <form th:method="post" th:object="${khachhang}" th:action="@{/khachhang/add}" enctype="multipart/form-data">
+            <section class="content" style="margin-left: 525px">
+                <div class="file-input-wrapper">
+                    <input type="file" id="fileInput" th:name="file" class="file-input">
+                    <label for="fileInput" class="file-input-label">
+                        <span>+</span>
+                        <span>Upload</span>
+                    </label>
+                    <img id="uploadedImage" src="" alt="Uploaded Image" style="display: none;">
 
-            </div>
-        </section>
-        <br>
-        <section class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <section class="content">
-                                    <div class="container">
-                                        <p>
-                                            <button class="btn btn-danger" style="margin-left: 1000px">Qúet QR</button>
-                                        </p>
-                                        <div class="d-flex">
-
-                                            <p>Tên khách hàng:
-                                                <input placeholder="Tên khách hàng" class="form-control"
-                                                       style="width: 550px">
-                                            </p>
-                                            <p style="margin-left: 20px">Ngày sinh:
-                                                <input type="date" class="form-control"
-                                                       style="width: 550px">
-                                            </p>
-                                        </div>
-
-
-                                        <div class="d-flex">
-
-                                            <p>Căn cước công dân:
-                                                <input placeholder="Căn cước công dân" class="form-control"
-                                                       style="width: 550px">
-                                            </p>
-                                            <p style="margin-left: 20px">Giới tính:
-                                                <br>
-                                                <input type="radio" checked="true" style="margin-top: 10px">Nam
-                                                <input type="radio" checked="true" style="margin-left: 10px;margin-top: 10px">Nữ
-                                            </p>
-                                        </div>
-
-                                        <div class="d-flex">
-
-                                            <p>Email:
-                                                <input placeholder="Email" class="form-control"
-                                                       style="width: 550px">
-                                            </p>
-                                            <p style="margin-left: 20px">Số điện thoại:
-                                                <input placeholder="Số điện thoại" class="form-control"
-                                                       style="width: 550px">
-                                            </p>
-                                        </div>
-
-                                        <div class="d-flex">
-
-                                            <p>Tỉnh/Thành phố:
-                                                <select class="form-control"  style="width: 550px">
-                                                    <option>Hà Nội</option>
-                                                    <option>Hải Phòng</option>
-                                                </select>
-                                            </p>
-                                            <p style="margin-left: 20px">Quận/Huyện:
-                                                <select class="form-control"  style="width: 550px">
-                                                    <option>Hà Nội</option>
-                                                    <option>Hải Phòng</option>
-                                                </select>
-                                            </p>
-                                        </div>
-
-                                        <div class="d-flex">
-                                            <p>Xã/Phường:
-                                                <select class="form-control"  style="width: 550px">
-                                                    <option>Hà Nội</option>
-                                                    <option>Hải Phòng</option>
-                                                </select>
-                                            </p>
-                                            <p style="margin-left: 20px">Số nhà/Ngõ/Đường:
-                                                <input placeholder="Số nhà/Ngõ/Đường" class="form-control"
-                                                       style="width: 550px">
-                                            </p>
-                                        </div>
-
-                                        <div class="d-flex">
-                                            <p>Trạng thái:
-                                                <select class="form-control"  style="width: 550px">
-                                                    <option>Kích hoạt</option>
-                                                    <option>Ngừng kích hoạt</option>
-                                                </select>
-                                            </p>
-                                        </div>
-                                        <button class="btn btn-primary">Thêm khách hàng</button>
-                                        <button class="btn btn-danger">Thoát</button>
-                                    </div>
-                                </section>
-                            </div>
-                            <!-- /.card-body -->
-                        </div>
-                        <!-- /.card -->
-
-
-                    </div>
-                    <!-- /.col -->
                 </div>
-                <!-- /.row -->
-            </div>
-            <!-- /.container-fluid -->
-        </section>
+            </section>
+            <br>
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    <section class="content">
+                                        <div class="container">
+                                            <p>
+                                            <div>
+                                                <button class="btn btn-danger mb-3" style="margin-left: 1000px">Quét QR
+                                                </button>
+                                            </div>
+                                            </p>
+                                            <div class="d-flex">
 
+                                                <p>Tên khách hàng:
+                                                    <input placeholder="Tên khách hàng" class="form-control"
+                                                           style="width: 550px" th:field="*{hovaten}">
+                                                </p>
+                                                <p style="margin-left: 20px">Ngày sinh:
+                                                    <input type="date" class="form-control"
+                                                           style="width: 550px" th:field="*{ngaysinh}">
+                                                </p>
+                                            </div>
+
+                                            <div class="d-flex">
+
+                                                <p>Căn cước công dân:
+                                                    <input placeholder="Căn cước công dân" class="form-control"
+                                                           style="width: 550px" th:field="*{cccd}">
+                                                </p>
+                                                <p style="margin-left: 20px">Giới tính:
+                                                    <br>
+                                                    <input type="radio" style="margin-top: 10px" th:field="*{gioitinh}"
+                                                           th:value="1">Nam
+                                                    <input type="radio" style="margin-left: 10px;margin-top: 10px"
+                                                           th:field="*{gioitinh}" th:value="0">Nữ
+                                                </p>
+                                            </div>
+
+                                            <div class="d-flex">
+
+                                                <p>Email:
+                                                    <input placeholder="Email" class="form-control"
+                                                           style="width: 550px" th:field="*{email}">
+                                                </p>
+                                                <p style="margin-left: 20px">Số điện thoại:
+                                                    <input placeholder="Số điện thoại" class="form-control"
+                                                           style="width: 550px" th:field="*{sodienthoai}">
+                                                </p>
+                                            </div>
+
+                                            <div class="d-flex">
+
+                                                <p>Tỉnh/Thành phố:
+                                                    <select class="form-control" style="width: 550px">
+                                                        <option>Hà Nội</option>
+                                                        <option>Hải Phòng</option>
+                                                    </select>
+                                                </p>
+                                                <p style="margin-left: 20px">Quận/Huyện:
+                                                    <select class="form-control" style="width: 550px">
+                                                        <option>Hà Nội</option>
+                                                        <option>Hải Phòng</option>
+                                                    </select>
+                                                </p>
+                                            </div>
+
+                                            <div class="d-flex">
+                                                <p>Xã/Phường:
+                                                    <select class="form-control" style="width: 550px">
+                                                        <option>Hà Nội</option>
+                                                        <option>Hải Phòng</option>
+                                                    </select>
+                                                </p>
+                                                <p style="margin-left: 20px">Số nhà/Ngõ/Đường:
+                                                    <input placeholder="Số nhà/Ngõ/Đường" class="form-control"
+                                                           style="width: 550px">
+                                                </p>
+                                            </div>
+
+                                            <div class="d-flex">
+                                                <p>Trạng thái:
+                                                    <select class="form-control" style="width: 550px"
+                                                            th:field="*{trangthai}">
+                                                        <option th:value="1">Kích hoạt</option>
+                                                        <option th:value="0">Chưa kích hoạt</option>
+                                                    </select>
+                                                </p>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Thêm khách hàng</button>
+                                            <a th:href="@{/khachhang}" class="btn btn-danger">Thoát</a>
+                                        </div>
+                                    </section>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+
+
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.container-fluid -->
+            </section>
+        </form>
 
         <br>
 

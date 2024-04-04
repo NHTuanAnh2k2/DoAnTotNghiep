@@ -18,6 +18,7 @@ public class KhachHang {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+    String makhachhang;
     Timestamp ngaytao;
     String nguoitao;
     Timestamp lancapnhatcuoi;

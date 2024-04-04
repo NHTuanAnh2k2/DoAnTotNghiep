@@ -30,4 +30,10 @@ public class PhieuGiamGiaImp implements PhieuGiamGiaService {
         return phieuGiamGiaRepository.findById(Id);
     }
 
+    @Override
+    public PhieuGiamGia findFirstByOrderByNgaytaoDesc() {
+        return phieuGiamGiaRepository.findFirstByOrderByNgaytaoDesc();
+    }
+
+
 }

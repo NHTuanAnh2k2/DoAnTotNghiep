@@ -9,9 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.util.List;
-///
+
 @Controller
 public class DeGiayController {
     @Autowired
@@ -56,6 +55,12 @@ public class DeGiayController {
         }
         deGiayImp.add(deGiay);
         return "redirect:/listdegiay";
+    }
+
+    @PostMapping("/addDeGiayModal")
+    public String addDeGiayModal(@ModelAttribute("degiay") DeGiay deGiay) {
+        deGiayImp.add(deGiay);
+        return "redirect:/viewaddSP";
     }
 
     @ModelAttribute("dsdg")
