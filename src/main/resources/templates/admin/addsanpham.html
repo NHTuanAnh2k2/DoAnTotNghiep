@@ -439,35 +439,34 @@
         </section>
         <!-- Main content -->
         <h3 class="text-bold text-center" style="padding-left: 15px">CHI TIẾT SẢN PHẨM</h3>
-        <a class="btn btn-primary" style="margin-left: 900px;margin-bottom: 15px" data-bs-toggle="modal"
-           data-bs-target="#chinhsuasoluongvagia">Chỉnh sửa số lượng và giá chung</a>
-        <button class="btn btn-primary" style="margin-left: 20px;margin-bottom: 15px">Hoàn tất</button>
-
-        <!-- Modal chỉnh sửa số lượng và giá -->
-        <div class="modal fade" id="chinhsuasoluongvagia" tabindex="-1" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5">Chỉnh sửa giá và số lượng sản phẩm</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Số lượng:
-                            <input type="number" class="form-control">
+        <form  method="post" enctype="multipart/form-data">
+            <a class="btn btn-primary" style="margin-left: 900px;margin-bottom: 15px" data-bs-toggle="modal"
+               data-bs-target="#chinhsuasoluongvagia">Chỉnh sửa số lượng và giá chung</a>
+            <!-- Modal chỉnh sửa số lượng và giá -->
+            <div class="modal fade" id="chinhsuasoluongvagia" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5">Chỉnh sửa giá và số lượng sản phẩm</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Số lượng:
+                                <input type="number" class="form-control">
+                            </p>
+                            <p>Đơn giá:
+                                <input class="form-control">
+                            </p>
+                        </div>
+                        <p style="margin-left: 18px">
+                            <button class="btn btn-primary">Cập nhật</button>
                         </p>
-                        <p>Đơn giá:
-                            <input class="form-control">
-                        </p>
                     </div>
-                   <p style="margin-left: 18px">
-                       <button class="btn btn-primary">Cập nhật</button>
-                   </p>
                 </div>
             </div>
-        </div>
 
-
+        <button class="btn btn-primary" style="margin-left: 20px;margin-bottom: 15px" th:formaction="@{/addImage}">Hoàn tất</button>
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
@@ -512,25 +511,13 @@
                                             </a>
                                         </td>
                                         <td>
+                                            <input type="hidden" id="spctId" name="spctId"  th:value="${spctt.id}">
                                             <div class="container">
                                                 <div id="image-preview"></div>
-                                                <form action="/upload" method="post" enctype="multipart/form-data">
                                                     <label for="file-input" class="custom-upload">
-                                                        <input type="file" id="file-input" name="file[]" multiple
-                                                               onchange="previewImages()">
+                                                        <input type="file" id="file-input" name="anh" multiple onchange="previewImages()">
                                                     </label>
-                                                </form>
-
                                             </div>
-<!--                                            <form action="/addProduct" method="post" enctype="multipart/form-data">-->
-<!--                                                &lt;!&ndash; Các trường dữ liệu khác &ndash;&gt;-->
-<!--                                                <input type="file" name="file" multiple>-->
-<!--                                                &lt;!&ndash; Các trường dữ liệu khác &ndash;&gt;-->
-<!--                                                <button type="submit">Submit</button>-->
-<!--                                            </form>-->
-
-
-                                            </form>
                                         </td>
                                     </tr>
                                     </tfoot>
@@ -546,6 +533,7 @@
             </div>
             <!-- /.container-fluid -->
         </section>
+        </form>
         <!-- /.content -->
     </div>
     <!--end-->

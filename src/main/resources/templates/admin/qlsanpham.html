@@ -26,7 +26,7 @@
     <!--end-->
 
     <!--Nội dung -->
-    <div class="content-wrapper">
+    <div class="content-wrapper" style="font-family: 'Times New Roman'">
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
@@ -64,22 +64,21 @@
                                     Bộ lọc
                                 </h3>
                                 <br>
-                                <form method="get" th:object="${tim}">
+                                <hr class="border border-danger border opacity-50">
+                                <form id="searchForm" method="get" th:object="${tim}">
                                     <h3 class="card-title">Tìm kiếm tên sản phẩm
                                         <input type="text" id="searchInput" placeholder="Tìm kiếm" class="form-control" name="key" style="width: 400px">
                                     </h3>
-<!--                                    <h3 class="card-title" style="margin-left: 200px">Trạng thái:-->
-<!--                                        <select id="statusSelect" class="form-control" name="trangthai" style="color:rgb(86,158,43);width: 400px">-->
-<!--                                            <option value="">-&#45;&#45;&#45;&#45;</option>-->
-<!--                                            <option value="1" style="color:rgb(86,158,43)">Đang kinh doanh</option>-->
-<!--                                            <option value="0" style="color:rgb(86,158,43)">Ngừng kinh doanh</option>-->
-<!--                                        </select>-->
-<!--                                    </h3>-->
+                                    <h3 class="card-title" style="margin-left: 200px">Trạng thái:
+                                        <select id="statusSelect" class="form-control" name="trangthai" style="color:rgb(86,158,43);width: 400px">
+                                            <option value="">-----</option>
+                                            <option value="1" style="color:rgb(86,158,43)">Đang kinh doanh</option>
+                                            <option value="0" style="color:rgb(86,158,43)">Ngừng kinh doanh</option>
+                                        </select>
+                                    </h3>
                                     <br>
                                     <br>
                                     <br>
-                                    <button th:formaction="@{/listsanpham}" style="margin-left: 100px" class="btn btn-primary">Tìm kiếm</button>
-                                    <input type="button" class="btn btn-danger" value="Làm mới bộ lọc" onclick="clearSearch()" />
                                 </form>
 
                             </div>
@@ -122,7 +121,7 @@
                                         <th>Mã Sản phẩm</th>
                                         <th>Tên sản phẩm</th>
                                         <th>Số lượng tồn</th>
-                                        <th>Trạng thái</th>
+<!--                                        <th>Trạng thái</th>-->
                                         <th>Hành động</th>
                                     </tr>
                                     </thead>
@@ -138,12 +137,12 @@
                                                 <span th:text="${spct.soluong}"></span>
                                             </th:block>
                                         </td>
-                                        <td>
-                                            <button style="border-radius: 50px"
-                                                    class="btn btn-xs custom-button no-border-button"
-                                                    th:classappend="${sp.trangthai ? 'btn-custom-info' : 'btn-custom-warning'}"
-                                                    th:text="${sp.trangthai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>
-                                        </td>
+<!--                                        <td>-->
+<!--                                            <button style="border-radius: 50px"-->
+<!--                                                    class="btn btn-xs custom-button no-border-button"-->
+<!--                                                    th:classappend="${sp.trangthai ? 'btn-custom-info' : 'btn-custom-warning'}"-->
+<!--                                                    th:text="${sp.trangthai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>-->
+<!--                                        </td>-->
                                         <td>
                                             <a th:href="@{/detailsanpham/{id}(id=${sp.id})}" class="btn btn-outline-danger">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
@@ -193,5 +192,15 @@
 </script>
 
 <!--end-->
+<!--tìm-->
+<script>
+    // Lắng nghe sự kiện change trong các trường input
+    document.getElementById('searchInput').addEventListener('change', function() {
+        document.getElementById('searchForm').submit(); // Gửi form khi có sự thay đổi
+    });
+    document.getElementById('statusSelect').addEventListener('change', function() {
+        document.getElementById('searchForm').submit(); // Gửi form khi có sự thay đổi
+    });
+</script>
 </body>
 </html>
