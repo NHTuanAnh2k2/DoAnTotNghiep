@@ -70,7 +70,7 @@ public class SanPhamController {
     @Autowired
     HttpServletRequest request;
 
-    //Hiển thị list sản phẩm
+    /////Hiển thị list sản phẩm
     @GetMapping("/listsanpham")
     public String hienthi(@RequestParam(defaultValue = "0") int p, @ModelAttribute("tim") SanPhamInfo info, Model model) {
         Pageable pageable = PageRequest.of(p, 20);
@@ -134,7 +134,6 @@ public class SanPhamController {
                              @RequestParam(name = "kichCoId") List<String> kichCoNames,
                              @RequestParam DeGiay idDeGiay,
                              @RequestParam List<MauSac> idMauSac
-//                             @RequestParam(name = "anh") List<MultipartFile> anhFiles
     ) {
         SanPham sanPham = new SanPham();
         sanPham.setTensanpham(tensp);
@@ -159,17 +158,6 @@ public class SanPhamController {
                     spct.setKichco(kichCo);
                     spct.setDegiay(idDeGiay);
                     spct.setMausac(colorId);
-                    // Lưu các ảnh vào cơ sở dữ liệu
-//                    for (MultipartFile anhFile : anhFiles) {
-                        // Lưu ảnh vào thư mục trên server và nhận đường dẫn
-//                        String anhUrl = saveImage(anhFile);
-
-                        // Tạo đối tượng Anh và lưu vào sản phẩm chi tiết
-//                        Anh anh = new Anh();
-//                        anh.setTenanh(anhUrl);
-//                        anh.setSanphamchitiet(spct);
-//                        spct.getAnh().add(anh);
-//                    }
                     sanPhamChiTietImp.addSPCT(spct);
                 } else {
                 }
@@ -179,6 +167,24 @@ public class SanPhamController {
         model.addAttribute("sanphamchitiet", sanPhamChiTiets);
         return "forward:/viewaddSP";
     }
+
+    @PostMapping("/addImage")
+    public String addImage(Model model, @RequestParam(name = "anh") List<MultipartFile> anhFiles,
+                           @RequestParam Integer spctId) {
+        SanPhamChiTiet spct = sanPhamChiTietRepository.findById(spctId).orElse(null);
+        if (spct != null) {
+            for (MultipartFile anhFile : anhFiles) {
+                String anhUrl = saveImage(anhFile);
+                Anh anh = new Anh();
+                anh.setTenanh(anhUrl);
+                anh.setSanphamchitiet(spct);
+                anhRepository.save(anh);
+            }
+        }
+        return "redirect:/listsanpham";
+    }
+
+
 
     @GetMapping("/detailsanpham/{id}")
     public String detailsanpham(@PathVariable Integer id, Model model) {
