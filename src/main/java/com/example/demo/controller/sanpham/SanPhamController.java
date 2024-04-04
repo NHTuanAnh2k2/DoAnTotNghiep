@@ -70,7 +70,7 @@ public class SanPhamController {
     @Autowired
     HttpServletRequest request;
 
-    /////Hiển thị list sản phẩm
+    //Hiển thị list sản phẩm
     @GetMapping("/listsanpham")
     public String hienthi(@RequestParam(defaultValue = "0") int p, @ModelAttribute("tim") SanPhamInfo info, Model model) {
         Pageable pageable = PageRequest.of(p, 20);
@@ -82,14 +82,12 @@ public class SanPhamController {
         } else {
             page = sanPhamRepositoty.findAllByOrderByNgaytaoDesc(pageable);
         }
-
         // Tạo mã sản phẩm ngẫu nhiên cho mỗi sản phẩm và lưu vào Map
         for (SanPham sp : page.getContent()) {
             Random random = new Random();
             int randomId = random.nextInt(1000000000);
             randomProductIds.put(sp.getId(), "SP" + String.format("%010d", randomId));
         }
-
         model.addAttribute("page", page);
         model.addAttribute("randomProductIds", randomProductIds); // Thêm Map vào Model
         return "admin/qlsanpham";
@@ -141,7 +139,6 @@ public class SanPhamController {
         LocalDateTime currentTime = LocalDateTime.now();
         sanPham.setNgaytao(currentTime);
         sanPhamImp.add(sanPham);
-
         for (MauSac colorId : idMauSac) {
             for (String sizeName : kichCoNames) {
                 KichCo kichCo = kichCoRepository.findByTen(sizeName);
@@ -183,20 +180,9 @@ public class SanPhamController {
         }
         return "redirect:/listsanpham";
     }
-
-
-
-    @GetMapping("/detailsanpham/{id}")
-    public String detailsanpham(@PathVariable Integer id, Model model) {
-        SanPham sanPham = sanPhamRepositoty.findById(id).orElse(null);
-        model.addAttribute("sanpham", sanPham);
-        model.addAttribute("sanphamchitiet", sanPham.getSpct());
-        return "admin/qlchitietsanpham";
-    }
-
     private String saveImage(MultipartFile file) {
         // Thư mục để lưu trữ ảnh trên server
-        String uploadDir = "G:\\Ki7\\DATN\\DATN\\src\\main\\resources\\upload";
+        String uploadDir = "G:\\Ki7\\DATN\\DATN\\src\\main\\resources\\static\\upload";
 
         try {
             // Đảm bảo thư mục upload tồn tại
@@ -204,17 +190,13 @@ public class SanPhamController {
             if (!directory.exists()) {
                 directory.mkdirs();
             }
-
             // Lấy tên file gốc
             String originalFileName = file.getOriginalFilename();
-
             // Tạo đường dẫn đến file trên server
             String filePath = uploadDir + File.separator + originalFileName;
-
             // Lưu file vào thư mục trên server
             File dest = new File(filePath);
             file.transferTo(dest);
-
             // Trả về đường dẫn của file
             return filePath;
         } catch (IOException e) {
@@ -224,5 +206,11 @@ public class SanPhamController {
         }
     }
 
-
+    @GetMapping("/detailsanpham/{id}")
+    public String detailsanpham(@PathVariable Integer id, Model model) {
+        SanPham sanPham = sanPhamRepositoty.findById(id).orElse(null);
+        model.addAttribute("sanpham", sanPham);
+        model.addAttribute("sanphamchitiet", sanPham.getSpct());
+        return "admin/qlchitietsanpham";
+    }
 }
