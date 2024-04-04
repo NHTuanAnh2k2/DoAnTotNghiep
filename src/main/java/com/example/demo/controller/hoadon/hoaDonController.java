@@ -79,31 +79,88 @@ public class hoaDonController {
         Pageable p = PageRequest.of(page, 5);
         int trangThai = -1;
         if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("null")
-                && hdSaveInfoSeachr.getLoaiHD().equalsIgnoreCase("null")
-                && hdSaveInfoSeachr.getTu().equalsIgnoreCase("null")
-                && hdSaveInfoSeachr.getDen().equalsIgnoreCase("null")) {
+                || hdSaveInfoSeachr.getLoaiHD().equalsIgnoreCase("null")
+                || hdSaveInfoSeachr.getTu().equalsIgnoreCase("null")
+                || hdSaveInfoSeachr.getDen().equalsIgnoreCase("null")) {
+            //các case tìm kiếm 1 th null
+            //case key null and all not null
+            if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("null")
+                    && !hdSaveInfoSeachr.getLoaiHD().equalsIgnoreCase("null")
+                    && !hdSaveInfoSeachr.getTu().equalsIgnoreCase("null")
+                    && !hdSaveInfoSeachr.getDen().equalsIgnoreCase("null")) {
+                System.out.println("key trong all not null");
+                return "redirect:/hoa-don/hien-thi";
+            }
+            //case loaihd null and all not null
+            if (hdSaveInfoSeachr.getLoaiHD().equalsIgnoreCase("null")
+                    && !hdSaveInfoSeachr.getKey().equalsIgnoreCase("null")
+                    && !hdSaveInfoSeachr.getTu().equalsIgnoreCase("null")
+                    && !hdSaveInfoSeachr.getDen().equalsIgnoreCase("null")) {
+                System.out.println("loaihd trong all not null");
+                return "redirect:/hoa-don/hien-thi";
+            }
+            //case ngaytao(tu or den) null and all not null
+            if (hdSaveInfoSeachr.getTu().equalsIgnoreCase("null")
+                    || hdSaveInfoSeachr.getDen().equalsIgnoreCase("null")) {
+                if (!hdSaveInfoSeachr.getKey().equalsIgnoreCase("null")
+                        && !hdSaveInfoSeachr.getLoaiHD().equalsIgnoreCase("null")) {
+                    System.out.println("tu or den trong all not null");
+                    return "redirect:/hoa-don/hien-thi";
+                }
 
+            }
+            //end case tìm kiếm 1 th null
+            //các case tìm kiếm 2 th null
+
+
+            //case key and loaihd null
+            if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("null")
+                    && hdSaveInfoSeachr.getLoaiHD().equalsIgnoreCase("null")
+                    && !hdSaveInfoSeachr.getTu().equalsIgnoreCase("null")
+                    && !hdSaveInfoSeachr.getDen().equalsIgnoreCase("null")) {
+                System.out.println("key and loai hd null");
+                return "redirect:/hoa-don/hien-thi";
+            }
+            //case key and (tu or den null)
+            if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("null")
+                    && !hdSaveInfoSeachr.getLoaiHD().equalsIgnoreCase("null")
+                    && hdSaveInfoSeachr.getTu().equalsIgnoreCase("null")
+                    && hdSaveInfoSeachr.getDen().equalsIgnoreCase("null")) {
+                System.out.println("key end tu or den null");
+                return "redirect:/hoa-don/hien-thi";
+            }
+
+            //case loaihd and (tu or den null)
+            if (!hdSaveInfoSeachr.getKey().equalsIgnoreCase("null")
+                    && hdSaveInfoSeachr.getLoaiHD().equalsIgnoreCase("null")
+                    && hdSaveInfoSeachr.getTu().equalsIgnoreCase("null")
+                    && hdSaveInfoSeachr.getDen().equalsIgnoreCase("null")) {
+                System.out.println("loaihd end tu or den null");
+                return "redirect:/hoa-don/hien-thi";
+            }
+
+            // end các case tìm kiếm 2 th null
 
         } else {
-            if (HDinfo.getKey().equalsIgnoreCase("chờ xác nhận")) {
+            if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("chờ xác nhận")) {
                 trangThai = 0;
             } else {
-                if (HDinfo.getKey().equalsIgnoreCase("đã xác nhận")) {
+                if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đã xác nhận")) {
                     trangThai = 1;
                 } else {
-                    if (HDinfo.getKey().equalsIgnoreCase("chờ giao hàng")) {
+                    if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("chờ giao hàng")) {
                         trangThai = 2;
                     } else {
-                        if (HDinfo.getKey().equalsIgnoreCase("đang giao hàng")) {
+                        if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đang giao hàng")) {
                             trangThai = 3;
                         } else {
-                            if (HDinfo.getKey().equalsIgnoreCase("đã thanh toán")) {
+                            if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đã thanh toán")) {
                                 trangThai = 4;
                             } else {
-                                if (HDinfo.getKey().equalsIgnoreCase("đã hoàn thành")) {
+                                if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đã hoàn thành")) {
                                     trangThai = 5;
                                 } else {
-                                    if (HDinfo.getKey().equalsIgnoreCase("đã hủy")) {
+                                    if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đã hủy")) {
                                         trangThai = 6;
                                     }
                                 }
