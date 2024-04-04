@@ -88,24 +88,113 @@ public class hoaDonController {
                     && !hdSaveInfoSeachr.getLoaiHD().equalsIgnoreCase("null")
                     && !hdSaveInfoSeachr.getTu().equalsIgnoreCase("null")
                     && !hdSaveInfoSeachr.getDen().equalsIgnoreCase("null")) {
-                System.out.println("key trong all not null");
-                return "redirect:/hoa-don/hien-thi";
+                if (hdSaveInfoSeachr.getTu().compareTo(hdSaveInfoSeachr.getDen()) >= 0) {
+                    Page<HoaDon> fixErr = dao.findAll(p);
+                    model.addAttribute("lst", fixErr);
+                    model.addAttribute("hdcustom",hdSaveInfoSeachr);
+                    model.addAttribute("pageNo", page);
+                    model.addAttribute("errdate", 1);
+                    model.addAttribute("tt0", dao.tinhTong(0));
+                    model.addAttribute("tt1", dao.tinhTong(1));
+                    model.addAttribute("tt2", dao.tinhTong(2));
+                    model.addAttribute("tt3", dao.tinhTong(3));
+                    model.addAttribute("tt4", dao.tinhTong(4));
+                    model.addAttribute("tt5", dao.tinhTong(5));
+                    model.addAttribute("tt6", dao.tinhTong(6));
+                    model.addAttribute("tt7", dao.findAll(p).getTotalElements());
+                    return "admin/qlhoadon";
+                }
+                lst = dao.LockTT(Boolean.valueOf(hdSaveInfoSeachr.getLoaiHD()), Date.valueOf(hdSaveInfoSeachr.getTu()),
+                        Date.valueOf(hdSaveInfoSeachr.getDen()), p);
             }
             //case loaihd null and all not null
             if (hdSaveInfoSeachr.getLoaiHD().equalsIgnoreCase("null")
                     && !hdSaveInfoSeachr.getKey().equalsIgnoreCase("null")
                     && !hdSaveInfoSeachr.getTu().equalsIgnoreCase("null")
                     && !hdSaveInfoSeachr.getDen().equalsIgnoreCase("null")) {
-                System.out.println("loaihd trong all not null");
-                return "redirect:/hoa-don/hien-thi";
+                if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("chờ xác nhận")) {
+                    trangThai = 0;
+                } else {
+                    if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đã xác nhận")) {
+                        trangThai = 1;
+                    } else {
+                        if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("chờ giao hàng")) {
+                            trangThai = 2;
+                        } else {
+                            if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đang giao hàng")) {
+                                trangThai = 3;
+                            } else {
+                                if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đã thanh toán")) {
+                                    trangThai = 4;
+                                } else {
+                                    if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đã hoàn thành")) {
+                                        trangThai = 5;
+                                    } else {
+                                        if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đã hủy")) {
+                                            trangThai = 6;
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }
+                if (hdSaveInfoSeachr.getTu().compareTo(hdSaveInfoSeachr.getDen()) >= 0) {
+                    Page<HoaDon> fixErr = dao.findAll(p);
+                    model.addAttribute("lst", fixErr);
+                    model.addAttribute("hdcustom",hdSaveInfoSeachr);
+                    model.addAttribute("pageNo", page);
+                    model.addAttribute("errdate", 1);
+                    model.addAttribute("tt0", dao.tinhTong(0));
+                    model.addAttribute("tt1", dao.tinhTong(1));
+                    model.addAttribute("tt2", dao.tinhTong(2));
+                    model.addAttribute("tt3", dao.tinhTong(3));
+                    model.addAttribute("tt4", dao.tinhTong(4));
+                    model.addAttribute("tt5", dao.tinhTong(5));
+                    model.addAttribute("tt6", dao.tinhTong(6));
+                    model.addAttribute("tt7", dao.findAll(p).getTotalElements());
+                    return "admin/qlhoadon";
+                }
+
+                lst = dao.LocKLHD(trangThai, Date.valueOf(hdSaveInfoSeachr.getTu()),
+                        Date.valueOf(hdSaveInfoSeachr.getDen()), p);
             }
             //case ngaytao(tu or den) null and all not null
             if (hdSaveInfoSeachr.getTu().equalsIgnoreCase("null")
                     || hdSaveInfoSeachr.getDen().equalsIgnoreCase("null")) {
                 if (!hdSaveInfoSeachr.getKey().equalsIgnoreCase("null")
                         && !hdSaveInfoSeachr.getLoaiHD().equalsIgnoreCase("null")) {
-                    System.out.println("tu or den trong all not null");
-                    return "redirect:/hoa-don/hien-thi";
+                    if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("chờ xác nhận")) {
+                        trangThai = 0;
+                    } else {
+                        if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đã xác nhận")) {
+                            trangThai = 1;
+                        } else {
+                            if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("chờ giao hàng")) {
+                                trangThai = 2;
+                            } else {
+                                if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đang giao hàng")) {
+                                    trangThai = 3;
+                                } else {
+                                    if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đã thanh toán")) {
+                                        trangThai = 4;
+                                    } else {
+                                        if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đã hoàn thành")) {
+                                            trangThai = 5;
+                                        } else {
+                                            if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("đã hủy")) {
+                                                trangThai = 6;
+                                            }
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                    lst = dao.LocKngayTao(trangThai, Boolean.valueOf(hdSaveInfoSeachr.getLoaiHD()), p);
+
                 }
 
             }
@@ -170,11 +259,28 @@ public class hoaDonController {
                     }
                 }
             }
+            if (hdSaveInfoSeachr.getTu().compareTo(hdSaveInfoSeachr.getDen()) >= 0) {
+                Page<HoaDon> fixErr = dao.findAll(p);
+                model.addAttribute("lst", fixErr);
+                model.addAttribute("hdcustom",hdSaveInfoSeachr);
+                model.addAttribute("pageNo", page);
+                model.addAttribute("errdate", 1);
+                model.addAttribute("tt0", dao.tinhTong(0));
+                model.addAttribute("tt1", dao.tinhTong(1));
+                model.addAttribute("tt2", dao.tinhTong(2));
+                model.addAttribute("tt3", dao.tinhTong(3));
+                model.addAttribute("tt4", dao.tinhTong(4));
+                model.addAttribute("tt5", dao.tinhTong(5));
+                model.addAttribute("tt6", dao.tinhTong(6));
+                model.addAttribute("tt7", dao.findAll(p).getTotalElements());
+                return "admin/qlhoadon";
+            }
             lst = dao.Loc(trangThai,
                     Boolean.valueOf(hdSaveInfoSeachr.getLoaiHD()), Date.valueOf(hdSaveInfoSeachr.getTu()),
                     Date.valueOf(hdSaveInfoSeachr.getDen()), p);
         }
         model.addAttribute("lst", lst);
+        model.addAttribute("hdcustom",hdSaveInfoSeachr);
         model.addAttribute("pageNo", page);
         //hiển thị số hd theo tt
         model.addAttribute("tt0", dao.tinhTong(0));
@@ -203,7 +309,6 @@ public class hoaDonController {
 //
 //
 //            if (er.hasFieldErrors("key") && HDinfo.getLoaiHD().equalsIgnoreCase("null")) {
-//
 //                if (HDinfo.getTu().compareTo(HDinfo.getDen()) >= 0) {
 //                    Page<HoaDon> fixErr = dao.findAll(p);
 //                    model.addAttribute("lst", fixErr);
