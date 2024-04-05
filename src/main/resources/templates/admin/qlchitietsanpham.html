@@ -3,8 +3,8 @@
 <nav th:replace="~{/layoutadmin/head.html}"></nav>
 <style>
     .carousel-img {
-        width: 300px; /* Thiết lập chiều rộng là 100% */
-        height: 150px; /* Tự động tính toán chiều cao dựa trên tỷ lệ của ảnh */
+        width: 100px; /* Thiết lập chiều rộng là 100% */
+        height: 70px; /* Tự động tính toán chiều cao dựa trên tỷ lệ của ảnh */
     }
 
     .btn-custom-warning {
@@ -174,7 +174,7 @@
                                         <td><input type="checkbox"></td>
                                         <td th:text="${stt.index + 1}"></td>
                                         <td>
-                                            <div id="carouselExample" class="carousel slide">
+                                            <div id="carouselExample" class="carousel">
                                                 <div class="carousel-inner">
                                                     <th:block th:each="anhs, index : ${spct.anh}">
                                                         <div th:classappend="${index.index == 0} ? 'carousel-item active' : 'carousel-item'">
