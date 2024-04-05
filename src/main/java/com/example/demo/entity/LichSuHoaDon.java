@@ -24,7 +24,7 @@ public class LichSuHoaDon {
     Timestamp lancapnhatcuoi;
     String nguoicapnhat;
     String ghichu;
-    Boolean trangthai;
+    Integer trangthai;
     @ManyToOne
     @JoinColumn(name = "idhoadon")
     HoaDon hoadon;

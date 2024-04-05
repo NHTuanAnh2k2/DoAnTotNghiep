@@ -2,9 +2,11 @@ package com.example.demo.controller.hoadon;
 
 import com.example.demo.entity.HoaDon;
 import com.example.demo.entity.KhachHang;
+import com.example.demo.entity.LichSuHoaDon;
 import com.example.demo.info.HoaDonCustom;
 import com.example.demo.repository.hoadon.HoaDonRepository;
 import com.example.demo.service.HoaDonService;
+import com.example.demo.service.LichSuHoaDonService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,8 +32,10 @@ import java.util.Optional;
 @RequestMapping("hoa-don")
 public class hoaDonController {
     @Autowired
+    LichSuHoaDonService daoLS;
+    @Autowired
     HoaDonService dao;
-    Integer idhd = null;
+    Integer idhdshowdetail = null;
     HoaDonCustom hdSaveInfoSeachr = new HoaDonCustom();
 
     @GetMapping("hien-thi")
@@ -336,206 +340,6 @@ public class hoaDonController {
         return "admin/qlhoadon";
     }
 
-
-//    @GetMapping("loc")
-//    public String Loc(Model model, @RequestParam("page") Optional<Integer> pageParam,
-//                      @Validated @ModelAttribute("hdcustom") HoaDonCustom HDinfo, Errors er) {
-//        Page<HoaDon> lst = null;
-//        hdSave = HDinfo;
-//        int page = pageParam.orElse(0);
-//        Pageable p = PageRequest.of(page, 5);
-//        Integer trangThai = -1;
-//
-//        if (er.hasErrors()) {
-//            //trường hợp trống 2 key
-//
-//
-//            if (er.hasFieldErrors("key") && HDinfo.getLoaiHD().equalsIgnoreCase("null")) {
-//                if (HDinfo.getTu().compareTo(HDinfo.getDen()) >= 0) {
-//                    Page<HoaDon> fixErr = dao.findAll(p);
-//                    model.addAttribute("lst", fixErr);
-//                    model.addAttribute("pageNo", page);
-//                    model.addAttribute("errdate", 1);
-//                    model.addAttribute("tt0", dao.tinhTong(0));
-//                    model.addAttribute("tt1", dao.tinhTong(1));
-//                    model.addAttribute("tt2", dao.tinhTong(2));
-//                    model.addAttribute("tt3", dao.tinhTong(3));
-//                    model.addAttribute("tt4", dao.tinhTong(4));
-//                    model.addAttribute("tt5", dao.tinhTong(5));
-//                    model.addAttribute("tt6", dao.tinhTong(6));
-//                    model.addAttribute("tt7", dao.findAll(p).getTotalElements());
-//                    return "admin/qlhoadon";
-//                }
-//                lst = dao.LocTheoKhoangNgay(HDinfo.getTu(), HDinfo.getDen(), p);
-//            }
-//            //trường hợp trống 1 key
-//            if (er.hasFieldErrors("key")) {
-//                if (er.hasFieldErrors("tu") || er.hasFieldErrors("den")) {
-//                    System.out.println("toi day");
-//                    lst = dao.LocTheoLoaiDon(Boolean.valueOf(HDinfo.getLoaiHD()), p);
-//                } else {
-//                    if (HDinfo.getTu().compareTo(HDinfo.getDen()) >= 0) {
-//                        Page<HoaDon> fixErr = dao.findAll(p);
-//                        model.addAttribute("lst", fixErr);
-//                        model.addAttribute("pageNo", page);
-//                        model.addAttribute("errdate", 1);
-//                        model.addAttribute("tt0", dao.tinhTong(0));
-//                        model.addAttribute("tt1", dao.tinhTong(1));
-//                        model.addAttribute("tt2", dao.tinhTong(2));
-//                        model.addAttribute("tt3", dao.tinhTong(3));
-//                        model.addAttribute("tt4", dao.tinhTong(4));
-//                        model.addAttribute("tt5", dao.tinhTong(5));
-//                        model.addAttribute("tt6", dao.tinhTong(6));
-//                        model.addAttribute("tt7", dao.findAll(p).getTotalElements());
-//                        return "admin/qlhoadon";
-//                    }
-//                    lst = dao.LockTT(Boolean.valueOf(HDinfo.getLoaiHD()), HDinfo.getTu(), HDinfo.getDen(), p);
-//                }
-//            }
-//
-//            if (er.hasFieldErrors("tu") || er.hasFieldErrors("den")) {
-//
-//                if (HDinfo.getKey().equalsIgnoreCase("chờ xác nhận")) {
-//                    trangThai = 0;
-//                } else {
-//                    if (HDinfo.getKey().equalsIgnoreCase("đã xác nhận")) {
-//                        trangThai = 1;
-//                    } else {
-//                        if (HDinfo.getKey().equalsIgnoreCase("chờ giao hàng")) {
-//                            trangThai = 2;
-//                        } else {
-//                            if (HDinfo.getKey().equalsIgnoreCase("đang giao hàng")) {
-//                                trangThai = 3;
-//                            } else {
-//                                if (HDinfo.getKey().equalsIgnoreCase("đã thanh toán")) {
-//                                    trangThai = 4;
-//                                } else {
-//                                    if (HDinfo.getKey().equalsIgnoreCase("đã hoàn thành")) {
-//                                        trangThai = 5;
-//                                    } else {
-//                                        if (HDinfo.getKey().equalsIgnoreCase("đã hủy")) {
-//                                            trangThai = 6;
-//                                        }
-//                                    }
-//                                }
-//                            }
-//
-//                        }
-//                    }
-//                }
-//                lst = dao.LocKngayTao(trangThai, Boolean.valueOf(HDinfo.getLoaiHD()), p);
-//            }
-//
-//        } else {
-//            if (HDinfo.getLoaiHD().equalsIgnoreCase("null")) {
-//                if (HDinfo.getKey().equalsIgnoreCase("chờ xác nhận")) {
-//                    trangThai = 0;
-//                } else {
-//                    if (HDinfo.getKey().equalsIgnoreCase("đã xác nhận")) {
-//                        trangThai = 1;
-//                    } else {
-//                        if (HDinfo.getKey().equalsIgnoreCase("chờ giao hàng")) {
-//                            trangThai = 2;
-//                        } else {
-//                            if (HDinfo.getKey().equalsIgnoreCase("đang giao hàng")) {
-//                                trangThai = 3;
-//                            } else {
-//                                if (HDinfo.getKey().equalsIgnoreCase("đã thanh toán")) {
-//                                    trangThai = 4;
-//                                } else {
-//                                    if (HDinfo.getKey().equalsIgnoreCase("đã hoàn thành")) {
-//                                        trangThai = 5;
-//                                    } else {
-//                                        if (HDinfo.getKey().equalsIgnoreCase("đã hủy")) {
-//                                            trangThai = 6;
-//                                        }
-//                                    }
-//                                }
-//                            }
-//
-//                        }
-//                    }
-//                }
-//                if (HDinfo.getTu().compareTo(HDinfo.getDen()) >= 0) {
-//                    Page<HoaDon> fixErr = dao.findAll(p);
-//                    model.addAttribute("lst", fixErr);
-//                    model.addAttribute("pageNo", page);
-//                    model.addAttribute("errdate", 1);
-//                    model.addAttribute("tt0", dao.tinhTong(0));
-//                    model.addAttribute("tt1", dao.tinhTong(1));
-//                    model.addAttribute("tt2", dao.tinhTong(2));
-//                    model.addAttribute("tt3", dao.tinhTong(3));
-//                    model.addAttribute("tt4", dao.tinhTong(4));
-//                    model.addAttribute("tt5", dao.tinhTong(5));
-//                    model.addAttribute("tt6", dao.tinhTong(6));
-//                    model.addAttribute("tt7", dao.findAll(p).getTotalElements());
-//                    return "admin/qlhoadon";
-//                }
-//                lst = dao.LocKLHD(trangThai, HDinfo.getTu(), HDinfo.getDen(), p);
-//
-//            } else {
-//                if (HDinfo.getKey().equalsIgnoreCase("chờ xác nhận")) {
-//                    trangThai = 0;
-//                } else {
-//                    if (HDinfo.getKey().equalsIgnoreCase("đã xác nhận")) {
-//                        trangThai = 1;
-//                    } else {
-//                        if (HDinfo.getKey().equalsIgnoreCase("chờ giao hàng")) {
-//                            trangThai = 2;
-//                        } else {
-//                            if (HDinfo.getKey().equalsIgnoreCase("đang giao hàng")) {
-//                                trangThai = 3;
-//                            } else {
-//                                if (HDinfo.getKey().equalsIgnoreCase("đã thanh toán")) {
-//                                    trangThai = 4;
-//                                } else {
-//                                    if (HDinfo.getKey().equalsIgnoreCase("đã hoàn thành")) {
-//                                        trangThai = 5;
-//                                    } else {
-//                                        if (HDinfo.getKey().equalsIgnoreCase("đã hủy")) {
-//                                            trangThai = 6;
-//                                        }
-//                                    }
-//                                }
-//                            }
-//
-//                        }
-//                    }
-//                }
-//                if (HDinfo.getTu().compareTo(HDinfo.getDen()) >= 0) {
-//                    Page<HoaDon> fixErr = dao.findAll(p);
-//                    model.addAttribute("lst", fixErr);
-//                    model.addAttribute("pageNo", page);
-//                    model.addAttribute("errdate", 1);
-//                    model.addAttribute("tt0", dao.tinhTong(0));
-//                    model.addAttribute("tt1", dao.tinhTong(1));
-//                    model.addAttribute("tt2", dao.tinhTong(2));
-//                    model.addAttribute("tt3", dao.tinhTong(3));
-//                    model.addAttribute("tt4", dao.tinhTong(4));
-//                    model.addAttribute("tt5", dao.tinhTong(5));
-//                    model.addAttribute("tt6", dao.tinhTong(6));
-//                    model.addAttribute("tt7", dao.findAll(p).getTotalElements());
-//                    return "admin/qlhoadon";
-//                }
-//                lst = dao.Loc(trangThai,
-//                        Boolean.valueOf(HDinfo.getLoaiHD()), HDinfo.getTu(), HDinfo.getDen(), p);
-//            }
-//        }
-//
-//        model.addAttribute("lst", lst);
-//        model.addAttribute("pageNo", page);
-//        //hiển thị số hd theo tt
-//        model.addAttribute("tt0", dao.tinhTong(0));
-//        model.addAttribute("tt1", dao.tinhTong(1));
-//        model.addAttribute("tt2", dao.tinhTong(2));
-//        model.addAttribute("tt3", dao.tinhTong(3));
-//        model.addAttribute("tt4", dao.tinhTong(4));
-//        model.addAttribute("tt5", dao.tinhTong(5));
-//        model.addAttribute("tt6", dao.tinhTong(6));
-//        model.addAttribute("tt7", dao.findAll(p).getTotalElements());
-//        return "admin/qlhoadon";
-//    }
-
     @GetMapping("cho-xac-nhan")
     public String choXacNhan(Model model, @RequestParam("page") Optional<Integer> pageParam,
                              @ModelAttribute("hdcustom") HoaDonCustom info) {
@@ -678,16 +482,23 @@ public class hoaDonController {
 
     @GetMapping("chi-tiet/{id}")
     public String chiTiet(Model model, @PathVariable("id") Integer id) {
-        idhd = id;
+        idhdshowdetail = id;
         return "redirect:/hoa-don/showDetail";
     }
 
+    //xem chi tiết hóa đơn
     @GetMapping("showDetail")
     public String show(Model model) {
-
+        HoaDon hoaDonXem = new HoaDon();
+        hoaDonXem.setId(idhdshowdetail);
+        List<LichSuHoaDon> lstLichSuHoaDon = daoLS.timLichSuTheoIDHoaDon(hoaDonXem);
+        model.addAttribute("lstlichsu", lstLichSuHoaDon);
+        model.addAttribute("trangThaiHienTai",lstLichSuHoaDon.get(lstLichSuHoaDon.size()-1).getTrangthai());
         return "admin/qlchitiethoadon";
     }
 
+
+    // call sang bán tại quầy
     @GetMapping("ban-hang")
     public String taoMoiHoaDon(Model model) {
 
