@@ -73,23 +73,14 @@ public class SanPhamController {
     //Hiển thị list sản phẩm
     @GetMapping("/listsanpham")
     public String hienthi(@RequestParam(defaultValue = "0") int p, @ModelAttribute("tim") SanPhamInfo info, Model model) {
-        Pageable pageable = PageRequest.of(p, 20);
-        Page<SanPham> page = null;
-        Map<Integer, String> randomProductIds = new HashMap<>(); // Map để lưu trữ mã sản phẩm ngẫu nhiên
-
+    Pageable pageable=PageRequest.of(p,20);
+        Page<Object[]> page=null;
         if (info.getKey() != null) {
-            page = sanPhamImp.findAllByTensanphamOrTrangthai(info.getKey(), info.getTrangthai(), pageable);
+          page = sanPhamRepositoty.findAllByTensanphamOrTrangthai(info.getKey(), info.getTrangthai(), pageable);
         } else {
-            page = sanPhamRepositoty.findAllByOrderByNgaytaoDesc(pageable);
-        }
-        // Tạo mã sản phẩm ngẫu nhiên cho mỗi sản phẩm và lưu vào Map
-        for (SanPham sp : page.getContent()) {
-            Random random = new Random();
-            int randomId = random.nextInt(1000000000);
-            randomProductIds.put(sp.getId(), "SP" + String.format("%010d", randomId));
+            page = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc(pageable);
         }
         model.addAttribute("page", page);
-        model.addAttribute("randomProductIds", randomProductIds); // Thêm Map vào Model
         return "admin/qlsanpham";
     }
 
@@ -160,10 +151,12 @@ public class SanPhamController {
                 }
             }
         }
+
         List<SanPhamChiTiet> sanPhamChiTiets = sanPhamChiTietRepository.findBySanPhamId(sanPham.getId());
         model.addAttribute("sanphamchitiet", sanPhamChiTiets);
         return "forward:/viewaddSP";
     }
+
 
     @PostMapping("/addImage")
     public String addImage(Model model, @RequestParam(name = "anh") List<MultipartFile> anhFiles,
@@ -173,7 +166,9 @@ public class SanPhamController {
             for (MultipartFile anhFile : anhFiles) {
                 String anhUrl = saveImage(anhFile);
                 Anh anh = new Anh();
+                LocalDateTime currentTime = LocalDateTime.now();
                 anh.setTenanh(anhUrl);
+                anh.setNgaytao(currentTime);
                 anh.setSanphamchitiet(spct);
                 anhRepository.save(anh);
             }

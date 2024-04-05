@@ -12,7 +12,7 @@ public interface SanPhamService {
 
     Page<SanPham> getAll(Pageable pageable);
 
-    Page<SanPham> findAllByTensanphamOrTrangthai(String tensanpham, Boolean trangthai, Pageable pageable);
+//    Page<SanPham> findAllByTensanphamOrTrangthai(String tensanpham, Boolean trangthai, Pageable pageable);
 
     SanPham add(SanPham sanPham);
 }
