@@ -16,9 +16,16 @@ import java.util.List;
 public interface SanPhamRepositoty extends JpaRepository<SanPham, Integer> {
     Page<Object[]>findAllByTensanphamOrTrangthai(String tensanpham, Boolean trangthai, Pageable pageable);
 
-    Page<SanPham> findAllByOrderByNgaytaoDesc(Pageable pageable);
-
     Boolean existsByTensanpham(String tensanpham);
+
+    @Query("SELECT sp.id, sp.tensanpham, sp.ngaytao,SUM(spct.soluong) as tongSoLuong ,sp.trangthai " +
+            "FROM SanPham sp " +
+            "JOIN sp.spct spct " +
+            "WHERE (sp.tensanpham LIKE ?1)AND(?2 IS NULL OR sp.trangthai=?2) " +
+            "GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai " +
+            "ORDER BY sp.ngaytao DESC, tongSoLuong DESC")
+    Page<Object[]> findByTenSanPhamAndTrangThai(String key, Boolean trangthai,Pageable pageable);
+
 
     @Query("SELECT sp.id, sp.tensanpham, sp.ngaytao, SUM(spct.soluong) AS tongSoLuong " +
             "FROM SanPham sp JOIN sp.spct spct " +

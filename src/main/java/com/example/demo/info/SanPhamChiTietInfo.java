@@ -9,8 +9,11 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SanPhamInfo {
+public class SanPhamChiTietInfo {
     String key;
-    Boolean trangthai;
-    Integer soluong;
+    Integer idThuongHieu;
+    Integer idDeGiay;
+    Integer idKichCo;
+    Integer idMauSac;
+    Integer idChatLieu;
 }
