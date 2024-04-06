@@ -2,7 +2,9 @@ package com.example.demo.service;
 
 import com.example.demo.entity.DiaChi;
 import com.example.demo.info.DiaChiNVInfo;
+import com.example.demo.info.NhanVienSearch;
 
+import java.sql.Date;
 import java.util.List;
 
 public interface DiaChiService {
@@ -12,4 +14,6 @@ public interface DiaChiService {
     public DiaChi add(DiaChiNVInfo diaChi);
     public DiaChi update(DiaChiNVInfo diaChi, Integer id);
     DiaChi search(Integer id);
+    List<DiaChi> searchND(String ten, Boolean trangThai, java.sql.Date batDau, Date ketThuc);
+    List<DiaChi> searchkey(NhanVienSearch nhanVienSearch);
 }

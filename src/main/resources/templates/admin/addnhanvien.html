@@ -118,70 +118,86 @@
                                         </div>
                                         <form th:method="post" th:object="${nd}" th:action="@{/addnv}">
                                         <div class="d-flex">
+                                            <div>
                                             <p>Tên nhân viên:
                                                 <input placeholder="Tên nhân viên" id="name" name="name" class="form-control"  th:field="*{hovaten}"
-                                                       style="width: 500px">
+                                                       style="width: 500px" th:errorclass="is-invalid">
                                             </p>
-                                            <p th:text="${tenErr}"></p>
-
+                                            <p th:if="${#fields.hasErrors('hovaten')}" th:errors="*{hovaten}" style="width: 500px; color: red"></p>
+                                            </div>
+                                            <div>
                                             <p style="margin-left: 20px">Ngày sinh:
                                                 <input type="date" class="form-control"
-                                                       style="width: 500px" th:field="*{ngaysinh}">
+                                                       style="width: 500px" th:field="*{ngaysinh}"  placeholder="dd/MM/yyyy" th:errorclass="is-invalid">
                                             </p>
-                                            <p th:text="${ngSinhErr}"></p>
+                                            <p th:if="${#fields.hasErrors('ngaysinh')}" th:errors="*{ngaysinh}" style="width: 500px; color: red"></p>
+                                            </div>
 
                                         </div>
-
-
                                         <div class="d-flex">
-
+                                            <div>
                                             <p>Căn cước công dân:
                                                 <input placeholder="Căn cước công dân" id="citizenID" name="citizenID" class="form-control"
-                                                       style="width: 500px" th:field="*{cccd}"></p>
-                                            <p th:text="${cccdErr}"></p>
+                                                       style="width: 500px" th:field="*{cccd}" th:errorclass="is-invalid"></p>
+                                            <p th:if="${#fields.hasErrors('cccd')}" th:errors="*{cccd}" style="width: 500px; color: red"></p>
+                                            </div>
+                                            <div>
                                             <p style="margin-left: 20px">Giới tính:
                                             <br>
                                                 <input type="radio" value="true" th:field="*{gioitinh}" style="margin-top: 10px">Nam
                                                 <input type="radio" value="false" th:field="*{gioitinh}" style="margin-left: 10px;margin-top: 10px">Nữ
                                             </p>
+                                                <p th:if="${#fields.hasErrors('gioitinh')}" th:errors="*{gioitinh}" style="width: 500px; color: red"></p>
+                                            </div>
                                         </div>
 
                                         <div class="d-flex">
-
+                                            <div>
                                             <p>Email:
                                                 <input placeholder="Email" class="form-control"
-                                                       style="width: 500px" th:field="*{email}"></p>
-                                            <p th:text="${mailErr}"></p>
+                                                       style="width: 500px" th:field="*{email}" th:errorclass="is-invalid"></p>
+                                            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="width: 500px; color: red"></p>
+                                            </div>
+                                            <div>
                                             <p style="margin-left: 20px">Số điện thoại:
                                                 <input placeholder="Số điện thoại" class="form-control"
-                                                       style="width: 500px" th:field="*{sodienthoai}"></p>
-                                            <p th:text="${sdtErr}"></p>
+                                                       style="width: 500px" th:field="*{sodienthoai}" th:errorclass="is-invalid"></p>
+                                            <p th:if="${#fields.hasErrors('sodienthoai')}" th:errors="*{sodienthoai}" style="width: 500px; color: red"></p>
+                                            </div>
                                         </div>
                                         <div th:object="${dc}">
                                         <div class="d-flex">
+                                            <div>
                                             <!-- Combobox cho Tỉnh/Thành phố -->
                                             <p>Tỉnh/Thành phố:
                                                 <select class="form-select form-select-sm mb-3" id="city" th:field="*{tinhthanhpho}"  aria-label=".form-select-sm" style="width: 500px">
                                                     <option value="" selected>Chọn tỉnh thành</option>
                                                 </select></p>
-                                            <p th:text="${tinhErr}"></p>
+                                            <p th:if="${#fields.hasErrors('tinhthanhpho')}" th:errors="*{tinhthanhpho}" style="width: 500px; color: red"></p>
+                                            </div>
+                                            <div>
                                             <p style="margin-left: 20px">Quận/Huyện:
                                                 <select class="form-select form-select-sm mb-3" id="district"  th:field="*{quanhuyen}" aria-label=".form-select-sm" style="width: 500px">
                                                     <option value="" selected>Chọn quận huyện</option>
                                                 </select></p>
-                                            <p th:text="${huyenErr}"></p>
+                                            <p th:if="${#fields.hasErrors('quanhuyen')}" th:errors="*{quanhuyen}" style="width: 500px; color: red"></p>
+                                            </div>
                                         </div>
 
                                         <div class="d-flex">
+                                            <div>
                                             <p>Xã/Phường:
                                                 <select class="form-select form-select-sm" id="ward"  th:field="*{xaphuong}" aria-label=".form-select-sm" style="width: 500px">
                                                     <option value="" selected>Chọn phường xã</option>
                                                 </select></p>
-                                            <p th:text="${xaErr}"></p>
+                                            <p th:if="${#fields.hasErrors('xaphuong')}" th:errors="*{xaphuong}" style="width: 500px; color: red"></p>
+                                            </div>
+                                            <div>
                                             <p style="margin-left: 20px">Tên Đường:
                                                 <input th:field="*{tenduong}" placeholder="Tên Đường" class="form-control"
                                                        style="width: 500px"></p>
-                                            <p th:text="${tenDuongErr}"></p>
+                                            <p th:if="${#fields.hasErrors('tenduong')}" th:errors="*{tenduong}" style="width: 500px; color: red"></p>
+                                            </div>
                                         </div>
 
                                         </div>
@@ -439,7 +455,7 @@
 <!--            var tracks = stream.getTracks();-->
 
 <!--            tracks.forEach(function(track) {-->
-<!--                track.stop();-->
+<!--              track.stop();-->
 <!--            });-->
 <!--        }-->
 <!--    });-->

@@ -2,6 +2,7 @@ package com.example.demo.service.impl;
 
 import com.example.demo.entity.NguoiDung;
 import com.example.demo.info.NguoiDungNVInfo;
+import com.example.demo.info.NhanVienSearch;
 import com.example.demo.repository.NguoiDungRepository1;
 import com.example.demo.service.NguoiDungService1;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,6 +90,16 @@ public class NguoiDungImpl1 implements NguoiDungService1 {
         message.setText(mailContent);
 //        message.setText(a);
         emailSender.send(message);
+    }
+
+    @Override
+    public List<NguoiDung> searchND(String ten, Boolean trangThai, java.sql.Date batDau, java.sql.Date ketThuc) {
+        return nguoiDungRepository.findByKey(ten,batDau,ketThuc,trangThai);
+    }
+
+    @Override
+    public List<NguoiDung> searchkey(NhanVienSearch nhanVienSearch) {
+        return nguoiDungRepository.findByKeys(nhanVienSearch.getKey(),nhanVienSearch.isTrangThai());
     }
 
     @Override

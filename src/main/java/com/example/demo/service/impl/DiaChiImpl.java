@@ -2,6 +2,7 @@ package com.example.demo.service.impl;
 
 import com.example.demo.entity.DiaChi;
 import com.example.demo.info.DiaChiNVInfo;
+import com.example.demo.info.NhanVienSearch;
 import com.example.demo.repository.DiaChiRepository;
 import com.example.demo.service.DiaChiService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,16 @@ public class DiaChiImpl implements DiaChiService {
     @Override
     public DiaChi search(Integer id) {
         return diaChiRepository.TimIdNguoiDung(id);
+    }
+
+    @Override
+    public List<DiaChi> searchND(String ten, Boolean trangThai, java.sql.Date batDau, java.sql.Date ketThuc) {
+        return diaChiRepository.findByKey(ten,batDau,ketThuc,trangThai);
+    }
+
+    @Override
+    public List<DiaChi> searchkey(NhanVienSearch nhanVienSearch) {
+        return diaChiRepository.findByKeys(nhanVienSearch.getKey(),nhanVienSearch.isTrangThai());
     }
 
 }

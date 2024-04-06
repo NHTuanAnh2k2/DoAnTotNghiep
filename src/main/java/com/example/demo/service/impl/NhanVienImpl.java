@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import com.example.demo.entity.NguoiDung;
 import com.example.demo.entity.NhanVien;
 import com.example.demo.info.NhanVienInfo;
+import com.example.demo.info.NhanVienSearch;
 import com.example.demo.repository.NhanVienRepository;
 import com.example.demo.service.NhanVienService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +71,26 @@ public class NhanVienImpl implements NhanVienService {
     @Override
     public NhanVien search(Integer id) {
         return nhanVienRepository.TimIdNguoiDung(id);
+    }
+
+    @Override
+    public List<NhanVien> searchND(String ten, Boolean trangThai, java.sql.Date batDau, java.sql.Date ketThuc) {
+        return nhanVienRepository.findByKey(ten,batDau,ketThuc,trangThai);
+    }
+
+    @Override
+    public List<NhanVien> searchKey(NhanVienSearch nhanVienSearch) {
+        return nhanVienRepository.findByKeys(nhanVienSearch.getKey(),nhanVienSearch.isTrangThai());
+    }
+
+    @Override
+    public List<NhanVien> timSDT(String sdt) {
+        return nhanVienRepository.timSDT(sdt);
+    }
+
+    @Override
+    public List<NhanVien> timEmail(String email) {
+        return nhanVienRepository.timEmail(email);
     }
 
 }

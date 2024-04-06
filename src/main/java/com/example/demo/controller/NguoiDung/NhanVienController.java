@@ -4,23 +4,26 @@ import com.example.demo.entity.*;
 import com.example.demo.info.DiaChiNVInfo;
 import com.example.demo.info.NguoiDungNVInfo;
 import com.example.demo.info.NhanVienInfo;
+import com.example.demo.info.NhanVienSearch;
 import com.example.demo.service.impl.DiaChiImpl;
 import com.example.demo.service.impl.NguoiDungImpl1;
 import com.example.demo.service.impl.NhanVienImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 public class NhanVienController {
@@ -33,7 +36,7 @@ public class NhanVienController {
 
 
     @GetMapping("/admin/qlnhanvien")
-    public String listnv(Model model,@ModelAttribute("nd") NguoiDungNVInfo nd) {
+    public String listnv(Model model,@ModelAttribute("nds") NhanVienSearch nd) {
         List<DiaChi> page = diaChi.getAll();
         List<NguoiDung> listnd = nguoiDung.getAll();
         List<NhanVien> listnv = nhanVien.getAll();
@@ -43,16 +46,13 @@ public class NhanVienController {
         return "admin/qlnhanvien";
     }
     @GetMapping("/timkiem")
-    public String list(Model model,@ModelAttribute("nd") NguoiDungNVInfo nd) {
-        List<DiaChi> page = new ArrayList<>();
-        if (nd.getHovaten()!= null){
-        page = diaChi.get(nd.getHovaten(), nd.getSodienthoai());}
-        else if (nd.getSodienthoai() != null){
-            page = diaChi.get(nd.getHovaten(), nd.getSodienthoai());
-        }else if (nd.getTrangthai() != null){
-            page = diaChi.getTT(nd.getTrangthai());
-        }
-        model.addAttribute("list", page);
+    public String list(Model model,@ModelAttribute("nds") NhanVienSearch nd) {
+        List<DiaChi> page = diaChi.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
+        List<NguoiDung> listnd = nguoiDung.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
+        List<NhanVien> listnv = nhanVien.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
+        model.addAttribute("items1", page);
+        model.addAttribute("items2", listnd);
+        model.addAttribute("items3", listnv);
         return "admin/qlnhanvien";
     }
     @GetMapping("/admin/addnhanvien")
@@ -65,12 +65,41 @@ public class NhanVienController {
     }
     @PostMapping("/addnv")
     public String addSave(
-                           @ModelAttribute("nd") @Valid  NguoiDungNVInfo nd,
-                           @ModelAttribute("dc") @Valid DiaChiNVInfo dc,
-                          Model model, BindingResult bindingResult,
-                          Errors error ) {
-        if(bindingResult.hasErrors()){
-            System.out.println("lỗi");
+            @Valid  @ModelAttribute("nd") NguoiDungNVInfo nd,
+            BindingResult ndBindingResult,
+            @Valid  @ModelAttribute("dc") DiaChiNVInfo dc,
+            BindingResult dcBindingResult,
+                          Model model, BindingResult result, Errors errors) {
+        nd.setHovaten(nd.getHovaten().trim().replaceAll("\\s+", " "));
+        nd.setEmail(nd.getEmail().trim().replaceAll("\\s+", " "));
+        nd.setCccd(nd.getCccd().trim().replaceAll("\\s+", " "));
+        nd.setSodienthoai(nd.getSodienthoai().trim().replaceAll("\\s+", " "));
+        dc.setTenduong(dc.getTenduong().trim().replaceAll("\\s+", " "));
+
+        List<NhanVien> timsdt = nhanVien.timSDT(nd.getSodienthoai());
+        List<NhanVien> timEm = nhanVien.timEmail(nd.getEmail());
+        if (!timsdt.isEmpty()) {
+            // Nếu tồn tại, trả về lỗi
+            ndBindingResult.rejectValue("sodienthoai", "error.sodienthoai", "Số điện thoại đã tồn tại");
+        }
+        if (!timEm.isEmpty()) {
+            // Nếu tồn tại, trả về lỗi
+            ndBindingResult.rejectValue("email", "error.email", "Email đã tồn tại");
+        }
+        if(nd.getNgaysinh() == null){
+            ndBindingResult.rejectValue("ngaysinh", "error.ngaysinh", "Không được để trống ngày sinh");
+            return "/admin/addnhanvien";
+        }
+        Calendar dob = Calendar.getInstance();
+        dob.setTime(nd.getNgaysinh());
+        Calendar today = Calendar.getInstance();
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+            ndBindingResult.rejectValue("ngaysinh", "error.ngaysinh", "Ngày sinh không được lớn hơn ngày hiện tại");
+        }else if(age < 18 || age > 40){
+            ndBindingResult.rejectValue("ngaysinh", "error.ngaysinh", "Nhân viên phải trên 18 tuổi");
+        }
+        if (ndBindingResult.hasErrors() || dcBindingResult.hasErrors()) {
             return "/admin/addnhanvien";
         }
         nguoiDung.add(nd);
@@ -84,7 +113,6 @@ public class NhanVienController {
         String subject = "Chúc mừng đã trở thành nhân viên của T&T shop";
         String mailType = "";
         String mailContent = "Tài khoản của bạn là: " + n.getTaikhoan() +"\nMật khẩu của bạn là: "+ n.getMatkhau();
-//        String a = "Mật khẩu của bạn là: " + n.getMatkhau();
         nguoiDung.sendEmail(to, subject, mailType, mailContent);
         return "redirect:/admin/qlnhanvien";
     }
