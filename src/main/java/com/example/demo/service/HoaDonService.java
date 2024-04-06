@@ -26,4 +26,6 @@ public interface HoaDonService {
 
     Page<HoaDon> LocTheoKhoangNgay(Date tu, Date den, Pageable p);
     Page<HoaDon> LocTheoLoaiDon( Boolean loaihd, Pageable p);
+    List<HoaDon> timTheoID(Integer id);
+    void capNhatHD(HoaDon hd);
 }

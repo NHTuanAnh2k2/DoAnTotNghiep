@@ -23,7 +23,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -499,9 +501,10 @@ public class hoaDonController {
         return "admin/qlchitiethoadon";
     }
 
-    //xác nhận ghi chú
+    //xác nhận đơn
     @GetMapping("xac-nhan-don")
     public String xacNhanHD(Model model, @ModelAttribute("ghichu") LichSuHoaDonCustom noidung) {
+        String ngaytao = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
         HoaDon hoadon = new HoaDon();
         hoadon.setId(idhdshowdetail);
         //fake id nhân viên thao tác
@@ -512,11 +515,63 @@ public class hoaDonController {
         lshd.setHoadon(hoadon);
         lshd.setNhanvien(nhanvien);
         lshd.setGhichu(noidung.getKey());
-        lshd.setTrangthai(1);
+        lshd.setNgaytao(Timestamp.valueOf(ngaytao));
+        List<HoaDon> lstSaveHD=dao.timTheoID(idhdshowdetail);
+        HoaDon hdTT=lstSaveHD.get(0);
+        Integer trangthaiset=hdTT.getTrangthai()+1;
+        hdTT.setTrangthai(trangthaiset);
+        dao.capNhatHD(hdTT);
+        lshd.setTrangthai(trangthaiset);
         daoLS.add(lshd);
         return "redirect:/hoa-don/showDetail";
     }
-
+    //xác nhận quay lại
+    @GetMapping("quay-lai")
+    public String quayLai(Model model, @ModelAttribute("ghichu") LichSuHoaDonCustom noidung) {
+        String ngaytao = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
+        HoaDon hoadon = new HoaDon();
+        hoadon.setId(idhdshowdetail);
+        //fake id nhân viên thao tác
+        NhanVien nhanvien = new NhanVien();
+        nhanvien.setId(1);
+        //end fake id nhân viên thao tác
+        LichSuHoaDon lshd = new LichSuHoaDon();
+        lshd.setHoadon(hoadon);
+        lshd.setNhanvien(nhanvien);
+        lshd.setGhichu(noidung.getKey());
+        lshd.setNgaytao(Timestamp.valueOf(ngaytao));
+        List<HoaDon> lstSaveHD=dao.timTheoID(idhdshowdetail);
+        HoaDon hdTT=lstSaveHD.get(0);
+        Integer trangthaiset=hdTT.getTrangthai()-1;
+        hdTT.setTrangthai(trangthaiset);
+        dao.capNhatHD(hdTT);
+        lshd.setTrangthai(trangthaiset);
+        daoLS.add(lshd);
+        return "redirect:/hoa-don/showDetail";
+    }
+    //xác nhận hủy
+    @GetMapping("huy-don")
+    public String huyDon(Model model, @ModelAttribute("ghichu") LichSuHoaDonCustom noidung) {
+        String ngaytao = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
+        HoaDon hoadon = new HoaDon();
+        hoadon.setId(idhdshowdetail);
+        //fake id nhân viên thao tác
+        NhanVien nhanvien = new NhanVien();
+        nhanvien.setId(1);
+        //end fake id nhân viên thao tác
+        LichSuHoaDon lshd = new LichSuHoaDon();
+        lshd.setHoadon(hoadon);
+        lshd.setNhanvien(nhanvien);
+        lshd.setGhichu(noidung.getKey());
+        lshd.setNgaytao(Timestamp.valueOf(ngaytao));
+        List<HoaDon> lstSaveHD=dao.timTheoID(idhdshowdetail);
+        HoaDon hdTT=lstSaveHD.get(0);
+        hdTT.setTrangthai(6);
+        dao.capNhatHD(hdTT);
+        lshd.setTrangthai(6);
+        daoLS.add(lshd);
+        return "redirect:/hoa-don/showDetail";
+    }
     // call sang bán tại quầy
     @GetMapping("ban-hang")
     public String taoMoiHoaDon(Model model) {

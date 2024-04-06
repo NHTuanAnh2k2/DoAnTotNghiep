@@ -65,4 +65,14 @@ public class HoaDonImp implements HoaDonService {
     public Page<HoaDon> LocTheoLoaiDon(Boolean loaihd, Pageable p) {
         return dao.findAllByLoaihoadon(loaihd,p);
     }
+
+    @Override
+    public List<HoaDon> timTheoID(Integer id) {
+        return dao.findAllById(id);
+    }
+
+    @Override
+    public void capNhatHD(HoaDon hd) {
+        dao.save(hd);
+    }
 }

@@ -150,14 +150,15 @@
                                                                     class="bi bi-cash-coin"></i></h1>
                                                             <h1 th:if="${a.trangthai==5}"><i
                                                                     class="bi bi-check-all"></i></h1>
-                                                            <h1 th:if="${a.trangthai==6}"><i
-                                                                    class="bi bi-x-circle-fill"></i></h1>
+                                                            <h1 th:if="${a.trangthai==6}"><i class="bi bi-trash"></i>
+                                                            </h1>
                                                             <h3 th:if="${a.trangthai==0}">Chờ xác nhận</h3>
                                                             <h3 th:if="${a.trangthai==1}">Đã xác nhận</h3>
                                                             <h3 th:if="${a.trangthai==2}">Chờ giao hàng</h3>
                                                             <h3 th:if="${a.trangthai==3}">Đang giao hàng</h3>
                                                             <h3 th:if="${a.trangthai==4}">Đã thanh toán</h3>
                                                             <h3 th:if="${a.trangthai==5}">Hoàn thành đơn</h3>
+                                                            <h3 th:if="${a.trangthai==6}">Đã hủy đơn</h3>
                                                             <p th:text="${a.ngaytao}"></p>
                                                         </div>
                                                     </div>
@@ -226,10 +227,14 @@
                                                                                     toán</td>
                                                                                 <td th:if="${a.trangthai==5}">đã hoàn
                                                                                     thành</td>
+                                                                                <td th:if="${a.trangthai==6}">đã hủy
+                                                                                </td>
                                                                                 <td
                                                                                     th:text="${ #dates.format(a.ngaytao, 'dd-MM-yyyy HH:mm:ss')}">
                                                                                 </td>
-                                                                                <td th:text="${a.nguoicapnhat}"></td>
+                                                                                <td
+                                                                                    th:text="${a.nhanvien.nguoidung.hovaten}">
+                                                                                </td>
                                                                                 <td th:text="${a.ghichu}"></td>
                                                                             </tr>
                                                                             </tfoot>
@@ -237,9 +242,7 @@
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Hủy</button>
-                                                                    <button type="button" class="btn btn-primary">Xác
-                                                                        nhận</button>
+                                                                        data-bs-dismiss="modal">Thoát</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -263,15 +266,13 @@
                                                                         th:object="${ghichu}">
                                                                         <p>Nhập ghi chú:
                                                                             <input placeholder="Ghi chú"
-                                                                                class="form-control"
-                                                                                th:field="*{key}">
+                                                                                class="form-control" th:field="*{key}">
                                                                         </p>
                                                                         <button type="button" class="btn btn-secondary"
                                                                             data-bs-dismiss="modal">Hủy</button>
                                                                         <button type="submit"
                                                                             class="btn btn-primary">Xác nhận</button>
                                                                     </form>
-
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -289,17 +290,19 @@
                                                                         aria-label="Close"></button>
                                                                 </div>
                                                                 <div class="modal-body">
+                                                                    <form th:action="@{huy-don}" method="get"
+                                                                    th:object="${ghichu}">
                                                                     <p>Nhập ghi chú:
                                                                         <input placeholder="Ghi chú"
-                                                                            class="form-control">
+                                                                            class="form-control" th:field="*{key}">
                                                                     </p>
-                                                                </div>
-                                                                <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary"
                                                                         data-bs-dismiss="modal">Hủy</button>
-                                                                    <button id="changeStatusButton" type="button"
+                                                                    <button type="submit"
                                                                         class="btn btn-primary">Xác nhận</button>
+                                                                </form>
                                                                 </div>
+                                                                
                                                             </div>
                                                         </div>
                                                     </div>
@@ -316,17 +319,19 @@
                                                                         aria-label="Close"></button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <p>Nhập ghi chú:
-                                                                        <input placeholder="Ghi chú"
-                                                                            class="form-control">
-                                                                    </p>
+                                                                    <form th:action="@{quay-lai}" method="get"
+                                                                        th:object="${ghichu}">
+                                                                        <p>Nhập ghi chú:
+                                                                            <input placeholder="Ghi chú"
+                                                                                class="form-control" th:field="*{key}">
+                                                                        </p>
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Hủy</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary">Xác nhận</button>
+                                                                    </form>
                                                                 </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Hủy</button>
-                                                                    <button id="changeStatusButton" type="button"
-                                                                        class="btn btn-primary">Xác nhận</button>
-                                                                </div>
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -369,17 +374,19 @@
                                                                     Chờ giao đơn
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <p>Nhập ghi chú:
-                                                                        <input placeholder="Ghi chú"
-                                                                            class="form-control">
-                                                                    </p>
+                                                                    <form th:action="@{xac-nhan-don}" method="get"
+                                                                        th:object="${ghichu}">
+                                                                        <p>Nhập ghi chú:
+                                                                            <input placeholder="Ghi chú"
+                                                                                class="form-control" th:field="*{key}">
+                                                                        </p>
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Hủy</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary">Xác nhận</button>
+                                                                    </form>
                                                                 </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Hủy</button>
-                                                                    <button id="changeStatusButton" type="button"
-                                                                        class="btn btn-primary">Xác nhận</button>
-                                                                </div>
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -396,17 +403,19 @@
                                                                         aria-label="Close"></button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <p>Nhập ghi chú:
-                                                                        <input placeholder="Ghi chú"
-                                                                            class="form-control">
-                                                                    </p>
+                                                                    <form th:action="@{xac-nhan-don}" method="get"
+                                                                        th:object="${ghichu}">
+                                                                        <p>Nhập ghi chú:
+                                                                            <input placeholder="Ghi chú"
+                                                                                class="form-control" th:field="*{key}">
+                                                                        </p>
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Hủy</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary">Xác nhận</button>
+                                                                    </form>
                                                                 </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Hủy</button>
-                                                                    <button id="changeStatusButton" type="button"
-                                                                        class="btn btn-primary">Xác nhận</button>
-                                                                </div>
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -424,17 +433,19 @@
                                                                         aria-label="Close"></button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <p>Nhập ghi chú:
-                                                                        <input placeholder="Ghi chú"
-                                                                            class="form-control">
-                                                                    </p>
+                                                                    <form th:action="@{xac-nhan-don}" method="get"
+                                                                        th:object="${ghichu}">
+                                                                        <p>Nhập ghi chú:
+                                                                            <input placeholder="Ghi chú"
+                                                                                class="form-control" th:field="*{key}">
+                                                                        </p>
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Hủy</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary">Xác nhận</button>
+                                                                    </form>
                                                                 </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Hủy</button>
-                                                                    <button id="changeStatusButton" type="button"
-                                                                        class="btn btn-primary">Xác nhận</button>
-                                                                </div>
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -452,17 +463,19 @@
                                                                         aria-label="Close"></button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <p>Nhập ghi chú:
-                                                                        <input placeholder="Ghi chú"
-                                                                            class="form-control">
-                                                                    </p>
+                                                                    <form th:action="@{xac-nhan-don}" method="get"
+                                                                        th:object="${ghichu}">
+                                                                        <p>Nhập ghi chú:
+                                                                            <input placeholder="Ghi chú"
+                                                                                class="form-control" th:field="*{key}">
+                                                                        </p>
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Hủy</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary">Xác nhận</button>
+                                                                    </form>
                                                                 </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Hủy</button>
-                                                                    <button id="changeStatusButton" type="button"
-                                                                        class="btn btn-primary">Xác nhận</button>
-                                                                </div>
+
                                                             </div>
                                                         </div>
                                                     </div>
