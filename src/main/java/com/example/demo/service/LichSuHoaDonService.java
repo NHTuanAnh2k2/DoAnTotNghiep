@@ -10,4 +10,5 @@ import java.util.List;
 
 public interface LichSuHoaDonService {
     List<LichSuHoaDon> timLichSuTheoIDHoaDon(HoaDon hd);
+    public void add(LichSuHoaDon hd);
 }

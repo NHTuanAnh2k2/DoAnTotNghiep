@@ -3,7 +3,9 @@ package com.example.demo.controller.hoadon;
 import com.example.demo.entity.HoaDon;
 import com.example.demo.entity.KhachHang;
 import com.example.demo.entity.LichSuHoaDon;
+import com.example.demo.entity.NhanVien;
 import com.example.demo.info.HoaDonCustom;
+import com.example.demo.info.LichSuHoaDonCustom;
 import com.example.demo.repository.hoadon.HoaDonRepository;
 import com.example.demo.service.HoaDonService;
 import com.example.demo.service.LichSuHoaDonService;
@@ -488,15 +490,32 @@ public class hoaDonController {
 
     //xem chi tiết hóa đơn
     @GetMapping("showDetail")
-    public String show(Model model) {
+    public String show(Model model, @ModelAttribute("ghichu") LichSuHoaDonCustom noidung) {
         HoaDon hoaDonXem = new HoaDon();
         hoaDonXem.setId(idhdshowdetail);
         List<LichSuHoaDon> lstLichSuHoaDon = daoLS.timLichSuTheoIDHoaDon(hoaDonXem);
         model.addAttribute("lstlichsu", lstLichSuHoaDon);
-        model.addAttribute("trangThaiHienTai",lstLichSuHoaDon.get(lstLichSuHoaDon.size()-1).getTrangthai());
+        model.addAttribute("trangThaiHienTai", lstLichSuHoaDon.get(lstLichSuHoaDon.size() - 1).getTrangthai());
         return "admin/qlchitiethoadon";
     }
 
+    //xác nhận ghi chú
+    @GetMapping("xac-nhan-don")
+    public String xacNhanHD(Model model, @ModelAttribute("ghichu") LichSuHoaDonCustom noidung) {
+        HoaDon hoadon = new HoaDon();
+        hoadon.setId(idhdshowdetail);
+        //fake id nhân viên thao tác
+        NhanVien nhanvien = new NhanVien();
+        nhanvien.setId(1);
+        //end fake id nhân viên thao tác
+        LichSuHoaDon lshd = new LichSuHoaDon();
+        lshd.setHoadon(hoadon);
+        lshd.setNhanvien(nhanvien);
+        lshd.setGhichu(noidung.getKey());
+        lshd.setTrangthai(1);
+        daoLS.add(lshd);
+        return "redirect:/hoa-don/showDetail";
+    }
 
     // call sang bán tại quầy
     @GetMapping("ban-hang")

@@ -23,4 +23,9 @@ public class LichSuHoaDonImp implements LichSuHoaDonService {
     public List<LichSuHoaDon> timLichSuTheoIDHoaDon(HoaDon hd) {
         return dao.findAllByHoadonOrderByNgaytao(hd);
     }
+
+    @Override
+    public void add(LichSuHoaDon hd) {
+        dao.save(hd);
+    }
 }
