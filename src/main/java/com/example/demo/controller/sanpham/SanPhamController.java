@@ -73,10 +73,10 @@ public class SanPhamController {
     //Hiển thị list sản phẩm
     @GetMapping("/listsanpham")
     public String hienthi(@RequestParam(defaultValue = "0") int p, @ModelAttribute("tim") SanPhamInfo info, Model model) {
-    Pageable pageable=PageRequest.of(p,20);
-        Page<Object[]> page=null;
+        Pageable pageable = PageRequest.of(p, 20);
+        Page<Object[]> page = null;
         if (info.getKey() != null) {
-          page = sanPhamRepositoty.findAllByTensanphamOrTrangthai(info.getKey(), info.getTrangthai(), pageable);
+            page = sanPhamRepositoty.findByTenSanPhamAndTrangThai("%" + info.getKey() + "%",info.getTrangthai(),pageable);
         } else {
             page = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc(pageable);
         }
@@ -159,8 +159,15 @@ public class SanPhamController {
 
 
     @PostMapping("/addImage")
-    public String addImage(Model model, @RequestParam(name = "anh") List<MultipartFile> anhFiles,
-                           @RequestParam Integer spctId) {
+    public String addImage(
+            Model model,
+            @RequestParam(name = "anh") List<MultipartFile> anhFiles,
+            @RequestParam Integer spctId
+//            @RequestParam("id") Integer id,
+//            @RequestParam("soluong") Integer soluong,
+//            @RequestParam("giatien") BigDecimal giatien
+    ) {
+//        sanPhamChiTietRepository.update(id, soluong, giatien);
         SanPhamChiTiet spct = sanPhamChiTietRepository.findById(spctId).orElse(null);
         if (spct != null) {
             for (MultipartFile anhFile : anhFiles) {
@@ -175,28 +182,21 @@ public class SanPhamController {
         }
         return "redirect:/listsanpham";
     }
-    private String saveImage(MultipartFile file) {
-        // Thư mục để lưu trữ ảnh trên server
-        String uploadDir = "G:\\Ki7\\DATN\\DATN\\src\\main\\resources\\static\\upload";
 
+    private String saveImage(MultipartFile file) {
+        String uploadDir = "G:\\Ki7\\DATN\\DATN\\src\\main\\resources\\static\\upload";
         try {
-            // Đảm bảo thư mục upload tồn tại
             File directory = new File(uploadDir);
             if (!directory.exists()) {
                 directory.mkdirs();
             }
-            // Lấy tên file gốc
             String originalFileName = file.getOriginalFilename();
-            // Tạo đường dẫn đến file trên server
             String filePath = uploadDir + File.separator + originalFileName;
-            // Lưu file vào thư mục trên server
             File dest = new File(filePath);
             file.transferTo(dest);
-            // Trả về đường dẫn của file
             return filePath;
         } catch (IOException e) {
             e.printStackTrace();
-            // Xử lý khi có lỗi xảy ra
             return null;
         }
     }

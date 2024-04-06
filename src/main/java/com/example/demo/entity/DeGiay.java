@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -21,17 +22,15 @@ public class DeGiay {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-//    @NotBlank(message = "Tên không được để trống")
     String ten;
     String nguoitao;
     String nguoicapnhat;
-    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    Date lancapnhatcuoi;
-    @Temporal(TemporalType.TIMESTAMP) // Sử dụng TemporalType.TIMESTAMP thay vì TemporalType.DATE
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") // Định dạng cho ngày giờ
-    private Date ngaytao;
-//    @NotNull(message = "Trạng thái không được để trống")
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    LocalDateTime lancapnhatcuoi;
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    LocalDateTime ngaytao;
     Boolean trangthai;
 
 }
