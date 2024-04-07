@@ -30,6 +30,7 @@ public class NhanVienImpl implements NhanVienService {
 
     @Override
     public NhanVien add(NhanVienInfo nhanVien) {
+        List<NhanVien> l = nhanVienRepository.getAllByOrderByIdDesc();
         NhanVien nv = new NhanVien();
         String ten = nhanVien.getIdnguoidung().getHovaten();
         String[] cacTu = ten.split("\\s+");
@@ -46,7 +47,8 @@ public class NhanVienImpl implements NhanVienService {
                 chuoiMoi.append(parts[i].charAt(0));
             }
         }
-        tenCuoi = tenCuoi + chuoiMoi.toString().toLowerCase();
+        int s = l.size() + 1;
+        tenCuoi = tenCuoi + chuoiMoi.toString().toLowerCase() + s;
         nv.setVaitro(true);
         nv.setManhanvien(tenCuoi);
         nv.setNgaytao(new Timestamp(new Date().getTime()));

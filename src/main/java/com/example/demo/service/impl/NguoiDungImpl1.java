@@ -40,7 +40,8 @@ public class NguoiDungImpl1 implements NguoiDungService1 {
     }
     public String tk(){
         List<NguoiDung> l = nguoiDungRepository.getAllByOrderByIdDesc();
-        String tk = "NV" + l.size();
+        int s = l.size() + 1;
+        String tk = "NV" + s;
         return tk;
     }
 
