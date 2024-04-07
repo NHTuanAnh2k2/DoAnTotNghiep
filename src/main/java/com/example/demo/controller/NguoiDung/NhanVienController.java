@@ -46,17 +46,16 @@ public class NhanVienController {
         return "admin/qlnhanvien";
     }
     @GetMapping("/timkiem")
-    public String list(Model model,@ModelAttribute("nds") NhanVienSearch nd) {
-//        if(nd.getBatdau() == null && nd.getKetthuc() == null){
-//            List<DiaChi> page = diaChi.searchkey(nd);
-//            List<NguoiDung> listnd = nguoiDung.searchkey(nd);
-//            List<NhanVien> listnv = nhanVien.searchKey(nd);
-//            model.addAttribute("items1", page);
-//            model.addAttribute("items2", listnd);
-//            model.addAttribute("items3", listnv);
-//            return "admin/qlnhanvien";
-//        }else
-            if (nd.getBatdau() != null && nd.getKetthuc() == null){
+    public String list(Model model,@Valid @ModelAttribute("nds") NhanVienSearch nd,BindingResult ndBindingResult) {
+        if(nd.getBatdau() == "" && nd.getKetthuc() == ""){
+            List<DiaChi> page = diaChi.searchkey(nd);
+            List<NguoiDung> listnd = nguoiDung.searchkey(nd);
+            List<NhanVien> listnv = nhanVien.searchKey(nd);
+            model.addAttribute("items1", page);
+            model.addAttribute("items2", listnd);
+            model.addAttribute("items3", listnv);
+            return "admin/qlnhanvien";
+        }else if (nd.getBatdau() != "" && nd.getKetthuc() == ""){
             List<DiaChi> page = diaChi.searchStart(nd.getKey(),nd.isTrangThai(),Date.valueOf(nd.getBatdau()));
             List<NguoiDung> listnd = nguoiDung.searchStart(nd.getKey(),nd.isTrangThai(),Date.valueOf(nd.getBatdau()));
             List<NhanVien> listnv = nhanVien.searchStart(nd.getKey(),nd.isTrangThai(),Date.valueOf(nd.getBatdau()));
@@ -64,33 +63,27 @@ public class NhanVienController {
             model.addAttribute("items2", listnd);
             model.addAttribute("items3", listnv);
             return "admin/qlnhanvien";
-//        }else if (nd.getKetthuc() != null && nd.getBatdau() == null){
-//            List<DiaChi> page = diaChi.searchEnd(nd.getKey(),nd.isTrangThai(),Date.valueOf(nd.getKetthuc()));
-//            List<NguoiDung> listnd = nguoiDung.searchEnd(nd.getKey(),nd.isTrangThai(),Date.valueOf(nd.getKetthuc()));
-//            List<NhanVien> listnv = nhanVien.searchEnd(nd.getKey(),nd.isTrangThai(),Date.valueOf(nd.getKetthuc()));
-//            model.addAttribute("items1", page);
-//            model.addAttribute("items2", listnd);
-//            model.addAttribute("items3", listnv);
-//            return "admin/qlnhanvien";
-//        }else if (nd.getKetthuc() != null && nd.getBatdau() != null) {
-//            try {
-//                List<DiaChi> page = diaChi.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
-//                List<NguoiDung> listnd = nguoiDung.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
-//                List<NhanVien> listnv = nhanVien.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
-//                model.addAttribute("items1", page);
-//                model.addAttribute("items2", listnd);
-//                model.addAttribute("items3", listnv);
-//                return "admin/qlnhanvien";
-//            }catch (Exception e){
-//
-//            }
-//            List<DiaChi> page = diaChi.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
-//            List<NguoiDung> listnd = nguoiDung.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
-//            List<NhanVien> listnv = nhanVien.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
-//            model.addAttribute("items1", page);
-//            model.addAttribute("items2", listnd);
-//            model.addAttribute("items3", listnv);
-//            return "admin/qlnhanvien";
+        }else if (nd.getKetthuc() != "" && nd.getBatdau() == ""){
+            List<DiaChi> page = diaChi.searchEnd(nd.getKey(),nd.isTrangThai(),Date.valueOf(nd.getKetthuc()));
+            List<NguoiDung> listnd = nguoiDung.searchEnd(nd.getKey(),nd.isTrangThai(),Date.valueOf(nd.getKetthuc()));
+            List<NhanVien> listnv = nhanVien.searchEnd(nd.getKey(),nd.isTrangThai(),Date.valueOf(nd.getKetthuc()));
+            model.addAttribute("items1", page);
+            model.addAttribute("items2", listnd);
+            model.addAttribute("items3", listnv);
+            return "admin/qlnhanvien";
+        }else if (nd.getKetthuc() != "" && nd.getBatdau() != "") {
+            Date a = Date.valueOf(nd.getBatdau());
+            Date b = Date.valueOf(nd.getKetthuc());
+            if (!a.before(b)){
+                ndBindingResult.rejectValue("ketthuc", "error.ketthuc", "Ngày đến phải sau ngày bắt đầu");
+            }
+            List<DiaChi> page = diaChi.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
+            List<NguoiDung> listnd = nguoiDung.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
+            List<NhanVien> listnv = nhanVien.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
+            model.addAttribute("items1", page);
+            model.addAttribute("items2", listnd);
+            model.addAttribute("items3", listnv);
+            return "admin/qlnhanvien";
         }
         return "admin/qlnhanvien";
     }
@@ -129,15 +122,18 @@ public class NhanVienController {
             ndBindingResult.rejectValue("ngaysinh", "error.ngaysinh", "Không được để trống ngày sinh");
             return "/admin/addnhanvien";
         }
-        Calendar dob = Calendar.getInstance();
-        dob.setTime(nd.getNgaysinh());
-        Calendar today = Calendar.getInstance();
-        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
-        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
-            ndBindingResult.rejectValue("ngaysinh", "error.ngaysinh", "Ngày sinh không được lớn hơn ngày hiện tại");
-        }else if(age < 18 || age > 40){
-            ndBindingResult.rejectValue("ngaysinh", "error.ngaysinh", "Nhân viên phải trên 18 tuổi");
+        if(nd.getNgaysinh() != null){
+            Calendar dob = Calendar.getInstance();
+            dob.setTime(nd.getNgaysinh());
+            Calendar today = Calendar.getInstance();
+            int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+            if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+                ndBindingResult.rejectValue("ngaysinh", "error.ngaysinh", "Ngày sinh không được lớn hơn ngày hiện tại");
+            }else if(age < 18 || age > 40){
+                ndBindingResult.rejectValue("ngaysinh", "error.ngaysinh", "Nhân viên phải trên 18 tuổi");
+            }
         }
+
         if (ndBindingResult.hasErrors() || dcBindingResult.hasErrors()) {
             return "/admin/addnhanvien";
         }

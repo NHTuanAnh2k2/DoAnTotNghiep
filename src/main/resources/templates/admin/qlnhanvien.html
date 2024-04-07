@@ -43,7 +43,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <form  th:action="@{/timkiem}" method="get" th:object="${nds}">
+                                <form  th:action="@{/timkiem}" id="myForm" method="get" th:object="${nds}">
                                 <h3 class="card-title">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
                                         <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
@@ -51,32 +51,58 @@
                                     Bộ lọc
                                 </h3>
                                 <br>
-                                <h3 class="card-title">Tìm kiếm:
-                                    <input  th:field="*{key}" type="text" placeholder="Tìm kiếm tên và SĐT" class="form-control">
-                                </h3>
-                                <h3 class="card-title" style="margin-left: 20px">Trạng thái:
-                                    <select class="form-control"  th:field="*{trangThai}">
-                                        <option  value="false">Nghỉ làm</option>
-                                        <option  value="true">Làm việc</option>
-                                    </select>
-                                </h3>
-<!--                                <h3 class="card-title" style="margin-left: 20px">Ngày sinh:-->
-                                    <h3 class="card-title" style="margin-left: 20px">Từ ngày:
-                                        <input type="date" th:field="*{batdau}" class="form-control">
-                                    </h3>
-                                    <h3 class="card-title" style="margin-left: 20px">Đến ngày:
-                                        <input type="date" th:field="*{ketthuc}" class="form-control">
-                                    </h3>
-<!--                                <input type="date" th:field="*{batdau}" class="form-control">-->
-<!--                                <input type="date" th:field="*{ketthuc}" class="form-control">-->
+                                    <hr class="border border-danger border-2 opacity-50">
+<!--                                    <form th:action="@{loc}" method="get" th:object="${hdcustom}">-->
+                                        <div class="row g-3">
+                                            <div class=" align-items-center col-lg-6 col-md-6">
+                                                <div class="col-auto">
+                                                    <label class="col-form-label">Tìm kiếm:</label>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <input th:field="*{key}" type="text" class="form-control"
+                                                           placeholder="Nhập tên hoặc sđt">
+                                                </div>
+                                            </div>
+                                            <div class="align-items-center col-lg-6 col-md-6">
+                                                <div class="col-auto">
+                                                    <label class="col-form-label">Trạng thái nhân viên:</label>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <select class="form-control" th:field="*{trangThai}">
+<!--                                                        <option value="null">Tất cả</option>-->
+                                                        <option value="true">Làm việc</option>
+                                                        <option value="false">Nghỉ làm</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class=" align-items-center col-lg-6 col-md-6">
+                                                <div class="col-auto">
+                                                    <label class="col-form-label">Từ:</label>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <input type="date" class="form-control" th:field="*{batdau}" th:value="${null}">
+<!--                                                    <i th:if="${errdate==1}" class="text-danger">Ngày bắt đầu không lớn-->
+<!--                                                        hơn ngày kết thúc!!</i>-->
+                                                </div>
+                                            </div>
+                                            <div class=" align-items-center col-lg-6 col-md-6">
+                                                <div class="col-auto">
+                                                    <label class="col-form-label">Đến:</label>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <input type="date" class="form-control" th:field="*{ketthuc}">
+                                                    <p th:if="${#fields.hasErrors('ketthuc')}" th:errors="*{ketthuc}" style="width: 500px; color: red"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="d-flex justify-content-between"
+                                             style="margin-right: 35%; margin-left: 35%;">
+                                            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                                            <button type="reset" class="btn btn-danger"  onclick="clearForm()">Làm mới</button>
 
-<!--                                </h3>-->
-                                <br>
-                                <br>
-                                <br>
-                                <button style="margin-left: 100px" class="btn btn-primary">Tìm kiếm</button>
-                                <button class="btn btn-danger">Làm mới bộ lọc</button>
-                                </form>
+                                        </div>
+                                    </form>
                             </div>
 
                         </div>
@@ -114,7 +140,7 @@
                                         <th>STT</th>
                                         <th>Mã nhân viên</th>
                                         <th>Tên nhân viên</th>
-                                        <th>CCCD</th>
+<!--                                        <th>CCCD</th>-->
                                         <th>Số điện thoại</th>
                                         <th>Ngày sinh</th>
                                         <th>Giới tính</th>
@@ -128,7 +154,7 @@
                                     <td th:text="${i+1}"></td>
                                     <td th:text="${items3[i].manhanvien}"></td>
                                     <td th:text="${items2[i].hovaten}"></td>
-                                    <td th:text="${items2[i].cccd}"></td>
+<!--                                    <td th:text="${items2[i].cccd}"></td>-->
                                     <td th:text="${items2[i].sodienthoai}"></td>
                                     <td th:text="${items2[i].ngaysinh}"></td>
                                     <td th:text="${items2[i].gioitinh ? 'Nam' : 'Nữ'}"></td>
@@ -169,6 +195,15 @@
     <nav th:replace="~{/layoutadmin/footer.html}"></nav>
 </div>
 <!--script-->
+<script>
+    function clearForm() {
+        // Lấy ra form theo id
+        var form = document.getElementById("myForm");
+
+        // Đặt lại giá trị của từng trường nhập liệu về rỗng
+        form.reset();
+    }
+</script>
 <nav th:replace="~{/layoutadmin/script.html}"></nav>
 <!--end-->
 </body>
