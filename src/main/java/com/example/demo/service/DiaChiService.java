@@ -14,6 +14,8 @@ public interface DiaChiService {
     public DiaChi add(DiaChiNVInfo diaChi);
     public DiaChi update(DiaChiNVInfo diaChi, Integer id);
     DiaChi search(Integer id);
-    List<DiaChi> searchND(String ten, Boolean trangThai, java.sql.Date batDau, Date ketThuc);
+    List<DiaChi> searchND(String ten, Boolean trangThai, Date batDau, Date ketThuc);
     List<DiaChi> searchkey(NhanVienSearch nhanVienSearch);
+    List<DiaChi> searchStart(String ten, Boolean trangThai, Date batDau);
+    List<DiaChi> searchEnd(String ten, Boolean trangThai, Date ketThuc);
 }

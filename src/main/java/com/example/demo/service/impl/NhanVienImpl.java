@@ -84,6 +84,16 @@ public class NhanVienImpl implements NhanVienService {
     }
 
     @Override
+    public List<NhanVien> searchStart(String ten, Boolean trangThai, java.sql.Date batDau) {
+        return nhanVienRepository.findByStart(ten,batDau,trangThai);
+    }
+
+    @Override
+    public List<NhanVien> searchEnd(String ten, Boolean trangThai, java.sql.Date ketThuc) {
+        return nhanVienRepository.findByEnd(ten,ketThuc,trangThai);
+    }
+
+    @Override
     public List<NhanVien> timSDT(String sdt) {
         return nhanVienRepository.timSDT(sdt);
     }

@@ -17,6 +17,10 @@ public interface NhanVienRepository extends JpaRepository<NhanVien,Integer> {
     List<NhanVien> getAllByOrderByIdDesc();
     @Query("SELECT c FROM NhanVien c  WHERE c.nguoidung.id = ?1")
     NhanVien TimIdNguoiDung(Integer id);
+    @Query("SELECT N FROM NhanVien N WHERE N.nguoidung.sodienthoai = ?1")
+    List<NhanVien> timSDT(String sdt);
+    @Query("SELECT N FROM NhanVien N WHERE N.nguoidung.email = ?1")
+    List<NhanVien> timEmail(String email);
     @Query("SELECT u FROM NhanVien u WHERE " +
             "(:name is null or u.nguoidung.hovaten LIKE %:name% or u.nguoidung.sodienthoai LIKE %:name%) and " +
             "(:startDate is null or u.nguoidung.ngaysinh >= :startDate) and " +
@@ -26,13 +30,23 @@ public interface NhanVienRepository extends JpaRepository<NhanVien,Integer> {
                            @Param("startDate") Date startDate,
                            @Param("endDate")  Date endDate,
                              @Param("status") boolean status);
-    @Query("SELECT N FROM NhanVien N WHERE N.nguoidung.sodienthoai = ?1")
-    List<NhanVien> timSDT(String sdt);
-    @Query("SELECT N FROM NhanVien N WHERE N.nguoidung.email = ?1")
-    List<NhanVien> timEmail(String email);
     @Query("SELECT u FROM NhanVien u WHERE " +
             "(:name is null or u.nguoidung.hovaten LIKE %:name% or u.nguoidung.sodienthoai LIKE %:name%) and " +
             "(:status is null or u.nguoidung.trangthai = :status)")
     List<NhanVien> findByKeys(@Param("name") String name,
+                             @Param("status") boolean status);
+    @Query("SELECT u FROM NhanVien u WHERE " +
+            "(:name is null or u.nguoidung.hovaten LIKE %:name% or u.nguoidung.sodienthoai LIKE %:name%) and " +
+            "(:startDate is null or u.nguoidung.ngaysinh >= :startDate) and " +
+            "(:status is null or u.nguoidung.trangthai = :status)")
+    List<NhanVien> findByStart(@Param("name") String name,
+                             @Param("startDate") Date startDate,
+                             @Param("status") boolean status);
+    @Query("SELECT u FROM NhanVien u WHERE " +
+            "(:name is null or u.nguoidung.hovaten LIKE %:name% or u.nguoidung.sodienthoai LIKE %:name%) and " +
+            "(:endDate is null or u.nguoidung.ngaysinh <= :endDate) and " +
+            "(:status is null or u.nguoidung.trangthai = :status)")
+    List<NhanVien> findByEnd(@Param("name") String name,
+                             @Param("endDate")  Date endDate,
                              @Param("status") boolean status);
 }

@@ -34,5 +34,18 @@ public interface DiaChiRepository extends JpaRepository<DiaChi, Integer> {
             "(:status is null or u.nguoidung.trangthai = :status)")
     List<DiaChi> findByKeys(@Param("name") String name,
                            @Param("status") boolean status);
-
+    @Query("SELECT u FROM DiaChi u WHERE " +
+            "(:name is null or u.nguoidung.hovaten LIKE %:name% or u.nguoidung.sodienthoai LIKE %:name%) and " +
+            "(:startDate is null or u.nguoidung.ngaysinh >= :startDate) and " +
+            "(:status is null or u.nguoidung.trangthai = :status)")
+    List<DiaChi> findByStart(@Param("name") String name,
+                           @Param("startDate") Date startDate,
+                           @Param("status") boolean status);
+    @Query("SELECT u FROM DiaChi u WHERE " +
+            "(:name is null or u.nguoidung.hovaten LIKE %:name% or u.nguoidung.sodienthoai LIKE %:name%) and " +
+            "(:endDate is null or u.nguoidung.ngaysinh <= :endDate) and " +
+            "(:status is null or u.nguoidung.trangthai = :status)")
+    List<DiaChi> findByEnd(@Param("name") String name,
+                           @Param("endDate") Date endDate,
+                           @Param("status") boolean status);
 }

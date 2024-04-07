@@ -75,4 +75,14 @@ public class DiaChiImpl implements DiaChiService {
         return diaChiRepository.findByKeys(nhanVienSearch.getKey(),nhanVienSearch.isTrangThai());
     }
 
+    @Override
+    public List<DiaChi> searchStart(String ten, Boolean trangThai, java.sql.Date batDau) {
+        return diaChiRepository.findByStart(ten,batDau,trangThai);
+    }
+
+    @Override
+    public List<DiaChi> searchEnd(String ten, Boolean trangThai, java.sql.Date ketThuc) {
+        return diaChiRepository.findByEnd(ten,ketThuc,trangThai);
+    }
+
 }

@@ -56,21 +56,21 @@
                                 </h3>
                                 <h3 class="card-title" style="margin-left: 20px">Trạng thái:
                                     <select class="form-control"  th:field="*{trangThai}">
-<!--                                        <option selected>Chọn</option>-->
                                         <option  value="false">Nghỉ làm</option>
                                         <option  value="true">Làm việc</option>
                                     </select>
                                 </h3>
-                                <h3 class="card-title" style="margin-left: 20px">Ngày sinh:
-                                <input type="date" th:field="*{batdau}" class="form-control">
-<!--                                    <input type="date" th:if="${nds.batdau.isPresent()}" th:field="*{batdau.get()}"/><br>-->
-<!--                                    <input type="date" th:unless="${nds.batdau.isPresent()}" /><br>-->
+<!--                                <h3 class="card-title" style="margin-left: 20px">Ngày sinh:-->
+                                    <h3 class="card-title" style="margin-left: 20px">Từ ngày:
+                                        <input type="date" th:field="*{batdau}" class="form-control">
+                                    </h3>
+                                    <h3 class="card-title" style="margin-left: 20px">Đến ngày:
+                                        <input type="date" th:field="*{ketthuc}" class="form-control">
+                                    </h3>
+<!--                                <input type="date" th:field="*{batdau}" class="form-control">-->
+<!--                                <input type="date" th:field="*{ketthuc}" class="form-control">-->
 
-                                    <input type="date" th:field="*{ketthuc}" class="form-control">
-<!--                                    <input type="date" th:if="${nds.ketthuc.isPresent()}" th:field="*{ketthuc.get()}"/><br>-->
-<!--                                    <input type="date" th:unless="${nds.ketthuc.isPresent()}" /><br>-->
-
-                                </h3>
+<!--                                </h3>-->
                                 <br>
                                 <br>
                                 <br>
@@ -140,11 +140,10 @@
                                                 th:text="${items2[i].trangthai ? 'Làm việc' : 'Nghỉ'}"></button>
                                     </td>
                                     <td>
-                                        <a  th:href="@{/updateNhanVien/{id}(id=${items2[i].id})}" class="btn btn-danger">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                 fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
-                                                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                        <a  th:href="@{/updateNhanVien/{id}(id=${items2[i].id})}" class="btn btn-outline-info">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-vector-pen" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd" d="M10.646.646a.5.5 0 0 1 .708 0l4 4a.5.5 0 0 1 0 .708l-1.902 1.902-.829 3.313a1.5 1.5 0 0 1-1.024 1.073L1.254 14.746 4.358 4.4A1.5 1.5 0 0 1 5.43 3.377l3.313-.828zm-1.8 2.908-3.173.793a.5.5 0 0 0-.358.342l-2.57 8.565 8.567-2.57a.5.5 0 0 0 .34-.357l.794-3.174-3.6-3.6z"/>
+                                                <path fill-rule="evenodd" d="M2.832 13.228 8 9a1 1 0 1 0-1-1l-4.228 5.168-.026.086z"/>
                                             </svg>
                                         </a>
 

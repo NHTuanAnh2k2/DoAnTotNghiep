@@ -47,12 +47,51 @@ public class NhanVienController {
     }
     @GetMapping("/timkiem")
     public String list(Model model,@ModelAttribute("nds") NhanVienSearch nd) {
-        List<DiaChi> page = diaChi.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
-        List<NguoiDung> listnd = nguoiDung.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
-        List<NhanVien> listnv = nhanVien.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
-        model.addAttribute("items1", page);
-        model.addAttribute("items2", listnd);
-        model.addAttribute("items3", listnv);
+//        if(nd.getBatdau() == null && nd.getKetthuc() == null){
+//            List<DiaChi> page = diaChi.searchkey(nd);
+//            List<NguoiDung> listnd = nguoiDung.searchkey(nd);
+//            List<NhanVien> listnv = nhanVien.searchKey(nd);
+//            model.addAttribute("items1", page);
+//            model.addAttribute("items2", listnd);
+//            model.addAttribute("items3", listnv);
+//            return "admin/qlnhanvien";
+//        }else
+            if (nd.getBatdau() != null && nd.getKetthuc() == null){
+            List<DiaChi> page = diaChi.searchStart(nd.getKey(),nd.isTrangThai(),Date.valueOf(nd.getBatdau()));
+            List<NguoiDung> listnd = nguoiDung.searchStart(nd.getKey(),nd.isTrangThai(),Date.valueOf(nd.getBatdau()));
+            List<NhanVien> listnv = nhanVien.searchStart(nd.getKey(),nd.isTrangThai(),Date.valueOf(nd.getBatdau()));
+            model.addAttribute("items1", page);
+            model.addAttribute("items2", listnd);
+            model.addAttribute("items3", listnv);
+            return "admin/qlnhanvien";
+//        }else if (nd.getKetthuc() != null && nd.getBatdau() == null){
+//            List<DiaChi> page = diaChi.searchEnd(nd.getKey(),nd.isTrangThai(),Date.valueOf(nd.getKetthuc()));
+//            List<NguoiDung> listnd = nguoiDung.searchEnd(nd.getKey(),nd.isTrangThai(),Date.valueOf(nd.getKetthuc()));
+//            List<NhanVien> listnv = nhanVien.searchEnd(nd.getKey(),nd.isTrangThai(),Date.valueOf(nd.getKetthuc()));
+//            model.addAttribute("items1", page);
+//            model.addAttribute("items2", listnd);
+//            model.addAttribute("items3", listnv);
+//            return "admin/qlnhanvien";
+//        }else if (nd.getKetthuc() != null && nd.getBatdau() != null) {
+//            try {
+//                List<DiaChi> page = diaChi.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
+//                List<NguoiDung> listnd = nguoiDung.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
+//                List<NhanVien> listnv = nhanVien.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
+//                model.addAttribute("items1", page);
+//                model.addAttribute("items2", listnd);
+//                model.addAttribute("items3", listnv);
+//                return "admin/qlnhanvien";
+//            }catch (Exception e){
+//
+//            }
+//            List<DiaChi> page = diaChi.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
+//            List<NguoiDung> listnd = nguoiDung.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
+//            List<NhanVien> listnv = nhanVien.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
+//            model.addAttribute("items1", page);
+//            model.addAttribute("items2", listnd);
+//            model.addAttribute("items3", listnv);
+//            return "admin/qlnhanvien";
+        }
         return "admin/qlnhanvien";
     }
     @GetMapping("/admin/addnhanvien")
@@ -71,9 +110,9 @@ public class NhanVienController {
             BindingResult dcBindingResult,
                           Model model, BindingResult result, Errors errors) {
         nd.setHovaten(nd.getHovaten().trim().replaceAll("\\s+", " "));
-        nd.setEmail(nd.getEmail().trim().replaceAll("\\s+", " "));
-        nd.setCccd(nd.getCccd().trim().replaceAll("\\s+", " "));
-        nd.setSodienthoai(nd.getSodienthoai().trim().replaceAll("\\s+", " "));
+        nd.setEmail(nd.getEmail().trim().replaceAll("\\s+", ""));
+        nd.setCccd(nd.getCccd().trim().replaceAll("\\s+", ""));
+        nd.setSodienthoai(nd.getSodienthoai().trim().replaceAll("\\s+", ""));
         dc.setTenduong(dc.getTenduong().trim().replaceAll("\\s+", " "));
 
         List<NhanVien> timsdt = nhanVien.timSDT(nd.getSodienthoai());

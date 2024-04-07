@@ -18,12 +18,12 @@ public interface NguoiDungRepository1 extends JpaRepository<NguoiDung, Integer> 
     @Query("SELECT c FROM NguoiDung c WHERE c.id = ?1")
     NguoiDung searchId(Integer id);
     List<NguoiDung> getAllByOrderByIdDesc();
-List<NguoiDung> getNhanVienByTrangthai(Boolean trangThai);
+    List<NguoiDung> getNhanVienByTrangthai(Boolean trangThai);
     @Query("SELECT u FROM NguoiDung u WHERE " +
             "(:name is null or u.hovaten LIKE %:name% or u.sodienthoai LIKE %:name%) and " +
             "(:startDate is null or u.ngaysinh >= :startDate) and " +
             "(:endDate is null or u.ngaysinh <= :endDate) and " +
-    "(:status is null or u.trangthai = :status)")
+            "(:status is null or u.trangthai = :status)")
     List<NguoiDung> findByKey(@Param("name") String name,
                            @Param("startDate") Date startDate,
                            @Param("endDate") Date endDate,
@@ -33,5 +33,18 @@ List<NguoiDung> getNhanVienByTrangthai(Boolean trangThai);
             "(:status is null or u.trangthai = :status)")
     List<NguoiDung> findByKeys(@Param("name") String name,
                               @Param("status") boolean status);
-
+    @Query("SELECT u FROM NguoiDung u WHERE " +
+            "(:name is null or u.hovaten LIKE %:name% or u.sodienthoai LIKE %:name%) and " +
+            "(:startDate is null or u.ngaysinh >= :startDate) and " +
+            "(:status is null or u.trangthai = :status)")
+    List<NguoiDung> findByStart(@Param("name") String name,
+                              @Param("startDate") Date startDate,
+                              @Param("status") boolean status);
+    @Query("SELECT u FROM NguoiDung u WHERE " +
+            "(:name is null or u.hovaten LIKE %:name% or u.sodienthoai LIKE %:name%) and " +
+            "(:endDate is null or u.ngaysinh <= :endDate) and " +
+            "(:status is null or u.trangthai = :status)")
+    List<NguoiDung> findByEnd(@Param("name") String name,
+                                @Param("endDate") Date endDate,
+                                @Param("status") boolean status);
 }
