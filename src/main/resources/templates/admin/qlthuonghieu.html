@@ -66,12 +66,11 @@
                                 <br>
                                 <form method="get" th:object="${tim}">
                                     <h3 class="card-title">Tìm kiếm:
-                                        <input type="text" placeholder="Tìm kiếm thương hiệu" class="form-control"
-                                               name="key">
+                                        <input type="text" id="searchInput" placeholder="Tìm kiếm thương hiệu" class="form-control" name="key">
                                     </h3>
 
                                     <h3 class="card-title" style="margin-left: 20px">Trạng thái:
-                                        <select class="form-control" name="trangthai" style="color:rgb(86,158,43)">
+                                        <select class="form-control" id="statusSelect" name="trangthai" style="color:rgb(86,158,43)">
                                             <option value="">-----</option>
                                             <option value="1" style="color:rgb(86,158,43)">Đang kinh doanh</option>
                                             <option value="0" style="color:rgb(86,158,43)">Ngừng kinh doanh</option>
@@ -80,8 +79,8 @@
                                     <br>
                                     <br>
                                     <br>
-                                    <button type="submit" style="margin-left: 100px" class="btn btn-primary">Tìm kiếm
-                                    </button>
+                                    <button type="submit" style="margin-left: 100px" class="btn btn-primary">Tìm kiếm</button>
+                                    <input type="button" class="btn btn-danger" value="Làm mới bộ lọc" onclick="clearSearch()" />
                                 </form>
                             </div>
 
@@ -141,12 +140,6 @@
                                             </form>
 
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                Hủy
-                                            </button>
-                                            <button type="button" class="btn btn-primary">Thêm</button>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -158,22 +151,17 @@
                                     <tr>
                                         <th>STT</th>
                                         <th>Tên thương hiệu</th>
-                                        <th>Người tạo</th>
-                                        <th>Người cập nhật</th>
-                                        <th>Lần cập nhật cuối</th>
                                         <th>Ngày tạo</th>
                                         <th>Trạng thái</th>
                                         <th>Hành động</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="th,stt:${page.content}">
+                                    <tr th:each="th,stt:${page}">
                                         <td th:text="${stt.index+1}"></td>
                                         <td th:text="${th.ten}"></td>
-                                        <td th:text="${th.nguoitao}"></td>
-                                        <td th:text="${th.nguoicapnhat}"></td>
-                                        <td th:text="${th.lancapnhatcuoi}"></td>
-                                        <td th:text="${th.ngaytao}"></td>
+                                        <td th:text="${#temporals.format(th.ngaytao, 'dd-MM-yyyy HH:mm:ss')}"></td>
+
                                         <td>
                                             <button style="border-radius: 50px"
                                                     class="btn btn-xs custom-button no-border-button"
@@ -183,7 +171,7 @@
 
 
                                         <td>
-                                            <a class="btn btn-danger">
+                                            <a class="btn btn-outline-danger">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                      fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
@@ -216,5 +204,11 @@
 <!--script-->
 <nav th:replace="~{/layoutadmin/script.html}"></nav>
 <!--end-->
+<script>
+    function clearSearch() {
+        document.getElementById("searchInput").value = "";
+        document.getElementById("statusSelect").selectedIndex = 0;
+    }
+</script>
 </body>
 </html>

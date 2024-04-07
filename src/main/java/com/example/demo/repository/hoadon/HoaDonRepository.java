@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface HoaDonRepository extends JpaRepository<HoaDon, Integer> {
@@ -18,4 +19,13 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Integer> {
     Page<HoaDon> findAllByTrangthai(Integer trangThai, Pageable p);
 
     Long countAllByTrangthai(Integer trangThai);
+
+    Page<HoaDon> findAllByLoaihoadonAndNgaytaoGreaterThanEqualAndNgaytaoLessThanEqual(Boolean loaihd, Date tu, Date den, Pageable p);
+
+    Page<HoaDon> findAllByTrangthaiAndNgaytaoGreaterThanEqualAndNgaytaoLessThanEqual(Integer trangThai, Date tu, Date den, Pageable p);
+    Page<HoaDon> findAllByTrangthaiAndLoaihoadon(Integer trangThai, Boolean loaihd, Pageable p);
+    Page<HoaDon> findAllByNgaytaoGreaterThanEqualAndNgaytaoLessThanEqual(Date tu, Date den, Pageable p);
+
+    Page<HoaDon> findAllByLoaihoadon( Boolean loaihd, Pageable p);
+    List<HoaDon> findAllById(Integer id);
 }

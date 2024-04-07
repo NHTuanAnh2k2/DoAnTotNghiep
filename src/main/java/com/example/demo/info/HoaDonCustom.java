@@ -14,10 +14,8 @@ import java.sql.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class HoaDonCustom {
-    @NotBlank(message = "Vui lòng không để trống!!")
     String key;
-    Date tu;
-    Date den;
-    @NotNull(message = "Vui lòng chọn loại hóa đơn!!")
-    Boolean loaiHD;
+    String tu;
+    String den;
+    String loaiHD;
 }

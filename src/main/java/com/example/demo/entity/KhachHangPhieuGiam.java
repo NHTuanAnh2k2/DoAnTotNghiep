@@ -18,11 +18,6 @@ public class KhachHangPhieuGiam {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    Timestamp ngaytao;
-    String nguoitao;
-    Timestamp lancapnhatcuoi;
-    String nguoicapnhat;
-    Boolean trangthai;
     @ManyToOne
     @JoinColumn(name = "idkhachhang")
     KhachHang khachhang;

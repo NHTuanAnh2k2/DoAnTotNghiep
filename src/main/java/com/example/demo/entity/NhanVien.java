@@ -18,6 +18,7 @@ public class NhanVien {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+    String manhanvien;
     Boolean vaitro;
     Timestamp ngaytao;
     String nguoitao;

@@ -1,6 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <nav th:replace="~{/layoutadmin/head.html}"></nav>
+<style>
+    .carousel-img {
+        width: 100px; /* Thiết lập chiều rộng là 100% */
+        height: 70px; /* Tự động tính toán chiều cao dựa trên tỷ lệ của ảnh */
+    }
+
+    .btn-custom-warning {
+        background-color: rgb(221, 100, 0);
+        color: #fff;
+        border-color: rgb(60, 179, 113);
+    }
+
+    .btn-custom-info {
+        background-color: rgb(86, 100, 234);
+        color: #fff;
+        border-color: rgb(60, 179, 113);
+    }
+
+</style>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
     <!-- Navbar -->
@@ -37,88 +56,90 @@
             </div><!-- /.container-fluid -->
         </section>
         <!---filter-->
-        <section class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
-                                        <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
-                                    </svg>
-                                    Bộ lọc
-                                </h3>
-                                <br>
-                                <h3 class="card-title" style="width: 500px">Tìm kiếm:
-                                    <input type="text" placeholder="Tìm kiếm" class="form-control">
-                                </h3>
-                                <h3 class="card-title" style="margin-left: 20px">Trạng thái:
-                                    <select class="form-control">
-                                        <option>ABC</option>
-                                        <option>ABC</option>
-                                        <option>ABC</option>
-                                    </select>
-                                </h3>
-                                <h3 class="card-title" style="margin-left: 20px">Thương hiệu:
-                                    <select class="form-control">
-                                        <option>ABC</option>
-                                        <option>ABC</option>
-                                        <option>ABC</option>
-                                    </select>
-                                </h3>
-                                <h3 class="card-title" style="margin-left: 20px">Đế giày:
-                                    <select class="form-control">
-                                        <option>ABC</option>
-                                        <option>ABC</option>
-                                        <option>ABC</option>
-                                    </select>
-                                </h3>
-                                <h3 class="card-title" style="margin-left: 20px">Kích cỡ:
-                                    <select class="form-control">
-                                        <option>ABC</option>
-                                        <option>ABC</option>
-                                        <option>ABC</option>
-                                    </select>
-                                </h3>
-                                <h3 class="card-title" style="margin-left: 20px">Màu sắc:
-                                    <select class="form-control">
-                                        <option>ABC</option>
-                                        <option>ABC</option>
-                                        <option>ABC</option>
-                                    </select>
-                                </h3>
-                                <h3 class="card-title" style="margin-left: 20px">Thể loại:
-                                    <select class="form-control">
-                                        <option>ABC</option>
-                                        <option>ABC</option>
-                                        <option>ABC</option>
-                                    </select>
-                                </h3>
-                                <br>
-                                <br>
-                                <br>
-                                <button style="margin-left: 100px" class="btn btn-primary">Tìm kiếm</button>
-                                <button class="btn btn-danger">Làm mới bộ lọc</button>
+                <section class="content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                                 class="bi bi-funnel" viewBox="0 0 16 16">
+                                                <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
+                                            </svg>
+                                            Bộ lọc
+                                        </h3>
+                                        <br>
+                                        <h3 class="card-title" style="width: 500px">Tìm kiếm:
+                                            <input type="text" placeholder="Tìm kiếm" class="form-control">
+                                        </h3>
+                                        <h3 class="card-title" style="margin-left: 20px">Trạng thái:
+                                            <select class="form-control">
+                                                <option>ABC</option>
+                                                <option>ABC</option>
+                                                <option>ABC</option>
+                                            </select>
+                                        </h3>
+                                        <h3 class="card-title" style="margin-left: 20px">Thương hiệu:
+                                            <select class="form-control">
+                                                <option>ABC</option>
+                                                <option>ABC</option>
+                                                <option>ABC</option>
+                                            </select>
+                                        </h3>
+                                        <h3 class="card-title" style="margin-left: 20px">Đế giày:
+                                            <select class="form-control">
+                                                <option>ABC</option>
+                                                <option>ABC</option>
+                                                <option>ABC</option>
+                                            </select>
+                                        </h3>
+                                        <h3 class="card-title" style="margin-left: 20px">Kích cỡ:
+                                            <select class="form-control">
+                                                <option>ABC</option>
+                                                <option>ABC</option>
+                                                <option>ABC</option>
+                                            </select>
+                                        </h3>
+                                        <h3 class="card-title" style="margin-left: 20px">Màu sắc:
+                                            <select class="form-control">
+                                                <option>ABC</option>
+                                                <option>ABC</option>
+                                                <option>ABC</option>
+                                            </select>
+                                        </h3>
+                                        <h3 class="card-title" style="margin-left: 20px">Thể loại:
+                                            <select class="form-control">
+                                                <option>ABC</option>
+                                                <option>ABC</option>
+                                                <option>ABC</option>
+                                            </select>
+                                        </h3>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <button style="margin-left: 100px" class="btn btn-primary">Tìm kiếm</button>
+                                        <button class="btn btn-danger">Làm mới bộ lọc</button>
+
+                                    </div>
+
+                                </div>
+                                <!-- /.card -->
+
 
                             </div>
-
+                            <!-- /.col -->
                         </div>
-                        <!-- /.card -->
-
-
+                        <!-- /.row -->
                     </div>
-                    <!-- /.col -->
-                </div>
-                <!-- /.row -->
-            </div>
-            <!-- /.container-fluid -->
-        </section>
+                    <!-- /.container-fluid -->
+                </section>
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
+                        <a th:href="@{/allSPCT}" style="margin-left: 1170px;margin-bottom: 10px">All</a>
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">
@@ -127,11 +148,9 @@
                                         <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"/>
                                         <path d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8m0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0M4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"/>
                                     </svg>
-                                    Danh sách sản phẩm
+                                    Danh sách chi tiết sản phẩm
                                 </h3>
-                                <a href="/admin/addsanpham" class="card-title btn btn-primary" style="margin-left: 850px">Tạo sản phẩm</a>
                             </div>
-
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <table id="example2" class="table table-bordered table-hover text-center">
@@ -139,169 +158,83 @@
                                     <tr>
                                         <th></th>
                                         <th>STT</th>
-                                        <th>Tên sản phẩm</th>
+                                        <th>Mã</th>
+                                        <th>Ảnh</th>
                                         <th>Số lượng</th>
-                                        <th>Giá nhập</th>
-                                        <th>Giá bán</th>
-                                        <th>Kích thước</th>
+                                        <th>Giá tiền</th>
+                                        <th>Đế giày</th>
+                                        <th>Kích cỡ</th>
                                         <th>Màu sắc</th>
-                                        <th>Trạng thái</th>
                                         <th>Hành động</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
+                                    <tr th:each="spct, stt : ${sanphamchitiet}">
+                                        <td><input type="checkbox"></td>
+                                        <td th:text="${stt.index + 1}"></td>
+                                        <td th:text="'SPCT00000'+${spct.id + 1}"></td>
                                         <td>
-                                            <input type="checkbox">
+                                            <div id="carouselExample" class="carousel">
+                                                <div class="carousel-inner">
+                                                    <th:block th:each="anhs, index : ${spct.anh}">
+                                                        <div th:classappend="${index.index == 0} ? 'carousel-item active' : 'carousel-item'">
+                                                            <img th:if="${anhs.tenanh != null}"
+                                                                 th:src="@{'/upload/' + ${anhs.tenanh.substring(anhs.tenanh.lastIndexOf('upload') + 6)}}"
+                                                                 class="d-block w-100 carousel-img" alt="Ảnh">
+                                                        </div>
+                                                    </th:block>
+                                                </div>
+                                                <button class="carousel-control-prev" type="button"
+                                                        data-bs-target="#carouselExample" data-bs-slide="prev">
+                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                    <span class="visually-hidden">Previous</span>
+                                                </button>
+                                                <button class="carousel-control-next" type="button"
+                                                        data-bs-target="#carouselExample" data-bs-slide="next">
+                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                    <span class="visually-hidden">Next</span>
+                                                </button>
+                                            </div>
                                         </td>
-                                        <td>Trident</td>
-                                        <td>Internet Explorer 4.0</td>
+
+
+                                        <td th:text="${spct.soluong}"></td>
+                                        <td th:text="${spct.giatien}"></td>
+                                        <!--                                        <td th:text="${spct.thuonghieu.ten}"></td>-->
+                                        <!--                                        <td th:text="${spct.chatlieu.ten}"></td>-->
+                                        <td th:text="${spct.degiay.ten}"></td>
+                                        <td th:text="${spct.kichco.ten}"></td>
+                                        <td th:text="${spct.mausac.ten}"></td>
+                                        <!--                                        <td>-->
+                                        <!--                                            <button style="border-radius: 50px"-->
+                                        <!--                                                    class="btn btn-xs custom-button no-border-button"-->
+                                        <!--                                                    th:classappend="${spct.trangthai ? 'btn-custom-info' : 'btn-custom-warning'}"-->
+                                        <!--                                                    th:text="${spct.trangthai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>-->
+                                        <!--                                        </td>-->
                                         <td>
-                                            <input type="number" width="50px">
-                                        </td>
-                                        <td>
-                                            <input type="number" width="50px">
-                                        </td>
-                                        <td>Internet Explorer 4.0</td>
-                                        <td>Internet Explorer 4.0</td>
-                                        <td>Internet Explorer 4.0</td>
-                                        <td>
-                                            <button class=" btn btn-primary btn-xs">Đang kinh doanh</button>
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-danger">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                                                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                                            <a href="#" class="btn btn-outline-danger">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                     fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
                                                 </svg>
                                             </a>
-                                            <a th:href="@{/admin/qlchitietsanpham/sv.id}" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#detailctsp">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                            <a th:href="@{/updateCTSP/{id}(id=${spct.id})}"
+                                               class="btn btn-outline-warning">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                     fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
                                                     <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
                                                 </svg>
                                             </a>
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="detailctsp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">UPDATE CHI TIẾT SẢN PHẨM</h1>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">THÔNG TIN SẢN PHẨM</div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                                            <button type="button" class="btn btn-primary">Update</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox">
-                                        </td>
-                                        <td>Trident</td>
-                                        <td>Internet Explorer 4.0</td>
-                                        <td>
-                                            <input type="number" width="50px">
-                                        </td>
-                                        <td>
-                                            <input type="number" width="50px">
-                                        </td>
-                                        <td>Internet Explorer 4.0</td>
-                                        <td>Internet Explorer 4.0</td>
-                                        <td>Internet Explorer 4.0</td>
-                                        <td>
-                                            <button class=" btn btn-primary btn-xs">Đang kinh doanh</button>
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-danger">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                                                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
-                                                </svg>
-                                            </a>
-                                            <a th:href="@{/admin/qlchitietsanpham/sv.id}" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#detailctsp">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
-                                                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
-                                                </svg>
-                                            </a>
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="detailctsp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">UPDATE CHI TIẾT SẢN PHẨM</h1>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">THÔNG TIN SẢN PHẨM</div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                                            <button type="button" class="btn btn-primary">Update</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox">
-                                        </td>
-                                        <td>Trident</td>
-                                        <td>Internet Explorer 4.0</td>
-                                        <td>
-                                            <input type="number" width="50px">
-                                        </td>
-                                        <td>
-                                            <input type="number" width="50px">
-                                        </td>
-                                        <td>Internet Explorer 4.0</td>
-                                        <td>Internet Explorer 4.0</td>
-                                        <td>Internet Explorer 4.0</td>
-                                        <td>
-                                            <button class=" btn btn-primary btn-xs">Đang kinh doanh</button>
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-danger">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                                                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
-                                                </svg>
-                                            </a>
-                                            <a th:href="@{/admin/qlchitietsanpham/sv.id}" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#detailctsp">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
-                                                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
-                                                </svg>
-                                            </a>
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="detailctsp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">UPDATE CHI TIẾT SẢN PHẨM</h1>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">THÔNG TIN SẢN PHẨM</div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                                            <button type="button" class="btn btn-primary">Update</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    </tbody>
                                     </tfoot>
                                 </table>
                             </div>
                             <!-- /.card-body -->
                         </div>
                         <!-- /.card -->
-
-
                     </div>
                     <!-- /.col -->
                 </div>
