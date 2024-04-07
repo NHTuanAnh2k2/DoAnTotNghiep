@@ -9,22 +9,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class NguoiDungImp implements NguoiDungService {
-    @Autowired
-    NguoiDungRepository nguoiDungRepository;
+public class NguoiDungImp{
 
-    @Override
-    public NguoiDung findByTaiKhoan(String taikhoan) {
-        return nguoiDungRepository.findNguoiDungByTaikhoan(taikhoan);
-    }
-
-    @Override
-    public List<NguoiDung> findAll() {
-        return nguoiDungRepository.findAll();
-    }
-
-    @Override
-    public void save(NguoiDung nguoiDung) {
-        nguoiDungRepository.save(nguoiDung);
-    }
 }
