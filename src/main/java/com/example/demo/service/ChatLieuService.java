@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ChatLieuService {
     List<ChatLieu> findAll();
-    void add(ChatLieu chatLieu);
+    ChatLieu add(ChatLieu chatLieu);
 
     List<ChatLieu> findByTen(String ten, Boolean trangthai);
 

@@ -18,9 +18,25 @@
         color: #fff;
         border-color: rgb(60, 179, 113);
     }
+    /*checkbox*/
+    .custom-checkbox {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 1px solid red; /* Biên đen */
+        border-radius: 4px; /* Bo góc */
+        outline: none;
+    }
+
+    .custom-checkbox:checked {
+        background-color: red; /* Màu đỏ */
+    }
+
 
 </style>
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini" style="font-family:Roboto">
 <div class="wrapper">
     <!-- Navbar -->
     <nav th:replace="~{/layoutadmin/navbar.html}"></nav>
@@ -70,12 +86,13 @@
                                     Bộ lọc
                                 </h3>
                                 <br>
+                                <hr class="border border-danger border opacity-50">
                             <form th:method="get" th:object="${search}">
-                                <h3 class="card-title" style="width: 280px">Tìm kiếm:
+                                <h3 class="card-title" style="width: 500px;font-weight: bold">Tìm kiếm:
                                     <input type="text" placeholder="Tìm kiếm tên sản phẩm" class="form-control" name="key">
                                 </h3>
-                                <h3 class="card-title" style="margin-left: 20px">Thương hiệu:
-                                    <select class="form-control" name="idThuongHieu">
+                                <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Thương hiệu:
+                                    <select class="form-control" name="idThuongHieu" style="color: orange; font-weight: bold;width: 150px">
                                         <option value="">-----</option>
                                         <option th:each="thuonghieu : ${th}"
                                                 th:value="${thuonghieu.id}"
@@ -83,8 +100,8 @@
                                         </option>
                                     </select>
                                 </h3>
-                                <h3 class="card-title" style="margin-left: 20px">Đế giày:
-                                    <select class="form-control" name="idDeGiay">
+                                <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Đế giày:
+                                    <select class="form-control" name="idDeGiay" style="color: orange; font-weight: bold;width: 150px">
                                         <option value="">-----</option>
                                         <option th:each="degiay : ${dg}"
                                                 th:value="${degiay.id}"
@@ -92,8 +109,8 @@
                                         </option>
                                     </select>
                                 </h3>
-                                <h3 class="card-title" style="margin-left: 20px">Kích cỡ:
-                                    <select class="form-control" name="idKichCo">
+                                <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Kích cỡ:
+                                    <select class="form-control" name="idKichCo" style="color: orange; font-weight: bold;width: 150px">
                                         <option value="">-----</option>
                                         <option th:each="kichco : ${kc}"
                                                 th:value="${kichco.id}"
@@ -101,8 +118,8 @@
                                         </option>
                                     </select>
                                 </h3>
-                                <h3 class="card-title" style="margin-left: 20px">Màu sắc:
-                                    <select class="form-control" name="idMauSac">
+                                <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Màu sắc:
+                                    <select class="form-control" name="idMauSac" style="color: orange; font-weight: bold;width: 150px">
                                         <option value="">-----</option>
                                         <option th:each="mausac : ${ms}"
                                                 th:value="${mausac.id}"
@@ -110,8 +127,15 @@
                                         </option>
                                     </select>
                                 </h3>
-                                <h3 class="card-title" style="margin-left: 20px">Chất liệu:
-                                    <select class="form-control" name="idChatLieu">
+                                <h3 class="card-title" style="margin-left: 5px;font-weight: bold">
+                                    Khoảng giá: <span id="priceRangeValue">50</span>
+                                    <div class="slidecontainer" style="width: 495px;">
+                                        <input type="range" min="1" max="100" value="50" style="width: 100%;" id="priceRange">
+                                    </div>
+                                </h3>
+
+                                <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Chất liệu:
+                                    <select class="form-control" name="idChatLieu" style="color: orange; font-weight: bold;width: 150px">
                                         <option value="">-----</option>
                                         <option th:each="chatlieu : ${cl}"
                                                 th:value="${chatlieu.id}"
@@ -119,11 +143,28 @@
                                         </option>
                                     </select>
                                 </h3>
+                                <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Giới tính:
+                                    <select id="statusSelect" class="form-control" name="gioitinh" style="color: orange; font-weight: bold;width: 150px">
+                                        <option value="">-----</option>
+                                        <option value="1">Nam</option>
+                                        <option value="0">Nữ</option>
+                                    </select>
+                                </h3>
+                                <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Trạng thái:
+                                    <select id="" class="form-control" name="gioitinh" style="color: orange; font-weight: bold;width: 150px">
+                                        <option value="">-----</option>
+                                        <option value="1">Đang kinh doanh</option>
+                                        <option value="0">Ngừng kinh doanh</option>
+                                    </select>
+                                </h3>
+                                <h3 class="card-title">
+                                    <button style="margin-left: 100px" class="btn btn-primary">Tìm kiếm</button>
+                                    <button class="btn btn-danger">Làm mới bộ lọc</button>
+                                </h3>
                                 <br>
                                 <br>
                                 <br>
-                                <button style="margin-left: 100px" class="btn btn-primary">Tìm kiếm</button>
-                                <button class="btn btn-danger">Làm mới bộ lọc</button>
+
                             </form>
                             </div>
                         </div>
@@ -170,9 +211,9 @@
                                     </thead>
                                     <tbody>
                                     <tr th:each="spct, stt : ${listAllCTSP}">
-                                        <td><input type="checkbox"></td>
+                                        <td><input type="checkbox" class="form-control custom-checkbox"></td>
                                         <td th:text="${stt.index + 1}"></td>
-                                        <td th:text="'SPCT00000'+${spct.id + 1}"></td>
+                                        <td th:text="'SPCT00000'+${spct.id + 1}" style="font-weight: bold"></td>
                                         <td>
                                             <div id="carouselExample" class="carousel">
                                                 <div class="carousel-inner">
@@ -180,7 +221,7 @@
                                                         <div th:classappend="${index.index == 0} ? 'carousel-item active' : 'carousel-item'">
                                                             <img th:if="${anhs.tenanh != null}"
                                                                  th:src="@{'/upload/' + ${anhs.tenanh.substring(anhs.tenanh.lastIndexOf('upload') + 6)}}"
-                                                                 class="d-block w-100 carousel-img" alt="Ảnh">
+                                                                 class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
                                                         </div>
                                                     </th:block>
                                                 </div>
@@ -198,8 +239,12 @@
                                         </td>
 
 
-                                        <td th:text="${spct.soluong}"></td>
-                                        <td th:text="${spct.giatien}"></td>
+                                        <td>
+                                            <input type="number" style="width: 70px; height: 30px" class="form-control" th:value="${spct.soluong}">
+                                        </td>
+                                        <td>
+                                            <input type="text" style="width: 150px; height: 30px;color: red;font-weight: bold" class="form-control" th:value="${#numbers.formatDecimal(spct.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}">
+                                        </td>
                                         <!--                                        <td th:text="${spct.thuonghieu.ten}"></td>-->
                                         <!--                                        <td th:text="${spct.chatlieu.ten}"></td>-->
                                         <td th:text="${spct.degiay.ten}"></td>
@@ -252,3 +297,14 @@
 <!--end-->
 </body>
 </html>
+<script>
+    // Lấy phần tử thanh trượt và phần tử hiển thị giá trị
+    var priceRange = document.getElementById("priceRange");
+    var priceRangeValue = document.getElementById("priceRangeValue");
+
+    // Lắng nghe sự kiện khi người dùng thay đổi giá trị thanh trượt
+    priceRange.oninput = function() {
+        // Cập nhật giá trị hiển thị
+        priceRangeValue.innerText = this.value;
+    };
+</script>
