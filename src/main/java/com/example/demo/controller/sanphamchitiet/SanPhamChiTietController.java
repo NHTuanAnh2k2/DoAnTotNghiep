@@ -51,7 +51,7 @@ public class SanPhamChiTietController {
     public String allSPCT(Model model, @ModelAttribute("search") SanPhamChiTietInfo info) {
         List<SanPhamChiTiet> list = null;
         if (info.getKey() == null && info.getIdChatLieu() == null && info.getIdDeGiay() == null && info.getIdKichCo() == null
-                && info.getIdMauSac() == null && info.getIdThuongHieu() == null) {
+                && info.getIdMauSac() == null && info.getIdThuongHieu() == null&&info.getGioitinh()==null) {
             list = sanPhamChiTietRepository.findAll();
         } else {
             list = sanPhamChiTietRepository.search(
@@ -60,7 +60,8 @@ public class SanPhamChiTietController {
                     info.getIdDeGiay(),
                     info.getIdKichCo(),
                     info.getIdMauSac(),
-                    info.getIdChatLieu());
+                    info.getIdChatLieu(),
+                    info.getGioitinh());
         }
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
@@ -68,13 +69,14 @@ public class SanPhamChiTietController {
         List<KichCo> listKichCo = kichCoImp.findAll();
         List<DeGiay> listDeGiay = deGiayImp.findAll();
         List<ChatLieu> listChatLieu = chatLieuImp.findAll();
+        List<SanPhamChiTiet> listSanPhamChiTiet=sanPhamChiTietRepository.findAll();
         model.addAttribute("sp", listSanPham);
         model.addAttribute("th", listThuongHieu);
         model.addAttribute("ms", listMauSac);
         model.addAttribute("kc", listKichCo);
         model.addAttribute("dg", listDeGiay);
         model.addAttribute("cl", listChatLieu);
-
+        model.addAttribute("spct",listSanPhamChiTiet);
         model.addAttribute("listAllCTSP", list);
         return "admin/allchitietsanpham";
     }

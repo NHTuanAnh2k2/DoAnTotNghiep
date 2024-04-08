@@ -16,4 +16,5 @@ public class SanPhamChiTietInfo {
     Integer idKichCo;
     Integer idMauSac;
     Integer idChatLieu;
+    Boolean gioitinh;
 }

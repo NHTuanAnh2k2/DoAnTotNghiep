@@ -5,7 +5,7 @@
     /* CSS cho cột Upload Ảnh */
     #example2 th:nth-child(6),
     #example2 td:nth-child(6) {
-        width: 410px; /* Đặt kích thước của cột "Upload Ảnh" tại đây */
+        width: 367px; /* Đặt kích thước của cột "Upload Ảnh" tại đây */
     }
 
     .container {
@@ -137,7 +137,7 @@
                                 </h3>
                                 <div class="card-header">
                                     <h5 style="font-family: 'Times New Roman'">
-                                        Tên sản phẩm:
+                                      <span style="color: red">* </span>Tên sản phẩm:
                                         <select class="form-control select2 select2-primary"
                                                 data-dropdown-css-class="select2-primary" style="width: 100%;"
                                                 name="tensp" data-tags="true" data-placeholder="Nhập tên sản phẩm">
@@ -148,7 +148,7 @@
                                         <span id="tenspError" style="color: red;font-style: italic"></span>
                                     </h5>
                                     <h5 style="font-family: 'Times New Roman'">
-                                        Giới tính:
+                                        <span style="color: red">* </span>Giới tính:
                                         <select class="form-control" name="gioitinh">
                                             <option value="" selected disabled hidden>Chọn giới tính</option>
                                             <option value="true">Nam</option>
@@ -157,97 +157,105 @@
                                         <span id="gioitinhError" style="color: red;font-style: italic"></span>
                                     </h5>
                                     <h5 style="font-family: 'Times New Roman'">
-                                        Mô tả:
+                                        <span style="color: red">* </span>Mô tả:
                                         <textarea rows="4" cols="164" class="form-control" name="mota"></textarea>
                                         <span id="motaError" style="color: red;font-style: italic"></span>
                                     </h5>
 
                                 </div>
 
-                                <!--abc-->
-                                <div class="d-flex">
-                                    <p style="margin-left: 100px">Thương hiệu:
-                                        <select class="form-control" style="width: 400px" name="idThuongHieu">
-                                            <option th:each="th : ${th}" th:value="${th.id}"
-                                                    th:text="${th.ten}"></option>
-                                        </select>
-                                    </p>
-                                    <input type="button" class="btn btn-primary" style="margin:2%" value="+"
-                                           data-bs-toggle="modal" data-bs-target="#themthuonghieu">
-                                    <!--trạng thái-->
-                                    <p style="margin-left: 100px">Trạng thái:
-                                        <select class="form-control" style="width: 400px" name="trangthai">
-                                            <option value="true">Đang kinh doanh</option>
-                                            <option value="false">Ngừng kinh doanh</option>
-                                        </select>
-                                    </p>
-                                    <input type="button" class="btn btn-primary" style="margin:2%" value="+">
-                                </div>
-                                <!--end-->
 
-                                <!--abc-->
-                                <!--chất liệu-->
-                                <div class="d-flex">
-                                    <p style="margin-left: 100px">Chất liệu:
-                                        <select class="form-control" style="width: 400px" name="idChatLieu">
-                                            <option th:each="cl : ${cl}" th:value="${cl.id}"
-                                                    th:text="${cl.ten}"></option>
-                                        </select>
-                                    </p>
-                                    <input type="button" class="btn btn-primary" style="margin:2%" value="+"
-                                           data-bs-toggle="modal" data-bs-target="#themchatlieu">
-                                    <!--đế giày-->
-                                    <p style="margin-left: 100px">Đế giày:
-                                        <select class="form-control" style="width: 400px" name="idDeGiay">
-                                            <option th:each="dg : ${dg}" th:value="${dg.id}"
-                                                    th:text="${dg.ten}"></option>
-                                        </select>
-                                    </p>
-                                    <input type="button" class="btn btn-primary" style="margin:2%" value="+"
-                                           data-bs-toggle="modal" data-bs-target="#themdegiay">
-                                </div>
-                                <!--end-->
                             </div>
-                            <div class="card">
-                                <!--abc-->
-                                <h3 class="text-center" style="font-weight: bold;margin-top: 10px">
-                                    KÍCH CỠ VÀ MÀU SẮC
-                                </h3>
-                                <div class="d-flex">
-                                    <p style="margin-left: 100px;font-family: 'Times New Roman'">Màu sắc:
-                                        <select class="select2" multiple="multiple" data-placeholder="Màu sắc"
-                                                style="width: 400px;" name="idMauSac">
-                                            <option th:each="ms : ${ms}" th:value="${ms.id}"
-                                                    th:text="${ms.ten}"></option>
-                                        </select>
-                                        <span id="mausacError" style="color: red;font-style: italic"></span>
-                                    </p>
-                                    <p>
-                                    </p>
-                                    <input type="button" class="btn btn-primary" style="margin:2%" value="+"
-                                           data-bs-toggle="modal" data-bs-target="#themmausac">
-                                </div>
-                                <!--end-->
-                                <div class="d-flex align-items-center" style="margin-left: 100px">
-                                    <div style="margin-right: 2%;font-weight: bold">
-                                        Kích cỡ:
-                                    </div>
-                                    <div>
-                                        <h6 id="displayValue"></h6>
-                                    </div>
-                                    <div style="margin-right: 2%;margin-left: 5px">
-                                        <input type="button" class="btn btn-primary" value="+" data-bs-toggle="modal"
-                                               data-bs-target="#themkichco2">
-                                    </div>
 
-                                </div>
-                                <span id="kichcoError"
-                                      style="color: red;font-family: 'Times New Roman';font-style: italic;margin-left: 100px"></span>
-                                <button type="submit" class="btn btn-primary"
-                                        style="margin-left: 100px;margin-bottom: 20px;margin-top: 30px; width: 200px;">
-                                    Thêm
-                                </button>
-                            </div>
+                             <div class="d-flex">
+                                 <div class="card" style="width: 610px">
+                                     <!--abc-->
+                                     <div class="d-flex">
+                                         <p style="margin-left: 20px"><span style="color: red">* </span>Thương hiệu:
+                                             <select class="form-control" style="width: 520px" name="idThuongHieu">
+                                                 <option th:each="th : ${th}" th:value="${th.id}"
+                                                         th:text="${th.ten}"></option>
+                                             </select>
+                                         </p>
+                                         <input type="button" class="btn btn-primary" style="margin:3%" value="+"
+                                                data-bs-toggle="modal" data-bs-target="#themthuonghieu">
+                                     </div>
+                                     <!--end-->
+
+                                     <!--abc-->
+
+                                     <!--chất liệu-->
+                                     <div class="d-flex">
+                                         <p style="margin-left: 20px"><span style="color: red">* </span>Chất liệu:
+                                             <select class="form-control" style="width: 520px" name="idChatLieu">
+                                                 <option th:each="cl : ${cl}" th:value="${cl.id}"
+                                                         th:text="${cl.ten}"></option>
+                                             </select>
+                                         </p>
+                                         <input type="button" class="btn btn-primary" style="margin:3%" value="+"
+                                                data-bs-toggle="modal" data-bs-target="#themchatlieu">
+                                     </div>
+
+                                     <!--đế giày-->
+                                     <div class="d-flex">
+                                         <p style="margin-left: 20px"><span style="color: red">* </span>Đế giày:
+                                             <select class="form-control" style="width: 520px" name="idDeGiay">
+                                                 <option th:each="dg : ${dg}" th:value="${dg.id}"
+                                                         th:text="${dg.ten}"></option>
+                                             </select>
+                                         </p>
+                                         <input type="button" class="btn btn-primary" style="margin:3%" value="+"
+                                                data-bs-toggle="modal" data-bs-target="#themdegiay">
+                                     </div>
+                                     <!--end-->
+                                 </div>
+                                 <div class="card" style="width:610px;margin-left: 20px">
+                                     <!--abc-->
+
+                                     <div class="d-flex">
+                                         <p style="margin-left: 20px;font-weight: bold"><span style="color: red">* </span>Màu sắc:
+                                             <select class="select2" multiple="multiple" data-placeholder="Màu sắc"
+                                                     style="width: 520px;" name="idMauSac">
+                                                 <option th:each="ms : ${ms}" th:value="${ms.id}"
+                                                         th:text="${ms.ten}"></option>
+                                             </select>
+                                             <span id="mausacError" style="color: red;font-style: italic"></span>
+                                         </p>
+                                         <p>
+                                         </p>
+                                         <input type="button" class="btn btn-primary" style="margin:3%" value="+"
+                                                data-bs-toggle="modal" data-bs-target="#themmausac">
+                                     </div>
+                                     <!--end-->
+                                     <!--kích cỡ-->
+                                     <div class="d-flex align-items-center" style="margin-left: 20px">
+                                         <div style="margin-right: 3%;font-weight: bold">
+                                             <span style="color: red">* </span>Kích cỡ:
+                                         </div>
+                                         <div>
+                                             <h6 id="displayValue"></h6>
+                                         </div>
+                                         <div style="margin-right: 2%;margin-left: 5px">
+                                             <input type="button" class="btn btn-primary" value="+" data-bs-toggle="modal"
+                                                    data-bs-target="#themkichco2">
+                                         </div>
+
+                                     </div>
+                                     <span id="kichcoError"
+                                           style="color: red;font-family: 'Times New Roman';font-style: italic;margin-left: 100px"></span>
+                                     <!--end-->
+                                     <button type="submit" class="btn btn-primary"
+                                             style="margin-left: 20px;margin-bottom: 20px;margin-top: 30px; width: 110px;">
+                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                             <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                         </svg>
+                                         Thêm
+                                     </button>
+
+                                 </div>
+
+                             </div>
+
                             <!-- Modal thêm kích cỡ 2-->
                             <div class="modal fade" id="themkichco2" tabindex="-1"
                                  aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -298,14 +306,7 @@
                                                 Tên thương hiệu:
                                                 <input class="form-control" th:field="*{ten}"/>
                                             </p>
-                                            <p>
-                                                Trạng thái:
-                                                <select class="form-control" th:field="*{trangthai}">
-                                                    <option value="1">Đang kinh doanh</option>
-                                                    <option value="0">Ngừng kinh doanh</option>
-                                                </select>
-                                            </p>
-                                            <button class="btn btn-primary">Thêm</button>
+                                            <button class="btn btn-primary" style="margin-left: 400px">Thêm</button>
                                         </form>
                                     </div>
                                 </div>
@@ -327,14 +328,7 @@
                                                 Tên chất liệu:
                                                 <input class="form-control" th:field="*{ten}"/>
                                             </p>
-                                            <p>
-                                                Trạng thái:
-                                                <select class="form-control" th:field="*{trangthai}">
-                                                    <option value="1">Đang kinh doanh</option>
-                                                    <option value="0">Ngừng kinh doanh</option>
-                                                </select>
-                                            </p>
-                                            <button class="btn btn-primary">Thêm</button>
+                                            <button class="btn btn-primary" style="margin-left: 400px">Thêm</button>
                                         </form>
                                     </div>
                                 </div>
@@ -356,14 +350,7 @@
                                                 Tên đế giày:
                                                 <input class="form-control" th:field="*{ten}"/>
                                             </p>
-                                            <p>
-                                                Trạng thái:
-                                                <select class="form-control" th:field="*{trangthai}">
-                                                    <option value="1">Đang kinh doanh</option>
-                                                    <option value="0">Ngừng kinh doanh</option>
-                                                </select>
-                                            </p>
-                                            <button class="btn btn-primary">Thêm</button>
+                                            <button class="btn btn-primary" style="margin-left: 400px">Thêm</button>
                                         </form>
                                     </div>
                                 </div>
@@ -414,14 +401,14 @@
                                                 Tên màu sắc:
                                                 <input class="form-control" th:field="*{ten}"/>
                                             </p>
-                                            <p>
-                                                Trạng thái:
-                                                <select class="form-control" th:field="*{trangthai}">
-                                                    <option value="1">Đang kinh doanh</option>
-                                                    <option value="0">Ngừng kinh doanh</option>
-                                                </select>
-                                            </p>
-                                            <button class="btn btn-primary">Thêm</button>
+<!--                                            <p>-->
+<!--                                                Trạng thái:-->
+<!--                                                <select class="form-control" th:field="*{trangthai}">-->
+<!--                                                    <option value="1">Đang kinh doanh</option>-->
+<!--                                                    <option value="0">Ngừng kinh doanh</option>-->
+<!--                                                </select>-->
+<!--                                            </p>-->
+                                            <button class="btn btn-primary" style="margin-left: 400px">Thêm</button>
                                         </form>
                                     </div>
                                 </div>
@@ -495,7 +482,7 @@
                                                 <input type="number" style="width: 70px; height: 30px" class="form-control" th:value="${spctt.soluong}">
                                             </td>
                                             <td>
-                                                <input type="text" style="width: 150px; height: 30px" class="form-control" th:value="${#numbers.formatDecimal(spctt.giatien, 0, 'COMMA', 3, 'POINT') + ' VNĐ'}">
+                                                <input type="text" style="width: 150px; height: 30px;color: red;font-weight: bold" class="form-control" th:value="${#numbers.formatDecimal(spctt.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}">
                                             </td>
 
                                             <td>

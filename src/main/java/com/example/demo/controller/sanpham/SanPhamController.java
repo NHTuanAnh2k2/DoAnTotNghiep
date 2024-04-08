@@ -116,7 +116,7 @@ public class SanPhamController {
     public String addProduct(@RequestParam(defaultValue = "0") int p, Model model,
                              @RequestParam String tensp,
                              @RequestParam String mota,
-                             @RequestParam Boolean trangthai,
+//                             @RequestParam Boolean trangthai,
                              @RequestParam ThuongHieu idThuongHieu,
                              @RequestParam ChatLieu idChatLieu,
                              @RequestParam Boolean gioitinh,
@@ -126,7 +126,7 @@ public class SanPhamController {
     ) {
         SanPham sanPham = new SanPham();
         sanPham.setTensanpham(tensp);
-        sanPham.setTrangthai(trangthai);
+        sanPham.setTrangthai(true);
         LocalDateTime currentTime = LocalDateTime.now();
         sanPham.setNgaytao(currentTime);
         sanPhamImp.add(sanPham);
@@ -142,7 +142,7 @@ public class SanPhamController {
                     spct.setThuonghieu(idThuongHieu);
                     spct.setChatlieu(idChatLieu);
                     spct.setGioitinh(gioitinh);
-                    spct.setTrangthai(trangthai);
+                    spct.setTrangthai(true);
                     spct.setKichco(kichCo);
                     spct.setDegiay(idDeGiay);
                     spct.setMausac(colorId);
