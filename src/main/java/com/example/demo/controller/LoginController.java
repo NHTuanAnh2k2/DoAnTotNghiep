@@ -20,20 +20,20 @@ public class LoginController {
         return "same/login";
     }
 
-    @PostMapping("/same/login")
-    public String login(
-            @RequestParam("taikhoan") String taikhoan,
-            @RequestParam("matkhau") String matkhau,
-            HttpSession session
-            ) {
-        NguoiDung nguoiDung = nguoiDungService.findByTaiKhoan(taikhoan);
-        if(nguoiDung != null && nguoiDung.getMatkhau().equals(matkhau)) {
-            session.setAttribute("tennguoidung", nguoiDung.getHovaten());
-            System.out.println(nguoiDung.getTaikhoan());
-            return "redirect:/trangchu";
-        } else {
-            return "redirect:/same/login";
-        }
-    }
+//    @PostMapping("/same/login")
+//    public String login(
+//            @RequestParam("taikhoan") String taikhoan,
+//            @RequestParam("matkhau") String matkhau,
+//            HttpSession session
+//            ) {
+//        NguoiDung nguoiDung = nguoiDungService.findByTaiKhoan(taikhoan);
+//        if(nguoiDung != null && nguoiDung.getMatkhau().equals(matkhau)) {
+//            session.setAttribute("tennguoidung", nguoiDung.getHovaten());
+//            System.out.println(nguoiDung.getTaikhoan());
+//            return "redirect:/trangchu";
+//        } else {
+//            return "redirect:/same/login";
+//        }
+//    }
 
 }

@@ -74,24 +74,13 @@ public class SanPhamController {
     @GetMapping("/listsanpham")
     public String hienthi(@RequestParam(defaultValue = "0") int p, @ModelAttribute("tim") SanPhamInfo info, Model model) {
         Pageable pageable = PageRequest.of(p, 20);
-        Page<SanPham> page = null;
-        Map<Integer, String> randomProductIds = new HashMap<>(); // Map để lưu trữ mã sản phẩm ngẫu nhiên
-
+        Page<Object[]> page = null;
         if (info.getKey() != null) {
-            page = sanPhamImp.findAllByTensanphamOrTrangthai(info.getKey(), info.getTrangthai(), pageable);
+            page = sanPhamRepositoty.findByTenSanPhamAndTrangThai("%" + info.getKey() + "%",info.getTrangthai(),pageable);
         } else {
-            page = sanPhamRepositoty.findAllByOrderByNgaytaoDesc(pageable);
+            page = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc(pageable);
         }
-
-        // Tạo mã sản phẩm ngẫu nhiên cho mỗi sản phẩm và lưu vào Map
-        for (SanPham sp : page.getContent()) {
-            Random random = new Random();
-            int randomId = random.nextInt(1000000000);
-            randomProductIds.put(sp.getId(), "SP" + String.format("%010d", randomId));
-        }
-
         model.addAttribute("page", page);
-        model.addAttribute("randomProductIds", randomProductIds); // Thêm Map vào Model
         return "admin/qlsanpham";
     }
 
@@ -134,7 +123,6 @@ public class SanPhamController {
                              @RequestParam(name = "kichCoId") List<String> kichCoNames,
                              @RequestParam DeGiay idDeGiay,
                              @RequestParam List<MauSac> idMauSac
-//                             @RequestParam(name = "anh") List<MultipartFile> anhFiles
     ) {
         SanPham sanPham = new SanPham();
         sanPham.setTensanpham(tensp);
@@ -142,7 +130,6 @@ public class SanPhamController {
         LocalDateTime currentTime = LocalDateTime.now();
         sanPham.setNgaytao(currentTime);
         sanPhamImp.add(sanPham);
-
         for (MauSac colorId : idMauSac) {
             for (String sizeName : kichCoNames) {
                 KichCo kichCo = kichCoRepository.findByTen(sizeName);
@@ -159,25 +146,59 @@ public class SanPhamController {
                     spct.setKichco(kichCo);
                     spct.setDegiay(idDeGiay);
                     spct.setMausac(colorId);
-                    // Lưu các ảnh vào cơ sở dữ liệu
-//                    for (MultipartFile anhFile : anhFiles) {
-                        // Lưu ảnh vào thư mục trên server và nhận đường dẫn
-//                        String anhUrl = saveImage(anhFile);
-
-                        // Tạo đối tượng Anh và lưu vào sản phẩm chi tiết
-//                        Anh anh = new Anh();
-//                        anh.setTenanh(anhUrl);
-//                        anh.setSanphamchitiet(spct);
-//                        spct.getAnh().add(anh);
-//                    }
                     sanPhamChiTietImp.addSPCT(spct);
                 } else {
                 }
             }
         }
+
         List<SanPhamChiTiet> sanPhamChiTiets = sanPhamChiTietRepository.findBySanPhamId(sanPham.getId());
         model.addAttribute("sanphamchitiet", sanPhamChiTiets);
         return "forward:/viewaddSP";
+    }
+
+
+    @PostMapping("/addImage")
+    public String addImage(
+            Model model,
+            @RequestParam(name = "anh") List<MultipartFile> anhFiles,
+            @RequestParam Integer spctId
+//            @RequestParam("id") Integer id,
+//            @RequestParam("soluong") Integer soluong,
+//            @RequestParam("giatien") BigDecimal giatien
+    ) {
+//        sanPhamChiTietRepository.update(id, soluong, giatien);
+        SanPhamChiTiet spct = sanPhamChiTietRepository.findById(spctId).orElse(null);
+        if (spct != null) {
+            for (MultipartFile anhFile : anhFiles) {
+                String anhUrl = saveImage(anhFile);
+                Anh anh = new Anh();
+                LocalDateTime currentTime = LocalDateTime.now();
+                anh.setTenanh(anhUrl);
+                anh.setNgaytao(currentTime);
+                anh.setSanphamchitiet(spct);
+                anhRepository.save(anh);
+            }
+        }
+        return "redirect:/listsanpham";
+    }
+
+    private String saveImage(MultipartFile file) {
+        String uploadDir = "G:\\Ki7\\DATN\\DATN\\src\\main\\resources\\static\\upload";
+        try {
+            File directory = new File(uploadDir);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+            String originalFileName = file.getOriginalFilename();
+            String filePath = uploadDir + File.separator + originalFileName;
+            File dest = new File(filePath);
+            file.transferTo(dest);
+            return filePath;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @GetMapping("/detailsanpham/{id}")
@@ -187,36 +208,4 @@ public class SanPhamController {
         model.addAttribute("sanphamchitiet", sanPham.getSpct());
         return "admin/qlchitietsanpham";
     }
-
-    private String saveImage(MultipartFile file) {
-        // Thư mục để lưu trữ ảnh trên server
-        String uploadDir = "G:\\Ki7\\DATN\\DATN\\src\\main\\resources\\upload";
-
-        try {
-            // Đảm bảo thư mục upload tồn tại
-            File directory = new File(uploadDir);
-            if (!directory.exists()) {
-                directory.mkdirs();
-            }
-
-            // Lấy tên file gốc
-            String originalFileName = file.getOriginalFilename();
-
-            // Tạo đường dẫn đến file trên server
-            String filePath = uploadDir + File.separator + originalFileName;
-
-            // Lưu file vào thư mục trên server
-            File dest = new File(filePath);
-            file.transferTo(dest);
-
-            // Trả về đường dẫn của file
-            return filePath;
-        } catch (IOException e) {
-            e.printStackTrace();
-            // Xử lý khi có lỗi xảy ra
-            return null;
-        }
-    }
-
-
 }

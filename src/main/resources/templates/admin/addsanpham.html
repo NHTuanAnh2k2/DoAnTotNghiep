@@ -247,38 +247,6 @@
                                         style="margin-left: 100px;margin-bottom: 20px;margin-top: 30px; width: 200px;">
                                     Thêm
                                 </button>
-                                <!-- Modal -->
-                                <div class="modal fade" id="themsanpham" tabindex="-1"
-                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm sản phẩm</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>
-                                                    Tên sản phẩm:
-                                                    <input class="form-control">
-                                                </p>
-                                                <p>
-                                                    Tên số lượng:
-                                                    <input type="number" class="form-control">
-                                                </p>
-                                                <p>
-                                                    Trạng thái:
-                                                    <select class="form-control">
-                                                        <option>Đang sử dụng</option>
-                                                        <option>Chưa sử dụng</option>
-                                                    </select>
-                                                </p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                    Hủy
-                                                </button>
-                                                <button type="submit" class="btn btn-primary">Thêm</button>
                             </div>
                             <!-- Modal thêm kích cỡ 2-->
                             <div class="modal fade" id="themkichco2" tabindex="-1"
@@ -471,113 +439,92 @@
         </section>
         <!-- Main content -->
         <h3 class="text-bold text-center" style="padding-left: 15px">CHI TIẾT SẢN PHẨM</h3>
-        <a class="btn btn-primary" style="margin-left: 900px;margin-bottom: 15px" data-bs-toggle="modal"
-           data-bs-target="#chinhsuasoluongvagia">Chỉnh sửa số lượng và giá chung</a>
-        <button class="btn btn-primary" style="margin-left: 20px;margin-bottom: 15px">Hoàn tất</button>
-
-        <!-- Modal chỉnh sửa số lượng và giá -->
-        <div class="modal fade" id="chinhsuasoluongvagia" tabindex="-1" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5">Chỉnh sửa giá và số lượng sản phẩm</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Số lượng:
-                            <input type="number" class="form-control">
-                        </p>
-                        <p>Đơn giá:
-                            <input class="form-control">
-                        </p>
-                    </div>
-                   <p style="margin-left: 18px">
-                       <button class="btn btn-primary">Cập nhật</button>
-                   </p>
-                </div>
-            </div>
-        </div>
-
-
-        <section class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <table id="example2" class="table table-bordered table-hover ">
-                                    <thead class="table table-danger">
-                                    <tr>
-                                        <th>STT</th>
-                                        <th>Tên sản phẩm</th>
-                                        <th>Số lượng</th>
-                                        <th>Giá bán</th>
-                                        <th>Hành động</th>
-                                        <th>Upload Ảnh</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:each="spctt,stt:${sanphamchitiet}">
-                                        <td>
-                                            <input type="checkbox" class="product-checkbox">
-                                            <span style="margin-left: 7px" th:text="${stt.index+1}"></span>
-                                        </td>
-                                        <td th:text="${spctt.sanpham.tensanpham} +' '+ '[' + ${spctt.kichco.ten} + '-' + ${spctt.mausac.ten} + ']'"></td>
-
-                                        <td>
-                                            <input type="number" style="width: 70px; height: 30px" class="form-control"
-                                                   th:value="${spctt.soluong}">
-                                        </td>
-                                        <td>
-                                            <input type="number" style="width: 150px; height: 30px" class="form-control"
-                                                   th:value="${spctt.giatien}">
-                                        </td>
-                                        <td>
-                                            <a th:href="@{/deleteCTSP/{id}(id=${spctt.id})}"
-                                               class="btn btn-outline-danger"
-                                               onclick="return xoa(event)">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                     fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
-                                                </svg>
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <div class="container">
-                                                <div id="image-preview"></div>
-                                                <form action="/upload" method="post" enctype="multipart/form-data">
-                                                    <label for="file-input" class="custom-upload">
-                                                        <input type="file" id="file-input" name="file[]" multiple
-                                                               onchange="previewImages()">
-                                                    </label>
-                                                </form>
-
-                                            </div>
-<!--                                            <form action="/addProduct" method="post" enctype="multipart/form-data">-->
-<!--                                                &lt;!&ndash; Các trường dữ liệu khác &ndash;&gt;-->
-<!--                                                <input type="file" name="file" multiple>-->
-<!--                                                &lt;!&ndash; Các trường dữ liệu khác &ndash;&gt;-->
-<!--                                                <button type="submit">Submit</button>-->
-<!--                                            </form>-->
-
-
-                                            </form>
-                                        </td>
-                                    </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-
+        <form  method="post" enctype="multipart/form-data">
+            <a class="btn btn-primary" style="margin-left: 900px;margin-bottom: 15px" data-bs-toggle="modal"
+               data-bs-target="#chinhsuasoluongvagia">Chỉnh sửa số lượng và giá chung</a>
+            <!-- Modal chỉnh sửa số lượng và giá -->
+            <div class="modal fade" id="chinhsuasoluongvagia" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5">Chỉnh sửa giá và số lượng sản phẩm</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <!-- /.card -->
+                        <div class="modal-body">
+                            <p>Số lượng:
+                                <input type="number" class="form-control">
+                            </p>
+                            <p>Đơn giá:
+                                <input class="form-control">
+                            </p>
+                        </div>
+                        <p style="margin-left: 18px">
+                            <button class="btn btn-primary">Cập nhật</button>
+                        </p>
                     </div>
-                    <!-- /.col -->
                 </div>
-                <!-- /.row -->
             </div>
-            <!-- /.container-fluid -->
-        </section>
+            <button class="btn btn-primary" style="margin-left: 20px; margin-bottom: 15px" th:formaction="@{/addImage}" id="submitButton" disabled onclick="return hoantat()">Hoàn tất</button>
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <table id="example2" class="table table-bordered table-hover ">
+                                        <thead class="table table-danger">
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Tên sản phẩm</th>
+                                            <th>Số lượng</th>
+                                            <th>Giá bán</th>
+                                            <th>Thao tác</th>
+                                            <th>Upload Ảnh</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="spctt,stt:${sanphamchitiet}" class="product-row">
+                                            <td>
+                                                <input type="checkbox" class="product-checkbox">
+                                                <span style="margin-left: 7px" th:text="${stt.index+1}"></span>
+                                            </td>
+                                            <td th:text="${spctt.sanpham.tensanpham} +' '+ '[' + ${spctt.kichco.ten} + '-' + ${spctt.mausac.ten} + ']'"></td>
+
+                                            <td>
+                                                <input type="number" style="width: 70px; height: 30px" class="form-control" th:value="${spctt.soluong}">
+                                            </td>
+                                            <td>
+                                                <input type="text" style="width: 150px; height: 30px" class="form-control" th:value="${#numbers.formatDecimal(spctt.giatien, 0, 'COMMA', 3, 'POINT') + ' VNĐ'}">
+                                            </td>
+
+                                            <td>
+                                                <a th:href="@{/deleteCTSP/{id}(id=${spctt.id})}" class="btn btn-outline-danger" onclick="return xoa(event)">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                        <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                                                    </svg>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <input type="hidden" id="spctId" name="spctId" th:value="${spctt.id}">
+                                                <div class="container">
+                                                    <div id="image-preview"></div>
+                                                    <label for="file-input" class="custom-upload">
+                                                        <input type="file" id="file-input" name="anh" multiple onchange="previewImages()">
+                                                    </label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </form>
         <!-- /.content -->
     </div>
     <!--end-->
@@ -590,8 +537,6 @@
 </html>
 <!--thư viện để chọn nhiều giá trị trên select -->
 <!-- ./wrapper -->
-<!-- jQuery -->
-<script src="../../plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- Select2 -->
@@ -955,7 +900,30 @@
     }
 </script>
 
+<script>
+    function checkProductDetails() {
+        // Kiểm tra số lượng sản phẩm chi tiết trong bảng
+        var rowCount = document.querySelectorAll('.product-row').length;
 
+        // Nếu có ít nhất một sản phẩm chi tiết, kích hoạt nút "Hoàn tất", ngược lại vô hiệu hóa nút
+        if (rowCount > 0) {
+            document.getElementById('submitButton').disabled = false;
+        } else {
+            document.getElementById('submitButton').disabled = true;
+        }
+    }
+
+    // Gọi hàm kiểm tra khi tải trang
+    window.onload = checkProductDetails;
+    function hoantat(){
+        if(confirm("Xác nhận hoàn tất")){
+            alert("Hoàn tất thành công")
+            return true;
+        }else {
+            return false;
+        }
+    }
+</script>
 
 
 

@@ -26,10 +26,10 @@ public class SanPhamImp implements SanPhamService {
         return sanPhamRepositoty.findAll(pageable);
     }
 
-    @Override
-    public Page<SanPham> findAllByTensanphamOrTrangthai(String tensanpham, Boolean trangthai, Pageable pageable) {
-        return sanPhamRepositoty.findAllByTensanphamOrTrangthai(tensanpham,trangthai,pageable);
-    }
+//    @Override
+//    public Page<SanPham> findAllByTensanphamOrTrangthai(String tensanpham, Boolean trangthai, Pageable pageable) {
+//        return sanPhamRepositoty.findAllByTensanphamOrTrangthai(tensanpham,trangthai,pageable);
+//    }
 
     @Override
     public SanPham add(SanPham sanPham) {

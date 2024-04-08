@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -53,12 +55,16 @@ public class DeGiayController {
             redirectAttributes.addFlashAttribute("err", "Tên không được để trống");
             return "admin/qldegiay";
         }
+        LocalDateTime currentTime = LocalDateTime.now();
+        deGiay.setNgaytao(currentTime);
         deGiayImp.add(deGiay);
         return "redirect:/listdegiay";
     }
 
     @PostMapping("/addDeGiayModal")
     public String addDeGiayModal(@ModelAttribute("degiay") DeGiay deGiay) {
+        LocalDateTime currentTime = LocalDateTime.now();
+        deGiay.setNgaytao(currentTime);
         deGiayImp.add(deGiay);
         return "redirect:/viewaddSP";
     }

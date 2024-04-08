@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,13 +8,13 @@
     <link rel="icon" type="image/png" href="../dist/img/logo_tt.png">
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!--Nhúng Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
-            crossorigin="anonymous"></script>
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
     <!-- Ionicons -->
@@ -32,6 +33,8 @@
     <link rel="stylesheet" href="../plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
     <link rel="stylesheet" href="../plugins/summernote/summernote-bs4.min.css">
+    <!-- cdn-bootstrap icon -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <style>
     .timeline {
@@ -79,52 +82,53 @@
         /* Màu xanh lá */
     }
 </style>
+
 <body class="hold-transition sidebar-mini layout-fixed">
 
-<div class="wrapper">
-    <!-- Ban đầu mở là hiển thị logo thương hiệu -->
-    <div class="preloader flex-column justify-content-center align-items-center">
-        <img class="animation__shake" src="../dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
-    </div>
-    <!-- end -->
+    <div class="wrapper">
+        <!-- Ban đầu mở là hiển thị logo thương hiệu -->
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="../dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+        </div>
+        <!-- end -->
 
-    <!-- navbar-->
-    <nav th:replace="~{/layoutadmin/navbar.html}"></nav>
-    <!-- End navbar -->
+        <!-- navbar-->
+        <nav th:replace="~{/layoutadmin/navbar.html}"></nav>
+        <!-- End navbar -->
 
-    <!--menu bán hàng -->
-    <nav th:replace="~{/layoutadmin/menu.html}"></nav>
-    <!--end menu -->
+        <!--menu bán hàng -->
+        <nav th:replace="~{/layoutadmin/menu.html}"></nav>
+        <!--end menu -->
 
 
-    <!-- narbar home/quản lý chi tiet hóa đơn -->
-    <div class="content-wrapper">
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-<!--                        <h5 class="m-0" style="color: grey">< Đơn hàng</h5>-->
-<!--                        &lt;!&ndash;Tên hóa đơn&ndash;&gt;-->
-<!--                        <p><h2 class="m-0">HD123456</h2> <h5 class="m-0" style="color: grey">25/11/2023 15:40 </h5></p>-->
-                    </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Quản lý chi tiết hóa đơn</li>
-                        </ol>
+        <!-- narbar home/quản lý chi tiet hóa đơn -->
+        <div class="content-wrapper">
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <!--                        <h5 class="m-0" style="color: grey">< Đơn hàng</h5>-->
+                            <!--                        &lt;!&ndash;Tên hóa đơn&ndash;&gt;-->
+                            <!--                        <p><h2 class="m-0">HD123456</h2> <h5 class="m-0" style="color: grey">25/11/2023 15:40 </h5></p>-->
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active">Quản lý chi tiết hóa đơn</li>
+                            </ol>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- /.content-header -->
+            <!-- /.content-header -->
 
-        <!--timeline-->
-        <div class="row g-3 container-fluid">
+            <!--timeline-->
+            <div class="row g-3 container-fluid">
                 <!--Nội dung chính timeline-->
                 <section class="content">
-                    <div class="container-fluid" >
-                        <div class="row" >
-                            <div class="col-12" >
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
                                 <div class="card" style="height: 350px;">
                                     <div class="card-header">
                                         <hr class="border border-danger border-2 opacity-50">
@@ -133,70 +137,112 @@
                                             <div class="row">
                                                 <div class="col">
                                                     <div id="timeline" class="timeline">
-                                                        <div class="timeline-item">
-                                                            <img class="status-icon"
-                                                                 src="https://static.vecteezy.com/system/resources/previews/000/423/742/original/vector-truck-icon.jpg"
-                                                                 alt="Status Icon">
-                                                            <h3>Chờ xác nhận</h3>
-                                                            <p>12-02-2022 10:00:00</p>
+                                                        <div class="timeline-item" th:each="a:${lstlichsu}">
+                                                            <h1 th:if="${a.trangthai==0}"><i
+                                                                    class="bi bi-check-circle"></i></h1>
+                                                            <h1 th:if="${a.trangthai==1}"><i
+                                                                    class="bi bi-check-circle-fill"></i></h1>
+                                                            <h1 th:if="${a.trangthai==2}"><i
+                                                                    class="bi bi-cart-check-fill"></i></h1>
+                                                            <h1 th:if="${a.trangthai==3}"><i class="bi bi-truck"></i>
+                                                            </h1>
+                                                            <h1 th:if="${a.trangthai==4}"><i
+                                                                    class="bi bi-cash-coin"></i></h1>
+                                                            <h1 th:if="${a.trangthai==5}"><i
+                                                                    class="bi bi-check-all"></i></h1>
+                                                            <h1 th:if="${a.trangthai==6}"><i class="bi bi-trash"></i>
+                                                            </h1>
+                                                            <h3 th:if="${a.trangthai==0}">Chờ xác nhận</h3>
+                                                            <h3 th:if="${a.trangthai==1}">Đã xác nhận</h3>
+                                                            <h3 th:if="${a.trangthai==2}">Chờ giao hàng</h3>
+                                                            <h3 th:if="${a.trangthai==3}">Đang giao hàng</h3>
+                                                            <h3 th:if="${a.trangthai==4}">Đã thanh toán</h3>
+                                                            <h3 th:if="${a.trangthai==5}">Hoàn thành đơn</h3>
+                                                            <h3 th:if="${a.trangthai==6}">Đã hủy đơn</h3>
+                                                            <p th:text="${a.ngaytao}"></p>
                                                         </div>
                                                     </div>
                                                     <p></p>
-                                                    <button class="btn btn-danger">Hủy</button>
-                                                    <button class="btn btn-primary" data-bs-toggle="modal"
-                                                            data-bs-target="#xacnhan">Xác nhận</button>
-                                                    <button class="btn btn-warning">In hóa đơn</button>
-                                                    <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#lichsu" style="margin-left: 805px">Lịch sử</button>
+                                                    <button class="btn btn-danger" th:if="${trangThaiHienTai<3}"
+                                                        data-bs-toggle="modal" data-bs-target="#huy">Hủy</button>
+                                                    <button class="btn btn-warning" th:if="${trangThaiHienTai>0}"
+                                                        data-bs-toggle="modal" data-bs-target="#quaylai">Quay
+                                                        lại</button>
+                                                    <button th:if="${trangThaiHienTai==0}" class="btn btn-primary"
+                                                        data-bs-toggle="modal" data-bs-target="#xacnhan">Xác
+                                                        nhận</button>
+                                                    <button th:if="${trangThaiHienTai==1}" class="btn btn-primary"
+                                                        data-bs-toggle="modal" data-bs-target="#chogiao">Chờ
+                                                        giao</button>
+                                                    <button th:if="${trangThaiHienTai==2}" class="btn btn-primary"
+                                                        data-bs-toggle="modal" data-bs-target="#vanchuyen">Vận
+                                                        chuyển</button>
+                                                    <button th:if="${trangThaiHienTai==3}" class="btn btn-primary"
+                                                        data-bs-toggle="modal" data-bs-target="#thanhtoan">Thanh
+                                                        toán</button>
+                                                    <button th:if="${trangThaiHienTai==4}" class="btn btn-primary"
+                                                        data-bs-toggle="modal" data-bs-target="#hoanthanh">Hoàn
+                                                        thành</button>
+                                                    <button class="btn btn-dark" data-bs-toggle="modal"
+                                                        data-bs-target="#lichsu" style="margin-left: 805px">Lịch
+                                                        sử</button>
                                                     <!-- Button trigger modal lịch sử -->
 
                                                     <!-- Modal lịch sử -->
-                                                    <div class="modal fade" id="lichsu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                        <div class="modal-dialog">
+                                                    <div class="modal fade" id="lichsu" tabindex="-1"
+                                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-xl">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Lịch sử</h1>
-                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                                        Lịch sử</h1>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <table id="example2" class="table table-bordered table-hover text-center">
+                                                                    <table id="example2"
+                                                                        class="table table-bordered table-hover text-center">
                                                                         <thead class="table table-danger">
-                                                                        <tr>
-                                                                            <th>STT</th>
-                                                                            <th>Trạng thái</th>
-                                                                            <th>Ngày</th>
-                                                                            <th>Người xác nhận</th>
-                                                                            <th>Ghi chú</th>
-                                                                        </tr>
+                                                                            <tr>
+                                                                                <th>STT</th>
+                                                                                <th>Trạng thái</th>
+                                                                                <th>Ngày xác nhận</th>
+                                                                                <th>Người xác nhận</th>
+                                                                                <th>Ghi chú</th>
+                                                                            </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                        <tr>
-                                                                            <td>1</td>
-                                                                            <td>Chờ xác nhận</td>
-                                                                            <td>15/02/2022 15:37:05</td>
-                                                                            <td>Nguyễn Văn Duy</td>
-                                                                            <td>Đồng ý xác nhận</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>1</td>
-                                                                            <td>Chờ xác nhận</td>
-                                                                            <td>15/02/2022 15:37:05</td>
-                                                                            <td>Nguyễn Văn Duy</td>
-                                                                            <td>Đồng ý xác nhận</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>1</td>
-                                                                            <td>Chờ xác nhận</td>
-                                                                            <td>15/02/2022 15:37:05</td>
-                                                                            <td>Nguyễn Văn Duy</td>
-                                                                            <td>Đồng ý xác nhận</td>
-                                                                        </tr>
-
-                                                                        </tfoot>
+                                                                            <tr th:each="a:${lstlichsu}">
+                                                                                <td th:text="${aStat.index+1}"></td>
+                                                                                <td th:if="${a.trangthai==0}">chờ xác
+                                                                                    nhận</td>
+                                                                                <td th:if="${a.trangthai==1}">đã xác
+                                                                                    nhận</td>
+                                                                                <td th:if="${a.trangthai==2}">chờ giao
+                                                                                    hàng</td>
+                                                                                <td th:if="${a.trangthai==3}">đang giao
+                                                                                    hàng</td>
+                                                                                <td th:if="${a.trangthai==4}">đã thanh
+                                                                                    toán</td>
+                                                                                <td th:if="${a.trangthai==5}">đã hoàn
+                                                                                    thành</td>
+                                                                                <td th:if="${a.trangthai==6}">đã hủy
+                                                                                </td>
+                                                                                <td
+                                                                                    th:text="${ #dates.format(a.ngaytao, 'dd-MM-yyyy HH:mm:ss')}">
+                                                                                </td>
+                                                                                <td
+                                                                                    th:text="${a.nhanvien.nguoidung.hovaten}">
+                                                                                </td>
+                                                                                <td th:text="${a.ghichu}"></td>
+                                                                            </tr>
+                                                                            </tfoot>
                                                                     </table>
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                                                    <button type="button" class="btn btn-primary">Xác nhận</button>
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">Thoát</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -204,34 +250,235 @@
                                                     <!-- Button trigger modal xac nhan -->
 
                                                     <!-- Modal xác nhận -->
-                                                    <div class="modal fade" id="xacnhan" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                                         aria-hidden="true">
+                                                    <div class="modal fade" id="xacnhan" tabindex="-1"
+                                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Xác nhận</h1>
-                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                            aria-label="Close"></button>
+                                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                                        Xác nhận đơn hàng</h1>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <p>Nhập ghi chú:
-                                                                        <input placeholder="Ghi chú" class="form-control">
-                                                                    </p>
-                                                                    <p>Nhập ghi chú:
-                                                                        <select class="form-control">
-                                                                            <option>Chờ giao</option>
-                                                                            <option>Đã giao</option>
-                                                                        </select>
-                                                                    </p>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                                                    <button id="changeStatusButton" type="button" class="btn btn-primary">Xác nhận</button>
+                                                                    <form th:action="@{xac-nhan-don}" method="get"
+                                                                        th:object="${ghichu}">
+                                                                        <p>Nhập ghi chú:
+                                                                            <input placeholder="Ghi chú"
+                                                                                class="form-control" th:field="*{key}">
+                                                                        </p>
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Hủy</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary">Xác nhận</button>
+                                                                    </form>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
 
+                                                    <div class="modal fade" id="huy" tabindex="-1"
+                                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                                        Hủy đơn</h1>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form th:action="@{huy-don}" method="get"
+                                                                    th:object="${ghichu}">
+                                                                    <p>Nhập ghi chú:
+                                                                        <input placeholder="Ghi chú"
+                                                                            class="form-control" th:field="*{key}">
+                                                                    </p>
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">Hủy</button>
+                                                                    <button type="submit"
+                                                                        class="btn btn-primary">Xác nhận</button>
+                                                                </form>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="modal fade" id="quaylai" tabindex="-1"
+                                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                                        Quay lại</h1>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form th:action="@{quay-lai}" method="get"
+                                                                        th:object="${ghichu}">
+                                                                        <p>Nhập ghi chú:
+                                                                            <input placeholder="Ghi chú"
+                                                                                class="form-control" th:field="*{key}">
+                                                                        </p>
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Hủy</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary">Xác nhận</button>
+                                                                    </form>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="modal fade" id="chogiao" aria-hidden="true"
+                                                        aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5"
+                                                                        id="exampleModalToggleLabel">Thông tin hóa đơn
+                                                                    </h1>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    thông tin hóa đơn hiển thị
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-primary"
+                                                                        data-bs-target="#exampleModalToggle2"
+                                                                        data-bs-toggle="modal">
+                                                                        lưu lại
+                                                                    </button>
+                                                                    <button class="btn btn-primary"
+                                                                        data-bs-target="#exampleModalToggle2"
+                                                                        data-bs-toggle="modal">
+                                                                        Bỏ qua
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal fade" id="exampleModalToggle2" aria-hidden="true"
+                                                        aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    Chờ giao đơn
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form th:action="@{xac-nhan-don}" method="get"
+                                                                        th:object="${ghichu}">
+                                                                        <p>Nhập ghi chú:
+                                                                            <input placeholder="Ghi chú"
+                                                                                class="form-control" th:field="*{key}">
+                                                                        </p>
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Hủy</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary">Xác nhận</button>
+                                                                    </form>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="modal fade" id="vanchuyen" tabindex="-1"
+                                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                                        Vận chuyển</h1>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form th:action="@{xac-nhan-don}" method="get"
+                                                                        th:object="${ghichu}">
+                                                                        <p>Nhập ghi chú:
+                                                                            <input placeholder="Ghi chú"
+                                                                                class="form-control" th:field="*{key}">
+                                                                        </p>
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Hủy</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary">Xác nhận</button>
+                                                                    </form>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="modal fade" id="thanhtoan" tabindex="-1"
+                                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                                        Thanh toán</h1>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form th:action="@{xac-nhan-don}" method="get"
+                                                                        th:object="${ghichu}">
+                                                                        <p>Nhập ghi chú:
+                                                                            <input placeholder="Ghi chú"
+                                                                                class="form-control" th:field="*{key}">
+                                                                        </p>
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Hủy</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary">Xác nhận</button>
+                                                                    </form>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="modal fade" id="hoanthanh" tabindex="-1"
+                                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                                        Hoàn thành đơn</h1>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form th:action="@{xac-nhan-don}" method="get"
+                                                                        th:object="${ghichu}">
+                                                                        <p>Nhập ghi chú:
+                                                                            <input placeholder="Ghi chú"
+                                                                                class="form-control" th:field="*{key}">
+                                                                        </p>
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Hủy</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary">Xác nhận</button>
+                                                                    </form>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -246,73 +493,781 @@
                     </div>
                     <!-- /.container-fluid -->
                 </section>
-            <!--end-->
+                <!--end-->
             </div>
-        <!--end-->
+            <!--end-->
 
-        <!--lịch sử thanh toán-->
-        <div class="row g-3 container-fluid">
-            <!--Nội dung chính lịch sử thanh toán-->
+            <!--lịch sử thanh toán-->
+            <div class="row g-3 container-fluid">
+                <!--Nội dung chính lịch sử thanh toán-->
+                <section class="content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card" style="height: 350px;">
+                                    <div class="card-header">
+                                        <hr class="border border-danger border-2 opacity-50">
+                                        <!--smkds-->
+                                        <h3>Lịch sử thanh toán</h3>
+                                        <table id="example2" class="table table-bordered table-hover text-center">
+                                            <thead class="table table-danger">
+                                                <tr>
+                                                    <th>STT</th>
+                                                    <th>Mã giao dịch</th>
+                                                    <th>Số tiền</th>
+                                                    <th>Trạng thái</th>
+                                                    <th>Thời gian</th>
+                                                    <th>Loại giao dịch</th>
+                                                    <th>Phương thức thanh toán</th>
+                                                    <th>Ghi chú</th>
+                                                    <th>Người xác nhận</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>12345</td>
+                                                    <td>1.000.000 VNĐ</td>
+                                                    <td>Tiền mặt</td>
+                                                    <td>25-12-2022</td>
+                                                    <td>Thanh toán</td>
+                                                    <td>Tiền mặt</td>
+                                                    <td>ok</td>
+                                                    <td>Duy</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>12345</td>
+                                                    <td>1.000.000 VNĐ</td>
+                                                    <td>Tiền mặt</td>
+                                                    <td>25-12-2022</td>
+                                                    <td>Thanh toán</td>
+                                                    <td>Tiền mặt</td>
+                                                    <td>ok</td>
+                                                    <td>Duy</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>12345</td>
+                                                    <td>1.000.000 VNĐ</td>
+                                                    <td>Tiền mặt</td>
+                                                    <td>25-12-2022</td>
+                                                    <td>Thanh toán</td>
+                                                    <td>Tiền mặt</td>
+                                                    <td>ok</td>
+                                                    <td>Duy</td>
+                                                </tr>
+                                                </tfoot>
+                                        </table>
+                                        <!--smkds-->
+                                    </div>
+                                </div>
+                                <!-- /.card -->
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.container-fluid -->
+                </section>
+                <!--end-->
+            </div>
+            <!--end-->
+
+            <div class="row g-3 container-fluid">
+                <div class="col-lg-8 col-md-8">
+                    <!--Nội dung chính chi tiet hóa đơn-->
+                    <section class="content">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card" style="height: 326px;">
+                                        <div class="card-header">
+                                            <div class="d-flex justify-content-end align-content-center">
+                                                <h4>
+                                                    Thông tin đơn hàng: HD123456
+                                                </h4>
+                                                <button style="margin-right: 50px; margin-left: 140px;" type="button"
+                                                    class="btn btn-outline-secondary" data-bs-toggle="modal"
+                                                    data-bs-target="#modalThayDoiHoaDon">Thay đổi</button>
+                                                <!--Modal thay đổi thông tin hóa đơn-->
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="modalThayDoiHoaDon" tabindex="-1"
+                                                    aria-labelledby="exampleModalThayDoiHoaDon" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-scrollable">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h3 class="modal-title fs-5"
+                                                                    id="exampleModalThayDoiHoaDon">Thay đổi thông tin
+                                                                    hóa đơn</h3>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form class="row g-3">
+                                                                    <div class="col-md-12">
+                                                                        <label class="form-label">Tên khách
+                                                                            hàng:</label>
+                                                                        <input type="text" class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-12">
+                                                                        <label class="form-label">Số điện thoại:</label>
+                                                                        <input type="text" class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <label class="form-label">Tỉnh/Thành
+                                                                            Phố:</label>
+                                                                        <select class="form-select">
+                                                                            <option selected disabled value="">Choose...
+                                                                            </option>
+                                                                            <option>...</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <label class="form-label">Quận/Huyện:</label>
+                                                                        <select class="form-select">
+                                                                            <option selected disabled value="">Choose...
+                                                                            </option>
+                                                                            <option>...</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <label class="form-label">Phường/Xã: </label>
+                                                                        <select class="form-select">
+                                                                            <option selected disabled value="">Choose...
+                                                                            </option>
+                                                                            <option>...</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-12">
+                                                                        <label class="form-label">Địa chỉ cụ
+                                                                            thể:</label>
+                                                                        <input type="text" class="form-control">
+                                                                    </div>
+                                                                    <div class="col-12">
+                                                                        <label class="form-label">Phí giao hàng:</label>
+                                                                        <input type="text" class="form-control">
+                                                                    </div>
+                                                                    <div class="col-12">
+                                                                        <label class="form-label">Ghi chú:</label>
+                                                                        <textarea class="form-control"
+                                                                            rows="3"></textarea>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Hủy</button>
+                                                                <button type="button" class="btn btn-primary">Xác
+                                                                    nhận</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/Kết thúc modal thay đổi thông tin-->
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    data-bs-toggle="modal" data-bs-target="#modalChuyenNhanVien">Chuyển
+                                                    nhân viên</button>
+                                                <!--Modal thay đổi nhân viên-->
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="modalChuyenNhanVien" tabindex="-1"
+                                                    aria-labelledby="exampleModalChuyenNhanVien" aria-hidden="true">
+                                                    <div class="modal-dialog modal-xl">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h class="modal-title fs-5"
+                                                                    id="exampleModalChuyenNhanVien">Chuyển nhân viên</h>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="card-body">
+                                                                    <div
+                                                                        class="d-flex justify-content-between align-items-center">
+                                                                        <div>
+                                                                            <p
+                                                                                style="font-family: 'Times New Roman'; font-size: 18px; font-weight: bold;">
+                                                                                Nhân viên hiện tại: Dương Thị Tùng </p>
+                                                                            <p
+                                                                                style="font-family: 'Times New Roman'; font-size: 18px; font-weight: bold;">
+                                                                                Mã nhân viên: GiaNgheoThoi </p>
+                                                                        </div>
+                                                                        <nav class="navbar bg-body-tertiary">
+                                                                            <div class="container-fluid">
+                                                                                <form class="d-flex" role="search">
+                                                                                    <input class="form-control me-2"
+                                                                                        type="search"
+                                                                                        placeholder="Search"
+                                                                                        aria-label="Search">
+                                                                                    <button
+                                                                                        class="btn btn-outline-success"
+                                                                                        type="submit">Search</button>
+                                                                                </form>
+                                                                            </div>
+                                                                        </nav>
+                                                                    </div>
+
+
+                                                                    <table
+                                                                        class="table table-bordered table-hover text-center">
+                                                                        <thead class="table table-danger">
+                                                                            <tr>
+                                                                                <th>STT</th>
+                                                                                <th>Mã nhân viên</th>
+                                                                                <th>Tên nhân viên</th>
+                                                                                <th>Số điện thoại</th>
+                                                                                <th>CCCD</th>
+                                                                                <th>Giói tính</th>
+                                                                                <th>Thao tác</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>1</td>
+                                                                                <td>InternetExplorer</td>
+                                                                                <td>Tuan Anh</td>
+                                                                                <td>0865858325</td>
+                                                                                <td>012345678987</td>
+                                                                                <td>Nam</td>
+                                                                                <td>
+                                                                                    <button type="button"
+                                                                                        class="btn btn-warning">Chọn</button>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>1</td>
+                                                                                <td>InternetExplorer</td>
+                                                                                <td>Tuan Anh</td>
+                                                                                <td>0865858325</td>
+                                                                                <td>012345678987</td>
+                                                                                <td>Nam</td>
+                                                                                <td>
+                                                                                    <button type="button"
+                                                                                        class="btn btn-warning">Chọn</button>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>1</td>
+                                                                                <td>InternetExplorer</td>
+                                                                                <td>Tuan Anh</td>
+                                                                                <td>0865858325</td>
+                                                                                <td>012345678987</td>
+                                                                                <td>Nam</td>
+                                                                                <td>
+                                                                                    <button type="button"
+                                                                                        class="btn btn-warning">Chọn</button>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <br>
+                                                                    <nav aria-label="Page navigation example">
+                                                                        <ul class="pagination">
+                                                                            <li class="page-item"><a class="page-link"
+                                                                                    href="#">Previous</a></li>
+                                                                            <li class="page-item"><a class="page-link"
+                                                                                    href="#">1</a></li>
+                                                                            <li class="page-item"><a class="page-link"
+                                                                                    href="#">Next</a></li>
+                                                                        </ul>
+                                                                    </nav>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Hủy</button>
+                                                                <button type="button" class="btn btn-primary">Xác
+                                                                    nhận</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--Kết thúc modal thay đổi nhân viên-->
+                                            </div>
+                                            <hr class="border border-danger border-2 opacity-50">
+                                            <div class="row g-3">
+                                                <div class="col-lg-6 col-md-6">
+                                                    <div class="d-flex justify-content-start">
+                                                        <h6 style="font-family: 'Times New Roman'; font-weight: bold">
+                                                            Trạng thái:</h6>
+                                                        <p
+                                                            style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
+                                                            Chờ xác nhận</p>
+                                                    </div>
+                                                    <div class="d-flex justify-content-start">
+                                                        <h6 style="font-family: 'Times New Roman'; font-weight: bold">
+                                                            Loại:</h6>
+                                                        <p
+                                                            style="margin-left: 50px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
+                                                            ONLINE</p>
+                                                    </div>
+                                                    <div class="d-flex justify-content-start">
+                                                        <h6 style="font-family: 'Times New Roman'; font-weight: bold">
+                                                            Địa chỉ:</h6>
+                                                        <p
+                                                            style="margin-left: 34px; font-family: 'Times New Roman'; font-size: 15px;">
+                                                            Khối Yên Đình, thị xã Cửa Lò, Nghệ An</p>
+                                                    </div>
+                                                    <div class="d-flex justify-content-start">
+                                                        <h6 style="font-family: 'Times New Roman'; font-weight: bold">
+                                                            Ngày tạo:</h6>
+                                                        <p
+                                                            style="margin-left: 20px; font-family: 'Times New Roman'; font-size: 15px;">
+                                                            25/11/2024</p>
+                                                    </div>
+                                                    <div class="d-flex justify-content-start">
+                                                        <h6 style="font-family: 'Times New Roman'; font-weight: bold">
+                                                            Ghi chú:</h6>
+                                                        <p
+                                                            style=" margin-left: 24px;font-family: 'Times New Roman'; font-size: 15px;">
+                                                            Hết tiền</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6">
+                                                    <div class="d-flex justify-content-start">
+                                                        <h6 style="font-family: 'Times New Roman'; font-weight: bold">
+                                                            Loại giao dịch:</h6>
+                                                        <p
+                                                            style="margin-left: 79px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
+                                                            Trả sau</p>
+                                                    </div>
+                                                    <div class="d-flex justify-content-start">
+                                                        <h6 style="font-family: 'Times New Roman'; font-weight: bold">
+                                                            Phương thức thanh toán:</h6>
+                                                        <p
+                                                            style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
+                                                            Tiền mặt</p>
+                                                    </div>
+                                                    <div class="d-flex justify-content-start">
+                                                        <h6 style="font-family: 'Times New Roman'; font-weight: bold">
+                                                            Tên khách hàng:</h6>
+                                                        <p
+                                                            style="margin-left: 70px; font-family: 'Times New Roman'; font-size: 15px;">
+                                                            Nguyễn Hoàng Tuấn Anh</p>
+                                                    </div>
+                                                    <div class="d-flex justify-content-start">
+                                                        <h6 style="font-family: 'Times New Roman'; font-weight: bold">Số
+                                                            điện thoại:</h6>
+                                                        <p
+                                                            style="margin-left: 89px; font-family: 'Times New Roman'; font-size: 15px;">
+                                                            0865858245</p>
+                                                    </div>
+                                                    <div class="d-flex justify-content-start">
+                                                        <h6 style="font-family: 'Times New Roman'; font-weight: bold">
+                                                            Ngày dự kiến nhận:</h6>
+                                                        <p
+                                                            style="margin-left: 48px; font-family: 'Times New Roman'; font-size: 15px;">
+                                                            25/12/2024</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- /.card -->
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                        <!-- /.container-fluid -->
+                    </section>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <!--Nội dung chính chi tiet hóa đơn-->
+                    <section class="content">
+                        <div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3>Chi phí đơn hàng</h3>
+                                            <hr class="border border-danger border-2 opacity-50">
+                                            <div class="d-flex justify-content-between">
+                                                <h6 style="font-family: 'Times New Roman'; font-weight: bold">Tổng tiền
+                                                    đơn hàng:</h6>
+                                                <p style="font-family: 'Times New Roman'; font-size: 16px; color: red">
+                                                    6.000.000 VND</p>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 style="font-family: 'Times New Roman'; font-weight: bold">Phí giao
+                                                    hàng:</h6>
+                                                <p style="font-family: 'Times New Roman'; font-size: 16px;">35.000 VND
+                                                </p>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 style="font-family: 'Times New Roman'; font-weight: bold">Phiếu giảm
+                                                    giá:</h6>
+                                                <p style="font-family: 'Times New Roman'; font-size: 16px;">1.000.000
+                                                    VND</p>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 style="font-family: 'Times New Roman'; font-weight: bold">Tổng tiền
+                                                    giảm:</h6>
+                                                <p style="font-family: 'Times New Roman'; font-size: 16px;">1.000.000
+                                                    VND</p>
+                                            </div>
+                                            <hr class="border border-danger border-2 opacity-50">
+                                            <div class="d-flex justify-content-between">
+                                                <h6 style="font-family: 'Times New Roman'; font-weight: bold">Tổng tiền
+                                                    thanh toán:</h6>
+                                                <p style="font-family: 'Times New Roman'; font-size: 16px; color: red;">
+                                                    5.065.000 VND</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.card -->
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                        <!-- /.container-fluid -->
+                    </section>
+                </div>
+            </div>
+
+            <!--Thông tin sản phẩm mua-->
             <section class="content">
-                <div class="container-fluid" >
-                    <div class="row" >
-                        <div class="col-12" >
-                            <div class="card" style="height: 350px;">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
                                 <div class="card-header">
+                                    <div class="d-flex justify-content-between align-content-center">
+                                        <h3>
+                                            Thông tin sản phẩm đã mua
+                                        </h3>
+                                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                            data-bs-target="#modalThemSanPhamHD">+ Thêm sản phẩm</button>
+                                        <!--Modal thêm sản phẩm vào hóa đơn-->
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="modalThemSanPhamHD" tabindex="-1"
+                                            aria-labelledby="exampleModalThemSanPhamHD" aria-hidden="true">
+                                            <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h3 class="modal-title fs-5" id="exampleModalThemSanPhamHD">Thêm
+                                                            sản phẩm vào đơn hàng</h3>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="card-body">
+                                                            <div class="d-flex justify-content-between">
+                                                                <nav class="navbar bg-body-tertiary">
+                                                                    <form>
+                                                                        <div class="d-flex align-items-center">
+                                                                            <input class="form-control me-2"
+                                                                                type="search" placeholder="Search"
+                                                                                aria-label="Search"
+                                                                                style="width: 800px;">
+                                                                            <button class="btn btn-outline-success"
+                                                                                type="submit"
+                                                                                style="margin-right: 35px; margin-left: 35px;">Search</button>
+                                                                            <button class="btn btn-outline-danger"
+                                                                                type="submit">Làm mới</button>
+                                                                        </div>
+                                                                        <!--Bộ lọc-->
+                                                                        <div class="align-items-center">
+                                                                            <div class="d-flex justify-content-around">
+                                                                                <div>
+                                                                                    <label class="col-form-label">Chất
+                                                                                        liệu</label>
+                                                                                    <select class="form-select"
+                                                                                        style="width: 120px;">
+                                                                                        <option selected disabled
+                                                                                            value="">Choose...</option>
+                                                                                        <option>...</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <label class="col-form-label">Thương
+                                                                                        hiệu</label>
+                                                                                    <select class="form-select"
+                                                                                        style="width: 120px;">
+                                                                                        <option selected disabled
+                                                                                            value="">Choose...</option>
+                                                                                        <option>...</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <label class="col-form-label">Đế
+                                                                                        giày</label>
+                                                                                    <select class="form-select"
+                                                                                        style="width: 120px;">
+                                                                                        <option selected disabled
+                                                                                            value="">Choose...</option>
+                                                                                        <option>...</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <label class="col-form-label">Kích
+                                                                                        cỡ</label>
+                                                                                    <select class="form-select"
+                                                                                        style="width: 120px;">
+                                                                                        <option selected disabled
+                                                                                            value="">Choose...</option>
+                                                                                        <option>...</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <label class="col-form-label">Màu
+                                                                                        sắc</label>
+                                                                                    <select class="form-select"
+                                                                                        style="width: 120px;">
+                                                                                        <option selected disabled
+                                                                                            value="">Choose...</option>
+                                                                                        <option>...</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                        <div class="d-flex justify-content-evenly">
+                                                                            <div>
+                                                                                <label class="col-form-label">Thể
+                                                                                    loại</label>
+                                                                                <select class="form-select"
+                                                                                    style="width: 120px;">
+                                                                                    <option selected disabled value="">
+                                                                                        Choose...</option>
+                                                                                    <option>...</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div>
+                                                                                <label class="col-form-label">Giới
+                                                                                    tính</label>
+                                                                                <select class="form-select"
+                                                                                    style="width: 120px;">
+                                                                                    <option selected disabled value="">
+                                                                                        Choose...</option>
+                                                                                    <option>...</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div>
+                                                                                <label class="col-form-label">Khoảng
+                                                                                    giá</label>
+                                                                                <div>
+                                                                                    <input type="range" min="1"
+                                                                                        max="100" value="50"
+                                                                                        style="width: 200px;">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+                                                                </nav>
+                                                            </div>
+                                                            <br>
+                                                            <table class="table table-bordered table-hover text-center">
+                                                                <thead class="table table-danger">
+                                                                    <tr>
+                                                                        <th>STT</th>
+                                                                        <th>Ảnh sản phẩm</th>
+                                                                        <th>Tên sản phẩm</th>
+                                                                        <th>Số lượng</th>
+                                                                        <th>Kích cỡ</th>
+                                                                        <th>Màu sắc</th>
+                                                                        <th>Trạng thái</th>
+                                                                        <th>Thao tác</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>1</td>
+                                                                        <td>Thêm vào nhá</td>
+                                                                        <td>Tuan Anh</td>
+                                                                        <td>56</td>
+                                                                        <td>41</td>
+                                                                        <td>Vàng</td>
+                                                                        <td>
+                                                                            <p
+                                                                                style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                                                                Đang kinh doanh</p>
+                                                                        </td>
+                                                                        <td>
+                                                                            <button type="button"
+                                                                                class="btn btn-warning">Chọn</button>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>1</td>
+                                                                        <td>Thêm vào nhá</td>
+                                                                        <td>Tuan Anh</td>
+                                                                        <td>56</td>
+                                                                        <td>41</td>
+                                                                        <td>Vàng</td>
+                                                                        <td>
+                                                                            <p
+                                                                                style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                                                                Đang kinh doanh</p>
+                                                                        </td>
+                                                                        <td>
+                                                                            <button type="button"
+                                                                                class="btn btn-warning">Chọn</button>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>1</td>
+                                                                        <td>Thêm vào nhá</td>
+                                                                        <td>Tuan Anh</td>
+                                                                        <td>56</td>
+                                                                        <td>41</td>
+                                                                        <td>Vàng</td>
+                                                                        <td>
+                                                                            <p
+                                                                                style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                                                                Đang kinh doanh</p>
+                                                                        </td>
+                                                                        <td>
+                                                                            <button type="button"
+                                                                                class="btn btn-warning">Chọn</button>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            <br>
+                                                            <nav aria-label="Page navigation example">
+                                                                <ul class="pagination">
+                                                                    <li class="page-item"><a class="page-link"
+                                                                            href="#">Previous</a></li>
+                                                                    <li class="page-item"><a class="page-link"
+                                                                            href="#">1</a></li>
+                                                                    <li class="page-item"><a class="page-link"
+                                                                            href="#">Next</a></li>
+                                                                </ul>
+                                                            </nav>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Hủy</button>
+                                                        <button type="button" class="btn btn-primary">OK</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--Kết thúc Modal thêm sản phẩm vào hóa đơn-->
+                                    </div>
                                     <hr class="border border-danger border-2 opacity-50">
-                                    <!--smkds-->
-                                 <h3>Lịch sử thanh toán</h3>
-                                    <table id="example2" class="table table-bordered table-hover text-center">
-                                        <thead class="table table-danger">
-                                        <tr>
-                                            <th>STT</th>
-                                            <th>Mã giao dịch</th>
-                                            <th>Số tiền</th>
-                                            <th>Trạng thái</th>
-                                            <th>Thời gian</th>
-                                            <th>Loại giao dịch</th>
-                                            <th>Phương thức thanh toán</th>
-                                            <th>Ghi chú</th>
-                                            <th>Người xác nhận</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>12345</td>
-                                            <td>1.000.000 VNĐ</td>
-                                            <td>Tiền mặt</td>
-                                            <td>25-12-2022</td>
-                                            <td>Thanh toán</td>
-                                            <td>Tiền mặt</td>
-                                            <td>ok</td>
-                                            <td>Duy</td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>12345</td>
-                                            <td>1.000.000 VNĐ</td>
-                                            <td>Tiền mặt</td>
-                                            <td>25-12-2022</td>
-                                            <td>Thanh toán</td>
-                                            <td>Tiền mặt</td>
-                                            <td>ok</td>
-                                            <td>Duy</td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>12345</td>
-                                            <td>1.000.000 VNĐ</td>
-                                            <td>Tiền mặt</td>
-                                            <td>25-12-2022</td>
-                                            <td>Thanh toán</td>
-                                            <td>Tiền mặt</td>
-                                            <td>ok</td>
-                                            <td>Duy</td>
-                                        </tr>
-                                        </tfoot>
-                                    </table>
-                                    <!--smkds-->
+                                    <div class="card-body">
+                                        <table class="table align-middle table-bordered table-hover">
+                                            <thead class="table table-danger">
+                                                <tr>
+                                                    <th>STT</th>
+                                                    <th>Ảnh sản phẩm</th>
+                                                    <th>Thông tin sản phẩm</th>
+                                                    <th>Màu sắc</th>
+                                                    <th>Số lượng</th>
+                                                    <th>Tổng tiền</th>
+                                                    <th>Trạng thái</th>
+                                                    <th>Thao tác</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Để ảnh vào nhá</td>
+                                                    <td>
+                                                        <h3
+                                                            style="font-family: 'Times New Roman'; font-size: 15px; font-weight: bold;">
+                                                            Giày đá bóng Nike</h3>
+                                                        <h3
+                                                            style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
+                                                            6.000.000 VND</h3>
+                                                        <h3
+                                                            style="font-family: 'Times New Roman'; font-size: 15px;font-weight: bold;">
+                                                            Kích cỡ: 41</h3>
+                                                    </td>
+                                                    <td>Đen</td>
+                                                    <td><input class="form-control form-control-sm" type="number"
+                                                            value="1" aria-label=".form-control-sm example"
+                                                            style="width: 100px;"></td>
+                                                    <td>6.000.000 VND</td>
+                                                    <td>
+                                                        <p
+                                                            style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
+                                                            Chờ xác nhận</p>
+                                                    </td>
+                                                    <td>
+                                                        <a>
+                                                            <button type="button" class="btn btn-danger">Xóa</button>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Để ảnh vào nhá</td>
+                                                    <td>
+                                                        <h3
+                                                            style="font-family: 'Times New Roman'; font-size: 15px; font-weight: bold;">
+                                                            Giày đá bóng Nike</h3>
+                                                        <h3
+                                                            style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
+                                                            6.000.000 VND</h3>
+                                                        <h3
+                                                            style="font-family: 'Times New Roman'; font-size: 15px;font-weight: bold;">
+                                                            Kích cỡ: 41</h3>
+                                                    </td>
+                                                    <td>Đen</td>
+                                                    <td><input class="form-control form-control-sm" type="number"
+                                                            value="1" aria-label=".form-control-sm example"
+                                                            style="width: 100px;"></td>
+                                                    <td>6.000.000 VND</td>
+                                                    <td>
+                                                        <p
+                                                            style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
+                                                            Chờ xác nhận</p>
+                                                    </td>
+                                                    <td>
+                                                        <a>
+                                                            <button type="button" class="btn btn-danger">Xóa</button>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Để ảnh vào nhá</td>
+                                                    <td>
+                                                        <h3
+                                                            style="font-family: 'Times New Roman'; font-size: 15px; font-weight: bold;">
+                                                            Giày đá bóng Nike</h3>
+                                                        <h3
+                                                            style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
+                                                            6.000.000 VND</h3>
+                                                        <h3
+                                                            style="font-family: 'Times New Roman'; font-size: 15px;font-weight: bold;">
+                                                            Kích cỡ: 41</h3>
+                                                    </td>
+                                                    <td>Đen</td>
+                                                    <td><input class="form-control form-control-sm" type="number"
+                                                            value="1" aria-label=".form-control-sm example"
+                                                            style="width: 100px;"></td>
+                                                    <td>6.000.000 VND</td>
+                                                    <td>
+                                                        <p
+                                                            style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
+                                                            Chờ xác nhận</p>
+                                                    </td>
+                                                    <td>
+                                                        <a>
+                                                            <button type="button" class="btn btn-danger">Xóa</button>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <br>
+                                        <nav aria-label="Page navigation example">
+                                            <ul class="pagination">
+                                                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                            </ul>
+                                        </nav>
+                                    </div>
                                 </div>
                             </div>
                             <!-- /.card -->
@@ -323,666 +1278,105 @@
                 </div>
                 <!-- /.container-fluid -->
             </section>
-            <!--end-->
         </div>
-        <!--end-->
+        <!--end -->
+        <nav th:replace="~{/layoutadmin/footer.html}"></nav>
 
-        <div class="row g-3 container-fluid">
-            <div class="col-lg-8 col-md-8">
-                <!--Nội dung chính chi tiet hóa đơn-->
-                <section class="content">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card" style="height: 326px;">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-end align-content-center">
-                                            <h4>
-                                                Thông tin đơn hàng: HD123456
-                                            </h4>
-                                            <button style="margin-right: 50px; margin-left: 140px;" type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalThayDoiHoaDon">Thay đổi</button>
-                                            <!--Modal thay đổi thông tin hóa đơn-->
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="modalThayDoiHoaDon" tabindex="-1" aria-labelledby="exampleModalThayDoiHoaDon" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-scrollable">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h3 class="modal-title fs-5" id="exampleModalThayDoiHoaDon">Thay đổi thông tin hóa đơn</h3>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <form class="row g-3">
-                                                                <div class="col-md-12">
-                                                                    <label class="form-label">Tên khách hàng:</label>
-                                                                    <input type="text" class="form-control">
-                                                                </div>
-                                                                <div class="col-md-12">
-                                                                    <label class="form-label">Số điện thoại:</label>
-                                                                    <input type="text" class="form-control">
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <label class="form-label">Tỉnh/Thành Phố:</label>
-                                                                    <select class="form-select">
-                                                                        <option selected disabled value="">Choose...</option>
-                                                                        <option>...</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <label class="form-label">Quận/Huyện:</label>
-                                                                    <select class="form-select">
-                                                                        <option selected disabled value="">Choose...</option>
-                                                                        <option>...</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <label class="form-label">Phường/Xã: </label>
-                                                                    <select class="form-select">
-                                                                        <option selected disabled value="">Choose...</option>
-                                                                        <option>...</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <label class="form-label">Địa chỉ cụ thể:</label>
-                                                                    <input type="text" class="form-control">
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <label class="form-label">Phí giao hàng:</label>
-                                                                    <input type="text" class="form-control">
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <label class="form-label">Ghi chú:</label>
-                                                                    <textarea class="form-control" rows="3"></textarea>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                                            <button type="button" class="btn btn-primary">Xác nhận</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!--/Kết thúc modal thay đổi thông tin-->
-                                            <button  type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalChuyenNhanVien">Chuyển nhân viên</button>
-                                            <!--Modal thay đổi nhân viên-->
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="modalChuyenNhanVien" tabindex="-1" aria-labelledby="exampleModalChuyenNhanVien" aria-hidden="true">
-                                                <div class="modal-dialog modal-xl">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h class="modal-title fs-5" id="exampleModalChuyenNhanVien">Chuyển nhân viên</h>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="card-body">
-                                                                <div class="d-flex justify-content-between align-items-center">
-                                                                    <div>
-                                                                        <p style="font-family: 'Times New Roman'; font-size: 18px; font-weight: bold;">Nhân viên hiện tại: Dương Thị Tùng </p>
-                                                                        <p style="font-family: 'Times New Roman'; font-size: 18px; font-weight: bold;">Mã nhân viên: GiaNgheoThoi </p>
-                                                                    </div>
-                                                                    <nav class="navbar bg-body-tertiary">
-                                                                        <div class="container-fluid">
-                                                                            <form class="d-flex" role="search">
-                                                                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                                                                                <button class="btn btn-outline-success" type="submit">Search</button>
-                                                                            </form>
-                                                                        </div>
-                                                                    </nav>
-                                                                </div>
-
-
-                                                                <table class="table table-bordered table-hover text-center">
-                                                                    <thead class="table table-danger">
-                                                                    <tr>
-                                                                        <th>STT</th>
-                                                                        <th>Mã nhân viên</th>
-                                                                        <th>Tên nhân viên</th>
-                                                                        <th>Số điện thoại</th>
-                                                                        <th>CCCD</th>
-                                                                        <th>Giói tính</th>
-                                                                        <th>Thao tác</th>
-                                                                    </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                    <tr>
-                                                                        <td>1</td>
-                                                                        <td>InternetExplorer</td>
-                                                                        <td>Tuan Anh</td>
-                                                                        <td>0865858325</td>
-                                                                        <td>012345678987</td>
-                                                                        <td>Nam</td>
-                                                                        <td>
-                                                                            <button type="button" class="btn btn-warning">Chọn</button>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>1</td>
-                                                                        <td>InternetExplorer</td>
-                                                                        <td>Tuan Anh</td>
-                                                                        <td>0865858325</td>
-                                                                        <td>012345678987</td>
-                                                                        <td>Nam</td>
-                                                                        <td>
-                                                                            <button type="button" class="btn btn-warning">Chọn</button>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>1</td>
-                                                                        <td>InternetExplorer</td>
-                                                                        <td>Tuan Anh</td>
-                                                                        <td>0865858325</td>
-                                                                        <td>012345678987</td>
-                                                                        <td>Nam</td>
-                                                                        <td>
-                                                                            <button type="button" class="btn btn-warning">Chọn</button>
-                                                                        </td>
-                                                                    </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                                <br>
-                                                                <nav aria-label="Page navigation example">
-                                                                    <ul class="pagination">
-                                                                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                                                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                                                                    </ul>
-                                                                </nav>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                                            <button type="button" class="btn btn-primary">Xác nhận</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!--Kết thúc modal thay đổi nhân viên-->
-                                        </div>
-                                        <hr class="border border-danger border-2 opacity-50">
-                                        <div class="row g-3">
-                                            <div class="col-lg-6 col-md-6">
-                                                <div class="d-flex justify-content-start">
-                                                    <h6 style="font-family: 'Times New Roman'; font-weight: bold">Trạng thái:</h6>
-                                                    <p style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">Chờ xác nhận</p>
-                                                </div>
-                                                <div class="d-flex justify-content-start">
-                                                    <h6 style="font-family: 'Times New Roman'; font-weight: bold">Loại:</h6>
-                                                    <p style="margin-left: 50px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">ONLINE</p>
-                                                </div>
-                                                <div class="d-flex justify-content-start">
-                                                    <h6 style="font-family: 'Times New Roman'; font-weight: bold">Địa chỉ:</h6>
-                                                    <p style="margin-left: 34px; font-family: 'Times New Roman'; font-size: 15px;">Khối Yên Đình, thị xã Cửa Lò, Nghệ An</p>
-                                                </div>
-                                                <div class="d-flex justify-content-start">
-                                                    <h6 style="font-family: 'Times New Roman'; font-weight: bold">Ngày tạo:</h6>
-                                                    <p style="margin-left: 20px; font-family: 'Times New Roman'; font-size: 15px;">25/11/2024</p>
-                                                </div>
-                                                <div class="d-flex justify-content-start">
-                                                    <h6 style="font-family: 'Times New Roman'; font-weight: bold">Ghi chú:</h6>
-                                                    <p style=" margin-left: 24px;font-family: 'Times New Roman'; font-size: 15px;">Hết tiền</p>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 col-md-6">
-                                                <div class="d-flex justify-content-start">
-                                                    <h6 style="font-family: 'Times New Roman'; font-weight: bold">Loại giao dịch:</h6>
-                                                    <p style="margin-left: 79px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">Trả sau</p>
-                                                </div>
-                                                <div class="d-flex justify-content-start">
-                                                    <h6 style="font-family: 'Times New Roman'; font-weight: bold">Phương thức thanh toán:</h6>
-                                                    <p style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">Tiền mặt</p>
-                                                </div>
-                                                <div class="d-flex justify-content-start">
-                                                    <h6 style="font-family: 'Times New Roman'; font-weight: bold">Tên khách hàng:</h6>
-                                                    <p style="margin-left: 70px; font-family: 'Times New Roman'; font-size: 15px;">Nguyễn Hoàng Tuấn Anh</p>
-                                                </div>
-                                                <div class="d-flex justify-content-start">
-                                                    <h6 style="font-family: 'Times New Roman'; font-weight: bold">Số điện thoại:</h6>
-                                                    <p style="margin-left: 89px; font-family: 'Times New Roman'; font-size: 15px;">0865858245</p>
-                                                </div>
-                                                <div class="d-flex justify-content-start">
-                                                    <h6 style="font-family: 'Times New Roman'; font-weight: bold">Ngày dự kiến nhận:</h6>
-                                                    <p style="margin-left: 48px; font-family: 'Times New Roman'; font-size: 15px;">25/12/2024</p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <!-- /.card -->
-                            </div>
-                            <!-- /.col -->
-                        </div>
-                        <!-- /.row -->
-                    </div>
-                    <!-- /.container-fluid -->
-                </section>
-            </div>
-            <div class="col-lg-4 col-md-4">
-                <!--Nội dung chính chi tiet hóa đơn-->
-                <section class="content">
-                    <div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3>Chi phí đơn hàng</h3>
-                                        <hr class="border border-danger border-2 opacity-50">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 style="font-family: 'Times New Roman'; font-weight: bold">Tổng tiền đơn hàng:</h6>
-                                                    <p style="font-family: 'Times New Roman'; font-size: 16px; color: red">6.000.000 VND</p>
-                                                </div>
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 style="font-family: 'Times New Roman'; font-weight: bold">Phí giao hàng:</h6>
-                                                    <p style="font-family: 'Times New Roman'; font-size: 16px;">35.000 VND</p>
-                                                </div>
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 style="font-family: 'Times New Roman'; font-weight: bold">Phiếu giảm giá:</h6>
-                                                    <p style="font-family: 'Times New Roman'; font-size: 16px;">1.000.000 VND</p>
-                                                </div>
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 style="font-family: 'Times New Roman'; font-weight: bold">Tổng tiền giảm:</h6>
-                                                    <p style="font-family: 'Times New Roman'; font-size: 16px;">1.000.000 VND</p>
-                                                </div>
-                                                <hr class="border border-danger border-2 opacity-50">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 style="font-family: 'Times New Roman'; font-weight: bold">Tổng tiền thanh toán:</h6>
-                                                    <p style="font-family: 'Times New Roman'; font-size: 16px; color: red;">5.065.000 VND</p>
-                                                </div>
-                                        </div>
-                                </div>
-                                <!-- /.card -->
-                            </div>
-                            <!-- /.col -->
-                        </div>
-                        <!-- /.row -->
-                    </div>
-                    <!-- /.container-fluid -->
-                </section>
-            </div>
-        </div>
-
-        <!--Thông tin sản phẩm mua-->
-        <section class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="d-flex justify-content-between align-content-center">
-                                    <h3>
-                                        Thông tin sản phẩm đã mua
-                                    </h3>
-                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalThemSanPhamHD">+ Thêm sản phẩm</button>
-                                    <!--Modal thêm sản phẩm vào hóa đơn-->
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="modalThemSanPhamHD" tabindex="-1" aria-labelledby="exampleModalThemSanPhamHD" aria-hidden="true">
-                                        <div class="modal-dialog modal-xl modal-dialog-scrollable">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h3 class="modal-title fs-5" id="exampleModalThemSanPhamHD">Thêm sản phẩm vào đơn hàng</h3>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="card-body">
-                                                        <div class="d-flex justify-content-between">
-                                                            <nav class="navbar bg-body-tertiary">
-                                                                    <form>
-                                                                        <div class="d-flex align-items-center">
-                                                                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" style="width: 800px;">
-                                                                            <button class="btn btn-outline-success" type="submit" style="margin-right: 35px; margin-left: 35px;">Search</button>
-                                                                            <button class="btn btn-outline-danger" type="submit">Làm mới</button>
-                                                                        </div>
-                                                                        <!--Bộ lọc-->
-                                                                        <div class="align-items-center">
-                                                                            <div class="d-flex justify-content-around">
-                                                                                <div>
-                                                                                    <label class="col-form-label">Chất liệu</label>
-                                                                                    <select class="form-select" style="width: 120px;">
-                                                                                        <option selected disabled value="">Choose...</option>
-                                                                                        <option>...</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                                <div>
-                                                                                    <label class="col-form-label">Thương hiệu</label>
-                                                                                    <select class="form-select" style="width: 120px;">
-                                                                                        <option selected disabled value="">Choose...</option>
-                                                                                        <option>...</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                                <div>
-                                                                                    <label class="col-form-label">Đế giày</label>
-                                                                                    <select class="form-select" style="width: 120px;">
-                                                                                        <option selected disabled value="">Choose...</option>
-                                                                                        <option>...</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                                <div>
-                                                                                    <label class="col-form-label">Kích cỡ</label>
-                                                                                    <select class="form-select" style="width: 120px;">
-                                                                                        <option selected disabled value="">Choose...</option>
-                                                                                        <option>...</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                                <div>
-                                                                                    <label class="col-form-label">Màu sắc</label>
-                                                                                    <select class="form-select" style="width: 120px;">
-                                                                                        <option selected disabled value="">Choose...</option>
-                                                                                        <option>...</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>
-
-                                                                        </div>
-                                                                        <div class="d-flex justify-content-evenly">
-                                                                            <div>
-                                                                                <label class="col-form-label">Thể loại</label>
-                                                                                <select class="form-select" style="width: 120px;">
-                                                                                    <option selected disabled value="">Choose...</option>
-                                                                                    <option>...</option>
-                                                                                </select>
-                                                                            </div>
-                                                                            <div>
-                                                                                <label class="col-form-label">Giới tính</label>
-                                                                                <select class="form-select" style="width: 120px;">
-                                                                                    <option selected disabled value="">Choose...</option>
-                                                                                    <option>...</option>
-                                                                                </select>
-                                                                            </div>
-                                                                            <div>
-                                                                                <label class="col-form-label">Khoảng giá</label>
-                                                                                <div>
-                                                                                    <input type="range" min="1" max="100" value="50" style="width: 200px;">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </form>
-                                                            </nav>
-                                                        </div>
-                                                        <br>
-                                                        <table class="table table-bordered table-hover text-center">
-                                                            <thead class="table table-danger">
-                                                            <tr>
-                                                                <th>STT</th>
-                                                                <th>Ảnh sản phẩm</th>
-                                                                <th>Tên sản phẩm</th>
-                                                                <th>Số lượng</th>
-                                                                <th>Kích cỡ</th>
-                                                                <th>Màu sắc</th>
-                                                                <th>Trạng thái</th>
-                                                                <th>Thao tác</th>
-                                                            </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>Thêm vào nhá</td>
-                                                                <td>Tuan Anh</td>
-                                                                <td>56</td>
-                                                                <td>41</td>
-                                                                <td>Vàng</td>
-                                                                <td><p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">Đang kinh doanh</p></td>
-                                                                <td>
-                                                                    <button type="button" class="btn btn-warning">Chọn</button>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>Thêm vào nhá</td>
-                                                                <td>Tuan Anh</td>
-                                                                <td>56</td>
-                                                                <td>41</td>
-                                                                <td>Vàng</td>
-                                                                <td><p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">Đang kinh doanh</p></td>
-                                                                <td>
-                                                                    <button type="button" class="btn btn-warning">Chọn</button>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>Thêm vào nhá</td>
-                                                                <td>Tuan Anh</td>
-                                                                <td>56</td>
-                                                                <td>41</td>
-                                                                <td>Vàng</td>
-                                                                <td><p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">Đang kinh doanh</p></td>
-                                                                <td>
-                                                                    <button type="button" class="btn btn-warning">Chọn</button>
-                                                                </td>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-                                                        <br>
-                                                        <nav aria-label="Page navigation example">
-                                                            <ul class="pagination">
-                                                                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                                                            </ul>
-                                                        </nav>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                                    <button type="button" class="btn btn-primary">OK</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--Kết thúc Modal thêm sản phẩm vào hóa đơn-->
-                                </div>
-                                <hr class="border border-danger border-2 opacity-50">
-                                <div class="card-body">
-                                    <table class="table align-middle table-bordered table-hover">
-                                        <thead class="table table-danger">
-                                        <tr>
-                                            <th>STT</th>
-                                            <th>Ảnh sản phẩm</th>
-                                            <th>Thông tin sản phẩm</th>
-                                            <th>Màu sắc</th>
-                                            <th>Số lượng</th>
-                                            <th>Tổng tiền</th>
-                                            <th>Trạng thái</th>
-                                            <th>Thao tác</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Để ảnh vào nhá</td>
-                                            <td>
-                                                <h3 style="font-family: 'Times New Roman'; font-size: 15px; font-weight: bold;">Giày đá bóng Nike</h3>
-                                                <h3 style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">6.000.000 VND</h3>
-                                                <h3 style="font-family: 'Times New Roman'; font-size: 15px;font-weight: bold;">Kích cỡ: 41</h3>
-                                            </td>
-                                            <td>Đen</td>
-                                            <td><input class="form-control form-control-sm" type="number" value="1" aria-label=".form-control-sm example" style="width: 100px;"></td>
-                                            <td>6.000.000 VND</td>
-                                            <td><p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">Chờ xác nhận</p></td>
-                                            <td>
-                                                <a>
-                                                    <button type="button" class="btn btn-danger">Xóa</button>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Để ảnh vào nhá</td>
-                                            <td>
-                                                <h3 style="font-family: 'Times New Roman'; font-size: 15px; font-weight: bold;">Giày đá bóng Nike</h3>
-                                                <h3 style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">6.000.000 VND</h3>
-                                                <h3 style="font-family: 'Times New Roman'; font-size: 15px;font-weight: bold;">Kích cỡ: 41</h3>
-                                            </td>
-                                            <td>Đen</td>
-                                            <td><input class="form-control form-control-sm" type="number" value="1" aria-label=".form-control-sm example" style="width: 100px;"></td>
-                                            <td>6.000.000 VND</td>
-                                            <td><p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">Chờ xác nhận</p></td>
-                                            <td>
-                                                <a>
-                                                    <button type="button" class="btn btn-danger">Xóa</button>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Để ảnh vào nhá</td>
-                                            <td>
-                                                <h3 style="font-family: 'Times New Roman'; font-size: 15px; font-weight: bold;">Giày đá bóng Nike</h3>
-                                                <h3 style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">6.000.000 VND</h3>
-                                                <h3 style="font-family: 'Times New Roman'; font-size: 15px;font-weight: bold;">Kích cỡ: 41</h3>
-                                            </td>
-                                            <td>Đen</td>
-                                            <td><input class="form-control form-control-sm" type="number" value="1" aria-label=".form-control-sm example" style="width: 100px;"></td>
-                                            <td>6.000.000 VND</td>
-                                            <td><p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">Chờ xác nhận</p></td>
-                                            <td>
-                                                <a>
-                                                    <button type="button" class="btn btn-danger">Xóa</button>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                    <br>
-                                    <nav aria-label="Page navigation example">
-                                        <ul class="pagination">
-                                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.card -->
-                    </div>
-                    <!-- /.col -->
-                </div>
-                <!-- /.row -->
-            </div>
-            <!-- /.container-fluid -->
-        </section>
     </div>
-    <!--end -->
-    <nav th:replace="~{/layoutadmin/footer.html}"></nav>
 
-</div>
+    <!-- ./wrapper -->
 
-<!-- ./wrapper -->
+    <!-- jQuery -->
+    <script src="../plugins/jquery/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <!-- Bootstrap 4 -->
+    <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- ChartJS -->
+    <script src="../plugins/chart.js/Chart.min.js"></script>
+    <!-- Sparkline -->
+    <script src="../plugins/sparklines/sparkline.js"></script>
+    <!-- JQVMap -->
+    <script src="../plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="../plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="../plugins/jquery-knob/jquery.knob.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="../plugins/moment/moment.min.js"></script>
+    <script src="../plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- Summernote -->
+    <script src="../plugins/summernote/summernote-bs4.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="../plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="../dist/js/adminlte.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="../dist/js/demo.js"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="../dist/js/pages/dashboard.js"></script>
 
-<!-- jQuery -->
-<script src="../plugins/jquery/jquery.min.js"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-    $.widget.bridge('uibutton', $.ui.button)
-</script>
-<!-- Bootstrap 4 -->
-<script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- ChartJS -->
-<script src="../plugins/chart.js/Chart.min.js"></script>
-<!-- Sparkline -->
-<script src="../plugins/sparklines/sparkline.js"></script>
-<!-- JQVMap -->
-<script src="../plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="../plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-<!-- jQuery Knob Chart -->
-<script src="../plugins/jquery-knob/jquery.knob.min.js"></script>
-<!-- daterangepicker -->
-<script src="../plugins/moment/moment.min.js"></script>
-<script src="../plugins/daterangepicker/daterangepicker.js"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Summernote -->
-<script src="../plugins/summernote/summernote-bs4.min.js"></script>
-<!-- overlayScrollbars -->
-<script src="../plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<!-- AdminLTE App -->
-<script src="../dist/js/adminlte.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="../dist/js/demo.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="../dist/js/pages/dashboard.js"></script>
-
-<script>
-    document.getElementById("changeStatusButton").addEventListener("click", function () {
-        var timeline = document.getElementById("timeline");
-        var newItemNumber = timeline.childElementCount + 1;
-        if (newItemNumber <= 8) { // Check if the maximum number of statuses has been reached
-            var newItem = document.createElement("div");
-            newItem.classList.add("timeline-item");
-            newItem.innerHTML = `
-                    <img class="status-icon" src="${getStatusIcon(newItemNumber)}" alt="Status Icon">
-                    <h3>${getStatusName(newItemNumber)}</h3>
-                    <p>${getDateTime()}</p>
-                `;
-            timeline.appendChild(newItem);
-            // Scroll to the end of timeline
-            timeline.scrollLeft = timeline.scrollWidth;
-        } else {
-            alert("Maximum number of statuses reached!");
+    <script>
+        function getStatusName(number) {
+            // Trả về tên trạng thái dựa trên số trạng thái đã tạo
+            switch (number) {
+                case 1:
+                    return "Chờ xác nhận";
+                case 2:
+                    return "Đã xác nhận";
+                case 3:
+                    return "Chờ vận chuyển";
+                case 4:
+                    return "Đã xác nhận";
+                case 5:
+                    return "Chờ vận chuyển";
+                case 6:
+                    return "Đang vận chuyển";
+                case 7:
+                    return "Đã thanh toán";
+                case 8:
+                    return "Thành công";
+                default:
+                    return "Trạng thái mới " + number;
+            }
         }
-    });
 
-    function getStatusName(number) {
-        // Trả về tên trạng thái dựa trên số trạng thái đã tạo
-        switch (number) {
-            case 1:
-                return "Chờ xác nhận";
-            case 2:
-                return "Đã xác nhận";
-            case 3:
-                return "Chờ vận chuyển";
-            case 4:
-                return "Đã xác nhận";
-            case 5:
-                return "Chờ vận chuyển";
-            case 6:
-                return "Đang vận chuyển";
-            case 7:
-                return "Đã thanh toán";
-            case 8:
-                return "Thành công";
-            default:
-                return "Trạng thái mới " + number;
+        function getDateTime() {
+            var now = new Date();
+            var date = now.toLocaleDateString('en-US');
+            var time = now.toLocaleTimeString('en-US');
+            return date + ' ' + time;
         }
-    }
 
-    function getDateTime() {
-        var now = new Date();
-        var date = now.toLocaleDateString('en-US');
-        var time = now.toLocaleTimeString('en-US');
-        return date + ' ' + time;
-    }
-
-    function getStatusIcon(number) {
-        // Trả về đường dẫn của biểu tượng hình ảnh tương ứng với trạng thái
-        switch (number) {
-            case 1:
-                return "https://static.vecteezy.com/system/resources/previews/000/423/742/original/vector-truck-icon.jpg";
-            case 2:
-                return "https://png.pngtree.com/png-vector/20190725/ourlarge/pngtree-invoice-icon-design-vector-png-image_1586820.jpg";
-            case 3:
-                return "https://static.vecteezy.com/system/resources/previews/000/423/742/original/vector-truck-icon.jpg";
-            case 4:
-                return "https://png.pngtree.com/png-vector/20190725/ourlarge/pngtree-invoice-icon-design-vector-png-image_1586820.jpg";
-            case 5:
-                return "https://static.vecteezy.com/system/resources/previews/000/423/742/original/vector-truck-icon.jpg";
-            case 6:
-                return "https://static.vecteezy.com/system/resources/previews/000/423/742/original/vector-truck-icon.jpg";
-            case 7:
-                return "https://png.pngtree.com/png-vector/20190725/ourlarge/pngtree-invoice-icon-design-vector-png-image_1586820.jpg";
-            case 8:
-                return "https://png.pngtree.com/png-vector/20190725/ourlarge/pngtree-invoice-icon-design-vector-png-image_1586820.jpg";
-            default:
-                return "https://png.pngtree.com/png-vector/20190725/ourlarge/pngtree-invoice-icon-design-vector-png-image_1586820.jpg";
+        function getStatusIcon(number) {
+            // Trả về đường dẫn của biểu tượng hình ảnh tương ứng với trạng thái
+            switch (number) {
+                case 1:
+                    return "https://static.vecteezy.com/system/resources/previews/000/423/742/original/vector-truck-icon.jpg";
+                case 2:
+                    return "https://png.pngtree.com/png-vector/20190725/ourlarge/pngtree-invoice-icon-design-vector-png-image_1586820.jpg";
+                case 3:
+                    return "https://static.vecteezy.com/system/resources/previews/000/423/742/original/vector-truck-icon.jpg";
+                case 4:
+                    return "https://png.pngtree.com/png-vector/20190725/ourlarge/pngtree-invoice-icon-design-vector-png-image_1586820.jpg";
+                case 5:
+                    return "https://static.vecteezy.com/system/resources/previews/000/423/742/original/vector-truck-icon.jpg";
+                case 6:
+                    return "https://static.vecteezy.com/system/resources/previews/000/423/742/original/vector-truck-icon.jpg";
+                case 7:
+                    return "https://png.pngtree.com/png-vector/20190725/ourlarge/pngtree-invoice-icon-design-vector-png-image_1586820.jpg";
+                case 8:
+                    return "https://png.pngtree.com/png-vector/20190725/ourlarge/pngtree-invoice-icon-design-vector-png-image_1586820.jpg";
+                default:
+                    return "https://png.pngtree.com/png-vector/20190725/ourlarge/pngtree-invoice-icon-design-vector-png-image_1586820.jpg";
+            }
         }
-    }
-</script>
+    </script>
 </body>
 
 </html>
-
-
