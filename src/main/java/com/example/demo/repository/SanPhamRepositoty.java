@@ -14,6 +14,8 @@ import java.util.List;
 
 @Repository
 public interface SanPhamRepositoty extends JpaRepository<SanPham, Integer> {
+    SanPham findFirstByOrderByNgaytaoDesc();
+
     Page<Object[]>findAllByTensanphamOrTrangthai(String tensanpham, Boolean trangthai, Pageable pageable);
 
     Boolean existsByTensanpham(String tensanpham);

@@ -67,13 +67,13 @@
                                 <hr class="border border-danger border opacity-50">
                                 <form id="searchForm" method="get" th:object="${tim}">
                                     <h3 class="card-title" style="font-weight: bold">Tìm kiếm tên sản phẩm
-                                        <input type="text" id="searchInput" placeholder="Tìm kiếm tên sản phẩm" class="form-control text-muted font-italic" name="key" style="width: 990px">
+                                        <input type="text" id="searchInput" placeholder="Tìm kiếm tên sản phẩm" class="form-control text-muted font-italic" name="key" style="width: 990px" th:value="${fillSearch}">
                                     </h3>
                                     <h3 class="card-title" style="margin-left: 50px;font-weight: bold">Trạng thái:
                                         <select id="statusSelect" class="form-control" name="trangthai" style="color: orange; font-weight: bold; width: 150px">
-                                            <option value="">-----</option>
-                                            <option value="1">Đang kinh doanh</option>
-                                            <option value="0">Ngừng kinh doanh</option>
+                                            <option value="" th:selected="${fillTrangThai == null}">Tất cả</option>
+                                            <option value="true" th:selected="${fillTrangThai != null && fillTrangThai}">Đang kinh doanh</option>
+                                            <option value="false" th:selected="${fillTrangThai != null && !fillTrangThai}">Ngừng kinh doanh</option>
                                         </select>
                                     </h3>
                                     <br>
@@ -109,7 +109,7 @@
                                     </svg>
                                     Danh sách sản phẩm
                                 </h3>
-                                <a href="/viewaddSP" class=" btn btn-primary" style="margin-left: 850px">
+                                <a href="/viewaddSPGET" class=" btn btn-primary" style="margin-left: 850px">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
                                     </svg>Tạo sản phẩm
