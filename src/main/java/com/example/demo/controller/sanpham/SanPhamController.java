@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
+///////
 @Controller
 public class SanPhamController {
     @Autowired
@@ -81,11 +81,13 @@ public class SanPhamController {
             page = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc(pageable);
         }
         model.addAttribute("page", page);
+        model.addAttribute("fillSearch", info.getKey());
+        model.addAttribute("fillTrangThai", info.getTrangthai());
         return "admin/qlsanpham";
     }
 
     //hiển thị các thuộc tính của sản phẩm thông qua modelAttribute
-    @RequestMapping(value = {"/viewaddSP", "/viewaddSP"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = {"/viewaddSPGET", "/viewaddSPPOST"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String viewaddSP(Model model, @RequestParam(defaultValue = "0") int p,
                             @ModelAttribute("thuonghieu") ThuongHieu thuongHieu,
                             @ModelAttribute("chatlieu") ChatLieu chatLieu,
@@ -154,7 +156,7 @@ public class SanPhamController {
 
         List<SanPhamChiTiet> sanPhamChiTiets = sanPhamChiTietRepository.findBySanPhamId(sanPham.getId());
         model.addAttribute("sanphamchitiet", sanPhamChiTiets);
-        return "forward:/viewaddSP";
+        return "forward:/viewaddSPPOST";
     }
 
 

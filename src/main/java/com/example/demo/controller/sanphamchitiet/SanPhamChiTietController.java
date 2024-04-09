@@ -3,6 +3,7 @@ package com.example.demo.controller.sanphamchitiet;
 import com.example.demo.entity.*;
 import com.example.demo.info.SanPhamChiTietInfo;
 import com.example.demo.repository.SanPhamChiTietRepository;
+import com.example.demo.repository.SanPhamRepositoty;
 import com.example.demo.service.impl.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
@@ -20,9 +21,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.math.BigDecimal;
 import java.util.List;
 
-
+///////
 @Controller
 public class SanPhamChiTietController {
+    @Autowired
+    SanPhamRepositoty sanPhamRepositoty;
     @Autowired
     SanPhamChiTietRepository sanPhamChiTietRepository;
     @Autowired
@@ -51,7 +54,7 @@ public class SanPhamChiTietController {
     public String allSPCT(Model model, @ModelAttribute("search") SanPhamChiTietInfo info) {
         List<SanPhamChiTiet> list = null;
         if (info.getKey() == null && info.getIdChatLieu() == null && info.getIdDeGiay() == null && info.getIdKichCo() == null
-                && info.getIdMauSac() == null && info.getIdThuongHieu() == null&&info.getGioitinh()==null) {
+                && info.getIdMauSac() == null && info.getIdThuongHieu() == null && info.getGioitinh() == null) {
             list = sanPhamChiTietRepository.findAll();
         } else {
             list = sanPhamChiTietRepository.search(
@@ -69,14 +72,14 @@ public class SanPhamChiTietController {
         List<KichCo> listKichCo = kichCoImp.findAll();
         List<DeGiay> listDeGiay = deGiayImp.findAll();
         List<ChatLieu> listChatLieu = chatLieuImp.findAll();
-        List<SanPhamChiTiet> listSanPhamChiTiet=sanPhamChiTietRepository.findAll();
+        List<SanPhamChiTiet> listSanPhamChiTiet = sanPhamChiTietRepository.findAll();
         model.addAttribute("sp", listSanPham);
         model.addAttribute("th", listThuongHieu);
         model.addAttribute("ms", listMauSac);
         model.addAttribute("kc", listKichCo);
         model.addAttribute("dg", listDeGiay);
         model.addAttribute("cl", listChatLieu);
-        model.addAttribute("spct",listSanPhamChiTiet);
+        model.addAttribute("spct", listSanPhamChiTiet);
         model.addAttribute("listAllCTSP", list);
         return "admin/allchitietsanpham";
     }
@@ -85,9 +88,16 @@ public class SanPhamChiTietController {
     public String deleteCTSP(@PathVariable Integer id, Model model) {
         sanPhamChiTietImp.deleteSPCT(id);
         // Cập nhật lại danh sách sản phẩm chi tiết
-        List<SanPhamChiTiet> sanPhamChiTiets = sanPhamChiTietRepository.findAll();
-        model.addAttribute("sanphamchitiet", sanPhamChiTiets);
-        return "redirect:/viewaddSP";
+//        List<SanPhamChiTiet> sanPhamChiTiets = sanPhamChiTietRepository.findAll();
+//        model.addAttribute("sanphamchitiet", sanPhamChiTiets);
+//        SanPham sanPham=new SanPham();
+//        List<SanPhamChiTiet> sanPhamChiTiets = sanPhamChiTietRepository.findBySanPhamId(sanPham.getId());
+//        model.addAttribute("sanphamchitiet", sanPhamChiTiets);
+        SanPham sanPham = sanPhamRepositoty.findFirstByOrderByNgaytaoDesc();
+        List<SanPhamChiTiet> listSPCT = sanPhamChiTietRepository.findBySanPhamId(sanPham.getId());
+        model.addAttribute("sanphamchitiet", listSPCT);
+        return "forward:/viewaddSPPOST";
+//        return "admin/addsanpham";
     }
 
 

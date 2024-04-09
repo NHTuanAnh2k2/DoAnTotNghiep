@@ -23,13 +23,13 @@ public class ThuongHieuController {
     ThuongHieuImp thuongHieuImp;
 
     @GetMapping("/listthuonghieu")
-    public String hienthi(@RequestParam(defaultValue = "0") int p, @ModelAttribute("th") ThuocTinhInfo info,@ModelAttribute("thuonghieu") ThuongHieu thuongHieu, Model model) {
-      List<ThuongHieu> list=null;
-       if(info.getKey()!=null){
-           list=thuongHieuImp.getThuongHieuByTenOrTrangthai(info.getKey(),info.getTrangthai());
-       }else {
-           list=thuongHieuRepository.findAllByOrderByNgaytaoDesc();
-       }
+    public String hienthi(@RequestParam(defaultValue = "0") int p, @ModelAttribute("th") ThuocTinhInfo info, @ModelAttribute("thuonghieu") ThuongHieu thuongHieu, Model model) {
+        List<ThuongHieu> list = null;
+        if (info.getKey() != null) {
+            list = thuongHieuImp.getThuongHieuByTenOrTrangthai(info.getKey(), info.getTrangthai());
+        } else {
+            list = thuongHieuRepository.findAllByOrderByNgaytaoDesc();
+        }
         model.addAttribute("page", list);
         return "admin/qlthuonghieu";
     }
@@ -37,6 +37,10 @@ public class ThuongHieuController {
     @PostMapping("/addSaveThuongHieu")
     @CacheEvict(value = "thuonghieuCache", allEntries = true)
     public String addSave(@ModelAttribute("thuonghieu") ThuongHieu thuongHieu, @ModelAttribute("th") ThuocTinhInfo info, Model model) {
+        if (thuongHieuRepository.existsByTen(thuongHieu.getTen())) {
+            model.addAttribute("errThuongHieu", "Tên thương hiệu trùng!");
+            return "admin/qlthuonghieu";
+        }
         LocalDateTime currentTime = LocalDateTime.now();
         thuongHieu.setNgaytao(currentTime);
         thuongHieuImp.add(thuongHieu);
@@ -45,7 +49,7 @@ public class ThuongHieuController {
 
 
     @PostMapping("/addThuongHieuModal")
-    public String addThuongHieuModal(@ModelAttribute("thuonghieu") ThuongHieu thuongHieu,@ModelAttribute("th") ThuocTinhInfo info) {
+    public String addThuongHieuModal(@ModelAttribute("thuonghieu") ThuongHieu thuongHieu, @ModelAttribute("th") ThuocTinhInfo info) {
         LocalDateTime currentTime = LocalDateTime.now();
         thuongHieu.setNgaytao(currentTime);
         thuongHieuImp.add(thuongHieu);
