@@ -25,10 +25,10 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.security.SecureRandom;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -153,8 +153,8 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
     }
 
     @Override
-    public List<KhachHang> findByAll(String ten, String sdt, int trangthai, Date ngaysinh) {
-        return khachHangRepostory.findByAll(ten, sdt, trangthai, ngaysinh);
+    public List<KhachHang> findByAll(String ten, String sdt, Date ngaysinh) {
+        return khachHangRepostory.findByAll(ten, sdt, ngaysinh);
     }
 
     @Override

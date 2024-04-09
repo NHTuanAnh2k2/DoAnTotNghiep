@@ -69,26 +69,12 @@
                             </svg>
                             THÊM KHÁCH HÀNG
                         </h1>
-                        <h1 class="text-center">
-                            Ảnh đại diện
-                        </h1>
                     </div>
                 </div>
             </div><!-- /.container-fluid -->
         </section>
         <!---filter-->
         <form  enctype="multipart/form-data">
-            <section class="content" style="margin-left: 525px">
-                <div class="file-input-wrapper">
-                    <input type="file" id="fileInput" th:name="file"  class="file-input">
-                    <label for="fileInput" class="file-input-label">
-                        <span>+</span>
-                        <span>Upload</span>
-                    </label>
-                    <img id="uploadedImage" th:src="@{/image/{fileName}(fileName=${getone.nguoidung.anh})}" alt="Uploaded Image" style="display: none;">
-
-                </div>
-            </section>
             <br>
             <section class="content">
                 <div class="container-fluid">
@@ -137,43 +123,42 @@
                                                 </p>
                                             </div>
 
-                                            <div class="d-flex">
+<!--                                            <div class="d-flex">-->
+<!--                                                <p>Tỉnh/Thành phố:-->
+<!--                                                    <select class="form-control" style="width: 550px">-->
+<!--                                                        <option>Hà Nội</option>-->
+<!--                                                        <option>Hải Phòng</option>-->
+<!--                                                    </select>-->
+<!--                                                </p>-->
+<!--                                                <p style="margin-left: 20px">Quận/Huyện:-->
+<!--                                                    <select class="form-control" style="width: 550px">-->
+<!--                                                        <option>Hà Nội</option>-->
+<!--                                                        <option>Hải Phòng</option>-->
+<!--                                                    </select>-->
+<!--                                                </p>-->
+<!--                                            </div>-->
 
-                                                <p>Tỉnh/Thành phố:
-                                                    <select class="form-control" style="width: 550px">
-                                                        <option>Hà Nội</option>
-                                                        <option>Hải Phòng</option>
-                                                    </select>
-                                                </p>
-                                                <p style="margin-left: 20px">Quận/Huyện:
-                                                    <select class="form-control" style="width: 550px">
-                                                        <option>Hà Nội</option>
-                                                        <option>Hải Phòng</option>
-                                                    </select>
-                                                </p>
-                                            </div>
+<!--                                            <div class="d-flex">-->
+<!--                                                <p>Xã/Phường:-->
+<!--                                                    <select class="form-control" style="width: 550px">-->
+<!--                                                        <option>Hà Nội</option>-->
+<!--                                                        <option>Hải Phòng</option>-->
+<!--                                                    </select>-->
+<!--                                                </p>-->
+<!--                                                <p style="margin-left: 20px">Số nhà/Ngõ/Đường:-->
+<!--                                                    <input placeholder="Số nhà/Ngõ/Đường" class="form-control"-->
+<!--                                                           style="width: 550px">-->
+<!--                                                </p>-->
+<!--                                            </div>-->
 
-                                            <div class="d-flex">
-                                                <p>Xã/Phường:
-                                                    <select class="form-control" style="width: 550px">
-                                                        <option>Hà Nội</option>
-                                                        <option>Hải Phòng</option>
-                                                    </select>
-                                                </p>
-                                                <p style="margin-left: 20px">Số nhà/Ngõ/Đường:
-                                                    <input placeholder="Số nhà/Ngõ/Đường" class="form-control"
-                                                           style="width: 550px">
-                                                </p>
-                                            </div>
-
-                                            <div class="d-flex">
-                                                <p>Trạng thái:
-                                                    <select class="form-control" style="width: 550px">
-                                                        <option th:selected="${getone.trangthai == true ? 'true' : 'false'}">Đã kích hoạt</option>
-                                                        <option th:selected="${getone.trangthai == false ? 'true' : 'false'}">Chưa kích hoạt</option>
-                                                    </select>
-                                                </p>
-                                            </div>
+<!--                                            <div class="d-flex">-->
+<!--                                                <p>Trạng thái:-->
+<!--                                                    <select class="form-control" style="width: 550px">-->
+<!--                                                        <option th:selected="${getone.trangthai == true ? 'true' : 'false'}">Đã kích hoạt</option>-->
+<!--                                                        <option th:selected="${getone.trangthai == false ? 'true' : 'false'}">Chưa kích hoạt</option>-->
+<!--                                                    </select>-->
+<!--                                                </p>-->
+<!--                                            </div>-->
                                             <button type="submit" class="btn btn-primary">Cập nhật khách hàng</button>
                                             <a th:href="@{/khachhang}" class="btn btn-danger">Thoát</a>
                                         </div>
