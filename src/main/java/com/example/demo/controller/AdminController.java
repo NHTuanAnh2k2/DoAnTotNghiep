@@ -20,16 +20,6 @@ public class AdminController {
         return "admin/qlthongke";
     }
 
-    @GetMapping("/admin/qlnhanvien")
-    public String qlnhanvien() {
-        return "/admin/qlnhanvien";
-    }
-
-    @GetMapping("/admin/addnhanvien")
-    public String addnhanvien() {
-        return "/admin/addnhanvien";
-    }
-
     @GetMapping("/admin/qlkhachhang")
     public String qlkhachhang() {
         return "/admin/qlkhachhang";
