@@ -5,11 +5,17 @@ import com.example.demo.entity.PhieuGiamGia;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 
 public interface PhieuGiamGiaService {
-    Page<PhieuGiamGia> findAll(Pageable pageable);
+    List<PhieuGiamGia> findAll();
+    Page<PhieuGiamGia> findAllOrderByNgayTaoDESC(String keySearch, Timestamp tungaySearch, Timestamp denngaySearch,
+                                                 Boolean kieuSearch,
+                                                 Boolean loaiSearch,
+                                                 Integer ttSearch, Pageable pageable);
     PhieuGiamGia AddPhieuGiamGia(PhieuGiamGia phieuGiamGia);
-    Optional<PhieuGiamGia> findPhieuGiamGiaById(Integer Id);
     PhieuGiamGia findFirstByOrderByNgaytaoDesc();
+    PhieuGiamGia findPhieuGiamGiaById(Integer Id);
 }

@@ -26,8 +26,8 @@ public class PhieuGiamGia {
     Integer giatrigiam;// phần trăm giảm
     BigDecimal dontoithieu;
     Integer soluong;
-    boolean loaiphieu;
-    boolean kieuphieu;
+    Boolean loaiphieu;
+    Boolean kieuphieu;
     Timestamp ngaybatdau;
     Timestamp ngayketthuc;
     Timestamp ngaytao;

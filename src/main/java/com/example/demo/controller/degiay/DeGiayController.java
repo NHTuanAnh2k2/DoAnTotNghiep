@@ -3,6 +3,7 @@ package com.example.demo.controller.degiay;
 
 import com.example.demo.entity.DeGiay;
 import com.example.demo.info.ThuocTinhInfo;
+import com.example.demo.repository.DeGiayRepository;
 import com.example.demo.service.impl.DeGiayImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,8 @@ import java.util.List;
 @Controller
 public class DeGiayController {
     @Autowired
+    DeGiayRepository deGiayRepository;
+    @Autowired
     DeGiayImp deGiayImp;
 
     @GetMapping("/listdegiay")
@@ -24,7 +27,7 @@ public class DeGiayController {
         if (info.getKey() != null) {
             page = deGiayImp.getDeGiayByTenOrTrangthai(info.getKey(), info.getTrangthai());
         } else {
-            page = deGiayImp.findAll();
+            page = deGiayRepository.findAllByOrderByNgaytaoDesc();
         }
         model.addAttribute("list", page);
         return "admin/qldegiay";

@@ -21,10 +21,8 @@ public class ChatLieuImp implements ChatLieuService {
     }
 
     @Override
-    public void add(ChatLieu chatLieu) {
-        chatLieu.setNgaytao(new Date());
-        chatLieu.setLancapnhatcuoi(new Date());
-        chatLieuRepository.save(chatLieu);
+    public ChatLieu add(ChatLieu chatLieu) {
+       return chatLieuRepository.save(chatLieu);
     }
 
     @Override

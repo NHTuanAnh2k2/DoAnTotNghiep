@@ -52,6 +52,11 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
     }
 
     @Override
+    public List<KhachHang> findAll() {
+        return khachHangRepostory.findAll();
+    }
+    @Override
+
     public KhachHang add(KhachHang khachHang, NguoiDung nguoiDung, DiaChi diaChi, String tinhthanhpho, String quanhuyen) {
         int usernameLength = 8;
         int passwordLength = 10;
@@ -257,11 +262,4 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
             return null;
         }
     }
-
-    @Override
-    public List<KhachHang> findAll() {
-        return khachHangRepostory.findAll();
-    }
-
-
 }
