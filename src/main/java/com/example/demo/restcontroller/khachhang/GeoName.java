@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class GeoName {
     private String name;
-    private Integer id;
+    private Integer geonameId;
     private String fcode;
 }

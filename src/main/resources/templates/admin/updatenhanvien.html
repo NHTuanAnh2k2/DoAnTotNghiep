@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<nav th:replace="~{/layoutadmin/head.html}"></nav>
+<script src="../sweetalert2/dist/sweetalert2.min.js/"></script>
+<link rel="stylesheet" type="text/css" href="../sweetalert2/dist/sweetalert2.min.css">
+<style>
+    .file-input-wrapper {
+        position: relative;
+        width: 200px; /* Độ rộng và chiều cao của hình tròn */
+        height: 200px;
+        border: 1px dashed #007bff; /* Viền bo có nét đứt màu xanh dương */
+        border-radius: 50%; /* Tạo hình tròn */
+        overflow: hidden;
+    }
+
+    .file-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    .file-input-label {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: Arial, sans-serif; /* Font chữ */
+        font-size: 16px; /* Kích thước văn bản */
+        color: black; /* Màu văn bản */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .file-input-label span {
+        margin-top: 5px;
+    }
+
+    #uploadedImage {
+        width: 100%; /* Kích thước hình ảnh sẽ phù hợp với kích thước của ô tròn */
+        height: 100%;
+        border-radius: 50%; /* Hình ảnh sẽ được làm tròn */
+    }
+</style>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper" >
+    <!-- Navbar -->
+    <nav th:replace="~{/layoutadmin/navbar.html}"></nav>
+    <!-- End navbar -->
+
+    <!--Menu bán hàng -->
+    <nav th:replace="~{/layoutadmin/menu.html}"></nav>
+    <!--end-->
+
+    <!--Nội dung -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-12">
+                        <h1>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                 class="bi bi-bookmark-dash-fill" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                      d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6 6a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z"/>
+                            </svg>
+                            THÊM NHÂN VIÊN
+                        </h1>
+                        <h1 class="text-center">
+                            Ảnh đại diện
+                        </h1>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <!---filter-->
+        <section class="content" style="margin-left: 450px">
+            <div class="file-input-wrapper">
+                <input type="file" id="fileInput" class="file-input">
+                <label for="fileInput" class="file-input-label">
+                    <span>+</span>
+                    <span>Upload</span>
+                </label>
+                <img id="uploadedImage" src="" alt="Uploaded Image" style="display: none;">
+
+            </div>
+        </section>
+        <br>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <section class="content">
+                                    <div class="container">
+                                        <form th:method="post" th:object="${nd}" th:action="@{/updateNhanVien/{id}(id=${nd.id})}">
+                                            <div class="d-flex">
+                                                <p>Tên nhân viên:
+                                                    <input placeholder="Tên nhân viên" class="form-control"  th:field="*{hovaten}"
+                                                           style="width: 500px">
+                                                </p>
+                                                <p th:text="${tenErr}"></p>
+
+                                                <p style="margin-left: 20px">Ngày sinh:
+                                                    <input type="date" class="form-control"
+                                                           style="width: 500px" th:field="*{ngaysinh}">
+                                                </p>
+                                                <p th:text="${ngSinhErr}"></p>
+
+                                            </div>
+
+
+                                            <div class="d-flex">
+
+                                                <p>Căn cước công dân:
+                                                    <input placeholder="Căn cước công dân" class="form-control"
+                                                           style="width: 500px" th:field="*{cccd}"></p>
+                                                <p th:text="${cccdErr}"></p>
+                                                <p style="margin-left: 20px">Giới tính:
+                                                    <br>
+                                                    <input type="radio" value="true" th:field="*{gioitinh}" style="margin-top: 10px">Nam
+                                                    <input type="radio" value="false" th:field="*{gioitinh}" style="margin-left: 10px;margin-top: 10px">Nữ
+                                                </p>
+                                            </div>
+
+                                            <div class="d-flex">
+
+                                                <p>Email:
+                                                    <input placeholder="Email" class="form-control"
+                                                           style="width: 500px" th:field="*{email}"></p>
+                                                <p th:text="${mailErr}"></p>
+                                                <p style="margin-left: 20px">Số điện thoại:
+                                                    <input placeholder="Số điện thoại" class="form-control"
+                                                           style="width: 500px" th:field="*{sodienthoai}"></p>
+                                                <p th:text="${sdtErr}"></p>
+                                            </div>
+                                            <div th:object="${dc}">
+                                                <div class="d-flex">
+                                                    <!-- Combobox cho Tỉnh/Thành phố -->
+                                                    <p>Tỉnh/Thành phố:
+                                                        <select class="form-select form-select-sm mb-3" id="city" th:field="*{tinhthanhpho}"  aria-label=".form-select-sm" style="width: 500px">
+                                                            <option value=""  th:text="*{tinhthanhpho}" selected>Chọn tỉnh thành</option>
+                                                        </select></p>
+                                                    <p th:text="${tinhErr}"></p>
+                                                    <p style="margin-left: 20px">Quận/Huyện:
+                                                        <select class="form-select form-select-sm mb-3" id="district"  th:field="*{quanhuyen}" aria-label=".form-select-sm" style="width: 500px">
+                                                            <option value="" th:text="*{quanhuyen}" selected>Chọn quận huyện</option>
+                                                        </select></p>
+                                                    <p th:text="${huyenErr}"></p>
+                                                </div>
+                                                <div class="d-flex">
+                                                    <p>Xã/Phường:
+                                                        <select class="form-select form-select-sm" id="ward"  th:field="*{xaphuong}" aria-label=".form-select-sm" style="width: 500px">
+                                                            <option value=""  th:text="*{xaphuong}" selected>Chọn phường xã</option>
+                                                        </select></p>
+                                                    <p th:text="${xaErr}"></p>
+                                                    <p style="margin-left: 20px">Tên Đường:
+                                                        <input th:field="*{tenduong}" placeholder="Tên Đường" class="form-control"
+                                                               style="width: 500px"></p>
+                                                    <p th:text="${tenDuongErr}"></p>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-primary" >Cập nhật nhân viên</button>
+                                            <button class="btn btn-danger">Thoát</button>
+                                        </form>
+                                    </div>
+                                </section>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+        <br>
+    </div>
+    <!--end-->
+    <nav th:replace="~{/layoutadmin/footer.html}"></nav>
+</div>
+
+<!--script-->
+<nav th:replace="~{/layoutadmin/script.html}"></nav>
+<!--end-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+<script>
+    var citis = document.getElementById("city");
+    var districts = document.getElementById("district");
+    var wards = document.getElementById("ward");
+    var Parameter = {
+        url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
+        method: "GET",
+        responseType: "application/json",
+    };
+    var promise = axios(Parameter);
+    promise.then(function (result) {
+        renderCity(result.data);
+    });
+
+    function renderCity(data) {
+        for (const x of data) {
+            var opt = document.createElement('option');
+            opt.value = x.Name;
+            opt.text = x.Name;
+            opt.setAttribute('data-id', x.Id);
+            citis.options.add(opt);
+        }
+        citis.onchange = function () {
+            district.length = 1;
+            ward.length = 1;
+            if(this.options[this.selectedIndex].dataset.id != ""){
+                const result = data.filter(n => n.Id === this.options[this.selectedIndex].dataset.id);
+
+                for (const k of result[0].Districts) {
+                    var opt = document.createElement('option');
+                    opt.value = k.Name;
+                    opt.text = k.Name;
+                    opt.setAttribute('data-id', k.Id);
+                    district.options.add(opt);
+                }
+            }
+        };
+        district.onchange = function () {
+            ward.length = 1;
+            const dataCity = data.filter((n) => n.Id === citis.options[citis.selectedIndex].dataset.id);
+            if (this.options[this.selectedIndex].dataset.id != "") {
+                const dataWards = dataCity[0].Districts.filter(n => n.Id === this.options[this.selectedIndex].dataset.id)[0].Wards;
+
+                for (const w of dataWards) {
+                    var opt = document.createElement('option');
+                    opt.value = w.Name;
+                    opt.text = w.Name;
+                    opt.setAttribute('data-id', w.Id);
+                    wards.options.add(opt);
+                }
+            }
+        };
+    }
+</script>
+
+<!--xử lý việc add ảnh nhân viên-->
+<script>
+    document.getElementById('fileInput').addEventListener('change', function (event) {
+        var file = event.target.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            var imgElement = document.getElementById('uploadedImage');
+            imgElement.src = e.target.result;
+            imgElement.style.display = 'block'; // Hiển thị hình ảnh
+            var labelElement = document.querySelector('.file-input-label');
+            labelElement.style.display = 'none'; // Ẩn phần label
+        };
+
+        reader.readAsDataURL(file);
+    });
+</script>
+<!--end-->
+</body>
+</html>

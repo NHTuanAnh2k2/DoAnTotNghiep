@@ -141,6 +141,7 @@ public class PhieuGiamGiaController {
                 for (int i = 0; i < doDaiChuoi; i++) {
                     // Lấy một ký tự ngẫu nhiên từ chuỗi kiTu và thêm vào chuỗi ngẫu nhiên
                     chuoiNgauNhien.append(kiTu.charAt(random.nextInt(kiTu.length())));
+                    //tuan anh
                 }
                 phieuGiamGia.setMacode(chuoiNgauNhien.toString());
             }else{

@@ -1,6 +1,7 @@
-package com.example.demo.entity;
+package com.example.demo.info;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -17,20 +18,14 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Valid
-@Entity
-@Table(name = "nguoidung")
-public class NguoiDung {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class NguoiDungNVInfo {
     Integer id;
-    String taikhoan;
-    String matkhau;
+
     @NotBlank(message = "Không được để trống email")
     @Email(message = "Sai định dạng của email")
     String email;
     @NotBlank(message = "Không được để trống họ và tên")
-//    @Pattern(regexp="^[\\\\p{L} '‘’]+$", message="Invalid name")
-
+    @Pattern(regexp="^[\\p{L} '‘’-]+$", message="Tên không hợp lệ")
     String hovaten;
 //    @DateTimeFormat(pattern = "yyyy-MM-dd")
 //    @Temporal(TemporalType.DATE)
@@ -41,7 +36,7 @@ public class NguoiDung {
     @NotNull(message = "Không được để trống số điện thoại")
     @Pattern(regexp="^0[0-9]{9}$", message="Sai định dạng số điện thoại")
     String sodienthoai;
-    @NotNull(message = "Không được để trống giới tính")
+    @NotNull(message = "Vui lòng chọn giới tính")
     Boolean gioitinh;
     String anh;
     Timestamp ngaytao;
