@@ -22,13 +22,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Properties;
+import java.util.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
 import java.util.Properties;
 
 @Controller
@@ -42,11 +39,8 @@ public class KhachHangController {
     KhachHangRestController khachHangRestController;
 
     @GetMapping
-    public String display(Model model, @ModelAttribute("khachhang") KhachHang khachHang,
-                          Optional<Integer> p
-    ) {
-        Pageable pageable = PageRequest.of(p.orElse(0), 10);
-        Page<KhachHang> lstKhachHang = khachHangService.findAllKhachHang(pageable);
+    public String display(Model model, @ModelAttribute("khachhang") KhachHang khachHang) {
+        List<KhachHang> lstKhachHang = khachHangService.findAllKhachHang();
         model.addAttribute("lstKhachHang", lstKhachHang);
         return "admin/qlkhachhang";
     }
@@ -66,14 +60,19 @@ public class KhachHangController {
     @GetMapping("/add")
     public String form(@ModelAttribute("nguoidung") NguoiDung nguoiDung,
                        @ModelAttribute("diachi") DiaChi diaChi,
-                       String idThanhPho,
                        Model model
     ) {
+
         List<String> cities = khachHangService.getCities();
-        List<String> districts = khachHangService.getDistricts(idThanhPho);
+        List<Integer> cityIds = khachHangService.getCityIds();
         model.addAttribute("cities", cities);
-        model.addAttribute("districts", districts);
+        model.addAttribute("cityIds", cityIds);
         return "admin/addkhachhang";
+    }
+
+    @GetMapping("/getDiaChi")
+    public List<String> form(@RequestParam("tinhthanhpho") Integer city) {
+        return khachHangService.getDistricts(city);
     }
 
     @PostMapping("/add")
@@ -81,13 +80,14 @@ public class KhachHangController {
                       @Valid NguoiDung nguoiDung,
                       @Valid DiaChi diaChi,
                       @RequestParam("tinhthanhpho") String tinhthanhpho,
+                      @RequestParam("quanhuyen") String quanhuyen,
                       BindingResult bindingResult,
                       Model model
     ) throws IOException {
         if (bindingResult.hasErrors()) {
             return "redirect:/khachhang/add";
         }
-        khachHangService.add(khachHang, nguoiDung, diaChi, tinhthanhpho);
+        khachHangService.add(khachHang, nguoiDung, diaChi, tinhthanhpho, quanhuyen);
         return "redirect:/khachhang/add";
     }
 
