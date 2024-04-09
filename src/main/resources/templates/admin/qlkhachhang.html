@@ -53,14 +53,12 @@
                                 <br>
                                 <form th:action="@{/khachhang/timkiem}" th:method="get">
                                     <h3 class="card-title">Tìm kiếm:
-                                        <input type="text" th:name="tenvasdt" placeholder="Tìm kiếm tên và SĐT" class="form-control">
+                                        <input type="text" th:name="ten" placeholder="Tìm kiếm tên"
+                                               class="form-control">
                                     </h3>
-                                    <h3 class="card-title" style="margin-left: 20px">Trạng thái:
-                                        <select class="form-control" th:name="trangthai">
-                                            <option></option>
-                                            <option th:value="1">Đã kích hoạt</option>
-                                            <option th:value="0">Chưa kích hoạt</option>
-                                        </select>
+                                    <h3 class="card-title">Tìm kiếm:
+                                        <input type="text" th:name="sdt" placeholder="Tìm kiếm SĐT"
+                                               class="form-control">
                                     </h3>
                                     <h3 class="card-title" style="margin-left: 20px">Ngày sinh:
                                         <input type="date" th:name="ngaysinh" class="form-control">
@@ -129,7 +127,8 @@
                                                     th:text="${kh.trangthai == true ? 'Đã kích hoạt' : 'Chưa kích hoạt'}"></button>
                                         </td>
                                         <td>
-                                            <a th:href="@{/khachhang/capnhat/{id}(id=${kh.id})}" class="btn btn-success" style="width: 100px">Chỉnh sửa</a>
+                                            <a th:href="@{/khachhang/capnhat/{id}(id=${kh.id})}" class="btn btn-success"
+                                               style="width: 100px">Chỉnh sửa</a>
                                         </td>
                                     </tr>
                                 </table>
