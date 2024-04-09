@@ -10,10 +10,13 @@ import java.util.Date;
 import java.util.List;
 
 public interface KhachHangService {
-    Page<KhachHang> findAllKhachHang(Pageable pageable);
-    KhachHang add(KhachHang khachHang, NguoiDung nguoiDung, DiaChi diaChi, String tinhthanhpho);
+    List<KhachHang> findAllKhachHang();
+    KhachHang add(KhachHang khachHang, NguoiDung nguoiDung, DiaChi diaChi, String tinhthanhpho, String quanhuyen);
     List<KhachHang> findByAll(String ten, String sdt, int trangthai, Date ngaysinh);
     KhachHang getOne(int id);
     List<String> getCities();
-    List<String> getDistricts(String cityId);
+    List<Integer> getCityIds();
+    List<String> getDistricts(Integer cityId);
+    List<String> getWards(Integer wardId);
+    List<KhachHang> findAll();
 }

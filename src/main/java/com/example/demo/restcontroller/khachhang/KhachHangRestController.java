@@ -31,9 +31,19 @@ public class KhachHangRestController {
         }
     }
 
-    @GetMapping("/districts")
-    public ResponseEntity<List<String>> getDistrictsByCityId(@RequestParam String cityId) {
-        List<String> districts = khachHangService.getDistricts(cityId);
+    @GetMapping("/cityId")
+    public ResponseEntity<List<Integer>> getCityIds() {
+        List<Integer> cityIds = khachHangService.getCityIds();
+        if (cityIds != null) {
+            return ResponseEntity.ok(cityIds);
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/getDiaChi")
+    public ResponseEntity<List<String>> getDistrictsByCityId(@RequestParam Integer tinhthanhpho) {
+        List<String> districts = khachHangService.getDistricts(tinhthanhpho);
         if (districts != null) {
             return ResponseEntity.ok(districts);
         } else {
