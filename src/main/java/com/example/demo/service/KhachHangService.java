@@ -6,7 +6,7 @@ import com.example.demo.entity.NguoiDung;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 public interface KhachHangService {
@@ -16,7 +16,7 @@ public interface KhachHangService {
 
     List<KhachHang> findAll();
 
-    List<KhachHang> findByAll(String ten, String sdt, int trangthai, Date ngaysinh);
+    List<KhachHang> findByAll(String ten, String sdt, Date ngaysinh);
 
     KhachHang getOne(int id);
 

@@ -22,6 +22,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.util.*;
 
 import java.io.File;
@@ -45,18 +46,17 @@ public class KhachHangController {
         return "admin/qlkhachhang";
     }
 
-    //    @PostMapping("/timkiem")
-//    public String search(@RequestParam(required = false) String tenOrSdt,
-//                         @RequestParam(required = false) int trangThai,
-//                         @RequestParam(required = false) Date ngaySinh
-//                         ){
-//        List<KhachHang> lstTimKiem = null;
-//        if (tenOrSdt != null) {
-//            lstTimKiem = khachHangService.findByTenOrSdt(tenOrSdt);
-//        } else if (trangThai != null) {
-//
-//        }
-//    }
+    @GetMapping("/timkiem")
+    public String search(@RequestParam(value = "ten", required = false) String ten,
+                         @RequestParam(value = "sdt", required = false) String sdt,
+                         @RequestParam(value = "ngaysinh", required = false) Date ngaySinh,
+                         Model model
+    ) {
+        List<KhachHang> lstTimKiem = khachHangService.findByAll(ten, sdt, ngaySinh);
+        model.addAttribute("lstKhachHang", lstTimKiem);
+        return "admin/qlkhachhang";
+    }
+
     @GetMapping("/add")
     public String form(@ModelAttribute("nguoidung") NguoiDung nguoiDung,
                        @ModelAttribute("diachi") DiaChi diaChi,
@@ -91,19 +91,6 @@ public class KhachHangController {
         return "redirect:/khachhang/add";
     }
 
-
-//    @GetMapping("/timkiem")
-//    public String timKiem(Model model,
-//                          @RequestParam(required = false) String tenHoacSdt,
-//                          @RequestParam(required = false) String sdt,
-//                          @RequestParam(required = false) int trangthai,
-//                          @RequestParam(required = false) Date ngaysinh
-//    ) {
-//        List<KhachHang> lstTimKiem = khachHangService.findByAll(tenHoacSdt, sdt, trangthai, ngaysinh);
-//        model.addAttribute("lstKhachHang", lstTimKiem);
-////        model.addAttribute("lstNguoiDung", khachHangService.findAll());
-//        return "admin/qlkhachhang";
-//    }
 
     @GetMapping("/capnhat/{id}")
     public String hienThiCapNhat(Model model,
