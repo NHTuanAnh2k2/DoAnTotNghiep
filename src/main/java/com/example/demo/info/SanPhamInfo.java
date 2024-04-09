@@ -1,6 +1,5 @@
 package com.example.demo.info;
 
-import com.example.demo.entity.SanPhamChiTiet;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

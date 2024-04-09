@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -26,11 +27,12 @@ public class PhieuGiamGia {
     BigDecimal dontoithieu;
     Integer soluong;
     Boolean loaiphieu;
+    Boolean kieuphieu;
     Timestamp ngaybatdau;
     Timestamp ngayketthuc;
     Timestamp ngaytao;
     String nguoitao;
     Timestamp lancapnhatcuoi;
     String nguoicapnhat;
-    Boolean trangthai;
+    Integer trangthai;
 }

@@ -57,39 +57,9 @@
     <!--Nội dung -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-12">
-                        <h1>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                                 class="bi bi-bookmark-dash-fill" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd"
-                                      d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6 6a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z"/>
-                            </svg>
-                            THÊM KHÁCH HÀNG
-                        </h1>
-                        <h1 class="text-center">
-                            Ảnh đại diện
-                        </h1>
-                    </div>
-                </div>
-            </div><!-- /.container-fluid -->
-        </section>
+        <h1>Thêm khách hàng</h1>
         <!---filter-->
-        <form th:method="post" th:object="${khachhang}" th:action="@{/khachhang/add}" enctype="multipart/form-data">
-            <section class="content" style="margin-left: 525px">
-                <div class="file-input-wrapper">
-                    <input type="file" id="fileInput" th:name="file" class="file-input">
-                    <label for="fileInput" class="file-input-label">
-                        <span>+</span>
-                        <span>Upload</span>
-                    </label>
-                    <img id="uploadedImage" src="" alt="Uploaded Image" style="display: none;">
-
-                </div>
-            </section>
-            <br>
+        <form th:method="post" th:object="${nguoidung}" th:action="@{/khachhang/add}" enctype="multipart/form-data">
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">
@@ -100,32 +70,30 @@
                                     <section class="content">
                                         <div class="container">
                                             <p>
-                                            <div>
-                                                <button class="btn btn-danger mb-3" style="margin-left: 1000px">Quét QR
+                                                <button type="button" class="btn btn-danger mb-3"
+                                                        style="margin-left: 1000px" onclick="startScanning()">Quét QR
                                                 </button>
-                                            </div>
                                             </p>
                                             <div class="d-flex">
-
                                                 <p>Tên khách hàng:
                                                     <input placeholder="Tên khách hàng" class="form-control"
                                                            style="width: 550px" th:field="*{hovaten}">
+                                                <p th:if="${#fields.hasErrors('hovaten')}" th:errorclass="error" th:errors="*{hovaten}"></p>
                                                 </p>
                                                 <p style="margin-left: 20px">Ngày sinh:
                                                     <input type="date" class="form-control"
                                                            style="width: 550px" th:field="*{ngaysinh}">
                                                 </p>
                                             </div>
-
                                             <div class="d-flex">
-
                                                 <p>Căn cước công dân:
                                                     <input placeholder="Căn cước công dân" class="form-control"
                                                            style="width: 550px" th:field="*{cccd}">
                                                 </p>
                                                 <p style="margin-left: 20px">Giới tính:
                                                     <br>
-                                                    <input type="radio" style="margin-top: 10px" th:field="*{gioitinh}"
+                                                    <input type="radio" style="margin-top: 10px"
+                                                           th:field="*{gioitinh}"
                                                            th:value="1">Nam
                                                     <input type="radio" style="margin-left: 10px;margin-top: 10px"
                                                            th:field="*{gioitinh}" th:value="0">Nữ
@@ -145,17 +113,20 @@
                                             </div>
 
                                             <div class="d-flex">
-
                                                 <p>Tỉnh/Thành phố:
-                                                    <select class="form-control" style="width: 550px">
-                                                        <option>Hà Nội</option>
-                                                        <option>Hải Phòng</option>
+                                                    <select name="tinhthanhpho" class="form-control"
+                                                            style="width: 550px">
+                                                        <option th:each="city : ${cities}" th:value="${city}"
+                                                                th:text="${city}">City
+                                                        </option>
                                                     </select>
                                                 </p>
                                                 <p style="margin-left: 20px">Quận/Huyện:
-                                                    <select class="form-control" style="width: 550px">
-                                                        <option>Hà Nội</option>
-                                                        <option>Hải Phòng</option>
+                                                    <select  class="form-control"
+                                                            style="width: 550px">
+                                                        <option th:each="district : ${districts}" th:value="${district}"
+                                                                th:text="${district}">District
+                                                        </option>
                                                     </select>
                                                 </p>
                                             </div>
@@ -229,5 +200,6 @@
         reader.readAsDataURL(file);
     });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr"></script>
 </body>
 </html>

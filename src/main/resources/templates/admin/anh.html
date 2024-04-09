@@ -26,7 +26,7 @@
                 <td th:text="${anh.id}"></td>
                 <td th:text="${anh.tenanh}"></td>
                 <td>
-                    <img th:src="${anh.tenanh}" alt="Ảnh" width="300px" height="200px">
+                    <img th:if="${anh.tenanh != null}" th:src="@{'/upload/' + ${anh.tenanh.substring(anh.tenanh.lastIndexOf('upload') + 6)}}" alt="Ảnh" width="300px" height="200px">
                 </td>
             </tr>
         </table>

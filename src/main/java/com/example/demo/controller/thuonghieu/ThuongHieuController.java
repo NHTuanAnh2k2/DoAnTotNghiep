@@ -46,6 +46,8 @@ public class ThuongHieuController {
 
     @PostMapping("/addThuongHieuModal")
     public String addThuongHieuModal(@ModelAttribute("thuonghieu") ThuongHieu thuongHieu,@ModelAttribute("th") ThuocTinhInfo info) {
+        LocalDateTime currentTime = LocalDateTime.now();
+        thuongHieu.setNgaytao(currentTime);
         thuongHieuImp.add(thuongHieu);
         return "redirect:/viewaddSP";
     }
