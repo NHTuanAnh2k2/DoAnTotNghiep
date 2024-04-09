@@ -78,7 +78,6 @@
                                                 <p>Tên khách hàng:
                                                     <input placeholder="Tên khách hàng" class="form-control"
                                                            style="width: 550px" th:field="*{hovaten}">
-                                                <p th:if="${#fields.hasErrors('hovaten')}" th:errorclass="error" th:errors="*{hovaten}"></p>
                                                 </p>
                                                 <p style="margin-left: 20px">Ngày sinh:
                                                     <input type="date" class="form-control"
@@ -114,28 +113,26 @@
 
                                             <div class="d-flex">
                                                 <p>Tỉnh/Thành phố:
-                                                    <select name="tinhthanhpho" class="form-control"
+                                                    <select id="tinhthanhpho" name="tinhthanhpho" class="form-control" onchange="getDiaChi()"
                                                             style="width: 550px">
-                                                        <option th:each="city : ${cities}" th:value="${city}"
+                                                        <option value="">Chọn tỉnh/thành phố</option>
+                                                        <option th:each="city,stt : ${cities}" th:value="${cityIds[stt.index]}"
                                                                 th:text="${city}">City
                                                         </option>
                                                     </select>
                                                 </p>
                                                 <p style="margin-left: 20px">Quận/Huyện:
-                                                    <select  class="form-control"
+                                                    <select class="form-control" id="quanhuyen" name="quanhuyen" onchange="getQuanHuyen()"
                                                             style="width: 550px">
-                                                        <option th:each="district : ${districts}" th:value="${district}"
-                                                                th:text="${district}">District
-                                                        </option>
+                                                        <option value="">Chọn quận/huyện</option>
                                                     </select>
                                                 </p>
                                             </div>
 
                                             <div class="d-flex">
                                                 <p>Xã/Phường:
-                                                    <select class="form-control" style="width: 550px">
-                                                        <option>Hà Nội</option>
-                                                        <option>Hải Phòng</option>
+                                                    <select class="form-control" style="width: 550px" id="xaphuong">
+                                                        <option value="">Chọn xã/phường</option>
                                                     </select>
                                                 </p>
                                                 <p style="margin-left: 20px">Số nhà/Ngõ/Đường:
@@ -199,6 +196,29 @@
 
         reader.readAsDataURL(file);
     });
+</script>
+<script>
+    function getDiaChi() {
+        var tinhthanhpho = document.getElementById("tinhthanhpho");
+        var selectedTinhthanhpho = tinhthanhpho.value;
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/api/getDiaChi?tinhthanhpho=" + selectedTinhthanhpho, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var districts = JSON.parse(xhr.responseText);
+                var districtSelect = document.getElementById("quanhuyen");
+                districtSelect.innerHTML = "";
+                districts.forEach(function(district) {
+                    var option = document.createElement("option");
+                    option.value = district;
+                    option.text = district;
+                    districtSelect.add(option);
+                });
+                console.log(districts);
+            }
+        };
+        xhr.send();
+    }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/jsqr"></script>
 </body>

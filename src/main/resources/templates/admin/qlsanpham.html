@@ -15,7 +15,7 @@
         border-color: rgb(60, 179, 113);
     }
 </style>
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini" style="font-family: 'Roboto'">
 <div class="wrapper">
     <!-- Navbar -->
     <nav th:replace="~{/layoutadmin/navbar.html}"></nav>
@@ -26,7 +26,7 @@
     <!--end-->
 
     <!--Nội dung -->
-    <div class="content-wrapper" style="font-family: 'Times New Roman'">
+    <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
@@ -66,14 +66,14 @@
                                 <br>
                                 <hr class="border border-danger border opacity-50">
                                 <form id="searchForm" method="get" th:object="${tim}">
-                                    <h3 class="card-title">Tìm kiếm tên sản phẩm
-                                        <input type="text" id="searchInput" placeholder="Tìm kiếm" class="form-control" name="key" style="width: 400px">
+                                    <h3 class="card-title" style="font-weight: bold">Tìm kiếm tên sản phẩm
+                                        <input type="text" id="searchInput" placeholder="Tìm kiếm tên sản phẩm" class="form-control text-muted font-italic" name="key" style="width: 990px">
                                     </h3>
-                                    <h3 class="card-title" style="margin-left: 200px">Trạng thái:
-                                        <select id="statusSelect" class="form-control" name="trangthai" style="color:rgb(86,158,43);width: 400px">
+                                    <h3 class="card-title" style="margin-left: 50px;font-weight: bold">Trạng thái:
+                                        <select id="statusSelect" class="form-control" name="trangthai" style="color: orange; font-weight: bold; width: 150px">
                                             <option value="">-----</option>
-                                            <option value="1" style="color:rgb(86,158,43)">Đang kinh doanh</option>
-                                            <option value="0" style="color:rgb(86,158,43)">Ngừng kinh doanh</option>
+                                            <option value="1">Đang kinh doanh</option>
+                                            <option value="0">Ngừng kinh doanh</option>
                                         </select>
                                     </h3>
                                     <br>
@@ -101,15 +101,19 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                                         class="bi bi-card-list" viewBox="0 0 16 16">
-                                        <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"/>
-                                        <path d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8m0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0M4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"/>
+                                <h3 class="card-title" style="margin-top: 10px">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-list-task" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M2 2.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5zM3 3H2v1h1z"/>
+                                        <path d="M5 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M5.5 7a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 4a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1z"/>
+                                        <path fill-rule="evenodd" d="M1.5 7a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5zM2 7h1v1H2zm0 3.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm1 .5H2v1h1z"/>
                                     </svg>
                                     Danh sách sản phẩm
                                 </h3>
-                                <a href="/viewaddSP" class="card-title btn btn-primary" style="margin-left: 850px">+Tạo sản phẩm</a>
+                                <a href="/viewaddSP" class=" btn btn-primary" style="margin-left: 850px">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                    </svg>Tạo sản phẩm
+                                </a>
                             </div>
 
                             <!-- /.card-header -->
@@ -121,16 +125,20 @@
                                         <th>Mã Sản phẩm</th>
                                         <th>Tên sản phẩm</th>
                                         <th>Số lượng tồn</th>
+                                        <th>Ngày tạo</th>
                                         <th>Thao tác</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr th:each="sp, stt : ${page.content}">
                                         <td th:text="${stt.index + 1}"></td>
-                                        <td th:text="'SP00000'+${sp[0]}"></td>
+                                        <th th:text="'SP00000'+${sp[0]}"></th>
                                         <td th:text="${sp[1]}"></td>
                                         <td>
                                             <span th:text="${sp[3]}"></span>
+                                        </td>
+                                        <td>
+                                            <span th:text="${#temporals.format(sp[2], 'dd-MM-yyyy HH:mm:ss')}"></span>
                                         </td>
                                         <td>
                                             <a th:href="@{/detailsanpham/{id}(id=${sp[0]})}" class="btn btn-outline-danger">

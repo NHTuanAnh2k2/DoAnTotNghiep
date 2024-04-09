@@ -6,8 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
+import java.time.LocalDateTime;
 
-import java.util.Date;
 
 @Getter
 @Setter
@@ -20,9 +20,13 @@ public class ChatLieu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     String ten;
-    Date ngaytao;
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    LocalDateTime ngaytao;
     String nguoitao;
-    Date lancapnhatcuoi;
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    LocalDateTime lancapnhatcuoi;
     String nguoicapnhat;
     Boolean trangthai;
 }
