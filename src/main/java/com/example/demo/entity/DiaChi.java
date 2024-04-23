@@ -26,13 +26,9 @@ public class DiaChi {
     String tinhthanhpho;
     String sdtnguoinhan;
     String hotennguoinhan;
-    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    Date ngaytao;
+    Timestamp ngaytao;
     String nguoitao;
-    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    Date lancapnhatcuoi;
+    Timestamp lancapnhatcuoi;
     String nguoicapnhat;
     Boolean trangthai;
     @ManyToOne

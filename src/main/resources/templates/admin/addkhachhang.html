@@ -113,16 +113,18 @@
 
                                             <div class="d-flex">
                                                 <p>Tỉnh/Thành phố:
-                                                    <select id="tinhthanhpho" name="tinhthanhpho" class="form-control" onchange="getDiaChi()"
+                                                    <select id="tinhthanhpho" name="tinhthanhpho" class="form-control"
+                                                            onchange="getDiaChi()"
                                                             style="width: 550px">
                                                         <option value="">Chọn tỉnh/thành phố</option>
-                                                        <option th:each="city,stt : ${cities}" th:value="${cityIds[stt.index]}"
-                                                                th:text="${city}">City
+                                                        <option th:each="city : ${cities}" th:value="${city.getName()}"
+                                                                th:text="${city.getName()}">City
                                                         </option>
                                                     </select>
                                                 </p>
                                                 <p style="margin-left: 20px">Quận/Huyện:
-                                                    <select class="form-control" id="quanhuyen" name="quanhuyen" onchange="getQuanHuyen()"
+                                                    <select class="form-control" id="quanhuyen" name="quanhuyen"
+                                                            onchange="getQuanHuyen()"
                                                             style="width: 550px">
                                                         <option value="">Chọn quận/huyện</option>
                                                     </select>
@@ -131,22 +133,12 @@
 
                                             <div class="d-flex">
                                                 <p>Xã/Phường:
-                                                    <select class="form-control" style="width: 550px" id="xaphuong">
+                                                    <select class="form-control" style="width: 550px" id="xaphuong" name="xaphuong">
                                                         <option value="">Chọn xã/phường</option>
                                                     </select>
                                                 </p>
                                                 <p style="margin-left: 20px">Số nhà/Ngõ/Đường:
-                                                    <input placeholder="Số nhà/Ngõ/Đường" class="form-control"
-                                                           style="width: 550px">
-                                                </p>
-                                            </div>
-                                            <div class="d-flex">
-                                                <p>Trạng thái:
-                                                    <select class="form-control" style="width: 550px"
-                                                            th:field="*{trangthai}">
-                                                        <option th:value="1">Kích hoạt</option>
-                                                        <option th:value="0">Chưa kích hoạt</option>
-                                                    </select>
+                                                    <input placeholder="Số nhà/Ngõ/Đường" class="form-control" style="width: 550px" id="tenduong" name="tenduong">
                                                 </p>
                                             </div>
                                             <button type="submit" class="btn btn-primary">Thêm khách hàng</button>
@@ -196,28 +188,58 @@
         reader.readAsDataURL(file);
     });
 </script>
+<script th:inline="javascript">
+    var cities = /*[[${cities}]]*/ [];
+</script>
 <script>
     function getDiaChi() {
-        var tinhthanhpho = document.getElementById("tinhthanhpho");
-        var selectedTinhthanhpho = tinhthanhpho.value;
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "/api/getDiaChi?tinhthanhpho=" + selectedTinhthanhpho, true);
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                var districts = JSON.parse(xhr.responseText);
-                var districtSelect = document.getElementById("quanhuyen");
-                districtSelect.innerHTML = "";
-                districts.forEach(function(district) {
-                    var option = document.createElement("option");
-                    option.value = district;
-                    option.text = district;
-                    districtSelect.add(option);
-                });
-                console.log(districts);
-            }
-        };
-        xhr.send();
+        var selectedProvince = document.getElementById("tinhthanhpho").value;
+        var quanhuyenSelect = document.getElementById("quanhuyen");
+
+        quanhuyenSelect.innerHTML = "<option value=''>Chọn quận/huyện</option>";
+
+        // Lấy thông tin về tỉnh/thành phố đã chọn từ biến cities
+        var selectedProvinceData = cities.find(function(city) {
+            return city.name === selectedProvince;
+        });
+
+        if (selectedProvinceData) {
+            selectedProvinceData.districts.forEach(function(district) {
+                var option = document.createElement("option");
+                option.text = district.name;
+                option.value = district.name;
+                quanhuyenSelect.appendChild(option);
+            });
+        }
     }
+
+    function getQuanHuyen() {
+        var selectedDistrict = document.getElementById("quanhuyen").value;
+        var xaphuongSelect = document.getElementById("xaphuong");
+        xaphuongSelect.innerHTML = "<option value=''>Chọn xã/phường</option>";
+
+        // Lấy thông tin về tỉnh/thành phố đã chọn từ biến cities
+        var selectedProvince = document.getElementById("tinhthanhpho").value;
+        var selectedProvinceData = cities.find(function(city) {
+            return city.name === selectedProvince;
+        });
+
+        if (selectedProvinceData) {
+            var selectedDistrictData = selectedProvinceData.districts.find(function(district) {
+                return district.name === selectedDistrict;
+            });
+
+            if (selectedDistrictData) {
+                selectedDistrictData.wards.forEach(function(ward) {
+                    var option = document.createElement("option");
+                    option.text = ward.name;
+                    option.value = ward.name;
+                    xaphuongSelect.appendChild(option);
+                });
+            }
+        }
+    }
+
 </script>
 <script src="https://cdn.jsdelivr.net/npm/jsqr"></script>
 </body>

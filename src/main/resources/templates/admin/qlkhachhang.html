@@ -107,27 +107,26 @@
                                     <thead class="table table-danger">
                                     <tr>
                                         <th>STT</th>
+                                        <th>Mã khách hàng</th>
                                         <th>Tên khách hàng</th>
                                         <th>CCCD</th>
                                         <th>SĐT</th>
                                         <th>Ngày sinh</th>
-                                        <th>Trạng thái</th>
+                                        <th>Địa chỉ</th>
                                         <th>Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr th:each="kh,stt:${lstKhachHang}">
                                         <td th:text="${stt.index+1}"></td>
+                                        <td th:text="${kh.khachhang.makhachhang}"></td>
                                         <td th:text="${kh.nguoidung.hovaten}"></td>
                                         <td th:text="${kh.nguoidung.sodienthoai}"></td>
                                         <td th:text="${kh.nguoidung.cccd}"></td>
                                         <td th:text="${kh.nguoidung.ngaysinh}"></td>
+                                        <td th:text="${kh.diachi.tenduong + ', ' + kh.diachi.xaphuong + ', ' + kh.diachi.quanhuyen + ', ' + kh.diachi.tinhthanhpho}"></td>
                                         <td>
-                                            <button th:class="${kh.trangthai == true ? 'btn btn-outline-primary btn-xs' : 'btn btn-outline-danger btn-xs'} "
-                                                    th:text="${kh.trangthai == true ? 'Đã kích hoạt' : 'Chưa kích hoạt'}"></button>
-                                        </td>
-                                        <td>
-                                            <a th:href="@{/khachhang/capnhat/{id}(id=${kh.id})}" class="btn btn-success"
+                                            <a th:href="@{/khachhang/capnhat/{id}(id=${kh.nguoidung.id})}" class="btn btn-success"
                                                style="width: 100px">Chỉnh sửa</a>
                                         </td>
                                     </tr>
