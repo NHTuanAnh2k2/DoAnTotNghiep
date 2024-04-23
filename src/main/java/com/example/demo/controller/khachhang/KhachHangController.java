@@ -3,31 +3,23 @@ package com.example.demo.controller.khachhang;
 import com.example.demo.entity.DiaChi;
 import com.example.demo.entity.KhachHang;
 import com.example.demo.entity.NguoiDung;
-import com.example.demo.repository.khachhang.KhachHangRepostory;
+import com.example.demo.info.KhachHangInfo;
 import com.example.demo.restcontroller.khachhang.KhachHangRestController;
+import com.example.demo.restcontroller.khachhang.Province;
+import com.example.demo.service.DiaChiService;
 import com.example.demo.service.KhachHangService;
 import com.example.demo.service.NguoiDungService;
-import jakarta.mail.*;
-import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeMessage;
 import jakarta.validation.Valid;
-import org.eclipse.tags.shaded.org.apache.xpath.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.util.*;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Properties;
 
 @Controller
 @RequestMapping("khachhang")
@@ -37,12 +29,32 @@ public class KhachHangController {
     @Autowired
     NguoiDungService nguoiDungService;
     @Autowired
+    DiaChiService diaChiService;
+    @Autowired
     KhachHangRestController khachHangRestController;
 
     @GetMapping
     public String display(Model model, @ModelAttribute("khachhang") KhachHang khachHang) {
         List<KhachHang> lstKhachHang = khachHangService.findAllKhachHang();
-        model.addAttribute("lstKhachHang", lstKhachHang);
+        Collections.sort(lstKhachHang, Comparator.comparing(KhachHang::getNgaytao).reversed());
+
+        List<DiaChi> lstDiaChi = diaChiService.getAll();
+        Collections.sort(lstDiaChi, Comparator.comparing(DiaChi::getNgaytao).reversed());
+
+        List<NguoiDung> lstNguoiDung = khachHangService.findAllNguoiDung();
+        Collections.sort(lstNguoiDung, Comparator.comparing(NguoiDung::getNgaytao).reversed());
+
+        List<KhachHangInfo> lstkhachhanginfo = new ArrayList<>();
+        int minSize = Math.min(lstKhachHang.size(), Math.min(lstDiaChi.size(), lstNguoiDung.size()));
+        for (int i = 0; i < minSize; i++) {
+            KhachHangInfo khachHangInfo = new KhachHangInfo();
+            khachHangInfo.setKhachhang(lstKhachHang.get(i));
+            khachHangInfo.setDiachi(lstDiaChi.get(i));
+            khachHangInfo.setNguoidung(lstNguoiDung.get(i));
+            lstkhachhanginfo.add(khachHangInfo);
+        }
+
+        model.addAttribute("lstKhachHang", lstkhachhanginfo);
         return "admin/qlkhachhang";
     }
 
@@ -58,21 +70,14 @@ public class KhachHangController {
     }
 
     @GetMapping("/add")
-    public String form(@ModelAttribute("nguoidung") NguoiDung nguoiDung,
-                       @ModelAttribute("diachi") DiaChi diaChi,
+    public String form(@ModelAttribute("nguoidung") NguoiDung nguoidung,
+                       @ModelAttribute("diachi") DiaChi diachi,
                        Model model
     ) {
 
-        List<String> cities = khachHangService.getCities();
-        List<Integer> cityIds = khachHangService.getCityIds();
+        List<Province> cities = khachHangService.getCities();
         model.addAttribute("cities", cities);
-        model.addAttribute("cityIds", cityIds);
         return "admin/addkhachhang";
-    }
-
-    @GetMapping("/getDiaChi")
-    public List<String> form(@RequestParam("tinhthanhpho") Integer city) {
-        return khachHangService.getDistricts(city);
     }
 
     @PostMapping("/add")
@@ -81,13 +86,15 @@ public class KhachHangController {
                       @Valid DiaChi diaChi,
                       @RequestParam("tinhthanhpho") String tinhthanhpho,
                       @RequestParam("quanhuyen") String quanhuyen,
+                      @RequestParam("xaphuong") String xaphuong,
+                      @RequestParam("tenduong") String tenduong,
                       BindingResult bindingResult,
                       Model model
     ) throws IOException {
         if (bindingResult.hasErrors()) {
             return "redirect:/khachhang/add";
         }
-        khachHangService.add(khachHang, nguoiDung, diaChi, tinhthanhpho, quanhuyen);
+        khachHangService.add(khachHang, nguoiDung, diaChi, tinhthanhpho, quanhuyen, xaphuong, tenduong);
         return "redirect:/khachhang/add";
     }
 

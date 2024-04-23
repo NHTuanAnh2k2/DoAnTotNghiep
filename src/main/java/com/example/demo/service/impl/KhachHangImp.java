@@ -2,22 +2,22 @@ package com.example.demo.service.impl;
 
 import com.example.demo.entity.DiaChi;
 import com.example.demo.repository.DiaChiRepository;
-import com.example.demo.restcontroller.khachhang.GeoName;
-import com.example.demo.restcontroller.khachhang.GeoNamesResponse;
+import com.example.demo.restcontroller.khachhang.District;
 import com.example.demo.entity.KhachHang;
 import com.example.demo.entity.NguoiDung;
 import com.example.demo.repository.NguoiDungRepository;
 import com.example.demo.repository.khachhang.KhachHangRepostory;
+import com.example.demo.restcontroller.khachhang.Province;
+import com.example.demo.restcontroller.khachhang.Ward;
 import com.example.demo.service.KhachHangService;
 import com.example.demo.service.NguoiDungService;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.validation.Valid;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -29,6 +29,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -55,34 +56,44 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
     public List<KhachHang> findAll() {
         return khachHangRepostory.findAll();
     }
+
+    @Override
+    public List<NguoiDung> findAllNguoiDung() {
+        return nguoiDungRepository.findAll();
+    }
+
     @Override
 
-    public KhachHang add(KhachHang khachHang, NguoiDung nguoiDung, DiaChi diaChi, String tinhthanhpho, String quanhuyen) {
+    public KhachHang add(KhachHang khachHang, NguoiDung nguoiDung, DiaChi diaChi, String tinhthanhpho, String quanhuyen, String xaphuong, String tenduong) {
         int usernameLength = 8;
         int passwordLength = 10;
         String username = generateRandomPassword(usernameLength);
         String password = generateRandomPassword(passwordLength);
 
         LocalDateTime currentDate = LocalDateTime.now();
+
         nguoiDung.setTaikhoan(username);
         nguoiDung.setMatkhau(password);
         nguoiDung.setNgaytao(Timestamp.valueOf(currentDate));
+        nguoiDung.setLancapnhatcuoi(Timestamp.valueOf(currentDate));
+        nguoiDung.setTrangthai(true);
         nguoiDungRepository.save(nguoiDung);
 
-        diaChi.setSoduong(1);
-        diaChi.setTenduong("test");
-        diaChi.setXaphuong("test");
+        diaChi.setTenduong(tenduong);
         diaChi.setQuanhuyen(quanhuyen);
+        diaChi.setXaphuong(xaphuong);
         diaChi.setSdtnguoinhan(nguoiDung.getSodienthoai());
         diaChi.setNguoidung(nguoiDung);
         diaChi.setTrangthai(nguoiDung.getTrangthai());
         diaChi.setTinhthanhpho(tinhthanhpho);
         diaChi.setNgaytao(nguoiDung.getNgaytao());
+        diaChi.setLancapnhatcuoi(nguoiDung.getLancapnhatcuoi());
         diaChiRepository.save(diaChi);
 
         khachHang.setNguoidung(nguoiDung);
         khachHang.setTrangthai(nguoiDung.getTrangthai());
         khachHang.setNgaytao(nguoiDung.getNgaytao());
+        khachHang.setLancapnhatcuoi(nguoiDung.getLancapnhatcuoi());
         khachHangRepostory.save(khachHang);
 
         String nguoiNhan = diaChi.getNguoidung().getEmail();
@@ -105,7 +116,7 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
         String host = "smtp.gmail.com";
         String port = "587";
         String senderEmail = "thinhdqph28839@fpt.edu.vn";
-        String senderPassword = "xxefjtjmafszpdch";
+        String senderPassword = "isniscmsyjdmqjmo";
 
         // Cấu hình cài đặt
         Properties properties = System.getProperties();
@@ -162,104 +173,74 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
         return khachHangRepostory.getReferenceById(id);
     }
 
-    @Value("thnhdq")
-    private String geoUsername;
     @Override
-    public List<String> getCities() {
+    public List<Province> getCities() {
         RestTemplate restTemplate = new RestTemplate();
-        String url = "http://api.geonames.org/childrenJSON?geonameId=1562822&username=" + geoUsername;
+        String url = "https://java6-f03d7-default-rtdb.firebaseio.com/province/-Nw8-WWjhZbyOqV-oeyy.json";
 
         try {
-            ResponseEntity<GeoNamesResponse> responseEntity = restTemplate.getForEntity(url, GeoNamesResponse.class);
-            List<String> cities = new ArrayList<>();
-            if (responseEntity.getStatusCode() == HttpStatus.OK && responseEntity.getBody() != null) {
-                GeoNamesResponse response = responseEntity.getBody();
-                if (response.getGeonames() != null) {
-                    for (GeoName geoName : response.getGeonames()) {
-                        String cityName = geoName.getName();
-                        cityName = cityName.replaceAll("(?i)province", "").trim();
-                        cities.add(cityName);
-                    }
+            String jsonResponse = restTemplate.getForObject(url, String.class);
+            JSONArray jsonArray = new JSONArray(jsonResponse);
+            List<Province> lstProvince = new ArrayList<>();
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                Province province = new Province();
+
+                // Check if "Name" key exists
+                if (jsonObject.has("Name")) {
+                    province.setName(jsonObject.getString("Name"));
+                } else {
+                    // Handle missing key
+                    province.setName("Unknown");
                 }
-            }
-            return cities;
-        } catch (RestClientException e) {
-            // Xử lý exception nếu có
-            return null;
-        }
-    }
 
-    @Override
-    public List<Integer> getCityIds() {
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "http://api.geonames.org/childrenJSON?geonameId=1562822&username=" + geoUsername;
-        try {
-            ResponseEntity<GeoNamesResponse> responseEntity = restTemplate.getForEntity(url, GeoNamesResponse.class);
-            List<Integer> cityIds = new ArrayList<>();
-            if (responseEntity.getStatusCode() == HttpStatus.OK && responseEntity.getBody() != null) {
-                GeoNamesResponse response = responseEntity.getBody();
-                if (response.getGeonames() != null) {
-                    System.out.println(response.getGeonames());
-                    for (GeoName geoName : response.getGeonames()) {
-                        Integer cityId = geoName.getGeonameId();
-                        cityIds.add(cityId);
+                JSONArray districtArray = jsonObject.getJSONArray("Districts");
+                List<District> districtList = new ArrayList<>();
+                for (int j = 0; j < districtArray.length(); j++) {
+                    JSONObject districtObject = districtArray.getJSONObject(j);
+                    District district = new District();
+
+                    // Check if "Name" key exists
+                    if (districtObject.has("Name")) {
+                        district.setName(districtObject.getString("Name"));
+                    } else {
+                        // Handle missing key
+                        district.setName("Unknown");
                     }
-                }
-            }
-            return cityIds;
-        } catch (RestClientException e) {
-            return null;
-        }
-    }
 
+                    JSONArray wardArray = districtObject.getJSONArray("Wards");
+                    List<Ward> wardList = new ArrayList<>();
+                    for (int k = 0; k < wardArray.length(); k++) {
+                        JSONObject wardObject = wardArray.getJSONObject(k);
+                        Ward ward = new Ward();
 
-    @Override
-    public List<String> getDistricts(Integer cityId) {
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "http://api.geonames.org/childrenJSON?geonameId=" + cityId + "&username=" + geoUsername;
-        try {
-            ResponseEntity<GeoNamesResponse> responseEntity = restTemplate.getForEntity(url, GeoNamesResponse.class);
-            List<String> districts = new ArrayList<>();
-            if (responseEntity.getStatusCode() == HttpStatus.OK && responseEntity.getBody() != null) {
-                GeoNamesResponse response = responseEntity.getBody();
-                if (response.getGeonames() != null) {
-                    for (GeoName geoName : response.getGeonames()) {
-                        if ("ADM2".equals(geoName.getFcode())) { // Kiểm tra nếu là quận/huyện (ADM2)
-                            String tenQuanHuyen = geoName.getName();
-                            tenQuanHuyen = tenQuanHuyen.replaceAll("(?i)district", "").trim();
-                            districts.add(tenQuanHuyen);
+                        // Check if "Name" key exists
+                        if (wardObject.has("Name")) {
+                            ward.setName(wardObject.getString("Name"));
+                        } else {
+                            // Handle missing key
+                            ward.setName("Unknown");
                         }
+
+                        // Populate other ward attributes as needed
+                        wardList.add(ward);
                     }
+                    district.setWards(wardList);
+
+                    // Populate other district attributes as needed
+                    districtList.add(district);
                 }
+                province.setDistricts(districtList);
+
+                lstProvince.add(province);
             }
-            return districts;
-        } catch (RestClientException e) {
+
+            return lstProvince;
+        } catch (RestClientException | JSONException e) {
+            e.printStackTrace();
             return null;
         }
     }
 
-    @Override
-    public List<String> getWards(Integer wardId) {
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "http://api.geonames.org/childrenJSON?geonameId=" + wardId + "&username=" + geoUsername;
-        try {
-            ResponseEntity<GeoNamesResponse> responseEntity = restTemplate.getForEntity(url, GeoNamesResponse.class);
-            List<String> districts = new ArrayList<>();
-            if (responseEntity.getStatusCode() == HttpStatus.OK && responseEntity.getBody() != null) {
-                GeoNamesResponse response = responseEntity.getBody();
-                if (response.getGeonames() != null) {
-                    for (GeoName geoName : response.getGeonames()) {
-                        if ("ADM3".equals(geoName.getFcode())) { // Kiểm tra nếu là xã/phường (ADM3)
-                            String tenXaPhuong = geoName.getName();
-                            tenXaPhuong = tenXaPhuong.replaceAll("(?i)ward", "").trim();
-                            districts.add(tenXaPhuong);
-                        }
-                    }
-                }
-            }
-            return districts;
-        } catch (RestClientException e) {
-            return null;
-        }
-    }
 }
