@@ -341,7 +341,7 @@
                                                             <td th:text="${a.loaihoadon==true?'online':'tại quầy'}">
                                                             </td>
                                                             <td
-                                                                th:text="${#numbers.formatDecimal(a.tongtien, 0, 'COMMA', 3, 'POINT')+'&#x20ab;'}">
+                                                                th:text="${#numbers.formatDecimal(a.tongtien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}">
                                                             </td>
                                                             <td
                                                                 th:text="${ #dates.format(a.ngaytao, 'dd-MM-yyyy HH:mm:ss')}">

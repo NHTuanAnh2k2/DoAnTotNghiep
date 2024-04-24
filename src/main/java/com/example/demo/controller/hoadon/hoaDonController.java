@@ -1,14 +1,13 @@
 package com.example.demo.controller.hoadon;
 
-import com.example.demo.entity.HoaDon;
-import com.example.demo.entity.KhachHang;
-import com.example.demo.entity.LichSuHoaDon;
-import com.example.demo.entity.NhanVien;
+import com.example.demo.entity.*;
 import com.example.demo.info.HoaDonCustom;
 import com.example.demo.info.LichSuHoaDonCustom;
 import com.example.demo.repository.hoadon.HoaDonRepository;
 import com.example.demo.service.HoaDonService;
 import com.example.demo.service.LichSuHoaDonService;
+import com.example.demo.service.PhuongThucThanhToanService;
+import com.example.demo.service.SanPhamService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,6 +34,10 @@ import java.util.Optional;
 @Controller
 @RequestMapping("hoa-don")
 public class hoaDonController {
+    @Autowired
+    PhuongThucThanhToanService daoPT;
+    @Autowired
+    SanPhamService daoSP;
     @Autowired
     LichSuHoaDonService daoLS;
     @Autowired
@@ -96,22 +99,7 @@ public class hoaDonController {
                     && !hdSaveInfoSeachr.getLoaiHD().equalsIgnoreCase("null")
                     && !hdSaveInfoSeachr.getTu().equalsIgnoreCase("null")
                     && !hdSaveInfoSeachr.getDen().equalsIgnoreCase("null")) {
-                if (hdSaveInfoSeachr.getTu().compareTo(hdSaveInfoSeachr.getDen()) >= 0) {
-                    Page<HoaDon> fixErr = dao.findAll(p);
-                    model.addAttribute("lst", fixErr);
-                    model.addAttribute("hdcustom", hdSaveInfoSeachr);
-                    model.addAttribute("pageNo", page);
-                    model.addAttribute("errdate", 1);
-                    model.addAttribute("tt0", dao.tinhTong(0));
-                    model.addAttribute("tt1", dao.tinhTong(1));
-                    model.addAttribute("tt2", dao.tinhTong(2));
-                    model.addAttribute("tt3", dao.tinhTong(3));
-                    model.addAttribute("tt4", dao.tinhTong(4));
-                    model.addAttribute("tt5", dao.tinhTong(5));
-                    model.addAttribute("tt6", dao.tinhTong(6));
-                    model.addAttribute("tt7", dao.findAll(p).getTotalElements());
-                    return "admin/qlhoadon";
-                }
+
                 lst = dao.LockTT(Boolean.valueOf(hdSaveInfoSeachr.getLoaiHD()), Date.valueOf(hdSaveInfoSeachr.getTu()),
                         Date.valueOf(hdSaveInfoSeachr.getDen()), p);
             }
@@ -147,22 +135,6 @@ public class hoaDonController {
 
                         }
                     }
-                }
-                if (hdSaveInfoSeachr.getTu().compareTo(hdSaveInfoSeachr.getDen()) >= 0) {
-                    Page<HoaDon> fixErr = dao.findAll(p);
-                    model.addAttribute("lst", fixErr);
-                    model.addAttribute("hdcustom", hdSaveInfoSeachr);
-                    model.addAttribute("pageNo", page);
-                    model.addAttribute("errdate", 1);
-                    model.addAttribute("tt0", dao.tinhTong(0));
-                    model.addAttribute("tt1", dao.tinhTong(1));
-                    model.addAttribute("tt2", dao.tinhTong(2));
-                    model.addAttribute("tt3", dao.tinhTong(3));
-                    model.addAttribute("tt4", dao.tinhTong(4));
-                    model.addAttribute("tt5", dao.tinhTong(5));
-                    model.addAttribute("tt6", dao.tinhTong(6));
-                    model.addAttribute("tt7", dao.findAll(p).getTotalElements());
-                    return "admin/qlhoadon";
                 }
 
                 lst = dao.LocKLHD(trangThai, Date.valueOf(hdSaveInfoSeachr.getTu()),
@@ -216,22 +188,6 @@ public class hoaDonController {
                     && !hdSaveInfoSeachr.getTu().equalsIgnoreCase("null")
                     && !hdSaveInfoSeachr.getDen().equalsIgnoreCase("null")) {
 
-                if (hdSaveInfoSeachr.getTu().compareTo(hdSaveInfoSeachr.getDen()) >= 0) {
-                    Page<HoaDon> fixErr = dao.findAll(p);
-                    model.addAttribute("lst", fixErr);
-                    model.addAttribute("hdcustom", hdSaveInfoSeachr);
-                    model.addAttribute("pageNo", page);
-                    model.addAttribute("errdate", 1);
-                    model.addAttribute("tt0", dao.tinhTong(0));
-                    model.addAttribute("tt1", dao.tinhTong(1));
-                    model.addAttribute("tt2", dao.tinhTong(2));
-                    model.addAttribute("tt3", dao.tinhTong(3));
-                    model.addAttribute("tt4", dao.tinhTong(4));
-                    model.addAttribute("tt5", dao.tinhTong(5));
-                    model.addAttribute("tt6", dao.tinhTong(6));
-                    model.addAttribute("tt7", dao.findAll(p).getTotalElements());
-                    return "admin/qlhoadon";
-                }
                 lst = dao.LocTheoKhoangNgay(Date.valueOf(hdSaveInfoSeachr.getTu()), Date.valueOf(hdSaveInfoSeachr.getDen()), p);
             }
             //case key and (tu or den null)
@@ -308,22 +264,6 @@ public class hoaDonController {
 
                     }
                 }
-            }
-            if (hdSaveInfoSeachr.getTu().compareTo(hdSaveInfoSeachr.getDen()) >= 0) {
-                Page<HoaDon> fixErr = dao.findAll(p);
-                model.addAttribute("lst", fixErr);
-                model.addAttribute("hdcustom", hdSaveInfoSeachr);
-                model.addAttribute("pageNo", page);
-                model.addAttribute("errdate", 1);
-                model.addAttribute("tt0", dao.tinhTong(0));
-                model.addAttribute("tt1", dao.tinhTong(1));
-                model.addAttribute("tt2", dao.tinhTong(2));
-                model.addAttribute("tt3", dao.tinhTong(3));
-                model.addAttribute("tt4", dao.tinhTong(4));
-                model.addAttribute("tt5", dao.tinhTong(5));
-                model.addAttribute("tt6", dao.tinhTong(6));
-                model.addAttribute("tt7", dao.findAll(p).getTotalElements());
-                return "admin/qlhoadon";
             }
             lst = dao.Loc(trangThai,
                     Boolean.valueOf(hdSaveInfoSeachr.getLoaiHD()), Date.valueOf(hdSaveInfoSeachr.getTu()),
@@ -493,9 +433,17 @@ public class hoaDonController {
     //xem chi tiết hóa đơn
     @GetMapping("showDetail")
     public String show(Model model, @ModelAttribute("ghichu") LichSuHoaDonCustom noidung) {
+        //Page<SanPham> pageSPTheoIDHD=daoSP.findAll();
         HoaDon hoaDonXem = new HoaDon();
-        hoaDonXem.setId(idhdshowdetail);
+        PhuongThucThanhToan phuongThuc = new PhuongThucThanhToan();
+        List<HoaDon> hoaDonTim = dao.timTheoID(idhdshowdetail);
+        hoaDonXem = hoaDonTim.get(0);
+        List<PhuongThucThanhToan> lstPhuongThuc = daoPT.timTheoHoaDon(hoaDonXem);
         List<LichSuHoaDon> lstLichSuHoaDon = daoLS.timLichSuTheoIDHoaDon(hoaDonXem);
+        phuongThuc = lstPhuongThuc.get(0);
+        model.addAttribute("hoaDonDT", hoaDonXem);
+        model.addAttribute("lstphuongThucTT", lstPhuongThuc);
+        model.addAttribute("phuongThucTT", phuongThuc);
         model.addAttribute("lstlichsu", lstLichSuHoaDon);
         model.addAttribute("trangThaiHienTai", lstLichSuHoaDon.get(lstLichSuHoaDon.size() - 1).getTrangthai());
         return "admin/qlchitiethoadon";
@@ -516,15 +464,16 @@ public class hoaDonController {
         lshd.setNhanvien(nhanvien);
         lshd.setGhichu(noidung.getKey());
         lshd.setNgaytao(Timestamp.valueOf(ngaytao));
-        List<HoaDon> lstSaveHD=dao.timTheoID(idhdshowdetail);
-        HoaDon hdTT=lstSaveHD.get(0);
-        Integer trangthaiset=hdTT.getTrangthai()+1;
+        List<HoaDon> lstSaveHD = dao.timTheoID(idhdshowdetail);
+        HoaDon hdTT = lstSaveHD.get(0);
+        Integer trangthaiset = hdTT.getTrangthai() + 1;
         hdTT.setTrangthai(trangthaiset);
         dao.capNhatHD(hdTT);
         lshd.setTrangthai(trangthaiset);
         daoLS.add(lshd);
         return "redirect:/hoa-don/showDetail";
     }
+
     //xác nhận quay lại
     @GetMapping("quay-lai")
     public String quayLai(Model model, @ModelAttribute("ghichu") LichSuHoaDonCustom noidung) {
@@ -540,15 +489,16 @@ public class hoaDonController {
         lshd.setNhanvien(nhanvien);
         lshd.setGhichu(noidung.getKey());
         lshd.setNgaytao(Timestamp.valueOf(ngaytao));
-        List<HoaDon> lstSaveHD=dao.timTheoID(idhdshowdetail);
-        HoaDon hdTT=lstSaveHD.get(0);
-        Integer trangthaiset=hdTT.getTrangthai()-1;
+        List<HoaDon> lstSaveHD = dao.timTheoID(idhdshowdetail);
+        HoaDon hdTT = lstSaveHD.get(0);
+        Integer trangthaiset = hdTT.getTrangthai() - 1;
         hdTT.setTrangthai(trangthaiset);
         dao.capNhatHD(hdTT);
         lshd.setTrangthai(trangthaiset);
         daoLS.add(lshd);
         return "redirect:/hoa-don/showDetail";
     }
+
     //xác nhận hủy
     @GetMapping("huy-don")
     public String huyDon(Model model, @ModelAttribute("ghichu") LichSuHoaDonCustom noidung) {
@@ -564,18 +514,20 @@ public class hoaDonController {
         lshd.setNhanvien(nhanvien);
         lshd.setGhichu(noidung.getKey());
         lshd.setNgaytao(Timestamp.valueOf(ngaytao));
-        List<HoaDon> lstSaveHD=dao.timTheoID(idhdshowdetail);
-        HoaDon hdTT=lstSaveHD.get(0);
+        List<HoaDon> lstSaveHD = dao.timTheoID(idhdshowdetail);
+        HoaDon hdTT = lstSaveHD.get(0);
         hdTT.setTrangthai(6);
         dao.capNhatHD(hdTT);
         lshd.setTrangthai(6);
         daoLS.add(lshd);
         return "redirect:/hoa-don/showDetail";
     }
+
     // call sang bán tại quầy
     @GetMapping("ban-hang")
     public String taoMoiHoaDon(Model model) {
 
         return "admin/banhangtaiquay";
     }
+
 }
