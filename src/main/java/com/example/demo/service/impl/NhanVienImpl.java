@@ -63,7 +63,26 @@ public class NhanVienImpl implements NhanVienService {
     @Override
     public NhanVien update(NhanVienInfo nhanVien, Integer id) {
         NhanVien nv = nhanVienRepository.TimIdNguoiDung(id);
+//        List<NhanVien> l = nhanVienRepository.getAllByOrderByIdDesc();
+//        String ten = nhanVien.getIdnguoidung().getHovaten();
+//        String[] cacTu = ten.split("\\s+");
+//        for (int i = 0; i < cacTu.length; i++) {
+//            cacTu[i] = Normalizer.normalize(cacTu[i], Normalizer.Form.NFD)
+//                    .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+//            cacTu[i] = cacTu[i].toLowerCase();
+//        }
+//        String tenCuoi = cacTu[cacTu.length - 1];
+//        String[] parts = ten.split("\\s+");
+//        StringBuilder chuoiMoi = new StringBuilder();
+//        for (int i = 0; i < parts.length - 1; i++) {
+//            if (!parts[i].isEmpty()) {
+//                chuoiMoi.append(parts[i].charAt(0));
+//            }
+//        }
+//        int s = l.size() + 1;
+//        tenCuoi = tenCuoi + chuoiMoi.toString().toLowerCase() + s;
         nv.setVaitro(true);
+//        nv.setManhanvien(tenCuoi);
         nv.setLancapnhatcuoi(new Timestamp(new Date().getTime()));
         nv.setNguoicapnhat("");
         nv.setTrangthai(true);

@@ -127,7 +127,7 @@ public class NhanVienController {
             dob.setTime(nd.getNgaysinh());
             Calendar today = Calendar.getInstance();
             int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
-            if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+            if (dob.after(today)) {
                 ndBindingResult.rejectValue("ngaysinh", "error.ngaysinh", "Ngày sinh không được lớn hơn ngày hiện tại");
             }else if(age < 18 || age > 40){
                 ndBindingResult.rejectValue("ngaysinh", "error.ngaysinh", "Nhân viên phải trên 18 tuổi");
@@ -163,9 +163,15 @@ public class NhanVienController {
     }
     @PostMapping("/updateNhanVien/{id}")
     public String update(@PathVariable Integer id, Model model,
-                         @ModelAttribute("nd") NguoiDungNVInfo nd,
+                         @Valid  @ModelAttribute("nd") NguoiDungNVInfo nd,
+                         BindingResult ndBindingResult,
+                         @Valid  @ModelAttribute("dc") DiaChiNVInfo dc,
+                         BindingResult dcBindingResult,
                          @ModelAttribute("nv") NhanVienInfo nv,
-                         @ModelAttribute("dc") DiaChiNVInfo dc) {
+                         BindingResult nvBindingResult) {
+        if (ndBindingResult.hasErrors() || dcBindingResult.hasErrors() || nvBindingResult.hasErrors()) {
+            return "admin/updatenhanvien";
+        }
         nguoiDung.update(nd,id);
         nhanVien.update(nv,id);
         diaChi.update(dc,id);
