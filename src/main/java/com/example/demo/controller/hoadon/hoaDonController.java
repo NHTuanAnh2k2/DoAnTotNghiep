@@ -4,10 +4,7 @@ import com.example.demo.entity.*;
 import com.example.demo.info.HoaDonCustom;
 import com.example.demo.info.LichSuHoaDonCustom;
 import com.example.demo.repository.hoadon.HoaDonRepository;
-import com.example.demo.service.HoaDonService;
-import com.example.demo.service.LichSuHoaDonService;
-import com.example.demo.service.PhuongThucThanhToanService;
-import com.example.demo.service.SanPhamService;
+import com.example.demo.service.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -37,7 +34,7 @@ public class hoaDonController {
     @Autowired
     PhuongThucThanhToanService daoPT;
     @Autowired
-    SanPhamService daoSP;
+    HoaDonChiTietService daoHDCT;
     @Autowired
     LichSuHoaDonService daoLS;
     @Autowired
@@ -432,8 +429,9 @@ public class hoaDonController {
 
     //xem chi tiết hóa đơn
     @GetMapping("showDetail")
-    public String show(Model model, @ModelAttribute("ghichu") LichSuHoaDonCustom noidung) {
-        //Page<SanPham> pageSPTheoIDHD=daoSP.findAll();
+    public String show(Model model, @ModelAttribute("ghichu") LichSuHoaDonCustom noidung, @RequestParam("pageSP") Optional<Integer> pageSP) {
+        int pageDetail = pageSP.orElse(0);
+        Pageable p = PageRequest.of(pageDetail, 5);
         HoaDon hoaDonXem = new HoaDon();
         PhuongThucThanhToan phuongThuc = new PhuongThucThanhToan();
         List<HoaDon> hoaDonTim = dao.timTheoID(idhdshowdetail);
@@ -442,10 +440,12 @@ public class hoaDonController {
         List<LichSuHoaDon> lstLichSuHoaDon = daoLS.timLichSuTheoIDHoaDon(hoaDonXem);
         phuongThuc = lstPhuongThuc.get(0);
         model.addAttribute("hoaDonDT", hoaDonXem);
+        model.addAttribute("pageNo", pageDetail);
         model.addAttribute("lstphuongThucTT", lstPhuongThuc);
         model.addAttribute("phuongThucTT", phuongThuc);
         model.addAttribute("lstlichsu", lstLichSuHoaDon);
         model.addAttribute("trangThaiHienTai", lstLichSuHoaDon.get(lstLichSuHoaDon.size() - 1).getTrangthai());
+        model.addAttribute("pageSPHD", daoHDCT.getDSSPHD(hoaDonXem,p));
         return "admin/qlchitiethoadon";
     }
 
