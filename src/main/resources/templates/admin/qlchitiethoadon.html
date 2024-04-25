@@ -902,16 +902,18 @@
                                                 </p>
                                             </div>
                                             <div class="d-flex justify-content-between">
-                                                <h6 style="font-family: 'Times New Roman'; font-weight: bold">Phiếu giảm
-                                                    giá:</h6>
-                                                <p style="font-family: 'Times New Roman'; font-size: 16px;">1.000.000
-                                                    VND</p>
+                                                <h6 style="font-family: 'Times New Roman'; font-weight: bold">Phiếu giảm giá
+                                                    :</h6>
+                                                <p th:text="${#numbers.formatDecimal(hoaDonDT.phivanchuyen, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                    style="font-family: 'Times New Roman'; font-size: 16px;">
+                                                </p>
                                             </div>
                                             <div class="d-flex justify-content-between">
-                                                <h6 style="font-family: 'Times New Roman'; font-weight: bold">Tổng tiền
-                                                    giảm:</h6>
-                                                <p style="font-family: 'Times New Roman'; font-size: 16px;">1.000.000
-                                                    VND</p>
+                                                <h6 style="font-family: 'Times New Roman'; font-weight: bold">Tổng tiền giảm
+                                                    :</h6>
+                                                <p th:text="${#numbers.formatDecimal(hoaDonDT.phivanchuyen, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                    style="font-family: 'Times New Roman'; font-size: 16px;">
+                                                </p>
                                             </div>
                                             <hr class="border border-danger border-2 opacity-50">
                                             <div class="d-flex justify-content-between">
