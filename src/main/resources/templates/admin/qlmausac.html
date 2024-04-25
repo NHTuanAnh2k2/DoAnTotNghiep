@@ -6,17 +6,15 @@
 <style>
 
     .btn-custom-warning {
-        background-color:rgb(222,255,206);
-        color:rgb(7,50,255);
-        border-color:rgb(7,50,255) ;
-
+        background-color: rgb(221, 100, 0);
+        color: #fff;
+        border-color: rgb(60, 179, 113);
     }
 
     .btn-custom-info {
-        background-color:rgb(222,255,206);
-        color:rgb(255,33,4);
-        border-color:rgb(255,33,4) ;
-
+        background-color: rgb(86, 100, 234);
+        color: #fff;
+        border-color: rgb(60, 179, 113);
     }
 </style>
 <body class="hold-transition sidebar-mini">
@@ -43,13 +41,13 @@
                                 <path fill-rule="evenodd"
                                       d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6 6a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z"/>
                             </svg>
-                            QUẢN LÝ ĐẾ GIÀY
+                            QUẢN LÝ MÀU SẮC
                         </h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">QUẢN LÝ ĐẾ GIÀY</li>
+                            <li class="breadcrumb-item active">QUẢN LÝ MÀU SẮC</li>
                         </ol>
                     </div>
                 </div>
@@ -72,7 +70,7 @@
                                 <br>
                                 <form method="get" th:object="${tim}">
                                     <h3 class="card-title">Tìm kiếm:
-                                        <input type="text" id="searchInput"  placeholder="Tìm kiếm đế giày" class="form-control" name="key">
+                                        <input type="text" id="searchInput"  placeholder="Tìm kiếm màu sắc" class="form-control" name="key">
                                     </h3>
 
                                     <h3 class="card-title" style="margin-left: 20px">Trạng thái:
@@ -116,11 +114,11 @@
                                         <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"/>
                                         <path d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8m0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0M4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"/>
                                     </svg>
-                                    Danh sách đế giày
+                                    Danh sách màu sắc
                                 </h3>
                                 <a href="/admin/addsanpham" class="card-title btn btn-primary"
                                    style="margin-left: 850px" data-bs-toggle="modal" data-bs-target="#themdegiay">Thêm
-                                    đế giày</a>
+                                    màu sắc</a>
                             </div>
 
                             <!-- Modal -->
@@ -129,14 +127,14 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm đế giày</h1>
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm màu sắc</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form id="addForm" th:method="post" th:object="${degiay}" th:action="@{/addSave}">
+                                            <form id="addForm" th:method="post" th:object="${mausac}" th:action="@{/addSave}">
                                                 <p>
-                                                    Tên đế giày:
+                                                    Tên màu sắc:
                                                     <input id="tenInput" class="form-control" th:field="*{ten}"/>
                                                     <!-- Hiển thị thông báo lỗi -->
                                                 <p id="tenError" class="text-danger"></p>
@@ -163,24 +161,23 @@
                                     <thead class="table table-danger">
                                     <tr>
                                         <th>STT</th>
-                                        <th>Tên đế giày</th>
+                                        <th>Tên màu sắc</th>
                                         <th>Người tạo</th>
                                         <th>Trạng thái</th>
                                         <th>Hành động</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="dg,stt:${list}">
+                                    <tr th:each="ms,stt:${list}">
                                         <td th:text="${stt.index+1}"></td>
-                                        <td th:text="${dg.ten}"></td>
-                                        <td th:text="${#temporals.format(dg.ngaytao, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                                        <td th:text="${ms.ten}"></td>
+                                        <td th:text="${#temporals.format(ms.ngaytao, 'dd-MM-yyyy HH:mm:ss')}"></td>
                                         <td>
-                                            <button style="border-radius: 5px"
-                                                    class="btn-xs"
-                                                    th:classappend="${dg.trangthai ? 'btn-custom-info' : 'btn-custom-warning'}"
-                                                    th:text="${dg.trangthai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>
+                                            <button style="border-radius: 50px"
+                                                    class="btn btn-xs custom-button no-border-button"
+                                                    th:classappend="${ms.trangthai ? 'btn-custom-info' : 'btn-custom-warning'}"
+                                                    th:text="${ms.trangthai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>
                                         </td>
-
                                         <td>
                                             <a class="btn btn-outline-danger">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
@@ -189,11 +186,11 @@
                                                     <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
                                                 </svg>
                                             </a>
-<!--                                            <a class="btn btn-warning" th:href="@{/delete/{id}(id=${dg.id})}" onclick="return xoa(event)">-->
-<!--                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">-->
-<!--                                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>-->
-<!--                                                </svg>-->
-<!--                                            </a>-->
+                                            <!--                                            <a class="btn btn-warning" th:href="@{/delete/{id}(id=${dg.id})}" onclick="return xoa(event)">-->
+                                            <!--                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">-->
+                                            <!--                                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>-->
+                                            <!--                                                </svg>-->
+                                            <!--                                            </a>-->
 
                                         </td>
                                     </tr>

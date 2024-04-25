@@ -136,125 +136,133 @@
                                     THÊM SẢN PHẨM
                                 </h3>
                                 <div class="card-header">
-                                    <h5 style="font-family: 'Times New Roman'">
-                                      <span style="color: red">* </span>Tên sản phẩm:
+                                    <h5 style="font-family: 'Times New Roman';font-weight: bold">
+                                        <span style="color: red">* </span>Tên sản phẩm:
                                         <select class="form-control select2 select2-primary"
                                                 data-dropdown-css-class="select2-primary" style="width: 100%;"
-                                                name="tensp" data-tags="true" data-placeholder="Nhập tên sản phẩm">
+                                                name="tensp" data-tags="true" data-placeholder="Nhập tên sản phẩm"
+                                                onchange="clearErrorMessageTenSP()">
                                             <option></option>
                                             <option th:each="sp : ${sp}" th:value="${sp.tensanpham}"
                                                     th:text="${sp.tensanpham}"></option>
                                         </select>
-                                        <span id="tenspError" style="color: red;font-style: italic"></span>
+                                        <span id="tenspError" style="color: red; font-style: italic"></span>
                                     </h5>
-                                    <h5 style="font-family: 'Times New Roman'">
+                                    <h5 style="font-family: 'Times New Roman';font-weight: bold">
                                         <span style="color: red">* </span>Giới tính:
-                                        <select class="form-control" name="gioitinh">
+                                        <select class="form-control" name="gioitinh"
+                                                onchange="clearErrorMessageGioiTinh()">
                                             <option value="" selected disabled hidden>Chọn giới tính</option>
                                             <option value="true">Nam</option>
                                             <option value="false">Nữ</option>
                                         </select>
                                         <span id="gioitinhError" style="color: red;font-style: italic"></span>
                                     </h5>
-                                    <h5 style="font-family: 'Times New Roman'">
+                                    <h5 style="font-family: 'Times New Roman';font-weight: bold">
                                         <span style="color: red">* </span>Mô tả:
-                                        <textarea rows="4" cols="164" class="form-control" name="mota"></textarea>
-                                        <span id="motaError" style="color: red;font-style: italic"></span>
+                                        <textarea rows="4" cols="164" class="form-control" name="mota"
+                                                  oninput="clearErrorMessageMoTa()"></textarea>
+                                        <span id="motaError" style="color: red; font-style: italic"></span>
                                     </h5>
+
 
                                 </div>
 
 
                             </div>
 
-                             <div class="d-flex">
-                                 <div class="card" style="width: 610px">
-                                     <!--abc-->
-                                     <div class="d-flex">
-                                         <p style="margin-left: 20px"><span style="color: red">* </span>Thương hiệu:
-                                             <select class="form-control" style="width: 520px" name="idThuongHieu">
-                                                 <option th:each="th : ${th}" th:value="${th.id}"
-                                                         th:text="${th.ten}"></option>
-                                             </select>
-                                         </p>
-                                         <input type="button" class="btn btn-primary" style="margin:3%" value="+"
-                                                data-bs-toggle="modal" data-bs-target="#themthuonghieu">
-                                     </div>
-                                     <!--end-->
+                            <div class="d-flex">
+                                <div class="card" style="width: 610px">
+                                    <!--abc-->
+                                    <div class="d-flex">
+                                        <p style="margin-left: 20px;font-weight: bold"><span style="color: red">* </span>Thương hiệu:
+                                            <select class="form-control" style="width: 520px" name="idThuongHieu">
+                                                <option th:each="th : ${th}" th:value="${th.id}"
+                                                        th:text="${th.ten}"></option>
+                                            </select>
+                                        </p>
+                                        <input type="button" class="btn btn-primary" style="margin:3%" value="+"
+                                               data-bs-toggle="modal" data-bs-target="#themthuonghieu">
+                                    </div>
+                                    <!--end-->
 
-                                     <!--abc-->
+                                    <!--abc-->
 
-                                     <!--chất liệu-->
-                                     <div class="d-flex">
-                                         <p style="margin-left: 20px"><span style="color: red">* </span>Chất liệu:
-                                             <select class="form-control" style="width: 520px" name="idChatLieu">
-                                                 <option th:each="cl : ${cl}" th:value="${cl.id}"
-                                                         th:text="${cl.ten}"></option>
-                                             </select>
-                                         </p>
-                                         <input type="button" class="btn btn-primary" style="margin:3%" value="+"
-                                                data-bs-toggle="modal" data-bs-target="#themchatlieu">
-                                     </div>
+                                    <!--chất liệu-->
+                                    <div class="d-flex">
+                                        <p style="margin-left: 20px;font-weight: bold"><span style="color: red">* </span>Chất liệu:
+                                            <select class="form-control" style="width: 520px" name="idChatLieu">
+                                                <option th:each="cl : ${cl}" th:value="${cl.id}"
+                                                        th:text="${cl.ten}"></option>
+                                            </select>
+                                        </p>
+                                        <input type="button" class="btn btn-primary" style="margin:3%" value="+"
+                                               data-bs-toggle="modal" data-bs-target="#themchatlieu">
+                                    </div>
 
-                                     <!--đế giày-->
-                                     <div class="d-flex">
-                                         <p style="margin-left: 20px"><span style="color: red">* </span>Đế giày:
-                                             <select class="form-control" style="width: 520px" name="idDeGiay">
-                                                 <option th:each="dg : ${dg}" th:value="${dg.id}"
-                                                         th:text="${dg.ten}"></option>
-                                             </select>
-                                         </p>
-                                         <input type="button" class="btn btn-primary" style="margin:3%" value="+"
-                                                data-bs-toggle="modal" data-bs-target="#themdegiay">
-                                     </div>
-                                     <!--end-->
-                                 </div>
-                                 <div class="card" style="width:610px;margin-left: 20px">
-                                     <!--abc-->
+                                    <!--đế giày-->
+                                    <div class="d-flex">
+                                        <p style="margin-left: 20px;font-weight: bold"><span style="color: red">* </span>Đế giày:
+                                            <select class="form-control" style="width: 520px" name="idDeGiay">
+                                                <option th:each="dg : ${dg}" th:value="${dg.id}"
+                                                        th:text="${dg.ten}"></option>
+                                            </select>
+                                        </p>
+                                        <input type="button" class="btn btn-primary" style="margin:3%" value="+"
+                                               data-bs-toggle="modal" data-bs-target="#themdegiay">
+                                    </div>
+                                    <!--end-->
+                                </div>
+                                <div class="card" style="width:610px;margin-left: 20px">
+                                    <!--abc-->
 
-                                     <div class="d-flex">
-                                         <p style="margin-left: 20px;font-weight: bold"><span style="color: red">* </span>Màu sắc:
-                                             <select class="select2" multiple="multiple" data-placeholder="Màu sắc"
-                                                     style="width: 520px;" name="idMauSac">
-                                                 <option th:each="ms : ${ms}" th:value="${ms.id}"
-                                                         th:text="${ms.ten}"></option>
-                                             </select>
-                                             <span id="mausacError" style="color: red;font-style: italic"></span>
-                                         </p>
-                                         <p>
-                                         </p>
-                                         <input type="button" class="btn btn-primary" style="margin:3%" value="+"
-                                                data-bs-toggle="modal" data-bs-target="#themmausac">
-                                     </div>
-                                     <!--end-->
-                                     <!--kích cỡ-->
-                                     <div class="d-flex align-items-center" style="margin-left: 20px">
-                                         <div style="margin-right: 3%;font-weight: bold">
-                                             <span style="color: red">* </span>Kích cỡ:
-                                         </div>
-                                         <div>
-                                             <h6 id="displayValue"></h6>
-                                         </div>
-                                         <div style="margin-right: 2%;margin-left: 5px">
-                                             <input type="button" class="btn btn-primary" value="+" data-bs-toggle="modal"
-                                                    data-bs-target="#themkichco2">
-                                         </div>
+                                    <div class="d-flex">
+                                        <p style="margin-left: 20px;font-weight: bold"><span
+                                                style="color: red">* </span>Màu sắc:
+                                            <select class="select2" multiple="multiple" data-placeholder="Màu sắc"
+                                                    style="width: 520px;" name="idMauSac"
+                                                    onchange="clearErrorMessageMauSac()">
+                                                <option th:each="ms : ${ms}" th:value="${ms.id}"
+                                                        th:text="${ms.ten}"></option>
+                                            </select>
+                                            <span id="mausacError" style="color: red;font-style: italic"></span>
+                                        </p>
+                                        <p>
+                                        </p>
+                                        <input type="button" class="btn btn-primary" style="margin:3%" value="+"
+                                               data-bs-toggle="modal" data-bs-target="#themmausac">
+                                    </div>
+                                    <!--end-->
+                                    <!--kích cỡ-->
+                                    <div class="d-flex align-items-center" style="margin-left: 20px">
+                                        <div style="margin-right: 3%;font-weight: bold">
+                                            <span style="color: red">* </span>Kích cỡ:
+                                        </div>
+                                        <div>
+                                            <h6 id="displayValue"></h6>
+                                        </div>
+                                        <div style="margin-right: 2%;margin-left: 5px">
+                                            <input type="button" class="btn btn-primary" value="+"
+                                                   data-bs-toggle="modal"
+                                                   data-bs-target="#themkichco2">
+                                        </div>
 
-                                     </div>
-                                     <span id="kichcoError"
-                                           style="color: red;font-family: 'Times New Roman';font-style: italic;margin-left: 100px"></span>
-                                     <!--end-->
-                                     <button type="submit" class="btn btn-primary"
-                                             style="margin-left: 20px;margin-bottom: 20px;margin-top: 30px; width: 110px;">
-                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                                             <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
-                                         </svg>
-                                         Thêm
-                                     </button>
+                                    </div>
+                                    <span id="kichcoError"
+                                          style="color: red;font-family: 'Times New Roman';font-style: italic;margin-left: 100px"></span>
+                                    <!--end-->
+                                    <button type="submit" class="btn btn-primary"
+                                            style="margin-left: 20px;margin-bottom: 20px;margin-top: 30px; width: 110px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                             fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                        </svg>
+                                        Thêm
+                                    </button>
 
-                                 </div>
+                                </div>
 
-                             </div>
+                            </div>
 
                             <!-- Modal thêm kích cỡ 2-->
                             <div class="modal fade" id="themkichco2" tabindex="-1"
@@ -401,13 +409,13 @@
                                                 Tên màu sắc:
                                                 <input class="form-control" th:field="*{ten}"/>
                                             </p>
-<!--                                            <p>-->
-<!--                                                Trạng thái:-->
-<!--                                                <select class="form-control" th:field="*{trangthai}">-->
-<!--                                                    <option value="1">Đang kinh doanh</option>-->
-<!--                                                    <option value="0">Ngừng kinh doanh</option>-->
-<!--                                                </select>-->
-<!--                                            </p>-->
+                                            <!--                                            <p>-->
+                                            <!--                                                Trạng thái:-->
+                                            <!--                                                <select class="form-control" th:field="*{trangthai}">-->
+                                            <!--                                                    <option value="1">Đang kinh doanh</option>-->
+                                            <!--                                                    <option value="0">Ngừng kinh doanh</option>-->
+                                            <!--                                                </select>-->
+                                            <!--                                            </p>-->
                                             <button class="btn btn-primary" style="margin-left: 400px">Thêm</button>
                                         </form>
                                     </div>
@@ -426,7 +434,7 @@
         </section>
         <!-- Main content -->
         <h3 class="text-bold text-center" style="padding-left: 15px">CHI TIẾT SẢN PHẨM</h3>
-        <form  method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data">
             <a class="btn btn-primary" style="margin-left: 900px;margin-bottom: 15px" data-bs-toggle="modal"
                data-bs-target="#chinhsuasoluongvagia">Chỉnh sửa số lượng và giá chung</a>
             <!-- Modal chỉnh sửa số lượng và giá -->
@@ -446,21 +454,23 @@
                                 <input class="form-control">
                             </p>
                         </div>
-                        <p style="margin-left: 18px">
+                        <p style="margin-left: 400px">
                             <button class="btn btn-primary">Cập nhật</button>
                         </p>
                     </div>
                 </div>
             </div>
-            <button class="btn btn-primary" style="margin-left: 20px; margin-bottom: 15px" th:formaction="@{/addImage}" id="submitButton" disabled onclick="return hoantat()">Hoàn tất</button>
+            <button class="btn btn-primary" style="margin-left: 20px; margin-bottom: 15px" th:formaction="@{/addImage}"
+                    id="submitButton" disabled onclick="return hoantat()">Hoàn tất
+            </button>
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <table id="example2" class="table table-bordered table-hover ">
-                                        <thead class="table table-danger">
+                                    <table id="example2" style="width: 100%" class="table-bordered table-hover text-center">
+                                        <thead style="background-color:#1d75b3;height: 50px">
                                         <tr>
                                             <th>STT</th>
                                             <th>Tên sản phẩm</th>
@@ -473,33 +483,47 @@
                                         <tbody>
                                         <tr th:each="spctt,stt:${sanphamchitiet}" class="product-row">
                                             <td>
-                                                <input type="checkbox" class="product-checkbox">
+                                                <input type="checkbox" class="product-checkbox" th:data-id="${spctt.id}">
+<!--                                                <span class="product-id" style="margin-left: 7px;"></span>-->
                                                 <span style="margin-left: 7px" th:text="${stt.index+1}"></span>
                                             </td>
                                             <td th:text="${spctt.sanpham.tensanpham} +' '+ '[' + ${spctt.kichco.ten} + '-' + ${spctt.mausac.ten} + ']'"></td>
 
                                             <td>
-                                                <input type="number" style="width: 70px; height: 30px" class="form-control" th:value="${spctt.soluong}">
+                                                <input type="number" style="width: 70px; height: 30px"
+                                                       class="form-control" th:value="${spctt.soluong}">
                                             </td>
                                             <td>
-                                                <input type="text" style="width: 150px; height: 30px;color: red;font-weight: bold" class="form-control" th:value="${#numbers.formatDecimal(spctt.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}">
+                                                <input type="text"
+                                                       style="width: 150px; height: 30px;color: red;font-weight: bold"
+                                                       class="form-control"
+                                                       th:value="${#numbers.formatDecimal(spctt.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}">
                                             </td>
 
                                             <td>
-                                                <a th:href="@{/deleteCTSP/{id}(id=${spctt.id})}" class="btn btn-outline-danger" onclick="return xoa(event)">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                <a th:href="@{/deleteCTSP/{id}(id=${spctt.id})}"
+                                                   class="btn btn-outline-danger" onclick="return xoa(event)">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                         fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                                                         <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
                                                     </svg>
                                                 </a>
                                             </td>
                                             <td>
-                                                <input type="hidden" id="spctId" name="spctId" th:value="${spctt.id}">
-                                                <div class="container">
-                                                    <div id="image-preview"></div>
-                                                    <label for="file-input" class="custom-upload">
-                                                        <input type="file" id="file-input" name="anh" multiple onchange="previewImages()">
-                                                    </label>
-                                                </div>
+                                                <!-- Input hidden chứa ID của sản phẩm chi tiết -->
+                                                <input type="hidden" name="spctId" th:value="${spctt.id}">
+                                                <!-- Thẻ input file cho phép chọn ảnh thứ nhất -->
+                                                <label for="file-input-1-${stt.index}">
+                                                    <input type="file" id="file-input-1-${stt.index}" name="anh1">
+                                                </label>
+                                                <!-- Thẻ input file cho phép chọn ảnh thứ hai -->
+                                                <label for="file-input-2-${stt.index}">
+                                                    <input type="file" id="file-input-2-${stt.index}" name="anh2">
+                                                </label>
+                                                <!-- Thẻ input file cho phép chọn ảnh thứ ba -->
+                                                <label for="file-input-3-${stt.index}">
+                                                    <input type="file" id="file-input-3-${stt.index}" name="anh3">
+                                                </label>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -688,6 +712,26 @@
 </script>
 
 <script>
+    function clearErrorMessageTenSP() {
+        document.getElementById("tenspError").innerText = "";
+    }
+
+    function clearErrorMessageGioiTinh() {
+        document.getElementById("gioitinhError").innerText = "";
+    }
+
+    function clearErrorMessageMoTa() {
+        document.getElementById("motaError").innerText = "";
+    }
+
+    function clearMotaError() {
+        document.getElementById("motaError").innerText = "";
+    }
+
+    function clearErrorMessageMauSac() {
+        document.getElementById("mausacError").innerText = "";
+    }
+
     function validateForm() {
         var tensp = document.forms["addProduct"]["tensp"].value;
         var mota = document.forms["addProduct"]["mota"].value;
@@ -902,11 +946,12 @@
 
     // Gọi hàm kiểm tra khi tải trang
     window.onload = checkProductDetails;
-    function hoantat(){
-        if(confirm("Xác nhận hoàn tất")){
+
+    function hoantat() {
+        if (confirm("Xác nhận hoàn tất")) {
             alert("Hoàn tất thành công")
             return true;
-        }else {
+        } else {
             return false;
         }
     }
@@ -916,7 +961,24 @@
 
 
 
+<script>
+    // Lấy tất cả các checkbox
+    const checkboxes = document.querySelectorAll('.product-checkbox');
 
+    // Lặp qua từng checkbox và thêm sự kiện click
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('click', function() {
+            // Lấy ID của sản phẩm chi tiết từ thuộc tính data-id
+            const id = this.getAttribute('data-id');
+
+            // Tìm phần tử span chứa ID bên cạnh checkbox
+            const idSpan = this.parentElement.querySelector('.product-id');
+
+            // Cập nhật nội dung của span với ID mới
+            idSpan.textContent = id;
+        });
+    });
+</script>
 
 
 

@@ -27,11 +27,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-///////
+import java.util.*;
+
+
 @Controller
 public class SanPhamController {
     @Autowired
@@ -76,7 +74,7 @@ public class SanPhamController {
         Pageable pageable = PageRequest.of(p, 20);
         Page<Object[]> page = null;
         if (info.getKey() != null) {
-            page = sanPhamRepositoty.findByTenSanPhamAndTrangThai("%" + info.getKey() + "%",info.getTrangthai(),pageable);
+            page = sanPhamRepositoty.findByTenSanPhamAndTrangThai("%" + info.getKey() + "%", info.getTrangthai(), pageable);
         } else {
             page = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc(pageable);
         }
@@ -114,11 +112,13 @@ public class SanPhamController {
         return "admin/addsanpham";
     }
 
+    List<SanPham> sanPhamList = new ArrayList<>();
+    List<SanPhamChiTiet> sanPhamChiTietList = new ArrayList<>();
+
     @PostMapping("/addProduct")
     public String addProduct(@RequestParam(defaultValue = "0") int p, Model model,
                              @RequestParam String tensp,
                              @RequestParam String mota,
-//                             @RequestParam Boolean trangthai,
                              @RequestParam ThuongHieu idThuongHieu,
                              @RequestParam ChatLieu idChatLieu,
                              @RequestParam Boolean gioitinh,
@@ -126,20 +126,33 @@ public class SanPhamController {
                              @RequestParam DeGiay idDeGiay,
                              @RequestParam List<MauSac> idMauSac
     ) {
+        Integer nextId = sanPhamRepositoty.findMaxIdSP();
+        Integer nextId2 = sanPhamChiTietRepository.findMaxIdSPCT();
+        if (nextId == null || nextId2 == null) {
+            return "redirect:/error";
+        }
+        nextId++;
         SanPham sanPham = new SanPham();
+        sanPham.setId(nextId);
         sanPham.setTensanpham(tensp);
         sanPham.setTrangthai(true);
         LocalDateTime currentTime = LocalDateTime.now();
         sanPham.setNgaytao(currentTime);
-        sanPhamImp.add(sanPham);
+        sanPhamList.add(sanPham);
+        for (SanPham sp : sanPhamList) {
+            System.out.println("idsp:" + sp.getId());
+            System.out.println("tensp:" + sp.getTensanpham());
+        }
         for (MauSac colorId : idMauSac) {
             for (String sizeName : kichCoNames) {
                 KichCo kichCo = kichCoRepository.findByTen(sizeName);
                 if (kichCo != null) {
+                    nextId2++;
                     SanPhamChiTiet spct = new SanPhamChiTiet();
+                    spct.setId(nextId2);
                     spct.setSanpham(sanPham);
                     spct.setSoluong(1);
-                    spct.setGiatien(BigDecimal.valueOf(1000));
+                    spct.setGiatien(BigDecimal.valueOf(100.000));
                     spct.setMota(mota);
                     spct.setThuonghieu(idThuongHieu);
                     spct.setChatlieu(idChatLieu);
@@ -148,14 +161,30 @@ public class SanPhamController {
                     spct.setKichco(kichCo);
                     spct.setDegiay(idDeGiay);
                     spct.setMausac(colorId);
-                    sanPhamChiTietImp.addSPCT(spct);
+                    sanPhamChiTietList.add(spct);
+                    for (SanPhamChiTiet spcts : sanPhamChiTietList) {
+                        System.out.println("idspct:" + spcts.getId());
+                        System.out.println("mausac:" + spcts.getKichco().getTen());
+                        System.out.println("kichco:" + spcts.getMausac().getTen());
+                    }
                 } else {
                 }
             }
         }
+        model.addAttribute("sanphamchitiet", sanPhamChiTietList);
+        return "forward:/viewaddSPPOST";
+    }
 
-        List<SanPhamChiTiet> sanPhamChiTiets = sanPhamChiTietRepository.findBySanPhamId(sanPham.getId());
-        model.addAttribute("sanphamchitiet", sanPhamChiTiets);
+    @GetMapping("/deleteCTSP/{id}")
+    public String deleteCTSP(@PathVariable Integer id, Model model) {
+        for (Iterator<SanPhamChiTiet> iterator = sanPhamChiTietList.iterator(); iterator.hasNext(); ) {
+            SanPhamChiTiet spct = iterator.next();
+            if (spct.getId().equals(id)) {
+                iterator.remove();
+                break;
+            }
+        }
+        model.addAttribute("sanphamchitiet", sanPhamChiTietList);
         return "forward:/viewaddSPPOST";
     }
 
@@ -163,17 +192,62 @@ public class SanPhamController {
     @PostMapping("/addImage")
     public String addImage(
             Model model,
-            @RequestParam(name = "anh") List<MultipartFile> anhFiles,
-            @RequestParam Integer spctId
-//            @RequestParam("id") Integer id,
-//            @RequestParam("soluong") Integer soluong,
-//            @RequestParam("giatien") BigDecimal giatien
+            @RequestParam(name = "anh1") List<MultipartFile> anhFiles1,
+            @RequestParam(name = "anh2") List<MultipartFile> anhFiles2,
+            @RequestParam(name = "anh3") List<MultipartFile> anhFiles3,
+            @RequestParam(name = "spctId") List<Integer> spctIds,
+            @RequestParam("id") Integer id,
+            @RequestParam("soluong") Integer soluong,
+            @RequestParam("giatien") BigDecimal giatien
     ) {
-//        sanPhamChiTietRepository.update(id, soluong, giatien);
-        SanPhamChiTiet spct = sanPhamChiTietRepository.findById(spctId).orElse(null);
-        if (spct != null) {
-            for (MultipartFile anhFile : anhFiles) {
-                String anhUrl = saveImage(anhFile);
+//        for (SanPhamChiTiet spct : sanPhamChiTietList) {
+//            if (spct.getId().equals(id)) {
+//                spct.setGiatien(giatien);
+//                spct.setSoluong(soluong);
+//                break;
+//            }
+//        }
+        for (SanPham sanPham : sanPhamList) {
+            SanPham savedSanPham = sanPhamRepositoty.save(sanPham);
+            for (SanPhamChiTiet spct : sanPhamChiTietList) {
+                if (spct.getSanpham().equals(sanPham)) {
+                    spct.setSanpham(savedSanPham);
+                    sanPhamChiTietRepository.save(spct);
+                }
+            }
+        }
+        sanPhamList.clear();
+        sanPhamChiTietList.clear();
+        // Kiểm tra nếu số lượng phần tử của các danh sách không bằng nhau
+        if (anhFiles1.size() != anhFiles2.size() || anhFiles1.size() != anhFiles3.size() || anhFiles1.size() != spctIds.size()) {
+            // Xử lý hoặc báo lỗi tùy thuộc vào logic của ứng dụng của bạn
+            // Ở đây tôi sẽ in ra một thông báo lỗi
+            System.out.println("Số lượng phần tử của các danh sách không khớp");
+            return "redirect:/error";
+        }
+        // Duyệt qua từng phần tử trong danh sách spctIds
+        for (int i = 0; i < spctIds.size(); i++) {
+            Integer spctId = spctIds.get(i);
+            SanPhamChiTiet spct = sanPhamChiTietRepository.findById(spctId).orElse(null);
+            if (spct != null) {
+                // Thêm ảnh thứ nhất
+                MultipartFile anhFile1 = anhFiles1.get(i);
+                addAnh(spct, anhFile1);
+                // Thêm ảnh thứ hai
+                MultipartFile anhFile2 = anhFiles2.get(i);
+                addAnh(spct, anhFile2);
+                // Thêm ảnh thứ ba
+                MultipartFile anhFile3 = anhFiles3.get(i);
+                addAnh(spct, anhFile3);
+            }
+        }
+        return "redirect:/listsanpham";
+    }
+
+    private void addAnh(SanPhamChiTiet spct, MultipartFile anhFile) {
+        if (!anhFile.isEmpty()) {
+            String anhUrl = saveImage(anhFile);
+            if (anhUrl != null) {
                 Anh anh = new Anh();
                 LocalDateTime currentTime = LocalDateTime.now();
                 anh.setTenanh(anhUrl);
@@ -182,7 +256,6 @@ public class SanPhamController {
                 anhRepository.save(anh);
             }
         }
-        return "redirect:/listsanpham";
     }
 
     private String saveImage(MultipartFile file) {
@@ -210,4 +283,26 @@ public class SanPhamController {
         model.addAttribute("sanphamchitiet", sanPham.getSpct());
         return "admin/qlchitietsanpham";
     }
+
+    @PostMapping("/updateGiaAndSoLuong")
+    public String updateGiaAndSoLuong(
+            Model model,
+            @RequestParam("ids") List<Integer> ids,
+            @RequestParam("soluong") Integer soluong,
+            @RequestParam("giatien") BigDecimal giatien
+    ) {
+        for (Integer id : ids) {
+            for (SanPhamChiTiet spct : sanPhamChiTietList) {
+                if (spct.getId().equals(id)) {
+                    spct.setGiatien(giatien);
+                    spct.setSoluong(soluong);
+                    break;
+                }
+            }
+        }
+        model.addAttribute("sanphamchitiet", sanPhamChiTietList);
+        return "forward:/viewaddSPPOST";
+    }
+
+
 }

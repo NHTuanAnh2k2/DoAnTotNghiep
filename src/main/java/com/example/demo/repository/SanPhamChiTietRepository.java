@@ -14,10 +14,14 @@ import java.util.List;
 @Repository
 public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, Integer> {
 
+
+    @Query(value = "SELECT MAX(spct.id) FROM SanPhamChiTiet spct")
+    Integer findMaxIdSPCT();
+
     @Query("SELECT spct FROM SanPhamChiTiet spct WHERE (spct.sanpham.tensanpham LIKE ?1) AND (?2 IS NULL OR spct.thuonghieu.id=?2) " +
             "AND (?3 IS NULL OR " + " spct.degiay.id=?3) AND (?4 IS NULL OR spct.kichco.id=?4) AND (?5 IS NULL OR spct.mausac.id=?5)" +
             "AND (?6 IS NULL OR spct.chatlieu.id=?6) AND (?7 IS NULL OR spct.gioitinh=?7)")
-    List<SanPhamChiTiet> search(String key, Integer idthuonghieu, Integer iddegiay, Integer idkichco, Integer idmausac, Integer idchatlieu,Boolean gioitinh);
+    List<SanPhamChiTiet> search(String key, Integer idthuonghieu, Integer iddegiay, Integer idkichco, Integer idmausac, Integer idchatlieu, Boolean gioitinh);
 
     @Query("SELECT spct FROM SanPhamChiTiet spct WHERE spct.sanpham.id = :idSanPham")
     List<SanPhamChiTiet> findBySanPhamId(@Param("idSanPham") Integer idSanPham);

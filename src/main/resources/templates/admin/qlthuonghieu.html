@@ -4,15 +4,17 @@
 <style>
 
     .btn-custom-warning {
-        background-color: rgb(221, 100, 0);
-        color: #fff;
-        border-color: rgb(60, 179, 113);
+        background-color:rgb(222,255,206);
+        color:rgb(7,50,255);
+        border-color:rgb(7,50,255) ;
+
     }
 
     .btn-custom-info {
-        background-color: rgb(86, 100, 234);
-        color: #fff;
-        border-color: rgb(60, 179, 113);
+        background-color:rgb(222,255,206);
+        color:rgb(255,33,4);
+        border-color:rgb(255,33,4) ;
+
     }
 </style>
 <body class="hold-transition sidebar-mini">
@@ -173,8 +175,8 @@
                                         <td th:text="${#temporals.format(th.ngaytao, 'dd-MM-yyyy HH:mm:ss')}"></td>
 
                                         <td>
-                                            <button style="border-radius: 50px"
-                                                    class="btn btn-xs custom-button no-border-button"
+                                            <button style="border-radius: 5px"
+                                                    class="btn-xs"
                                                     th:classappend="${th.trangthai ? 'btn-custom-info' : 'btn-custom-warning'}"
                                                     th:text="${th.trangthai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>
                                         </td>

@@ -84,21 +84,21 @@ public class SanPhamChiTietController {
         return "admin/allchitietsanpham";
     }
 
-    @GetMapping("/deleteCTSP/{id}")
-    public String deleteCTSP(@PathVariable Integer id, Model model) {
-        sanPhamChiTietImp.deleteSPCT(id);
-        // Cập nhật lại danh sách sản phẩm chi tiết
-//        List<SanPhamChiTiet> sanPhamChiTiets = sanPhamChiTietRepository.findAll();
-//        model.addAttribute("sanphamchitiet", sanPhamChiTiets);
-//        SanPham sanPham=new SanPham();
-//        List<SanPhamChiTiet> sanPhamChiTiets = sanPhamChiTietRepository.findBySanPhamId(sanPham.getId());
-//        model.addAttribute("sanphamchitiet", sanPhamChiTiets);
-        SanPham sanPham = sanPhamRepositoty.findFirstByOrderByNgaytaoDesc();
-        List<SanPhamChiTiet> listSPCT = sanPhamChiTietRepository.findBySanPhamId(sanPham.getId());
-        model.addAttribute("sanphamchitiet", listSPCT);
-        return "forward:/viewaddSPPOST";
-//        return "admin/addsanpham";
-    }
+//    @GetMapping("/deleteCTSP/{id}")
+//    public String deleteCTSP(@PathVariable Integer id, Model model) {
+//        sanPhamChiTietImp.deleteSPCT(id);
+//        // Cập nhật lại danh sách sản phẩm chi tiết
+////        List<SanPhamChiTiet> sanPhamChiTiets = sanPhamChiTietRepository.findAll();
+////        model.addAttribute("sanphamchitiet", sanPhamChiTiets);
+////        SanPham sanPham=new SanPham();
+////        List<SanPhamChiTiet> sanPhamChiTiets = sanPhamChiTietRepository.findBySanPhamId(sanPham.getId());
+////        model.addAttribute("sanphamchitiet", sanPhamChiTiets);
+//        SanPham sanPham = sanPhamRepositoty.findFirstByOrderByNgaytaoDesc();
+//        List<SanPhamChiTiet> listSPCT = sanPhamChiTietRepository.findBySanPhamId(sanPham.getId());
+//        model.addAttribute("sanphamchitiet", listSPCT);
+//        return "forward:/viewaddSPPOST";
+////        return "admin/addsanpham";
+//    }
 
 
     @GetMapping("/updateCTSP/{id}")

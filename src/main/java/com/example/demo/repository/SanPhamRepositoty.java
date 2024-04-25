@@ -14,9 +14,14 @@ import java.util.List;
 
 @Repository
 public interface SanPhamRepositoty extends JpaRepository<SanPham, Integer> {
+
+    @Query(value = "SELECT MAX(s.id) FROM SanPham s")
+    Integer findMaxIdSP();
+
+
     SanPham findFirstByOrderByNgaytaoDesc();
 
-    Page<Object[]>findAllByTensanphamOrTrangthai(String tensanpham, Boolean trangthai, Pageable pageable);
+    Page<Object[]> findAllByTensanphamOrTrangthai(String tensanpham, Boolean trangthai, Pageable pageable);
 
     Boolean existsByTensanpham(String tensanpham);
 
@@ -26,7 +31,7 @@ public interface SanPhamRepositoty extends JpaRepository<SanPham, Integer> {
             "WHERE (sp.tensanpham LIKE ?1)AND(?2 IS NULL OR sp.trangthai=?2) " +
             "GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai " +
             "ORDER BY sp.ngaytao DESC, tongSoLuong DESC")
-    Page<Object[]> findByTenSanPhamAndTrangThai(String key, Boolean trangthai,Pageable pageable);
+    Page<Object[]> findByTenSanPhamAndTrangThai(String key, Boolean trangthai, Pageable pageable);
 
 
     @Query("SELECT sp.id, sp.tensanpham, sp.ngaytao, SUM(spct.soluong) AS tongSoLuong " +
@@ -34,7 +39,6 @@ public interface SanPhamRepositoty extends JpaRepository<SanPham, Integer> {
             "GROUP BY sp.id, sp.tensanpham, sp.ngaytao " +
             "ORDER BY sp.ngaytao DESC, tongSoLuong DESC")
     Page<Object[]> findProductsWithTotalQuantityOrderByDateDesc(Pageable pageable);
-
 
 
     @Query("SELECT sp.id, sp.tensanpham, spct.soluong FROM SanPham sp " +
