@@ -195,10 +195,10 @@ public class SanPhamController {
             @RequestParam(name = "anh1") List<MultipartFile> anhFiles1,
             @RequestParam(name = "anh2") List<MultipartFile> anhFiles2,
             @RequestParam(name = "anh3") List<MultipartFile> anhFiles3,
-            @RequestParam(name = "spctId") List<Integer> spctIds,
-            @RequestParam("id") Integer id,
-            @RequestParam("soluong") Integer soluong,
-            @RequestParam("giatien") BigDecimal giatien
+            @RequestParam(name = "spctId") List<Integer> spctIds
+//            @RequestParam("id") Integer id,
+//            @RequestParam("soluong") Integer soluong,
+//            @RequestParam("giatien") BigDecimal giatien
     ) {
 //        for (SanPhamChiTiet spct : sanPhamChiTietList) {
 //            if (spct.getId().equals(id)) {
