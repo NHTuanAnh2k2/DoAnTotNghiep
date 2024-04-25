@@ -36,7 +36,7 @@
     }
 
 </style>
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini" style="font-family: 'Bahnschrift'">
 <div class="wrapper">
     <!-- Navbar -->
     <nav th:replace="~{/layoutadmin/navbar.html}"></nav>
@@ -191,7 +191,7 @@
                                         <td th:text="${stt.index + 1}"></td>
                                         <td th:text="'SPCT00000'+${spct.id + 1}" style="font-weight: bold"></td>
                                         <td>
-                                            <div id="carouselExample" class="carousel">
+                                            <div th:id="'carouselExample' + ${spct.id}" class="carousel">
                                                 <div class="carousel-inner">
                                                     <th:block th:each="anhs, index : ${spct.anh}">
                                                         <div th:classappend="${index.index == 0} ? 'carousel-item active' : 'carousel-item'">
@@ -202,19 +202,17 @@
                                                     </th:block>
                                                 </div>
                                                 <button class="carousel-control-prev" type="button"
-                                                        data-bs-target="#carouselExample" data-bs-slide="prev">
+                                                        th:data-bs-target="'#carouselExample' + ${spct.id}" data-bs-slide="prev">
                                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                                     <span class="visually-hidden">Previous</span>
                                                 </button>
                                                 <button class="carousel-control-next" type="button"
-                                                        data-bs-target="#carouselExample" data-bs-slide="next">
+                                                        th:data-bs-target="'#carouselExample' + ${spct.id}" data-bs-slide="next">
                                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                                     <span class="visually-hidden">Next</span>
                                                 </button>
                                             </div>
                                         </td>
-
-
                                         <td>
                                             <input type="number" style="width: 70px; height: 30px" class="form-control"
                                                    th:value="${spct.soluong}">
