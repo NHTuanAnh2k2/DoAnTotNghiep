@@ -44,7 +44,7 @@ public class ChatLieuController {
         LocalDateTime currentTime = LocalDateTime.now();
         chatLieu.setNgaytao(currentTime);
         chatLieuService.add(chatLieu);
-        return "redirect:/viewaddSP";
+        return "redirect:/viewaddSPGET";
     }
 
     @GetMapping("/chatlieu/delete/{id}")

@@ -69,7 +69,7 @@ public class DeGiayController {
         LocalDateTime currentTime = LocalDateTime.now();
         deGiay.setNgaytao(currentTime);
         deGiayImp.add(deGiay);
-        return "redirect:/viewaddSP";
+        return "redirect:/viewaddSPGET";
     }
 
     @ModelAttribute("dsdg")

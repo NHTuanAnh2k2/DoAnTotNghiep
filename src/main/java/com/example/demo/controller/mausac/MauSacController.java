@@ -39,7 +39,7 @@ public class MauSacController {
     @PostMapping("/addMauSacModal")
     public String addMauSacModal(@ModelAttribute("mausac") MauSac mauSac) {
         mauSacImp.addMauSac(mauSac);
-        return "redirect:/viewaddSP";
+        return "redirect:/viewaddSPGET";
     }
 
 }

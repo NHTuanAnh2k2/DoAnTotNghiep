@@ -53,7 +53,7 @@ public class ThuongHieuController {
         LocalDateTime currentTime = LocalDateTime.now();
         thuongHieu.setNgaytao(currentTime);
         thuongHieuImp.add(thuongHieu);
-        return "redirect:/viewaddSP";
+        return "redirect:/viewaddSPGET";
     }
 
 }

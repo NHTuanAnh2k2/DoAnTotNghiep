@@ -9,23 +9,16 @@ import com.example.demo.repository.SanPhamRepositoty;
 import com.example.demo.service.impl.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -68,7 +61,7 @@ public class SanPhamController {
     @Autowired
     HttpServletRequest request;
 
-    //Hiển thị list sản phẩm
+
     @GetMapping("/listsanpham")
     public String hienthi(@RequestParam(defaultValue = "0") int p, @ModelAttribute("tim") SanPhamInfo info, Model model) {
         Pageable pageable = PageRequest.of(p, 20);
@@ -126,6 +119,9 @@ public class SanPhamController {
                              @RequestParam DeGiay idDeGiay,
                              @RequestParam List<MauSac> idMauSac
     ) {
+        model.addAttribute("tensp",tensp);
+        model.addAttribute("motas",mota);
+        model.addAttribute("gioitinh",gioitinh);
         Integer nextId = sanPhamRepositoty.findMaxIdSP();
         Integer nextId2 = sanPhamChiTietRepository.findMaxIdSPCT();
         if (nextId == null || nextId2 == null) {
@@ -147,25 +143,51 @@ public class SanPhamController {
             for (String sizeName : kichCoNames) {
                 KichCo kichCo = kichCoRepository.findByTen(sizeName);
                 if (kichCo != null) {
-                    nextId2++;
-                    SanPhamChiTiet spct = new SanPhamChiTiet();
-                    spct.setId(nextId2);
-                    spct.setSanpham(sanPham);
-                    spct.setSoluong(1);
-                    spct.setGiatien(BigDecimal.valueOf(100.000));
-                    spct.setMota(mota);
-                    spct.setThuonghieu(idThuongHieu);
-                    spct.setChatlieu(idChatLieu);
-                    spct.setGioitinh(gioitinh);
-                    spct.setTrangthai(true);
-                    spct.setKichco(kichCo);
-                    spct.setDegiay(idDeGiay);
-                    spct.setMausac(colorId);
-                    sanPhamChiTietList.add(spct);
-                    for (SanPhamChiTiet spcts : sanPhamChiTietList) {
-                        System.out.println("idspct:" + spcts.getId());
-                        System.out.println("mausac:" + spcts.getKichco().getTen());
-                        System.out.println("kichco:" + spcts.getMausac().getTen());
+                    if (sanPhamChiTietList == null||sanPhamChiTietList.isEmpty()) {
+                        nextId2++;
+                        SanPhamChiTiet spct = new SanPhamChiTiet();
+                        spct.setId(nextId2);
+                        spct.setSanpham(sanPham);
+                        spct.setSoluong(1);
+                        spct.setGiatien(BigDecimal.valueOf(100.000));
+                        spct.setMota(mota);
+                        spct.setThuonghieu(idThuongHieu);
+                        spct.setChatlieu(idChatLieu);
+                        spct.setGioitinh(gioitinh);
+                        spct.setTrangthai(true);
+                        spct.setKichco(kichCo);
+                        spct.setDegiay(idDeGiay);
+                        spct.setMausac(colorId);
+                        sanPhamChiTietList.add(spct);
+                        for (SanPhamChiTiet spcts : sanPhamChiTietList) {
+                            System.out.println("idspct:" + spcts.getId());
+                            System.out.println("mausac:" + spcts.getKichco().getTen());
+                            System.out.println("kichco:" + spcts.getMausac().getTen());
+                        }
+                    } else {
+                        int lastIndex = sanPhamChiTietList.size() - 1;
+                        SanPhamChiTiet lastItem = sanPhamChiTietList.get(lastIndex);
+                        int count = lastItem.getId();
+                        count++;
+                        SanPhamChiTiet spct = new SanPhamChiTiet();
+                        spct.setId(count);
+                        spct.setSanpham(sanPham);
+                        spct.setSoluong(1);
+                        spct.setGiatien(BigDecimal.valueOf(100.000));
+                        spct.setMota(mota);
+                        spct.setThuonghieu(idThuongHieu);
+                        spct.setChatlieu(idChatLieu);
+                        spct.setGioitinh(gioitinh);
+                        spct.setTrangthai(true);
+                        spct.setKichco(kichCo);
+                        spct.setDegiay(idDeGiay);
+                        spct.setMausac(colorId);
+                        sanPhamChiTietList.add(spct);
+                        for (SanPhamChiTiet spcts : sanPhamChiTietList) {
+                            System.out.println("idspct:" + spcts.getId());
+                            System.out.println("mausac:" + spcts.getKichco().getTen());
+                            System.out.println("kichco:" + spcts.getMausac().getTen());
+                        }
                     }
                 } else {
                 }
@@ -196,17 +218,7 @@ public class SanPhamController {
             @RequestParam(name = "anh2") List<MultipartFile> anhFiles2,
             @RequestParam(name = "anh3") List<MultipartFile> anhFiles3,
             @RequestParam(name = "spctId") List<Integer> spctIds
-//            @RequestParam("id") Integer id,
-//            @RequestParam("soluong") Integer soluong,
-//            @RequestParam("giatien") BigDecimal giatien
     ) {
-//        for (SanPhamChiTiet spct : sanPhamChiTietList) {
-//            if (spct.getId().equals(id)) {
-//                spct.setGiatien(giatien);
-//                spct.setSoluong(soluong);
-//                break;
-//            }
-//        }
         for (SanPham sanPham : sanPhamList) {
             SanPham savedSanPham = sanPhamRepositoty.save(sanPham);
             for (SanPhamChiTiet spct : sanPhamChiTietList) {
@@ -218,25 +230,18 @@ public class SanPhamController {
         }
         sanPhamList.clear();
         sanPhamChiTietList.clear();
-        // Kiểm tra nếu số lượng phần tử của các danh sách không bằng nhau
         if (anhFiles1.size() != anhFiles2.size() || anhFiles1.size() != anhFiles3.size() || anhFiles1.size() != spctIds.size()) {
-            // Xử lý hoặc báo lỗi tùy thuộc vào logic của ứng dụng của bạn
-            // Ở đây tôi sẽ in ra một thông báo lỗi
             System.out.println("Số lượng phần tử của các danh sách không khớp");
             return "redirect:/error";
         }
-        // Duyệt qua từng phần tử trong danh sách spctIds
         for (int i = 0; i < spctIds.size(); i++) {
             Integer spctId = spctIds.get(i);
             SanPhamChiTiet spct = sanPhamChiTietRepository.findById(spctId).orElse(null);
             if (spct != null) {
-                // Thêm ảnh thứ nhất
                 MultipartFile anhFile1 = anhFiles1.get(i);
                 addAnh(spct, anhFile1);
-                // Thêm ảnh thứ hai
                 MultipartFile anhFile2 = anhFiles2.get(i);
                 addAnh(spct, anhFile2);
-                // Thêm ảnh thứ ba
                 MultipartFile anhFile3 = anhFiles3.get(i);
                 addAnh(spct, anhFile3);
             }
@@ -287,22 +292,26 @@ public class SanPhamController {
     @PostMapping("/updateGiaAndSoLuong")
     public String updateGiaAndSoLuong(
             Model model,
-            @RequestParam("ids") List<Integer> ids,
             @RequestParam("soluong") Integer soluong,
-            @RequestParam("giatien") BigDecimal giatien
+            @RequestParam("giatien") BigDecimal giatien,
+            @RequestParam("choncheckbox") String[] choncheckbox
     ) {
-        for (Integer id : ids) {
-            for (SanPhamChiTiet spct : sanPhamChiTietList) {
-                if (spct.getId().equals(id)) {
-                    spct.setGiatien(giatien);
-                    spct.setSoluong(soluong);
-                    break;
+        List<String> listString = Arrays.asList(choncheckbox);
+        List<Integer> listInt= new ArrayList<>();
+        for(String s : listString){
+            Integer i= Integer.parseInt(s);
+            listInt.add(i);
+        }
+        listInt.remove(Integer.valueOf(-1));
+        for (Integer id: listInt) {
+            for (SanPhamChiTiet sanPhamChiTiet:sanPhamChiTietList) {
+                if (sanPhamChiTiet.getId().equals(id)) {
+                    sanPhamChiTiet.setGiatien(giatien);
+                    sanPhamChiTiet.setSoluong(soluong);
                 }
             }
         }
         model.addAttribute("sanphamchitiet", sanPhamChiTietList);
         return "forward:/viewaddSPPOST";
     }
-
-
 }
