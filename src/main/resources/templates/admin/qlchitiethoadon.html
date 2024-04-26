@@ -1201,7 +1201,10 @@
                                                             aria-label=".form-control-sm example" style="width: 100px;"
                                                             th:value="${a.soluong}" min="1" max="100"></td>
 
-                                                    <td th:text="${a.giasanpham*a.soluong}"></td>
+                                                    <td
+                                                        th:text="${#numbers.formatDecimal(a.giasanpham*a.soluong, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}" 
+                                                        style="color: red;">
+                                                    </td>
                                                     <td>
                                                         <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;"
                                                             th:text="${a.trangthai==true?'thành công':'thất bại'}"></p>
