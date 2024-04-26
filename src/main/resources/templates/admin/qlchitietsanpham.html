@@ -20,19 +20,8 @@
     }
 
     /*checkbox*/
-    .custom-checkbox {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        width: 20px;
-        height: 20px;
-        border: 1px solid red; /* Biên đen */
-        border-radius: 4px; /* Bo góc */
-        outline: none;
-    }
-
-    .custom-checkbox:checked {
-        background-color: red; /* Màu đỏ */
+    .checkbox-red:checked {
+        background-color: red;
     }
 
 </style>
@@ -187,7 +176,7 @@
                                     </thead>
                                     <tbody>
                                     <tr th:each="spct, stt : ${sanphamchitiet}">
-                                        <td><input type="checkbox" class="form-control custom-checkbox"></td>
+                                        <td><input type="checkbox" class="form-check-input checkbox checkbox-red"></td>
                                         <td th:text="${stt.index + 1}"></td>
                                         <td th:text="'SPCT00000'+${spct.id + 1}" style="font-weight: bold"></td>
                                         <td>
@@ -241,7 +230,7 @@
                                                     <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
                                                 </svg>
                                             </a>
-                                            <a th:attr="data-target='#detailspct'+${spct.id}" data-toggle="modal"
+                                            <a th:href="@{/updateCTSP/{id}(id=${spct.id})}"
                                                class="btn btn-outline-warning">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                      fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
@@ -249,39 +238,6 @@
                                                     <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
                                                 </svg>
                                             </a>
-                                            <!-- Modal -->
-<!--                                            <div th:each="spct : ${sanphamchitiet}" class="modal fade"-->
-<!--                                                 th:id="'detailspct'+${spct.id}" tabindex="-1" role="dialog">-->
-<!--                                                <div class="modal-dialog">-->
-<!--                                                    <div class="modal-content">-->
-<!--                                                        <div class="modal-header">-->
-<!--                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal-->
-<!--                                                                title</h1>-->
-<!--                                                            <button type="button" class="btn-close"-->
-<!--                                                                    data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--                                                        </div>-->
-<!--                                                        <div class="modal-body">-->
-
-<!--                                                            <p>Tên sản phẩm:-->
-<!--                                                                <input class="form-control"-->
-<!--                                                                       th:value="${spct.sanpham.tensanpham}">-->
-<!--                                                            </p>-->
-<!--                                                            <p>Số lượng:-->
-<!--                                                                <input type="number" class="form-control"-->
-<!--                                                                       th:value="${spct.soluong}">-->
-<!--                                                            </p>-->
-<!--                                                        </div>-->
-<!--                                                        <div class="modal-footer">-->
-<!--                                                            <button type="button" class="btn btn-secondary"-->
-<!--                                                                    data-bs-dismiss="modal">Close-->
-<!--                                                            </button>-->
-<!--                                                            <button type="button" class="btn btn-primary">Save changes-->
-<!--                                                            </button>-->
-<!--                                                        </div>-->
-<!--                                                    </div>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-
                                         </td>
                                     </tr>
                                     </tbody>
