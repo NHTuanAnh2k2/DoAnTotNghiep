@@ -23,4 +23,9 @@ public class HoaDonChiTietImp implements HoaDonChiTietService {
     public Page<HoaDonChiTiet> getDSSPHD(HoaDon hd, Pageable p) {
         return dao.findAllByHoadon(hd,p);
     }
+
+    @Override
+    public List<HoaDonChiTiet> getListSPHD(HoaDon hd) {
+        return dao.findAllByHoadon(hd);
+    }
 }

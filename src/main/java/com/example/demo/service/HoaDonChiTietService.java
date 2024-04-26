@@ -10,4 +10,5 @@ import java.util.List;
 
 public interface HoaDonChiTietService {
     Page<HoaDonChiTiet> getDSSPHD(HoaDon hd,Pageable p);
+    List<HoaDonChiTiet> getListSPHD(HoaDon hd);
 }

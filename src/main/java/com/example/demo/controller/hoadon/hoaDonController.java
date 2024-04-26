@@ -18,6 +18,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.NumberFormat;
@@ -31,6 +32,9 @@ import java.util.Optional;
 @Controller
 @RequestMapping("hoa-don")
 public class hoaDonController {
+    @Autowired
+    PhieuGiamGiaChiTietService daoPGGCT;
+
     @Autowired
     PhuongThucThanhToanService daoPT;
     @Autowired
@@ -439,13 +443,24 @@ public class hoaDonController {
         List<PhuongThucThanhToan> lstPhuongThuc = daoPT.timTheoHoaDon(hoaDonXem);
         List<LichSuHoaDon> lstLichSuHoaDon = daoLS.timLichSuTheoIDHoaDon(hoaDonXem);
         phuongThuc = lstPhuongThuc.get(0);
+        List<PhieuGiamGiaChiTiet> lstPGGCT=daoPGGCT.timListPhieuTheoHD(hoaDonXem);
+        PhieuGiamGiaChiTiet phieuGiamCT = lstPGGCT.get(0);
+        BigDecimal tongTienSP=new BigDecimal("0");
+        List<HoaDonChiTiet> lstHDCT=daoHDCT.getListSPHD(hoaDonXem);
+        for (HoaDonChiTiet b:lstHDCT
+             ) {
+            tongTienSP=tongTienSP.add(b.getGiasanpham().multiply(new BigDecimal(b.getSoluong())));
+        }
+        BigDecimal tongTT=(tongTienSP.add(hoaDonXem.getPhivanchuyen())).subtract(phieuGiamCT.getTiengiam());
+        model.addAttribute("tongTT", tongTT);
         model.addAttribute("hoaDonDT", hoaDonXem);
         model.addAttribute("pageNo", pageDetail);
         model.addAttribute("lstphuongThucTT", lstPhuongThuc);
         model.addAttribute("phuongThucTT", phuongThuc);
         model.addAttribute("lstlichsu", lstLichSuHoaDon);
+        model.addAttribute("phieuGiamCT", phieuGiamCT);
         model.addAttribute("trangThaiHienTai", lstLichSuHoaDon.get(lstLichSuHoaDon.size() - 1).getTrangthai());
-        model.addAttribute("pageSPHD", daoHDCT.getDSSPHD(hoaDonXem,p));
+        model.addAttribute("pageSPHD", daoHDCT.getDSSPHD(hoaDonXem, p));
         return "admin/qlchitiethoadon";
     }
 

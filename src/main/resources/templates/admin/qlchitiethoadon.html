@@ -902,16 +902,18 @@
                                                 </p>
                                             </div>
                                             <div class="d-flex justify-content-between">
-                                                <h6 style="font-family: 'Times New Roman'; font-weight: bold">Phiếu giảm giá
+                                                <h6 style="font-family: 'Times New Roman'; font-weight: bold">Phiếu giảm
+                                                    giá
                                                     :</h6>
-                                                <p th:text="${#numbers.formatDecimal(hoaDonDT.phivanchuyen, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                <p th:text="${#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiamtoida, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
                                                     style="font-family: 'Times New Roman'; font-size: 16px;">
                                                 </p>
                                             </div>
                                             <div class="d-flex justify-content-between">
-                                                <h6 style="font-family: 'Times New Roman'; font-weight: bold">Tổng tiền giảm
+                                                <h6 style="font-family: 'Times New Roman'; font-weight: bold">Tổng tiền
+                                                    giảm
                                                     :</h6>
-                                                <p th:text="${#numbers.formatDecimal(hoaDonDT.phivanchuyen, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                <p th:text="${#numbers.formatDecimal(phieuGiamCT.tiengiam, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
                                                     style="font-family: 'Times New Roman'; font-size: 16px;">
                                                 </p>
                                             </div>
@@ -919,8 +921,9 @@
                                             <div class="d-flex justify-content-between">
                                                 <h6 style="font-family: 'Times New Roman'; font-weight: bold">Tổng tiền
                                                     thanh toán:</h6>
-                                                <p style="font-family: 'Times New Roman'; font-size: 16px; color: red;">
-                                                    5.065.000 VND</p>
+                                                <p th:text="${#numbers.formatDecimal(tongTT, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                    style="font-family: 'Times New Roman'; font-size: 16px; color: red;">
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -1204,7 +1207,8 @@
                                                             th:text="${a.trangthai==true?'thành công':'thất bại'}"></p>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger"><i class="bi bi-trash3"></i></button>
+                                                        <button type="button" class="btn btn-danger"><i
+                                                                class="bi bi-trash3"></i></button>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -1212,17 +1216,15 @@
                                         <br>
                                         <nav aria-label="Page navigation example" th:if="${pageSPHD.totalPages>1}">
                                             <ul class="pagination">
-                                                <li class="page-item" th:if="${pageSPHD.number>0}"><a
-                                                        class="page-link"
+                                                <li class="page-item" th:if="${pageSPHD.number>0}"><a class="page-link"
                                                         th:href="@{'?pageSP='+${pageSPHD.number-1}}">Previous</a>
                                                 </li>
                                                 <li class="page-item"
                                                     th:each="i:${#numbers.sequence(1,pageSPHD.totalPages)}"
-                                                    th:classappend="${pageNo==i-1?'active':''}"><a
-                                                        class="page-link" th:href="@{'?pageSP='+${i-1}}"
-                                                        th:text="${i}"></a></li>
-                                                <li class="page-item" th:if="${pageSPHD.number<pageSPHD.totalPages-1}"><a
-                                                        class="page-link"
+                                                    th:classappend="${pageNo==i-1?'active':''}"><a class="page-link"
+                                                        th:href="@{'?pageSP='+${i-1}}" th:text="${i}"></a></li>
+                                                <li class="page-item" th:if="${pageSPHD.number<pageSPHD.totalPages-1}">
+                                                    <a class="page-link"
                                                         th:href="@{'?pageSP='+${pageSPHD.number+1}}">Next</a>
                                                 </li>
                                             </ul>
