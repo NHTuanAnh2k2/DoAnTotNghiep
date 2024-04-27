@@ -586,62 +586,69 @@
                                                                     data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <form class="row g-3">
+                                                                <form class="row g-3" th:action= "@{thay-doi-TT-HD}" method="get" th:object="${thayDoiTT}">
                                                                     <div class="col-md-12">
                                                                         <label class="form-label">Tên khách
                                                                             hàng:</label>
-                                                                        <input type="text" class="form-control">
+                                                                        <input type="text" class="form-control" th:field="*{ten}">
                                                                     </div>
                                                                     <div class="col-md-12">
                                                                         <label class="form-label">Số điện thoại:</label>
-                                                                        <input type="text" class="form-control">
+                                                                        <input type="text" class="form-control" th:field="*{sdt}">
                                                                     </div>
                                                                     <div class="col-md-4">
                                                                         <label class="form-label">Tỉnh/Thành
                                                                             Phố:</label>
-                                                                        <select class="form-select">
+                                                                        <select class="form-select" id="tinhthanhpho" th:field="*{tinh}"
+                                                                            name="tinhthanhpho" onchange="getDiaChi()">
                                                                             <option selected disabled value="">Choose...
                                                                             </option>
-                                                                            <option>...</option>
+                                                                            <option th:each="city : ${cities}"
+                                                                                th:value="${city.getName()}"
+                                                                                th:text="${city.getName()}">City
+                                                                            </option>
                                                                         </select>
+
                                                                     </div>
                                                                     <div class="col-md-4">
                                                                         <label class="form-label">Quận/Huyện:</label>
-                                                                        <select class="form-select">
+                                                                        <select class="form-select" id="quanhuyen" th:field="*{huyen}"
+                                                                            name="quanhuyen" onchange="getQuanHuyen()">
                                                                             <option selected disabled value="">Choose...
                                                                             </option>
-                                                                            <option>...</option>
+
                                                                         </select>
                                                                     </div>
                                                                     <div class="col-md-4">
                                                                         <label class="form-label">Phường/Xã: </label>
-                                                                        <select class="form-select">
+                                                                        <select class="form-select" id="xaphuong" th:field="*{xa}"
+                                                                            name="xaphuong" onchange="getQuanHuyen()">
                                                                             <option selected disabled value="">Choose...
                                                                             </option>
-                                                                            <option>...</option>
                                                                         </select>
                                                                     </div>
                                                                     <div class="col-12">
                                                                         <label class="form-label">Địa chỉ cụ
                                                                             thể:</label>
-                                                                        <input type="text" class="form-control">
+                                                                        <input type="text" class="form-control" th:field="*{diachiCT}">
                                                                     </div>
                                                                     <div class="col-12">
                                                                         <label class="form-label">Phí giao hàng:</label>
-                                                                        <input type="text" class="form-control">
+                                                                        <input type="text" class="form-control" th:field="*{phigiao}">
                                                                     </div>
                                                                     <div class="col-12">
                                                                         <label class="form-label">Ghi chú:</label>
-                                                                        <textarea class="form-control"
+                                                                        <textarea class="form-control" th:field="*{ghichu}"
                                                                             rows="3"></textarea>
                                                                     </div>
+                                                                    <button type="submit" class="btn btn-primary">Xác
+                                                                        nhận</button>
                                                                 </form>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary"
                                                                     data-bs-dismiss="modal">Hủy</button>
-                                                                <button type="button" class="btn btn-primary">Xác
-                                                                    nhận</button>
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1201,8 +1208,7 @@
                                                             aria-label=".form-control-sm example" style="width: 100px;"
                                                             th:value="${a.soluong}" min="1" max="100"></td>
 
-                                                    <td
-                                                        th:text="${#numbers.formatDecimal(a.giasanpham*a.soluong, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}" 
+                                                    <td th:text="${#numbers.formatDecimal(a.giasanpham*a.soluong, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
                                                         style="color: red;">
                                                     </td>
                                                     <td>
@@ -1341,6 +1347,56 @@
                     return "https://png.pngtree.com/png-vector/20190725/ourlarge/pngtree-invoice-icon-design-vector-png-image_1586820.jpg";
             }
         }
+    </script>
+    <script th:inline="javascript">
+        var cities = /*[[${cities}]]*/[];
+    </script>
+    <script>
+        function getDiaChi() {
+            var selectedProvince = document.getElementById("tinhthanhpho").value;
+            var quanhuyenSelect = document.getElementById("quanhuyen");
+
+            // Lấy thông tin về tỉnh/thành phố đã chọn từ biến cities
+            var selectedProvinceData = cities.find(function (city) {
+                return city.name === selectedProvince;
+            });
+
+            if (selectedProvinceData) {
+                selectedProvinceData.districts.forEach(function (district) {
+                    var option = document.createElement("option");
+                    option.text = district.name;
+                    option.value = district.name;
+                    quanhuyenSelect.appendChild(option);
+                });
+            }
+        }
+
+        function getQuanHuyen() {
+            var selectedDistrict = document.getElementById("quanhuyen").value;
+            var xaphuongSelect = document.getElementById("xaphuong");
+           
+            // Lấy thông tin về tỉnh/thành phố đã chọn từ biến cities
+            var selectedProvince = document.getElementById("tinhthanhpho").value;
+            var selectedProvinceData = cities.find(function (city) {
+                return city.name === selectedProvince;
+            });
+
+            if (selectedProvinceData) {
+                var selectedDistrictData = selectedProvinceData.districts.find(function (district) {
+                    return district.name === selectedDistrict;
+                });
+
+                if (selectedDistrictData) {
+                    selectedDistrictData.wards.forEach(function (ward) {
+                        var option = document.createElement("option");
+                        option.text = ward.name;
+                        option.value = ward.name;
+                        xaphuongSelect.appendChild(option);
+                    });
+                }
+            }
+        }
+
     </script>
 </body>
 

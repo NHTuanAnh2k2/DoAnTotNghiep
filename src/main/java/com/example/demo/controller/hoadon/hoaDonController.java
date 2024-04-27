@@ -3,7 +3,9 @@ package com.example.demo.controller.hoadon;
 import com.example.demo.entity.*;
 import com.example.demo.info.HoaDonCustom;
 import com.example.demo.info.LichSuHoaDonCustom;
+import com.example.demo.info.ThayDoiTTHoaDon_KHInfo;
 import com.example.demo.repository.hoadon.HoaDonRepository;
+import com.example.demo.restcontroller.khachhang.Province;
 import com.example.demo.service.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +36,8 @@ import java.util.Optional;
 public class hoaDonController {
     @Autowired
     PhieuGiamGiaChiTietService daoPGGCT;
-
+    @Autowired
+    KhachHangService daoKH;
     @Autowired
     PhuongThucThanhToanService daoPT;
     @Autowired
@@ -433,7 +436,9 @@ public class hoaDonController {
 
     //xem chi tiết hóa đơn
     @GetMapping("showDetail")
-    public String show(Model model, @ModelAttribute("ghichu") LichSuHoaDonCustom noidung, @RequestParam("pageSP") Optional<Integer> pageSP) {
+    public String show(Model model, @ModelAttribute("ghichu") LichSuHoaDonCustom noidung,
+                       @RequestParam("pageSP") Optional<Integer> pageSP,
+                       @ModelAttribute("thayDoiTT")ThayDoiTTHoaDon_KHInfo ThongTinKHChange) {
         int pageDetail = pageSP.orElse(0);
         Pageable p = PageRequest.of(pageDetail, 5);
         HoaDon hoaDonXem = new HoaDon();
@@ -443,15 +448,17 @@ public class hoaDonController {
         List<PhuongThucThanhToan> lstPhuongThuc = daoPT.timTheoHoaDon(hoaDonXem);
         List<LichSuHoaDon> lstLichSuHoaDon = daoLS.timLichSuTheoIDHoaDon(hoaDonXem);
         phuongThuc = lstPhuongThuc.get(0);
-        List<PhieuGiamGiaChiTiet> lstPGGCT=daoPGGCT.timListPhieuTheoHD(hoaDonXem);
+        List<PhieuGiamGiaChiTiet> lstPGGCT = daoPGGCT.timListPhieuTheoHD(hoaDonXem);
         PhieuGiamGiaChiTiet phieuGiamCT = lstPGGCT.get(0);
-        BigDecimal tongTienSP=new BigDecimal("0");
-        List<HoaDonChiTiet> lstHDCT=daoHDCT.getListSPHD(hoaDonXem);
-        for (HoaDonChiTiet b:lstHDCT
-             ) {
-            tongTienSP=tongTienSP.add(b.getGiasanpham().multiply(new BigDecimal(b.getSoluong())));
+        BigDecimal tongTienSP = new BigDecimal("0");
+        List<HoaDonChiTiet> lstHDCT = daoHDCT.getListSPHD(hoaDonXem);
+        for (HoaDonChiTiet b : lstHDCT
+        ) {
+            tongTienSP = tongTienSP.add(b.getGiasanpham().multiply(new BigDecimal(b.getSoluong())));
         }
-        BigDecimal tongTT=(tongTienSP.add(hoaDonXem.getPhivanchuyen())).subtract(phieuGiamCT.getTiengiam());
+        BigDecimal tongTT = (tongTienSP.add(hoaDonXem.getPhivanchuyen())).subtract(phieuGiamCT.getTiengiam());
+        List<Province> cities = daoKH.getCities();
+        model.addAttribute("cities", cities);
         model.addAttribute("tongTT", tongTT);
         model.addAttribute("hoaDonDT", hoaDonXem);
         model.addAttribute("pageNo", pageDetail);
@@ -461,6 +468,7 @@ public class hoaDonController {
         model.addAttribute("phieuGiamCT", phieuGiamCT);
         model.addAttribute("trangThaiHienTai", lstLichSuHoaDon.get(lstLichSuHoaDon.size() - 1).getTrangthai());
         model.addAttribute("pageSPHD", daoHDCT.getDSSPHD(hoaDonXem, p));
+
         return "admin/qlchitiethoadon";
     }
 
@@ -541,8 +549,8 @@ public class hoaDonController {
     // call sang bán tại quầy
     @GetMapping("ban-hang")
     public String taoMoiHoaDon(Model model) {
-
         return "admin/banhangtaiquay";
     }
+
 
 }
