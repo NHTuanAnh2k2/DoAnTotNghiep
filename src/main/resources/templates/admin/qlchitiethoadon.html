@@ -586,21 +586,25 @@
                                                                     data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <form class="row g-3" th:action= "@{thay-doi-TT-HD}" method="get" th:object="${thayDoiTT}">
+                                                                <form class="row g-3" th:action="@{thay-doi-TT-HD}"
+                                                                    method="get" th:object="${thayDoiTT}">
                                                                     <div class="col-md-12">
                                                                         <label class="form-label">Tên khách
                                                                             hàng:</label>
-                                                                        <input type="text" class="form-control" th:field="*{ten}">
+                                                                        <input type="text" class="form-control"
+                                                                            th:field="*{ten}">
                                                                     </div>
                                                                     <div class="col-md-12">
                                                                         <label class="form-label">Số điện thoại:</label>
-                                                                        <input type="text" class="form-control" th:field="*{sdt}">
+                                                                        <input type="text" class="form-control"
+                                                                            th:field="*{sdt}">
                                                                     </div>
                                                                     <div class="col-md-4">
                                                                         <label class="form-label">Tỉnh/Thành
                                                                             Phố:</label>
-                                                                        <select class="form-select" id="tinhthanhpho" th:field="*{tinh}"
-                                                                            name="tinhthanhpho" onchange="getDiaChi()">
+                                                                        <select class="form-select" id="tinhthanhpho"
+                                                                            th:field="*{tinh}" name="tinhthanhpho"
+                                                                            onchange="getDiaChi()">
                                                                             <option selected disabled value="">Choose...
                                                                             </option>
                                                                             <option th:each="city : ${cities}"
@@ -612,8 +616,9 @@
                                                                     </div>
                                                                     <div class="col-md-4">
                                                                         <label class="form-label">Quận/Huyện:</label>
-                                                                        <select class="form-select" id="quanhuyen" th:field="*{huyen}"
-                                                                            name="quanhuyen" onchange="getQuanHuyen()">
+                                                                        <select class="form-select" id="quanhuyen"
+                                                                            th:field="*{huyen}" name="quanhuyen"
+                                                                            onchange="getQuanHuyen()">
                                                                             <option selected disabled value="">Choose...
                                                                             </option>
 
@@ -621,8 +626,9 @@
                                                                     </div>
                                                                     <div class="col-md-4">
                                                                         <label class="form-label">Phường/Xã: </label>
-                                                                        <select class="form-select" id="xaphuong" th:field="*{xa}"
-                                                                            name="xaphuong" onchange="getQuanHuyen()">
+                                                                        <select class="form-select" id="xaphuong"
+                                                                            th:field="*{xa}" name="xaphuong"
+                                                                            onchange="getQuanHuyen()">
                                                                             <option selected disabled value="">Choose...
                                                                             </option>
                                                                         </select>
@@ -630,16 +636,18 @@
                                                                     <div class="col-12">
                                                                         <label class="form-label">Địa chỉ cụ
                                                                             thể:</label>
-                                                                        <input type="text" class="form-control" th:field="*{diachiCT}">
+                                                                        <input type="text" class="form-control"
+                                                                            th:field="*{diachiCT}">
                                                                     </div>
                                                                     <div class="col-12">
                                                                         <label class="form-label">Phí giao hàng:</label>
-                                                                        <input type="text" class="form-control" th:field="*{phigiao}">
+                                                                        <input type="text" class="form-control"
+                                                                            th:field="*{phigiao}">
                                                                     </div>
                                                                     <div class="col-12">
                                                                         <label class="form-label">Ghi chú:</label>
-                                                                        <textarea class="form-control" th:field="*{ghichu}"
-                                                                            rows="3"></textarea>
+                                                                        <textarea class="form-control"
+                                                                            th:field="*{ghichu}" rows="3"></textarea>
                                                                     </div>
                                                                     <button type="submit" class="btn btn-primary">Xác
                                                                         nhận</button>
@@ -675,17 +683,12 @@
                                                                     <div
                                                                         class="d-flex justify-content-between align-items-center">
                                                                         <div>
-                                                                            <p
-                                                                                style="font-family: 'Times New Roman'; font-size: 18px; font-weight: bold;"
-                                                                                
-                                                                                th:text="${'Nhân viên hiện tại: '+hoaDonDT.nhanvien.nguoidung.hovaten}"
-                                                                                >
-                                                                                 </p>
-                                                                            <p
-                                                                                style="font-family: 'Times New Roman'; font-size: 18px; font-weight: bold;"
-                                                                                th:text="${'Mã nhân viên: ' +hoaDonDT.nhanvien.manhanvien}"
-                                                                                >
-                                                                               </p>
+                                                                            <p style="font-family: 'Times New Roman'; font-size: 18px; font-weight: bold;"
+                                                                                th:text="${'Nhân viên hiện tại: '+hoaDonDT.nhanvien.nguoidung.hovaten}">
+                                                                            </p>
+                                                                            <p style="font-family: 'Times New Roman'; font-size: 18px; font-weight: bold;"
+                                                                                th:text="${'Mã nhân viên: ' +hoaDonDT.nhanvien.manhanvien}">
+                                                                            </p>
                                                                         </div>
                                                                         <nav class="navbar bg-body-tertiary">
                                                                             <div class="container-fluid">
@@ -711,43 +714,20 @@
                                                                                 <th>Mã nhân viên</th>
                                                                                 <th>Tên nhân viên</th>
                                                                                 <th>Số điện thoại</th>
-                                                                                <th>CCCD</th>
+                                                                                <th>Ngày sinh</th>
                                                                                 <th>Giói tính</th>
                                                                                 <th>Thao tác</th>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                            <tr>
-                                                                                <td>1</td>
-                                                                                <td>InternetExplorer</td>
-                                                                                <td>Tuan Anh</td>
-                                                                                <td>0865858325</td>
-                                                                                <td>012345678987</td>
-                                                                                <td>Nam</td>
-                                                                                <td>
-                                                                                    <button type="button"
-                                                                                        class="btn btn-warning">Chọn</button>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>1</td>
-                                                                                <td>InternetExplorer</td>
-                                                                                <td>Tuan Anh</td>
-                                                                                <td>0865858325</td>
-                                                                                <td>012345678987</td>
-                                                                                <td>Nam</td>
-                                                                                <td>
-                                                                                    <button type="button"
-                                                                                        class="btn btn-warning">Chọn</button>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>1</td>
-                                                                                <td>InternetExplorer</td>
-                                                                                <td>Tuan Anh</td>
-                                                                                <td>0865858325</td>
-                                                                                <td>012345678987</td>
-                                                                                <td>Nam</td>
+                                                                            <tr th:each= "a:${pageNVChanges}">
+                                                                                <td th:text="${aStat.index+1}"></td>
+                                                                                <td th:text="${a.manhanvien}"></td>
+                                                                                <td th:text="${a.nguoidung.hovaten}"></td>
+                                                                                <td th:text="${a.nguoidung.sodienthoai}"></td>
+                                                                                <td th:text="${ #dates.format(a.nguoidung.ngaysinh, 'dd-MM-yyyy')}"></td>
+                                                                               
+                                                                                <td th:text="${a.nguoidung.gioitinh==true?'Nam':'Nữ'}"></td>
                                                                                 <td>
                                                                                     <button type="button"
                                                                                         class="btn btn-warning">Chọn</button>
@@ -1379,7 +1359,7 @@
         function getQuanHuyen() {
             var selectedDistrict = document.getElementById("quanhuyen").value;
             var xaphuongSelect = document.getElementById("xaphuong");
-           
+
             // Lấy thông tin về tỉnh/thành phố đã chọn từ biến cities
             var selectedProvince = document.getElementById("tinhthanhpho").value;
             var selectedProvinceData = cities.find(function (city) {

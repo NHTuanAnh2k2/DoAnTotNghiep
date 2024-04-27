@@ -4,6 +4,7 @@ import com.example.demo.entity.*;
 import com.example.demo.info.HoaDonCustom;
 import com.example.demo.info.LichSuHoaDonCustom;
 import com.example.demo.info.ThayDoiTTHoaDon_KHInfo;
+import com.example.demo.repository.NhanVienRepository;
 import com.example.demo.repository.hoadon.HoaDonRepository;
 import com.example.demo.restcontroller.khachhang.Province;
 import com.example.demo.service.*;
@@ -36,6 +37,8 @@ import java.util.Optional;
 public class hoaDonController {
     @Autowired
     PhieuGiamGiaChiTietService daoPGGCT;
+    @Autowired
+    NhanVienRepository nhanVienService;
     @Autowired
     KhachHangService daoKH;
     @Autowired
@@ -438,9 +441,13 @@ public class hoaDonController {
     @GetMapping("showDetail")
     public String show(Model model, @ModelAttribute("ghichu") LichSuHoaDonCustom noidung,
                        @RequestParam("pageSP") Optional<Integer> pageSP,
-                       @ModelAttribute("thayDoiTT")ThayDoiTTHoaDon_KHInfo ThongTinKHChange) {
+                       @ModelAttribute("thayDoiTT") ThayDoiTTHoaDon_KHInfo ThongTinKHChange
+            , @RequestParam("pageNV") Optional<Integer> pageNVT) {
+        int pageNV = pageNVT.orElse(0);
         int pageDetail = pageSP.orElse(0);
         Pageable p = PageRequest.of(pageDetail, 5);
+        Pageable pnv = PageRequest.of(pageNV, 5);
+        Page<NhanVien> pageNVChanges = nhanVienService.findAll(pnv);
         HoaDon hoaDonXem = new HoaDon();
         PhuongThucThanhToan phuongThuc = new PhuongThucThanhToan();
         List<HoaDon> hoaDonTim = dao.timTheoID(idhdshowdetail);
@@ -458,6 +465,7 @@ public class hoaDonController {
         }
         BigDecimal tongTT = (tongTienSP.add(hoaDonXem.getPhivanchuyen())).subtract(phieuGiamCT.getTiengiam());
         List<Province> cities = daoKH.getCities();
+        model.addAttribute("pageNVChanges", pageNVChanges);
         model.addAttribute("cities", cities);
         model.addAttribute("tongTT", tongTT);
         model.addAttribute("hoaDonDT", hoaDonXem);
