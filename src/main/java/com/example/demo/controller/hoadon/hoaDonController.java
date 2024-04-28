@@ -469,6 +469,7 @@ public class hoaDonController {
         model.addAttribute("cities", cities);
         model.addAttribute("tongTT", tongTT);
         model.addAttribute("hoaDonDT", hoaDonXem);
+        model.addAttribute("pageNoNVT", pageNV);
         model.addAttribute("pageNo", pageDetail);
         model.addAttribute("lstphuongThucTT", lstPhuongThuc);
         model.addAttribute("phuongThucTT", phuongThuc);

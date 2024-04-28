@@ -532,8 +532,14 @@
 
                                                     </td>
                                                     <td th:text="${a.ngaytao}"></td>
-                                                    <td th:text="${a.tenphuongthuc}"></td>
-                                                    <td th:text="${a.mota}"></td>
+                                                    <td>
+                                                        <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;"
+                                                            th:text="${a.tenphuongthuc}"></p>
+                                                    </td>
+                                                    <td>
+                                                        <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;"
+                                                            th:text="${a.mota}"></p>
+                                                    </td>
                                                     <td></td>
                                                     <td></td>
                                                 </tr>
@@ -720,14 +726,21 @@
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                            <tr th:each= "a:${pageNVChanges}">
+                                                                            <tr th:each="a:${pageNVChanges}">
                                                                                 <td th:text="${aStat.index+1}"></td>
                                                                                 <td th:text="${a.manhanvien}"></td>
-                                                                                <td th:text="${a.nguoidung.hovaten}"></td>
-                                                                                <td th:text="${a.nguoidung.sodienthoai}"></td>
-                                                                                <td th:text="${ #dates.format(a.nguoidung.ngaysinh, 'dd-MM-yyyy')}"></td>
-                                                                               
-                                                                                <td th:text="${a.nguoidung.gioitinh==true?'Nam':'Nữ'}"></td>
+                                                                                <td th:text="${a.nguoidung.hovaten}">
+                                                                                </td>
+                                                                                <td
+                                                                                    th:text="${a.nguoidung.sodienthoai}">
+                                                                                </td>
+                                                                                <td
+                                                                                    th:text="${ #dates.format(a.nguoidung.ngaysinh, 'dd-MM-yyyy')}">
+                                                                                </td>
+
+                                                                                <td
+                                                                                    th:text="${a.nguoidung.gioitinh==true?'Nam':'Nữ'}">
+                                                                                </td>
                                                                                 <td>
                                                                                     <button type="button"
                                                                                         class="btn btn-warning">Chọn</button>
@@ -736,14 +749,25 @@
                                                                         </tbody>
                                                                     </table>
                                                                     <br>
-                                                                    <nav aria-label="Page navigation example">
+                                                                    <nav aria-label="Page navigation example"
+                                                                        th:if="${pageNVChanges.totalPages>1}">
                                                                         <ul class="pagination">
-                                                                            <li class="page-item"><a class="page-link"
-                                                                                    href="#">Previous</a></li>
-                                                                            <li class="page-item"><a class="page-link"
-                                                                                    href="#">1</a></li>
-                                                                            <li class="page-item"><a class="page-link"
-                                                                                    href="#">Next</a></li>
+                                                                            <li class="page-item"
+                                                                                th:if="${pageNVChanges.number>0}"><a
+                                                                                    class="page-link"
+                                                                                    th:href="@{'?pageNV='+${pageNVChanges.number-1}}">Previous</a>
+                                                                            </li>
+                                                                            <li class="page-item"
+                                                                                th:each="i:${#numbers.sequence(1,pageNVChanges.totalPages)}"
+                                                                                th:classappend="${pageNoNVT==i-1?'active':''}">
+                                                                                <a class="page-link"
+                                                                                    th:href="@{'?pageNV='+${i-1}}"
+                                                                                    th:text="${i}"></a></li>
+                                                                            <li class="page-item"
+                                                                                th:if="${pageNVChanges.number<pageNVChanges.totalPages-1}">
+                                                                                <a class="page-link"
+                                                                                    th:href="@{'?pageNV='+${pageNVChanges.number+1}}">Next</a>
+                                                                            </li>
                                                                         </ul>
                                                                     </nav>
                                                                 </div>
