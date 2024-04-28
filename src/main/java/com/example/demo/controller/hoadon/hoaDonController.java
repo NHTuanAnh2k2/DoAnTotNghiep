@@ -437,17 +437,25 @@ public class hoaDonController {
         return "redirect:/hoa-don/showDetail";
     }
 
+    @GetMapping("viewNVChanges")
+    @ResponseBody
+    public ResponseEntity<?> getlist(@RequestParam("pageNVChanges") Optional<Integer> pageParam) {
+        Pageable p=PageRequest.of(pageParam.orElse(0),5);
+        Page<NhanVien> pageNV = nhanVienService.findAll(p);
+        return ResponseEntity.ok(pageNV);
+    }
+
     //xem chi tiết hóa đơn
     @GetMapping("showDetail")
     public String show(Model model, @ModelAttribute("ghichu") LichSuHoaDonCustom noidung,
                        @RequestParam("pageSP") Optional<Integer> pageSP,
                        @ModelAttribute("thayDoiTT") ThayDoiTTHoaDon_KHInfo ThongTinKHChange
-            , @RequestParam("pageNV") Optional<Integer> pageNVT) {
-        int pageNV = pageNVT.orElse(0);
+            ) {
+
         int pageDetail = pageSP.orElse(0);
         Pageable p = PageRequest.of(pageDetail, 5);
-        Pageable pnv = PageRequest.of(pageNV, 5);
-        Page<NhanVien> pageNVChanges = nhanVienService.findAll(pnv);
+
+
         HoaDon hoaDonXem = new HoaDon();
         PhuongThucThanhToan phuongThuc = new PhuongThucThanhToan();
         List<HoaDon> hoaDonTim = dao.timTheoID(idhdshowdetail);
@@ -465,11 +473,9 @@ public class hoaDonController {
         }
         BigDecimal tongTT = (tongTienSP.add(hoaDonXem.getPhivanchuyen())).subtract(phieuGiamCT.getTiengiam());
         List<Province> cities = daoKH.getCities();
-        model.addAttribute("pageNVChanges", pageNVChanges);
         model.addAttribute("cities", cities);
         model.addAttribute("tongTT", tongTT);
         model.addAttribute("hoaDonDT", hoaDonXem);
-        model.addAttribute("pageNoNVT", pageNV);
         model.addAttribute("pageNo", pageDetail);
         model.addAttribute("lstphuongThucTT", lstPhuongThuc);
         model.addAttribute("phuongThucTT", phuongThuc);

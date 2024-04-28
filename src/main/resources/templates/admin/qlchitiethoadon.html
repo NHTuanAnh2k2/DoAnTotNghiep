@@ -668,7 +668,7 @@
                                                     </div>
                                                 </div>
                                                 <!--/Kết thúc modal thay đổi thông tin-->
-                                                <button type="button" class="btn btn-outline-secondary"
+                                                <button type="button" class="btn btn-outline-secondary" id="changeNV"
                                                     data-bs-toggle="modal" data-bs-target="#modalChuyenNhanVien"
                                                     th:classappend="${trangThaiHienTai!=0?'disabled':''}">Chuyển
                                                     nhân viên</button>
@@ -721,52 +721,27 @@
                                                                                 <th>Tên nhân viên</th>
                                                                                 <th>Số điện thoại</th>
                                                                                 <th>Ngày sinh</th>
-                                                                                <th>Giói tính</th>
+                                                                                <th>Giới tính</th>
                                                                                 <th>Thao tác</th>
                                                                             </tr>
                                                                         </thead>
-                                                                        <tbody>
-                                                                            <tr th:each="a:${pageNVChanges}">
-                                                                                <td th:text="${aStat.index+1}"></td>
-                                                                                <td th:text="${a.manhanvien}"></td>
-                                                                                <td th:text="${a.nguoidung.hovaten}">
-                                                                                </td>
-                                                                                <td
-                                                                                    th:text="${a.nguoidung.sodienthoai}">
-                                                                                </td>
-                                                                                <td
-                                                                                    th:text="${ #dates.format(a.nguoidung.ngaysinh, 'dd-MM-yyyy')}">
-                                                                                </td>
+                                                                        <tbody id="tbl_doi_nv">
 
-                                                                                <td
-                                                                                    th:text="${a.nguoidung.gioitinh==true?'Nam':'Nữ'}">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <button type="button"
-                                                                                        class="btn btn-warning">Chọn</button>
-                                                                                </td>
-                                                                            </tr>
                                                                         </tbody>
                                                                     </table>
                                                                     <br>
-                                                                    <nav aria-label="Page navigation example"
-                                                                        th:if="${pageNVChanges.totalPages>1}">
+                                                                    <nav aria-label="Page navigation example">
                                                                         <ul class="pagination">
-                                                                            <li class="page-item"
-                                                                                th:if="${pageNVChanges.number>0}"><a
-                                                                                    class="page-link"
-                                                                                    th:href="@{'?pageNV='+${pageNVChanges.number-1}}">Previous</a>
+                                                                            <li class="page-item"><a
+                                                                                    class="page-link">Previous</a>
                                                                             </li>
-                                                                            <li class="page-item"
-                                                                                th:each="i:${#numbers.sequence(1,pageNVChanges.totalPages)}"
-                                                                                th:classappend="${pageNoNVT==i-1?'active':''}">
-                                                                                <a class="page-link"
-                                                                                    th:href="@{'?pageNV='+${i-1}}"
-                                                                                    th:text="${i}"></a></li>
-                                                                            <li class="page-item"
-                                                                                th:if="${pageNVChanges.number<pageNVChanges.totalPages-1}">
-                                                                                <a class="page-link"
-                                                                                    th:href="@{'?pageNV='+${pageNVChanges.number+1}}">Next</a>
+                                                                            <li class="page-item">
+                                                                                <a class="page-link">
+                                                                                    1
+                                                                                </a>
+                                                                            </li>
+                                                                            <li class="page-item">
+                                                                                <a class="page-link">Next</a>
                                                                             </li>
                                                                         </ul>
                                                                     </nav>
@@ -1406,6 +1381,38 @@
             }
         }
 
+    </script>
+    <script>
+        var btn = document.getElementById('changeNV');
+
+        btn.onclick = function () {
+            const pageNVChanges = localStorage.getItem("pageNVChanges") ?? 1;
+            const url = `/hoa-don/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+            fetch(url)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    let html = '';
+                    for (const hd of b.content) {
+                        html += `<tr>
+                               <td>${hd.index}</td>
+                               <td>${hd.manhanvien}</td>
+                               <td>${hd.nguoidung.hovaten}</td>
+                               <td>${hd.nguoidung.sodienthoai}</td>
+                               <td>${hd.nguoidung.ngaysinh}</td>
+                               <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
+                               <td>
+                                <a>
+                                <button type="button"
+                                class="btn btn-warning">Chọn</button>
+                                </a>
+                                 </td>
+                            </tr>`;
+                    }
+                    document.getElementById("tbl_doi_nv").innerHTML = html;
+                })
+        }
     </script>
 </body>
 
