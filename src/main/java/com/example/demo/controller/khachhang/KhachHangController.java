@@ -3,7 +3,9 @@ package com.example.demo.controller.khachhang;
 import com.example.demo.entity.DiaChi;
 import com.example.demo.entity.KhachHang;
 import com.example.demo.entity.NguoiDung;
-import com.example.demo.info.KhachHangInfo;
+import com.example.demo.info.*;
+import com.example.demo.repository.DiaChiRepository;
+import com.example.demo.repository.NguoiDungRepository;
 import com.example.demo.restcontroller.khachhang.KhachHangRestController;
 import com.example.demo.restcontroller.khachhang.Province;
 import com.example.demo.service.DiaChiService;
@@ -14,9 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import java.io.IOException;
@@ -31,30 +36,11 @@ public class KhachHangController {
     @Autowired
     DiaChiService diaChiService;
     @Autowired
-    KhachHangRestController khachHangRestController;
+    NguoiDungRepository nguoiDungRepository;
 
     @GetMapping
     public String display(Model model, @ModelAttribute("khachhang") KhachHang khachHang) {
-        List<KhachHang> lstKhachHang = khachHangService.findAllKhachHang();
-        Collections.sort(lstKhachHang, Comparator.comparing(KhachHang::getNgaytao).reversed());
-
-        List<DiaChi> lstDiaChi = diaChiService.getAll();
-        Collections.sort(lstDiaChi, Comparator.comparing(DiaChi::getNgaytao).reversed());
-
-        List<NguoiDung> lstNguoiDung = khachHangService.findAllNguoiDung();
-        Collections.sort(lstNguoiDung, Comparator.comparing(NguoiDung::getNgaytao).reversed());
-
-        List<KhachHangInfo> lstkhachhanginfo = new ArrayList<>();
-        int minSize = Math.min(lstKhachHang.size(), Math.min(lstDiaChi.size(), lstNguoiDung.size()));
-        for (int i = 0; i < minSize; i++) {
-            KhachHangInfo khachHangInfo = new KhachHangInfo();
-            khachHangInfo.setKhachhang(lstKhachHang.get(i));
-            khachHangInfo.setDiachi(lstDiaChi.get(i));
-            khachHangInfo.setNguoidung(lstNguoiDung.get(i));
-            lstkhachhanginfo.add(khachHangInfo);
-        }
-
-        model.addAttribute("lstKhachHang", lstkhachhanginfo);
+        model.addAttribute("lstKhachHang", khachHangService.displayKhachHang());
         return "admin/qlkhachhang";
     }
 
@@ -71,7 +57,6 @@ public class KhachHangController {
 
     @GetMapping("/add")
     public String form(@ModelAttribute("nguoidung") NguoiDung nguoidung,
-                       @ModelAttribute("diachi") DiaChi diachi,
                        Model model
     ) {
 
@@ -81,35 +66,100 @@ public class KhachHangController {
     }
 
     @PostMapping("/add")
-    public String add(@Valid KhachHang khachHang,
-                      @Valid NguoiDung nguoiDung,
-                      @Valid DiaChi diaChi,
+    public String add(@Valid @ModelAttribute("khachhang") KhachHang khachHang,
+                      BindingResult khBindingResult,
+                      @Valid @ModelAttribute("nguoidung") NguoiDung nguoiDung,
+                      BindingResult ndBindingResult,
+                      @Valid @ModelAttribute("diachi") DiaChi diaChi,
+                      BindingResult dcBindingResult,
                       @RequestParam("tinhthanhpho") String tinhthanhpho,
                       @RequestParam("quanhuyen") String quanhuyen,
                       @RequestParam("xaphuong") String xaphuong,
                       @RequestParam("tenduong") String tenduong,
-                      BindingResult bindingResult,
                       Model model
     ) throws IOException {
-        if (bindingResult.hasErrors()) {
-            return "redirect:/khachhang/add";
+        List<Province> cities = khachHangService.getCities();
+        if (khBindingResult.hasErrors()) {
+            model.addAttribute("cities", cities);
+            return "admin/addkhachhang";
+        } else if (ndBindingResult.hasErrors()) {
+            model.addAttribute("cities", cities);
+            return "admin/addkhachhang";
+        } else if (dcBindingResult.hasErrors()) {
+            model.addAttribute("cities", cities);
+            return "admin/addkhachhang";
         }
         khachHangService.add(khachHang, nguoiDung, diaChi, tinhthanhpho, quanhuyen, xaphuong, tenduong);
+        model.addAttribute("cities", cities);
         return "redirect:/khachhang/add";
     }
 
+    @GetMapping("/update/{id}")
+    public String displayUpdate(@ModelAttribute("diachi") DiaChiKHInfo diaChi,
+                                @ModelAttribute("nguoidung") NguoiDungKHInfo nguoidung,
+                                @PathVariable("id") Integer id,
+                                Model model) {
 
-    @GetMapping("/capnhat/{id}")
-    public String hienThiCapNhat(Model model,
-                                 @PathVariable("id") int id
-    ) {
-        KhachHang khachHang = khachHangService.getOne(id);
-        model.addAttribute("getone", khachHang);
+        DiaChi diaChiSelect = khachHangService.findDiaChiById(id);
+        NguoiDung nguoiDungSelect = khachHangService.findNguoiDungById(diaChiSelect.getNguoidung().getId());
+        List<Province> cities = khachHangService.getCities();
+        model.addAttribute("cities", cities);
+        model.addAttribute("diachi", diaChiSelect);
+        model.addAttribute("nguoidung", nguoiDungSelect);
+
         return "admin/updatekhachhang";
+    }
+
+    @PostMapping("/update/{id}")
+    public String update(@Valid @ModelAttribute("nguoidung") NguoiDungKHInfo nguoidung,
+                         BindingResult ndBindingResult,
+                         @Valid @ModelAttribute("diachi") DiaChiKHInfo diachi,
+                         BindingResult dcBindingResult,
+                         @PathVariable("id") Integer id,
+                         Model model
+    ) {
+        List<Province> cities = khachHangService.getCities();
+        if (ndBindingResult.hasErrors()) {
+            List<ObjectError> lst = ndBindingResult.getAllErrors();
+            System.out.println(lst);
+            model.addAttribute("cities", cities);
+            return "admin/updatekhachhang";
+        } else if (dcBindingResult.hasErrors()) {
+            List<ObjectError> lst = dcBindingResult.getAllErrors();
+            System.out.println(lst);
+            model.addAttribute("cities", cities);
+            return "admin/updatekhachhang";
+        }
+
+        DiaChi dc = khachHangService.findDiaChiById(id);
+        dc.setTinhthanhpho(diachi.getTinhthanhpho());
+        dc.setQuanhuyen(diachi.getQuanhuyen());
+        dc.setXaphuong(diachi.getXaphuong());
+        dc.setTenduong(diachi.getTenduong());
+        dc.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
+        khachHangService.updateDiaChi(dc);
+
+        NguoiDung nd = khachHangService.findNguoiDungById(dc.getNguoidung().getId());
+        nd.setEmail(nguoidung.getEmail());
+        nd.setHovaten(nguoidung.getHovaten());
+        nd.setNgaysinh(nguoidung.getNgaysinh());
+        nd.setCccd(nguoidung.getCccd());
+        nd.setSodienthoai(nguoidung.getSodienthoai());
+        nd.setGioitinh(nguoidung.getGioitinh());
+        nd.setLancapnhatcuoi(dc.getLancapnhatcuoi());
+        khachHangService.updateNguoiDung(nd);
+
+        KhachHang kh = khachHangService.findKhachHangByIdNguoiDung(nd.getId());
+        kh.setLancapnhatcuoi(dc.getLancapnhatcuoi());
+        khachHangService.updateKhachHang(kh);
+
+        model.addAttribute("lstKhachHang", khachHangService.displayKhachHang());
+        return "redirect:/khachhang";
     }
 
     @GetMapping("/qr")
     public String qrcode() {
         return "admin/qrcode";
     }
+
 }

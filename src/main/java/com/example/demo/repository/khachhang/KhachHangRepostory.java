@@ -17,4 +17,6 @@ public interface KhachHangRepostory extends JpaRepository<KhachHang, Integer> {
     @Query("SELECT k FROM KhachHang k ORDER BY k.ngaytao DESC")
     List<KhachHang> findAllKhachHang();
 
+    @Query("SELECT k FROM KhachHang k WHERE k.nguoidung.id = ?1")
+    KhachHang findByNguoiDung(Integer id);
 }

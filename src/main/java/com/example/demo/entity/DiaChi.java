@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ public class DiaChi {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+    @NotBlank(message = "Không được để trống tên đường")
     String tenduong;
     String xaphuong;
     String quanhuyen;

@@ -74,8 +74,8 @@
             </div><!-- /.container-fluid -->
         </section>
         <!---filter-->
-        <form  enctype="multipart/form-data">
-            <br>
+        <form th:method="post" th:object="${nguoidung}" th:action="@{/khachhang/update/{id}(id=${diachi.id})}"
+              enctype="multipart/form-data">
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">
@@ -86,81 +86,115 @@
                                     <section class="content">
                                         <div class="container">
                                             <div class="d-flex">
-                                                <p>Tên khách hàng:
-                                                    <input placeholder="Tên khách hàng" class="form-control"
-                                                           style="width: 550px" th:value="${getone.nguoidung.hovaten}">
-                                                </p>
-                                                <p style="margin-left: 20px">Ngày sinh:
-                                                    <input type="date" class="form-control"
-                                                           style="width: 550px" th:value="${getone.nguoidung.ngaysinh}">
-                                                </p>
+                                                <div>
+                                                    <p>Tên khách hàng:
+                                                        <input placeholder="Tên khách hàng" class="form-control"
+                                                               style="width: 550px" th:field="*{hovaten}">
+                                                    </p>
+                                                    <p th:if="${#fields.hasErrors('hovaten')}"
+                                                       th:errors="*{hovaten}" style="color: red;"></p>
+                                                </div>
+                                                <div>
+                                                    <p style="margin-left: 20px">Ngày sinh:
+                                                        <input type="date" class="form-control"
+                                                               style="width: 550px" th:field="*{ngaysinh}">
+                                                    </p>
+                                                    <p th:if="${#fields.hasErrors('ngaysinh')}"
+                                                       th:errors="*{ngaysinh}"
+                                                       style="color: red; padding-left: 20px"></p>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex">
+                                                <div>
+                                                    <p>Căn cước công dân:
+                                                        <input placeholder="Căn cước công dân" class="form-control"
+                                                               style="width: 550px" th:field="*{cccd}">
+                                                    </p>
+                                                    <p th:if="${#fields.hasErrors('cccd')}"
+                                                       th:errors="*{cccd}" style="color: red;"></p>
+                                                </div>
+                                                <div>
+                                                    <p style="margin-left: 20px">Giới tính:
+                                                        <br>
+                                                        <input type="radio" style="margin-top: 10px"
+                                                               th:field="*{gioitinh}"
+                                                               th:value="1">Nam
+                                                        <input type="radio" style="margin-left: 10px;margin-top: 10px"
+                                                               th:field="*{gioitinh}" th:value="0">Nữ
+                                                    </p>
+                                                    <p th:if="${#fields.hasErrors('gioitinh')}"
+                                                       th:errors="*{gioitinh}"
+                                                       style="color: red; padding-left: 20px"></p>
+                                                </div>
                                             </div>
 
                                             <div class="d-flex">
-
-                                                <p>Căn cước công dân:
-                                                    <input placeholder="Căn cước công dân" class="form-control"
-                                                           style="width: 550px" th:value="${getone.nguoidung.cccd}">
-                                                </p>
-                                                <p style="margin-left: 20px">Giới tính:
-                                                    <br>
-                                                    <input type="radio" style="margin-top: 10px"
-                                                            th:checked="${getone.nguoidung.gioitinh == true ? 'true' : 'false'} " >Nam
-                                                    <input type="radio" style="margin-left: 10px;margin-top: 10px"
-                                                            th:checked="${getone.nguoidung.gioitinh == false ? 'true' : 'false'} ">Nữ
-                                                </p>
+                                                <div>
+                                                    <p>Email:
+                                                        <input placeholder="Email" class="form-control"
+                                                               style="width: 550px" th:field="*{email}">
+                                                    </p>
+                                                    <p th:if="${#fields.hasErrors('email')}"
+                                                       th:errors="*{email}" style="color: red;"></p>
+                                                </div>
+                                                <div>
+                                                    <p style="margin-left: 20px; float: right">Số điện thoại:
+                                                        <input placeholder="Số điện thoại" class="form-control"
+                                                               style="width: 550px" th:field="*{sodienthoai}">
+                                                    </p>
+                                                    <p th:if="${#fields.hasErrors('sodienthoai')}"
+                                                       th:errors="*{sodienthoai}"
+                                                       style="color: red; padding-left: 20px"></p>
+                                                </div>
                                             </div>
+                                            <div th:object="${diachi}">
+                                                <div class="d-flex">
+                                                    <input th:field="*{id}" th:hidden="true">
+                                                    <p>Tỉnh/Thành phố:
+                                                        <select th:field="*{tinhthanhpho}" class="form-control"
+                                                                onchange="getDiaChi()" style="width: 550px">
+                                                            <option th:value="*{tinhthanhpho}"
+                                                                    th:text="*{tinhthanhpho}">Chọn tỉnh/thành phố
+                                                            </option>
+                                                            <option th:each="city : ${cities}"
+                                                                    th:value="${city.getName()}"
+                                                                    th:text="${city.getName()}"
+                                                            >
+                                                                City
+                                                            </option>
+                                                        </select>
+                                                    </p>
+                                                    <p style="margin-left: 20px">Quận/Huyện:
+                                                        <select class="form-control" th:field="*{quanhuyen}"
+                                                                onchange="getQuanHuyen()"
+                                                                style="width: 550px">
+                                                            <option th:value="*{quanhuyen}"
+                                                                    th:text="*{quanhuyen}">Chọn quận/huyện
+                                                            </option>
+                                                        </select>
+                                                    </p>
+                                                </div>
 
-                                            <div class="d-flex">
-
-                                                <p>Email:
-                                                    <input placeholder="Email" class="form-control"
-                                                           style="width: 550px" th:value="${getone.nguoidung.email}">
-                                                </p>
-                                                <p style="margin-left: 20px">Số điện thoại:
-                                                    <input placeholder="Số điện thoại" class="form-control"
-                                                           style="width: 550px" th:value="${getone.nguoidung.sodienthoai}">
-                                                </p>
+                                                <div class="d-flex">
+                                                    <p>Xã/Phường:
+                                                        <select class="form-control" style="width: 550px"
+                                                                th:field="*{xaphuong}">
+                                                            <option th:value="*{xaphuong}"
+                                                                    th:text="*{xaphuong}">Chọn xã/phường
+                                                            </option>
+                                                        </select>
+                                                    </p>
+                                                    <p style="margin-left: 20px">Số nhà/Ngõ/Đường:
+                                                        <input placeholder="Số nhà/Ngõ/Đường" class="form-control"
+                                                               style="width: 550px" th:field="*{tenduong}">
+                                                    <p th:if="${#fields.hasErrors('tenduong')}"
+                                                       th:errors="*{tenduong}"
+                                                       style="color: red; padding-left: 20px"></p>
+                                                    </p>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Sửa khách hàng</button>
+                                                <a th:href="@{/khachhang}" class="btn btn-danger">Thoát</a>
                                             </div>
-
-<!--                                            <div class="d-flex">-->
-<!--                                                <p>Tỉnh/Thành phố:-->
-<!--                                                    <select class="form-control" style="width: 550px">-->
-<!--                                                        <option>Hà Nội</option>-->
-<!--                                                        <option>Hải Phòng</option>-->
-<!--                                                    </select>-->
-<!--                                                </p>-->
-<!--                                                <p style="margin-left: 20px">Quận/Huyện:-->
-<!--                                                    <select class="form-control" style="width: 550px">-->
-<!--                                                        <option>Hà Nội</option>-->
-<!--                                                        <option>Hải Phòng</option>-->
-<!--                                                    </select>-->
-<!--                                                </p>-->
-<!--                                            </div>-->
-
-<!--                                            <div class="d-flex">-->
-<!--                                                <p>Xã/Phường:-->
-<!--                                                    <select class="form-control" style="width: 550px">-->
-<!--                                                        <option>Hà Nội</option>-->
-<!--                                                        <option>Hải Phòng</option>-->
-<!--                                                    </select>-->
-<!--                                                </p>-->
-<!--                                                <p style="margin-left: 20px">Số nhà/Ngõ/Đường:-->
-<!--                                                    <input placeholder="Số nhà/Ngõ/Đường" class="form-control"-->
-<!--                                                           style="width: 550px">-->
-<!--                                                </p>-->
-<!--                                            </div>-->
-
-<!--                                            <div class="d-flex">-->
-<!--                                                <p>Trạng thái:-->
-<!--                                                    <select class="form-control" style="width: 550px">-->
-<!--                                                        <option th:selected="${getone.trangthai == true ? 'true' : 'false'}">Đã kích hoạt</option>-->
-<!--                                                        <option th:selected="${getone.trangthai == false ? 'true' : 'false'}">Chưa kích hoạt</option>-->
-<!--                                                    </select>-->
-<!--                                                </p>-->
-<!--                                            </div>-->
-                                            <button type="submit" class="btn btn-primary">Cập nhật khách hàng</button>
-                                            <a th:href="@{/khachhang}" class="btn btn-danger">Thoát</a>
                                         </div>
                                     </section>
                                 </div>
@@ -188,23 +222,59 @@
 <!--script-->
 <nav th:replace="~{/layoutadmin/script.html}"></nav>
 <!--end-->
-
-<!--xử lý việc add ảnh khách hàng-->
-<script>
-    document.getElementById('fileInput').addEventListener('change', function (event) {
-        var file = event.target.files[0];
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            var imgElement = document.getElementById('uploadedImage');
-            imgElement.src = e.target.result;
-            imgElement.style.display = 'block'; // Hiển thị hình ảnh
-            var labelElement = document.querySelector('.file-input-label');
-            labelElement.style.display = 'none'; // Ẩn phần label
-        };
-
-        reader.readAsDataURL(file);
-    });
+<script th:inline="javascript">
+    var cities = /*[[${cities}]]*/ [];
 </script>
+<script>
+    function getDiaChi() {
+        var selectedProvince = document.getElementById("tinhthanhpho").value;
+        var quanhuyenSelect = document.getElementById("quanhuyen");
+
+        quanhuyenSelect.innerHTML = "<option value=''>Chọn quận/huyện</option>";
+
+        // Lấy thông tin về tỉnh/thành phố đã chọn từ biến cities
+        var selectedProvinceData = cities.find(function (city) {
+            return city.name === selectedProvince;
+        });
+
+        if (selectedProvinceData) {
+            selectedProvinceData.districts.forEach(function (district) {
+                var option = document.createElement("option");
+                option.text = district.name;
+                option.value = district.name;
+                quanhuyenSelect.appendChild(option);
+            });
+        }
+    }
+
+    function getQuanHuyen() {
+        var selectedDistrict = document.getElementById("quanhuyen").value;
+        var xaphuongSelect = document.getElementById("xaphuong");
+        xaphuongSelect.innerHTML = "<option value=''>Chọn xã/phường</option>";
+
+        // Lấy thông tin về tỉnh/thành phố đã chọn từ biến cities
+        var selectedProvince = document.getElementById("tinhthanhpho").value;
+        var selectedProvinceData = cities.find(function (city) {
+            return city.name === selectedProvince;
+        });
+
+        if (selectedProvinceData) {
+            var selectedDistrictData = selectedProvinceData.districts.find(function (district) {
+                return district.name === selectedDistrict;
+            });
+
+            if (selectedDistrictData) {
+                selectedDistrictData.wards.forEach(function (ward) {
+                    var option = document.createElement("option");
+                    option.text = ward.name;
+                    option.value = ward.name;
+                    xaphuongSelect.appendChild(option);
+                });
+            }
+        }
+    }
+
+</script>
+
 </body>
 </html>
