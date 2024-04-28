@@ -38,6 +38,7 @@ public class MauSacController {
 
     @PostMapping("/addMauSacModal")
     public String addMauSacModal(@ModelAttribute("mausac") MauSac mauSac) {
+        mauSac.setTrangthai(true);
         mauSacImp.addMauSac(mauSac);
         return "redirect:/viewaddSPGET";
     }

@@ -42,6 +42,7 @@ public class ThuongHieuController {
             return "admin/qlthuonghieu";
         }
         LocalDateTime currentTime = LocalDateTime.now();
+        thuongHieu.setTrangthai(true);
         thuongHieu.setNgaytao(currentTime);
         thuongHieuImp.add(thuongHieu);
         return "redirect:/listthuonghieu";
@@ -51,6 +52,7 @@ public class ThuongHieuController {
     @PostMapping("/addThuongHieuModal")
     public String addThuongHieuModal(@ModelAttribute("thuonghieu") ThuongHieu thuongHieu, @ModelAttribute("th") ThuocTinhInfo info) {
         LocalDateTime currentTime = LocalDateTime.now();
+        thuongHieu.setTrangthai(true);
         thuongHieu.setNgaytao(currentTime);
         thuongHieuImp.add(thuongHieu);
         return "redirect:/viewaddSPGET";
