@@ -34,6 +34,7 @@ public class ChatLieuController {
     @PostMapping("/add")
     public String add(Model model, @ModelAttribute("chatlieu") ChatLieu chatLieu) {
         LocalDateTime currentTime = LocalDateTime.now();
+        chatLieu.setTrangthai(true);
         chatLieu.setNgaytao(currentTime);
         chatLieuService.add(chatLieu);
         return "redirect:/chatlieu";
@@ -42,6 +43,7 @@ public class ChatLieuController {
     @PostMapping("/addChatLieuModal")
     public String addChatLieuModal(Model model, @ModelAttribute("chatlieu") ChatLieu chatLieu) {
         LocalDateTime currentTime = LocalDateTime.now();
+        chatLieu.setTrangthai(true);
         chatLieu.setNgaytao(currentTime);
         chatLieuService.add(chatLieu);
         return "redirect:/viewaddSPGET";

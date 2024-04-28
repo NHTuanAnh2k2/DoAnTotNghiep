@@ -36,6 +36,7 @@ public class KichCoController {
 
     @PostMapping("/addKichCoModal")
     public String addKichCoModal(@ModelAttribute("kichco") KichCo kichCo) {
+        kichCo.setTrangthai(true);
         kichCoImp.addKichCo(kichCo);
         return "redirect:/viewaddSP";
     }

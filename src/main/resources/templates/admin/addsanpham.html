@@ -268,8 +268,7 @@
                                           style="color: red;font-style: italic;margin-left: 100px"></span>
                                     <!--end-->
                                     <button type="submit" class="btn btn-primary"
-                                            style="margin-left: 20px;margin-bottom: 20px;margin-top: 30px; width: 110px;"
-                                            onclick="return them()">
+                                            style="margin-left: 20px;margin-bottom: 20px;margin-top: 30px; width: 110px;">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                              fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                             <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
@@ -325,13 +324,18 @@
                                                 aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form method="post" th:action="@{/addThuongHieuModal}"
-                                              th:object="${thuonghieu}">
+                                        <form method="post" th:action="@{/addThuongHieuModal}" th:object="${thuonghieu}"
+                                              onsubmit="return validateThuongHieu()">
                                             <p>
                                                 Tên thương hiệu:
-                                                <input class="form-control" th:field="*{ten}"/>
+                                                <input id="tenThuongHieu" class="form-control" th:field="*{ten}"/>
+                                                <span id="tenThuongHieuError"
+                                                      style="color: red;font-style: italic"></span>
+                                                <!-- Thông báo lỗi -->
                                             </p>
-                                            <button class="btn btn-primary" style="margin-left: 400px">Thêm</button>
+                                            <button type="submit" class="btn btn-primary" style="margin-left: 400px">
+                                                Thêm
+                                            </button>
                                         </form>
                                     </div>
                                 </div>
@@ -348,10 +352,14 @@
                                                 aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form method="post" th:action="@{/addChatLieuModal}" th:object="${chatlieu}">
+                                        <form method="post" th:action="@{/addChatLieuModal}" th:object="${chatlieu}"
+                                              onsubmit="return validateChatLieu()">
                                             <p>
                                                 Tên chất liệu:
-                                                <input class="form-control" th:field="*{ten}"/>
+                                                <input id="tenChatLieu" class="form-control" th:field="*{ten}"/>
+                                                <span id="tenChatLieuError"
+                                                      style="color: red;font-style: italic"></span>
+                                                <!-- Thông báo lỗi -->
                                             </p>
                                             <button class="btn btn-primary" style="margin-left: 400px">Thêm</button>
                                         </form>
@@ -370,10 +378,13 @@
                                                 aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form method="post" th:action="@{/addDeGiayModal}" th:object="${degiay}">
+                                        <form method="post" th:action="@{/addDeGiayModal}" th:object="${degiay}"  onsubmit="return validateDeGiay()">
                                             <p>
                                                 Tên đế giày:
-                                                <input class="form-control" th:field="*{ten}"/>
+                                                <input id="tenDeGiay" class="form-control" th:field="*{ten}"/>
+                                                <span id="tenDeGiayError"
+                                                      style="color: red;font-style: italic"></span>
+                                                <!-- Thông báo lỗi -->
                                             </p>
                                             <button class="btn btn-primary" style="margin-left: 400px">Thêm</button>
                                         </form>
@@ -421,10 +432,13 @@
                                                 aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form method="post" th:action="@{/addMauSacModal}" th:object="${mausac}">
+                                        <form method="post" th:action="@{/addMauSacModal}" th:object="${mausac}" onsubmit="return validateMauSac()">
                                             <p>
                                                 Tên màu sắc:
-                                                <input class="form-control" th:field="*{ten}"/>
+                                                <input id="tenMauSac"class="form-control" th:field="*{ten}"/>
+                                                <span id="tenMauSacError"
+                                                      style="color: red;font-style: italic"></span>
+                                                <!-- Thông báo lỗi -->
                                             </p>
                                             <!--                                            <p>-->
                                             <!--                                                Trạng thái:-->
@@ -451,7 +465,8 @@
         </section>
         <!-- Main content -->
         <h3 class="text-bold text-center" style="padding-left: 15px">CHI TIẾT SẢN PHẨM</h3>
-        <form id="submitid" method="post" enctype="multipart/form-data">
+        <form id="submitid" th:action="@{/addImage}" name="addImage" method="post" enctype="multipart/form-data"
+              onsubmit="return validateForm2()">
             <a id="editButton" class="btn btn-primary disabled" style="margin-left: 900px;margin-bottom: 15px"
                data-bs-toggle="modal" data-bs-target="#chinhsuasoluongvagia">Chỉnh sửa số lượng và giá chung</a>
 
@@ -483,8 +498,8 @@
                 </div>
             </div>
             <button class="btn-sm btn-primary" style="margin-left: 10px; margin-bottom: 15px"
-                    th:formaction="@{/addImage}"
-                    id="submitButton" onclick="return hoantat()">Hoàn tất
+                    type="submit"
+                    id="submitButton">Hoàn tất
             </button>
             <section class="content">
                 <div class="container-fluid">
@@ -534,17 +549,13 @@
                                                 </a>
                                             </td>
                                             <td>
-                                                <!-- Input hidden chứa ID của sản phẩm chi tiết -->
                                                 <input type="hidden" name="spctId" th:value="${spctt.id}">
-                                                <!-- Thẻ input file cho phép chọn ảnh thứ nhất -->
                                                 <label for="file-input-1-${stt.index}">
                                                     <input type="file" id="file-input-1-${stt.index}" name="anh1">
                                                 </label>
-                                                <!-- Thẻ input file cho phép chọn ảnh thứ hai -->
                                                 <label for="file-input-2-${stt.index}">
                                                     <input type="file" id="file-input-2-${stt.index}" name="anh2">
                                                 </label>
-                                                <!-- Thẻ input file cho phép chọn ảnh thứ ba -->
                                                 <label for="file-input-3-${stt.index}">
                                                     <input type="file" id="file-input-3-${stt.index}" name="anh3">
                                                 </label>
@@ -800,18 +811,48 @@
         } else {
             document.getElementById("kichcoError").innerText = "";
         }
-// them();
+        return them();
 
     }
 
-    // function them() {
-    //     if (confirm("Bạn có muốn thêm không")) {
-    //         alert("Thêm thành công")
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
-    // }
+    function them() {
+        // Sử dụng SweetAlert2 thay vì hộp thoại confirm
+        Swal.fire({
+            title: 'Bạn có muốn thêm không?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "success",
+                    title: "Thêm thành công!"
+                });
+
+                setTimeout(function () {
+                    document.addProduct.submit();
+                }, 3000);
+            }
+        });
+
+        // Ngăn form được gửi đi ngay lập tức
+        return false;
+    }
+
 
     function isEmpty(str) {
         return !str.trim();
@@ -830,7 +871,7 @@
         console.log("Delete URL: ", deleteUrl); // Hiển thị giá trị của deleteUrl trong console
         Swal.fire({
             title: 'Bạn có muốn xóa?',
-            icon: 'warning',
+            icon: 'question',
             showCancelButton: true,
             confirmButtonText: 'Xóa',
             cancelButtonText: 'Hủy',
@@ -977,14 +1018,6 @@
     // Gọi hàm kiểm tra khi tải trang
     window.onload = checkProductDetails;
 
-    function hoantat() {
-        if (confirm("Xác nhận hoàn tất")) {
-            alert("Hoàn tất thành công")
-            return true;
-        } else {
-            return false;
-        }
-    }
 </script>
 
 
@@ -1051,3 +1084,119 @@
 </script>
 
 
+<!--<script>-->
+<!--    function validateForm2() {-->
+<!--        // Lấy các phần tử input file-->
+<!--        var fileInputs = document.querySelectorAll('input[type="file"]');-->
+<!--        var fileSelected = false;-->
+
+<!--        // Kiểm tra xem ít nhất một trong các input file đã được chọn hay không-->
+<!--        fileInputs.forEach(function (input) {-->
+<!--            if (input.files.length > 0) {-->
+<!--                fileSelected = true;-->
+<!--            }-->
+<!--        });-->
+<!--        // Nếu không có tệp ảnh nào được chọn, hiển thị thông báo lỗi và ngăn form được gửi đi-->
+<!--        if (!fileSelected) {-->
+<!--            alert("Vui lòng chọn ít nhất một tệp ảnh cho sản phẩm.");-->
+<!--            return false;-->
+<!--        } else {-->
+<!--            return hoantat();-->
+<!--        }-->
+<!--    }-->
+
+<!--    function hoantat() {-->
+<!--        // Sử dụng SweetAlert2 thay vì hộp thoại confirm-->
+<!--        Swal.fire({-->
+<!--            title: 'Xác nhận hoàn tất?',-->
+<!--            icon: 'question',-->
+<!--            showCancelButton: true,-->
+<!--            confirmButtonText: 'Có',-->
+<!--            cancelButtonText: 'Không'-->
+<!--        }).then((result) => {-->
+<!--            if (result.isConfirmed) {-->
+<!--                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian-->
+<!--                const Toast = Swal.mixin({-->
+<!--                    toast: true,-->
+<!--                    position: "top-end",-->
+<!--                    showConfirmButton: false,-->
+<!--                    timer: 3000,-->
+<!--                    timerProgressBar: true,-->
+<!--                    didOpen: (toast) => {-->
+<!--                        toast.onmouseenter = Swal.stopTimer;-->
+<!--                        toast.onmouseleave = Swal.resumeTimer;-->
+<!--                    }-->
+<!--                });-->
+
+<!--                Toast.fire({-->
+<!--                    icon: "success",-->
+<!--                    title: "Hoàn tất thành công!"-->
+<!--                });-->
+
+<!--                setTimeout(function () {-->
+<!--                    document.addImage.submit();-->
+<!--                }, 3000);-->
+<!--            }-->
+<!--        });-->
+
+<!--        // Ngăn form được gửi đi ngay lập tức-->
+<!--        return false;-->
+<!--    }-->
+
+<!--</script>-->
+
+<script>
+    function validateThuongHieu() {
+        var tenThuongHieu = document.getElementById("tenThuongHieu").value;
+        var tenThuongHieuError = document.getElementById("tenThuongHieuError");
+
+        // Kiểm tra xem trường "Tên thương hiệu" có trống không
+        if (tenThuongHieu.trim() === "") {
+            tenThuongHieuError.innerText = "Vui lòng nhập tên thương hiệu.";
+            return false; // Ngăn form được gửi đi
+        } else {
+            tenThuongHieuError.innerText = ""; // Xóa thông báo lỗi nếu có
+            return true; // Cho phép form được gửi đi
+        }
+    }
+
+    function validateChatLieu() {
+        var tenChatLieu = document.getElementById("tenChatLieu").value;
+        var tenChatLieuError = document.getElementById("tenChatLieuError");
+
+        // Kiểm tra xem trường "Tên thương hiệu" có trống không
+        if (tenChatLieu.trim() === "") {
+            tenChatLieuError.innerText = "Vui lòng nhập tên chất liệu.";
+            return false; // Ngăn form được gửi đi
+        } else {
+            tenChatLieuError.innerText = ""; // Xóa thông báo lỗi nếu có
+            return true; // Cho phép form được gửi đi
+        }
+    }
+    function validateDeGiay() {
+        var tenDeGiay = document.getElementById("tenDeGiay").value;
+        var tenDeGiayError = document.getElementById("tenDeGiayError");
+
+        // Kiểm tra xem trường "Tên thương hiệu" có trống không
+        if (tenDeGiay.trim() === "") {
+            tenDeGiayError.innerText = "Vui lòng nhập tên đế giày.";
+            return false; // Ngăn form được gửi đi
+        } else {
+            tenDeGiayError.innerText = ""; // Xóa thông báo lỗi nếu có
+            return true; // Cho phép form được gửi đi
+        }
+    }
+    function validateMauSac() {
+        var tenMauSac = document.getElementById("tenMauSac").value;
+        var tenMauSacError = document.getElementById("tenMauSacError");
+
+        // Kiểm tra xem trường "Tên thương hiệu" có trống không
+        if (tenMauSac.trim() === "") {
+            tenMauSacError.innerText = "Vui lòng nhập tên màu sắc.";
+            return false; // Ngăn form được gửi đi
+        } else {
+            tenMauSacError.innerText = ""; // Xóa thông báo lỗi nếu có
+            return true; // Cho phép form được gửi đi
+        }
+    }
+</script>
