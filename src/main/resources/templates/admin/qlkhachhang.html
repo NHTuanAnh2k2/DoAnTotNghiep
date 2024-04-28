@@ -126,7 +126,7 @@
                                         <td th:text="${kh.nguoidung.ngaysinh}"></td>
                                         <td th:text="${kh.diachi.tenduong + ', ' + kh.diachi.xaphuong + ', ' + kh.diachi.quanhuyen + ', ' + kh.diachi.tinhthanhpho}"></td>
                                         <td>
-                                            <a th:href="@{/khachhang/capnhat/{id}(id=${kh.nguoidung.id})}" class="btn btn-success"
+                                            <a th:href="@{/khachhang/update/{id}(id=${kh.diachi.id})}" class="btn btn-success"
                                                style="width: 100px">Chỉnh sửa</a>
                                         </td>
                                     </tr>

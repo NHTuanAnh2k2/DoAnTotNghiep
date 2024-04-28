@@ -59,7 +59,7 @@
         <!-- Content Header (Page header) -->
         <h1>Thêm khách hàng</h1>
         <!---filter-->
-        <form th:method="post" th:object="${nguoidung}" th:action="@{/khachhang/add}" enctype="multipart/form-data">
+        <form th:method="post" th:object="${nguoidung}" th:action="@{/khachhang/add}" id="addCustomerForm" enctype="multipart/form-data">
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">
@@ -75,40 +75,65 @@
                                                 </button>
                                             </p>
                                             <div class="d-flex">
-                                                <p>Tên khách hàng:
-                                                    <input placeholder="Tên khách hàng" class="form-control"
-                                                           style="width: 550px" th:field="*{hovaten}">
-                                                </p>
-                                                <p style="margin-left: 20px">Ngày sinh:
-                                                    <input type="date" class="form-control"
-                                                           style="width: 550px" th:field="*{ngaysinh}">
-                                                </p>
+                                                <div>
+                                                    <p>Tên khách hàng:
+                                                        <input placeholder="Tên khách hàng" class="form-control"
+                                                               style="width: 550px" th:field="*{hovaten}">
+                                                    </p>
+                                                    <p th:if="${#fields.hasErrors('hovaten')}"
+                                                       th:errors="*{hovaten}" style="color: red;"></p>
+                                                </div>
+                                                <div>
+                                                    <p style="margin-left: 20px">Ngày sinh:
+                                                        <input type="date" class="form-control"
+                                                               style="width: 550px" th:field="*{ngaysinh}">
+                                                    </p>
+                                                    <p th:if="${#fields.hasErrors('ngaysinh')}"
+                                                       th:errors="*{ngaysinh}"
+                                                       style="color: red; padding-left: 20px"></p>
+                                                </div>
                                             </div>
                                             <div class="d-flex">
-                                                <p>Căn cước công dân:
-                                                    <input placeholder="Căn cước công dân" class="form-control"
-                                                           style="width: 550px" th:field="*{cccd}">
-                                                </p>
-                                                <p style="margin-left: 20px">Giới tính:
-                                                    <br>
-                                                    <input type="radio" style="margin-top: 10px"
-                                                           th:field="*{gioitinh}"
-                                                           th:value="1">Nam
-                                                    <input type="radio" style="margin-left: 10px;margin-top: 10px"
-                                                           th:field="*{gioitinh}" th:value="0">Nữ
-                                                </p>
+                                                <div>
+                                                    <p>Căn cước công dân:
+                                                        <input placeholder="Căn cước công dân" class="form-control"
+                                                               style="width: 550px" th:field="*{cccd}">
+                                                    </p>
+                                                    <p th:if="${#fields.hasErrors('cccd')}"
+                                                       th:errors="*{cccd}" style="color: red;"></p>
+                                                </div>
+                                                <div>
+                                                    <p style="margin-left: 20px">Giới tính:
+                                                        <br>
+                                                        <input type="radio" style="margin-top: 10px"
+                                                               th:field="*{gioitinh}"
+                                                               th:value="1">Nam
+                                                        <input type="radio" style="margin-left: 10px;margin-top: 10px"
+                                                               th:field="*{gioitinh}" th:value="0">Nữ
+                                                    </p>
+                                                    <p th:if="${#fields.hasErrors('gioitinh')}"
+                                                       th:errors="*{gioitinh}"
+                                                       style="color: red; padding-left: 20px"></p>
+                                                </div>
                                             </div>
 
                                             <div class="d-flex">
-
-                                                <p>Email:
-                                                    <input placeholder="Email" class="form-control"
-                                                           style="width: 550px" th:field="*{email}">
-                                                </p>
-                                                <p style="margin-left: 20px">Số điện thoại:
-                                                    <input placeholder="Số điện thoại" class="form-control"
-                                                           style="width: 550px" th:field="*{sodienthoai}">
-                                                </p>
+                                                <div>
+                                                    <p>Email:
+                                                        <input placeholder="Email" class="form-control"
+                                                               style="width: 550px" th:field="*{email}">
+                                                    </p>
+                                                    <p th:if="${#fields.hasErrors('email')}"
+                                                       th:errors="*{email}" style="color: red;"></p>
+                                                </div>
+                                                <div>
+                                                    <p style="margin-left: 20px; float: right">Số điện thoại:
+                                                        <input placeholder="Số điện thoại" class="form-control"
+                                                               style="width: 550px" th:field="*{sodienthoai}"></p>
+                                                    <p th:if="${#fields.hasErrors('sodienthoai')}"
+                                                       th:errors="*{sodienthoai}"
+                                                       style="color: red; padding-left: 20px"></p>
+                                                </div>
                                             </div>
 
                                             <div class="d-flex">
@@ -133,15 +158,19 @@
 
                                             <div class="d-flex">
                                                 <p>Xã/Phường:
-                                                    <select class="form-control" style="width: 550px" id="xaphuong" name="xaphuong">
+                                                    <select class="form-control" style="width: 550px" id="xaphuong"
+                                                            name="xaphuong">
                                                         <option value="">Chọn xã/phường</option>
                                                     </select>
                                                 </p>
                                                 <p style="margin-left: 20px">Số nhà/Ngõ/Đường:
-                                                    <input placeholder="Số nhà/Ngõ/Đường" class="form-control" style="width: 550px" id="tenduong" name="tenduong">
+                                                    <input placeholder="Số nhà/Ngõ/Đường" class="form-control"
+                                                           style="width: 550px" id="tenduong" name="tenduong">
                                                 </p>
                                             </div>
-                                            <button type="submit" class="btn btn-primary">Thêm khách hàng</button>
+                                            <button type="button" class="btn btn-primary" id="btnAddCustomer" onclick="confirmAddCustomer()"
+                                                    >Thêm khách hàng
+                                            </button>
                                             <a th:href="@{/khachhang}" class="btn btn-danger">Thoát</a>
                                         </div>
                                     </section>
@@ -199,12 +228,12 @@
         quanhuyenSelect.innerHTML = "<option value=''>Chọn quận/huyện</option>";
 
         // Lấy thông tin về tỉnh/thành phố đã chọn từ biến cities
-        var selectedProvinceData = cities.find(function(city) {
+        var selectedProvinceData = cities.find(function (city) {
             return city.name === selectedProvince;
         });
 
         if (selectedProvinceData) {
-            selectedProvinceData.districts.forEach(function(district) {
+            selectedProvinceData.districts.forEach(function (district) {
                 var option = document.createElement("option");
                 option.text = district.name;
                 option.value = district.name;
@@ -220,17 +249,17 @@
 
         // Lấy thông tin về tỉnh/thành phố đã chọn từ biến cities
         var selectedProvince = document.getElementById("tinhthanhpho").value;
-        var selectedProvinceData = cities.find(function(city) {
+        var selectedProvinceData = cities.find(function (city) {
             return city.name === selectedProvince;
         });
 
         if (selectedProvinceData) {
-            var selectedDistrictData = selectedProvinceData.districts.find(function(district) {
+            var selectedDistrictData = selectedProvinceData.districts.find(function (district) {
                 return district.name === selectedDistrict;
             });
 
             if (selectedDistrictData) {
-                selectedDistrictData.wards.forEach(function(ward) {
+                selectedDistrictData.wards.forEach(function (ward) {
                     var option = document.createElement("option");
                     option.text = ward.name;
                     option.value = ward.name;
@@ -241,6 +270,26 @@
     }
 
 </script>
+<script>
+    function confirmAddCustomer() {
+        Swal.fire({
+            title: "Do you want to save the changes?",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: "Save",
+            denyButtonText: `Don't save`
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire("Saved!", "", "success");
+                document.getElementById('addCustomerForm').submit();
+            } else if (result.isDenied) {
+                Swal.fire("Changes are not saved", "", "info");
+            }
+        })
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsqr"></script>
 </body>
 </html>

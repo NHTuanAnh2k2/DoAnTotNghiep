@@ -1,27 +1,20 @@
-package com.example.demo.entity;
+package com.example.demo.info;
 
-import jakarta.persistence.*;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Date;
 import java.sql.Timestamp;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Valid
-@Entity
-@Table(name = "nguoidung")
-public class NguoiDung {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class NguoiDungKHInfo {
     Integer id;
     String taikhoan;
     String matkhau;
@@ -30,11 +23,9 @@ public class NguoiDung {
     String email;
     @NotBlank(message = "Không được để trống họ và tên")
 //    @Pattern(regexp="^[\\\\p{L} '‘’]+$", message="Invalid name")
-
     String hovaten;
-//    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    //    @DateTimeFormat(pattern = "yyyy-MM-dd")
 //    @Temporal(TemporalType.DATE)
-    @NotNull(message = "Không được để trống ngày sinh")
     Date ngaysinh;
     @NotNull(message = "Không được để trống căn cước công dân")
     @Pattern(regexp="^0[0-9]{11}$", message="Sai định dạng số căn cước")
@@ -44,11 +35,4 @@ public class NguoiDung {
     String sodienthoai;
     @NotNull(message = "Không được để trống giới tính")
     Boolean gioitinh;
-    String anh;
-    Timestamp ngaytao;
-    String nguoitao;
-    Timestamp lancapnhatcuoi;
-    String nguoicapnhat;
-    Boolean trangthai;
-
 }
