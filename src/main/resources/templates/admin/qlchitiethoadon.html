@@ -732,16 +732,17 @@
                                                                     <br>
                                                                     <nav aria-label="Page navigation example">
                                                                         <ul class="pagination">
-                                                                            <li class="page-item"><a
-                                                                                    class="page-link">Previous</a>
+                                                                            <li class="page-item" id="btn_prev_page"><a
+                                                                                    class="page-link"
+                                                                                    id="prevPage">Previous</a>
                                                                             </li>
-                                                                            <li class="page-item">
-                                                                                <a class="page-link">
-                                                                                    1
-                                                                                </a>
+                                                                            <li class="d-flex flex-row page-item" id="numberPage">
+                                                                                
+                                                    
                                                                             </li>
-                                                                            <li class="page-item">
-                                                                                <a class="page-link">Next</a>
+                                                                            <li class="page-item" id="btn_next_page">
+                                                                                <a class="page-link"
+                                                                                    id="nextPage">Next</a>
                                                                             </li>
                                                                         </ul>
                                                                     </nav>
@@ -1383,10 +1384,13 @@
 
     </script>
     <script>
+        let thisNumberPage = 0;
         var btn = document.getElementById('changeNV');
+        var nextPage = document.getElementById('nextPage');
+        var prevPage = document.getElementById('prevPage');
 
         btn.onclick = function () {
-            const pageNVChanges = localStorage.getItem("pageNVChanges") ?? 1;
+            const pageNVChanges = localStorage.getItem("pageNVChanges") ?? 0;
             const url = `/hoa-don/viewNVChanges?pageNVChanges=${pageNVChanges}`;
             fetch(url)
                 .then(function (a) {
@@ -1410,10 +1414,123 @@
                                  </td>
                             </tr>`;
                     }
+                    if (thisNumberPage < 1) {
+                        prevPage.style.display = 'none';
+                    } else {
+                        prevPage.style.display = 'block';
+                    }
+                    if (thisNumberPage > b.totalPages - 1) {
+                        nextPage.style.display = 'none';
+                    } else {
+                        nextPage.style.display = 'block';
+                    }
+
+                    
                     document.getElementById("tbl_doi_nv").innerHTML = html;
+
                 })
         }
+
+
+
+        nextPage.onclick = function () {
+            thisNumberPage++;
+            const pageNVChanges = localStorage.getItem("pageNVChanges") ?? thisNumberPage;
+            const url = `/hoa-don/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+            fetch(url)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    let html = '';
+                    for (const hd of b.content) {
+                        html += `<tr>
+                               <td>${hd.index}</td>
+                               <td>${hd.manhanvien}</td>
+                               <td>${hd.nguoidung.hovaten}</td>
+                               <td>${hd.nguoidung.sodienthoai}</td>
+                               <td>${hd.nguoidung.ngaysinh}</td>
+                               <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
+                               <td>
+                                <a>
+                                <button type="button"
+                                class="btn btn-warning">Chọn</button>
+                                </a>
+                                 </td>
+                            </tr>`;
+                    }
+                    if (thisNumberPage < 1) {
+                        prevPage.style.display = 'none';
+                    } else {
+                        prevPage.style.display = 'block';
+                    }
+                    if (thisNumberPage > b.totalPages - 1) {
+                        nextPage.style.display = 'none';
+                    } else {
+                        nextPage.style.display = 'block';
+                    }
+                    document.getElementById("tbl_doi_nv").innerHTML = html;
+
+                })
+        }
+
+
+
+        prevPage.onclick = function () {
+            thisNumberPage--;
+            const pageNVChanges = localStorage.getItem("pageNVChanges") ?? thisNumberPage;
+            const url = `/hoa-don/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+            fetch(url)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    let html = '';
+                    let htmlNumberPage = '';
+                    for (const hd of b.content) {
+                        html += `<tr>
+                               <td>${hd.index}</td>
+                               <td>${hd.manhanvien}</td>
+                               <td>${hd.nguoidung.hovaten}</td>
+                               <td>${hd.nguoidung.sodienthoai}</td>
+                               <td>${hd.nguoidung.ngaysinh}</td>
+                               <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
+                               <td>
+                                <a>
+                                <button type="button"
+                                class="btn btn-warning">Chọn</button>
+                                </a>
+                                 </td>
+                            </tr>`;
+                    }
+                    if (thisNumberPage < 1) {
+                        prevPage.style.display = 'none';
+                    } else {
+                        prevPage.style.display = 'block';
+                    }
+                    if (thisNumberPage > b.totalPages + 1) {
+                        nextPage.style.display = 'none';
+                    } else {
+                        nextPage.style.display = 'block';
+                    }
+                    for(var i=1;i<=b.totalPages;i++){
+                        htmlNumberPage+=`
+                        <a class="page-link">
+                                                                                    ${i}
+                         </a>
+                        `;
+                    }
+                    
+
+
+                    document.getElementById("tbl_doi_nv").innerHTML = html;
+
+                })
+        }
+
     </script>
+
+
 </body>
 
 </html>
