@@ -1398,11 +1398,13 @@
                     return a.json();
                 })
                 .then(function (b) {
+                    var STT=0;
                     let html = '';
                     let htmlNumberPage = '';
                     for (const hd of b.content) {
+                        STT++;
                         html += `<tr>
-                               <td>${hd.index}</td>
+                               <td>${STT}</td>
                                <td>${hd.manhanvien}</td>
                                <td>${hd.nguoidung.hovaten}</td>
                                <td>${hd.nguoidung.sodienthoai}</td>
@@ -1416,6 +1418,7 @@
                                  </td>
                             </tr>`;
                     }
+                    console.log(b.content.index)
                     if (thisNumberPage < 1) {
                         prevPage.style.display = 'none';
                     } else {
@@ -1450,11 +1453,13 @@
                     return a.json();
                 })
                 .then(function (b) {
+                    var STT=0;
                     let html = '';
                     let htmlNumberPage = '';
                     for (const hd of b.content) {
+                        STT++;
                         html += `<tr>
-                               <td>${hd.index}</td>
+                               <td>${STT}</td>
                                <td>${hd.manhanvien}</td>
                                <td>${hd.nguoidung.hovaten}</td>
                                <td>${hd.nguoidung.sodienthoai}</td>
@@ -1494,6 +1499,7 @@
 
 
         prevPage.onclick = function () {
+           
             thisNumberPage--;
             const pageNVChanges = localStorage.getItem("pageNVChanges") ?? thisNumberPage;
             const url = `/hoa-don/viewNVChanges?pageNVChanges=${pageNVChanges}`;
@@ -1502,11 +1508,14 @@
                     return a.json();
                 })
                 .then(function (b) {
+                    var STT=0;
                     let html = '';
                     let htmlNumberPage = '';
+                
                     for (const hd of b.content) {
+                        STT++;
                         html += `<tr>
-                               <td>${hd.index}</td>
+                               <td>${STT}</td>
                                <td>${hd.manhanvien}</td>
                                <td>${hd.nguoidung.hovaten}</td>
                                <td>${hd.nguoidung.sodienthoai}</td>
