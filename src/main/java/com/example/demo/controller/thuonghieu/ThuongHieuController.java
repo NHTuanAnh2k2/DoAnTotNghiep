@@ -44,6 +44,7 @@ public class ThuongHieuController {
         LocalDateTime currentTime = LocalDateTime.now();
         thuongHieu.setTrangthai(true);
         thuongHieu.setNgaytao(currentTime);
+        thuongHieu.setLancapnhatcuoi(currentTime);
         thuongHieuImp.add(thuongHieu);
         return "redirect:/listthuonghieu";
     }
@@ -54,6 +55,7 @@ public class ThuongHieuController {
         LocalDateTime currentTime = LocalDateTime.now();
         thuongHieu.setTrangthai(true);
         thuongHieu.setNgaytao(currentTime);
+        thuongHieu.setLancapnhatcuoi(currentTime);
         thuongHieuImp.add(thuongHieu);
         return "redirect:/viewaddSPGET";
     }

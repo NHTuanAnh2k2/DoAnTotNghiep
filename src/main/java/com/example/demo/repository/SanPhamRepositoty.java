@@ -34,9 +34,9 @@ public interface SanPhamRepositoty extends JpaRepository<SanPham, Integer> {
     Page<Object[]> findByTenSanPhamAndTrangThai(String key, Boolean trangthai, Pageable pageable);
 
 
-    @Query("SELECT sp.id, sp.tensanpham, sp.ngaytao, SUM(spct.soluong) AS tongSoLuong " +
+    @Query("SELECT sp.id, sp.tensanpham, sp.ngaytao, SUM(spct.soluong) AS tongSoLuong,sp.trangthai " +
             "FROM SanPham sp JOIN sp.spct spct " +
-            "GROUP BY sp.id, sp.tensanpham, sp.ngaytao " +
+            "GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai " +
             "ORDER BY sp.ngaytao DESC, tongSoLuong DESC")
     Page<Object[]> findProductsWithTotalQuantityOrderByDateDesc(Pageable pageable);
 

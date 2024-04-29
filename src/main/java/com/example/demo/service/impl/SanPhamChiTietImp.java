@@ -42,10 +42,10 @@ public class SanPhamChiTietImp implements SanPhamChiTietService {
 //        sanPhamChiTietRepository.updateSoLuongVaGiaTien(ids,soluong,giatien);
 //    }
 
-    @Override
-    public void update(Integer id, Integer soLuong, BigDecimal giaTien) {
-        sanPhamChiTietRepository.update(id,soLuong,giaTien);
-    }
+//    @Override
+//    public void update(Integer id, Integer soLuong, BigDecimal giaTien) {
+//        sanPhamChiTietRepository.update(id,soLuong,giaTien);
+//    }
 
 
 
