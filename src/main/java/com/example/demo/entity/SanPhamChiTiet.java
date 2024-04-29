@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.ObjectIdGenerator;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,8 +13,12 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id"
+)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -37,31 +43,32 @@ public class SanPhamChiTiet {
     LocalDateTime lancapnhatcuoi;
     String nguoicapnhat;
     Boolean trangthai;
-    @JsonBackReference
+
+
     @ManyToOne
     @JoinColumn(name = "idsanpham")
     SanPham sanpham;
-    @JsonBackReference
+
     @ManyToOne
     @JoinColumn(name = "idkichco")
     KichCo kichco;
-    @JsonBackReference
+
     @ManyToOne
     @JoinColumn(name = "idmausac")
     MauSac mausac;
-    @JsonBackReference
+
     @ManyToOne
     @JoinColumn(name = "idchatlieu")
     ChatLieu chatlieu;
-    @JsonBackReference
+
     @ManyToOne
     @JoinColumn(name = "idthuonghieu")
     ThuongHieu thuonghieu;
-    @JsonBackReference
+
     @ManyToOne
     @JoinColumn(name = "iddegiay")
     DeGiay degiay;
-    @JsonBackReference
+
     @OneToMany(mappedBy = "sanphamchitiet")
     List<Anh> anh;
 }
