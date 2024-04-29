@@ -943,9 +943,9 @@
                                             Thông tin sản phẩm đã mua
                                         </h3>
                                         <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                                            data-bs-target="#modalThemSanPhamHD"
+                                            data-bs-target="#modalThemSanPhamHD" id="changeSP"
                                             th:classappend="${trangThaiHienTai!=0?'disabled':''}">+ Thêm sản
-                                            phẩm</button>
+                                            phẩm </button>
                                         <!--Modal thêm sản phẩm vào hóa đơn-->
                                         <!-- Modal -->
                                         <div class="modal fade" id="modalThemSanPhamHD" tabindex="-1"
@@ -1078,69 +1078,24 @@
                                                                         <th>Thao tác</th>
                                                                     </tr>
                                                                 </thead>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td>1</td>
-                                                                        <td>Thêm vào nhá</td>
-                                                                        <td>Tuan Anh</td>
-                                                                        <td>56</td>
-                                                                        <td>41</td>
-                                                                        <td>Vàng</td>
-                                                                        <td>
-                                                                            <p
-                                                                                style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
-                                                                                Đang kinh doanh</p>
-                                                                        </td>
-                                                                        <td>
-                                                                            <button type="button"
-                                                                                class="btn btn-warning">Chọn</button>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>1</td>
-                                                                        <td>Thêm vào nhá</td>
-                                                                        <td>Tuan Anh</td>
-                                                                        <td>56</td>
-                                                                        <td>41</td>
-                                                                        <td>Vàng</td>
-                                                                        <td>
-                                                                            <p
-                                                                                style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
-                                                                                Đang kinh doanh</p>
-                                                                        </td>
-                                                                        <td>
-                                                                            <button type="button"
-                                                                                class="btn btn-warning">Chọn</button>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>1</td>
-                                                                        <td>Thêm vào nhá</td>
-                                                                        <td>Tuan Anh</td>
-                                                                        <td>56</td>
-                                                                        <td>41</td>
-                                                                        <td>Vàng</td>
-                                                                        <td>
-                                                                            <p
-                                                                                style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
-                                                                                Đang kinh doanh</p>
-                                                                        </td>
-                                                                        <td>
-                                                                            <button type="button"
-                                                                                class="btn btn-warning">Chọn</button>
-                                                                        </td>
-                                                                    </tr>
+                                                                <tbody id="tbl_sp_them">
                                                                 </tbody>
                                                             </table>
                                                             <br>
                                                             <nav aria-label="Page navigation example">
                                                                 <ul class="pagination">
-                                                                    <li class="page-item"><a class="page-link"
-                                                                            href="#">Previous</a></li>
-                                                                    <li class="page-item"><a class="page-link"
-                                                                            href="#">1</a></li>
-                                                                    <li class="page-item"><a class="page-link"
-                                                                            href="#">Next</a></li>
+                                                                    <li class="page-item" id="btn_prev_page"><a
+                                                                            class="page-link"
+                                                                            id="prevPageSP">Previous</a>
+                                                                    </li>
+                                                                    <li class="d-flex flex-row page-item"
+                                                                        id="numberPageSP">
+
+
+                                                                    </li>
+                                                                    <li class="page-item" id="btn_next_page">
+                                                                        <a class="page-link" id="nextPageSP">Next</a>
+                                                                    </li>
                                                                 </ul>
                                                             </nav>
                                                         </div>
@@ -1384,6 +1339,8 @@
         }
 
     </script>
+
+    <!-- thay đổi nhân viên hdct -->
     <script>
         let thisNumberPage = 0;
         var btn = document.getElementById('changeNV');
@@ -1398,7 +1355,7 @@
                     return a.json();
                 })
                 .then(function (b) {
-                    var STT=0;
+                    var STT = 0;
                     let html = '';
                     let htmlNumberPage = '';
                     for (const hd of b.content) {
@@ -1418,7 +1375,7 @@
                                  </td>
                             </tr>`;
                     }
-                    console.log(b.content.index)
+
                     if (thisNumberPage < 1) {
                         prevPage.style.display = 'none';
                     } else {
@@ -1453,7 +1410,7 @@
                     return a.json();
                 })
                 .then(function (b) {
-                    var STT=0;
+                    var STT = 0;
                     let html = '';
                     let htmlNumberPage = '';
                     for (const hd of b.content) {
@@ -1499,7 +1456,7 @@
 
 
         prevPage.onclick = function () {
-           
+
             thisNumberPage--;
             const pageNVChanges = localStorage.getItem("pageNVChanges") ?? thisNumberPage;
             const url = `/hoa-don/viewNVChanges?pageNVChanges=${pageNVChanges}`;
@@ -1508,10 +1465,10 @@
                     return a.json();
                 })
                 .then(function (b) {
-                    var STT=0;
+                    var STT = 0;
                     let html = '';
                     let htmlNumberPage = '';
-                
+
                     for (const hd of b.content) {
                         STT++;
                         html += `<tr>
@@ -1534,7 +1491,7 @@
                     } else {
                         prevPage.style.display = 'block';
                     }
-                    if (thisNumberPage >= b.totalPages -1) {
+                    if (thisNumberPage >= b.totalPages - 1) {
                         nextPage.style.display = 'none';
                     } else {
                         nextPage.style.display = 'block';
@@ -1553,6 +1510,187 @@
         }
 
     </script>
+    <!-- thay đổi sản phẩm hdct -->
+    <script>
+        let thisNumberSPPage = 0;
+        var btnSP = document.getElementById('changeSP');
+        // var nextPageSP = document.getElementById('nextPageSP');
+        // var prevPageSP = document.getElementById('prevPageSP');
+
+        btnSP.onclick = function () {
+            const pageSPChanges = localStorage.getItem("pageSPChanges") ?? 0;
+            const urlPage = `http://localhost:8080/hoa-don/viewSPChanges`;
+
+            fetch(urlPage)
+                .then(function (c) {
+                    return c.json();
+                })
+                .then(function (d) {
+                    console.log(d)
+                    //     var STT = 0;
+                    //     let htmlSP = '';
+                    //     let htmlNumberPageSP = '';
+                    //     for (const hd of b.content) {
+                    //         STT++;
+                    //         htmlPage += `<tr>
+                    //            <td>${STT}</td>
+                    //            <td> ảnh </td>
+                    //            <td>${hd.sanpham.tensanpham}</td>
+                    //            <td>${hd.soluong}</td>
+                    //            <td>${hd.kichco.ten}</td>
+                    //            <td>${hd.mausac.ten}</td>
+                    //            <td>
+                    //             <p ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                    //                 style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                    //             </p>
+                    //             </td>
+                    //            <td>
+                    //             <a>
+                    //             <button type="button"
+                    //             class="btn btn-warning">Chọn</button>
+                    //             </a>
+                    //              </td>
+                    //         </tr>`;
+                    //     }
+
+                    //     if (thisNumberSPPage < 1) {
+                    //         prevPageSP.style.display = 'none';
+                    //     } else {
+                    //         prevPageSP.style.display = 'block';
+                    //     }
+                    //     if (thisNumberSPPage >= b.totalPages - 1) {
+                    //         nextPageSP.style.display = 'none';
+                    //     } else {
+                    //         nextPageSP.style.display = 'block';
+                    //     }
+                    //     for (var i = 1; i <= b.totalPages; i++) {
+                    //         htmlNumberPage += `
+                    //     <a class="page-link">
+                    //                                                                 ${i}
+                    //      </a>
+                    //     `;
+                    //     }
+                    //     document.getElementById("numberPageSP").innerHTML = htmlNumberPage;
+                    //     document.getElementById("tbl_sp_them").innerHTML = htmlPage;
+
+                })
+        }
+
+
+
+        // nextPage.onclick = function () {
+        //     thisNumberPage++;
+        //     const pageNVChanges = localStorage.getItem("pageNVChanges") ?? thisNumberPage;
+        //     const url = `/hoa-don/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+        //     fetch(url)
+        //         .then(function (a) {
+        //             return a.json();
+        //         })
+        //         .then(function (b) {
+        //             var STT = 0;
+        //             let html = '';
+        //             let htmlNumberPage = '';
+        //             for (const hd of b.content) {
+        //                 STT++;
+        //                 html += `<tr>
+        //                    <td>${STT}</td>
+        //                    <td>${hd.manhanvien}</td>
+        //                    <td>${hd.nguoidung.hovaten}</td>
+        //                    <td>${hd.nguoidung.sodienthoai}</td>
+        //                    <td>${hd.nguoidung.ngaysinh}</td>
+        //                    <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
+        //                    <td>
+        //                     <a>
+        //                     <button type="button"
+        //                     class="btn btn-warning">Chọn</button>
+        //                     </a>
+        //                      </td>
+        //                 </tr>`;
+        //             }
+        //             if (thisNumberPage < 1) {
+        //                 prevPage.style.display = 'none';
+        //             } else {
+        //                 prevPage.style.display = 'block';
+        //             }
+        //             if (thisNumberPage >= b.totalPages - 1) {
+        //                 nextPage.style.display = 'none';
+        //             } else {
+        //                 nextPage.style.display = 'block';
+        //             }
+        //             for (var i = 1; i <= b.totalPages; i++) {
+        //                 htmlNumberPage += `
+        //             <a class="page-link">
+        //                                                                         ${i}
+        //              </a>
+        //             `;
+        //             }
+        //             document.getElementById("numberPage").innerHTML = htmlNumberPage;
+        //             document.getElementById("tbl_doi_nv").innerHTML = html;
+
+        //         })
+        // }
+
+
+
+        // prevPage.onclick = function () {
+
+        //     thisNumberPage--;
+        //     const pageNVChanges = localStorage.getItem("pageNVChanges") ?? thisNumberPage;
+        //     const url = `/hoa-don/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+        //     fetch(url)
+        //         .then(function (a) {
+        //             return a.json();
+        //         })
+        //         .then(function (b) {
+        //             var STT = 0;
+        //             let html = '';
+        //             let htmlNumberPage = '';
+
+        //             for (const hd of b.content) {
+        //                 STT++;
+        //                 html += `<tr>
+        //                    <td>${STT}</td>
+        //                    <td>${hd.manhanvien}</td>
+        //                    <td>${hd.nguoidung.hovaten}</td>
+        //                    <td>${hd.nguoidung.sodienthoai}</td>
+        //                    <td>${hd.nguoidung.ngaysinh}</td>
+        //                    <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
+        //                    <td>
+        //                     <a>
+        //                     <button type="button"
+        //                     class="btn btn-warning">Chọn</button>
+        //                     </a>
+        //                      </td>
+        //                 </tr>`;
+        //             }
+        //             if (thisNumberPage < 1) {
+        //                 prevPage.style.display = 'none';
+        //             } else {
+        //                 prevPage.style.display = 'block';
+        //             }
+        //             if (thisNumberPage >= b.totalPages - 1) {
+        //                 nextPage.style.display = 'none';
+        //             } else {
+        //                 nextPage.style.display = 'block';
+        //             }
+        //             for (var i = 1; i <= b.totalPages; i++) {
+        //                 htmlNumberPage += `
+        //             <a class="page-link">
+        //                                                                         ${i}
+        //              </a>
+        //             `;
+        //             }
+        //             document.getElementById("numberPage").innerHTML = htmlNumberPage;
+        //             document.getElementById("tbl_doi_nv").innerHTML = html;
+
+        //         })
+        // }
+
+    </script>
+
+
+
+
 
 
 </body>

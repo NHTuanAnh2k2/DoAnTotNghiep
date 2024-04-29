@@ -38,6 +38,8 @@ public class hoaDonController {
     @Autowired
     PhieuGiamGiaChiTietService daoPGGCT;
     @Autowired
+    SanPhamChiTietService daoSPCT;
+    @Autowired
     NhanVienRepository nhanVienService;
     @Autowired
     KhachHangService daoKH;
@@ -439,10 +441,18 @@ public class hoaDonController {
 
     @GetMapping("viewNVChanges")
     @ResponseBody
-    public ResponseEntity<?> getlist(@RequestParam("pageNVChanges") Optional<Integer> pageParam) {
-        Pageable p=PageRequest.of(pageParam.orElse(0),5);
+    public ResponseEntity<?> getlistNV(@RequestParam("pageNVChanges") Optional<Integer> pageParam) {
+        Pageable p = PageRequest.of(pageParam.orElse(0), 5);
         Page<NhanVien> pageNV = nhanVienService.findAll(p);
         return ResponseEntity.ok(pageNV);
+    }
+
+    @GetMapping("viewSPChanges")
+    @ResponseBody
+    public ResponseEntity<?> getlistSP(@RequestParam("pageSPChanges") Optional<Integer> pageParam) {
+        Pageable p = PageRequest.of(pageParam.orElse(0), 5);
+        Page<SanPhamChiTiet> pageSP = daoSPCT.finAllPage(p);
+        return ResponseEntity.ok(pageSP);
     }
 
     //xem chi tiết hóa đơn
@@ -450,7 +460,7 @@ public class hoaDonController {
     public String show(Model model, @ModelAttribute("ghichu") LichSuHoaDonCustom noidung,
                        @RequestParam("pageSP") Optional<Integer> pageSP,
                        @ModelAttribute("thayDoiTT") ThayDoiTTHoaDon_KHInfo ThongTinKHChange
-            ) {
+    ) {
 
         int pageDetail = pageSP.orElse(0);
         Pageable p = PageRequest.of(pageDetail, 5);
