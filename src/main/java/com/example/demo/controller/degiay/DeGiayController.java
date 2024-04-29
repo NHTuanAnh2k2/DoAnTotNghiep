@@ -61,6 +61,7 @@ public class DeGiayController {
         LocalDateTime currentTime = LocalDateTime.now();
         deGiay.setTrangthai(true);
         deGiay.setNgaytao(currentTime);
+        deGiay.setLancapnhatcuoi(currentTime);
         deGiayImp.add(deGiay);
         return "redirect:/listdegiay";
     }
@@ -70,6 +71,7 @@ public class DeGiayController {
         LocalDateTime currentTime = LocalDateTime.now();
         deGiay.setTrangthai(true);
         deGiay.setNgaytao(currentTime);
+        deGiay.setLancapnhatcuoi(currentTime);
         deGiayImp.add(deGiay);
         return "redirect:/viewaddSPGET";
     }

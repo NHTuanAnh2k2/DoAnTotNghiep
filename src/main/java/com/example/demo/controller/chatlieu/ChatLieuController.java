@@ -36,6 +36,7 @@ public class ChatLieuController {
         LocalDateTime currentTime = LocalDateTime.now();
         chatLieu.setTrangthai(true);
         chatLieu.setNgaytao(currentTime);
+        chatLieu.setLancapnhatcuoi(currentTime);
         chatLieuService.add(chatLieu);
         return "redirect:/chatlieu";
     }
@@ -45,6 +46,7 @@ public class ChatLieuController {
         LocalDateTime currentTime = LocalDateTime.now();
         chatLieu.setTrangthai(true);
         chatLieu.setNgaytao(currentTime);
+        chatLieu.setLancapnhatcuoi(currentTime);
         chatLieuService.add(chatLieu);
         return "redirect:/viewaddSPGET";
     }

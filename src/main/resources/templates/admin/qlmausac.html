@@ -4,19 +4,22 @@
 <script src="../sweetalert2/dist/sweetalert2.min.js/"></script>
 <link rel="stylesheet" type="text/css" href="../sweetalert2/dist/sweetalert2.min.css">
 <style>
-
     .btn-custom-warning {
-        background-color: rgb(221, 100, 0);
-        color: #fff;
-        border-color: rgb(60, 179, 113);
+        background-color:rgb(222,255,206);
+        color:rgb(7,50,255);
+        border-color:rgb(7,50,255) ;
+
     }
 
     .btn-custom-info {
-        background-color: rgb(86, 100, 234);
-        color: #fff;
-        border-color: rgb(60, 179, 113);
+        background-color:rgb(222,255,206);
+        color:rgb(255,33,4);
+        border-color:rgb(255,33,4) ;
+
     }
 </style>
+<script src="../sweetalert2/dist/sweetalert2.min.js/"></script>
+<link rel="stylesheet" type="text/css" href="../sweetalert2/dist/sweetalert2.min.css">
 <body class="hold-transition sidebar-mini">
 
 <div class="wrapper">
@@ -116,9 +119,12 @@
                                     </svg>
                                     Danh sách màu sắc
                                 </h3>
-                                <a href="/admin/addsanpham" class="card-title btn btn-primary"
-                                   style="margin-left: 850px" data-bs-toggle="modal" data-bs-target="#themdegiay">Thêm
-                                    màu sắc</a>
+                                <a href="/admin/addsanpham" class="btn btn-primary"
+                                   style="margin-left: 850px" data-bs-toggle="modal" data-bs-target="#themdegiay">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                    </svg>
+                                    Thêm màu sắc</a>
                             </div>
 
                             <!-- Modal -->
@@ -132,23 +138,13 @@
                                                     aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form id="addForm" th:method="post" th:object="${mausac}" th:action="@{/addSave}">
+                                            <form id="addForm" th:method="post" name="addMauSac" th:object="${mausac}" th:action="@{/addSaveMauSac}" onsubmit="return validateTrung()">
                                                 <p>
                                                     Tên màu sắc:
                                                     <input id="tenInput" class="form-control" th:field="*{ten}"/>
-                                                    <!-- Hiển thị thông báo lỗi -->
-                                                <p id="tenError" class="text-danger"></p>
+                                                <div style="color: red; font-weight: initial;font-style: italic" id="errorTen"></div>
                                                 </p>
-                                                <p>
-                                                    Trạng thái:
-                                                    <select id="trangthaiSelect" class="form-control" th:field="*{trangthai}">
-                                                        <option value="1">Đang kinh doanh</option>
-                                                        <option value="0">Ngừng kinh doanh</option>
-                                                    </select>
-                                                    <!-- Hiển thị thông báo lỗi -->
-                                                <p id="trangthaiError" class="text-danger"></p>
-                                                </p>
-                                                <button id="submitButton" class="btn btn-primary">Thêm</button>
+                                                <button id="submitButton" class="btn btn-primary" style="margin-left: 400px">Thêm</button>
                                             </form>
                                         </div>
                                     </div>
@@ -164,7 +160,7 @@
                                         <th>Tên màu sắc</th>
                                         <th>Người tạo</th>
                                         <th>Trạng thái</th>
-                                        <th>Hành động</th>
+                                        <th>Thao tác</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -173,13 +169,13 @@
                                         <td th:text="${ms.ten}"></td>
                                         <td th:text="${#temporals.format(ms.ngaytao, 'dd-MM-yyyy HH:mm:ss')}"></td>
                                         <td>
-                                            <button style="border-radius: 50px"
-                                                    class="btn btn-xs custom-button no-border-button"
+                                            <button style="border-radius: 5px"
+                                                    class="btn-xs"
                                                     th:classappend="${ms.trangthai ? 'btn-custom-info' : 'btn-custom-warning'}"
                                                     th:text="${ms.trangthai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>
                                         </td>
                                         <td>
-                                            <a class="btn btn-outline-danger">
+                                            <a class="btn btn-outline-warning">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                      fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
@@ -219,122 +215,87 @@
 <!--script-->
 <nav th:replace="~{/layoutadmin/script.html}"></nav>
 <!--end-->
-
-<!--<script th:inline="javascript">-->
-<!--    /*<![CDATA[*/-->
-<!--    // Đối tượng JavaScript để lưu trạng thái của các tên đã được nhập-->
-<!--    var daNhap = {};-->
-
-<!--    document.getElementById("submitButton").addEventListener("click", function (event) {-->
-<!--        // Kiểm tra dữ liệu nhập vào trước khi submit form-->
-<!--        var tenValue = document.getElementById("tenInput").value.trim();-->
-<!--        var trangthaiValue = document.getElementById("trangthaiSelect").value.trim();-->
-<!--        var tenError = document.getElementById("tenError");-->
-<!--        var trangthaiError = document.getElementById("trangthaiError");-->
-
-<!--        // Xóa thông báo lỗi cũ-->
-<!--        tenError.innerText = "";-->
-<!--        trangthaiError.innerText = "";-->
-
-<!--        // Biểu thức chính quy để kiểm tra chuỗi chỉ chứa chữ cái-->
-<!--        var regex = /^[a-zA-Z]+$/;-->
-
-<!--        // Kiểm tra dữ liệu và hiển thị thông báo lỗi nếu cần-->
-<!--        if (tenValue === "") {-->
-<!--            tenError.innerText = "Tên không được để trống";-->
-<!--            event.preventDefault(); // Ngăn chặn submit form nếu có lỗi-->
-<!--        } else if (!regex.test(tenValue)) {-->
-<!--            tenError.innerText = "Tên phải chứa ít nhất một chữ cái và không có ký tự đặc biệt";-->
-<!--            event.preventDefault(); // Ngăn chặn submit form nếu có lỗi-->
-<!--        } else if (daNhap[tenValue]) {-->
-<!--            tenError.innerText = "Tên đã được nhập trước đó";-->
-<!--            event.preventDefault(); // Ngăn chặn submit form nếu có lỗi-->
-<!--        } else {-->
-<!--            // Đánh dấu rằng tên đã được nhập-->
-<!--            daNhap[tenValue] = true;-->
-<!--        }-->
-
-<!--        if (trangthaiValue === "") {-->
-<!--            trangthaiError.innerText = "Trạng thái không được để trống";-->
-<!--            event.preventDefault(); // Ngăn chặn submit form nếu có lỗi-->
-<!--        }-->
-<!--    });-->
-<!--    /*]]>*/-->
-<!--</script>-->
-
-<script>
-    function xoa(event) {
-        event.preventDefault(); // Ngăn chặn chuyển hướng mặc định của thẻ 'a'
-        var deleteUrl = event.currentTarget.getAttribute('href'); // Lấy giá trị của thuộc tính href của thẻ <a>
-        console.log("Delete URL: ", deleteUrl); // Hiển thị giá trị của deleteUrl trong console
-        Swal.fire({
-            title: 'Bạn có muốn xóa?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Xóa',
-            cancelButtonText: 'Hủy',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Hiển thị thông báo xóa thành công
-                Swal.fire({
-                    title: 'Đã xóa thành công!',
-                    icon: 'success',
-                    timer: 3000, // Hiển thị trong 3 giây
-                    showConfirmButton: false // Ẩn nút Xác nhận
-                });
-                // Chờ 3 giây trước khi chuyển hướng đến URL xóa
-                setTimeout(function() {
-                    window.location.href = deleteUrl;
-                }, 1000);
-            }
-        });
-    }
-    // Gắn sự kiện click vào nút "Thêm"
-    document.getElementById("submitButton").addEventListener("click", function(event) {
-        event.preventDefault(); // Ngăn chặn gửi form mặc định
-        // Lấy dữ liệu từ form
-        var ten = document.getElementById("tenInput").value;
-        var trangthai = document.getElementById("trangthaiSelect").value;
-        // Kiểm tra điều kiện validate
-        if (ten.trim() === "") {
-            document.getElementById("tenError").innerText = "Vui lòng nhập tên đế giày.";
-            return; // Dừng lại nếu có lỗi
-        }else if (/\d/.test(ten)) {
-            document.getElementById("tenError").innerText = "Tên không được chứa số.";
-            return;
-        }
-        else {
-            document.getElementById("tenError").innerText = ""; // Xóa thông báo lỗi nếu hợp lệ
-        }
-        // Thực hiện các kiểm tra validate khác nếu cần
-
-        // Nếu form hợp lệ, gửi form
-        document.getElementById("addForm").submit();
-
-        // Hiển thị thông báo thêm thành công
-        const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-            }
-        });
-        Toast.fire({
-            icon: "success",
-            title: "Thêm thành công"
-        });
-    });
-</script>
-
 <script>
     function clearSearch() {
         document.getElementById("searchInput").value = "";
         document.getElementById("statusSelect").selectedIndex = 0;
     }
+</script>
+
+<script th:inline="javascript">
+
+    /*<![CDATA[*/
+    var objectsFromController = /*[[${list}]]*/ [];
+
+    function validateTrung() {
+        var inputMa = document.getElementById("tenInput").value;
+        var errorMa = document.getElementById("errorTen");
+        var isMaValid = true;
+
+        // Kiểm tra xem trường "Tên đế giày" có trống không
+        if (inputMa.trim() === "") {
+            errorMa.innerText = "Vui lòng nhập tên màu sắc.";
+            return false; // Ngăn form được gửi đi
+        } else {
+            errorMa.innerText = ""; // Xóa thông báo lỗi nếu có
+        }
+
+        // Kiểm tra trùng tên đế giày
+        for (var i = 0; i < objectsFromController.length; i++) {
+            var obj = objectsFromController[i];
+            if (inputMa === obj.ten) {
+                errorMa.innerText = "Tên màu sắc đã tồn tại!";
+                isMaValid = false;
+                break;
+            }
+        }
+
+        if (isMaValid) {
+            errorMa.innerText = "";
+            them();
+        }
+
+        return false;
+    }
+
+    function them() {
+        // Sử dụng SweetAlert2 thay vì hộp thoại confirm
+        Swal.fire({
+            title: 'Bạn có muốn thêm không?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "success",
+                    title: "Thêm thành công!"
+                });
+
+                setTimeout(function () {
+                    document.addMauSac.submit();
+                }, 3000);
+            }
+        });
+
+        // Ngăn form được gửi đi ngay lập tức
+        return false;
+    }
+    /*]]>*/
 </script>
 </body>
 </html>

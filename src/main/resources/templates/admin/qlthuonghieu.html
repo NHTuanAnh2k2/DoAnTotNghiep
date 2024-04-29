@@ -17,6 +17,8 @@
 
     }
 </style>
+<script src="../sweetalert2/dist/sweetalert2.min.js/"></script>
+<link rel="stylesheet" type="text/css" href="../sweetalert2/dist/sweetalert2.min.css">
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
     <!-- Navbar -->
@@ -117,8 +119,12 @@
                                     </svg>
                                     Danh sách thương hiệu
                                 </h3>
-                                <a class="card-title btn btn-primary" style="margin-left: 850px" data-bs-toggle="modal"
-                                   data-bs-target="#themthuonghieu">Thêm</a>
+                                <a class="btn btn-primary" style="margin-left: 800px" data-bs-toggle="modal"
+                                   data-bs-target="#themthuonghieu">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                    </svg>Thêm thương hiệu
+                                </a>
                             </div>
 
                             <!-- Modal -->
@@ -132,23 +138,14 @@
                                                     aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form id="addForm" th:method="post" th:object="${thuonghieu}"
+                                            <form id="addForm" name="addThuongHieu" th:method="post" th:object="${thuonghieu}"
                                                   th:action="@{/addSaveThuongHieu}" onsubmit="return validateTrung()">
                                                 <p>
                                                     Tên thương hiệu:
                                                     <input id="tenInput" class="form-control" th:field="*{ten}"/>
-                                                <div style="color: red; font-weight: initial;" id="errorTen"></div>
-
+                                                <div style="color: red; font-weight: initial;font-style: italic" id="errorTen"></div>
                                                 </p>
-                                                <p>
-                                                    Trạng thái:
-                                                    <select id="trangthaiSelect" class="form-control"
-                                                            th:field="*{trangthai}">
-                                                        <option value="1">Đang kinh doanh</option>
-                                                        <option value="0">Ngừng kinh doanh</option>
-                                                    </select>
-                                                </p>
-                                                <button id="submitButton" class="btn btn-primary">Thêm</button>
+                                                <button id="submitButton" class="btn btn-primary" style="margin-left: 400px">Thêm</button>
                                             </form>
 
                                         </div>
@@ -165,7 +162,7 @@
                                         <th>Tên thương hiệu</th>
                                         <th>Ngày tạo</th>
                                         <th>Trạng thái</th>
-                                        <th>Hành động</th>
+                                        <th>Thao tác</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -183,7 +180,7 @@
 
 
                                         <td>
-                                            <a class="btn btn-outline-danger">
+                                            <a class="btn btn-outline-warning">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                      fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
@@ -232,6 +229,16 @@
         var inputMa = document.getElementById("tenInput").value;
         var errorMa = document.getElementById("errorTen");
         var isMaValid = true;
+
+        // Kiểm tra xem trường "Tên đế giày" có trống không
+        if (inputMa.trim() === "") {
+            errorMa.innerText = "Vui lòng nhập tên thương hiệu.";
+            return false; // Ngăn form được gửi đi
+        } else {
+            errorMa.innerText = ""; // Xóa thông báo lỗi nếu có
+        }
+
+        // Kiểm tra trùng tên đế giày
         for (var i = 0; i < objectsFromController.length; i++) {
             var obj = objectsFromController[i];
             if (inputMa === obj.ten) {
@@ -240,12 +247,51 @@
                 break;
             }
         }
+
         if (isMaValid) {
             errorMa.innerText = "";
-            return true;
-        } else {
-            return false;
+            them();
         }
+
+        return false;
+    }
+
+    function them() {
+        // Sử dụng SweetAlert2 thay vì hộp thoại confirm
+        Swal.fire({
+            title: 'Bạn có muốn thêm không?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "success",
+                    title: "Thêm thành công!"
+                });
+
+                setTimeout(function () {
+                    document.addThuongHieu.submit();
+                }, 3000);
+            }
+        });
+
+        // Ngăn form được gửi đi ngay lập tức
+        return false;
     }
     /*]]>*/
 </script>

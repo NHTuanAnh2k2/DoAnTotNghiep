@@ -2,28 +2,31 @@ package com.example.demo.controller.sanphamchitiet;
 
 import com.example.demo.entity.*;
 import com.example.demo.info.SanPhamChiTietInfo;
-import com.example.demo.repository.SanPhamChiTietRepository;
-import com.example.demo.repository.SanPhamRepositoty;
+import com.example.demo.repository.*;
 import com.example.demo.service.impl.*;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-///////
+
 @Controller
 public class SanPhamChiTietController {
+    @Autowired
+    ChatLieuRepository chatLieuRepository;
+    @Autowired
+    MauSacRepository mauSacRepository;
+    @Autowired
+    KichCoRepository kichCoRepository;
+    @Autowired
+    DeGiayRepository deGiayRepository;
+    @Autowired
+    ThuongHieuRepository thuongHieuRepository;
     @Autowired
     SanPhamRepositoty sanPhamRepositoty;
     @Autowired
@@ -125,22 +128,79 @@ public class SanPhamChiTietController {
 
     @PostMapping("/updateCTSP/{id}")
     public String updateCTSP(@PathVariable Integer id, @ModelAttribute("hehe") SanPhamChiTiet sanPhamChiTiet) {
+        LocalDateTime currentTime = LocalDateTime.now();
         sanPhamChiTiet.setId(id);
-        sanPhamChiTietImp.addSPCT(sanPhamChiTiet);
-        return "redirect:/admin/qlchitietsanpham";
+        sanPhamChiTiet.setNgaytao(currentTime);
+        sanPhamChiTiet.setLancapnhatcuoi(currentTime);
+        SanPham sanPham = sanPhamChiTiet.getSanpham();
+        sanPham.setId(id);
+        sanPham.setTrangthai(true);
+        sanPham.setNgaytao(currentTime);
+        sanPham.setLancapnhatcuoi(currentTime);
+        sanPham.setTensanpham(sanPhamChiTiet.getSanpham().getTensanpham());
+        sanPhamRepositoty.save(sanPham);
+        ThuongHieu thuongHieu = sanPhamChiTiet.getThuonghieu();
+        thuongHieu.setId(id);
+        thuongHieu.setTrangthai(true);
+        thuongHieu.setNgaytao(currentTime);
+        thuongHieu.setLancapnhatcuoi(currentTime);
+        thuongHieu.setTen(sanPhamChiTiet.getThuonghieu().getTen());
+        thuongHieuRepository.save(thuongHieu);
+        ChatLieu chatLieu = sanPhamChiTiet.getChatlieu();
+        chatLieu.setId(id);
+        chatLieu.setTrangthai(true);
+        chatLieu.setNgaytao(currentTime);
+        chatLieu.setLancapnhatcuoi(currentTime);
+        chatLieu.setTen(sanPhamChiTiet.getChatlieu().getTen());
+        chatLieuRepository.save(chatLieu);
+        DeGiay deGiay = sanPhamChiTiet.getDegiay();
+        deGiay.setId(id);
+        deGiay.setTrangthai(true);
+        deGiay.setNgaytao(currentTime);
+        deGiay.setLancapnhatcuoi(currentTime);
+        deGiay.setTen(sanPhamChiTiet.getDegiay().getTen());
+        deGiayRepository.save(deGiay);
+        MauSac mauSac = sanPhamChiTiet.getMausac();
+        mauSac.setId(id);
+        mauSac.setTrangthai(true);
+        mauSac.setNgaytao(currentTime);
+        mauSac.setLancapnhatcuoi(currentTime);
+        mauSac.setTen(sanPhamChiTiet.getMausac().getTen());
+        mauSacRepository.save(mauSac);
+        KichCo kichCo = sanPhamChiTiet.getKichco();
+        kichCo.setId(id);
+        kichCo.setTrangthai(true);
+        kichCo.setNgaytao(currentTime);
+        kichCo.setLancapnhatcuoi(currentTime);
+        kichCo.setTen(sanPhamChiTiet.getKichco().getTen());
+        kichCoRepository.save(kichCo);
+        sanPhamChiTietRepository.save(sanPhamChiTiet);
+        Integer firstProductId = sanPhamChiTiet.getSanpham().getId();
+        return "redirect:/detailsanpham/" + firstProductId;
     }
 
-//    @Transactional
-//    @PostMapping("/updateSPCTbyIdSanPham")
-//    public String updateSanPhamChiTiet(@RequestParam("id") Integer id,
-//                                       @RequestParam("soluong") Integer soluong,
-//                                       @RequestParam("giatien") BigDecimal giatien) {
-//        try {
-//            sanPhamChiTietRepository.update(id, soluong, giatien);
-//            return "redirect:/viewaddSP?success=1";
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return "redirect:/viewaddSP?error=1";
-//        }
-//    }
+    @PostMapping("/updateGiaAndSoLuongCTSP")
+    public String updateGiaAndSoLuong(
+            Model model,
+            @RequestParam("soluong") Integer soluong,
+            @RequestParam("giatien") BigDecimal giatien,
+            @RequestParam("choncheckbox") String[] choncheckbox
+    ) {
+        List<String> listString = Arrays.asList(choncheckbox);
+        List<Integer> listInt = new ArrayList<>();
+        for (String s : listString) {
+            Integer i = Integer.parseInt(s);
+            listInt.add(i);
+        }
+        listInt.remove(Integer.valueOf(-1));
+        Integer firstProductId = null;
+        if (!listInt.isEmpty()) {
+            Integer firstSPCTId = listInt.get(0);
+            firstProductId = sanPhamChiTietRepository.findIdBySanpham(firstSPCTId);
+        }
+        for (Integer id : listInt) {
+            sanPhamChiTietRepository.updateSoLuongVaGiaTienById(id, soluong, giatien);
+        }
+        return "redirect:/detailsanpham/" + firstProductId;
+    }
 }

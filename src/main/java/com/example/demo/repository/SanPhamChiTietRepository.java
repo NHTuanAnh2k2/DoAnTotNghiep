@@ -29,11 +29,8 @@ public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, 
     @Transactional
     @Modifying
     @Query(value = "UPDATE SanPhamChiTiet SET soluong = :soluong, giatien = :giatien WHERE id = :id", nativeQuery = true)
-    void update(@Param("id") Integer id, @Param("soluong") Integer soLuong, @Param("giatien") BigDecimal giaTien);
+    void updateSoLuongVaGiaTienById(@Param("id") Integer id, @Param("soluong") Integer soLuong, @Param("giatien") BigDecimal giaTien);
 
-    @Transactional
-    @Modifying
-    @Query(value = "UPDATE SanPhamChiTiet SET SoLuong = :soluong, GiaTien = :giatien WHERE IdSanPham = :idsanpham", nativeQuery = true)
-    void updateByIdSanPham(@Param("idsanpham") Integer idsanpham, @Param("soluong") Integer soluong, @Param("giatien") BigDecimal giatien);
-
+    @Query("SELECT s.sanpham.id FROM SanPhamChiTiet s WHERE s.id = :spctId")
+    Integer findIdBySanpham(Integer spctId);
 }
