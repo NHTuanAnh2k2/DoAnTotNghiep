@@ -736,9 +736,10 @@
                                                                                     class="page-link"
                                                                                     id="prevPage">Previous</a>
                                                                             </li>
-                                                                            <li class="d-flex flex-row page-item" id="numberPage">
-                                                                                
-                                                    
+                                                                            <li class="d-flex flex-row page-item"
+                                                                                id="numberPage">
+
+
                                                                             </li>
                                                                             <li class="page-item" id="btn_next_page">
                                                                                 <a class="page-link"
@@ -1398,6 +1399,7 @@
                 })
                 .then(function (b) {
                     let html = '';
+                    let htmlNumberPage = '';
                     for (const hd of b.content) {
                         html += `<tr>
                                <td>${hd.index}</td>
@@ -1419,13 +1421,19 @@
                     } else {
                         prevPage.style.display = 'block';
                     }
-                    if (thisNumberPage > b.totalPages - 1) {
+                    if (thisNumberPage >= b.totalPages - 1) {
                         nextPage.style.display = 'none';
                     } else {
                         nextPage.style.display = 'block';
                     }
-
-                    
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPage += `
+                        <a class="page-link">
+                                                                                    ${i}
+                         </a>
+                        `;
+                    }
+                    document.getElementById("numberPage").innerHTML = htmlNumberPage;
                     document.getElementById("tbl_doi_nv").innerHTML = html;
 
                 })
@@ -1443,6 +1451,7 @@
                 })
                 .then(function (b) {
                     let html = '';
+                    let htmlNumberPage = '';
                     for (const hd of b.content) {
                         html += `<tr>
                                <td>${hd.index}</td>
@@ -1464,11 +1473,19 @@
                     } else {
                         prevPage.style.display = 'block';
                     }
-                    if (thisNumberPage > b.totalPages - 1) {
+                    if (thisNumberPage >= b.totalPages - 1) {
                         nextPage.style.display = 'none';
                     } else {
                         nextPage.style.display = 'block';
                     }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPage += `
+                        <a class="page-link">
+                                                                                    ${i}
+                         </a>
+                        `;
+                    }
+                    document.getElementById("numberPage").innerHTML = htmlNumberPage;
                     document.getElementById("tbl_doi_nv").innerHTML = html;
 
                 })
@@ -1508,21 +1525,19 @@
                     } else {
                         prevPage.style.display = 'block';
                     }
-                    if (thisNumberPage > b.totalPages + 1) {
+                    if (thisNumberPage >= b.totalPages -1) {
                         nextPage.style.display = 'none';
                     } else {
                         nextPage.style.display = 'block';
                     }
-                    for(var i=1;i<=b.totalPages;i++){
-                        htmlNumberPage+=`
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPage += `
                         <a class="page-link">
                                                                                     ${i}
                          </a>
                         `;
                     }
-                    
-
-
+                    document.getElementById("numberPage").innerHTML = htmlNumberPage;
                     document.getElementById("tbl_doi_nv").innerHTML = html;
 
                 })
