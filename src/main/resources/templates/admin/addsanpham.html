@@ -195,7 +195,7 @@
                                                         th:text="${th.ten}"></option>
                                             </select>
                                         </p>
-                                        <input type="button" class="btn btn-primary" style="margin:3%" value="+"
+                                        <input type="button" class="btn" style="margin:3%;background-color:rgb(249,72,42);color: white" value="+"
                                                data-bs-toggle="modal" data-bs-target="#themthuonghieu">
                                     </div>
                                     <!--end-->
@@ -211,7 +211,7 @@
                                                         th:text="${cl.ten}"></option>
                                             </select>
                                         </p>
-                                        <input type="button" class="btn btn-primary" style="margin:3%" value="+"
+                                        <input type="button" class="btn" style="margin:3%;background-color:rgb(249,72,42);color: white" value="+"
                                                data-bs-toggle="modal" data-bs-target="#themchatlieu">
                                     </div>
 
@@ -224,7 +224,7 @@
                                                         th:text="${dg.ten}"></option>
                                             </select>
                                         </p>
-                                        <input type="button" class="btn btn-primary" style="margin:3%" value="+"
+                                        <input type="button" class="btn" style="margin:3%;background-color:rgb(249,72,42);color: white" value="+"
                                                data-bs-toggle="modal" data-bs-target="#themdegiay">
                                     </div>
                                     <!--end-->
@@ -245,7 +245,7 @@
                                         </p>
                                         <p>
                                         </p>
-                                        <input type="button" class="btn btn-primary" style="margin:3%" value="+"
+                                        <input type="button" class="btn" style="margin:3%;background-color:rgb(249,72,42);color: white" value="+"
                                                data-bs-toggle="modal" data-bs-target="#themmausac">
                                     </div>
                                     <!--end-->
@@ -258,7 +258,7 @@
                                             <h6 id="displayValue"></h6>
                                         </div>
                                         <div style="margin-right: 2%;margin-left: 5px">
-                                            <input type="button" class="btn btn-primary" value="+"
+                                            <input type="button" class="btn" style="background-color:rgb(249,72,42);color: white" value="+"
                                                    data-bs-toggle="modal"
                                                    data-bs-target="#themkichco2">
                                         </div>
@@ -267,15 +267,14 @@
                                     <span id="kichcoError"
                                           style="color: red;font-style: italic;margin-left: 100px"></span>
                                     <!--end-->
-                                    <button type="submit" class="btn btn-primary"
-                                            style="margin-left: 20px;margin-bottom: 20px;margin-top: 30px; width: 110px;">
+                                    <button type="submit" class="btn"
+                                            style="margin-left: 20px;margin-bottom: 20px;margin-top: 30px; width: 110px;background-color:rgb(249,72,42);color: white">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                              fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                             <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
                                         </svg>
                                         Thêm
                                     </button>
-
                                 </div>
 
                             </div>
@@ -333,7 +332,7 @@
                                                       style="color: red;font-style: italic"></span>
                                                 <!-- Thông báo lỗi -->
                                             </p>
-                                            <button type="submit" class="btn btn-primary" style="margin-left: 400px">
+                                            <button type="submit" class="btn" style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
                                                 Thêm
                                             </button>
                                         </form>
@@ -361,7 +360,9 @@
                                                       style="color: red;font-style: italic"></span>
                                                 <!-- Thông báo lỗi -->
                                             </p>
-                                            <button class="btn btn-primary" style="margin-left: 400px">Thêm</button>
+                                            <button type="submit" class="btn" style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
+                                                Thêm
+                                            </button>
                                         </form>
                                     </div>
                                 </div>
@@ -386,7 +387,9 @@
                                                       style="color: red;font-style: italic"></span>
                                                 <!-- Thông báo lỗi -->
                                             </p>
-                                            <button class="btn btn-primary" style="margin-left: 400px">Thêm</button>
+                                            <button type="submit" class="btn" style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
+                                                Thêm
+                                            </button>
                                         </form>
                                     </div>
                                 </div>
@@ -438,16 +441,10 @@
                                                 <input id="tenMauSac"class="form-control" th:field="*{ten}"/>
                                                 <span id="tenMauSacError"
                                                       style="color: red;font-style: italic"></span>
-                                                <!-- Thông báo lỗi -->
                                             </p>
-                                            <!--                                            <p>-->
-                                            <!--                                                Trạng thái:-->
-                                            <!--                                                <select class="form-control" th:field="*{trangthai}">-->
-                                            <!--                                                    <option value="1">Đang kinh doanh</option>-->
-                                            <!--                                                    <option value="0">Ngừng kinh doanh</option>-->
-                                            <!--                                                </select>-->
-                                            <!--                                            </p>-->
-                                            <button class="btn btn-primary" style="margin-left: 400px">Thêm</button>
+                                            <button type="submit" class="btn" style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
+                                                Thêm
+                                            </button>
                                         </form>
                                     </div>
                                 </div>
@@ -467,7 +464,7 @@
         <h3 class="text-bold text-center" style="padding-left: 15px">CHI TIẾT SẢN PHẨM</h3>
         <form id="submitid" th:action="@{/addImage}" name="addImage" method="post" enctype="multipart/form-data"
               onsubmit="return validateForm2()">
-            <a id="editButton" class="btn btn-primary disabled" style="margin-left: 900px;margin-bottom: 15px"
+            <a id="editButton" class="btn disabled" style="margin-left: 900px;margin-bottom: 15px;background-color:rgb(249,72,42);color: white"
                data-bs-toggle="modal" data-bs-target="#chinhsuasoluongvagia">Chỉnh sửa số lượng và giá chung</a>
 
 
@@ -498,7 +495,7 @@
                 </div>
             </div>
 
-            <button class="btn-sm btn-primary" style="margin-left: 10px; margin-bottom: 15px"
+            <button class="btn-sm btn-dark" style="margin-left: 10px; margin-bottom: 15px"
                     type="submit"
                     id="submitButton">Hoàn tất
             </button>
@@ -510,7 +507,7 @@
                                 <div class="card-header">
                                     <table id="example2" style="width: 100%"
                                            class="table-bordered table-hover text-center">
-                                        <thead style="background-color:#1d75b3;height: 50px">
+                                        <thead style="background-color:rgb(249,72,42);height: 50px">
                                         <tr>
                                             <th>STT</th>
                                             <th>Tên sản phẩm</th>
@@ -542,8 +539,8 @@
 
                                             <td>
                                                 <a th:href="@{/deleteCTSP/{id}(id=${spctt.id})}"
-                                                   class="btn btn-outline-danger" onclick="return xoa(event)">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                  style="color: rgb(249,72,42)" onclick="return xoa(event)">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
                                                          fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                                                         <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
                                                     </svg>
