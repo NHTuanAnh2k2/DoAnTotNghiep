@@ -76,8 +76,7 @@ public class SanPhamController {
         model.addAttribute("fillTrangThai", info.getTrangthai());
         return "admin/qlsanpham";
     }
-
-    //hiển thị các thuộc tính của sản phẩm thông qua modelAttribute
+    
     @RequestMapping(value = {"/viewaddSPGET", "/viewaddSPPOST"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String viewaddSP(Model model, @RequestParam(defaultValue = "0") int p,
                             @ModelAttribute("thuonghieu") ThuongHieu thuongHieu,
