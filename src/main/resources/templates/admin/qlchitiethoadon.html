@@ -608,35 +608,21 @@
                                                                     <div class="col-md-4">
                                                                         <label class="form-label">Tỉnh/Thành
                                                                             Phố:</label>
-                                                                        <select class="form-select" id="tinhthanhpho"
-                                                                            th:field="*{tinh}" name="tinhthanhpho"
-                                                                           >
-                                                                            <option value="" th:text="*{tinh}" selected>
-                                                                                Chọn tỉnh thành</option>
-                                                                            <!-- <option th:each="city : ${cities}"
-                                                                                th:value="${city.getName()}"
-                                                                                th:text="${city.getName()}">City
-                                                                            </option> -->
-                                                                        </select>
+                                                                            <select class="form-select form-select-sm mb-3" id="city" th:field="*{tinh}" >
+                                                                                <option value=""  th:text="*{tinh}" selected>Chọn tỉnh thành</option>
+                                                                            </select></p>
 
                                                                     </div>
                                                                     <div class="col-md-4">
                                                                         <label class="form-label">Quận/Huyện:</label>
-                                                                        <select class="form-select" id="quanhuyen"
-                                                                            th:field="*{huyen}" name="quanhuyen"
-                                                                            >
-                                                                            <option value="" th:text="*{huyen}"
-                                                                                selected>Chọn tỉnh thành</option>
-
+                                                                        <select class="form-select form-select-sm mb-3" id="district"  th:field="*{huyen}" >
+                                                                            <option value="" th:text="*{huyen}" selected>Chọn quận huyện</option>
                                                                         </select>
                                                                     </div>
                                                                     <div class="col-md-4">
                                                                         <label class="form-label">Phường/Xã: </label>
-                                                                        <select class="form-select" id="xaphuong"
-                                                                            th:field="*{xa}" name="xaphuong"
-                                                                            >
-                                                                            <option value="" th:text="*{xa}" selected>
-                                                                                Chọn tỉnh thành</option>
+                                                                        <select class="form-select form-select-sm" id="ward"  th:field="*{xa}" >
+                                                                            <option value=""  th:text="*{xa}" selected>Chọn phường xã</option>
                                                                         </select>
                                                                     </div>
                                                                     <div class="col-12">
@@ -648,8 +634,8 @@
                                                                     <div class="col-12">
                                                                         <label class="form-label">Phí giao hàng:</label>
                                                                         <input type="text" class="form-control"
-                                                                            th:field="*{phigiao}">
-                                                                    </div>
+                                                                            th:field="*{phigiao}" >
+                                                                    </div> 
                                                                     <div class="col-12">
                                                                         <label class="form-label">Ghi chú:</label>
                                                                         <textarea class="form-control"
@@ -1341,9 +1327,9 @@
     </script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <script>
-        var citis = document.getElementById("tinhthanhpho");
-        var districts = document.getElementById("quanhuyen");
-        var wards = document.getElementById("xaphuong");
+        var citis = document.getElementById("city");
+        var districts = document.getElementById("district");
+        var wards = document.getElementById("ward");
         var Parameter = {
             url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
             method: "GET",
