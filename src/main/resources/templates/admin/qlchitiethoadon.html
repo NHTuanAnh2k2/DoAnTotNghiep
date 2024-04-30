@@ -1388,7 +1388,7 @@
                     }
                     for (var i = 1; i <= b.totalPages; i++) {
                         htmlNumberPage += `
-                        <a class="page-link">
+                        <a class="page-link" onclick="pageClick( ${i-1})">
                                                                                     ${i}
                          </a>
                         `;
@@ -1400,6 +1400,56 @@
         }
 
 
+        function pageClick(number) {
+            const pageNVChanges = localStorage.getItem("pageNVChanges") ?? number;
+            const url = `/hoa-don/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+            fetch(url)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let html = '';
+                    let htmlNumberPage = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        html += `<tr>
+                               <td>${STT}</td>
+                               <td>${hd.manhanvien}</td>
+                               <td>${hd.nguoidung.hovaten}</td>
+                               <td>${hd.nguoidung.sodienthoai}</td>
+                               <td>${hd.nguoidung.ngaysinh}</td>
+                               <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
+                               <td>
+                                <a>
+                                <button type="button"
+                                class="btn btn-warning">Chọn</button>
+                                </a>
+                                 </td>
+                            </tr>`;
+                    }
+                    if (thisNumberPage < 1) {
+                        prevPage.style.display = 'none';
+                    } else {
+                        prevPage.style.display = 'block';
+                    }
+                    if (thisNumberPage >= b.totalPages - 1) {
+                        nextPage.style.display = 'none';
+                    } else {
+                        nextPage.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPage += `
+                        <a class="page-link" onclick="pageClick( ${i-1})">
+                                                                                    ${i}
+                         </a>
+                        `;
+                    }
+                    document.getElementById("numberPage").innerHTML = htmlNumberPage;
+                    document.getElementById("tbl_doi_nv").innerHTML = html;
+
+                })
+        }
 
         nextPage.onclick = function () {
             thisNumberPage++;
@@ -1442,7 +1492,7 @@
                     }
                     for (var i = 1; i <= b.totalPages; i++) {
                         htmlNumberPage += `
-                        <a class="page-link">
+                        <a class="page-link" onclick="pageClick( ${i-1})">
                                                                                     ${i}
                          </a>
                         `;
@@ -1498,7 +1548,7 @@
                     }
                     for (var i = 1; i <= b.totalPages; i++) {
                         htmlNumberPage += `
-                        <a class="page-link">
+                        <a class="page-link" onclick="pageClick( ${i-1})">
                                                                                     ${i}
                          </a>
                         `;
@@ -1568,7 +1618,7 @@
                     }
                     for (var i = 1; i <= b.totalPages; i++) {
                         htmlNumberPageSP += `
-                        <a class="page-link">
+                        <a class="page-link" onclick="pageClickSP( ${i-1})">
                                                                                     ${i}
                          </a>
                         `;
@@ -1579,7 +1629,67 @@
                 })
         }
 
+        function pageClickSP(numbers) {
+            const pageSPChanges = localStorage.getItem("pageSPChanges") ?? numbers;
+            const urlPage = `/hoa-don/viewSPChanges?pageSPChanges=${pageSPChanges}`;
+            fetch(urlPage)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    console.log(b)
+                    var STT = 0;
+                    let htmlSP = '';
+                    let htmlNumberPageSP = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        htmlSP += `<tr>
+                               <td>${STT}</td>
+                               <td> 
+                                <img src="${hd.anh.tenanh}" alt=""
+                                                            style="height: 100px; width: 100px;">
+                                
+                                </td>
+                               <td>${hd.sanpham.tensanpham}</td>
+                               <td>${hd.soluong}</td>
+                               <td>${hd.kichco.ten}</td>
+                               <td>${hd.mausac.ten}</td>
+                               <td>
+                                <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                    ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                    </p>
+                                </td>
+                               <td>
+                                <a>
+                                <button type="button"
+                                class="btn btn-warning">Chọn</button>
+                                </a>
+                                 </td>
+                            </tr>`;
+                    }
 
+                    if (thisNumberSPPage < 1) {
+                        prevPageSP.style.display = 'none';
+                    } else {
+                        prevPageSP.style.display = 'block';
+                    }
+                    if (thisNumberSPPage >= b.totalPages - 1) {
+                        nextPageSP.style.display = 'none';
+                    } else {
+                        nextPageSP.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPageSP += `
+                        <a class="page-link" onclick="pageClickSP( ${i-1})">
+                                                                                    ${i}
+                         </a>
+                        `;
+                    }
+                    document.getElementById("numberPageSP").innerHTML = htmlNumberPageSP;
+                    document.getElementById("tbl_sp_them").innerHTML = htmlSP;
+
+                })
+        }
 
 
         nextPageSP.onclick = function () {
@@ -1634,7 +1744,7 @@
                     }
                     for (var i = 1; i <= b.totalPages; i++) {
                         htmlNumberPageSP += `
-                        <a class="page-link">
+                        <a class="page-link" onclick="pageClickSP( ${i-1})">
                                                                                     ${i}
                          </a>
                         `;
@@ -1700,7 +1810,7 @@
                     }
                     for (var i = 1; i <= b.totalPages; i++) {
                         htmlNumberPageSP += `
-                        <a class="page-link">
+                        <a class="page-link" onclick="pageClickSP( ${i-1})">
                                                                                     ${i}
                          </a>
                         `;
@@ -1712,12 +1822,6 @@
         }
 
     </script>
-
-
-
-
-
-
 </body>
 
 </html>
