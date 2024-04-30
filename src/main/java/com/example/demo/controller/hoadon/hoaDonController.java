@@ -482,8 +482,13 @@ public class hoaDonController {
             tongTienSP = tongTienSP.add(b.getGiasanpham().multiply(new BigDecimal(b.getSoluong())));
         }
         BigDecimal tongTT = (tongTienSP.add(hoaDonXem.getPhivanchuyen())).subtract(phieuGiamCT.getTiengiam());
-        List<Province> cities = daoKH.getCities();
-        model.addAttribute("cities", cities);
+//        List<Province> cities = daoKH.getCities();
+        ThayDoiTTHoaDon_KHInfo formChangesTTKH = new ThayDoiTTHoaDon_KHInfo(
+                "tùng", "0123", "TP. Hồ Chí Minh", "Quận 1", "Cô Giang",
+                "ngã ba gốc bòng", "30000", "hàng dễ vỡ"
+        );
+        model.addAttribute("thayDoiTT", formChangesTTKH);
+//        model.addAttribute("cities", cities);
         model.addAttribute("tongTT", tongTT);
         model.addAttribute("hoaDonDT", hoaDonXem);
         model.addAttribute("pageNo", pageDetail);

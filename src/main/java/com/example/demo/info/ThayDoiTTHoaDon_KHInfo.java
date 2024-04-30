@@ -18,7 +18,7 @@ public class ThayDoiTTHoaDon_KHInfo {
     String huyen;
     String xa;
     String diachiCT;
-    BigDecimal phigiao;
+    String phigiao;
     String ghichu;
 
 }
