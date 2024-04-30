@@ -18,7 +18,7 @@
 </style>
 <script src="../sweetalert2/dist/sweetalert2.min.js/"></script>
 <link rel="stylesheet" type="text/css" href="../sweetalert2/dist/sweetalert2.min.css">
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini" style="font-family: 'Bahnschrift'">
 <div class="wrapper">
     <!-- Navbar -->
     <nav th:replace="~{/layoutadmin/navbar.html}"></nav>
@@ -84,8 +84,8 @@
                                     <br>
                                     <br>
                                     <br>
-                                    <button style="margin-left: 100px" class="btn btn-primary">Tìm kiếm</button>
-                                    <input type="button" class="btn btn-danger" value="Làm mới bộ lọc" onclick="clearSearch()" />
+                                    <button style="margin-left: 100px;background-color:rgb(249,72,42);color: white" class="btn">Tìm kiếm</button>
+                                    <input type="button" class="btn btn-dark" value="Làm mới bộ lọc" onclick="clearSearch()" />
                                 </form>
                             </div>
 
@@ -115,8 +115,8 @@
                                     </svg>
                                     Danh sách chất liệu
                                 </h3>
-                                <a href="/admin/addsanpham" class="btn btn-primary"
-                                   style="margin-left: 850px" data-bs-toggle="modal" data-bs-target="#themdegiay">
+                                <a href="/admin/addsanpham" class="btn"
+                                   style="margin-left: 850px;background-color:rgb(249,72,42);color: white" data-bs-toggle="modal" data-bs-target="#themdegiay">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
                                     </svg>
@@ -140,7 +140,7 @@
                                                     <input id="tenInput" th:field="*{ten}" class="form-control">
                                                 <div style="color: red; font-weight: initial;font-style: italic" id="errorTen"></div>
                                                 </p>
-                                                <button class="btn btn-primary" style="margin-left: 400px">Thêm</button>
+                                                <button class="btn" style="margin-left: 400px;background-color:rgb(249,72,42);color: white">Thêm</button>
                                             </form>
                                         </div>
                                     </div>
@@ -149,8 +149,8 @@
 
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <table id="example2" class="table table-bordered table-hover text-center">
-                                    <thead class="table table-danger">
+                                <table id="example2" style="width: 100%" class="table-bordered table-hover text-center">
+                                    <thead style="background-color:rgb(249,72,42);height: 50px">
                                     <tr>
                                         <th>STT</th>
                                         <th>Tên chất liệu</th>
@@ -171,8 +171,8 @@
                                                     th:text="${cl.trangthai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>
                                         </td>
                                         <td>
-                                            <a class="btn btn-outline-warning">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            <a style="color: rgb(249,72,42)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
                                                      fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
                                                     <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>

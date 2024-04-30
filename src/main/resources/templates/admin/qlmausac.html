@@ -20,7 +20,7 @@
 </style>
 <script src="../sweetalert2/dist/sweetalert2.min.js/"></script>
 <link rel="stylesheet" type="text/css" href="../sweetalert2/dist/sweetalert2.min.css">
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini" style="font-family: 'Bahnschrift'">
 
 <div class="wrapper">
     <!-- Navbar -->
@@ -86,8 +86,8 @@
                                     <br>
                                     <br>
                                     <br>
-                                    <button type="submit" style="margin-left: 100px" class="btn btn-primary">Tìm kiếm</button>
-                                    <input type="button" class="btn btn-danger" value="Làm mới bộ lọc" onclick="clearSearch()" />
+                                    <button type="submit" style="margin-left: 100px;background-color:rgb(249,72,42);color: white" class="btn">Tìm kiếm</button>
+                                    <input type="button" class="btn btn-dark" value="Làm mới bộ lọc" onclick="clearSearch()" />
                                 </form>
 
 
@@ -119,8 +119,8 @@
                                     </svg>
                                     Danh sách màu sắc
                                 </h3>
-                                <a href="/admin/addsanpham" class="btn btn-primary"
-                                   style="margin-left: 850px" data-bs-toggle="modal" data-bs-target="#themdegiay">
+                                <a href="/admin/addsanpham" class="btn"
+                                   style="margin-left: 850px;background-color:rgb(249,72,42);color: white" data-bs-toggle="modal" data-bs-target="#themdegiay">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
                                     </svg>
@@ -144,7 +144,7 @@
                                                     <input id="tenInput" class="form-control" th:field="*{ten}"/>
                                                 <div style="color: red; font-weight: initial;font-style: italic" id="errorTen"></div>
                                                 </p>
-                                                <button id="submitButton" class="btn btn-primary" style="margin-left: 400px">Thêm</button>
+                                                <button id="submitButton" class="btn" style="margin-left: 400px;background-color:rgb(249,72,42);color: white">Thêm</button>
                                             </form>
                                         </div>
                                     </div>
@@ -153,8 +153,8 @@
 
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <table id="example2" class="table table-bordered table-hover text-center">
-                                    <thead class="table table-danger">
+                                <table id="example2" style="width: 100%" class="table-bordered table-hover text-center">
+                                    <thead style="background-color:rgb(249,72,42);height: 50px">
                                     <tr>
                                         <th>STT</th>
                                         <th>Tên màu sắc</th>
@@ -175,19 +175,13 @@
                                                     th:text="${ms.trangthai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>
                                         </td>
                                         <td>
-                                            <a class="btn btn-outline-warning">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            <a style="color: rgb(249,72,42)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
                                                      fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
                                                     <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
                                                 </svg>
                                             </a>
-                                            <!--                                            <a class="btn btn-warning" th:href="@{/delete/{id}(id=${dg.id})}" onclick="return xoa(event)">-->
-                                            <!--                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">-->
-                                            <!--                                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>-->
-                                            <!--                                                </svg>-->
-                                            <!--                                            </a>-->
-
                                         </td>
                                     </tr>
                                     </tbody>
