@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -487,7 +488,7 @@ public class hoaDonController {
         ThayDoiTTHoaDon_KHInfo formChangesTTKH = new ThayDoiTTHoaDon_KHInfo(
                 hoaDonXem.getKhachhang().getNguoidung().getHovaten(), hoaDonXem.getSdt(),
                 hoaDonXem.getDiachi(), hoaDonXem.getDiachi(), hoaDonXem.getDiachi(),
-                hoaDonXem.getDiachi(), hoaDonXem.getPhivanchuyen()+"", hoaDonXem.getGhichu()
+                hoaDonXem.getDiachi(), hoaDonXem.getPhivanchuyen() + "", hoaDonXem.getGhichu()
         );
         model.addAttribute("thayDoiTT", formChangesTTKH);
         model.addAttribute("tongTT", tongTT);
@@ -583,5 +584,11 @@ public class hoaDonController {
         return "admin/banhangtaiquay";
     }
 
+    //
+    @PostMapping("ChangesTTHD")
+    public String changesTTDH(Model model, @ModelAttribute("thayDoiTT") ThayDoiTTHoaDon_KHInfo TTChanges) {
+
+        return "admin/banhangtaiquay";
+    }
 
 }
