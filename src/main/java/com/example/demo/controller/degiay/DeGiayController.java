@@ -59,7 +59,9 @@ public class DeGiayController {
             return "admin/qldegiay";
         }
         LocalDateTime currentTime = LocalDateTime.now();
+        deGiay.setTrangthai(true);
         deGiay.setNgaytao(currentTime);
+        deGiay.setLancapnhatcuoi(currentTime);
         deGiayImp.add(deGiay);
         return "redirect:/listdegiay";
     }
@@ -67,9 +69,11 @@ public class DeGiayController {
     @PostMapping("/addDeGiayModal")
     public String addDeGiayModal(@ModelAttribute("degiay") DeGiay deGiay) {
         LocalDateTime currentTime = LocalDateTime.now();
+        deGiay.setTrangthai(true);
         deGiay.setNgaytao(currentTime);
+        deGiay.setLancapnhatcuoi(currentTime);
         deGiayImp.add(deGiay);
-        return "redirect:/viewaddSP";
+        return "redirect:/viewaddSPGET";
     }
 
     @ModelAttribute("dsdg")

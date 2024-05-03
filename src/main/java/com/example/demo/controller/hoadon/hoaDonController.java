@@ -3,11 +3,11 @@ package com.example.demo.controller.hoadon;
 import com.example.demo.entity.*;
 import com.example.demo.info.HoaDonCustom;
 import com.example.demo.info.LichSuHoaDonCustom;
+import com.example.demo.info.ThayDoiTTHoaDon_KHInfo;
+import com.example.demo.repository.NhanVienRepository;
 import com.example.demo.repository.hoadon.HoaDonRepository;
-import com.example.demo.service.HoaDonService;
-import com.example.demo.service.LichSuHoaDonService;
-import com.example.demo.service.PhuongThucThanhToanService;
-import com.example.demo.service.SanPhamService;
+import com.example.demo.restcontroller.khachhang.Province;
+import com.example.demo.service.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +21,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.NumberFormat;
@@ -35,9 +36,17 @@ import java.util.Optional;
 @RequestMapping("hoa-don")
 public class hoaDonController {
     @Autowired
+    PhieuGiamGiaChiTietService daoPGGCT;
+    @Autowired
+    SanPhamChiTietService daoSPCT;
+    @Autowired
+    NhanVienRepository nhanVienService;
+    @Autowired
+    KhachHangService daoKH;
+    @Autowired
     PhuongThucThanhToanService daoPT;
     @Autowired
-    SanPhamService daoSP;
+    HoaDonChiTietService daoHDCT;
     @Autowired
     LichSuHoaDonService daoLS;
     @Autowired
@@ -430,10 +439,33 @@ public class hoaDonController {
         return "redirect:/hoa-don/showDetail";
     }
 
+    @GetMapping("viewNVChanges")
+    @ResponseBody
+    public ResponseEntity<?> getlistNV(@RequestParam("pageNVChanges") Optional<Integer> pageParam) {
+        Pageable p = PageRequest.of(pageParam.orElse(0), 5);
+        Page<NhanVien> pageNV = nhanVienService.findAll(p);
+        return ResponseEntity.ok(pageNV);
+    }
+
+    @GetMapping("viewSPChanges")
+    @ResponseBody
+    public ResponseEntity<?> getlistSP(@RequestParam("pageSPChanges") Optional<Integer> pageParam) {
+        Pageable p = PageRequest.of(pageParam.orElse(0), 5);
+        Page<SanPhamChiTiet> pageSP = daoSPCT.finAllPage(p);
+        return ResponseEntity.ok(pageSP);
+    }
+
     //xem chi tiết hóa đơn
     @GetMapping("showDetail")
-    public String show(Model model, @ModelAttribute("ghichu") LichSuHoaDonCustom noidung) {
-        //Page<SanPham> pageSPTheoIDHD=daoSP.findAll();
+    public String show(Model model, @ModelAttribute("ghichu") LichSuHoaDonCustom noidung,
+                       @RequestParam("pageSP") Optional<Integer> pageSP,
+                       @ModelAttribute("thayDoiTT") ThayDoiTTHoaDon_KHInfo ThongTinKHChange
+    ) {
+
+        int pageDetail = pageSP.orElse(0);
+        Pageable p = PageRequest.of(pageDetail, 5);
+
+
         HoaDon hoaDonXem = new HoaDon();
         PhuongThucThanhToan phuongThuc = new PhuongThucThanhToan();
         List<HoaDon> hoaDonTim = dao.timTheoID(idhdshowdetail);
@@ -441,11 +473,33 @@ public class hoaDonController {
         List<PhuongThucThanhToan> lstPhuongThuc = daoPT.timTheoHoaDon(hoaDonXem);
         List<LichSuHoaDon> lstLichSuHoaDon = daoLS.timLichSuTheoIDHoaDon(hoaDonXem);
         phuongThuc = lstPhuongThuc.get(0);
+        List<PhieuGiamGiaChiTiet> lstPGGCT = daoPGGCT.timListPhieuTheoHD(hoaDonXem);
+        PhieuGiamGiaChiTiet phieuGiamCT = lstPGGCT.get(0);
+        BigDecimal tongTienSP = new BigDecimal("0");
+        List<HoaDonChiTiet> lstHDCT = daoHDCT.getListSPHD(hoaDonXem);
+        for (HoaDonChiTiet b : lstHDCT
+        ) {
+            tongTienSP = tongTienSP.add(b.getGiasanpham().multiply(new BigDecimal(b.getSoluong())));
+        }
+        BigDecimal tongTT = (tongTienSP.add(hoaDonXem.getPhivanchuyen())).subtract(phieuGiamCT.getTiengiam());
+
+
+        ThayDoiTTHoaDon_KHInfo formChangesTTKH = new ThayDoiTTHoaDon_KHInfo(
+                hoaDonXem.getKhachhang().getNguoidung().getHovaten(), hoaDonXem.getSdt(),
+                hoaDonXem.getDiachi(), hoaDonXem.getDiachi(), hoaDonXem.getDiachi(),
+                hoaDonXem.getDiachi(), hoaDonXem.getPhivanchuyen()+"", hoaDonXem.getGhichu()
+        );
+        model.addAttribute("thayDoiTT", formChangesTTKH);
+        model.addAttribute("tongTT", tongTT);
         model.addAttribute("hoaDonDT", hoaDonXem);
+        model.addAttribute("pageNo", pageDetail);
         model.addAttribute("lstphuongThucTT", lstPhuongThuc);
         model.addAttribute("phuongThucTT", phuongThuc);
         model.addAttribute("lstlichsu", lstLichSuHoaDon);
+        model.addAttribute("phieuGiamCT", phieuGiamCT);
         model.addAttribute("trangThaiHienTai", lstLichSuHoaDon.get(lstLichSuHoaDon.size() - 1).getTrangthai());
+        model.addAttribute("pageSPHD", daoHDCT.getDSSPHD(hoaDonXem, p));
+
         return "admin/qlchitiethoadon";
     }
 
@@ -526,8 +580,8 @@ public class hoaDonController {
     // call sang bán tại quầy
     @GetMapping("ban-hang")
     public String taoMoiHoaDon(Model model) {
-
         return "admin/banhangtaiquay";
     }
+
 
 }

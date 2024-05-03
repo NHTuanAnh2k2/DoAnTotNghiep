@@ -34,6 +34,7 @@ public class NguoiDung {
     String hovaten;
 //    @DateTimeFormat(pattern = "yyyy-MM-dd")
 //    @Temporal(TemporalType.DATE)
+    @NotNull(message = "Không được để trống ngày sinh")
     Date ngaysinh;
     @NotNull(message = "Không được để trống căn cước công dân")
     @Pattern(regexp="^0[0-9]{11}$", message="Sai định dạng số căn cước")

@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.ObjectIdGenerator;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +13,12 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id"
+)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -36,6 +43,8 @@ public class SanPhamChiTiet {
     LocalDateTime lancapnhatcuoi;
     String nguoicapnhat;
     Boolean trangthai;
+
+
     @ManyToOne
     @JoinColumn(name = "idsanpham")
     SanPham sanpham;

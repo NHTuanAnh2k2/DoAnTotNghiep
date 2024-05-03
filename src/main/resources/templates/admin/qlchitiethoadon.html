@@ -291,18 +291,18 @@
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <form th:action="@{huy-don}" method="get"
-                                                                    th:object="${ghichu}">
-                                                                    <p>Nhập ghi chú:
-                                                                        <input placeholder="Ghi chú"
-                                                                            class="form-control" th:field="*{key}">
-                                                                    </p>
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Hủy</button>
-                                                                    <button type="submit"
-                                                                        class="btn btn-primary">Xác nhận</button>
-                                                                </form>
+                                                                        th:object="${ghichu}">
+                                                                        <p>Nhập ghi chú:
+                                                                            <input placeholder="Ghi chú"
+                                                                                class="form-control" th:field="*{key}">
+                                                                        </p>
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Hủy</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary">Xác nhận</button>
+                                                                    </form>
                                                                 </div>
-                                                                
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -524,18 +524,24 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr th:each= "a:${lstphuongThucTT}">
+                                                <tr th:each="a:${lstphuongThucTT}">
                                                     <td th:text="${aStat.index+1}"></td>
-                                                    <td th:text="${a.magiaodichvnpay}"></td> 
+                                                    <td th:text="${a.magiaodichvnpay}"></td>
                                                     <td th:text="${a.tongtien}"></td>
                                                     <td th:text="${a.trangthai==true?'Thành công':'Chưa thành công'}">
-                                                   
+
                                                     </td>
-                                                    <td th:text="${a.ngaytao}"></td> 
-                                                    <td th:text="${a.tenphuongthuc}"></td> 
-                                                    <td th:text="${a.mota}"></td> 
-                                                    <td></td> 
-                                                    <td></td> 
+                                                    <td th:text="${a.ngaytao}"></td>
+                                                    <td>
+                                                        <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;"
+                                                            th:text="${a.tenphuongthuc}"></p>
+                                                    </td>
+                                                    <td>
+                                                        <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;"
+                                                            th:text="${a.mota}"></p>
+                                                    </td>
+                                                    <td></td>
+                                                    <td></td>
                                                 </tr>
                                                 </tfoot>
                                         </table>
@@ -565,11 +571,13 @@
                                         <div class="card-header">
                                             <div class="d-flex justify-content-end align-content-center">
                                                 <h4 th:text="${'Thông tin đơn hàng: '+hoaDonDT.mahoadon}">
-                                                     
+
                                                 </h4>
                                                 <button style="margin-right: 50px; margin-left: 140px;" type="button"
                                                     class="btn btn-outline-secondary" data-bs-toggle="modal"
-                                                    data-bs-target="#modalThayDoiHoaDon" th:classappend="${trangThaiHienTai!=0?'disabled':''}" >Thay đổi</button>
+                                                    data-bs-target="#modalThayDoiHoaDon"
+                                                    th:classappend="${trangThaiHienTai!=0?'disabled':''}">Thay
+                                                    đổi</button>
                                                 <!--Modal thay đổi thông tin hóa đơn-->
                                                 <!-- Modal -->
                                                 <div class="modal fade" id="modalThayDoiHoaDon" tabindex="-1"
@@ -584,69 +592,71 @@
                                                                     data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <form class="row g-3">
+                                                                <form class="row g-3" th:action="@{thay-doi-TT-HD}"
+                                                                    method="get" th:object="${thayDoiTT}">
                                                                     <div class="col-md-12">
                                                                         <label class="form-label">Tên khách
                                                                             hàng:</label>
-                                                                        <input type="text" class="form-control">
+                                                                        <input type="text" class="form-control"
+                                                                            th:field="*{ten}">
                                                                     </div>
                                                                     <div class="col-md-12">
                                                                         <label class="form-label">Số điện thoại:</label>
-                                                                        <input type="text" class="form-control">
+                                                                        <input type="text" class="form-control"
+                                                                            th:field="*{sdt}">
                                                                     </div>
                                                                     <div class="col-md-4">
                                                                         <label class="form-label">Tỉnh/Thành
                                                                             Phố:</label>
-                                                                        <select class="form-select">
-                                                                            <option selected disabled value="">Choose...
-                                                                            </option>
-                                                                            <option>...</option>
-                                                                        </select>
+                                                                            <select class="form-select form-select-sm mb-3" id="city" th:field="*{tinh}" >
+                                                                                <option value=""  th:text="*{tinh}" selected>Chọn tỉnh thành</option>
+                                                                            </select></p>
+
                                                                     </div>
                                                                     <div class="col-md-4">
                                                                         <label class="form-label">Quận/Huyện:</label>
-                                                                        <select class="form-select">
-                                                                            <option selected disabled value="">Choose...
-                                                                            </option>
-                                                                            <option>...</option>
+                                                                        <select class="form-select form-select-sm mb-3" id="district"  th:field="*{huyen}" >
+                                                                            <option value="" th:text="*{huyen}" selected>Chọn quận huyện</option>
                                                                         </select>
                                                                     </div>
                                                                     <div class="col-md-4">
                                                                         <label class="form-label">Phường/Xã: </label>
-                                                                        <select class="form-select">
-                                                                            <option selected disabled value="">Choose...
-                                                                            </option>
-                                                                            <option>...</option>
+                                                                        <select class="form-select form-select-sm" id="ward"  th:field="*{xa}" >
+                                                                            <option value=""  th:text="*{xa}" selected>Chọn phường xã</option>
                                                                         </select>
                                                                     </div>
                                                                     <div class="col-12">
                                                                         <label class="form-label">Địa chỉ cụ
                                                                             thể:</label>
-                                                                        <input type="text" class="form-control">
+                                                                        <input type="text" class="form-control"
+                                                                            th:field="*{diachiCT}">
                                                                     </div>
                                                                     <div class="col-12">
                                                                         <label class="form-label">Phí giao hàng:</label>
-                                                                        <input type="text" class="form-control">
-                                                                    </div>
+                                                                        <input type="text" class="form-control"
+                                                                            th:field="*{phigiao}" >
+                                                                    </div> 
                                                                     <div class="col-12">
                                                                         <label class="form-label">Ghi chú:</label>
                                                                         <textarea class="form-control"
-                                                                            rows="3"></textarea>
+                                                                            th:field="*{ghichu}" rows="3"></textarea>
                                                                     </div>
+                                                                    <button type="submit" class="btn btn-primary">Xác
+                                                                        nhận</button>
                                                                 </form>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary"
                                                                     data-bs-dismiss="modal">Hủy</button>
-                                                                <button type="button" class="btn btn-primary">Xác
-                                                                    nhận</button>
+
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <!--/Kết thúc modal thay đổi thông tin-->
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    data-bs-toggle="modal" data-bs-target="#modalChuyenNhanVien" th:classappend="${trangThaiHienTai!=0?'disabled':''}">Chuyển
+                                                <button type="button" class="btn btn-outline-secondary" id="changeNV"
+                                                    data-bs-toggle="modal" data-bs-target="#modalChuyenNhanVien"
+                                                    th:classappend="${trangThaiHienTai!=0?'disabled':''}">Chuyển
                                                     nhân viên</button>
                                                 <!--Modal thay đổi nhân viên-->
                                                 <!-- Modal -->
@@ -665,12 +675,12 @@
                                                                     <div
                                                                         class="d-flex justify-content-between align-items-center">
                                                                         <div>
-                                                                            <p
-                                                                                style="font-family: 'Times New Roman'; font-size: 18px; font-weight: bold;">
-                                                                                Nhân viên hiện tại: Dương Thị Tùng </p>
-                                                                            <p
-                                                                                style="font-family: 'Times New Roman'; font-size: 18px; font-weight: bold;">
-                                                                                Mã nhân viên: GiaNgheoThoi </p>
+                                                                            <p style="font-family: 'Times New Roman'; font-size: 18px; font-weight: bold;"
+                                                                                th:text="${'Nhân viên hiện tại: '+hoaDonDT.nhanvien.nguoidung.hovaten}">
+                                                                            </p>
+                                                                            <p style="font-family: 'Times New Roman'; font-size: 18px; font-weight: bold;"
+                                                                                th:text="${'Mã nhân viên: ' +hoaDonDT.nhanvien.manhanvien}">
+                                                                            </p>
                                                                         </div>
                                                                         <nav class="navbar bg-body-tertiary">
                                                                             <div class="container-fluid">
@@ -696,59 +706,31 @@
                                                                                 <th>Mã nhân viên</th>
                                                                                 <th>Tên nhân viên</th>
                                                                                 <th>Số điện thoại</th>
-                                                                                <th>CCCD</th>
-                                                                                <th>Giói tính</th>
+                                                                                <th>Ngày sinh</th>
+                                                                                <th>Giới tính</th>
                                                                                 <th>Thao tác</th>
                                                                             </tr>
                                                                         </thead>
-                                                                        <tbody>
-                                                                            <tr>
-                                                                                <td>1</td>
-                                                                                <td>InternetExplorer</td>
-                                                                                <td>Tuan Anh</td>
-                                                                                <td>0865858325</td>
-                                                                                <td>012345678987</td>
-                                                                                <td>Nam</td>
-                                                                                <td>
-                                                                                    <button type="button"
-                                                                                        class="btn btn-warning">Chọn</button>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>1</td>
-                                                                                <td>InternetExplorer</td>
-                                                                                <td>Tuan Anh</td>
-                                                                                <td>0865858325</td>
-                                                                                <td>012345678987</td>
-                                                                                <td>Nam</td>
-                                                                                <td>
-                                                                                    <button type="button"
-                                                                                        class="btn btn-warning">Chọn</button>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>1</td>
-                                                                                <td>InternetExplorer</td>
-                                                                                <td>Tuan Anh</td>
-                                                                                <td>0865858325</td>
-                                                                                <td>012345678987</td>
-                                                                                <td>Nam</td>
-                                                                                <td>
-                                                                                    <button type="button"
-                                                                                        class="btn btn-warning">Chọn</button>
-                                                                                </td>
-                                                                            </tr>
+                                                                        <tbody id="tbl_doi_nv">
+
                                                                         </tbody>
                                                                     </table>
                                                                     <br>
                                                                     <nav aria-label="Page navigation example">
                                                                         <ul class="pagination">
-                                                                            <li class="page-item"><a class="page-link"
-                                                                                    href="#">Previous</a></li>
-                                                                            <li class="page-item"><a class="page-link"
-                                                                                    href="#">1</a></li>
-                                                                            <li class="page-item"><a class="page-link"
-                                                                                    href="#">Next</a></li>
+                                                                            <li class="page-item" id="btn_prev_page"><a
+                                                                                    class="page-link"
+                                                                                    id="prevPage">Previous</a>
+                                                                            </li>
+                                                                            <li class="d-flex flex-row page-item"
+                                                                                id="numberPage">
+
+
+                                                                            </li>
+                                                                            <li class="page-item" id="btn_next_page">
+                                                                                <a class="page-link"
+                                                                                    id="nextPage">Next</a>
+                                                                            </li>
                                                                         </ul>
                                                                     </nav>
                                                                 </div>
@@ -770,58 +752,58 @@
                                                     <div class="d-flex justify-content-start">
                                                         <h6 style="font-family: 'Times New Roman'; font-weight: bold">
                                                             Trạng thái:</h6>
-                                                        <p th:if= "${hoaDonDT.trangthai==0}"
+                                                        <p th:if="${hoaDonDT.trangthai==0}"
                                                             style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
                                                             Chờ xác nhận</p>
-                                                            <p th:if= "${hoaDonDT.trangthai==1}"
+                                                        <p th:if="${hoaDonDT.trangthai==1}"
                                                             style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
                                                             Đã xác nhận</p>
-                                                            <p th:if= "${hoaDonDT.trangthai==2}"
+                                                        <p th:if="${hoaDonDT.trangthai==2}"
                                                             style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
                                                             Chờ giao hàng</p>
-                                                            <p th:if= "${hoaDonDT.trangthai==3}"
+                                                        <p th:if="${hoaDonDT.trangthai==3}"
                                                             style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
                                                             Đang giao hàng</p>
-                                                            <p th:if= "${hoaDonDT.trangthai==4}"
+                                                        <p th:if="${hoaDonDT.trangthai==4}"
                                                             style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
                                                             Đã thanh toán</p>
-                                                            <p th:if= "${hoaDonDT.trangthai==5}"
+                                                        <p th:if="${hoaDonDT.trangthai==5}"
                                                             style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
                                                             Đã hoàn thành</p>
-                                                            <p th:if= "${hoaDonDT.trangthai==6}"
+                                                        <p th:if="${hoaDonDT.trangthai==6}"
                                                             style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
                                                             Đã hủy</p>
                                                     </div>
                                                     <div class="d-flex justify-content-start">
                                                         <h6 style="font-family: 'Times New Roman'; font-weight: bold">
                                                             Loại:</h6>
-                                                        <p th:if= "${hoaDonDT.loaihoadon==true}"
+                                                        <p th:if="${hoaDonDT.loaihoadon==true}"
                                                             style="margin-left: 50px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
-                                                            ONLINE</p>
-                                                            <p th:if= "${hoaDonDT.loaihoadon==false}"
+                                                            online</p>
+                                                        <p th:if="${hoaDonDT.loaihoadon==false}"
                                                             style="margin-left: 50px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
-                                                            OFFLINE</p>
+                                                            offline</p>
                                                     </div>
                                                     <div class="d-flex justify-content-start">
                                                         <h6 style="font-family: 'Times New Roman'; font-weight: bold">
                                                             Địa chỉ:</h6>
                                                         <p th:text="${hoaDonDT.diachi}"
                                                             style="margin-left: 34px; font-family: 'Times New Roman'; font-size: 15px;">
-                                                            </p>
+                                                        </p>
                                                     </div>
                                                     <div class="d-flex justify-content-start">
                                                         <h6 style="font-family: 'Times New Roman'; font-weight: bold">
                                                             Ngày tạo:</h6>
                                                         <p th:text="${ #dates.format(hoaDonDT.ngaytao, 'dd-MM-yyyy HH:mm:ss')}"
                                                             style="margin-left: 20px; font-family: 'Times New Roman'; font-size: 15px;">
-                                                            </p>
+                                                        </p>
                                                     </div>
                                                     <div class="d-flex justify-content-start">
                                                         <h6 style="font-family: 'Times New Roman'; font-weight: bold">
                                                             Ghi chú:</h6>
                                                         <p th:text="${hoaDonDT.ghichu}"
                                                             style=" margin-left: 24px;font-family: 'Times New Roman'; font-size: 15px;">
-                                                            </p>
+                                                        </p>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6 col-md-6">
@@ -830,28 +812,28 @@
                                                             Loại giao dịch:</h6>
                                                         <p th:text="${phuongThucTT.tenphuongthuc}"
                                                             style="margin-left: 79px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
-                                                             </p>
+                                                        </p>
                                                     </div>
                                                     <div class="d-flex justify-content-start">
                                                         <h6 style="font-family: 'Times New Roman'; font-weight: bold">
-                                                            Phương thức thanh toán:</h6> 
+                                                            Phương thức thanh toán:</h6>
                                                         <p th:text="${phuongThucTT.mota}"
                                                             style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
-                                                            </p>
+                                                        </p>
                                                     </div>
                                                     <div class="d-flex justify-content-start">
                                                         <h6 style="font-family: 'Times New Roman'; font-weight: bold">
                                                             Tên khách hàng:</h6>
                                                         <p th:text="${hoaDonDT.khachhang.nguoidung.hovaten}"
                                                             style="margin-left: 70px; font-family: 'Times New Roman'; font-size: 15px;">
-                                                            </p>
+                                                        </p>
                                                     </div>
                                                     <div class="d-flex justify-content-start">
                                                         <h6 style="font-family: 'Times New Roman'; font-weight: bold">Số
                                                             điện thoại:</h6>
                                                         <p th:text="${hoaDonDT.sdt}"
                                                             style="margin-left: 89px; font-family: 'Times New Roman'; font-size: 15px;">
-                                                            </p>
+                                                        </p>
                                                     </div>
                                                     <div class="d-flex justify-content-start">
                                                         <h6 style="font-family: 'Times New Roman'; font-weight: bold">
@@ -888,34 +870,39 @@
                                                 <h6 style="font-family: 'Times New Roman'; font-weight: bold">Tổng tiền
                                                     đơn hàng:</h6>
                                                 <p th:text="${#numbers.formatDecimal(hoaDonDT.tongtien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
-                                                 style="font-family: 'Times New Roman'; font-size: 16px; color: red">
-                                                    </p>
+                                                    style="font-family: 'Times New Roman'; font-size: 16px; color: red">
+                                                </p>
                                             </div>
                                             <div class="d-flex justify-content-between">
                                                 <h6 style="font-family: 'Times New Roman'; font-weight: bold">Phí giao
                                                     hàng:</h6>
                                                 <p th:text="${#numbers.formatDecimal(hoaDonDT.phivanchuyen, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
-                                                style="font-family: 'Times New Roman'; font-size: 16px;">
+                                                    style="font-family: 'Times New Roman'; font-size: 16px;">
                                                 </p>
                                             </div>
                                             <div class="d-flex justify-content-between">
                                                 <h6 style="font-family: 'Times New Roman'; font-weight: bold">Phiếu giảm
-                                                    giá:</h6>
-                                                <p style="font-family: 'Times New Roman'; font-size: 16px;">1.000.000
-                                                    VND</p>
+                                                    giá
+                                                    :</h6>
+                                                <p th:text="${#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiamtoida, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                    style="font-family: 'Times New Roman'; font-size: 16px;">
+                                                </p>
                                             </div>
                                             <div class="d-flex justify-content-between">
                                                 <h6 style="font-family: 'Times New Roman'; font-weight: bold">Tổng tiền
-                                                    giảm:</h6>
-                                                <p style="font-family: 'Times New Roman'; font-size: 16px;">1.000.000
-                                                    VND</p>
+                                                    giảm
+                                                    :</h6>
+                                                <p th:text="${#numbers.formatDecimal(phieuGiamCT.tiengiam, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                    style="font-family: 'Times New Roman'; font-size: 16px;">
+                                                </p>
                                             </div>
                                             <hr class="border border-danger border-2 opacity-50">
                                             <div class="d-flex justify-content-between">
                                                 <h6 style="font-family: 'Times New Roman'; font-weight: bold">Tổng tiền
                                                     thanh toán:</h6>
-                                                <p style="font-family: 'Times New Roman'; font-size: 16px; color: red;">
-                                                    5.065.000 VND</p>
+                                                <p th:text="${#numbers.formatDecimal(tongTT, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                    style="font-family: 'Times New Roman'; font-size: 16px; color: red;">
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -942,7 +929,9 @@
                                             Thông tin sản phẩm đã mua
                                         </h3>
                                         <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                                            data-bs-target="#modalThemSanPhamHD" th:classappend="${trangThaiHienTai!=0?'disabled':''}">+ Thêm sản phẩm</button>
+                                            data-bs-target="#modalThemSanPhamHD" id="changeSP"
+                                            th:classappend="${trangThaiHienTai!=0?'disabled':''}">+ Thêm sản
+                                            phẩm </button>
                                         <!--Modal thêm sản phẩm vào hóa đơn-->
                                         <!-- Modal -->
                                         <div class="modal fade" id="modalThemSanPhamHD" tabindex="-1"
@@ -1075,69 +1064,24 @@
                                                                         <th>Thao tác</th>
                                                                     </tr>
                                                                 </thead>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td>1</td>
-                                                                        <td>Thêm vào nhá</td>
-                                                                        <td>Tuan Anh</td>
-                                                                        <td>56</td>
-                                                                        <td>41</td>
-                                                                        <td>Vàng</td>
-                                                                        <td>
-                                                                            <p
-                                                                                style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
-                                                                                Đang kinh doanh</p>
-                                                                        </td>
-                                                                        <td>
-                                                                            <button type="button"
-                                                                                class="btn btn-warning">Chọn</button>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>1</td>
-                                                                        <td>Thêm vào nhá</td>
-                                                                        <td>Tuan Anh</td>
-                                                                        <td>56</td>
-                                                                        <td>41</td>
-                                                                        <td>Vàng</td>
-                                                                        <td>
-                                                                            <p
-                                                                                style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
-                                                                                Đang kinh doanh</p>
-                                                                        </td>
-                                                                        <td>
-                                                                            <button type="button"
-                                                                                class="btn btn-warning">Chọn</button>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>1</td>
-                                                                        <td>Thêm vào nhá</td>
-                                                                        <td>Tuan Anh</td>
-                                                                        <td>56</td>
-                                                                        <td>41</td>
-                                                                        <td>Vàng</td>
-                                                                        <td>
-                                                                            <p
-                                                                                style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
-                                                                                Đang kinh doanh</p>
-                                                                        </td>
-                                                                        <td>
-                                                                            <button type="button"
-                                                                                class="btn btn-warning">Chọn</button>
-                                                                        </td>
-                                                                    </tr>
+                                                                <tbody id="tbl_sp_them">
                                                                 </tbody>
                                                             </table>
                                                             <br>
                                                             <nav aria-label="Page navigation example">
                                                                 <ul class="pagination">
-                                                                    <li class="page-item"><a class="page-link"
-                                                                            href="#">Previous</a></li>
-                                                                    <li class="page-item"><a class="page-link"
-                                                                            href="#">1</a></li>
-                                                                    <li class="page-item"><a class="page-link"
-                                                                            href="#">Next</a></li>
+                                                                    <li class="page-item" id="btn_prev_page"><a
+                                                                            class="page-link"
+                                                                            id="prevPageSP">Previous</a>
+                                                                    </li>
+                                                                    <li class="d-flex flex-row page-item"
+                                                                        id="numberPageSP">
+
+
+                                                                    </li>
+                                                                    <li class="page-item" id="btn_next_page">
+                                                                        <a class="page-link" id="nextPageSP">Next</a>
+                                                                    </li>
                                                                 </ul>
                                                             </nav>
                                                         </div>
@@ -1168,106 +1112,57 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Để ảnh vào nhá</td>
+                                                <tr th:each="a:${pageSPHD}">
+                                                    <td th:text="${aStat.index+1}"></td>
                                                     <td>
-                                                        <h3
+                                                        <img src="a.sanphamchitiet.anh.get(0).getTenanh()" alt=""
+                                                            style="height: 100px; width: 100px;">
+                                                    </td>
+                                                    <td>
+                                                        <p th:text="${a.sanphamchitiet.sanpham.tensanpham}"
                                                             style="font-family: 'Times New Roman'; font-size: 15px; font-weight: bold;">
-                                                            Giày đá bóng Nike</h3>
-                                                        <h3
+                                                            ></p>
+                                                        <p th:text="${a.giasanpham}"
                                                             style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
-                                                            6.000.000 VND</h3>
-                                                        <h3
+                                                            ></p>
+                                                        <p th:text="${'Size: '+a.sanphamchitiet.kichco.ten}"
                                                             style="font-family: 'Times New Roman'; font-size: 15px;font-weight: bold;">
-                                                            Kích cỡ: 41</h3>
+                                                            ></p>
                                                     </td>
-                                                    <td>Đen</td>
+                                                    <td th:text="${a.sanphamchitiet.mausac.ten}"></td>
+
                                                     <td><input class="form-control form-control-sm" type="number"
-                                                            value="1" aria-label=".form-control-sm example"
-                                                            style="width: 100px;"></td>
-                                                    <td>6.000.000 VND</td>
-                                                    <td>
-                                                        <p
-                                                            style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
-                                                            Chờ xác nhận</p>
+                                                            aria-label=".form-control-sm example" style="width: 100px;"
+                                                            th:value="${a.soluong}" min="1" max="100"></td>
+
+                                                    <td th:text="${#numbers.formatDecimal(a.giasanpham*a.soluong, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                        style="color: red;">
                                                     </td>
                                                     <td>
-                                                        <a>
-                                                            <button type="button" class="btn btn-danger">Xóa</button>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Để ảnh vào nhá</td>
-                                                    <td>
-                                                        <h3
-                                                            style="font-family: 'Times New Roman'; font-size: 15px; font-weight: bold;">
-                                                            Giày đá bóng Nike</h3>
-                                                        <h3
-                                                            style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
-                                                            6.000.000 VND</h3>
-                                                        <h3
-                                                            style="font-family: 'Times New Roman'; font-size: 15px;font-weight: bold;">
-                                                            Kích cỡ: 41</h3>
-                                                    </td>
-                                                    <td>Đen</td>
-                                                    <td><input class="form-control form-control-sm" type="number"
-                                                            value="1" aria-label=".form-control-sm example"
-                                                            style="width: 100px;"></td>
-                                                    <td>6.000.000 VND</td>
-                                                    <td>
-                                                        <p
-                                                            style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
-                                                            Chờ xác nhận</p>
+                                                        <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;"
+                                                            th:text="${a.trangthai==true?'thành công':'thất bại'}"></p>
                                                     </td>
                                                     <td>
-                                                        <a>
-                                                            <button type="button" class="btn btn-danger">Xóa</button>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Để ảnh vào nhá</td>
-                                                    <td>
-                                                        <h3
-                                                            style="font-family: 'Times New Roman'; font-size: 15px; font-weight: bold;">
-                                                            Giày đá bóng Nike</h3>
-                                                        <h3
-                                                            style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
-                                                            6.000.000 VND</h3>
-                                                        <h3
-                                                            style="font-family: 'Times New Roman'; font-size: 15px;font-weight: bold;">
-                                                            Kích cỡ: 41</h3>
-                                                    </td>
-                                                    <td>Đen</td>
-                                                    <td><input class="form-control form-control-sm" type="number"
-                                                            value="1" aria-label=".form-control-sm example"
-                                                            style="width: 100px;"></td>
-                                                    <td>6.000.000 VND</td>
-                                                    <td>
-                                                        <p
-                                                            style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
-                                                            Chờ xác nhận</p>
-                                                    </td>
-                                                    <td>
-                                                        <a>
-                                                            <button type="button" class="btn btn-danger">Xóa</button>
-                                                        </a>
+                                                        <button type="button" class="btn btn-danger"><i
+                                                                class="bi bi-trash3"></i></button>
                                                     </td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                         <br>
-                                        <nav aria-label="Page navigation example">
+                                        <nav aria-label="Page navigation example" th:if="${pageSPHD.totalPages>1}">
                                             <ul class="pagination">
-                                                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                                <li class="page-item" th:if="${pageSPHD.number>0}"><a class="page-link"
+                                                        th:href="@{'?pageSP='+${pageSPHD.number-1}}">Previous</a>
+                                                </li>
+                                                <li class="page-item"
+                                                    th:each="i:${#numbers.sequence(1,pageSPHD.totalPages)}"
+                                                    th:classappend="${pageNo==i-1?'active':''}"><a class="page-link"
+                                                        th:href="@{'?pageSP='+${i-1}}" th:text="${i}"></a></li>
+                                                <li class="page-item" th:if="${pageSPHD.number<pageSPHD.totalPages-1}">
+                                                    <a class="page-link"
+                                                        th:href="@{'?pageSP='+${pageSPHD.number+1}}">Next</a>
+                                                </li>
                                             </ul>
                                         </nav>
                                     </div>
@@ -1379,6 +1274,594 @@
                     return "https://png.pngtree.com/png-vector/20190725/ourlarge/pngtree-invoice-icon-design-vector-png-image_1586820.jpg";
             }
         }
+    </script>
+    <!-- <script th:inline="javascript">
+        var cities = /*[[${cities}]]*/[];
+    </script> -->
+    <!-- <script>
+        function getDiaChi() {
+            var selectedProvince = document.getElementById("tinhthanhpho").value;
+            var quanhuyenSelect = document.getElementById("quanhuyen");
+
+            // Lấy thông tin về tỉnh/thành phố đã chọn từ biến cities
+            var selectedProvinceData = cities.find(function (city) {
+                return city.name === selectedProvince;
+            });
+
+            if (selectedProvinceData) {
+                selectedProvinceData.districts.forEach(function (district) {
+                    var option = document.createElement("option");
+                    option.text = district.name;
+                    option.value = district.name;
+                    quanhuyenSelect.appendChild(option);
+                });
+            }
+        }
+
+        function getQuanHuyen() {
+            var selectedDistrict = document.getElementById("quanhuyen").value;
+            var xaphuongSelect = document.getElementById("xaphuong");
+
+            // Lấy thông tin về tỉnh/thành phố đã chọn từ biến cities
+            var selectedProvince = document.getElementById("tinhthanhpho").value;
+            var selectedProvinceData = cities.find(function (city) {
+                return city.name === selectedProvince;
+            });
+
+            if (selectedProvinceData) {
+                var selectedDistrictData = selectedProvinceData.districts.find(function (district) {
+                    return district.name === selectedDistrict;
+                });
+
+                if (selectedDistrictData) {
+                    selectedDistrictData.wards.forEach(function (ward) {
+                        var option = document.createElement("option");
+                        option.text = ward.name;
+                        option.value = ward.name;
+                        xaphuongSelect.appendChild(option);
+                    });
+                }
+            }
+        }
+
+    </script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script>
+        var citis = document.getElementById("city");
+        var districts = document.getElementById("district");
+        var wards = document.getElementById("ward");
+        var Parameter = {
+            url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
+            method: "GET",
+            responseType: "application/json",
+        };
+        var promise = axios(Parameter);
+        promise.then(function (result) {
+            renderCity(result.data);
+        });
+    
+        function renderCity(data) {
+            for (const x of data) {
+                var opt = document.createElement('option');
+                opt.value = x.Name;
+                opt.text = x.Name;
+                opt.setAttribute('data-id', x.Id);
+                citis.options.add(opt);
+            }
+            citis.onchange = function () {
+                district.length = 1;
+                ward.length = 1;
+                if(this.options[this.selectedIndex].dataset.id != ""){
+                    const result = data.filter(n => n.Id === this.options[this.selectedIndex].dataset.id);
+    
+                    for (const k of result[0].Districts) {
+                        var opt = document.createElement('option');
+                        opt.value = k.Name;
+                        opt.text = k.Name;
+                        opt.setAttribute('data-id', k.Id);
+                        district.options.add(opt);
+                    }
+                }
+            };
+            district.onchange = function () {
+                ward.length = 1;
+                const dataCity = data.filter((n) => n.Id === citis.options[citis.selectedIndex].dataset.id);
+                if (this.options[this.selectedIndex].dataset.id != "") {
+                    const dataWards = dataCity[0].Districts.filter(n => n.Id === this.options[this.selectedIndex].dataset.id)[0].Wards;
+    
+                    for (const w of dataWards) {
+                        var opt = document.createElement('option');
+                        opt.value = w.Name;
+                        opt.text = w.Name;
+                        opt.setAttribute('data-id', w.Id);
+                        wards.options.add(opt);
+                    }
+                }
+            };
+        }
+    </script>
+
+    <!-- thay đổi nhân viên hdct -->
+    <script>
+        let thisNumberPage = 0;
+        var btn = document.getElementById('changeNV');
+        var nextPage = document.getElementById('nextPage');
+        var prevPage = document.getElementById('prevPage');
+
+        btn.onclick = function () {
+            const pageNVChanges = localStorage.getItem("pageNVChanges") ?? 0;
+            const url = `/hoa-don/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+            fetch(url)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let html = '';
+                    let htmlNumberPage = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        html += `<tr>
+                               <td>${STT}</td>
+                               <td>${hd.manhanvien}</td>
+                               <td>${hd.nguoidung.hovaten}</td>
+                               <td>${hd.nguoidung.sodienthoai}</td>
+                               <td>${hd.nguoidung.ngaysinh}</td>
+                               <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
+                               <td>
+                                <a>
+                                <button type="button"
+                                class="btn btn-warning">Chọn</button>
+                                </a>
+                                 </td>
+                            </tr>`;
+                    }
+
+                    if (thisNumberPage < 1) {
+                        prevPage.style.display = 'none';
+                    } else {
+                        prevPage.style.display = 'block';
+                    }
+                    if (thisNumberPage >= b.totalPages - 1) {
+                        nextPage.style.display = 'none';
+                    } else {
+                        nextPage.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPage += `
+                        <a class="page-link" onclick="pageClick( ${i - 1})">
+                                                                                    ${i}
+                         </a>
+                        `;
+                    }
+                    document.getElementById("numberPage").innerHTML = htmlNumberPage;
+                    document.getElementById("tbl_doi_nv").innerHTML = html;
+
+                })
+        }
+
+
+        function pageClick(number) {
+            const pageNVChanges = localStorage.getItem("pageNVChanges") ?? number;
+            const url = `/hoa-don/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+            fetch(url)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let html = '';
+                    let htmlNumberPage = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        html += `<tr>
+                               <td>${STT}</td>
+                               <td>${hd.manhanvien}</td>
+                               <td>${hd.nguoidung.hovaten}</td>
+                               <td>${hd.nguoidung.sodienthoai}</td>
+                               <td>${hd.nguoidung.ngaysinh}</td>
+                               <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
+                               <td>
+                                <a>
+                                <button type="button"
+                                class="btn btn-warning">Chọn</button>
+                                </a>
+                                 </td>
+                            </tr>`;
+                    }
+                    if (thisNumberPage < 1) {
+                        prevPage.style.display = 'none';
+                    } else {
+                        prevPage.style.display = 'block';
+                    }
+                    if (thisNumberPage >= b.totalPages - 1) {
+                        nextPage.style.display = 'none';
+                    } else {
+                        nextPage.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPage += `
+                        <a class="page-link" onclick="pageClick( ${i - 1})">
+                                                                                    ${i}
+                         </a>
+                        `;
+                    }
+                    document.getElementById("numberPage").innerHTML = htmlNumberPage;
+                    document.getElementById("tbl_doi_nv").innerHTML = html;
+
+                })
+        }
+
+        nextPage.onclick = function () {
+            thisNumberPage++;
+            const pageNVChanges = localStorage.getItem("pageNVChanges") ?? thisNumberPage;
+            const url = `/hoa-don/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+            fetch(url)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let html = '';
+                    let htmlNumberPage = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        html += `<tr>
+                               <td>${STT}</td>
+                               <td>${hd.manhanvien}</td>
+                               <td>${hd.nguoidung.hovaten}</td>
+                               <td>${hd.nguoidung.sodienthoai}</td>
+                               <td>${hd.nguoidung.ngaysinh}</td>
+                               <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
+                               <td>
+                                <a>
+                                <button type="button"
+                                class="btn btn-warning">Chọn</button>
+                                </a>
+                                 </td>
+                            </tr>`;
+                    }
+                    if (thisNumberPage < 1) {
+                        prevPage.style.display = 'none';
+                    } else {
+                        prevPage.style.display = 'block';
+                    }
+                    if (thisNumberPage >= b.totalPages - 1) {
+                        nextPage.style.display = 'none';
+                    } else {
+                        nextPage.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPage += `
+                        <a class="page-link" onclick="pageClick( ${i - 1})">
+                                                                                    ${i}
+                         </a>
+                        `;
+                    }
+                    document.getElementById("numberPage").innerHTML = htmlNumberPage;
+                    document.getElementById("tbl_doi_nv").innerHTML = html;
+
+                })
+        }
+
+
+
+        prevPage.onclick = function () {
+
+            thisNumberPage--;
+            const pageNVChanges = localStorage.getItem("pageNVChanges") ?? thisNumberPage;
+            const url = `/hoa-don/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+            fetch(url)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let html = '';
+                    let htmlNumberPage = '';
+
+                    for (const hd of b.content) {
+                        STT++;
+                        html += `<tr>
+                               <td>${STT}</td>
+                               <td>${hd.manhanvien}</td>
+                               <td>${hd.nguoidung.hovaten}</td>
+                               <td>${hd.nguoidung.sodienthoai}</td>
+                               <td>${hd.nguoidung.ngaysinh}</td>
+                               <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
+                               <td>
+                                <a>
+                                <button type="button"
+                                class="btn btn-warning">Chọn</button>
+                                </a>
+                                 </td>
+                            </tr>`;
+                    }
+                    if (thisNumberPage < 1) {
+                        prevPage.style.display = 'none';
+                    } else {
+                        prevPage.style.display = 'block';
+                    }
+                    if (thisNumberPage >= b.totalPages - 1) {
+                        nextPage.style.display = 'none';
+                    } else {
+                        nextPage.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPage += `
+                        <a class="page-link" onclick="pageClick( ${i - 1})">
+                                                                                    ${i}
+                         </a>
+                        `;
+                    }
+                    document.getElementById("numberPage").innerHTML = htmlNumberPage;
+                    document.getElementById("tbl_doi_nv").innerHTML = html;
+
+                })
+        }
+
+    </script>
+    <!-- thay đổi sản phẩm hdct -->
+    <script>
+        let thisNumberSPPage = 0;
+        var btnSP = document.getElementById('changeSP');
+        var nextPageSP = document.getElementById('nextPageSP');
+        var prevPageSP = document.getElementById('prevPageSP');
+
+        btnSP.onclick = function () {
+            const pageSPChanges = localStorage.getItem("pageSPChanges") ?? 0;
+            const urlPage = `/hoa-don/viewSPChanges?pageSPChanges=${pageSPChanges}`;
+
+            fetch(urlPage)
+                .then(function (c) {
+                    return c.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let htmlSP = '';
+                    let htmlNumberPageSP = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        htmlSP += `<tr>
+                               <td>${STT}</td>
+                               <td> 
+                                <img src="${hd.anh.tenanh}" alt=""
+                                                            style="height: 100px; width: 100px;">
+                                
+                                </td>
+                               <td>${hd.sanpham.tensanpham}</td>
+                               <td>${hd.soluong}</td>
+                               <td>${hd.kichco.ten}</td>
+                               <td>${hd.mausac.ten}</td>
+                               <td>
+                                <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                    ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                    </p>
+                                </td>
+                               <td>
+                                <a>
+                                <button type="button"
+                                class="btn btn-warning">Chọn</button>
+                                </a>
+                                 </td>
+                            </tr>`;
+                    }
+
+                    if (thisNumberSPPage < 1) {
+                        prevPageSP.style.display = 'none';
+                    } else {
+                        prevPageSP.style.display = 'block';
+                    }
+                    if (thisNumberSPPage >= b.totalPages - 1) {
+                        nextPageSP.style.display = 'none';
+                    } else {
+                        nextPageSP.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPageSP += `
+                        <a class="page-link" onclick="pageClickSP( ${i - 1})">
+                                                                                    ${i}
+                         </a>
+                        `;
+                    }
+                    document.getElementById("numberPageSP").innerHTML = htmlNumberPageSP;
+                    document.getElementById("tbl_sp_them").innerHTML = htmlSP;
+
+                })
+        }
+
+        function pageClickSP(numbers) {
+            const pageSPChanges = localStorage.getItem("pageSPChanges") ?? numbers;
+            const urlPage = `/hoa-don/viewSPChanges?pageSPChanges=${pageSPChanges}`;
+            fetch(urlPage)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    console.log(b)
+                    var STT = 0;
+                    let htmlSP = '';
+                    let htmlNumberPageSP = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        htmlSP += `<tr>
+                               <td>${STT}</td>
+                               <td> 
+                                <img src="${hd.anh.tenanh}" alt=""
+                                                            style="height: 100px; width: 100px;">
+                                
+                                </td>
+                               <td>${hd.sanpham.tensanpham}</td>
+                               <td>${hd.soluong}</td>
+                               <td>${hd.kichco.ten}</td>
+                               <td>${hd.mausac.ten}</td>
+                               <td>
+                                <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                    ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                    </p>
+                                </td>
+                               <td>
+                                <a>
+                                <button type="button"
+                                class="btn btn-warning">Chọn</button>
+                                </a>
+                                 </td>
+                            </tr>`;
+                    }
+
+                    if (thisNumberSPPage < 1) {
+                        prevPageSP.style.display = 'none';
+                    } else {
+                        prevPageSP.style.display = 'block';
+                    }
+                    if (thisNumberSPPage >= b.totalPages - 1) {
+                        nextPageSP.style.display = 'none';
+                    } else {
+                        nextPageSP.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPageSP += `
+                        <a class="page-link" onclick="pageClickSP( ${i - 1})">
+                                                                                    ${i}
+                         </a>
+                        `;
+                    }
+                    document.getElementById("numberPageSP").innerHTML = htmlNumberPageSP;
+                    document.getElementById("tbl_sp_them").innerHTML = htmlSP;
+
+                })
+        }
+
+
+        nextPageSP.onclick = function () {
+            thisNumberSPPage++;
+            const pageSPChanges = localStorage.getItem("pageSPChanges") ?? thisNumberSPPage;
+            const urlPage = `/hoa-don/viewSPChanges?pageSPChanges=${pageSPChanges}`;
+            fetch(urlPage)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    console.log(b)
+                    var STT = 0;
+                    let htmlSP = '';
+                    let htmlNumberPageSP = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        htmlSP += `<tr>
+                               <td>${STT}</td>
+                               <td> 
+                                <img src="${hd.anh.tenanh}" alt=""
+                                                            style="height: 100px; width: 100px;">
+                                
+                                </td>
+                               <td>${hd.sanpham.tensanpham}</td>
+                               <td>${hd.soluong}</td>
+                               <td>${hd.kichco.ten}</td>
+                               <td>${hd.mausac.ten}</td>
+                               <td>
+                                <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                    ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                    </p>
+                                </td>
+                               <td>
+                                <a>
+                                <button type="button"
+                                class="btn btn-warning">Chọn</button>
+                                </a>
+                                 </td>
+                            </tr>`;
+                    }
+
+                    if (thisNumberSPPage < 1) {
+                        prevPageSP.style.display = 'none';
+                    } else {
+                        prevPageSP.style.display = 'block';
+                    }
+                    if (thisNumberSPPage >= b.totalPages - 1) {
+                        nextPageSP.style.display = 'none';
+                    } else {
+                        nextPageSP.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPageSP += `
+                        <a class="page-link" onclick="pageClickSP( ${i - 1})">
+                                                                                    ${i}
+                         </a>
+                        `;
+                    }
+                    document.getElementById("numberPageSP").innerHTML = htmlNumberPageSP;
+                    document.getElementById("tbl_sp_them").innerHTML = htmlSP;
+
+                })
+        }
+
+
+
+        prevPageSP.onclick = function () {
+
+            thisNumberSPPage--;
+            const pageSPChanges = localStorage.getItem("pageSPChanges") ?? thisNumberSPPage;
+            const urlPage = `/hoa-don/viewSPChanges?pageSPChanges=${pageSPChanges}`;
+            fetch(urlPage)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    console.log(b)
+                    var STT = 0;
+                    let htmlSP = '';
+                    let htmlNumberPageSP = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        htmlSP += `<tr>
+                               <td>${STT}</td>
+                               <td> 
+                                <img src="${hd.anh.tenanh}" alt=""
+                                                            style="height: 100px; width: 100px;">
+                                
+                                </td>
+                               <td>${hd.sanpham.tensanpham}</td>
+                               <td>${hd.soluong}</td>
+                               <td>${hd.kichco.ten}</td>
+                               <td>${hd.mausac.ten}</td>
+                               <td>
+                                <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                    ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                    </p>
+                                </td>
+                               <td>
+                                <a>
+                                <button type="button"
+                                class="btn btn-warning">Chọn</button>
+                                </a>
+                                 </td>
+                            </tr>`;
+                    }
+
+                    if (thisNumberSPPage < 1) {
+                        prevPageSP.style.display = 'none';
+                    } else {
+                        prevPageSP.style.display = 'block';
+                    }
+                    if (thisNumberSPPage >= b.totalPages - 1) {
+                        nextPageSP.style.display = 'none';
+                    } else {
+                        nextPageSP.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPageSP += `
+                        <a class="page-link" onclick="pageClickSP( ${i - 1})">
+                                                                                    ${i}
+                         </a>
+                        `;
+                    }
+                    document.getElementById("numberPageSP").innerHTML = htmlNumberPageSP;
+                    document.getElementById("tbl_sp_them").innerHTML = htmlSP;
+
+                })
+        }
+
     </script>
 </body>
 

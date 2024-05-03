@@ -1,6 +1,9 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.DiaChi;
+import com.example.demo.info.KhachHangInfo;
+import com.example.demo.info.NguoiDungKHInfo;
+import com.example.demo.info.NguoiDungNVInfo;
 import com.example.demo.repository.DiaChiRepository;
 import com.example.demo.restcontroller.khachhang.District;
 import com.example.demo.entity.KhachHang;
@@ -18,8 +21,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -28,10 +29,7 @@ import java.security.SecureRandom;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 @Service
 public class KhachHangImp implements KhachHangService, NguoiDungService {
@@ -63,7 +61,6 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
     }
 
     @Override
-
     public KhachHang add(KhachHang khachHang, NguoiDung nguoiDung, DiaChi diaChi, String tinhthanhpho, String quanhuyen, String xaphuong, String tenduong) {
         int usernameLength = 8;
         int passwordLength = 10;
@@ -88,8 +85,11 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
         diaChi.setTinhthanhpho(tinhthanhpho);
         diaChi.setNgaytao(nguoiDung.getNgaytao());
         diaChi.setLancapnhatcuoi(nguoiDung.getLancapnhatcuoi());
+        diaChi.setHotennguoinhan(nguoiDung.getHovaten());
         diaChiRepository.save(diaChi);
 
+        String maKH = "KH" + (totalCustomer() + 1);
+        khachHang.setMakhachhang(maKH);
         khachHang.setNguoidung(nguoiDung);
         khachHang.setTrangthai(nguoiDung.getTrangthai());
         khachHang.setNgaytao(nguoiDung.getNgaytao());
@@ -102,7 +102,29 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
         return khachHang;
     }
 
-    public static String generateRandomPassword(int length) {
+    @Override
+    public DiaChi updateDiaChi(DiaChi diaChi) {
+        diaChi.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
+        diaChiRepository.save(diaChi);
+        return diaChi;
+    }
+
+    @Override
+    public KhachHang updateKhachHang(KhachHang khachHang) {
+        return khachHangRepostory.save(khachHang);
+    }
+
+    @Override
+    public NguoiDung updateNguoiDung(NguoiDung nguoiDung) {
+        return nguoiDungRepository.save(nguoiDung);
+    }
+
+    public int totalCustomer() {
+        List<KhachHang> lstKhachHang = khachHangRepostory.findAll();
+        int total = lstKhachHang.size();
+        return total;
+    }
+    public String generateRandomPassword(int length) {
         if (length < 4) throw new IllegalArgumentException("Length too short, minimum 4 characters required");
         StringBuilder password = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
@@ -164,6 +186,35 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
     }
 
     @Override
+    public List<KhachHangInfo> displayKhachHang() {
+        List<KhachHang> lstKhachHang = this.findAllKhachHang();
+        Collections.sort(lstKhachHang, Comparator.comparing(KhachHang::getNgaytao).reversed());
+
+        List<DiaChi> lstDiaChi = diaChiRepository.findAll();
+        Collections.sort(lstDiaChi, Comparator.comparing(DiaChi::getNgaytao).reversed());
+
+        List<NguoiDung> lstNguoiDung = this.findAllNguoiDung();
+        Collections.sort(lstNguoiDung, Comparator.comparing(NguoiDung::getNgaytao).reversed());
+
+        List<KhachHangInfo> lstkhachhanginfo = new ArrayList<>();
+        int minSize = Math.min(lstKhachHang.size(), Math.min(lstDiaChi.size(), lstNguoiDung.size()));
+        for (int i = 0; i < minSize; i++) {
+            KhachHangInfo khachHangInfo = new KhachHangInfo();
+            khachHangInfo.setKhachhang(lstKhachHang.get(i));
+            khachHangInfo.setDiachi(lstDiaChi.get(i));
+            khachHangInfo.setNguoidung(lstNguoiDung.get(i));
+            lstkhachhanginfo.add(khachHangInfo);
+        }
+
+        return lstkhachhanginfo;
+    }
+
+    @Override
+    public KhachHang findKhachHangByIdNguoiDung(Integer id) {
+        return khachHangRepostory.findByNguoiDung(id);
+    }
+
+    @Override
     public List<KhachHang> findByAll(String ten, String sdt, Date ngaysinh) {
         return khachHangRepostory.findByAll(ten, sdt, ngaysinh);
     }
@@ -171,6 +222,21 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
     @Override
     public KhachHang getOne(int id) {
         return khachHangRepostory.getReferenceById(id);
+    }
+
+    @Override
+    public KhachHang findKhachHangById(int id) {
+        return khachHangRepostory.getReferenceById(id);
+    }
+
+    @Override
+    public DiaChi findDiaChiById(int id) {
+        return diaChiRepository.getReferenceById(id);
+    }
+
+    @Override
+    public NguoiDung findNguoiDungById(int id) {
+        return nguoiDungRepository.getReferenceById(id);
     }
 
     @Override

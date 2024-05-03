@@ -18,25 +18,15 @@
         color: #fff;
         border-color: rgb(60, 179, 113);
     }
-    /*checkbox*/
-    .custom-checkbox {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        width: 20px;
-        height: 20px;
-        border: 1px solid red; /* Biên đen */
-        border-radius: 4px; /* Bo góc */
-        outline: none;
-    }
 
-    .custom-checkbox:checked {
-        background-color: red; /* Màu đỏ */
+    /*checkbox*/
+    .checkbox-red:checked {
+        background-color: red;
     }
 
 
 </style>
-<body class="hold-transition sidebar-mini" style="font-family:Roboto">
+<body class="hold-transition sidebar-mini" style="font-family: 'Bahnschrift'">
 <div class="wrapper">
     <!-- Navbar -->
     <nav th:replace="~{/layoutadmin/navbar.html}"></nav>
@@ -87,85 +77,94 @@
                                 </h3>
                                 <br>
                                 <hr class="border border-danger border opacity-50">
-                            <form th:method="get" th:object="${search}">
-                                <h3 class="card-title" style="width: 500px;font-weight: bold">Tìm kiếm:
-                                    <input type="text" placeholder="Tìm kiếm tên sản phẩm" class="form-control" name="key">
-                                </h3>
-                                <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Thương hiệu:
-                                    <select class="form-control" name="idThuongHieu" style="color: orange; font-weight: bold;width: 150px">
-                                        <option value="">-----</option>
-                                        <option th:each="thuonghieu : ${th}"
-                                                th:value="${thuonghieu.id}"
-                                                th:text="${thuonghieu.ten}">
-                                        </option>
-                                    </select>
-                                </h3>
-                                <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Đế giày:
-                                    <select class="form-control" name="idDeGiay" style="color: orange; font-weight: bold;width: 150px">
-                                        <option value="">-----</option>
-                                        <option th:each="degiay : ${dg}"
-                                                th:value="${degiay.id}"
-                                                th:text="${degiay.ten}">
-                                        </option>
-                                    </select>
-                                </h3>
-                                <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Kích cỡ:
-                                    <select class="form-control" name="idKichCo" style="color: orange; font-weight: bold;width: 150px">
-                                        <option value="">-----</option>
-                                        <option th:each="kichco : ${kc}"
-                                                th:value="${kichco.id}"
-                                                th:text="${kichco.ten}">
-                                        </option>
-                                    </select>
-                                </h3>
-                                <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Màu sắc:
-                                    <select class="form-control" name="idMauSac" style="color: orange; font-weight: bold;width: 150px">
-                                        <option value="">-----</option>
-                                        <option th:each="mausac : ${ms}"
-                                                th:value="${mausac.id}"
-                                                th:text="${mausac.ten}">
-                                        </option>
-                                    </select>
-                                </h3>
-                                <h3 class="card-title" style="margin-left: 5px;font-weight: bold">
-                                    Khoảng giá: <span id="priceRangeValue">50</span>
-                                    <div class="slidecontainer" style="width: 495px;">
-                                        <input type="range" min="1" max="100" value="50" style="width: 100%;" id="priceRange">
-                                    </div>
-                                </h3>
+                                <form th:method="get" th:object="${search}">
+                                    <h3 class="card-title" style="width: 500px;font-weight: bold">Tìm kiếm:
+                                        <input type="text" placeholder="Tìm kiếm tên sản phẩm" class="form-control"
+                                               name="key">
+                                    </h3>
+                                    <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Thương hiệu:
+                                        <select class="form-control" name="idThuongHieu"
+                                                style="color: orange; font-weight: bold;width: 150px">
+                                            <option value="">-----</option>
+                                            <option th:each="thuonghieu : ${th}"
+                                                    th:value="${thuonghieu.id}"
+                                                    th:text="${thuonghieu.ten}">
+                                            </option>
+                                        </select>
+                                    </h3>
+                                    <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Đế giày:
+                                        <select class="form-control" name="idDeGiay"
+                                                style="color: orange; font-weight: bold;width: 150px">
+                                            <option value="">-----</option>
+                                            <option th:each="degiay : ${dg}"
+                                                    th:value="${degiay.id}"
+                                                    th:text="${degiay.ten}">
+                                            </option>
+                                        </select>
+                                    </h3>
+                                    <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Kích cỡ:
+                                        <select class="form-control" name="idKichCo"
+                                                style="color: orange; font-weight: bold;width: 150px">
+                                            <option value="">-----</option>
+                                            <option th:each="kichco : ${kc}"
+                                                    th:value="${kichco.id}"
+                                                    th:text="${kichco.ten}">
+                                            </option>
+                                        </select>
+                                    </h3>
+                                    <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Màu sắc:
+                                        <select class="form-control" name="idMauSac"
+                                                style="color: orange; font-weight: bold;width: 150px">
+                                            <option value="">-----</option>
+                                            <option th:each="mausac : ${ms}"
+                                                    th:value="${mausac.id}"
+                                                    th:text="${mausac.ten}">
+                                            </option>
+                                        </select>
+                                    </h3>
+                                    <h3 class="card-title" style="margin-left: 5px;font-weight: bold">
+                                        Khoảng giá: <span id="priceRangeValue">50</span>
+                                        <div class="slidecontainer" style="width: 495px;">
+                                            <input type="range" min="1" max="100" value="50" style="width: 100%;"
+                                                   id="priceRange">
+                                        </div>
+                                    </h3>
 
-                                <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Chất liệu:
-                                    <select class="form-control" name="idChatLieu" style="color: orange; font-weight: bold;width: 150px">
-                                        <option value="">-----</option>
-                                        <option th:each="chatlieu : ${cl}"
-                                                th:value="${chatlieu.id}"
-                                                th:text="${chatlieu.ten}">
-                                        </option>
-                                    </select>
-                                </h3>
-                                <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Giới tính:
-                                    <select id="statusSelect" class="form-control" name="gioitinh" style="color: orange; font-weight: bold;width: 150px">
-                                        <option value="">-----</option>
-                                        <option value="1">Nam</option>
-                                        <option value="0">Nữ</option>
-                                    </select>
-                                </h3>
-                                <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Trạng thái:
-                                    <select id="" class="form-control" name="gioitinh" style="color: orange; font-weight: bold;width: 150px">
-                                        <option value="">-----</option>
-                                        <option value="1">Đang kinh doanh</option>
-                                        <option value="0">Ngừng kinh doanh</option>
-                                    </select>
-                                </h3>
-                                <h3 class="card-title">
-                                    <button style="margin-left: 100px" class="btn btn-primary">Tìm kiếm</button>
-                                    <button class="btn btn-danger">Làm mới bộ lọc</button>
-                                </h3>
-                                <br>
-                                <br>
-                                <br>
+                                    <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Chất liệu:
+                                        <select class="form-control" name="idChatLieu"
+                                                style="color: orange; font-weight: bold;width: 150px">
+                                            <option value="">-----</option>
+                                            <option th:each="chatlieu : ${cl}"
+                                                    th:value="${chatlieu.id}"
+                                                    th:text="${chatlieu.ten}">
+                                            </option>
+                                        </select>
+                                    </h3>
+                                    <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Giới tính:
+                                        <select id="statusSelect" class="form-control" name="gioitinh"
+                                                style="color: orange; font-weight: bold;width: 150px">
+                                            <option value="">-----</option>
+                                            <option value="1">Nam</option>
+                                            <option value="0">Nữ</option>
+                                        </select>
+                                    </h3>
+                                    <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Trạng thái:
+                                        <select id="" class="form-control" name="gioitinh"
+                                                style="color: orange; font-weight: bold;width: 150px">
+                                            <option value="">-----</option>
+                                            <option value="1">Đang kinh doanh</option>
+                                            <option value="0">Ngừng kinh doanh</option>
+                                        </select>
+                                    </h3>
+                                    <h3 class="card-title">
+                                        <button style="margin-left: 100px;background-color: rgb(249,72,42);color: white" class="btn">Tìm kiếm</button>
+                                        <button class="btn btn-dark">Làm mới bộ lọc</button>
+                                    </h3>
+                                    <br>
+                                    <br>
+                                    <br>
 
-                            </form>
+                                </form>
                             </div>
                         </div>
                         <!-- /.card -->
@@ -194,15 +193,16 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <table id="example2" class="table table-bordered table-hover text-center">
-                                    <thead class="table table-danger">
+                                <table id="example2" style="width: 100%" class="table-bordered table-hover text-center">
+                                    <thead style="background-color:rgb(249,72,42);height: 50px">
                                     <tr>
-                                        <th></th>
                                         <th>STT</th>
                                         <th>Mã</th>
                                         <th>Ảnh</th>
                                         <th>Số lượng</th>
                                         <th>Giá tiền</th>
+                                        <th>Thương hiệu</th>
+                                        <th>Chất liệu</th>
                                         <th>Đế giày</th>
                                         <th>Kích cỡ</th>
                                         <th>Màu sắc</th>
@@ -211,7 +211,6 @@
                                     </thead>
                                     <tbody>
                                     <tr th:each="spct, stt : ${listAllCTSP}">
-                                        <td><input type="checkbox" class="form-control custom-checkbox"></td>
                                         <td th:text="${stt.index + 1}"></td>
                                         <td th:text="'SPCT00000'+${spct.id + 1}" style="font-weight: bold"></td>
                                         <td>
@@ -239,61 +238,22 @@
                                         </td>
 
 
-                                        <td>
-                                            <input type="number" style="width: 70px; height: 30px" class="form-control" th:value="${spct.soluong}">
-                                        </td>
-                                        <td>
-                                            <input type="text" style="width: 150px; height: 30px;color: red;font-weight: bold" class="form-control" th:value="${#numbers.formatDecimal(spct.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}">
-                                        </td>
-                                        <!--                                        <td th:text="${spct.thuonghieu.ten}"></td>-->
-                                        <!--                                        <td th:text="${spct.chatlieu.ten}"></td>-->
+                                        <td th:text="${spct.soluong}"></td>
+                                        <td style="color: red;font-weight: bold"
+                                            th:text="${#numbers.formatDecimal(spct.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></td>
+                                        <td th:text="${spct.thuonghieu.ten}"></td>
+                                        <td th:text="${spct.chatlieu.ten}"></td>
                                         <td th:text="${spct.degiay.ten}"></td>
                                         <td th:text="${spct.kichco.ten}"></td>
                                         <td th:text="${spct.mausac.ten}"></td>
-                                        <!--                                        <td>-->
-                                        <!--                                            <button style="border-radius: 50px"-->
-                                        <!--                                                    class="btn btn-xs custom-button no-border-button"-->
-                                        <!--                                                    th:classappend="${spct.trangthai ? 'btn-custom-info' : 'btn-custom-warning'}"-->
-                                        <!--                                                    th:text="${spct.trangthai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>-->
-                                        <!--                                        </td>-->
                                         <td>
-                                            <a href="#" class="btn btn-outline-danger">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                     fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
-                                                </svg>
-                                            </a>
-                                            <a th:attr="data-target='#detailSTCP'+${spct.id}" data-toggle="modal"
-                                               class="btn btn-outline-warning">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            <a style="color: rgb(249,72,42)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
                                                      fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
                                                     <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
                                                 </svg>
                                             </a>
-
-                                            <div th:each="spct, stt : ${listAllCTSP}" class="modal fade" th:id="'detailSTCP'+${spct.id}" tabindex="-1" role="dialog">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" th:text="'Phiếu giảm giá '+${spct.sanpham.tensanpham}"></h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-
-                                                            <div class="d-flex justify-content-end align-items-center ">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                                                <button type="submit" class="btn btn-primary" style="margin-left: 20px;">Cập nhật</button>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
                                         </td>
                                     </tr>
                                     </tbody>
@@ -326,7 +286,7 @@
     var priceRangeValue = document.getElementById("priceRangeValue");
 
     // Lắng nghe sự kiện khi người dùng thay đổi giá trị thanh trượt
-    priceRange.oninput = function() {
+    priceRange.oninput = function () {
         // Cập nhật giá trị hiển thị
         priceRangeValue.innerText = this.value;
     };

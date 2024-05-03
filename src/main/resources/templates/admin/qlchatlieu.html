@@ -2,20 +2,23 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <nav th:replace="~{/layoutadmin/head.html}"></nav>
 <style>
-
     .btn-custom-warning {
-        background-color: rgb(221, 100, 0);
-        color: #fff;
-        border-color: rgb(60, 179, 113);
+        background-color:rgb(222,255,206);
+        color:rgb(7,50,255);
+        border-color:rgb(7,50,255) ;
+
     }
 
     .btn-custom-info {
-        background-color: rgb(86, 100, 234);
-        color: #fff;
-        border-color: rgb(60, 179, 113);
+        background-color:rgb(222,255,206);
+        color:rgb(255,33,4);
+        border-color:rgb(255,33,4) ;
+
     }
 </style>
-<body class="hold-transition sidebar-mini">
+<script src="../sweetalert2/dist/sweetalert2.min.js/"></script>
+<link rel="stylesheet" type="text/css" href="../sweetalert2/dist/sweetalert2.min.css">
+<body class="hold-transition sidebar-mini" style="font-family: 'Bahnschrift'">
 <div class="wrapper">
     <!-- Navbar -->
     <nav th:replace="~{/layoutadmin/navbar.html}"></nav>
@@ -81,8 +84,8 @@
                                     <br>
                                     <br>
                                     <br>
-                                    <button style="margin-left: 100px" class="btn btn-primary">Tìm kiếm</button>
-                                    <input type="button" class="btn btn-danger" value="Làm mới bộ lọc" onclick="clearSearch()" />
+                                    <button style="margin-left: 100px;background-color:rgb(249,72,42);color: white" class="btn">Tìm kiếm</button>
+                                    <input type="button" class="btn btn-dark" value="Làm mới bộ lọc" onclick="clearSearch()" />
                                 </form>
                             </div>
 
@@ -112,9 +115,12 @@
                                     </svg>
                                     Danh sách chất liệu
                                 </h3>
-                                <a href="/admin/addsanpham" class="card-title btn btn-primary"
-                                   style="margin-left: 850px" data-bs-toggle="modal" data-bs-target="#themdegiay">Thêm
-                                    chất liệu</a>
+                                <a href="/admin/addsanpham" class="btn"
+                                   style="margin-left: 850px;background-color:rgb(249,72,42);color: white" data-bs-toggle="modal" data-bs-target="#themdegiay">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                    </svg>
+                                    Thêm chất liệu</a>
                             </div>
 
                             <!-- Modal -->
@@ -128,19 +134,13 @@
                                                     aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form th:method="post" th:action="@{/add}" th:object="${chatlieu}">
+                                            <form id="addForm" name="addChatLieu" th:method="post" th:action="@{/add}" th:object="${chatlieu}" onsubmit="return validateTrung()">
                                                 <p>
                                                     Tên chất liệu:
-                                                    <input th:field="*{ten}" class="form-control">
+                                                    <input id="tenInput" th:field="*{ten}" class="form-control">
+                                                <div style="color: red; font-weight: initial;font-style: italic" id="errorTen"></div>
                                                 </p>
-                                                <p>
-                                                    Trạng thái:
-                                                    <select th:field="*{trangthai}" class="form-control">
-                                                        <option th:value="1">Đang kinh doanh</option>
-                                                        <option th:value="0">Ngừng kinh doanh</option>
-                                                    </select>
-                                                </p>
-                                                <button class="btn btn-primary">Thêm</button>
+                                                <button class="btn" style="margin-left: 400px;background-color:rgb(249,72,42);color: white">Thêm</button>
                                             </form>
                                         </div>
                                     </div>
@@ -149,14 +149,14 @@
 
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <table id="example2" class="table table-bordered table-hover text-center">
-                                    <thead class="table table-danger">
+                                <table id="example2" style="width: 100%" class="table-bordered table-hover text-center">
+                                    <thead style="background-color:rgb(249,72,42);height: 50px">
                                     <tr>
                                         <th>STT</th>
                                         <th>Tên chất liệu</th>
                                         <th>Ngày tạo</th>
                                         <th>Trạng thái</th>
-                                        <th>Hành động</th>
+                                        <th>Thao tác</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -165,14 +165,14 @@
                                         <td th:text="${cl.ten}"></td>
                                         <td th:text="${#temporals.format(cl.ngaytao, 'dd-MM-yyyy HH:mm:ss')}"></td>
                                         <td>
-                                            <button style="border-radius: 50px"
-                                                    class="btn btn-xs custom-button no-border-button"
+                                            <button style="border-radius: 5px"
+                                                    class="btn-xs"
                                                     th:classappend="${cl.trangthai ? 'btn-custom-info' : 'btn-custom-warning'}"
                                                     th:text="${cl.trangthai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>
                                         </td>
                                         <td>
-                                            <a class="btn btn-outline-danger">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            <a style="color: rgb(249,72,42)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
                                                      fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
                                                     <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
@@ -207,6 +207,82 @@
         document.getElementById("searchInput").value = "";
         document.getElementById("statusSelect").selectedIndex = 0;
     }
+</script>
+
+<script th:inline="javascript">
+
+    /*<![CDATA[*/
+    var objectsFromController = /*[[${lstChatLieu}]]*/ [];
+
+    function validateTrung() {
+        var inputMa = document.getElementById("tenInput").value;
+        var errorMa = document.getElementById("errorTen");
+        var isMaValid = true;
+
+        // Kiểm tra xem trường "Tên đế giày" có trống không
+        if (inputMa.trim() === "") {
+            errorMa.innerText = "Vui lòng nhập tên chất liệu.";
+            return false; // Ngăn form được gửi đi
+        } else {
+            errorMa.innerText = ""; // Xóa thông báo lỗi nếu có
+        }
+
+        // Kiểm tra trùng tên đế giày
+        for (var i = 0; i < objectsFromController.length; i++) {
+            var obj = objectsFromController[i];
+            if (inputMa === obj.ten) {
+                errorMa.innerText = "Tên chất liệu đã tồn tại!";
+                isMaValid = false;
+                break;
+            }
+        }
+
+        if (isMaValid) {
+            errorMa.innerText = "";
+            them();
+        }
+
+        return false;
+    }
+
+    function them() {
+        // Sử dụng SweetAlert2 thay vì hộp thoại confirm
+        Swal.fire({
+            title: 'Bạn có muốn thêm không?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "success",
+                    title: "Thêm thành công!"
+                });
+
+                setTimeout(function () {
+                    document.addChatLieu.submit();
+                }, 3000);
+            }
+        });
+
+        // Ngăn form được gửi đi ngay lập tức
+        return false;
+    }
+    /*]]>*/
 </script>
 </body>
 </html>
