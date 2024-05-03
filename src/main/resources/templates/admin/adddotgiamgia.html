@@ -115,10 +115,10 @@
                                         <label>Ngày kết thúc</label>
                                         <div style="color: red; font-weight: initial;" id="errorDenNgay"></div>
                                     </div>
-<!--                                    <div class="d-flex justify-content-evenly align-items-center" style="margin-top: 15px;">-->
-<!--                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>-->
-<!--                                        <button onclick="layGiaTri()" type="submit" class="btn btn-primary" style="margin-left: 20px;">Thêm</button>-->
-<!--                                    </div>-->
+                                    <div class="d-flex justify-content-evenly align-items-center" style="margin-top: 15px;">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                        <button onclick="layGiaTri()" type="submit" class="btn btn-primary" style="margin-left: 20px;">+ Thêm</button>
+                                    </div>
                                 </form>
                             </div>
                             <div class="col-lg-7">
@@ -133,22 +133,13 @@
                                     </div>
                                 </form>
                                 <div class="table-responsive" style="margin-top: 10px; padding-bottom: 15px; max-height: 400px;">
-                                    <table class="table table-bordered table-hover">
+                                    <table id="productTable" class="table table-bordered table-hover">
                                         <thead class="table table-danger align-middle text-center sticky-thead">
                                         <th></th>
                                         <th>STT</th>
                                         <th>Tên sản phẩm</th>
                                         </thead>
                                         <tbody>
-                                        <tr th:each="sp,stt:${lstSP}">
-                                            <th class="align-middle text-center">
-                                                <div class="form-check">
-                                                    <input class="form-check-input checkbox" th:value="${sp.id}" type="checkbox" onchange="luuGiaTri(this)">
-                                                </div>
-                                            </th>
-                                            <th th:text="${stt.index +1}"></th>
-                                            <td th:text="${sp.tensanpham}"></td>
-                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -174,30 +165,22 @@
                             </svg>
                             Danh sách chi tiết sản phẩm
                         </h3>
-                        <a th:href="@{/admin/xem-them-dot-giam-gia}" class="card-title btn btn-primary" style="margin-left: 780px;">+ Thêm mới</a>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="table-responsive" style="margin-top: 10px; padding-bottom: 15px; max-height: 400px;">
-                                    <table class="table table-bordered table-hover">
+                                    <table id="detailTable" class="table table-bordered table-hover">
                                         <thead class="table table-danger align-middle text-center sticky-thead">
-                                        <th>
-                                            <div class="form-check">
-                                                <input class="form-check-input checkbox" type="checkbox" onchange="luuGiaTri(this)">
-                                            </div>
-                                        </th>
+                                        <th><input type="checkbox" name="chontatcactsp" id="chontatcactsp" onchange="selectAll(this)"></th>
                                         <th>STT</th>
                                         <th>Ảnh</th>
                                         <th>Tên sản phẩm</th>
-                                        <th>Giói tính</th>
-                                        <th>Kích thước</th>
+                                        <th>Size</th>
                                         <th>Màu sắc</th>
+<!--                                        <th>Gioi tính</th>-->
                                         </thead>
-                                        <tbody>
-                                        <tr>
-
-                                        </tr>
+                                        <tbody class="table align-middle">
                                         </tbody>
                                     </table>
                                 </div>
@@ -215,10 +198,129 @@
     <nav th:replace="~{/layoutadmin/footer.html}"></nav>
 </div>
 <script>
+
+    let selectedProducts = new Set(); // Danh sách các sản phẩm được chọn
+    let index= 0;
+    let index1=0;
+    // Hàm để lấy danh sách sản phẩm từ server
+    async function getProducts() {
+        const response = await fetch('/hien-thi-san-pham');
+        return await response.json();
+    }
+
+    // Hàm để lấy chi tiết sản phẩm từ server dựa vào productId
+    async function getProductDetails(Id) {
+        const response = await fetch(`/hien-thi-san-pham-chi-tiet/${Id}`);
+        return await response.json();
+    }
+
+    // Hàm để hiển thị danh sách sản phẩm
+    async function displayProducts() {
+        const products = await getProducts();
+        const productTableBody = document.querySelector("#productTable tbody");
+        products.forEach(product => {
+            const row = productTableBody.insertRow();
+            const checkboxCell = row.insertCell();
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.name="chonsanpham";
+            checkbox.value = product.id;
+            checkbox.addEventListener("change", async function() {
+                if (this.checked) {
+                    selectedProducts.add(product.id);
+                    const details = await getProductDetails(product.id);
+                    displayDetails(details);
+                } else {
+                    selectedProducts.delete(product.id);
+                    hideDetails(product.id);
+                }
+            });
+            checkboxCell.appendChild(checkbox);
+            const numberCell = row.insertCell();
+            numberCell.textContent = ++index; // T
+            const nameCell = row.insertCell();
+            nameCell.textContent = product.tensanpham;
+        });
+    }
+
+    // Hàm để hiển thị chi tiết sản phẩm
+    function displayDetails(details) {
+        const detailTableBody = document.querySelector("#detailTable tbody");
+        details.forEach(detail => {
+            const row = detailTableBody.insertRow();
+            row.setAttribute("data-product-id", detail.sanpham.id); // Lưu productId vào data attribute
+            const checkboxCell = row.insertCell();
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.name="chonchitietsp";
+            checkbox.value = detail.id;
+            checkbox.onchange = function() {
+                luuGiaTri(this);
+            };
+            checkboxCell.appendChild(checkbox);
+
+            const numberCell = row.insertCell();
+            numberCell.textContent = ++index1;
+
+            const imageCell = row.insertCell(); // Thêm cột cho ảnh
+
+            // Kiểm tra xem detail có danh sách ảnh không
+            if (detail.anh.length > 0) {
+                const image = document.createElement("img");
+                image.src = '/upload/' + detail.anh[0].tenanh.substring(detail.anh[0].tenanh.lastIndexOf('upload') + 6);
+                image.alt = "Ảnh"; // Thiết lập thuộc tính alt của ảnh
+                image.width = 110; // Đặt chiều rộng của ảnh (đơn vị là pixels)
+                image.height = 75;
+                imageCell.appendChild(image); // Thêm ảnh vào ô trong hàng
+            }
+
+            const nameCell = row.insertCell();
+            nameCell.textContent = detail.sanpham.tensanpham;
+
+            const sizeCell = row.insertCell();
+            sizeCell.textContent = detail.kichco.ten;
+
+            const colorCell = row.insertCell();
+            colorCell.textContent = detail.mausac.ten;
+
+        });
+    }
+
+    // Hàm để ẩn chi tiết sản phẩm của sản phẩm đã bị bỏ chọn
+    function hideDetails(Id) {
+        const detailRows = document.querySelectorAll(`#detailTable tbody tr[data-product-id="${Id}"]`);
+        detailRows.forEach(row => row.remove());
+    }
+
+    // Gọi hàm để hiển thị danh sách sản phẩm khi trang được tải
+    displayProducts();
     var giaTriTuCheckbox = []; // Mảng lưu trữ giá trị từ checkbox
+    function selectAll(source) {
+        var checkboxes = document.getElementsByName('chonchitietsp');
+        for(var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = source.checked;
+            // Nếu checkbox được chọn, thêm giá trị của nó vào mảng giaTriTuCheckbox
+            if (source.checked) {
+                giaTriTuCheckbox.push(checkboxes[i].value);
+            } else { // Nếu checkbox không được chọn, loại bỏ giá trị của nó khỏi mảng giaTriTuCheckbox
+                var index = giaTriTuCheckbox.indexOf(checkboxes[i].value);
+                if (index !== -1) {
+                    giaTriTuCheckbox.splice(index, 1);
+                }
+            }
+        }
+    }
+
+    // Gắn sự kiện change cho checkbox "chontatcactsp"
+    chontatcactspCheckbox.addEventListener("change", handleChonTatCaCacTSP);
+
+
 
     // Hàm lưu trữ giá trị từ checkbox khi thay đổi
     function luuGiaTri(checkbox) {
+        if (!giaTriTuCheckbox) {
+            giaTriTuCheckbox = []; // Khởi tạo biến giaTriTuCheckbox nếu nó chưa được khởi tạo
+        }
         if (checkbox.checked) {
             giaTriTuCheckbox.push(checkbox.value);
         } else {
@@ -226,6 +328,11 @@
             if (index !== -1) {
                 giaTriTuCheckbox.splice(index, 1);
             }
+        }
+        if (giaTriTuCheckbox.length > 0) {
+            console.log("Mảng có giá trị:", giaTriTuCheckbox);
+        } else {
+            console.log("Mảng không có giá trị.");
         }
     }
 
@@ -236,7 +343,7 @@
                 input.type = "hidden";
                 input.name = "choncheckbox";
                 input.value= giaTriTuCheckbox[i];
-                document.getElementById("formThemPhieu").appendChild(input);
+                document.getElementById("formThemDot").appendChild(input);
             }
         }
     }
@@ -244,7 +351,16 @@
 <script th:inline="javascript">
 
     /*<![CDATA[*/
-    var objectsFromController = /*[[${lstPGG}]]*/ [];
+    // var objectsFromController = /*[[${lstPGG}]]*/ [];
+    function kiemTraCheckboxDuocChon(name) {
+        var checkboxes = document.getElementsByName(name);
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                return true; // Nếu có checkbox nào được chọn, trả về true
+            }
+        }
+        return false; // Nếu không có checkbox nào được chọn, trả về false
+    }
     function checkCoKhoangTrang(str) {
         // Sử dụng biểu thức chính quy để kiểm tra có khoảng trắng giữa hai từ không
         return /\s/.test(str.trim());
@@ -254,26 +370,7 @@
         return /\s{2,}/.test(str.trim());
     }
     function validateForm(){
-        var inputMa=document.getElementById("inputMa").value;
-        var errorMa=document.getElementById("errorMa");
-        var isMaValid = true;
-        for (var i = 0; i < objectsFromController.length; i++) {
-            var obj = objectsFromController[i];
-            if(inputMa === obj.macode){
-                errorMa.innerText = "Mã phiếu đã tồn tại!";
-                isMaValid = false;
-                break;
-            }
-        }
-        if(inputMa.trim().length > 0){
-            if(checkCoKhoangTrang(inputMa)){
-                errorMa.innerText = "Mã phiếu không được chứa khoảng trắng!";
-                isMaValid = false;
-            }
-        }
-        if (isMaValid) {
-            errorMa.innerText = "";
-        }
+
         var inputTen=document.getElementById("inputTen").value;
         var errorTen=document.getElementById("errorTen");
         var isTenValid = true;
@@ -292,68 +389,17 @@
         }
         var inputGiaTri=document.getElementById("inputGiaTri").value;
         var errorGiaTri=document.getElementById("errorGiaTri");
-        var loaiPhieu = document.getElementById("loaiphieu").value;
         var isGiaTriValid = true;
         if (inputGiaTri === "") {
             errorGiaTri.innerText = "Giá trị giảm không được để trống!";
             isGiaTriValid = false;
-        }else if(loaiPhieu === "true"){
-            if(inputGiaTri < 1 || inputGiaTri > 100){
-                errorGiaTri.innerText = "Phần trăm giảm phải từ 1 -> 100!";
-                isGiaTriValid = false;
-            }
-        }else if(loaiPhieu === "false"){
-            if(inputGiaTri < 1){
-                errorGiaTri.innerText = "Giá trị giảm phải > 0!";
-                isGiaTriValid = false;
-            }
+        }
+        if(inputGiaTri < 1 || inputGiaTri > 100){
+            errorGiaTri.innerText = "Phần trăm giảm phải từ 1 -> 100!";
+            isGiaTriValid = false;
         }
         if(isGiaTriValid){
             errorGiaTri.innerText = "";
-        }
-        var inputToiThieu=document.getElementById("inputToiThieu").value;
-        var errorToiThieu=document.getElementById("errorToiThieu");
-        var isToiThieuValid = true;
-        if (inputToiThieu !== "") {
-            if(inputToiThieu < 0){
-                errorToiThieu.innerText = "Hóa đơn tối thiểu phải >= 0!";
-                isGiaTriValid = false;
-            }else{
-                errorToiThieu.innerText = "";
-            }
-        }else{
-            errorToiThieu.innerText = "";
-        }
-        var inputToiDa=document.getElementById("inputToiDa").value;
-        var errorToiDa=document.getElementById("errorToiDa");
-        var isToiDaValid = true;
-        if (inputToiDa !== "") {
-            if(inputToiDa < 0){
-                errorToiDa.innerText = "Giá trị giảm tối đa phải >= 0!";
-                isToiDaValid = false;
-            }else{
-                errorToiDa.innerText = "";
-            }
-        }else{
-            errorToiDa.innerText = "";
-        }
-        var inputSoLuong=document.getElementById("inputSoLuong").value;
-        var errorSoLuong=document.getElementById("errorSoLuong");
-        var isSoLuongValid = true;
-        if(inputSoLuong === ""){
-            errorSoLuong.innerText = "Số lượng không được bỏ trống!";
-            isSoLuongValid = false;
-        }
-        if (inputSoLuong !== "") {
-            if(inputSoLuong <= 0){
-                errorSoLuong.innerText = "Số lượng phải > 0!";
-                isSoLuongValid = false;
-            }else{
-                errorSoLuong.innerText = "";
-            }
-        }
-        if(isSoLuongValid){
-            errorSoLuong.innerText = "";
         }
         var inputTuNgay=document.getElementById("inputTuNgay").value;
         var inputDenNgay=document.getElementById("inputDenNgay").value;
@@ -391,26 +437,13 @@
         if(isDenNgayValid){
             errorDenNgay.innerText="";
         }
-        if(isMaValid && isTenValid && isGiaTriValid && isToiThieuValid && isToiDaValid && isSoLuongValid && isTuNgayValid && isDenNgayValid){
-
-            var checkboxes = document.getElementsByClassName("checkbox");
-            var giaTriDaChon = [];
-            for (var i = 0; i < checkboxes.length; i++) {
-                if (checkboxes[i].checked) {
-                    giaTriDaChon.push(checkboxes[i].value);
-                }
+        if(isTenValid && isGiaTriValid && isTuNgayValid && isDenNgayValid){
+            if(kiemTraCheckboxDuocChon("chonsanpham")){
+                return true;
+            }else{
+                alert("Vui lòng chọn san pham áp dụng!");
+                return false;
             }
-            if (document.getElementById('radio').checked){
-                if(giaTriDaChon.length <= 0){
-                    alert("Vui lòng chọn khách hàng áp dụng!");
-                    return false;
-                }
-            }
-
-
-            return true;
-        }else{
-            return false;
         }
     }
 

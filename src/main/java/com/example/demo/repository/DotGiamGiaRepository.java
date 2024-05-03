@@ -23,4 +23,5 @@ public interface DotGiamGiaRepository extends JpaRepository<DotGiamGia, Integer>
                                                  @Param("ttSearch") Integer ttSearch,
                                                  Pageable pageable);
     DotGiamGia findDotGiamGiaById(Integer Id);
+    DotGiamGia findFirstByOrderByNgaytaoDesc();
 }

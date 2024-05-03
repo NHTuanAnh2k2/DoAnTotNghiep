@@ -21,6 +21,6 @@ public interface SanPhamChiTietService {
 //    void updateSoLuongVaGiaTien(List<Integer> ids, Integer soluong, BigDecimal giatien);
 
 //    void update(Integer id, Integer soLuong, BigDecimal giaTien);
-
+    List<SanPhamChiTiet> findBySanPhamId(Integer idSanPham);
     SanPhamChiTiet findById( Integer id);
 }
