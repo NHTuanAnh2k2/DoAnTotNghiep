@@ -24,6 +24,7 @@ public class HoaDon {
     String maqr;
     String sdt;
     String mahoadon;
+    String tennguoinhan;
     String diachi;
     String email;
     BigDecimal tongtien;
