@@ -184,13 +184,15 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                        <a th:href="@{/allSPCT}" style="margin-left: 1100px;margin-bottom: 10px"
-                           class="btn btn-outline-dark">All CTSP</a>
                         <form th:method="post" th:action="@{/updateGiaAndSoLuongCTSP}" id="submitid"
                               onsubmit="return validateForm()" name="updateSLGT">
-                            <a id="editButton" class="btn btn-primary disabled" style="margin-left: 950px;margin-bottom: 15px"
-                               data-bs-toggle="modal" data-bs-target="#chinhsuasoluongvagia">Chỉnh sửa số lượng và giá
-                                chung</a>
+                            <div class="d-flex">
+                                <a th:href="@{/allSPCT}" style="margin-left: 850px;margin-bottom: 10px"
+                                   class="btn btn-dark">All CTSP</a>
+                                <a id="editButton" class="btn disabled" style="margin-left: 10px;margin-bottom: 15px;background-color:rgb(249,72,42);color: white"
+                                   data-bs-toggle="modal" data-bs-target="#chinhsuasoluongvagia">Chỉnh sửa số lượng và giá
+                                    chung</a>
+                            </div>
                             <input type="hidden" name="choncheckbox" value="-1">
                             <!-- Modal chỉnh sửa số lượng và giá -->
                             <div class="modal fade" id="chinhsuasoluongvagia" tabindex="-1"
@@ -214,7 +216,7 @@
                                             </p>
                                         </div>
                                         <p style="margin-left: 400px">
-                                            <button class="btn btn-primary" onclick="layGiaTri2()"
+                                            <button class="btn" style="background-color:rgb(249,72,42);color: white" onclick="layGiaTri2()"
                                                     type="submit">Cập nhật
                                             </button>
                                         </p>
@@ -236,8 +238,8 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <table id="example2" class="table table-bordered table-hover text-center">
-                                    <thead class="table table-danger">
+                                <table id="example2" style="width: 100%" class="table-bordered table-hover text-center">
+                                    <thead style="background-color:rgb(249,72,42);height: 50px">
                                     <tr>
                                         <th>STT</th>
                                         <th>Mã</th>
@@ -295,9 +297,8 @@
                                         <td th:text="${spct.kichco.ten}"></td>
                                         <td th:text="${spct.mausac.ten}"></td>
                                         <td>
-                                            <a th:href="@{/updateCTSP/{id}(id=${spct.id})}"
-                                               class="btn btn-outline-warning">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            <a th:href="@{/updateCTSP/{id}(id=${spct.id})}" style="color:rgb(249,72,42)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
                                                      fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
                                                     <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>

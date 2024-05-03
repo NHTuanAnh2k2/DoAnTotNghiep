@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<nav th:replace="~{/layoutadmin/head.html}"></nav>
+<style>
+
+    .btn-custom-warning {
+        background-color: rgb(222, 255, 206);
+        color: rgb(7, 50, 255);
+        border-color: rgb(7, 50, 255);
+
+    }
+
+    .btn-custom-info {
+        background-color: rgb(222, 255, 206);
+        color: rgb(255, 33, 4);
+        border-color: rgb(255, 33, 4);
+
+    }
+</style>
+<body class="hold-transition sidebar-mini" style="font-family: 'Bahnschrift'">
+<div class="wrapper">
+    <!-- Navbar -->
+    <nav th:replace="~{/layoutadmin/navbar.html}"></nav>
+    <!-- End navbar -->
+
+    <!--Menu bán hàng -->
+    <nav th:replace="~{/layoutadmin/menu.html}"></nav>
+    <!--end-->
+
+    <!--Nội dung -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                 class="bi bi-bookmark-dash-fill" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                      d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6 6a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z"/>
+                            </svg>
+                            QUẢN LÝ TRẢ HÀNG
+                        </h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">QUẢN LÝ TRẢ HÀNG</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <!---filter-->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Thông tin khách hàng</h3>
+                                <div class="row">
+                                    <div class="col-6 d-flex">
+                                        <p>Tên khách hàng</p>
+                                        <p style="margin-left: 100px">Nguyễn Văn Duy</p>
+                                    </div>
+                                    <div class="col-6 d-flex">
+                                        <p>Ngày giao hàng</p>
+                                        <p style="margin-left: 100px">20/01/2024</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-6 d-flex">
+                                        <p>Số điện thoại</p>
+                                        <p style="margin-left: 120px">0123456789</p>
+                                    </div>
+                                    <div class="col-6 d-flex">
+                                        <p>Ngày nhận hàng</p>
+                                        <p style="margin-left: 100px">25/01/2024</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-6 d-flex">
+                                        <p>Địa chỉ</p>
+                                        <p style="margin-left: 160px">Quốc Oai Hà Nội</p>
+                                    </div>
+                                    <div class="col-6 d-flex">
+                                        <p>Trạng thái</p>
+                                        <p style="margin-left: 130px">
+                                            <button class="btn" style="background-color:#0a53be;color: white">Thành
+                                                công
+                                            </button>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-6 d-flex">
+                                        <p>Ghi chú</p>
+                                        <p style="margin-left: 160px">okok</p>
+                                    </div>
+                                    <div class="col-6 d-flex">
+                                        <p>Loại</p>
+                                        <p style="margin-left: 170px">
+                                            <button class="btn" style="background-color:rgb(249,72,42);color: white">
+                                                ONLINE
+                                            </button>
+                                        </p>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                        <!-- /.card -->
+
+
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title" style="margin-top: 10px">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                         class="bi bi-list-task" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                              d="M2 2.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5zM3 3H2v1h1z"/>
+                                        <path d="M5 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M5.5 7a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 4a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1z"/>
+                                        <path fill-rule="evenodd"
+                                              d="M1.5 7a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5zM2 7h1v1H2zm0 3.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm1 .5H2v1h1z"/>
+                                    </svg>
+                                    Thông tin đơn hàng
+                                </h3>
+                                <a class="btn"
+                                   style="margin-left: 850px;background-color: rgb(249,72,42);color: white">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                         class="bi bi-repeat" viewBox="0 0 16 16">
+                                        <path d="M11 5.466V4H5a4 4 0 0 0-3.584 5.777.5.5 0 1 1-.896.446A5 5 0 0 1 5 3h6V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192m3.81.086a.5.5 0 0 1 .67.225A5 5 0 0 1 11 13H5v1.466a.25.25 0 0 1-.41.192l-2.36-1.966a.25.25 0 0 1 0-.384l2.36-1.966a.25.25 0 0 1 .41.192V12h6a4 4 0 0 0 3.585-5.777.5.5 0 0 1 .225-.67Z"/>
+                                    </svg>
+                                    Trả hàng tất cả
+                                </a>
+                            </div>
+
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <table id="example2" style="width: 100%" class="table-bordered table-hover text-center">
+                                    <thead style="background-color:rgb(249,72,42);height: 50px">
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Ảnh</th>
+                                        <th>Thông tin sản phẩm</th>
+                                        <th>Màu sắc</th>
+                                        <th>Số lượng</th>
+                                        <th>Tổng tiền</th>
+                                        <th>Trạng thái</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>ABC</td>
+                                        <td>
+                                            <p>Giày thể thao New Balance 574[41-Xanh dương]</p>
+                                            <p style="color: red">2,500,000đ</p>
+                                        </td>
+                                        <td>ABC</td>
+                                        <td>ABC</td>
+                                        <td>ABC</td>
+                                        <td>ABC</td>
+                                        <td>
+                                            <a style="color: rgb(249,72,42)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                     fill="currentColor"
+                                                     class="bi bi-repeat" viewBox="0 0 16 16">
+                                                    <path d="M11 5.466V4H5a4 4 0 0 0-3.584 5.777.5.5 0 1 1-.896.446A5 5 0 0 1 5 3h6V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192m3.81.086a.5.5 0 0 1 .67.225A5 5 0 0 1 11 13H5v1.466a.25.25 0 0 1-.41.192l-2.36-1.966a.25.25 0 0 1 0-.384l2.36-1.966a.25.25 0 0 1 .41.192V12h6a4 4 0 0 0 3.585-5.777.5.5 0 0 1 .225-.67Z"/>
+                                                </svg>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>2</td>
+                                        <td>ABC</td>
+                                        <td>
+                                            <p>Giày thể thao New Balance 574[41-Xanh dương]</p>
+                                            <p style="color: red">2,500,000đ</p>
+                                        </td>
+                                        <td>ABC</td>
+                                        <td>ABC</td>
+                                        <td>ABC</td>
+                                        <td>ABC</td>
+                                        <td>
+                                            <a style="color: rgb(249,72,42)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                     fill="currentColor"
+                                                     class="bi bi-repeat" viewBox="0 0 16 16">
+                                                    <path d="M11 5.466V4H5a4 4 0 0 0-3.584 5.777.5.5 0 1 1-.896.446A5 5 0 0 1 5 3h6V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192m3.81.086a.5.5 0 0 1 .67.225A5 5 0 0 1 11 13H5v1.466a.25.25 0 0 1-.41.192l-2.36-1.966a.25.25 0 0 1 0-.384l2.36-1.966a.25.25 0 0 1 .41.192V12h6a4 4 0 0 0 3.585-5.777.5.5 0 0 1 .225-.67Z"/>
+                                                </svg>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>3</td>
+                                        <td>ABC</td>
+                                        <td>
+                                            <p>Giày thể thao New Balance 574[41-Xanh dương]</p>
+                                            <p style="color: red">2,500,000đ</p>
+                                        </td>
+                                        <td>ABC</td>
+                                        <td>ABC</td>
+                                        <td>ABC</td>
+                                        <td>ABC</td>
+                                        <td>
+                                            <a style="color: rgb(249,72,42)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                     fill="currentColor"
+                                                     class="bi bi-repeat" viewBox="0 0 16 16">
+                                                    <path d="M11 5.466V4H5a4 4 0 0 0-3.584 5.777.5.5 0 1 1-.896.446A5 5 0 0 1 5 3h6V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192m3.81.086a.5.5 0 0 1 .67.225A5 5 0 0 1 11 13H5v1.466a.25.25 0 0 1-.41.192l-2.36-1.966a.25.25 0 0 1 0-.384l2.36-1.966a.25.25 0 0 1 .41.192V12h6a4 4 0 0 0 3.585-5.777.5.5 0 0 1 .225-.67Z"/>
+                                                </svg>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                        <!--card3-->
+
+                        <!--endcard3-->
+
+                    </div>
+
+                    <!-- /.col -->
+                </div>
+                <div class="row">
+                    <div class="col-8">
+                        <div class="card" style="height: 100%">
+                            <div class="card-header">
+                                <h3 class="card-title" style="margin-top: 10px">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                         class="bi bi-list-task" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                              d="M2 2.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5zM3 3H2v1h1z"/>
+                                        <path d="M5 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M5.5 7a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 4a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1z"/>
+                                        <path fill-rule="evenodd"
+                                              d="M1.5 7a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5zM2 7h1v1H2zm0 3.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm1 .5H2v1h1z"/>
+                                    </svg>
+                                    Thông tin trả hàng
+                                </h3>
+                            </div>
+
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <table style="width: 100%" class="table-bordered table-hover text-center">
+                                    <thead style="background-color:rgb(249,72,42);height: 50px">
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Ảnh</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Màu sắc</th>
+                                        <th>Số lượng</th>
+                                        <th>Giá tiền</th>
+                                        <th>Tổng tiền</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>ABC</td>
+                                        <td>Giày thể thao New Balance 574</td>
+                                        <td>ABC</td>
+                                        <td>ABC</td>
+                                        <td style="color: red">2,500,000đ</td>
+                                        <td style="color: red">5,000,000đ</td>
+                                        <td>
+                                            <a style="color: rgb(249,72,42)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                     fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                                                </svg>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>1</td>
+                                        <td>ABC</td>
+                                        <td>Giày thể thao New Balance 574</td>
+                                        <td>ABC</td>
+                                        <td>ABC</td>
+                                        <td style="color: red">2,500,000đ</td>
+                                        <td style="color: red">5,000,000đ</td>
+                                        <td>
+                                            <a style="color: rgb(249,72,42)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                     fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                                                </svg>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>1</td>
+                                        <td>ABC</td>
+                                        <td>Giày thể thao New Balance 574</td>
+                                        <td>ABC</td>
+                                        <td>ABC</td>
+                                        <td style="color: red">2,500,000đ</td>
+                                        <td style="color: red">5,000,000đ</td>
+                                        <td>
+                                            <a style="color: rgb(249,72,42)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                     fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                                                </svg>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card" style="height: 100%">
+                            <div class="card-header">
+                                <h3 class="card-title" style="margin-top: 10px">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                         class="bi bi-list-task" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                              d="M2 2.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5zM3 3H2v1h1z"/>
+                                        <path d="M5 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M5.5 7a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 4a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1z"/>
+                                        <path fill-rule="evenodd"
+                                              d="M1.5 7a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5zM2 7h1v1H2zm0 3.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm1 .5H2v1h1z"/>
+                                    </svg>
+                                    Thông tin thanh toán
+                                </h3>
+                            </div>
+
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <p style="font-weight: bold">Tổng giá hàng gốc:</p>
+                                    <p style="color: red">5,000,000đ</p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <p style="font-weight: bold">Voucher đã sử dụng:</p>
+                                    <p style="color: red">150,000đ</p>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <p style="font-weight: bold">Tiền ship:</p>
+                                    <p style="color: red">0đ</p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <p style="font-weight: bold">Tổng tiền thanh toán:</p>
+                                    <p style="color: red">10,000,000đ</p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <p style="font-weight: bold">Tổng giá hàng trả:</p>
+                                    <p style="color: red">2,500,000đ</p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <p style="font-weight: bold">Voucher mới:</p>
+                                    <p style="color: red">150,000đ</p>
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between">
+                                    <p style="font-weight: bold">Tổng tiền trả khách:</p>
+                                    <p style="color: red">2,500,000đ</p>
+                                </div>
+                                <div>
+                                    <p style="font-weight: bold">Mô tả:</p>
+                                    <textarea class="form-control"></textarea>
+                                </div>
+                                <br>
+                                <div>
+                                    <button class="btn" style="background-color: rgb(249,72,42);color: white;width: 360px">Trả hàng</button>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!--end-->
+    <nav th:replace="~{/layoutadmin/footer.html}"></nav>
+</div>
+<!--script-->
+<nav th:replace="~{/layoutadmin/script.html}"></nav>
+
+<!--làm mới bộ lọc-->
+<script>
+    function clearSearch() {
+        document.getElementById("searchInput").value = "";
+        document.getElementById("statusSelect").selectedIndex = 0;
+    }
+</script>
+
+<!--end-->
+<!--tìm-->
+<script>
+    // Lắng nghe sự kiện change trong các trường input
+    document.getElementById('searchInput').addEventListener('change', function () {
+        document.getElementById('searchForm').submit(); // Gửi form khi có sự thay đổi
+    });
+    document.getElementById('statusSelect').addEventListener('change', function () {
+        document.getElementById('searchForm').submit(); // Gửi form khi có sự thay đổi
+    });
+</script>
+</body>
+</html>

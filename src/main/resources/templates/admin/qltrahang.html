@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<nav th:replace="~{/layoutadmin/head.html}"></nav>
+<style>
+
+    .btn-custom-warning {
+        background-color: rgb(222, 255, 206);
+        color: rgb(7, 50, 255);
+        border-color: rgb(7, 50, 255);
+
+    }
+
+    .btn-custom-info {
+        background-color: rgb(222, 255, 206);
+        color: rgb(255, 33, 4);
+        border-color: rgb(255, 33, 4);
+
+    }
+</style>
+<script src="../sweetalert2/dist/sweetalert2.min.js/"></script>
+<link rel="stylesheet" type="text/css" href="../sweetalert2/dist/sweetalert2.min.css">
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <!-- Navbar -->
+    <nav th:replace="~{/layoutadmin/navbar.html}"></nav>
+    <!-- End navbar -->
+
+    <!--Menu bán hàng -->
+    <nav th:replace="~{/layoutadmin/menu.html}"></nav>
+    <!--end-->
+
+    <!--Nội dung -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                 class="bi bi-bookmark-dash-fill" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                      d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6 6a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z"/>
+                            </svg>
+                            TRẢ HÀNG
+                        </h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">TRẢ HÀNG</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card" style="height: 600px;">
+                            <br>
+                            <div class="d-flex align-items-center" style="margin-left: 200px; margin-top: 50px">
+                                <p class="d-flex align-items-center mb-0" style="font-weight: bold">
+                                    <span style="color: red">*</span>
+                                    Mã hóa đơn:
+                                    <input class="form-control ml-2" style="width: 500px; height: 40px">
+                                </p>
+                                <a class="btn btn-dark ml-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                         class="bi bi-qr-code-scan" viewBox="0 0 16 16">
+                                        <path d="M0 .5A.5.5 0 0 1 .5 0h3a.5.5 0 0 1 0 1H1v2.5a.5.5 0 0 1-1 0zm12 0a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0V1h-2.5a.5.5 0 0 1-.5-.5M.5 12a.5.5 0 0 1 .5.5V15h2.5a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1 0-1H15v-2.5a.5.5 0 0 1 .5-.5M4 4h1v1H4z"/>
+                                        <path d="M7 2H2v5h5zM3 3h3v3H3zm2 8H4v1h1z"/>
+                                        <path d="M7 9H2v5h5zm-4 1h3v3H3zm8-6h1v1h-1z"/>
+                                        <path d="M9 2h5v5H9zm1 1v3h3V3zM8 8v2h1v1H8v1h2v-2h1v2h1v-1h2v-1h-3V8zm2 2H9V9h1zm4 2h-1v1h-2v1h3zm-4 2v-1H8v1z"/>
+                                        <path d="M12 9h2V8h-2z"/>
+                                    </svg>
+                                    QR Code
+                                </a>
+                                <a class="btn ml-3" style="background-color:rgb(249,72,42);color:white" th:href="@{/admin/trahangdetail}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                    </svg>
+                                    Tìm kiếm
+                                </a>
+                            </div>
+
+                            <div style="margin-left: 300px">
+                                <img src="../dist/img/struck2.jpg" width="500px" height="450px">
+                            </div>
+                        </div>
+
+                        <!-- /.card -->
+
+
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!--end-->
+    <nav th:replace="~{/layoutadmin/footer.html}"></nav>
+</div>
+<!--script-->
+<nav th:replace="~{/layoutadmin/script.html}"></nav>
+<!--end-->
+<script>
+    function clearSearch() {
+        document.getElementById("searchInput").value = "";
+        document.getElementById("statusSelect").selectedIndex = 0;
+    }
+</script>
+
+<script th:inline="javascript">
+
+    /*<![CDATA[*/
+    var objectsFromController = /*[[${page}]]*/ [];
+
+    function validateTrung() {
+        var inputMa = document.getElementById("tenInput").value;
+        var errorMa = document.getElementById("errorTen");
+        var isMaValid = true;
+
+        // Kiểm tra xem trường "Tên đế giày" có trống không
+        if (inputMa.trim() === "") {
+            errorMa.innerText = "Vui lòng nhập tên thương hiệu.";
+            return false; // Ngăn form được gửi đi
+        } else {
+            errorMa.innerText = ""; // Xóa thông báo lỗi nếu có
+        }
+
+        // Kiểm tra trùng tên đế giày
+        for (var i = 0; i < objectsFromController.length; i++) {
+            var obj = objectsFromController[i];
+            if (inputMa === obj.ten) {
+                errorMa.innerText = "Tên thương hiệu đã tồn tại!";
+                isMaValid = false;
+                break;
+            }
+        }
+
+        if (isMaValid) {
+            errorMa.innerText = "";
+            them();
+        }
+
+        return false;
+    }
+
+    function them() {
+        // Sử dụng SweetAlert2 thay vì hộp thoại confirm
+        Swal.fire({
+            title: 'Bạn có muốn thêm không?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "success",
+                    title: "Thêm thành công!"
+                });
+
+                setTimeout(function () {
+                    document.addThuongHieu.submit();
+                }, 3000);
+            }
+        });
+
+        // Ngăn form được gửi đi ngay lập tức
+        return false;
+    }
+
+    /*]]>*/
+</script>
+</body>
+</html>
