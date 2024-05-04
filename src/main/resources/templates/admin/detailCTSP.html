@@ -3,6 +3,46 @@
 <nav th:replace="~{/layoutadmin/head.html}"></nav>
 <style>
 
+    .image-preview img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        margin-left: 20px;/* Thêm khoảng cách giữa các ảnh */
+    }
+
+
+    .custom-upload {
+        display: inline-block;
+        border: 2px dotted blue; /* Thay đổi viền thành viền chấm */
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        width: 100px;
+        height: 100px;
+
+    }
+
+    .custom-upload::before {
+        content: "+ Upload";
+        display: block;
+        text-align: center;
+        line-height: 85px;
+    }
+
+    .container {
+        display: flex;
+        align-items: center;
+        margin-left: 20px;
+    }
+
+    .image-preview {
+        display: flex;
+        flex-wrap: wrap; /* Cho phép ảnh xuống dòng khi không đủ chỗ */
+    }
+
+
     .btn-custom-warning {
         background-color: rgb(221, 100, 0);
         color: #fff;
@@ -71,7 +111,9 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <form method="post" th:object="${hehe}" th:action="@{/updateCTSP/{id}(id=${hehe.id})}" name="updateProduct" onsubmit="return validateForm()">
+                                <form method="post" enctype="multipart/form-data" th:object="${hehe}"
+                                      th:action="@{/updateCTSP/{id}(id=${hehe.id})}"
+                                      name="updateProduct" onsubmit="return validateForm()">
                                     <div class="d-flex">
                                         <p>Tên sản phẩm:
                                             <input class="form-control" style="width:550px"
@@ -105,8 +147,6 @@
                                                 <option th:each="th : ${th}" th:value="${th.ten}"
                                                         th:text="${th.ten}"></option>
                                             </select>
-<!--                                            <input type="text" class="form-control" style="width:550px"-->
-<!--                                                   th:field="*{thuonghieu.ten}">-->
                                         </p>
                                         <p style="margin-left:92px">
                                             Trạng thái:
@@ -149,17 +189,44 @@
                                         </p>
                                     </div>
                                     <h5>ẢNH SẢN PHẨM</h5>
+
                                     <p>
-                                    <div>
-                                        <th:block th:each="anh : *{anh}">
+<!--                                    <div class="d-flex">-->
+<!--                                        <th:block th:each="anh : *{anh}">-->
+<!--                                            <img th:if="${anh.tenanh != null}"-->
+<!--                                                 th:src="@{'/upload/' + ${anh.tenanh.substring(anh.tenanh.lastIndexOf('upload') + 6)}}"-->
+<!--                                                 width="100" height="100" alt="Ảnh">-->
+<!--                                        </th:block>-->
+<!--                                        <td>-->
+<!--                                            <input type="file" name="anhs" multiple>-->
+<!--                                            <input type="hidden"  name="spctIds" th:value="*{id}">-->
+<!--                                        </td>-->
+<!--                                    </div>-->
+
+                                    <div class="d-flex">
+                                        <th:block th:each="anh, iterStat : *{anh}">
                                             <img th:if="${anh.tenanh != null}"
                                                  th:src="@{'/upload/' + ${anh.tenanh.substring(anh.tenanh.lastIndexOf('upload') + 6)}}"
-                                               width="100"  height="100" alt="Ảnh">
+                                                 width="100" height="100" alt="Ảnh"
+                                                 style="margin-left: 20px"
+                                                 th:classappend="${iterStat.index > 0} ? 'additional-margin' : ''">
                                         </th:block>
+                                        <div class="image-preview">
+                                        </div>
+                                        <div style="margin-left: 20px">
+                                            <label class="custom-upload" id="uploadButton">
+                                                <input type="file" name="anhs" multiple style="display: none;">
+                                                <td>
+                                                    <input type="hidden" id="spctIds" name="spctIds" th:value="*{id}">
+                                                </td>
+                                            </label>
+                                        </div>
                                     </div>
-
                                     </p>
-                                    <button class="btn" type="submit" style="margin-left: 1050px;background-color: rgb(249,72,42);color: white">Chỉnh sửa</button>
+                                    <button class="btn" type="submit"
+                                            style="margin-left: 1050px;background-color: rgb(249,72,42);color: white">
+                                        Chỉnh sửa
+                                    </button>
                                 </form>
                             </div>
                             <!-- /.card-body -->
@@ -185,7 +252,7 @@
 
 <script>
     function validateForm() {
-      return update();
+        return update();
     }
 
     function update() {
@@ -225,4 +292,43 @@
         // Ngăn form được gửi đi ngay lập tức
         return false;
     }
+</script>
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const input = document.querySelector('input[type="file"]');
+        const preview = document.querySelector('.image-preview');
+        const uploadButton = document.getElementById('uploadButton');
+
+        input.addEventListener('change', function () {
+            const totalImages = preview.querySelectorAll('img').length;
+            const totalFiles = this.files.length;
+
+            if (totalImages + totalFiles > 8) {
+                alert("Bạn chỉ có thể tải lên tối đa 8 ảnh.");
+                return;
+            }
+
+            [...this.files].forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = new Image();
+                    img.src = e.target.result;
+
+                    img.style.width = '100px';
+                    img.style.height = '100px';
+                    img.style.objectFit = 'cover';
+
+                    preview.appendChild(img);
+
+                    // Ẩn hoặc hiển thị nút tải lên dựa trên số lượng ảnh đã hiển thị
+                    if (totalImages + preview.querySelectorAll('img').length >= 8) {
+                        uploadButton.style.display = 'none';
+                    } else {
+                        uploadButton.style.display = 'inline-block';
+                    }
+                }
+                reader.readAsDataURL(file);
+            });
+        });
+    });
 </script>
