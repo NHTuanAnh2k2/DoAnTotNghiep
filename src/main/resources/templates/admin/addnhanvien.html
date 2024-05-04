@@ -116,21 +116,23 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <form th:method="post" th:object="${nd}" th:action="@{/addnv}">
+<!--                                        <form id="addItemForm" th:object="${nd}">-->
+                                        <form th:method="post"  id="addForm" th:object="${nd}" th:action="@{/addnv}">
+
                                         <div class="d-flex">
                                             <div>
                                             <p>Tên nhân viên:
                                                 <input placeholder="Tên nhân viên" id="name" name="name" class="form-control"  th:field="*{hovaten}"
                                                        style="width: 500px" th:errorclass="is-invalid">
                                             </p>
-                                            <p th:if="${#fields.hasErrors('hovaten')}" th:errors="*{hovaten}" style="width: 500px; color: red"></p>
+                                            <p th:if="${#fields.hasErrors('hovaten')}" class="error" th:errors="*{hovaten}" style="width: 500px; color: red"></p>
                                             </div>
                                             <div>
                                             <p style="margin-left: 20px">Ngày sinh:
                                                 <input type="date" class="form-control"
                                                        style="width: 500px" th:field="*{ngaysinh}"  placeholder="dd/MM/yyyy" th:errorclass="is-invalid">
                                             </p>
-                                            <p th:if="${#fields.hasErrors('ngaysinh')}" th:errors="*{ngaysinh}" style="width: 500px; color: red"></p>
+                                            <p th:if="${#fields.hasErrors('ngaysinh')}" class="error" th:errors="*{ngaysinh}" style="width: 500px; color: red"></p>
                                             </div>
 
                                         </div>
@@ -139,7 +141,7 @@
                                             <p>Căn cước công dân:
                                                 <input placeholder="Căn cước công dân" id="citizenID" name="citizenID" class="form-control"
                                                        style="width: 500px" th:field="*{cccd}" th:errorclass="is-invalid"></p>
-                                            <p th:if="${#fields.hasErrors('cccd')}" th:errors="*{cccd}" style="width: 500px; color: red"></p>
+                                            <p th:if="${#fields.hasErrors('cccd')}" class="error" th:errors="*{cccd}" style="width: 500px; color: red"></p>
                                             </div>
                                             <div>
                                             <p style="margin-left: 20px">Giới tính:
@@ -147,7 +149,7 @@
                                                 <input type="radio" value="true" th:field="*{gioitinh}" style="margin-top: 10px">Nam
                                                 <input type="radio" value="false" th:field="*{gioitinh}" style="margin-left: 10px;margin-top: 10px">Nữ
                                             </p>
-                                                <p th:if="${#fields.hasErrors('gioitinh')}" th:errors="*{gioitinh}" style="width: 500px; color: red"></p>
+                                                <p th:if="${#fields.hasErrors('gioitinh')}" class="error" th:errors="*{gioitinh}" style="width: 500px; color: red"></p>
                                             </div>
                                         </div>
 
@@ -156,13 +158,13 @@
                                             <p>Email:
                                                 <input placeholder="Email" class="form-control"
                                                        style="width: 500px" th:field="*{email}" th:errorclass="is-invalid"></p>
-                                            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="width: 500px; color: red"></p>
+                                            <p th:if="${#fields.hasErrors('email')}" class="error" th:errors="*{email}" style="width: 500px; color: red"></p>
                                             </div>
                                             <div>
                                             <p style="margin-left: 20px">Số điện thoại:
                                                 <input placeholder="Số điện thoại" class="form-control"
                                                        style="width: 500px" th:field="*{sodienthoai}" th:errorclass="is-invalid"></p>
-                                            <p th:if="${#fields.hasErrors('sodienthoai')}" th:errors="*{sodienthoai}" style="width: 500px; color: red"></p>
+                                            <p th:if="${#fields.hasErrors('sodienthoai')}" class="error" th:errors="*{sodienthoai}" style="width: 500px; color: red"></p>
                                             </div>
                                         </div>
                                         <div th:object="${dc}">
@@ -173,14 +175,14 @@
                                                 <select class="form-select form-select-sm mb-3" id="city" th:field="*{tinhthanhpho}"  aria-label=".form-select-sm" style="width: 500px">
                                                     <option value="" selected>Chọn tỉnh thành</option>
                                                 </select></p>
-                                            <p th:if="${#fields.hasErrors('tinhthanhpho')}" th:errors="*{tinhthanhpho}" style="width: 500px; color: red"></p>
+                                            <p th:if="${#fields.hasErrors('tinhthanhpho')}" class="error" th:errors="*{tinhthanhpho}" style="width: 500px; color: red"></p>
                                             </div>
                                             <div>
                                             <p style="margin-left: 20px">Quận/Huyện:
                                                 <select class="form-select form-select-sm mb-3" id="district"  th:field="*{quanhuyen}" aria-label=".form-select-sm" style="width: 500px">
                                                     <option value="" selected>Chọn quận huyện</option>
                                                 </select></p>
-                                            <p th:if="${#fields.hasErrors('quanhuyen')}" th:errors="*{quanhuyen}" style="width: 500px; color: red"></p>
+                                            <p th:if="${#fields.hasErrors('quanhuyen')}" class="error" th:errors="*{quanhuyen}" style="width: 500px; color: red"></p>
                                             </div>
                                         </div>
 
@@ -190,18 +192,18 @@
                                                 <select class="form-select form-select-sm" id="ward"  th:field="*{xaphuong}" aria-label=".form-select-sm" style="width: 500px">
                                                     <option value="" selected>Chọn phường xã</option>
                                                 </select></p>
-                                            <p th:if="${#fields.hasErrors('xaphuong')}" th:errors="*{xaphuong}" style="width: 500px; color: red"></p>
+                                            <p th:if="${#fields.hasErrors('xaphuong')}" class="error" th:errors="*{xaphuong}" style="width: 500px; color: red"></p>
                                             </div>
                                             <div>
                                             <p style="margin-left: 20px">Tên Đường:
                                                 <input th:field="*{tenduong}" placeholder="Tên Đường" class="form-control"
                                                        style="width: 500px"></p>
-                                            <p th:if="${#fields.hasErrors('tenduong')}" th:errors="*{tenduong}" style="width: 500px; color: red"></p>
+                                            <p th:if="${#fields.hasErrors('tenduong')}" class="error" th:errors="*{tenduong}" style="width: 500px; color: red"></p>
                                             </div>
                                         </div>
 
                                         </div>
-                                        <button class="btn btn-primary" >Thêm nhân viên</button>
+                                        <button class="btn btn-primary" onclick="confirmAdd()" >Thêm nhân viên</button>
                                         <button class="btn btn-danger"  onclick="goBack()">Thoát</button>
                                         </form>
                                     </div>
@@ -256,8 +258,8 @@
             citis.options.add(opt);
         }
         citis.onchange = function () {
-            district.length = 1;
-            ward.length = 1;
+            districts.length = 1;
+            wards.length = 1;
             if(this.options[this.selectedIndex].dataset.id != ""){
                 const result = data.filter(n => n.Id === this.options[this.selectedIndex].dataset.id);
 
@@ -266,12 +268,12 @@
                     opt.value = k.Name;
                     opt.text = k.Name;
                     opt.setAttribute('data-id', k.Id);
-                    district.options.add(opt);
+                    districts.options.add(opt);
                 }
             }
         };
-        district.onchange = function () {
-            ward.length = 1;
+        districts.onchange = function () {
+            wards.length = 1;
             const dataCity = data.filter((n) => n.Id === citis.options[citis.selectedIndex].dataset.id);
             if (this.options[this.selectedIndex].dataset.id != "") {
                 const dataWards = dataCity[0].Districts.filter(n => n.Id === this.options[this.selectedIndex].dataset.id)[0].Wards;
@@ -305,9 +307,57 @@
         reader.readAsDataURL(file);
     });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function confirmAdd() {
+        // Sử dụng SweetAlert2 thay vì hộp thoại confirm
+        Swal.fire({
+            title: 'Bạn có muốn thêm không?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "success",
+                    title: "Thêm thành công!"
+                });
+
+                setTimeout(function () {
+                    document.getElementById('addForm').submit();
+                    window.location.href = 'admin/qlnhanvien';
+                }, 3000);
+
+            } else {
+                // Nếu người dùng chọn Không, đóng hộp thoại và không thực hiện hành động nào
+                // Swal.fire('Đã hủy', 'Dữ liệu không được thêm vào.', 'info');
+                document.getElementById('addForm').addEventListener('submit', function(event) {
+                    event.preventDefault(); // Ngăn chặn hành động mặc định của sự kiện submit
+                    // Các xử lý khác có thể được thực hiện ở đây
+                });
+                return false;
+            }
+        });
+    }
+</script>
 <script>
     function goBack() {
-        window.history.back();
+        window.location.href = 'admin/qlnhanvien';
     }
     function decodeUTF8(text) {
         // Chuyển đổi các ký tự không hợp lệ
@@ -410,59 +460,59 @@
     }
     scanAndFillForm();
 </script>
-<!--<script src="https://cdn.jsdelivr.net/npm/quagga"></script>-->
-<!--<script>-->
-<!--    // Lấy phần tử modal và nút mở modal-->
-<!--    var cameraModal = document.getElementById('cameraModal');-->
-<!--    var openCameraButton = document.getElementById('openCamera');-->
-<!--    var closeButton = document.getElementsByClassName('close')[0];-->
+<script src="https://cdn.jsdelivr.net/npm/quagga"></script>
+<script>
+    // Lấy phần tử modal và nút mở modal
+    var cameraModal = document.getElementById('cameraModal');
+    var openCameraButton = document.getElementById('openCamera');
+    var closeButton = document.getElementsByClassName('close')[0];
 
-<!--    // Khi người dùng nhấp vào nút mở modal, hiển thị modal và mở camera-->
-<!--    openCameraButton.addEventListener('click', function() {-->
-<!--        // Hiển thị modal-->
-<!--        cameraModal.style.display = 'block';-->
-<!--        // Truy cập vào camera và hiển thị luồng video trong modal-->
-<!--        navigator.mediaDevices.getUserMedia({ video: true })-->
-<!--            .then(function(stream) {-->
-<!--                var videoElement = document.getElementById('cameraStream');-->
-<!--                videoElement.srcObject = stream;-->
-<!--                videoElement.play();-->
-<!--                let info = stream.split("|");-->
-<!--                document.getElementById('citizenID').value = info[0];-->
-<!--                // document.getElementById('name').innerText = info[2];-->
-<!--                videoElement.stop();-->
-<!--            })-->
-<!--            .catch(function(error) {-->
-<!--                console.error('Lỗi khi truy cập camera: ' + error);-->
-<!--            });-->
-<!--    });-->
+    // Khi người dùng nhấp vào nút mở modal, hiển thị modal và mở camera
+    openCameraButton.addEventListener('click', function() {
+        // Hiển thị modal
+        cameraModal.style.display = 'block';
+        // Truy cập vào camera và hiển thị luồng video trong modal
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                var videoElement = document.getElementById('cameraStream');
+                videoElement.srcObject = stream;
+                videoElement.play();
+                let info = stream.split("|");
+                document.getElementById('citizenID').value = info[0];
+                // document.getElementById('name').innerText = info[2];
+                videoElement.stop();
+            })
+            .catch(function(error) {
+                console.error('Lỗi khi truy cập camera: ' + error);
+            });
+    });
 
-<!--    // Khi người dùng nhấp vào nút đóng modal, đóng modal và dừng luồng video-->
-<!--    closeButton.addEventListener('click', function() {-->
-<!--        cameraModal.style.display = 'none';-->
-<!--        var videoElement = document.getElementById('cameraStream');-->
-<!--        var stream = videoElement.srcObject;-->
-<!--        var tracks = stream.getTracks();-->
+    // Khi người dùng nhấp vào nút đóng modal, đóng modal và dừng luồng video
+    closeButton.addEventListener('click', function() {
+        cameraModal.style.display = 'none';
+        var videoElement = document.getElementById('cameraStream');
+        var stream = videoElement.srcObject;
+        var tracks = stream.getTracks();
 
-<!--        tracks.forEach(function(track) {-->
-<!--            track.stop();-->
-<!--        });-->
-<!--    });-->
+        tracks.forEach(function(track) {
+            track.stop();
+        });
+    });
 
-<!--    // Khi người dùng nhấp vào bất kỳ vị trí nào bên ngoài modal, đóng modal-->
-<!--    window.addEventListener('click', function(event) {-->
-<!--        if (event.target == cameraModal) {-->
-<!--            cameraModal.style.display = 'none';-->
-<!--            var videoElement = document.getElementById('cameraStream');-->
-<!--            var stream = videoElement.srcObject;-->
-<!--            var tracks = stream.getTracks();-->
+    // Khi người dùng nhấp vào bất kỳ vị trí nào bên ngoài modal, đóng modal
+    window.addEventListener('click', function(event) {
+        if (event.target == cameraModal) {
+            cameraModal.style.display = 'none';
+            var videoElement = document.getElementById('cameraStream');
+            var stream = videoElement.srcObject;
+            var tracks = stream.getTracks();
 
-<!--            tracks.forEach(function(track) {-->
-<!--              track.stop();-->
-<!--            });-->
-<!--        }-->
-<!--    });-->
-<!--</script>-->
+            tracks.forEach(function(track) {
+              track.stop();
+            });
+        }
+    });
+</script>
 <!--end-->
 </body>
 </html>
