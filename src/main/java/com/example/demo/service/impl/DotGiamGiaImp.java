@@ -37,4 +37,9 @@ public class DotGiamGiaImp implements DotGamGiaService {
     public DotGiamGia findDotGiamGiaById(Integer Id) {
         return dotGiamGiaRepository.findDotGiamGiaById(Id);
     }
+
+    @Override
+    public DotGiamGia findFirstByOrderByNgaytaoDesc() {
+        return dotGiamGiaRepository.findFirstByOrderByNgaytaoDesc();
+    }
 }

@@ -37,6 +37,11 @@ public class SanPhamChiTietImp implements SanPhamChiTietService {
         sanPhamChiTietRepository.deleteById(id);
     }
 
+    @Override
+    public List<SanPhamChiTiet> findBySanPhamId(Integer idSanPham) {
+        return sanPhamChiTietRepository.findBySanPhamId(idSanPham);
+    }
+
 //    @Override
 //    public void updateSoLuongVaGiaTien(List<Integer> ids, Integer soluong, BigDecimal giatien) {
 //        sanPhamChiTietRepository.updateSoLuongVaGiaTien(ids,soluong,giatien);

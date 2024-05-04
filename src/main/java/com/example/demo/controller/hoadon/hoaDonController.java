@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,11 +27,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("hoa-don")
@@ -482,12 +479,14 @@ public class hoaDonController {
             tongTienSP = tongTienSP.add(b.getGiasanpham().multiply(new BigDecimal(b.getSoluong())));
         }
         BigDecimal tongTT = (tongTienSP.add(hoaDonXem.getPhivanchuyen())).subtract(phieuGiamCT.getTiengiam());
-
-
+        List<String> diachiLst = Arrays.asList(hoaDonXem.getDiachi().split(", "));
+        String tinh = diachiLst.get(0);
+        String huyen = diachiLst.get(1);
+        String xa = diachiLst.get(2);
+        String diachiCT = diachiLst.get(3);
         ThayDoiTTHoaDon_KHInfo formChangesTTKH = new ThayDoiTTHoaDon_KHInfo(
-                hoaDonXem.getKhachhang().getNguoidung().getHovaten(), hoaDonXem.getSdt(),
-                hoaDonXem.getDiachi(), hoaDonXem.getDiachi(), hoaDonXem.getDiachi(),
-                hoaDonXem.getDiachi(), hoaDonXem.getPhivanchuyen()+"", hoaDonXem.getGhichu()
+                hoaDonXem.getTennguoinhan(), hoaDonXem.getSdt(),
+                tinh, huyen, xa, diachiCT, hoaDonXem.getPhivanchuyen(), hoaDonXem.getGhichu()
         );
         model.addAttribute("thayDoiTT", formChangesTTKH);
         model.addAttribute("tongTT", tongTT);
@@ -583,5 +582,20 @@ public class hoaDonController {
         return "admin/banhangtaiquay";
     }
 
+    //
+    @PostMapping("ChangesTTHD")
+    public String changesTTDH(Model model, @ModelAttribute("thayDoiTT") ThayDoiTTHoaDon_KHInfo TTChanges) {
+        List<HoaDon> hd = dao.timTheoID(idhdshowdetail);
+        HoaDon hdset = hd.get(0);
+        hdset.setTennguoinhan(TTChanges.getTen());
+        hdset.setSdt(TTChanges.getSdt());
+        String diachi = TTChanges.getTinh() + ", " + TTChanges.getHuyen() + ", " + TTChanges.getXa() + ", " + TTChanges.getDiachiCT();
+        hdset.setDiachi(diachi.trim());
+        hdset.setPhivanchuyen(TTChanges.getPhigiao());
+        hdset.setGhichu(TTChanges.getGhichu());
+        dao.capNhatHD(hdset);
+
+        return "redirect:/hoa-don/showDetail";
+    }
 
 }
