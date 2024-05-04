@@ -582,7 +582,7 @@ public class hoaDonController {
         return "admin/banhangtaiquay";
     }
 
-    //
+    //thay đổi tt khách tại hdct
     @PostMapping("ChangesTTHD")
     public String changesTTDH(Model model, @ModelAttribute("thayDoiTT") ThayDoiTTHoaDon_KHInfo TTChanges) {
         List<HoaDon> hd = dao.timTheoID(idhdshowdetail);
@@ -595,6 +595,17 @@ public class hoaDonController {
         hdset.setGhichu(TTChanges.getGhichu());
         dao.capNhatHD(hdset);
 
+        return "redirect:/hoa-don/showDetail";
+    }
+
+    // lựa chọn nhân viên thay thế tại hdct
+    @GetMapping("ChoseNV/{id}")
+    public String choseNV(@PathVariable("id") Integer id) {
+        List<HoaDon> hd = dao.timTheoID(idhdshowdetail);
+        HoaDon hdset = hd.get(0);
+        Optional<NhanVien> nv = nhanVienService.findById(id);
+        hdset.setNhanvien(nv.get());
+        dao.capNhatHD(hdset);
         return "redirect:/hoa-don/showDetail";
     }
 
