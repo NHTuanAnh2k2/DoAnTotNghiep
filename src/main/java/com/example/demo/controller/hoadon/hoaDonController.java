@@ -609,4 +609,13 @@ public class hoaDonController {
         return "redirect:/hoa-don/showDetail";
     }
 
+    // tìm kiếm nhân viên muốn thay đổi
+    @GetMapping("searchNV")
+    @ResponseBody
+    public ResponseEntity<?> tìmlistNV(@RequestParam("keySearch") Optional<String> key) {
+
+        List<NhanVien> pageNV = nhanVienService.findAll();
+        return ResponseEntity.ok(pageNV);
+    }
+
 }

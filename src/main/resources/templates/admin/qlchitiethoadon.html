@@ -698,10 +698,8 @@
                                                                                     <input class="form-control me-2"
                                                                                         type="search"
                                                                                         placeholder="Search"
-                                                                                        aria-label="Search">
-                                                                                    <button
-                                                                                        class="btn btn-outline-success"
-                                                                                        type="submit">Search</button>
+                                                                                        aria-label="Search"
+                                                                                        id="searchNV">
                                                                                 </form>
                                                                             </div>
                                                                         </nav>
@@ -734,8 +732,6 @@
                                                                             </li>
                                                                             <li class="d-flex flex-row page-item"
                                                                                 id="numberPage">
-
-
                                                                             </li>
                                                                             <li class="page-item" id="btn_next_page">
                                                                                 <a class="page-link"
@@ -744,10 +740,6 @@
                                                                         </ul>
                                                                     </nav>
                                                                 </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-bs-dismiss="modal">Hủy</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1870,6 +1862,41 @@
                 })
         }
 
+    </script>
+
+    <script>
+        var searchNV = document.getElementById('searchNV');
+
+        searchNV.onkeyup = function () {
+            var keySearch = searchNV.value;
+            var url = `/hoa-don/searchNV?keySearch=${keySearch}`;
+            fetch(url)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let html = '';
+                    for (const hd of b) {
+                        STT++;
+                        html += `<tr>
+                               <td>${STT}</td>
+                               <td>${hd.manhanvien}</td>
+                               <td>${hd.nguoidung.hovaten}</td>
+                               <td>${hd.nguoidung.sodienthoai}</td>
+                               <td>${hd.nguoidung.ngaysinh}</td>
+                               <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
+                               <td>
+                                <a href="ChoseNV/${hd.id}"><button
+                                class="btn btn-warning">
+                                chọn
+                                 </button></a>
+                                 </td>
+                            </tr>`;
+                    }
+                    document.getElementById("tbl_doi_nv").innerHTML = html;
+                })
+        }
     </script>
 </body>
 
