@@ -75,7 +75,7 @@ public class NhanVienController {
             Date a = Date.valueOf(nd.getBatdau());
             Date b = Date.valueOf(nd.getKetthuc());
             if (!a.before(b)){
-                ndBindingResult.rejectValue("ketthuc", "error.ketthuc", "Ngày đến phải sau ngày bắt đầu");
+                ndBindingResult.rejectValue("ketthuc", "error.ketthuc", "Khoảng ngày không hợp lệ");
             }
             List<DiaChi> page = diaChi.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
             List<NguoiDung> listnd = nguoiDung.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
@@ -169,6 +169,21 @@ public class NhanVienController {
                          BindingResult dcBindingResult,
                          @ModelAttribute("nv") NhanVienInfo nv,
                          BindingResult nvBindingResult) {
+        if(nd.getNgaysinh() == null){
+            ndBindingResult.rejectValue("ngaysinh", "error.ngaysinh", "Không được để trống ngày sinh");
+            return "/admin/addnhanvien";
+        }
+        if(nd.getNgaysinh() != null){
+            Calendar dob = Calendar.getInstance();
+            dob.setTime(nd.getNgaysinh());
+            Calendar today = Calendar.getInstance();
+            int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+            if (dob.after(today)) {
+                ndBindingResult.rejectValue("ngaysinh", "error.ngaysinh", "Ngày sinh không được lớn hơn ngày hiện tại");
+            }else if(age < 18 || age > 40){
+                ndBindingResult.rejectValue("ngaysinh", "error.ngaysinh", "Nhân viên phải trên 18 tuổi");
+            }
+        }
         if (ndBindingResult.hasErrors() || dcBindingResult.hasErrors() || nvBindingResult.hasErrors()) {
             return "admin/updatenhanvien";
         }

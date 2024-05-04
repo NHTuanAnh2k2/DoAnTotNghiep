@@ -100,7 +100,7 @@
                             <div class="card-body">
                                 <section class="content">
                                     <div class="container">
-                                        <form th:method="post" th:object="${nd}" th:action="@{/updateNhanVien/{id}(id=${nd.id})}">
+                                        <form th:method="post" th:object="${nd}" id="updateForm" th:action="@{/updateNhanVien/{id}(id=${nd.id})}">
                                             <div class="d-flex">
                                                 <div>
                                                     <p>Tên nhân viên:
@@ -184,7 +184,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button class="btn btn-primary" >Cập nhật nhân viên</button>
+                                            <button class="btn btn-primary" onclick="confirmUpdate()" >Cập nhật nhân viên</button>
                                             <button class="btn btn-danger"  onclick="goBack()">Thoát</button>
                                         </form>
                                     </div>
@@ -221,32 +221,8 @@
     };
     var promise = axios(Parameter);
     promise.then(function (result) {
-        // hienthi(result.data);
         renderCity(result.data);
     });
-    function hienthi(data){
-        for (const x of data) {
-            var opt = document.createElement('option');
-            opt.value = x.Name;
-            opt.text = x.Name;
-            opt.setAttribute('data-id', x.Id);
-            citis.options.add(opt);
-        }
-        for (const k of result[0].Districts) {
-            var opt1 = document.createElement('option');
-            opt1.value = k.Name;
-            opt1.text = k.Name;
-            opt1.setAttribute('data-id', k.Id);
-            districts.options.add(opt1);
-        }
-        for (const w of dataWards) {
-            var opt = document.createElement('option');
-            opt.value = w.Name;
-            opt.text = w.Name;
-            opt.setAttribute('data-id', w.Id);
-            wards.options.add(opt);
-        }
-    }
 
     function renderCity(data) {
         for (const x of data) {
@@ -289,8 +265,23 @@
     }
 </script>
 <script>
+    function confirmUpdate() {
+        Swal.fire({
+            title: "Bạn có muốn cập nhật nhân viên không?",
+            // showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: "Cập nhật",
+            cancelButtonText: "Hủy"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire("Update thành công!", "", "success");
+                document.getElementById('updateForm').submit();
+                window.location.href = 'admin/qlnhanvien';
+            }
+        })
+    }
     function goBack() {
-        window.history.back();
+        window.location.href = 'admin/qlnhanvien';
     }
 </script>
 
