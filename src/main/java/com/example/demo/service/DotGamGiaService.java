@@ -14,4 +14,5 @@ public interface DotGamGiaService {
                                                Integer ttSearch, Pageable pageable);
     DotGiamGia AddDotGiamGia(DotGiamGia dotGiamGia);
     DotGiamGia findDotGiamGiaById(Integer Id);
+    DotGiamGia findFirstByOrderByNgaytaoDesc();
 }

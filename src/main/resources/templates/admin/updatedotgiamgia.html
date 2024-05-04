@@ -93,31 +93,51 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-5">
-                                <form id="formThemDot" th:action="@{/admin/them-dot-giam-gia}" th:object="${dotGiamGia}" method="post" onsubmit="return validateForm()">
-                                    <div class="form123 mt-5">
+                                <form id="formThemDot" th:action="@{/admin/cap-nhat-dot-giam-gia/{Id}(Id=${dotGiamGia.id})}" th:object="${dotGiamGia}" method="post" onsubmit="return validateForm()">
+                                    <div class="d-flex justify-content-between mt-5">
+                                        <div class="form123">
+                                            <input type="text" th:field="*{nguoitao}" disabled/>
+                                            <label>Người tạo</label>
+                                        </div>
+                                        <div class="form123">
+                                            <input type="datetime-local" th:field="*{ngaytao}" disabled/>
+                                            <label>Ngày tạo</label>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-1">
+                                        <div class="form123">
+                                            <input type="text" th:field="*{nguoicapnhat}" disabled/>
+                                            <label>Người cập nhật cuối</label>
+                                        </div>
+                                        <div class="form123">
+                                            <input type="datetime-local" th:field="*{lancapnhatcuoi}" disabled/>
+                                            <label>Lần cập nhật cuối</label>
+                                        </div>
+                                    </div>
+                                    <div class="form123 mt-1">
                                         <input id="inputTen" type="text" th:field="*{tendot}" placeholder="Tên đợt giảm giá"/>
                                         <label>Tên đợt giảm giá</label>
                                         <div style="color: red; font-weight: initial;" id="errorTen"></div>
                                     </div>
                                     <input type="hidden" name="choncheckbox" value="-1">
-                                    <div class="form123 mt-5">
+                                    <div class="form123 mt-1">
                                         <input id="inputGiaTri" type="number" th:field="*{giatrigiam}" placeholder="Giá trị giảm"/>
                                         <label>Giá trị giảm</label>
                                         <div style="color: red; font-weight: initial;" id="errorGiaTri"></div>
                                     </div>
-                                    <div class="form123 mt-5">
-                                        <input id="inputTuNgay" name="ngayBatDau" type="datetime-local"/>
+                                    <div class="form123 mt-1">
+                                        <input id="inputTuNgay" name="ngayBatDau" th:value="${dotGiamGia.ngaybatdau}" type="datetime-local"/>
                                         <label>Ngày bắt đầu</label>
                                         <div style="color: red; font-weight: initial;" id="errorTuNgay"></div>
                                     </div>
-                                    <div class="form123 mt-5">
-                                        <input id="inputDenNgay" name="ngayKetThuc" type="datetime-local"/>
+                                    <div class="form123 mt-1">
+                                        <input id="inputDenNgay" name="ngayKetThuc" th:value="${dotGiamGia.ngayketthuc}" type="datetime-local"/>
                                         <label>Ngày kết thúc</label>
                                         <div style="color: red; font-weight: initial;" id="errorDenNgay"></div>
                                     </div>
                                     <div class="d-flex justify-content-evenly align-items-center" style="margin-top: 15px;">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                        <button onclick="layGiaTri()" type="submit" class="btn btn-primary" style="margin-left: 20px;">+ Thêm</button>
+                                        <button onclick="layGiaTri()" type="submit" class="btn btn-primary" style="margin-left: 20px;">Cập nhật</button>
                                     </div>
                                 </form>
                             </div>
@@ -178,7 +198,7 @@
                                         <th>Tên sản phẩm</th>
                                         <th>Size</th>
                                         <th>Màu sắc</th>
-<!--                                        <th>Gioi tính</th>-->
+                                        <!--                                        <th>Gioi tính</th>-->
                                         </thead>
                                         <tbody class="table align-middle">
                                         </tbody>
@@ -202,6 +222,18 @@
     let selectedProducts = new Set(); // Danh sách các sản phẩm được chọn
     let index= 0;
     let index1=0;
+
+    async function getProductsByIdDotGiam() {
+        const response = await fetch('/san-pham-dot-giam'); // Thay đổi URL thành URL của controller của bạn
+        return await response.json();
+    }
+
+    async function getProductsDetailByIdDotGiam() {
+        const response = await fetch('/chi-tiet-san-pham-dot-giam'); // Thay đổi URL thành URL của controller của bạn
+        return await response.json();
+    }
+
+
     // Hàm để lấy danh sách sản phẩm từ server
     async function getProducts() {
         const response = await fetch('/hien-thi-san-pham');
@@ -213,10 +245,11 @@
         const response = await fetch(`/hien-thi-san-pham-chi-tiet/${Id}`);
         return await response.json();
     }
-    var giaTriTuCheckbox = []; // Mảng lưu trữ giá trị từ checkbox
+    var giaTriTuCheckbox = [];
     // Hàm để hiển thị danh sách sản phẩm
     async function displayProducts() {
         const products = await getProducts();
+        const productsFromController = await getProductsByIdDotGiam();
         const productTableBody = document.querySelector("#productTable tbody");
         products.forEach(product => {
             const row = productTableBody.insertRow();
@@ -225,6 +258,19 @@
             checkbox.type = "checkbox";
             checkbox.name="chonsanpham";
             checkbox.value = product.id;
+
+            // Kiểm tra xem id sản phẩm có trong danh sách từ controller không
+            if (productsFromController.some(controllerProduct => controllerProduct.id === product.id)) {
+                checkbox.checked = true; // Nếu có, đánh dấu checkbox
+                getProductDetails(product.id)
+                    .then(details => {
+                        displayDetails(details); // Hiển thị chi tiết sản phẩm
+                    })
+                    .catch(error => {
+                        console.error('Error fetching product details:', error);
+                    });
+            }
+
             checkbox.addEventListener("change", async function() {
                 if (this.checked) {
                     selectedProducts.add(product.id);
@@ -244,8 +290,9 @@
     }
 
     // Hàm để hiển thị chi tiết sản phẩm
-    function displayDetails(details) {
+    async function displayDetails(details) {
         const detailTableBody = document.querySelector("#detailTable tbody");
+        const productsFromController = await getProductsDetailByIdDotGiam();
         details.forEach(detail => {
             const row = detailTableBody.insertRow();
             row.setAttribute("data-product-id", detail.sanpham.id); // Lưu productId vào data attribute
@@ -257,6 +304,10 @@
             checkbox.onchange = function() {
                 luuGiaTri(this);
             };
+            if(productsFromController.some(controllerProduct => controllerProduct.id === detail.id)){
+                checkbox.checked = true;
+                giaTriTuCheckbox.push(detail.id.toString());
+            }
             checkboxCell.appendChild(checkbox);
 
             const numberCell = row.insertCell();
@@ -312,6 +363,7 @@
 
     // Gọi hàm để hiển thị danh sách sản phẩm khi trang được tải
     displayProducts();
+     // Mảng lưu trữ giá trị từ checkbox
     function selectAll(source) {
         var checkboxes = document.getElementsByName('chonchitietsp');
         for(var i = 0; i < checkboxes.length; i++) {

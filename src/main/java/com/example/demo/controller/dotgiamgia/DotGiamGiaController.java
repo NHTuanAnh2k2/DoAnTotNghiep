@@ -1,11 +1,13 @@
 package com.example.demo.controller.dotgiamgia;
 
-import com.example.demo.entity.DotGiamGia;
-import com.example.demo.entity.PhieuGiamGia;
-import com.example.demo.entity.SanPhamChiTiet;
+import com.example.demo.entity.*;
 import com.example.demo.service.impl.DotGiamGiaImp;
+import com.example.demo.service.impl.SanPHamDotGiamImp;
 import com.example.demo.service.impl.SanPhamChiTietImp;
 import com.example.demo.service.impl.SanPhamImp;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.asm.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,7 +18,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 @Controller
 public class DotGiamGiaController {
@@ -27,6 +31,9 @@ public class DotGiamGiaController {
     SanPhamImp sanPhamImp;
     @Autowired
     SanPhamChiTietImp sanPhamChiTietImp;
+    @Autowired
+    SanPHamDotGiamImp sanPHamDotGiamImp;
+
 
     @RequestMapping("/admin/hien-thi-dot-giam-gia")
     public String qlphieugiamgia(Model model,
@@ -92,9 +99,116 @@ public class DotGiamGiaController {
     }
     @GetMapping("/admin/xem-them-dot-giam-gia")
     public String qlxemthemphieugiamgia(@ModelAttribute("dotGiamGia") DotGiamGia dotGiamGia, Model model){
-        model.addAttribute("lstSP",sanPhamImp.findAll());
-        model.addAttribute("lstCTSP",sanPhamChiTietImp.findAll());
+//        model.addAttribute("lstSP",sanPhamImp.findAll());
+//        model.addAttribute("lstCTSP",sanPhamChiTietImp.findAll());
         return "admin/adddotgiamgia";
+    }
+    @PostMapping("/admin/them-dot-giam-gia")
+    public String AddDotGiamGia(@ModelAttribute("dotGiamGia") DotGiamGia dotGiamGia,
+                                  @RequestParam("ngayBatDau") String ngayBatDau,
+                                  @RequestParam("ngayKetThuc") String ngayKetThuc,
+                                  @RequestParam("choncheckbox") String[] choncheckbox){
+
+            dotGiamGia.setTendot(dotGiamGia.getTendot().trim());
+            dotGiamGia.setNguoitao("Tuan Anh");
+            Timestamp ngayBatDauTimestamp = Timestamp.valueOf(ngayBatDau.replace("T", " ") + ":00");
+            Timestamp ngayKetThucTimestamp = Timestamp.valueOf(ngayKetThuc.replace("T", " ") + ":00");
+            dotGiamGia.setNgaybatdau(ngayBatDauTimestamp);
+            dotGiamGia.setNgayketthuc(ngayKetThucTimestamp);
+
+            Timestamp ngayHT= new Timestamp(System.currentTimeMillis());
+            dotGiamGia.setLancapnhatcuoi(new Timestamp(System.currentTimeMillis()));
+            dotGiamGia.setNguoicapnhat("Tuan Anh");
+            if(ngayBatDauTimestamp.getTime()> ngayHT.getTime()){
+                dotGiamGia.setTrangthai(0);
+            }else{
+                dotGiamGia.setTrangthai(1);
+            }
+
+            dotGiamGia.setNgaytao(new Timestamp(System.currentTimeMillis()));
+            dotGiamGiaImp.AddDotGiamGia(dotGiamGia);
+            List<String> listString = Arrays.asList(choncheckbox);
+            List<Integer> listInt= new ArrayList<>();
+            for(String s : listString){
+                System.out.println(s);
+                Integer i= Integer.parseInt(s);
+                listInt.add(i);
+            }
+            listInt.remove(Integer.valueOf(-1));
+
+            for(Integer chon :listInt){
+                DotGiamGia dot = dotGiamGiaImp.findFirstByOrderByNgaytaoDesc();
+                SanPhamChiTiet spct= sanPhamChiTietImp.findById(chon);
+                SanPhamDotGiam sanPhamDotGiam= new SanPhamDotGiam();
+                sanPhamDotGiam.setSanphamchitiet(spct);
+                sanPhamDotGiam.setDotgiamgia(dot);
+
+                sanPHamDotGiamImp.AddSanPhamDotGiam(sanPhamDotGiam);
+
+            }
+
+            return "redirect:/admin/hien-thi-dot-giam-gia";
+
+    }
+    @GetMapping("/admin/xem-cap-nhat-dot-giam-gia/{Id}")
+    public String qlxemcapnhatdotgiamgia(@PathVariable("Id") Integer Id, Model model, HttpSession session){
+        model.addAttribute("dotGiamGia",dotGiamGiaImp.findDotGiamGiaById(Id));
+        session.setAttribute("dotGG", dotGiamGiaImp.findDotGiamGiaById(Id));
+        return "admin/updatedotgiamgia";
+    }
+    @PostMapping("/admin/cap-nhat-dot-giam-gia/{Id}")
+    public String qlcapnhatdotgiamgia(@PathVariable("Id") Integer Id,
+                                      @ModelAttribute("dotGiamGia") DotGiamGia dotGiamGia,
+                                      @RequestParam("ngayBatDau") String ngayBatDau,
+                                      @RequestParam("ngayKetThuc") String ngayKetThuc,
+                                      @RequestParam("choncheckbox") String[] choncheckbox){
+        DotGiamGia dot= dotGiamGiaImp.findDotGiamGiaById(Id);
+        dotGiamGia.setId(Id);
+        dotGiamGia.setTendot(dotGiamGia.getTendot().trim());
+        Timestamp ngayBatDauTimestamp = Timestamp.valueOf(ngayBatDau.replace("T", " ") + ":00");
+        Timestamp ngayKetThucTimestamp = Timestamp.valueOf(ngayKetThuc.replace("T", " ") + ":00");
+        dotGiamGia.setNgaybatdau(ngayBatDauTimestamp);
+        dotGiamGia.setNgayketthuc(ngayKetThucTimestamp);
+        Timestamp ngayHT= new Timestamp(System.currentTimeMillis());
+        dotGiamGia.setLancapnhatcuoi(new Timestamp(System.currentTimeMillis()));
+        dotGiamGia.setNguoicapnhat("Tuan Anh");
+        if (dot.getTrangthai() == 2) {
+            dotGiamGia.setTrangthai(2);
+        } else {
+            if (ngayBatDauTimestamp.getTime() > ngayHT.getTime()) {
+                dotGiamGia.setTrangthai(0);
+            } else {
+                dotGiamGia.setTrangthai(1);
+            }
+        }
+
+
+        dotGiamGiaImp.AddDotGiamGia(dotGiamGia);
+        List<String> listString = Arrays.asList(choncheckbox);
+        List<Integer> listInt= new ArrayList<>();
+        for(String s : listString){
+            System.out.println(s);
+            Integer i= Integer.parseInt(s);
+            listInt.add(i);
+        }
+        listInt.remove(Integer.valueOf(-1));
+
+        List<SanPhamDotGiam> lstSPDG= sanPHamDotGiamImp.findSanPhamDotGiamByIdDotgiamgia(dotGiamGia.getId());
+        for(SanPhamDotGiam sp :lstSPDG){
+            sanPHamDotGiamImp.delete(sp);
+        }
+
+        for(Integer chon :listInt){
+            SanPhamChiTiet spct= sanPhamChiTietImp.findById(chon);
+            SanPhamDotGiam sanPhamDotGiam= new SanPhamDotGiam();
+            sanPhamDotGiam.setSanphamchitiet(spct);
+            sanPhamDotGiam.setDotgiamgia(dotGiamGia);
+
+            sanPHamDotGiamImp.AddSanPhamDotGiam(sanPhamDotGiam);
+
+        }
+
+        return "redirect:/admin/hien-thi-dot-giam-gia";
     }
 //    @GetMapping("/products")
 //    public String getAllProducts(Model model) {
@@ -109,4 +223,18 @@ public class DotGiamGiaController {
 //        model.addAttribute("productDetails", productDetails);
 //        return "products"; // Trả về template HTML chứa danh sách sản phẩm và chi tiết sản phẩm
 //    }
+
+//    @GetMapping("/xem-chi-tiet-san-pham")
+//
+//    public String getProductDetails(@RequestParam("productIds") List<String> productIds,Model model) {
+//        List<SanPhamChiTiet> allProductDetails = new ArrayList<>();
+//        for (String productId : productIds) {
+//            Integer id= Integer.parseInt(productId);
+//            List<SanPhamChiTiet> productDetails = sanPhamChiTietImp.findBySanPhamId(id);
+//            allProductDetails.addAll(productDetails);
+//        }
+//        model.addAttribute("lstSPCT",allProductDetails);
+//        return "forward://admin/hien-thi-dot-giam-gia";// Trả về danh sách chi tiết sản phẩm của tất cả các sản phẩm
+//    }
+
 }
