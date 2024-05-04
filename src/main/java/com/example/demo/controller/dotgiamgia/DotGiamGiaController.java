@@ -117,6 +117,8 @@ public class DotGiamGiaController {
             dotGiamGia.setNgayketthuc(ngayKetThucTimestamp);
 
             Timestamp ngayHT= new Timestamp(System.currentTimeMillis());
+            dotGiamGia.setLancapnhatcuoi(new Timestamp(System.currentTimeMillis()));
+            dotGiamGia.setNguoicapnhat("Tuan Anh");
             if(ngayBatDauTimestamp.getTime()> ngayHT.getTime()){
                 dotGiamGia.setTrangthai(0);
             }else{
@@ -153,6 +155,60 @@ public class DotGiamGiaController {
         model.addAttribute("dotGiamGia",dotGiamGiaImp.findDotGiamGiaById(Id));
         session.setAttribute("dotGG", dotGiamGiaImp.findDotGiamGiaById(Id));
         return "admin/updatedotgiamgia";
+    }
+    @PostMapping("/admin/cap-nhat-dot-giam-gia/{Id}")
+    public String qlcapnhatdotgiamgia(@PathVariable("Id") Integer Id,
+                                      @ModelAttribute("dotGiamGia") DotGiamGia dotGiamGia,
+                                      @RequestParam("ngayBatDau") String ngayBatDau,
+                                      @RequestParam("ngayKetThuc") String ngayKetThuc,
+                                      @RequestParam("choncheckbox") String[] choncheckbox){
+        DotGiamGia dot= dotGiamGiaImp.findDotGiamGiaById(Id);
+        dotGiamGia.setId(Id);
+        dotGiamGia.setTendot(dotGiamGia.getTendot().trim());
+        Timestamp ngayBatDauTimestamp = Timestamp.valueOf(ngayBatDau.replace("T", " ") + ":00");
+        Timestamp ngayKetThucTimestamp = Timestamp.valueOf(ngayKetThuc.replace("T", " ") + ":00");
+        dotGiamGia.setNgaybatdau(ngayBatDauTimestamp);
+        dotGiamGia.setNgayketthuc(ngayKetThucTimestamp);
+        Timestamp ngayHT= new Timestamp(System.currentTimeMillis());
+        dotGiamGia.setLancapnhatcuoi(new Timestamp(System.currentTimeMillis()));
+        dotGiamGia.setNguoicapnhat("Tuan Anh");
+        if (dot.getTrangthai() == 2) {
+            dotGiamGia.setTrangthai(2);
+        } else {
+            if (ngayBatDauTimestamp.getTime() > ngayHT.getTime()) {
+                dotGiamGia.setTrangthai(0);
+            } else {
+                dotGiamGia.setTrangthai(1);
+            }
+        }
+
+
+        dotGiamGiaImp.AddDotGiamGia(dotGiamGia);
+        List<String> listString = Arrays.asList(choncheckbox);
+        List<Integer> listInt= new ArrayList<>();
+        for(String s : listString){
+            System.out.println(s);
+            Integer i= Integer.parseInt(s);
+            listInt.add(i);
+        }
+        listInt.remove(Integer.valueOf(-1));
+
+        List<SanPhamDotGiam> lstSPDG= sanPHamDotGiamImp.findSanPhamDotGiamByIdDotgiamgia(dotGiamGia.getId());
+        for(SanPhamDotGiam sp :lstSPDG){
+            sanPHamDotGiamImp.delete(sp);
+        }
+
+        for(Integer chon :listInt){
+            SanPhamChiTiet spct= sanPhamChiTietImp.findById(chon);
+            SanPhamDotGiam sanPhamDotGiam= new SanPhamDotGiam();
+            sanPhamDotGiam.setSanphamchitiet(spct);
+            sanPhamDotGiam.setDotgiamgia(dotGiamGia);
+
+            sanPHamDotGiamImp.AddSanPhamDotGiam(sanPhamDotGiam);
+
+        }
+
+        return "redirect:/admin/hien-thi-dot-giam-gia";
     }
 //    @GetMapping("/products")
 //    public String getAllProducts(Model model) {

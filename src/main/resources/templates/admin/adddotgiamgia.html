@@ -213,7 +213,7 @@
         const response = await fetch(`/hien-thi-san-pham-chi-tiet/${Id}`);
         return await response.json();
     }
-
+    var giaTriTuCheckbox = []; // Mảng lưu trữ giá trị từ checkbox
     // Hàm để hiển thị danh sách sản phẩm
     async function displayProducts() {
         const products = await getProducts();
@@ -287,14 +287,31 @@
     }
 
     // Hàm để ẩn chi tiết sản phẩm của sản phẩm đã bị bỏ chọn
-    function hideDetails(Id) {
+    async function hideDetails(Id) {
         const detailRows = document.querySelectorAll(`#detailTable tbody tr[data-product-id="${Id}"]`);
         detailRows.forEach(row => row.remove());
+        const details = await getProductDetails(Id);
+        // Lặp qua mỗi chi tiết sản phẩm
+        for (let i = 0; i < details.length; i++) {
+            const detail = details[i];
+
+            // Lặp qua mỗi giá trị trong mảng giaTriTuCheckbox
+            for (let j = 0; j < giaTriTuCheckbox.length; j++) {
+                const value = giaTriTuCheckbox[j];
+
+                // So sánh chi tiết sản phẩm với giá trị từ checkbox
+                if (detail.id.toString() === value) {
+                    // Nếu có sự khớp, loại bỏ giá trị khỏi mảng giaTriTuCheckbox
+                    giaTriTuCheckbox.splice(j, 1);
+                    // Phá vòng lặp để tiết kiệm thời gian
+                    break;
+                }
+            }
+        }
     }
 
     // Gọi hàm để hiển thị danh sách sản phẩm khi trang được tải
     displayProducts();
-    var giaTriTuCheckbox = []; // Mảng lưu trữ giá trị từ checkbox
     function selectAll(source) {
         var checkboxes = document.getElementsByName('chonchitietsp');
         for(var i = 0; i < checkboxes.length; i++) {
@@ -438,12 +455,18 @@
             errorDenNgay.innerText="";
         }
         if(isTenValid && isGiaTriValid && isTuNgayValid && isDenNgayValid){
-            if(kiemTraCheckboxDuocChon("chonsanpham")){
-                return true;
-            }else{
+            if(kiemTraCheckboxDuocChon("chonsanpham")===false){
                 alert("Vui lòng chọn san pham áp dụng!");
                 return false;
+            }else{
+                if(kiemTraCheckboxDuocChon("chonchitietsp")===false){
+                    alert("Vui lòng chọn chi tiet san pham áp dụng!");
+                    return false;
+                }
+                return true;
             }
+        }else{
+            return false;
         }
     }
 

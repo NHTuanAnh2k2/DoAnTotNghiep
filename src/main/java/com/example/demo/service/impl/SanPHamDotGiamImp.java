@@ -21,4 +21,9 @@ public class SanPHamDotGiamImp implements SanPhamDotGiamService {
     public List<SanPhamDotGiam> findSanPhamDotGiamByIdDotgiamgia(Integer IdDot) {
         return sanPhamDotGiamRepository.findSanPhamDotGiamByIdDotgiamgia(IdDot);
     }
+
+    @Override
+    public void delete(SanPhamDotGiam sanPhamDotGiam) {
+         sanPhamDotGiamRepository.delete(sanPhamDotGiam);
+    }
 }
