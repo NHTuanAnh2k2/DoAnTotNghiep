@@ -8,13 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-///
+
 @Controller
 public class SanPhamChiTietController {
     @Autowired
@@ -52,6 +56,8 @@ public class SanPhamChiTietController {
 
     @Autowired
     AnhImp anhImp;
+    @Autowired
+    AnhRepository anhRepository;
 
     @GetMapping("/allSPCT")
     public String allSPCT(Model model, @ModelAttribute("search") SanPhamChiTietInfo info) {
@@ -127,7 +133,10 @@ public class SanPhamChiTietController {
     }
 
     @PostMapping("/updateCTSP/{id}")
-    public String updateCTSP(@PathVariable Integer id, @ModelAttribute("hehe") SanPhamChiTiet sanPhamChiTiet) {
+    public String updateCTSP(@PathVariable Integer id, @ModelAttribute("hehe") SanPhamChiTiet sanPhamChiTiet,
+                             @RequestParam(name = "anhs") List<MultipartFile> anhFiles,
+                             @RequestParam(name = "spctIds") Integer spctId
+    ) {
         LocalDateTime currentTime = LocalDateTime.now();
         sanPhamChiTiet.setId(id);
         sanPhamChiTiet.setNgaytao(currentTime);
@@ -175,9 +184,41 @@ public class SanPhamChiTietController {
         kichCo.setTen(sanPhamChiTiet.getKichco().getTen());
         kichCoRepository.save(kichCo);
         sanPhamChiTietRepository.save(sanPhamChiTiet);
+        SanPhamChiTiet spct = sanPhamChiTietRepository.findById(spctId).orElse(null);
+        if (spct != null) {
+            for (MultipartFile anhFile : anhFiles) {
+                String anhUrl = saveImage(anhFile);
+                Anh anh = new Anh();
+                anh.setTenanh(anhUrl);
+                anh.setTrangthai(true);
+                anh.setNgaytao(currentTime);
+                anh.setLancapnhatcuoi(currentTime);
+                anh.setSanphamchitiet(spct);
+                anhRepository.save(anh);
+            }
+        }
+
         Integer firstProductId = sanPhamChiTiet.getSanpham().getId();
         return "redirect:/detailsanpham/" + firstProductId;
     }
+    private String saveImage(MultipartFile file) {
+        String uploadDir = "G:\\Ki7\\DATN\\DATN\\src\\main\\resources\\static\\upload";
+        try {
+            File directory = new File(uploadDir);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+            String originalFileName = file.getOriginalFilename();
+            String filePath = uploadDir + File.separator + originalFileName;
+            File dest = new File(filePath);
+            file.transferTo(dest);
+            return filePath;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     @PostMapping("/updateGiaAndSoLuongCTSP")
     public String updateGiaAndSoLuong(
