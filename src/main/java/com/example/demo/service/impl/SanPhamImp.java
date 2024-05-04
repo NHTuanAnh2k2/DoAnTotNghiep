@@ -36,5 +36,10 @@ public class SanPhamImp implements SanPhamService {
         return sanPhamRepositoty.save(sanPham);
     }
 
+    @Override
+    public SanPham findById(Integer Id) {
+        return sanPhamRepositoty.getById(Id);
+    }
+
 
 }

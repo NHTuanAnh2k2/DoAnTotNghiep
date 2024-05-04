@@ -6,6 +6,7 @@ import com.example.demo.service.impl.SanPHamDotGiamImp;
 import com.example.demo.service.impl.SanPhamChiTietImp;
 import com.example.demo.service.impl.SanPhamImp;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.asm.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,7 +35,7 @@ public class DotGiamGiaController {
     SanPHamDotGiamImp sanPHamDotGiamImp;
 
 
-    @GetMapping("/admin/hien-thi-dot-giam-gia")
+    @RequestMapping("/admin/hien-thi-dot-giam-gia")
     public String qlphieugiamgia(Model model,
                                  @RequestParam(defaultValue = "0") Integer p,
                                  @RequestParam(value = "keySearch",required = false) String keySearch,
@@ -146,6 +147,12 @@ public class DotGiamGiaController {
 
             return "redirect:/admin/hien-thi-dot-giam-gia";
 
+    }
+    @GetMapping("/admin/xem-cap-nhat-dot-giam-gia/{Id}")
+    public String qlxemcapnhatdotgiamgia(@PathVariable("Id") Integer Id, Model model, HttpSession session){
+        model.addAttribute("dotGiamGia",dotGiamGiaImp.findDotGiamGiaById(Id));
+        session.setAttribute("dotGG", dotGiamGiaImp.findDotGiamGiaById(Id));
+        return "admin/updatedotgiamgia";
     }
 //    @GetMapping("/products")
 //    public String getAllProducts(Model model) {
