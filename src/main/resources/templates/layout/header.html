@@ -6,21 +6,17 @@
 </head>
 <body>
 <header>
-    <div class="header-top bg-dark" style="height: 70px;padding-top: 20px; line-height: 70px">
+    <div class="header-top" style="height: 70px;padding-top: 20px; line-height: 70px;background-color: white;color: black">
         <div class="container">
             <div class="row">
                 <div class="col-12">
                     <div class="left floatleft">
                         <ul>
-                            <li>
-                                <img src="../dist/img/logo_t&t.jpg" class="rounded-circle" width="50px" height="50px">
-                            </li>
-
-                            <li>
+                            <li style="font-weight: bold;color: #0a0e14">
                                 <i class="fa fa-phone"></i>
                                 0345506813
                             </li>
-                            <li>
+                            <li style="font-weight: bold;color: #0a0e14">
                                 <i class="fa fa-envelope-o"></i>
                                 duynvph30146@fpt.edu.vn
                             </li>
@@ -34,13 +30,13 @@
                                     <button type="submit" aria-label="Right Align">
                                         <i class="fa fa-search"></i>
                                     </button>
-                                    <input type="search" placeholder="Search"/>
+                                    <input type="search" placeholder="Search" style="color: #0a0e14" />
                                 </form>
                             </li>
                             <!--end-->
                             <!--cart-->
-                            <li style="padding-left: 20px">
-                                <a th:href="@{/cart}">
+                            <li style="padding-left: 20px;color: #0a0e14">
+                                <a th:href="@{/cart}" style="color: #0a0e14">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                                          class="bi bi-cart-check-fill" viewBox="0 0 16 16">
                                         <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m-1.646-7.646-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708"/>
@@ -50,8 +46,8 @@
                             <!--end-->
                             <!--account-->
                             <li style="padding-left: 20px">
-                                <i class="fa fa-user" style="width: 20px;height: 20px"></i>
-                                <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Account</a>
+                                <i class="fa fa-user" style="width: 20px;height: 20px;color: #0a0e14"></i>
+                                <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" style="font-weight: bold;color: #0a0e14">Account</a>
                             </li>
                             <!-- Modal -->
                             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -81,6 +77,15 @@
     </div>
 </header>
 
+<header>
+    <div  style="height: 30px;line-height: 30px;color: white;background-color: rgb(249,72,42)">
+        <h5>
+            <marquee>Đến với "T&T SHOE quý khách hàng sẽ có những sản phẩm ưng ý nhất, chất lượng phục vụ tốt và giá
+                thành tốt nhất, cùng những “ Chương Trình Khuyến Mãi Đặc Biệt”.</marquee>
+        </h5>
+    </div>
+</header>
+
 <header style="height: 30px;padding-bottom: 20px">
     <div class=" bg-white">
         <div class="container">
@@ -89,25 +94,22 @@
                     <div class="">
                         <ul>
                             <li class="text-dark" style="padding-left: 260px">
-                                <a href="#">TRANG CHỦ</a>
+                                <a th:href="@{/customer/trangchu}"class="text-decoration-none text-dark" style="font-weight: bold">TRANG CHỦ</a>
                             </li>
                             <li class="text-dark" style="padding-left: 20px">
-                                <a href="#">GIỚI THIỆU</a>
+                                <a th:href="@{/customer/sanpham}" class="text-decoration-none text-dark" style="font-weight: bold">SẢN PHẨM</a>
                             </li>
                             <li class="text-dark" style="padding-left: 20px">
-                                <a href="#">SẢN PHẨM</a>
+                                <a href="#" class="text-decoration-none text-dark" style="font-weight: bold">GIỚI THIỆU</a>
                             </li>
                             <li class="text-dark" style="padding-left: 20px">
-                                <a href="#">DANH MỤC</a>
+                                <a href="#" class="text-decoration-none text-dark" style="font-weight: bold">TIN TỨC</a>
                             </li>
                             <li class="text-dark" style="padding-left: 20px">
-                                <a href="#">CÁC NHÃN HIỆU</a>
+                                <a href="#" class="text-decoration-none text-dark" style="font-weight: bold">LIÊN HỆ</a>
                             </li>
                             <li class="text-dark" style="padding-left: 20px">
-                                <a href="#">SẮP RA MẮT</a>
-                            </li>
-                            <li class="text-dark" style="padding-left: 20px">
-                                <a href="#">GIẢM GIÁ</a>
+                                <a href="#" class="text-decoration-none text-dark" style="font-weight: bold">TRA CỨU</a>
                             </li>
                         </ul>
                     </div>

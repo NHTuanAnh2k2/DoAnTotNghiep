@@ -16,13 +16,33 @@
 <!-- product details area start -->
 <section class="product-details section-padding-top">
     <div class="container">
-        <div class="row">
+        <div class="row" th:each="spct, stt : ${sanphamchitiet}">
             <div class="col-md-6">
                 <div class="left">
                     <!-- Single-pro-slider Big-photo start -->
                     <div class="large-slider zoom-gallery">
-                        <div>
-                            <img src="../dist/img/bong2.jpg" width="555" height="587" alt="" />
+                        <div th:id="'carouselExample' + ${spct.id}" class="carousel">
+                            <div class="carousel-inner">
+                                <th:block th:each="anhs, index : ${spct.anh}">
+                                    <div th:classappend="${index.index == 0} ? 'carousel-item active' : 'carousel-item'">
+                                        <img th:if="${anhs.tenanh != null}"
+                                             th:src="@{'/upload/' + ${anhs.tenanh.substring(anhs.tenanh.lastIndexOf('upload') + 6)}}"
+                                             class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
+                                    </div>
+                                </th:block>
+                            </div>
+                            <button class="carousel-control-prev" type="button"
+                                    th:data-bs-target="'#carouselExample' + ${spct.id}"
+                                    data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button"
+                                    th:data-bs-target="'#carouselExample' + ${spct.id}"
+                                    data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -30,66 +50,25 @@
             <div class="col-md-6">
                 <div class="right">
                     <div class="singl-pro-title">
-                        <h3>GIÀY BÓNG ĐÁ NIKES </h3>
-                        <h1>$1700.00</h1>
-                        <hr />
+
+                        <h3 th:text="${spct.sanpham.tensanpham}"></h3>
+                        <td th:text="'SPCT00000'+${spct.id + 1}" style="font-weight: bold"></td>
+                        <h1 style="color: red;font-weight: bold"  th:text="${#numbers.formatDecimal(spct.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></h1>
+                        Kích cỡ:
+                        <p>
+                            <a style="background-color: rgb(249,72,42);color: white" class="btn" th:text="${spct.kichco.ten}"></a>
+
+                        </p>
+                        Số lượng:
+                        <p>
+
+                            <input type="number" th:value="${spct.soluong}">
+                        </p>
                         <p>Mô tả</p>
-                        <hr />
-                        <div class="color-brand clearfix">
-                            <div class="s-select">
-                                <div class="custom-select">
-                                    <select class="form-control">
-                                        <option>Color</option>
-                                        <option>Red </option>
-                                        <option>Green </option>
-                                        <option>Blue</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="s-select">
-                                <div class="custom-select">
-                                    <select class="form-control">
-                                        <option>Brend</option>
-                                        <option>Men </option>
-                                        <option>Fashion </option>
-                                        <option>Shirt</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="s-select s-plus-minus">
-                                <form action="#">
-                                    <div class="plus-minus">
-                                        <a class="dec qtybutton">-</a>
-                                        <input type="text" value="02" name="qtybutton" class="plus-minus-box">
-                                        <a class="inc qtybutton">+</a>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="actions-btn">
-                            <ul class="clearfix text-center">
-                                <li>
-                                    <a href="cart.html"><i class="fa fa-shopping-cart"></i> add to cart</a>
-                                </li>
-                                <li>
-                                    <a href="cart.html"><i class="fa fa-heart-o"></i></a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-compress"></i></a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-share-alt"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                        <hr />
-
-
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 </section>
 <!-- product details area end -->

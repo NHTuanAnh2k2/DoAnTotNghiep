@@ -1,0 +1,1577 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<!--thư viện-->
+<nav th:replace="~{/layout/head.html}"></nav>
+<!--end-->
+<body>
+
+<!-- header -->
+<nav th:replace="~{/layout/header.html}"></nav>
+<!-- header end -->
+
+<!-- page banner -->
+<!--<nav th:replace="~{/layout/banner.html}"></nav>-->
+<!-- page banner end -->
+
+<!-- product content section start -->
+<section class="product-content section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 order-2 order-lg-1 pt-5 pt-lg-0">
+                <div class="sidebar left-sidebar">
+                    <div class="category single-side">
+                        <div class="sidebar-title">
+                            <h3>THƯƠNG HIỆU</h3>
+                            <input placeholder="Tìm thương hiệu" class="form-control">
+                            <br>
+                            <p><input type="checkbox"> ADDIDAS</p>
+                            <p><input type="checkbox"> NIKES</p>
+
+                        </div>
+                        <div class="sidebar-title">
+                            <h3>ĐẾ GIÀY</h3>
+                            <input placeholder="Tìm sản phẩm" class="form-control">
+                            <br>
+                            <p><input type="checkbox"> VẢI</p>
+                            <p><input type="checkbox"> NHỰA</p>
+                            <p><input type="checkbox"> CAO SU</p>
+
+                        </div>
+                        <div class="sidebar-title">
+                            <h3>CHẤT LIỆU</h3>
+                            <select class="form-control">
+                                <option>CAO SU</option>
+                                <option>NHỰA</option>
+                                <option>VẢI</option>
+                            </select>
+                        </div>
+                        <p></p>
+                        <div class="sidebar-title">
+                            <h3>MÀU SẮC</h3>
+                            <p><input type="checkbox"> MÀU ĐỎ</p>
+                            <p><input type="checkbox"> MÀU XANH</p>
+                            <p><input type="checkbox"> MÀU VÀNG</p>
+                        </div>
+
+                        <div class="sidebar-title">
+                            <h3>SIZE</h3>
+                            <div class="slidecontainer" style="width: 300px;">
+                                <input type="range" min="1" max="100" value="50" style="width: 100%;">
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!--size-->
+                    <!--                    <div class="single-side">-->
+                    <!--                        <div class="sidebar-title">-->
+                    <!--                            <h3>Sizes</h3>-->
+                    <!--                        </div>-->
+                    <!--                        <div class="size-btn clearfix">-->
+                    <!--                            <a href="#">X</a>-->
+                    <!--                            <a href="#">m</a>-->
+                    <!--                            <a href="#">l</a>-->
+                    <!--                            <a href="#">Xm</a>-->
+                    <!--                            <a href="#">xxl</a>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                    <!--end-->
+
+                    <!--ảnh hover-->
+                    <div class="sidebar-banner banner-hover">
+                        <a href="#"><img src="../dist/img/sale.jpg" width="263" height="406" alt="Banner"/></a>
+                    </div>
+                    <!--end-->
+                </div>
+
+            </div>
+
+            <div class="col-lg-9 order-1 order-lg-2">
+                <div class="shop-menu clearfix">
+                    <div class="right floatright">
+                        <!--tăng dần, giảm dần-->
+                        <ul>
+                            <li>
+                                <div class="custom-select">
+                                    <select class="form-control">
+                                        <option>12</option>
+                                        <option>13</option>
+                                        <option>14</option>
+                                        <option>15</option>
+                                        <option>16</option>
+                                        <option>17</option>
+                                    </select>
+                                </div>
+                                <p>Tăng dần</p>
+                            </li>
+                            <li>
+                                <div class="custom-select">
+                                    <select class="form-control">
+                                        <option>Bike</option>
+                                        <option>Aikes</option>
+                                        <option>Biike</option>
+                                        <option>Uike</option>
+                                    </select>
+                                </div>
+                                <p>Giảm dần</p>
+                            </li>
+                        </ul>
+                        <!--end-->
+                    </div>
+                </div>
+
+                <div class="tab-content">
+                    <!--nội dung-->
+                    <div class="tab-pane fade text-center active show" id="gird">
+                        <div class="single-products row">
+                            <div class="col-md-4">
+                                <div class="product-item margin40">
+                                    <div class="pro-img">
+                                        <a th:href="@{/product/detail}">
+                                            <img src="../dist/img/bong2.jpg" width="360" height="409" alt="Product"/></a>
+                                        <div class="tag-n-s">
+                                            <span>New</span>
+                                        </div>
+                                        <div class="actions-btn">
+                                            <ul class="clearfix">
+                                                <li>
+                                                    <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#"><i class="fa fa-heart"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                            class="fa fa-eye"></i></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product-title">
+                                        <a href="#"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                        </a>
+                                        <div class="ratting">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star gray-star"></i>
+                                        </div>
+                                        <p><span>$1700.00</span>
+                                            <del>$170.00</del>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!---end-->
+                            <div class="col-md-4">
+                                <div class="product-item margin40">
+                                    <div class="pro-img">
+                                        <a href="product-details.html"><img src="../dist/img/bong2.jpg" width="360"
+                                                                            height="409" alt="Product"/></a>
+                                        <div class="tag-n-s">
+                                            <span>Sell</span>
+                                        </div>
+                                        <div class="actions-btn">
+                                            <ul class="clearfix">
+                                                <li>
+                                                    <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#"><i class="fa fa-heart"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                            class="fa fa-eye"></i></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product-title">
+                                        <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                        </a>
+                                        <div class="ratting">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star gray-star"></i>
+                                        </div>
+                                        <p><span>$1700.00</span>
+                                            <del>$170.00</del>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!---end-->
+                            <div class="col-md-4">
+                                <div class="product-item margin40">
+                                    <div class="pro-img">
+                                        <a href="product-details.html"><img src="../dist/img/bong2.jpg" width="360"
+                                                                            height="409" alt="Product"/></a>
+                                        <div class="tag-n-s">
+                                            <span>New</span>
+                                        </div>
+                                        <div class="actions-btn">
+                                            <ul class="clearfix">
+                                                <li>
+                                                    <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#"><i class="fa fa-heart"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                            class="fa fa-eye"></i></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product-title">
+                                        <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                        </a>
+                                        <div class="ratting">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star gray-star"></i>
+                                        </div>
+                                        <p><span>$1700.00</span>
+                                            <del>$170.00</del>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!---end-->
+                            <div class="col-md-4">
+                                <div class="product-item margin40">
+                                    <div class="pro-img">
+                                        <a href="product-details.html"><img src="../dist/img/bong3.jpg" width="360"
+                                                                            height="409" alt="Product"/></a>
+                                        <div class="tag-n-s">
+                                            <span>Sell</span>
+                                        </div>
+                                        <div class="actions-btn">
+                                            <ul class="clearfix">
+                                                <li>
+                                                    <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#"><i class="fa fa-heart"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                            class="fa fa-eye"></i></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product-title">
+                                        <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                        </a>
+                                        <div class="ratting">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star gray-star"></i>
+                                        </div>
+                                        <p><span>$1700.00</span>
+                                            <del>$170.00</del>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!---end-->
+                            <div class="col-md-4">
+                                <div class="product-item margin40">
+                                    <div class="pro-img">
+                                        <a href="product-details.html"><img src="../dist/img/bong3.jpg" width="360"
+                                                                            height="409" alt="Product"/></a>
+                                        <div class="actions-btn">
+                                            <ul class="clearfix">
+                                                <li>
+                                                    <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#"><i class="fa fa-heart"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                            class="fa fa-eye"></i></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product-title">
+                                        <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                        </a>
+                                        <div class="ratting">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star gray-star"></i>
+                                        </div>
+                                        <p><span>$1700.00</span>
+                                            <del>$170.00</del>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!---end-->
+                            <div class="col-md-4">
+                                <div class="product-item margin40">
+                                    <div class="pro-img">
+                                        <a href="product-details.html"><img src="../dist/img/bong3.jpg" width="360"
+                                                                            height="409" alt="Product"/></a>
+                                        <div class="tag-n-s">
+                                            <span>New</span>
+                                        </div>
+                                        <div class="actions-btn">
+                                            <ul class="clearfix">
+                                                <li>
+                                                    <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#"><i class="fa fa-heart"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                            class="fa fa-eye"></i></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product-title">
+                                        <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                        </a>
+                                        <div class="ratting">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star gray-star"></i>
+                                        </div>
+                                        <p><span>$1700.00</span>
+                                            <del>$170.00</del>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!---end-->
+                            <div class="col-md-4">
+                                <div class="product-item margin40">
+                                    <div class="pro-img">
+                                        <a href="product-details.html"><img src="../dist/img/bong1.jpg" width="360"
+                                                                            height="409" alt="Product"/></a>
+                                        <div class="actions-btn">
+                                            <ul class="clearfix">
+                                                <li>
+                                                    <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#"><i class="fa fa-heart"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                            class="fa fa-eye"></i></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product-title">
+                                        <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                        </a>
+                                        <div class="ratting">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star gray-star"></i>
+                                        </div>
+                                        <p><span>$1700.00</span>
+                                            <del>$170.00</del>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!---end-->
+                            <div class="col-md-4">
+                                <div class="product-item margin40">
+                                    <div class="pro-img">
+                                        <a href="product-details.html"><img src="../dist/img/bong1.jpg" width="360"
+                                                                            height="409" alt="Product"/></a>
+                                        <div class="actions-btn">
+                                            <ul class="clearfix">
+                                                <li>
+                                                    <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#"><i class="fa fa-heart"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                            class="fa fa-eye"></i></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product-title">
+                                        <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                        </a>
+                                        <div class="ratting">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star gray-star"></i>
+                                        </div>
+                                        <p><span>$1700.00</span>
+                                            <del>$170.00</del>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!---end-->
+                            <div class="col-md-4">
+                                <div class="product-item margin40">
+                                    <div class="pro-img">
+                                        <a href="product-details.html"><img src="../dist/img/bong1.jpg" width="360"
+                                                                            height="409" alt="Product"/></a>
+                                        <div class="tag-n-s">
+                                            <span>New</span>
+                                        </div>
+                                        <div class="actions-btn">
+                                            <ul class="clearfix">
+                                                <li>
+                                                    <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#"><i class="fa fa-heart"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                            class="fa fa-eye"></i></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product-title">
+                                        <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                        </a>
+                                        <div class="ratting">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star gray-star"></i>
+                                        </div>
+                                        <p><span>$1700.00</span>
+                                            <del>$170.00</del>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!---end-->
+                            <div class="col-md-4">
+                                <div class="product-item margin40">
+                                    <div class="pro-img">
+                                        <a href="product-details.html"><img src="../dist/img/bong2.jpg" width="360"
+                                                                            height="409" alt="Product"/></a>
+                                        <div class="actions-btn">
+                                            <ul class="clearfix">
+                                                <li>
+                                                    <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#"><i class="fa fa-heart"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                            class="fa fa-eye"></i></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product-title">
+                                        <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                        </a>
+                                        <div class="ratting">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star gray-star"></i>
+                                        </div>
+                                        <p><span>$1700.00</span>
+                                            <del>$170.00</del>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!---end-->
+                            <div class="col-md-4">
+                                <div class="product-item margin40">
+                                    <div class="pro-img">
+                                        <a href="product-details.html"><img src="../dist/img/bong2.jpg" width="360"
+                                                                            height="409" alt="Product"/></a>
+                                        <div class="tag-n-s">
+                                            <span>Sell</span>
+                                        </div>
+                                        <div class="actions-btn">
+                                            <ul class="clearfix">
+                                                <li>
+                                                    <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#"><i class="fa fa-heart"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                            class="fa fa-eye"></i></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product-title">
+                                        <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                        </a>
+                                        <div class="ratting">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star gray-star"></i>
+                                        </div>
+                                        <p><span>$1700.00</span>
+                                            <del>$170.00</del>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!---end-->
+                            <div class="col-md-4">
+                                <div class="product-item margin40">
+                                    <div class="pro-img">
+                                        <a href="product-details.html"><img src="../dist/img/bong2.jpg" width="360"
+                                                                            height="409" alt="Product"/></a>
+                                        <div class="tag-n-s">
+                                            <span>Sell</span>
+                                        </div>
+                                        <div class="actions-btn">
+                                            <ul class="clearfix">
+                                                <li>
+                                                    <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#"><i class="fa fa-heart"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                            class="fa fa-eye"></i></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product-title">
+                                        <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                        </a>
+                                        <div class="ratting">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star gray-star"></i>
+                                        </div>
+                                        <p><span>$1700.00</span>
+                                            <del>$170.00</del>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end-->
+                </div>
+
+                <!--phân trang-->
+                <div class="shop-menu clearfix margin-close">
+                    <div class="right floatright text-center">
+                        <div class="pagnation-ul">
+                            <ul class="clearfix">
+                                <li>
+                                    <a href="#">1</a>
+                                </li>
+                                <li>
+                                    <a href="#">2</a>
+                                </li>
+                                <li>
+                                    <a href="#">3</a>
+                                </li>
+                                <li class="dot-dot">
+                                    <a href="#">.....</a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-angle-right"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--end-->
+
+            </div>
+
+        </div>
+        <h3 style="margin-top: 30px" class="text-center">CÁC SẢN PHẨM NỔI BẬT</h3>
+        <hr class="border border-danger border opacity-50">
+        <div class="tab-content">
+            <!--nội dung-->
+            <div class="tab-pane fade text-center active show" id="gird">
+                <div class="single-products row">
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <a th:href="@{/product/detail}">
+                                    <img src="../dist/img/bong2.jpg" width="360" height="409" alt="Product"/></a>
+                                <div class="tag-n-s">
+                                    <span>New</span>
+                                </div>
+                                <div class="actions-btn">
+                                    <ul class="clearfix">
+                                        <li>
+                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                    class="fa fa-eye"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product-title">
+                                <a href="#"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                </a>
+                                <div class="ratting">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star gray-star"></i>
+                                </div>
+                                <p><span>$1700.00</span>
+                                    <del>$170.00</del>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <a href="product-details.html"><img src="../dist/img/bong2.jpg" width="360"
+                                                                    height="409" alt="Product"/></a>
+                                <div class="tag-n-s">
+                                    <span>Sell</span>
+                                </div>
+                                <div class="actions-btn">
+                                    <ul class="clearfix">
+                                        <li>
+                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                    class="fa fa-eye"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product-title">
+                                <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                </a>
+                                <div class="ratting">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star gray-star"></i>
+                                </div>
+                                <p><span>$1700.00</span>
+                                    <del>$170.00</del>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <a href="product-details.html"><img src="../dist/img/bong2.jpg" width="360"
+                                                                    height="409" alt="Product"/></a>
+                                <div class="actions-btn">
+                                    <ul class="clearfix">
+                                        <li>
+                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                    class="fa fa-eye"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product-title">
+                                <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                </a>
+                                <div class="ratting">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star gray-star"></i>
+                                </div>
+                                <p><span>$1700.00</span>
+                                    <del>$170.00</del>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <a href="product-details.html"><img src="../dist/img/bong3.jpg" width="360"
+                                                                    height="409" alt="Product"/></a>
+                                <div class="tag-n-s">
+                                    <span>Sell</span>
+                                </div>
+                                <div class="actions-btn">
+                                    <ul class="clearfix">
+                                        <li>
+                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                    class="fa fa-eye"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product-title">
+                                <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                </a>
+                                <div class="ratting">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star gray-star"></i>
+                                </div>
+                                <p><span>$1700.00</span>
+                                    <del>$170.00</del>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <a href="product-details.html"><img src="../dist/img/bong3.jpg" width="360"
+                                                                    height="409" alt="Product"/></a>
+                                <div class="actions-btn">
+                                    <ul class="clearfix">
+                                        <li>
+                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                    class="fa fa-eye"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product-title">
+                                <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                </a>
+                                <div class="ratting">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star gray-star"></i>
+                                </div>
+                                <p><span>$1700.00</span>
+                                    <del>$170.00</del>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <a href="product-details.html"><img src="../dist/img/bong2.jpg" width="360"
+                                                                    height="409" alt="Product"/></a>
+                                <div class="actions-btn">
+                                    <ul class="clearfix">
+                                        <li>
+                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                    class="fa fa-eye"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product-title">
+                                <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                </a>
+                                <div class="ratting">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star gray-star"></i>
+                                </div>
+                                <p><span>$1700.00</span>
+                                    <del>$170.00</del>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <a href="product-details.html"><img src="../dist/img/bong2.jpg" width="360"
+                                                                    height="409" alt="Product"/></a>
+                                <div class="actions-btn">
+                                    <ul class="clearfix">
+                                        <li>
+                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                    class="fa fa-eye"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product-title">
+                                <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                </a>
+                                <div class="ratting">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star gray-star"></i>
+                                </div>
+                                <p><span>$1700.00</span>
+                                    <del>$170.00</del>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <a href="product-details.html"><img src="../dist/img/bong2.jpg" width="360"
+                                                                    height="409" alt="Product"/></a>
+                                <div class="actions-btn">
+                                    <ul class="clearfix">
+                                        <li>
+                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                    class="fa fa-eye"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product-title">
+                                <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                </a>
+                                <div class="ratting">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star gray-star"></i>
+                                </div>
+                                <p><span>$1700.00</span>
+                                    <del>$170.00</del>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <a href="product-details.html"><img src="../dist/img/bong2.jpg" width="360"
+                                                                    height="409" alt="Product"/></a>
+                                <div class="actions-btn">
+                                    <ul class="clearfix">
+                                        <li>
+                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                    class="fa fa-eye"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product-title">
+                                <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                </a>
+                                <div class="ratting">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star gray-star"></i>
+                                </div>
+                                <p><span>$1700.00</span>
+                                    <del>$170.00</del>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <a href="product-details.html"><img src="../dist/img/bong2.jpg" width="360"
+                                                                    height="409" alt="Product"/></a>
+                                <div class="actions-btn">
+                                    <ul class="clearfix">
+                                        <li>
+                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                    class="fa fa-eye"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product-title">
+                                <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                </a>
+                                <div class="ratting">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star gray-star"></i>
+                                </div>
+                                <p><span>$1700.00</span>
+                                    <del>$170.00</del>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <a href="product-details.html"><img src="../dist/img/bong2.jpg" width="360"
+                                                                    height="409" alt="Product"/></a>
+                                <div class="tag-n-s">
+                                    <span>Sell</span>
+                                </div>
+                                <div class="actions-btn">
+                                    <ul class="clearfix">
+                                        <li>
+                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                    class="fa fa-eye"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product-title">
+                                <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                </a>
+                                <div class="ratting">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star gray-star"></i>
+                                </div>
+                                <p><span>$1700.00</span>
+                                    <del>$170.00</del>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <a href="product-details.html"><img src="../dist/img/bong2.jpg" width="360"
+                                                                    height="409" alt="Product"/></a>
+                                <div class="tag-n-s">
+                                    <span>Sell</span>
+                                </div>
+                                <div class="actions-btn">
+                                    <ul class="clearfix">
+                                        <li>
+                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                    class="fa fa-eye"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product-title">
+                                <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                </a>
+                                <div class="ratting">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star gray-star"></i>
+                                </div>
+                                <p><span>$1700.00</span>
+                                    <del>$170.00</del>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end-->
+        </div>
+
+        <!--những sản phẩm đang được giảm giá-->
+        <h3 style="margin-top: 30px" class="text-center">CÁC SẢN PHẨM MỚI NHẤT</h3>
+        <hr class="border border-danger border opacity-50">
+        <div class="tab-content">
+            <!--nội dung-->
+            <div class="tab-pane fade text-center active show" id="gird">
+                <div class="single-products row">
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <a th:href="@{/product/detail}">
+                                    <img src="../dist/img/bong2.jpg" width="360" height="409" alt="Product"/></a>
+                                <div class="tag-n-s">
+                                    <span>New</span>
+                                </div>
+                                <div class="actions-btn">
+                                    <ul class="clearfix">
+                                        <li>
+                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                    class="fa fa-eye"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product-title">
+                                <a href="#"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                </a>
+                                <div class="ratting">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star gray-star"></i>
+                                </div>
+                                <p><span>$1700.00</span>
+                                    <del>$170.00</del>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <a href="product-details.html"><img src="../dist/img/bong2.jpg" width="360"
+                                                                    height="409" alt="Product"/></a>
+                                <div class="tag-n-s">
+                                    <span>Sell</span>
+                                </div>
+                                <div class="actions-btn">
+                                    <ul class="clearfix">
+                                        <li>
+                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                    class="fa fa-eye"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product-title">
+                                <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                </a>
+                                <div class="ratting">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star gray-star"></i>
+                                </div>
+                                <p><span>$1700.00</span>
+                                    <del>$170.00</del>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <a href="product-details.html"><img src="../dist/img/bong2.jpg" width="360"
+                                                                    height="409" alt="Product"/></a>
+                                <div class="actions-btn">
+                                    <ul class="clearfix">
+                                        <li>
+                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                    class="fa fa-eye"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product-title">
+                                <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                </a>
+                                <div class="ratting">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star gray-star"></i>
+                                </div>
+                                <p><span>$1700.00</span>
+                                    <del>$170.00</del>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <a href="product-details.html"><img src="../dist/img/bong3.jpg" width="360"
+                                                                    height="409" alt="Product"/></a>
+                                <div class="tag-n-s">
+                                    <span>Sell</span>
+                                </div>
+                                <div class="actions-btn">
+                                    <ul class="clearfix">
+                                        <li>
+                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                    class="fa fa-eye"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product-title">
+                                <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                </a>
+                                <div class="ratting">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star gray-star"></i>
+                                </div>
+                                <p><span>$1700.00</span>
+                                    <del>$170.00</del>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <a href="product-details.html"><img src="../dist/img/bong3.jpg" width="360"
+                                                                    height="409" alt="Product"/></a>
+                                <div class="actions-btn">
+                                    <ul class="clearfix">
+                                        <li>
+                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                    class="fa fa-eye"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product-title">
+                                <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                </a>
+                                <div class="ratting">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star gray-star"></i>
+                                </div>
+                                <p><span>$1700.00</span>
+                                    <del>$170.00</del>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <a href="product-details.html"><img src="../dist/img/bong2.jpg" width="360"
+                                                                    height="409" alt="Product"/></a>
+                                <div class="actions-btn">
+                                    <ul class="clearfix">
+                                        <li>
+                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                    class="fa fa-eye"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product-title">
+                                <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                </a>
+                                <div class="ratting">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star gray-star"></i>
+                                </div>
+                                <p><span>$1700.00</span>
+                                    <del>$170.00</del>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <a href="product-details.html"><img src="../dist/img/bong2.jpg" width="360"
+                                                                    height="409" alt="Product"/></a>
+                                <div class="actions-btn">
+                                    <ul class="clearfix">
+                                        <li>
+                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                    class="fa fa-eye"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product-title">
+                                <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                </a>
+                                <div class="ratting">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star gray-star"></i>
+                                </div>
+                                <p><span>$1700.00</span>
+                                    <del>$170.00</del>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <a href="product-details.html"><img src="../dist/img/bong2.jpg" width="360"
+                                                                    height="409" alt="Product"/></a>
+                                <div class="actions-btn">
+                                    <ul class="clearfix">
+                                        <li>
+                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                    class="fa fa-eye"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product-title">
+                                <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                </a>
+                                <div class="ratting">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star gray-star"></i>
+                                </div>
+                                <p><span>$1700.00</span>
+                                    <del>$170.00</del>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <a href="product-details.html"><img src="../dist/img/bong2.jpg" width="360"
+                                                                    height="409" alt="Product"/></a>
+                                <div class="actions-btn">
+                                    <ul class="clearfix">
+                                        <li>
+                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                    class="fa fa-eye"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product-title">
+                                <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                </a>
+                                <div class="ratting">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star gray-star"></i>
+                                </div>
+                                <p><span>$1700.00</span>
+                                    <del>$170.00</del>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <a href="product-details.html"><img src="../dist/img/bong2.jpg" width="360"
+                                                                    height="409" alt="Product"/></a>
+                                <div class="actions-btn">
+                                    <ul class="clearfix">
+                                        <li>
+                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                    class="fa fa-eye"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product-title">
+                                <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                </a>
+                                <div class="ratting">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star gray-star"></i>
+                                </div>
+                                <p><span>$1700.00</span>
+                                    <del>$170.00</del>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <a href="product-details.html"><img src="../dist/img/bong2.jpg" width="360"
+                                                                    height="409" alt="Product"/></a>
+                                <div class="tag-n-s">
+                                    <span>Sell</span>
+                                </div>
+                                <div class="actions-btn">
+                                    <ul class="clearfix">
+                                        <li>
+                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                    class="fa fa-eye"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product-title">
+                                <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                </a>
+                                <div class="ratting">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star gray-star"></i>
+                                </div>
+                                <p><span>$1700.00</span>
+                                    <del>$170.00</del>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <a href="product-details.html"><img src="../dist/img/bong2.jpg" width="360"
+                                                                    height="409" alt="Product"/></a>
+                                <div class="tag-n-s">
+                                    <span>Sell</span>
+                                </div>
+                                <div class="actions-btn">
+                                    <ul class="clearfix">
+                                        <li>
+                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                    class="fa fa-eye"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product-title">
+                                <a href="product-details.html"><h3 class="title">Copenhagen Spitfire Chair</h3>
+                                </a>
+                                <div class="ratting">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star gray-star"></i>
+                                </div>
+                                <p><span>$1700.00</span>
+                                    <del>$170.00</del>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end-->
+        </div>
+        <!--end-->
+    </div>
+</section>
+<!-- product content section end -->
+
+<!-- footer start -->
+<nav th:replace="~{/layout/footer.html}"></nav>
+<!-- footer end -->
+
+</body>
+</html>
+

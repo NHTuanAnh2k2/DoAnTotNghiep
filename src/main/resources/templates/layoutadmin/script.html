@@ -23,9 +23,24 @@
 <script>
     $(function () {
         $("#example1").DataTable({
-            "responsive": true, "lengthChange": false, "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+            "language": {
+                "info": "Hiển thị _START_ đến _END_ của _TOTAL_ bản ghi",
+                "infoEmpty": "Hiển thị 0 đến 0 của 0 bản ghi",
+                "infoFiltered": "(được lọc từ tổng số _MAX_ bản ghi)",
+                "lengthMenu": "Hiển thị _MENU_ bản ghi mỗi trang",
+                "paginate": {
+                    "first": "Đầu",
+                    "last": "Cuối",
+                    "next": "Tiếp",
+                    "previous": "Trước"
+                }
+            }
         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
         $('#example2').DataTable({
             "paging": true,
             "lengthChange": false,
@@ -34,6 +49,18 @@
             "info": true,
             "autoWidth": false,
             "responsive": true,
+            "language": {
+                "info": "Hiển thị _START_ đến _END_ của _TOTAL_ bản ghi",
+                "infoEmpty": "Hiển thị 0 đến 0 của 0 bản ghi",
+                "infoFiltered": "(được lọc từ tổng số _MAX_ bản ghi)",
+                "lengthMenu": "Hiển thị _MENU_ bản ghi mỗi trang",
+                "paginate": {
+                    "first": "Đầu",
+                    "last": "Cuối",
+                    "next": "Tiếp",
+                    "previous": "Trước"
+                }
+            }
         });
     });
 </script>
