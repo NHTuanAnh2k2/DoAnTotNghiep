@@ -83,7 +83,7 @@
     }
 </style>
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed" style="font-family: 'Bahnschrift'">
 
     <div class="wrapper">
         <!-- Ban đầu mở là hiển thị logo thương hiệu -->
@@ -697,9 +697,12 @@
                                                                                 <form class="d-flex" role="search">
                                                                                     <input class="form-control me-2"
                                                                                         type="search"
-                                                                                        placeholder="Search"
+                                                                                        placeholder="Nhập mã nhân viên..."
                                                                                         aria-label="Search"
                                                                                         id="searchNV">
+                                                                                    <button type="button" id="reloadnv"
+                                                                                        class="btn btn-outline-warning"><i
+                                                                                            class="bi bi-arrow-clockwise"></i></button>
                                                                                 </form>
                                                                             </div>
                                                                         </nav>
@@ -724,7 +727,8 @@
                                                                         </tbody>
                                                                     </table>
                                                                     <br>
-                                                                    <nav aria-label="Page navigation example">
+                                                                    <nav aria-label="Page navigation example"
+                                                                        id="navNV">
                                                                         <ul class="pagination">
                                                                             <li class="page-item" id="btn_prev_page"><a
                                                                                     class="page-link"
@@ -1182,6 +1186,28 @@
 
     </div>
 
+    <!-- bắt đầu modal chỉnh số lượng add sp -->
+    <div class="modal fade" id="quantityModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- kết thúc modal chỉnh số lượng add sp -->
+
+
+
     <!-- ./wrapper -->
 
     <!-- jQuery -->
@@ -1384,9 +1410,67 @@
     <!-- thay đổi nhân viên hdct -->
     <script>
         let thisNumberPage = 0;
+
+        var reload = document.getElementById('reloadnv');
         var btn = document.getElementById('changeNV');
         var nextPage = document.getElementById('nextPage');
         var prevPage = document.getElementById('prevPage');
+        var navNV = document.getElementById('navNV');
+
+        reload.onclick = function () {
+            const pageNVChanges = localStorage.getItem("pageNVChanges") ?? 0;
+            const url = `/hoa-don/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+            fetch(url)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let html = '';
+                    let htmlNumberPage = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        html += `<tr>
+                               <td>${STT}</td>
+                               <td>${hd.manhanvien}</td>
+                               <td>${hd.nguoidung.hovaten}</td>
+                               <td>${hd.nguoidung.sodienthoai}</td>
+                               <td>${hd.nguoidung.ngaysinh}</td>
+                               <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
+                               <td>
+                                <a href="ChoseNV/${hd.id}"><button
+                                class="btn btn-warning">
+                                chọn
+                                 </button></a>
+                                 </td>
+                            </tr>`;
+                    }
+
+                    if (thisNumberPage < 1) {
+                        prevPage.style.display = 'none';
+                    } else {
+                        prevPage.style.display = 'block';
+                    }
+                    if (thisNumberPage >= b.totalPages - 1) {
+                        nextPage.style.display = 'none';
+                    } else {
+                        nextPage.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPage += `
+                        <a class="page-link" onclick="pageClick( ${i - 1})">
+                                                                                    ${i}
+                         </a>
+                        `;
+                    }
+                    document.getElementById("numberPage").innerHTML = htmlNumberPage;
+                    document.getElementById("tbl_doi_nv").innerHTML = html;
+
+                })
+        }
+
+
+
 
         btn.onclick = function () {
             const pageNVChanges = localStorage.getItem("pageNVChanges") ?? 0;
@@ -1437,6 +1521,39 @@
                     document.getElementById("numberPage").innerHTML = htmlNumberPage;
                     document.getElementById("tbl_doi_nv").innerHTML = html;
 
+                })
+        }
+
+        var searchNV = document.getElementById('searchNV');
+
+        searchNV.onkeyup = function () {
+            var keySearch = searchNV.value;
+            var url = `/hoa-don/searchNV?keySearch=${keySearch}`;
+            fetch(url)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let html = '';
+                    for (const hd of b) {
+                        STT++;
+                        html += `<tr>
+                       <td>${STT}</td>
+                       <td>${hd.manhanvien}</td>
+                       <td>${hd.nguoidung.hovaten}</td>
+                       <td>${hd.nguoidung.sodienthoai}</td>
+                       <td>${hd.nguoidung.ngaysinh}</td>
+                       <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
+                       <td>
+                        <a href="ChoseNV/${hd.id}"><button
+                        class="btn btn-warning">
+                        chọn
+                         </button></a>
+                         </td>
+                    </tr>`;
+                    }
+                    document.getElementById("tbl_doi_nv").innerHTML = html;
                 })
         }
 
@@ -1640,7 +1757,7 @@
                                 </td>
                                <td>
                                 <a>
-                                <button type="button"
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#quantityModal"
                                 class="btn btn-warning">Chọn</button>
                                 </a>
                                  </td>
@@ -1702,7 +1819,7 @@
                                 </td>
                                <td>
                                 <a>
-                                <button type="button"
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#quantityModal"
                                 class="btn btn-warning">Chọn</button>
                                 </a>
                                  </td>
@@ -1766,7 +1883,7 @@
                                 </td>
                                <td>
                                 <a>
-                                <button type="button"
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#quantityModal"
                                 class="btn btn-warning">Chọn</button>
                                 </a>
                                  </td>
@@ -1832,7 +1949,7 @@
                                 </td>
                                <td>
                                 <a>
-                                <button type="button"
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#quantityModal"
                                 class="btn btn-warning">Chọn</button>
                                 </a>
                                  </td>
@@ -1862,41 +1979,6 @@
                 })
         }
 
-    </script>
-
-    <script>
-        var searchNV = document.getElementById('searchNV');
-
-        searchNV.onkeyup = function () {
-            var keySearch = searchNV.value;
-            var url = `/hoa-don/searchNV?keySearch=${keySearch}`;
-            fetch(url)
-                .then(function (a) {
-                    return a.json();
-                })
-                .then(function (b) {
-                    var STT = 0;
-                    let html = '';
-                    for (const hd of b) {
-                        STT++;
-                        html += `<tr>
-                               <td>${STT}</td>
-                               <td>${hd.manhanvien}</td>
-                               <td>${hd.nguoidung.hovaten}</td>
-                               <td>${hd.nguoidung.sodienthoai}</td>
-                               <td>${hd.nguoidung.ngaysinh}</td>
-                               <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
-                               <td>
-                                <a href="ChoseNV/${hd.id}"><button
-                                class="btn btn-warning">
-                                chọn
-                                 </button></a>
-                                 </td>
-                            </tr>`;
-                    }
-                    document.getElementById("tbl_doi_nv").innerHTML = html;
-                })
-        }
     </script>
 </body>
 
