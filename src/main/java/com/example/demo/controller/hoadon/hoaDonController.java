@@ -480,10 +480,10 @@ public class hoaDonController {
         }
         BigDecimal tongTT = (tongTienSP.add(hoaDonXem.getPhivanchuyen())).subtract(phieuGiamCT.getTiengiam());
         List<String> diachiLst = Arrays.asList(hoaDonXem.getDiachi().split(", "));
-        String tinh = diachiLst.get(0);
-        String huyen = diachiLst.get(1);
-        String xa = diachiLst.get(2);
-        String diachiCT = diachiLst.get(3);
+        String diachiCT = diachiLst.get(0);
+        String xa = diachiLst.get(1);
+        String huyen = diachiLst.get(2);
+        String tinh = diachiLst.get(3);
         ThayDoiTTHoaDon_KHInfo formChangesTTKH = new ThayDoiTTHoaDon_KHInfo(
                 hoaDonXem.getTennguoinhan(), hoaDonXem.getSdt(),
                 tinh, huyen, xa, diachiCT, hoaDonXem.getPhivanchuyen(), hoaDonXem.getGhichu()
@@ -620,13 +620,12 @@ public class hoaDonController {
         Boolean result = daoHDCT.checkHDCT(hdset, spct);
 
         if (result == true) {
-//            List<HoaDonChiTiet> lstTim = daoHDCT.timHDCT(hdset, spct);
-//            HoaDonChiTiet hdct = lstTim.get(0);
-//            int sl = hdct.getSoluong() + 1;
-//            hdct.setSoluong(sl);
-//            daoSPCT.addSPCT(spctCapNhatSL);
-//            daoHDCT.capnhat(hdct);
-            System.out.println("bbbbb");
+            List<HoaDonChiTiet> lstTim = daoHDCT.timHDCT(hdset, spct);
+            HoaDonChiTiet hdct = lstTim.get(0);
+            int sl = hdct.getSoluong() + 1;
+            hdct.setSoluong(sl);
+            daoSPCT.addSPCT(spctCapNhatSL);
+            daoHDCT.capnhat(hdct);
             return "redirect:/hoa-don/showDetail";
         }
         HoaDonChiTiet hdctNew = new HoaDonChiTiet();
