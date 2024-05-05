@@ -4,7 +4,7 @@ import com.example.demo.entity.*;
 import com.example.demo.info.HoaDonCustom;
 import com.example.demo.info.LichSuHoaDonCustom;
 import com.example.demo.info.ThayDoiTTHoaDon_KHInfo;
-import com.example.demo.repository.NhanVienRepository;
+import com.example.demo.repository.*;
 import com.example.demo.repository.hoadon.HoaDonRepository;
 import com.example.demo.restcontroller.khachhang.Province;
 import com.example.demo.service.*;
@@ -32,6 +32,16 @@ import java.util.*;
 @Controller
 @RequestMapping("hoa-don")
 public class hoaDonController {
+    @Autowired
+    ChatLieuRepository daoChatLieu;
+    @Autowired
+    ThuongHieuRepository daoThuongHieu;
+    @Autowired
+    DeGiayRepository daoDeGiay;
+    @Autowired
+    KichCoRepository daoKichCo;
+    @Autowired
+    MauSacRepository daoMauSac;
     @Autowired
     PhieuGiamGiaChiTietService daoPGGCT;
     @Autowired
@@ -646,5 +656,42 @@ public class hoaDonController {
         List<NhanVien> pageNV = nhanVienService.timNVTheoMa(key);
         return ResponseEntity.ok(pageNV);
     }
+
+    // tìm kiếm sảm phẩm theo bộ lọc
+//    @GetMapping("searchSP")
+//    @ResponseBody
+//    public ResponseEntity<?> timSPHDCT(@RequestParam("keySearch") String key) {
+//        List<NhanVien> pageNV = nhanVienService.timNVTheoMa(key);
+//        return ResponseEntity.ok(pageNV);
+//    }
+
+
+    @ModelAttribute("dsChatLieu")
+    public List<ChatLieu> dsChatLieu() {
+        return daoChatLieu.findAll();
+    }
+
+
+    @ModelAttribute("dsThuongHieu")
+    public List<ThuongHieu> dsThuongHieu() {
+        return daoThuongHieu.findAll();
+    }
+
+    @ModelAttribute("dsDe")
+    public List<DeGiay> dsDe() {
+        return daoDeGiay.findAll();
+    }
+
+
+    @ModelAttribute("dsKichCo")
+    public List<KichCo> dsKichCo() {
+        return daoKichCo.findAll();
+    }
+
+    @ModelAttribute("dsMauSac")
+    public List<MauSac> dsMauSac() {
+        return daoMauSac.findAll();
+    }
+
 
 }

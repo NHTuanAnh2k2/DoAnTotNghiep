@@ -972,9 +972,12 @@
                                                                                         liệu</label>
                                                                                     <select class="form-select"
                                                                                         style="width: 120px;">
-                                                                                        <option selected disabled
-                                                                                            value="">Choose...</option>
-                                                                                        <option>...</option>
+                                                                                        <option
+                                                                                            th:each="a:${dsChatLieu}"
+                                                                                            th:value="${a.id}"
+                                                                                            th:text="${a.ten}">
+
+                                                                                        </option>
                                                                                     </select>
                                                                                 </div>
                                                                                 <div>
@@ -982,9 +985,12 @@
                                                                                         hiệu</label>
                                                                                     <select class="form-select"
                                                                                         style="width: 120px;">
-                                                                                        <option selected disabled
-                                                                                            value="">Choose...</option>
-                                                                                        <option>...</option>
+                                                                                        <option
+                                                                                            th:each="a:${dsThuongHieu}"
+                                                                                            th:value="${a.id}"
+                                                                                            th:text="${a.ten}">
+
+                                                                                        </option>
                                                                                     </select>
                                                                                 </div>
                                                                                 <div>
@@ -992,9 +998,11 @@
                                                                                         giày</label>
                                                                                     <select class="form-select"
                                                                                         style="width: 120px;">
-                                                                                        <option selected disabled
-                                                                                            value="">Choose...</option>
-                                                                                        <option>...</option>
+                                                                                        <option th:each="a:${dsDe}"
+                                                                                            th:value="${a.id}"
+                                                                                            th:text="${a.ten}">
+
+                                                                                        </option>
                                                                                     </select>
                                                                                 </div>
                                                                                 <div>
@@ -1002,9 +1010,11 @@
                                                                                         cỡ</label>
                                                                                     <select class="form-select"
                                                                                         style="width: 120px;">
-                                                                                        <option selected disabled
-                                                                                            value="">Choose...</option>
-                                                                                        <option>...</option>
+                                                                                        <option th:each="a:${dsKichCo}"
+                                                                                            th:value="${a.id}"
+                                                                                            th:text="${a.ten}">
+
+                                                                                        </option>
                                                                                     </select>
                                                                                 </div>
                                                                                 <div>
@@ -1012,9 +1022,11 @@
                                                                                         sắc</label>
                                                                                     <select class="form-select"
                                                                                         style="width: 120px;">
-                                                                                        <option selected disabled
-                                                                                            value="">Choose...</option>
-                                                                                        <option>...</option>
+                                                                                        <option th:each="a:${dsMauSac}"
+                                                                                            th:value="${a.id}"
+                                                                                            th:text="${a.ten}">
+
+                                                                                        </option>
                                                                                     </select>
                                                                                 </div>
                                                                             </div>
@@ -1036,18 +1048,21 @@
                                                                                     tính</label>
                                                                                 <select class="form-select"
                                                                                     style="width: 120px;">
-                                                                                    <option selected disabled value="">
-                                                                                        Choose...</option>
-                                                                                    <option>...</option>
+                                                                                    <option value="true">Nam</option>
+                                                                                    <option value="false">Nữ</option>
                                                                                 </select>
                                                                             </div>
                                                                             <div>
                                                                                 <label class="col-form-label">Khoảng
-                                                                                    giá</label>
-                                                                                <div>
+                                                                                    giá: <span id="priceRangeValue">
+                                                                                        50</span></label>
+
+                                                                                <div class="slidecontainer"
+                                                                                    style="width: 495px;">
                                                                                     <input type="range" min="1"
-                                                                                        max="100" value="50"
-                                                                                        style="width: 200px;">
+                                                                                        max="100" value="30"
+                                                                                        style="width: 100%;"
+                                                                                        id="priceRange">
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -2039,6 +2054,19 @@
         }
 
     </script>
+    <!-- tạo khoảng giá -->
+    <script>
+        // Lấy phần tử thanh trượt và phần tử hiển thị giá trị
+        var priceRange = document.getElementById("priceRange");
+        var priceRangeValue = document.getElementById("priceRangeValue");
+
+        // Lắng nghe sự kiện khi người dùng thay đổi giá trị thanh trượt
+        priceRange.oninput = function () {
+            // Cập nhật giá trị hiển thị
+            priceRangeValue.innerText = this.value;
+        };
+    </script>
+
 </body>
 
 </html>
