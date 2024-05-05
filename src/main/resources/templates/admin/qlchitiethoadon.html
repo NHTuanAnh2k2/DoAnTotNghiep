@@ -700,6 +700,9 @@
                                                                                         placeholder="Nhập mã nhân viên..."
                                                                                         aria-label="Search"
                                                                                         id="searchNV">
+                                                                                    <button type="button" id="reloadnv"
+                                                                                        class="btn btn-outline-warning"><i
+                                                                                            class="bi bi-arrow-clockwise"></i></button>
                                                                                 </form>
                                                                             </div>
                                                                         </nav>
@@ -724,7 +727,8 @@
                                                                         </tbody>
                                                                     </table>
                                                                     <br>
-                                                                    <nav aria-label="Page navigation example" id="navNV">
+                                                                    <nav aria-label="Page navigation example"
+                                                                        id="navNV">
                                                                         <ul class="pagination">
                                                                             <li class="page-item" id="btn_prev_page"><a
                                                                                     class="page-link"
@@ -1406,10 +1410,68 @@
     <!-- thay đổi nhân viên hdct -->
     <script>
         let thisNumberPage = 0;
+
+        var reload = document.getElementById('reloadnv');
         var btn = document.getElementById('changeNV');
         var nextPage = document.getElementById('nextPage');
         var prevPage = document.getElementById('prevPage');
         var navNV = document.getElementById('navNV');
+
+        reload.onclick = function () {
+            const pageNVChanges = localStorage.getItem("pageNVChanges") ?? 0;
+            const url = `/hoa-don/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+            fetch(url)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let html = '';
+                    let htmlNumberPage = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        html += `<tr>
+                               <td>${STT}</td>
+                               <td>${hd.manhanvien}</td>
+                               <td>${hd.nguoidung.hovaten}</td>
+                               <td>${hd.nguoidung.sodienthoai}</td>
+                               <td>${hd.nguoidung.ngaysinh}</td>
+                               <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
+                               <td>
+                                <a href="ChoseNV/${hd.id}"><button
+                                class="btn btn-warning">
+                                chọn
+                                 </button></a>
+                                 </td>
+                            </tr>`;
+                    }
+
+                    if (thisNumberPage < 1) {
+                        prevPage.style.display = 'none';
+                    } else {
+                        prevPage.style.display = 'block';
+                    }
+                    if (thisNumberPage >= b.totalPages - 1) {
+                        nextPage.style.display = 'none';
+                    } else {
+                        nextPage.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPage += `
+                        <a class="page-link" onclick="pageClick( ${i - 1})">
+                                                                                    ${i}
+                         </a>
+                        `;
+                    }
+                    document.getElementById("numberPage").innerHTML = htmlNumberPage;
+                    document.getElementById("tbl_doi_nv").innerHTML = html;
+
+                })
+        }
+
+
+
+
         btn.onclick = function () {
             const pageNVChanges = localStorage.getItem("pageNVChanges") ?? 0;
             const url = `/hoa-don/viewNVChanges?pageNVChanges=${pageNVChanges}`;
