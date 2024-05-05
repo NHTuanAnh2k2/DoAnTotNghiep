@@ -2,6 +2,7 @@ package com.example.demo.service.impl;
 
 import com.example.demo.entity.HoaDon;
 import com.example.demo.entity.HoaDonChiTiet;
+import com.example.demo.entity.SanPhamChiTiet;
 import com.example.demo.repository.hoadon.HoaDonChiTietRepository;
 import com.example.demo.repository.hoadon.HoaDonRepository;
 import com.example.demo.service.HoaDonChiTietService;
@@ -21,11 +22,26 @@ public class HoaDonChiTietImp implements HoaDonChiTietService {
 
     @Override
     public Page<HoaDonChiTiet> getDSSPHD(HoaDon hd, Pageable p) {
-        return dao.findAllByHoadon(hd,p);
+        return dao.findAllByHoadon(hd, p);
     }
 
     @Override
     public List<HoaDonChiTiet> getListSPHD(HoaDon hd) {
         return dao.findAllByHoadon(hd);
+    }
+
+    @Override
+    public Boolean checkHDCT(HoaDon hd, SanPhamChiTiet spct) {
+        return dao.existsByHoadonAndSanphamchitiet(hd, spct);
+    }
+
+    @Override
+    public List<HoaDonChiTiet> timHDCT(HoaDon hd, SanPhamChiTiet spct) {
+        return dao.findAllByHoadonAndSanphamchitiet(hd, spct);
+    }
+
+    @Override
+    public void capnhat(HoaDonChiTiet hdct) {
+        dao.save(hdct);
     }
 }

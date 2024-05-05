@@ -675,8 +675,9 @@
                                                     <div class="modal-dialog modal-xl">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h class="modal-title fs-5"
-                                                                    id="exampleModalChuyenNhanVien">Chuyển nhân viên</h>
+                                                                <h3 class="modal-title fs-5"
+                                                                    id="exampleModalChuyenNhanVien">Chuyển nhân viên
+                                                                </h3>
                                                                 <button type="button" class="btn-close"
                                                                     data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
@@ -955,14 +956,13 @@
                                                                     <form>
                                                                         <div class="d-flex align-items-center">
                                                                             <input class="form-control me-2"
-                                                                                type="search" placeholder="Search"
+                                                                                type="search"
+                                                                                placeholder="Nhập tên sản phẩm..."
                                                                                 aria-label="Search"
-                                                                                style="width: 800px;">
-                                                                            <button class="btn btn-outline-success"
-                                                                                type="submit"
-                                                                                style="margin-right: 35px; margin-left: 35px;">Search</button>
-                                                                            <button class="btn btn-outline-danger"
-                                                                                type="submit">Làm mới</button>
+                                                                                style="width: 984px;">
+                                                                            <button type="button" id="reloadsp"
+                                                                                class="btn btn-outline-warning"><i
+                                                                                    class="bi bi-arrow-clockwise"></i></button>
                                                                         </div>
                                                                         <!--Bộ lọc-->
                                                                         <div class="align-items-center">
@@ -1089,11 +1089,6 @@
                                                                 </ul>
                                                             </nav>
                                                         </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Hủy</button>
-                                                        <button type="button" class="btn btn-primary">OK</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1721,9 +1716,73 @@
     <!-- thay đổi sản phẩm hdct -->
     <script>
         let thisNumberSPPage = 0;
+        var reloadSP = document.getElementById('reloadsp');
         var btnSP = document.getElementById('changeSP');
         var nextPageSP = document.getElementById('nextPageSP');
         var prevPageSP = document.getElementById('prevPageSP');
+
+        reloadSP.onclick = function () {
+            const pageSPChanges = localStorage.getItem("pageSPChanges") ?? 0;
+            const urlPage = `/hoa-don/viewSPChanges?pageSPChanges=${pageSPChanges}`;
+
+            fetch(urlPage)
+                .then(function (c) {
+                    return c.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let htmlSP = '';
+                    let htmlNumberPageSP = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        htmlSP += `<tr>
+                               <td>${STT}</td>
+                               <td> 
+                                <img src="${hd.anh.tenanh}" alt=""
+                                                            style="height: 100px; width: 100px;">
+                                
+                                </td>
+                               <td>${hd.sanpham.tensanpham}</td>
+                               <td>${hd.soluong}</td>
+                               <td>${hd.kichco.ten}</td>
+                               <td>${hd.mausac.ten}</td>
+                               <td>
+                                <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                    ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                    </p>
+                                </td>
+                               <td>
+                                <a href="ChoseSP/${hd.id}"><button
+                                class="btn btn-warning">
+                                chọn
+                                 </button></a>
+                                 </td>
+                            </tr>`;
+                    }
+
+                    if (thisNumberSPPage < 1) {
+                        prevPageSP.style.display = 'none';
+                    } else {
+                        prevPageSP.style.display = 'block';
+                    }
+                    if (thisNumberSPPage >= b.totalPages - 1) {
+                        nextPageSP.style.display = 'none';
+                    } else {
+                        nextPageSP.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPageSP += `
+                        <a class="page-link" onclick="pageClickSP( ${i - 1})">
+                                                                                    ${i}
+                         </a>
+                        `;
+                    }
+                    document.getElementById("numberPageSP").innerHTML = htmlNumberPageSP;
+                    document.getElementById("tbl_sp_them").innerHTML = htmlSP;
+
+                })
+        }
+
 
         btnSP.onclick = function () {
             const pageSPChanges = localStorage.getItem("pageSPChanges") ?? 0;
@@ -1756,10 +1815,10 @@
                                     </p>
                                 </td>
                                <td>
-                                <a>
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#quantityModal"
-                                class="btn btn-warning">Chọn</button>
-                                </a>
+                                <a href="ChoseSP/${hd.id}"><button
+                                class="btn btn-warning">
+                                chọn
+                                 </button></a>
                                  </td>
                             </tr>`;
                     }
@@ -1818,10 +1877,10 @@
                                     </p>
                                 </td>
                                <td>
-                                <a>
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#quantityModal"
-                                class="btn btn-warning">Chọn</button>
-                                </a>
+                                <a href="ChoseSP/${hd.id}"><button
+                                class="btn btn-warning">
+                                chọn
+                                 </button></a>
                                  </td>
                             </tr>`;
                     }
@@ -1882,10 +1941,10 @@
                                     </p>
                                 </td>
                                <td>
-                                <a>
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#quantityModal"
-                                class="btn btn-warning">Chọn</button>
-                                </a>
+                                <a href="ChoseSP/${hd.id}"><button
+                                class="btn btn-warning">
+                                chọn
+                                 </button></a>
                                  </td>
                             </tr>`;
                     }
@@ -1948,10 +2007,10 @@
                                     </p>
                                 </td>
                                <td>
-                                <a>
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#quantityModal"
-                                class="btn btn-warning">Chọn</button>
-                                </a>
+                                <a href="ChoseSP/${hd.id}"><button
+                                class="btn btn-warning">
+                                chọn
+                                 </button></a>
                                  </td>
                             </tr>`;
                     }

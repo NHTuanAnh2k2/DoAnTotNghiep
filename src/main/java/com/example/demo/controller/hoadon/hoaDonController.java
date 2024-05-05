@@ -612,11 +612,31 @@ public class hoaDonController {
     // thêm sản phẩm tại hdct
     @GetMapping("ChoseSP/{id}")
     public String choseSP(@PathVariable("id") Integer id) {
-//        List<HoaDon> hd = dao.timTheoID(idhdshowdetail);
-//        HoaDon hdset = hd.get(0);
-//        Optional<NhanVien> nv = nhanVienService.findById(id);
-//        hdset.setNhanvien(nv.get());
-//        dao.capNhatHD(hdset);
+        SanPhamChiTiet spct = daoSPCT.findById(id);
+        SanPhamChiTiet spctCapNhatSL = spct;
+        spctCapNhatSL.setSoluong(spctCapNhatSL.getSoluong() - 1);
+        List<HoaDon> hd = dao.timTheoID(idhdshowdetail);
+        HoaDon hdset = hd.get(0);
+        Boolean result = daoHDCT.checkHDCT(hdset, spct);
+
+        if (result == true) {
+//            List<HoaDonChiTiet> lstTim = daoHDCT.timHDCT(hdset, spct);
+//            HoaDonChiTiet hdct = lstTim.get(0);
+//            int sl = hdct.getSoluong() + 1;
+//            hdct.setSoluong(sl);
+//            daoSPCT.addSPCT(spctCapNhatSL);
+//            daoHDCT.capnhat(hdct);
+            System.out.println("bbbbb");
+            return "redirect:/hoa-don/showDetail";
+        }
+        HoaDonChiTiet hdctNew = new HoaDonChiTiet();
+        hdctNew.setHoadon(hdset);
+        hdctNew.setSanphamchitiet(spct);
+        hdctNew.setSoluong(1);
+        hdctNew.setTrangthai(true);
+        hdctNew.setGiasanpham(spct.getGiatien());
+        daoSPCT.addSPCT(spctCapNhatSL);
+        daoHDCT.capnhat(hdctNew);
         return "redirect:/hoa-don/showDetail";
     }
 
