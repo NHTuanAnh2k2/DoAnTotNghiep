@@ -609,12 +609,22 @@ public class hoaDonController {
         return "redirect:/hoa-don/showDetail";
     }
 
+    // thêm sản phẩm tại hdct
+    @GetMapping("ChoseSP/{id}")
+    public String choseSP(@PathVariable("id") Integer id) {
+//        List<HoaDon> hd = dao.timTheoID(idhdshowdetail);
+//        HoaDon hdset = hd.get(0);
+//        Optional<NhanVien> nv = nhanVienService.findById(id);
+//        hdset.setNhanvien(nv.get());
+//        dao.capNhatHD(hdset);
+        return "redirect:/hoa-don/showDetail";
+    }
+
     // tìm kiếm nhân viên muốn thay đổi
     @GetMapping("searchNV")
     @ResponseBody
-    public ResponseEntity<?> tìmlistNV(@RequestParam("keySearch") Optional<String> key) {
-
-        List<NhanVien> pageNV = nhanVienService.findAll();
+    public ResponseEntity<?> tìmlistNV(@RequestParam("keySearch") String key) {
+        List<NhanVien> pageNV = nhanVienService.timNVTheoMa(key);
         return ResponseEntity.ok(pageNV);
     }
 
