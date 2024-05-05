@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface SanPhamDotGiamRepository extends JpaRepository<SanPhamDotGiam,Integer> {
-    @Query("SELECT s FROM SanPhamDotGiam s WHERE s.dotgiamgia.id=:IdDot")
+    @Query("SELECT s FROM SanPhamDotGiam s WHERE s.dotgiamgia.id =:IdDot")
     List<SanPhamDotGiam> findSanPhamDotGiamByIdDotgiamgia(Integer IdDot);
 }

@@ -11,6 +11,7 @@ import com.example.demo.service.impl.KhachHangImp;
 import com.example.demo.service.impl.KhachHangPhieuGiamImp;
 import com.example.demo.service.impl.PhieuGiamGiaImp;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -236,27 +237,89 @@ public class PhieuGiamGiaController {
         }
 
     }
-    @GetMapping("/admin/chi-tiet-phieu-giam-gia/{Id}")
-    public String ChiTietPhieuGiamGia(@PathVariable("Id") Integer Id, Model model){
+    @GetMapping("/admin/xem-cap-nhat-phieu-giam-gia/{Id}")
+    public String ChiTietPhieuGiamGia(@PathVariable("Id") Integer Id, Model model, HttpSession session){
         PhieuGiamGia phieuGiamGia= phieuGiamGiaImp.findPhieuGiamGiaById(Id);
-        model.addAttribute("phieuGiamGiaCT",phieuGiamGia);
-        return "redirect:/admin/hien-thi-phieu-giam-gia";
+        List<KhachHangPhieuGiam> lstKHPG= new ArrayList<>();
+        if(phieuGiamGia.getKieuphieu()==true){
+            lstKHPG=khachHangPhieuGiamImp.findKhachHangPhieuGiamByIdPhieugiamgia(phieuGiamGia.getId());
+        }
+        model.addAttribute("phieuGiamGia",phieuGiamGia);
+        session.setAttribute("lstKH", khachHangImp.findAll());
+        session.setAttribute("lstKHPG", lstKHPG);
+        session.setAttribute("phieuGG", phieuGiamGiaImp.findPhieuGiamGiaById(Id));
+        return "admin/updatephieugiamgia";
     }
 
     @PostMapping("/admin/cap-nhat-phieu-giam-gia/{Id}")
-    public String CapNhatPhieuGiamGia(@ModelAttribute("phieuGiamGia") PhieuGiamGia phieuGiamGia,
+    public String CapNhatPhieuGiamGia(@PathVariable("Id") Integer Id,
+                                  @ModelAttribute("phieuGiamGia") PhieuGiamGia phieuGiamGia,
                                   @RequestParam("ngayBatDau") String ngayBatDau,
-                                  @RequestParam("ngayKetThuc") String ngayKetThuc){
-
-        phieuGiamGia.setNguoitao("Tuan Anh");
+                                  @RequestParam("ngayKetThuc") String ngayKetThuc,
+                                      @RequestParam("choncheckbox") String[] choncheckbox,
+                                      @RequestParam("loaiphieu") Boolean loaiphieu){
+        PhieuGiamGia phieu= phieuGiamGiaImp.findPhieuGiamGiaById(Id);
+        phieuGiamGia.setId(Id);
+        phieuGiamGia.setTenphieu(phieuGiamGia.getTenphieu().trim());
+        phieuGiamGia.setNguoitao(phieu.getNguoitao());
+        phieuGiamGia.setNgaytao(phieu.getNgaytao());
+        phieuGiamGia.setLoaiphieu(loaiphieu);
+        phieuGiamGia.setKieuphieu(phieu.getKieuphieu());
+        phieuGiamGia.setMacode(phieu.getMacode());
         Timestamp ngayBatDauTimestamp = Timestamp.valueOf(ngayBatDau.replace("T", " ") + ":00");
         Timestamp ngayKetThucTimestamp = Timestamp.valueOf(ngayKetThuc.replace("T", " ") + ":00");
         phieuGiamGia.setNgaybatdau(ngayBatDauTimestamp);
         phieuGiamGia.setNgayketthuc(ngayKetThucTimestamp);
+        Timestamp ngayHT= new Timestamp(System.currentTimeMillis());
+        phieuGiamGia.setLancapnhatcuoi(new Timestamp(System.currentTimeMillis()));
+        phieuGiamGia.setNguoicapnhat("Tuan Anh");
+        if (phieu.getTrangthai() == 2) {
+            phieuGiamGia.setTrangthai(2);
+        } else {
+            if (ngayBatDauTimestamp.getTime() > ngayHT.getTime()) {
+                phieuGiamGia.setTrangthai(0);
+            } else {
+                phieuGiamGia.setTrangthai(1);
+            }
+        }
+        if(choncheckbox !=null){
+            phieuGiamGiaImp.AddPhieuGiamGia(phieuGiamGia);
+            List<String> listString = Arrays.asList(choncheckbox);
+            List<Integer> listInt= new ArrayList<>();
+            for(String s : listString){
+                Integer i= Integer.parseInt(s);
+                listInt.add(i);
+            }
+            listInt.remove(Integer.valueOf(-1));
+            List<String> lstEmail= new ArrayList<>();
+            for(Integer chon :listInt){
+                KhachHang kh= khachHangImp.getOne(chon);
+                lstEmail.add(kh.getNguoidung().getEmail());
+                KhachHangPhieuGiam khachHangPhieuGiam= new KhachHangPhieuGiam();
+                khachHangPhieuGiam.setKhachhang(kh);
+                khachHangPhieuGiam.setPhieugiamgia(phieuGiamGia);
 
-        phieuGiamGia.setNgaytao(new Timestamp(System.currentTimeMillis()));
-        phieuGiamGiaImp.AddPhieuGiamGia(phieuGiamGia);
-        return "redirect:/admin/hien-thi-phieu-giam-gia";
+                khachHangPhieuGiamImp.AddKhachHangPhieuGiam(khachHangPhieuGiam);
+
+            }
+            String subject = "Mã giảm giá mới!";
+            String body = "Chào bạn,\n\n"
+                    + "Chúng tôi rất vui thông báo rằng bạn đã nhận được một mã giảm giá mới!\n\n"
+                    + "Mã giảm giá của bạn là: " + phieuGiamGia.getMacode() + "\n\n"
+                    + "Xin cảm ơn và chúc bạn có một ngày tốt lành!\n";
+            for(String e :lstEmail){
+                emailService.sendEmail(e,subject,body);
+            }
+
+            return "redirect:/admin/hien-thi-phieu-giam-gia";
+        }else{
+            phieuGiamGiaImp.AddPhieuGiamGia(phieuGiamGia);
+            return "redirect:/admin/hien-thi-phieu-giam-gia";
+        }
+
+
+
+
     }
     @RequestMapping("/admin/cap-nhat-trang-thai-phieu-giam-gia/{Id}")
     public String CapNhatTrangThaiPhieuGiamGia(@PathVariable("Id") Integer Id){

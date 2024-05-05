@@ -164,6 +164,7 @@ public class DotGiamGiaController {
                                       @RequestParam("choncheckbox") String[] choncheckbox){
         DotGiamGia dot= dotGiamGiaImp.findDotGiamGiaById(Id);
         dotGiamGia.setId(Id);
+
         dotGiamGia.setTendot(dotGiamGia.getTendot().trim());
         Timestamp ngayBatDauTimestamp = Timestamp.valueOf(ngayBatDau.replace("T", " ") + ":00");
         Timestamp ngayKetThucTimestamp = Timestamp.valueOf(ngayKetThuc.replace("T", " ") + ":00");
@@ -172,6 +173,8 @@ public class DotGiamGiaController {
         Timestamp ngayHT= new Timestamp(System.currentTimeMillis());
         dotGiamGia.setLancapnhatcuoi(new Timestamp(System.currentTimeMillis()));
         dotGiamGia.setNguoicapnhat("Tuan Anh");
+        dotGiamGia.setNguoitao(dot.getNguoitao());
+        dotGiamGia.setNgaytao(dot.getNgaytao());
         if (dot.getTrangthai() == 2) {
             dotGiamGia.setTrangthai(2);
         } else {

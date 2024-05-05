@@ -244,73 +244,13 @@
 
                                             </td>
                                             <td>
-                                                <a class="btn btn-warning" style="width: 35px;" th:attr="data-target='#capnhatChiTietModal'+${pgg.id}" data-toggle="modal">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="10" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
-                                                        <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001"/>
+                                                <a th:href="@{/admin/xem-cap-nhat-phieu-giam-gia/{Id}(Id=${pgg.id})}" style="color:rgb(249,72,42)">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                                                         fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                                                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
                                                     </svg>
                                                 </a>
-                                                <!-- Modal -->
-                                                <div th:each="pgg : ${pagePGG.content}" class="modal fade" th:id="'capnhatChiTietModal'+${pgg.id}" tabindex="-1" role="dialog">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" th:text="'Phiếu giảm giá '+${pgg.tenphieu}"></h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <p>Tên phiếu giảm giá:
-                                                                    <input class="form-control" type="text" th:value="${pgg.tenphieu}"/>
-                                                                </p>
-                                                                <p>Mã phiếu giảm giá:
-                                                                    <input class="form-control" type="text"  th:value="*{pgg.macode}"/>
-                                                                </p>
-                                                                <div class="d-flex justify-content-between">
-                                                                    <p style="width: 210px;">Giá trị giảm:
-                                                                        <input class="form-control" type="number" th:value="*{pgg.giatrigiam}"/>
-                                                                    </p>
-                                                                    <p style="width: 210px;">Loại phiếu giảm giá:
-                                                                        <select class="form-control" style="color:rgb(86,158,43)" th:model="*{pgg.loaiphieu}">
-                                                                            <option value="true" style="color:rgb(86,158,43)" th:selected="*{pgg.loaiphieu == true}">Giảm theo %</option>
-                                                                            <option value="false" style="color:rgb(86,158,43)" th:selected="*{pgg.loaiphieu == false}">Giảm theo số tiền</option>
-                                                                        </select>
-                                                                    </p>
-                                                                </div>
-                                                                <div class="d-flex justify-content-between">
-                                                                    <p style="width: 210px;">Giá trị hóa đơn tối thiểu:
-                                                                        <input class="form-control" type="number" th:value="*{pgg.dontoithieu}"/>
-                                                                    </p>
-                                                                    <p style="width: 210px;">Giá trị giảm tối đa:
-                                                                        <input class="form-control" type="number" th:value="*{pgg.giatrigiamtoida}"/>
-                                                                    </p>
-                                                                </div>
-                                                                <p>Số lượng:
-                                                                    <input class="form-control" type="number" th:value="*{pgg.soluong}"/>
-                                                                </p>
-                                                                <div class="d-flex justify-content-between">
-                                                                    <p style="width: 210px;">Ngày bắt đầu:
-                                                                        <input class="form-control" th:value="*{pgg.ngaybatdau}" type="datetime-local"/>
-                                                                    </p>
-                                                                    <p style="width: 210px;">Ngày kết thúc:
-                                                                        <input class="form-control" th:value="*{pgg.ngayketthuc}" type="datetime-local"/>
-                                                                    </p>
-                                                                </div>
-                                                                <p>Trạng thái:
-                                                                    <select class="form-control" style="color:rgb(86,158,43)" th:model="*{pgg.trangthai}">
-                                                                        <option value="true" style="color:rgb(86,158,43)" th:selected="*{pgg.trangthai == true}">Ngừng kích hoạt</option>
-                                                                        <option value="false" style="color:rgb(86,158,43)" th:selected="*{pgg.trangthai == false}">Đang kích hoạt</option>
-                                                                    </select>
-                                                                </p>
-                                                                <div class="d-flex justify-content-end align-items-center ">
-                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                                                    <button type="submit" class="btn btn-primary" style="margin-left: 20px;">Cập nhật</button>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             </td>
                                         </tr>
                                     </tbody>
