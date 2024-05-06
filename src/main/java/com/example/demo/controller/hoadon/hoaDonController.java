@@ -662,15 +662,16 @@ public class hoaDonController {
     @ResponseBody
     public ResponseEntity<?> timSPHDCT(@RequestParam("lstData") List<String> lstData
     ) {
-        String ten = lstData.get(0);
-        String ChatLieu = lstData.get(1);
-        String ThuongHieu = lstData.get(2);
-        String De = lstData.get(3);
-        String KichCo = lstData.get(4);
-        String MauSac = lstData.get(5);
+        String ten = lstData.get(0).equalsIgnoreCase("all") ? lstData.get(0) : "";
+        String ChatLieu = lstData.get(0).equalsIgnoreCase("all") ? lstData.get(1) : "";
+        String ThuongHieu = lstData.get(0).equalsIgnoreCase("all") ? lstData.get(2) : "";
+        String De = lstData.get(0).equalsIgnoreCase("all") ? lstData.get(3) : "";
+        String KichCo = lstData.get(0).equalsIgnoreCase("all") ? lstData.get(4) : "";
+        String MauSac = lstData.get(0).equalsIgnoreCase("all") ? lstData.get(5) : "";
         Boolean GioiTinh = Boolean.valueOf(lstData.get(6));
         BigDecimal KhoangGia = BigDecimal.valueOf(Double.valueOf(lstData.get(7)));
-        List<SanPhamChiTiet> lst = daoSPCT.timSPCTHDCT(ten, ChatLieu, ThuongHieu, De, KichCo, MauSac, GioiTinh, KhoangGia);
+        List<SanPhamChiTiet> lst = daoSPCT.timSPCTHDCT("", ChatLieu, ThuongHieu, De, KichCo, MauSac, GioiTinh, KhoangGia);
+        //List<SanPhamChiTiet> lst = daoSPCT.timSPCTHDCT("", "", "", "", "", "", GioiTinh, KhoangGia);
         return ResponseEntity.ok(lst);
     }
 

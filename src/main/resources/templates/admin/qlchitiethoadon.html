@@ -973,6 +973,7 @@
                                                                                     <select class="form-select"
                                                                                         id="chatlieu"
                                                                                         style="width: 120px;">
+                                                                                        <option value="all" selected>----</option>
                                                                                         <option
                                                                                             th:each="a:${dsChatLieu}"
                                                                                             th:value="${a.ten}"
@@ -987,6 +988,7 @@
                                                                                     <select class="form-select"
                                                                                         id="thuonghieu"
                                                                                         style="width: 120px;">
+                                                                                        <option value="all" selected>----</option>
                                                                                         <option
                                                                                             th:each="a:${dsThuongHieu}"
                                                                                             th:value="${a.ten}"
@@ -1001,6 +1003,7 @@
                                                                                     <select class="form-select"
                                                                                         id="degiay"
                                                                                         style="width: 120px;">
+                                                                                        <option value="all" selected>----</option>
                                                                                         <option th:each="a:${dsDe}"
                                                                                             th:value="${a.ten}"
                                                                                             th:text="${a.ten}">
@@ -1014,6 +1017,7 @@
                                                                                     <select class="form-select"
                                                                                         id="kichco"
                                                                                         style="width: 120px;">
+                                                                                        <option value="all" selected>----</option>
                                                                                         <option th:each="a:${dsKichCo}"
                                                                                             th:value="${a.ten}"
                                                                                             th:text="${a.ten}">
@@ -1027,6 +1031,7 @@
                                                                                     <select class="form-select"
                                                                                         id="mausac"
                                                                                         style="width: 120px;">
+                                                                                        <option value="all" selected>----</option>
                                                                                         <option th:each="a:${dsMauSac}"
                                                                                             th:value="${a.ten}"
                                                                                             th:text="${a.ten}">
@@ -1043,19 +1048,20 @@
                                                                                     tính</label>
                                                                                 <select class="form-select"
                                                                                     id="gioitinh" style="width: 120px;">
+                                                                                
                                                                                     <option value="true">Nam</option>
                                                                                     <option value="false">Nữ</option>
                                                                                 </select>
                                                                             </div>
                                                                             <div>
                                                                                 <label class="col-form-label">Khoảng
-                                                                                    giá: <span id="priceRangeValue">
+                                                                                    giá: <span id="priceRangeValue">500,000 đ
                                                                                     </span></label>
 
                                                                                 <div class="slidecontainer mt-1"
                                                                                     style="width: 495px;">
                                                                                     <input type="range" min="100000"
-                                                                                        max="5000000" value="30"
+                                                                                        max="8000000" value="500000"
                                                                                         style="width: 100%;"
                                                                                         id="priceRange">
                                                                                 </div>
