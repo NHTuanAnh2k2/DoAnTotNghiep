@@ -6,7 +6,10 @@ import com.example.demo.entity.NguoiDung;
 import com.example.demo.info.KhachHangInfo;
 import com.example.demo.info.NguoiDungKHInfo;
 import com.example.demo.restcontroller.khachhang.Province;
+import com.google.zxing.NotFoundException;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
@@ -14,18 +17,17 @@ import java.util.Optional;
 public interface KhachHangService {
     List<KhachHang> findAllKhachHang();
 
+    //Add khách hàng
     KhachHang add(KhachHang khachHang, NguoiDung nguoiDung, DiaChi diaChi, String tinhthanhpho, String quanhuyen, String xaphuong, String tenduong);
 
+    //Update khách hàng
     DiaChi updateDiaChi(DiaChi diaChi);
     KhachHang updateKhachHang(KhachHang khachHang);
     NguoiDung updateNguoiDung(NguoiDung nguoiDung);
+
     List<KhachHang> findAll();
     List<NguoiDung> findAllNguoiDung();
-
-    List<KhachHang> findByAll(String ten, String sdt, Date ngaysinh);
-
     KhachHang getOne(int id);
-
     KhachHang findKhachHangById(int id);
     DiaChi findDiaChiById(int id);
     NguoiDung findNguoiDungById(int id);
@@ -36,7 +38,11 @@ public interface KhachHangService {
     void sendEmail(String recipient, String username, String password, String name);
 
     List<KhachHangInfo> displayKhachHang();
-
-
     KhachHang findKhachHangByIdNguoiDung(Integer id);
+
+    //Tìm kiếm
+    List<KhachHangInfo> findByTenSdtMa(String tenSdtMa);
+
+    void scanQr() throws NotFoundException;
+    String readQRCode(File qrCodeImage) throws IOException;
 }
