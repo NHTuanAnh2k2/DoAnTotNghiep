@@ -671,7 +671,14 @@ public class hoaDonController {
         Boolean GioiTinh = Boolean.valueOf(lstData.get(6));
         BigDecimal KhoangGia = BigDecimal.valueOf(Double.valueOf(lstData.get(7)));
         List<SanPhamChiTiet> lst = daoSPCT.timSPCTHDCT(ten, ChatLieu, ThuongHieu, De, KichCo, MauSac, GioiTinh, KhoangGia);
-        //List<SanPhamChiTiet> lst = daoSPCT.timSPCTHDCT("", "", "", "", "", "", GioiTinh, KhoangGia);
+        System.out.println("aaaaaaaaaa");
+        System.out.println(ten);
+        System.out.println(ChatLieu);
+        System.out.println(ThuongHieu);
+        System.out.println(De);
+        System.out.println(KichCo);
+        System.out.println(MauSac);
+
         return ResponseEntity.ok(lst);
     }
 
