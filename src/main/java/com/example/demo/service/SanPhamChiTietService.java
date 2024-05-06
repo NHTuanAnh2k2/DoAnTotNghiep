@@ -9,7 +9,10 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface SanPhamChiTietService {
-
+    List<SanPhamChiTiet> timSPCTHDCT(String tenSp, String chatlieu,
+                                     String ThuongHieu, String De,
+                                     String KichCo, String MauSac,
+                                     Boolean gioitinh, BigDecimal gia);
     List<SanPhamChiTiet> findAll();
 
     Page<SanPhamChiTiet> finAllPage(Pageable pageable);

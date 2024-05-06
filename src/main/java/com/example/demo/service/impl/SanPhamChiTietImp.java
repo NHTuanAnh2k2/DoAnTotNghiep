@@ -18,6 +18,13 @@ public class SanPhamChiTietImp implements SanPhamChiTietService {
 
 
     @Override
+    public List<SanPhamChiTiet> timSPCTHDCT(String tenSp, String chatlieu, String ThuongHieu,
+                                            String De, String KichCo, String MauSac, Boolean gioitinh, BigDecimal gia) {
+        return sanPhamChiTietRepository.searchSPCT(tenSp,chatlieu,ThuongHieu,De,
+                KichCo,MauSac,gioitinh,gia);
+    }
+
+    @Override
     public List<SanPhamChiTiet> findAll() {
         return sanPhamChiTietRepository.findAll();
     }

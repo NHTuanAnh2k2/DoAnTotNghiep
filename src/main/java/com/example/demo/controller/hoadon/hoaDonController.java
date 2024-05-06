@@ -658,12 +658,21 @@ public class hoaDonController {
     }
 
     // tìm kiếm sảm phẩm theo bộ lọc
-//    @GetMapping("searchSP")
-//    @ResponseBody
-//    public ResponseEntity<?> timSPHDCT(@RequestParam("keySearch") String key) {
-//        List<NhanVien> pageNV = nhanVienService.timNVTheoMa(key);
-//        return ResponseEntity.ok(pageNV);
-//    }
+    @GetMapping("searchSP")
+    @ResponseBody
+    public ResponseEntity<?> timSPHDCT(@RequestParam("lstData") List<String> lstData
+    ) {
+        String ten = lstData.get(0);
+        String ChatLieu = lstData.get(1);
+        String ThuongHieu = lstData.get(2);
+        String De = lstData.get(3);
+        String KichCo = lstData.get(4);
+        String MauSac = lstData.get(5);
+        Boolean GioiTinh = Boolean.valueOf(lstData.get(6));
+        BigDecimal KhoangGia = BigDecimal.valueOf(Double.valueOf(lstData.get(7)));
+        List<SanPhamChiTiet> lst = daoSPCT.timSPCTHDCT(ten, ChatLieu, ThuongHieu, De, KichCo, MauSac, GioiTinh, KhoangGia);
+        return ResponseEntity.ok(lst);
+    }
 
 
     @ModelAttribute("dsChatLieu")

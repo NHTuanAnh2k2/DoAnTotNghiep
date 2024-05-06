@@ -13,7 +13,11 @@ import java.util.List;
 
 @Repository
 public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, Integer> {
-
+    @Query("SELECT c FROM SanPhamChiTiet c WHERE c.sanpham.tensanpham like %?1% and c.chatlieu.ten like %?2% and c.thuonghieu.ten like %?3% and c.degiay.ten like %?4% and c.kichco.ten like %?5% and c.mausac.ten like %?6% and c.gioitinh = ?7 and c.giatien <= ?8")
+    List<SanPhamChiTiet> searchSPCT(String tenSp, String chatlieu,
+                              String ThuongHieu, String De,
+                              String KichCo, String MauSac,
+                              Boolean gioitinh, BigDecimal gia);
 
     @Query(value = "SELECT MAX(spct.id) FROM SanPhamChiTiet spct")
     Integer findMaxIdSPCT();
