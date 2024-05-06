@@ -52,29 +52,59 @@
                                 </h3>
                                 <br>
                                 <form th:action="@{/khachhang/timkiem}" th:method="get">
-                                    <h3 class="card-title">Tìm kiếm:
-                                        <input type="text" th:name="ten" placeholder="Tìm kiếm tên"
-                                               class="form-control">
-                                    </h3>
-                                    <h3 class="card-title">Tìm kiếm:
-                                        <input type="text" th:name="sdt" placeholder="Tìm kiếm SĐT"
-                                               class="form-control">
-                                    </h3>
-                                    <h3 class="card-title" style="margin-left: 20px">Ngày sinh:
-                                        <input type="date" th:name="ngaysinh" class="form-control">
-                                    </h3>
-                                    <br>
-                                    <br>
-                                    <br>
-                                    <button style="margin-left: 100px" class="btn btn-primary">Tìm kiếm</button>
-                                    <button class="btn btn-danger">Làm mới bộ lọc</button>
+                                    <div class="row">
+                                        <div class="mb-3 col-12">
+                                            <h3 class="card-title" style="width: 80%">Tên, mã hoặc số điện thoại:
+                                                <input type="text" th:name="tenSdtMa" placeholder="Tìm kiếm tên, mã hoặc số điện thoại"
+                                                       class="form-control">
+                                            </h3>
+                                        </div>
+                                    </div>
+<!--                                    <div class="row" style="margin-left: 74px">-->
+<!--                                        <div class="mb-3 col-5">-->
+<!--                                            <h3 class="card-title" style="width: 80%">CCCD:-->
+<!--                                                <input type="text" th:name="ten" placeholder="Tìm kiếm cccd"-->
+<!--                                                       class="form-control">-->
+<!--                                            </h3>-->
+<!--                                        </div>-->
+<!--                                        <div class="mb-3 col-5">-->
+<!--                                            <h3 class="card-title" style="width: 80%">Tỉnh/Thành phố:-->
+<!--                                                <input type="text" th:name="sdt" placeholder="Tìm kiếm SĐT"-->
+<!--                                                       class="form-control">-->
+<!--                                            </h3>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="row" style="margin-left: 74px">-->
+<!--                                        <div class="mb-3 col-5">-->
+<!--                                            <h3 class="card-title" style="width: 80%">Ngày sinh:-->
+<!--                                                <input type="date" th:name="ngaysinh" class="form-control"-->
+<!--                                                       style="width: 300px">-->
+<!--                                            </h3>-->
+<!--                                        </div>-->
+<!--                                        <div class="mb-3 col-5">-->
+<!--                                            <h3 class="card-title" style="width: 80%">Ngày sinh:-->
+<!--                                                <input type="date" th:name="ngaysinh" class="form-control"-->
+<!--                                                       style="width: 300px">-->
+<!--                                            </h3>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <button type="submit" style="margin-left: 83px; width: 200px"
+                                                    class="btn btn-primary">Tìm kiếm
+                                            </button>
+                                        </div>
+                                        <div class="col-3">
+                                            <a class="btn btn-danger" href="/khachhang"
+                                                    style="width: 200px; margin-left: 300px">Reset
+                                            </a>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
 
                         </div>
                         <!-- /.card -->
-
-
                     </div>
                     <!-- /.col -->
                 </div>
@@ -120,13 +150,14 @@
                                     <tr th:each="kh,stt:${lstKhachHang}">
                                         <td th:text="${stt.index+1}"></td>
                                         <td th:text="${kh.khachhang.makhachhang}"></td>
-                                        <td th:text="${kh.nguoidung.hovaten}"></td>
-                                        <td th:text="${kh.nguoidung.sodienthoai}"></td>
-                                        <td th:text="${kh.nguoidung.cccd}"></td>
-                                        <td th:text="${kh.nguoidung.ngaysinh}"></td>
+                                        <td th:text="${kh.khachhang.nguoidung.hovaten}"></td>
+                                        <td th:text="${kh.khachhang.nguoidung.cccd}"></td>
+                                        <td th:text="${kh.khachhang.nguoidung.sodienthoai}"></td>
+                                        <td th:text="${kh.khachhang.nguoidung.ngaysinh}"></td>
                                         <td th:text="${kh.diachi.tenduong + ', ' + kh.diachi.xaphuong + ', ' + kh.diachi.quanhuyen + ', ' + kh.diachi.tinhthanhpho}"></td>
                                         <td>
-                                            <a th:href="@{/khachhang/update/{id}(id=${kh.diachi.id})}" class="btn btn-success"
+                                            <a th:href="@{/khachhang/update/{id}(id=${kh.diachi.id})}"
+                                               class="btn btn-success"
                                                style="width: 100px">Chỉnh sửa</a>
                                         </td>
                                     </tr>

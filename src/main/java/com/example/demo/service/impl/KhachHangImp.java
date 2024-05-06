@@ -14,6 +14,9 @@ import com.example.demo.restcontroller.khachhang.Province;
 import com.example.demo.restcontroller.khachhang.Ward;
 import com.example.demo.service.KhachHangService;
 import com.example.demo.service.NguoiDungService;
+import com.google.zxing.*;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.HybridBinarizer;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -25,6 +28,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.security.SecureRandom;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -193,16 +200,13 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
         List<DiaChi> lstDiaChi = diaChiRepository.findAll();
         Collections.sort(lstDiaChi, Comparator.comparing(DiaChi::getNgaytao).reversed());
 
-        List<NguoiDung> lstNguoiDung = this.findAllNguoiDung();
-        Collections.sort(lstNguoiDung, Comparator.comparing(NguoiDung::getNgaytao).reversed());
 
         List<KhachHangInfo> lstkhachhanginfo = new ArrayList<>();
-        int minSize = Math.min(lstKhachHang.size(), Math.min(lstDiaChi.size(), lstNguoiDung.size()));
+        int minSize = Math.min(lstKhachHang.size(), lstDiaChi.size());
         for (int i = 0; i < minSize; i++) {
             KhachHangInfo khachHangInfo = new KhachHangInfo();
             khachHangInfo.setKhachhang(lstKhachHang.get(i));
             khachHangInfo.setDiachi(lstDiaChi.get(i));
-            khachHangInfo.setNguoidung(lstNguoiDung.get(i));
             lstkhachhanginfo.add(khachHangInfo);
         }
 
@@ -215,8 +219,49 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
     }
 
     @Override
-    public List<KhachHang> findByAll(String ten, String sdt, Date ngaysinh) {
-        return khachHangRepostory.findByAll(ten, sdt, ngaysinh);
+    public List<KhachHangInfo> findByTenSdtMa(String tenSdtMa) {
+        List<KhachHang> lstKhachHang = khachHangRepostory.findByTenSdtMa(tenSdtMa);
+        Collections.sort(lstKhachHang, Comparator.comparing(KhachHang::getNgaytao).reversed());
+
+        List<KhachHangInfo> lstkhachhanginfo = new ArrayList<>();
+
+        // Lấy danh sách địa chỉ cho từng khách hàng
+        for (KhachHang khachHang : lstKhachHang) {
+            KhachHangInfo khachHangInfo = new KhachHangInfo();
+            int ndId = khachHang.getNguoidung().getId();
+            List<DiaChi> lstDiaChi = diaChiRepository.findDiaChiByIdNd(ndId);
+
+            // Kiểm tra xem số lượng địa chỉ và số lượng khách hàng có phù hợp không
+            if (lstDiaChi.size() >= 1) { // Kiểm tra ít nhất phải có một địa chỉ tương ứng
+                DiaChi diaChi = lstDiaChi.get(0); // Lấy địa chỉ tương ứng với khách hàng
+                khachHangInfo.setKhachhang(khachHang);
+                khachHangInfo.setDiachi(diaChi);
+                lstkhachhanginfo.add(khachHangInfo);
+            }
+        }
+
+        return lstkhachhanginfo;
+    }
+
+
+    @Override
+    public void scanQr(){
+        return;
+    }
+
+    @Override
+    public String readQRCode(File qrCodeImage) throws IOException {
+        BufferedImage bufferedImage = ImageIO.read(qrCodeImage);
+        BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(
+                new BufferedImageLuminanceSource(bufferedImage)));
+        MultiFormatReader reader = new MultiFormatReader();
+        try {
+            Result result = reader.decode(binaryBitmap);
+            return result.getText();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
