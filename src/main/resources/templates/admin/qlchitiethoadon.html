@@ -1157,7 +1157,7 @@
                                                     <td th:text="${a.sanphamchitiet.mausac.ten}"></td>
 
                                                     <td><input class="form-control form-control-sm" type="number"
-                                                            onchange="changeQuantity()"
+                                                            th:id="${a.id}" oninput="changeQuantity(this)"
                                                             aria-label=".form-control-sm example" style="width: 100px;"
                                                             th:value="${a.soluong}" min="1" max="100"></td>
 
@@ -1173,7 +1173,7 @@
                                                             <button class="btn btn-outline-danger"
                                                                 onclick="return confirm('Bạn có muốn xóa sản phẩm này không?')"
                                                                 type="button"><i class="bi bi-trash3"></i></button></a>
-                                                        <a
+                                                        <a th:id="${a.id+'fsport'}"
                                                             th:href="@{update-sp-hdct/{id}/{sl}(id=${a.id},sl=${a.soluong})}">
                                                             <button class="btn btn-outline-warning"
                                                                 onclick="return confirm('Bạn có muốn cập nhật lại sản phẩm này không?')"
@@ -2225,10 +2225,14 @@
             });
         });
     </script> -->
-   <!-- tạo khoảng giá -->
- <script>
-
- </script>
+    <!-- tạo khoảng giá -->
+    <script>
+        function changeQuantity(input) {
+            var element = document.getElementById(input.id + 'fsport');
+            var newHref = "update-sp-hdct/"+input.id+"/"+input.value;
+            element.setAttribute("href", newHref);
+        }
+    </script>
 
 </body>
 
