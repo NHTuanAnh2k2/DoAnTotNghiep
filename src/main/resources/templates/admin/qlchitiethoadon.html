@@ -971,9 +971,11 @@
                                                                                     <label class="col-form-label">Chất
                                                                                         liệu</label>
                                                                                     <select class="form-select"
+                                                                                        onchange="SearchSPHDCT()"
                                                                                         id="chatlieu"
                                                                                         style="width: 120px;">
-                                                                                        <option value="all" selected>----</option>
+                                                                                        <option value="all" selected>
+                                                                                            ----</option>
                                                                                         <option
                                                                                             th:each="a:${dsChatLieu}"
                                                                                             th:value="${a.ten}"
@@ -986,9 +988,11 @@
                                                                                     <label class="col-form-label">Thương
                                                                                         hiệu</label>
                                                                                     <select class="form-select"
+                                                                                        onchange="SearchSPHDCT()"
                                                                                         id="thuonghieu"
                                                                                         style="width: 120px;">
-                                                                                        <option value="all" selected>----</option>
+                                                                                        <option value="all" selected>
+                                                                                            ----</option>
                                                                                         <option
                                                                                             th:each="a:${dsThuongHieu}"
                                                                                             th:value="${a.ten}"
@@ -1001,9 +1005,11 @@
                                                                                     <label class="col-form-label">Đế
                                                                                         giày</label>
                                                                                     <select class="form-select"
+                                                                                        onchange="SearchSPHDCT()"
                                                                                         id="degiay"
                                                                                         style="width: 120px;">
-                                                                                        <option value="all" selected>----</option>
+                                                                                        <option value="all" selected>
+                                                                                            ----</option>
                                                                                         <option th:each="a:${dsDe}"
                                                                                             th:value="${a.ten}"
                                                                                             th:text="${a.ten}">
@@ -1015,9 +1021,11 @@
                                                                                     <label class="col-form-label">Kích
                                                                                         cỡ</label>
                                                                                     <select class="form-select"
+                                                                                        onchange="SearchSPHDCT()"
                                                                                         id="kichco"
                                                                                         style="width: 120px;">
-                                                                                        <option value="all" selected>----</option>
+                                                                                        <option value="all" selected>
+                                                                                            ----</option>
                                                                                         <option th:each="a:${dsKichCo}"
                                                                                             th:value="${a.ten}"
                                                                                             th:text="${a.ten}">
@@ -1029,9 +1037,11 @@
                                                                                     <label class="col-form-label">Màu
                                                                                         sắc</label>
                                                                                     <select class="form-select"
+                                                                                        oninput="SearchSPHDCT()"
                                                                                         id="mausac"
                                                                                         style="width: 120px;">
-                                                                                        <option value="all" selected>----</option>
+                                                                                        <option value="all" selected>
+                                                                                            ----</option>
                                                                                         <option th:each="a:${dsMauSac}"
                                                                                             th:value="${a.ten}"
                                                                                             th:text="${a.ten}">
@@ -1047,20 +1057,23 @@
                                                                                 <label class="col-form-label">Giới
                                                                                     tính</label>
                                                                                 <select class="form-select"
+                                                                                    onchange="SearchSPHDCT()"
                                                                                     id="gioitinh" style="width: 120px;">
-                                                                                
+
                                                                                     <option value="true">Nam</option>
                                                                                     <option value="false">Nữ</option>
                                                                                 </select>
                                                                             </div>
                                                                             <div>
                                                                                 <label class="col-form-label">Khoảng
-                                                                                    giá: <span id="priceRangeValue">500,000 đ
+                                                                                    giá: <span
+                                                                                        id="priceRangeValue">500,000 đ
                                                                                     </span></label>
 
                                                                                 <div class="slidecontainer mt-1"
                                                                                     style="width: 495px;">
                                                                                     <input type="range" min="100000"
+                                                                                        onchange="SearchSPHDCT()"
                                                                                         max="8000000" value="500000"
                                                                                         style="width: 100%;"
                                                                                         id="priceRange">
@@ -1088,7 +1101,7 @@
                                                                 </tbody>
                                                             </table>
                                                             <br>
-                                                            <nav aria-label="Page navigation example">
+                                                            <nav aria-label="Page navigation example" id="navAddSPHDCT">
                                                                 <ul class="pagination">
                                                                     <li class="page-item" id="btn_prev_page"><a
                                                                             class="page-link"
@@ -1746,6 +1759,62 @@
         var gioitinh = document.getElementById('gioitinh');
         var khoanggia = document.getElementById('priceRange');
 
+        function SearchSPHDCT() {
+            var tentim = tensp.value;
+            var cl = chatlieu.value;
+            var th = thuonghieu.value;
+            var dg = degiay.value;
+            var kc = kichco.value;
+            var ms = mausac.value;
+            var gt = gioitinh.value;
+            var kg = khoanggia.value;
+            var list = [
+                tentim, cl, th, dg, kc, ms, gt, kg
+            ]
+            var urltimSPCT = `/hoa-don/searchSP?lstData=${list}`;
+            fetch(urltimSPCT)
+                .then(function (c) {
+                    return c.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let htmlSP = '';
+                    let htmlNumberPageSP = '';
+                    for (const hd of b) {
+                        STT++;
+                        htmlSP += `<tr>
+                               <td>${STT}</td>
+                               <td> 
+                                <img src="${hd.anh.tenanh}" alt=""
+                                                            style="height: 100px; width: 100px;">
+                                
+                                </td>
+                               <td>${hd.sanpham.tensanpham}</td>
+                               <td>${hd.soluong}</td>
+                               <td>${hd.kichco.ten}</td>
+                               <td>${hd.mausac.ten}</td>
+                               <td>
+                                <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                    ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                    </p>
+                                </td>
+                               <td>
+                                <a href="ChoseSP/${hd.id}"><button
+                                class="btn btn-warning">
+                                chọn
+                                 </button></a>
+                                 </td>
+                            </tr>`;
+                    }
+                    document.getElementById("tbl_sp_them").innerHTML = htmlSP;
+                    document.getElementById('navAddSPHDCT').style.display = 'none';
+
+                })
+        }
+
+
+
+
         tensp.onkeyup = function () {
             var tentim = tensp.value;
             var cl = chatlieu.value;
@@ -1794,6 +1863,7 @@
                             </tr>`;
                     }
                     document.getElementById("tbl_sp_them").innerHTML = htmlSP;
+                    document.getElementById('navAddSPHDCT').style.display = 'none';
 
                 })
         }
