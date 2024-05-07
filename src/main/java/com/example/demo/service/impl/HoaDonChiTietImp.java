@@ -44,4 +44,15 @@ public class HoaDonChiTietImp implements HoaDonChiTietService {
     public void capnhat(HoaDonChiTiet hdct) {
         dao.save(hdct);
     }
+
+    @Override
+    public HoaDonChiTiet findByID(Integer id) {
+        return dao.findById(id).get();
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+        dao.deleteById(id);
+    }
+
 }

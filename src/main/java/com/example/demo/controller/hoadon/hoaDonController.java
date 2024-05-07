@@ -652,7 +652,7 @@ public class hoaDonController {
     // tìm kiếm nhân viên muốn thay đổi
     @GetMapping("searchNV")
     @ResponseBody
-    public ResponseEntity<?> tìmlistNV(@RequestParam("keySearch") String key) {
+    public ResponseEntity<?> timlistNV(@RequestParam("keySearch") String key) {
         List<NhanVien> pageNV = nhanVienService.timNVTheoMa(key);
         return ResponseEntity.ok(pageNV);
     }
@@ -671,20 +671,48 @@ public class hoaDonController {
         Boolean GioiTinh = Boolean.valueOf(lstData.get(6));
         BigDecimal KhoangGia = BigDecimal.valueOf(Double.valueOf(lstData.get(7)));
         List<SanPhamChiTiet> lst = daoSPCT.timSPCTHDCT(ten, ChatLieu, ThuongHieu, De, KichCo, MauSac, GioiTinh, KhoangGia);
-        System.out.println("aaaaaaaaaa");
-        System.out.println(ten);
-        System.out.println(ChatLieu);
-        System.out.println(ThuongHieu);
-        System.out.println(De);
-        System.out.println(KichCo);
-        System.out.println(MauSac);
-        System.out.println(GioiTinh);
-        System.out.println(KhoangGia);
-
         return ResponseEntity.ok(lst);
     }
 
+    //xóa sản phẩm ra khỏi hóa đơn
+    @GetMapping("delete-sp-hdct/{id}")
+    public String deleteSPHDCT(@PathVariable("id") Integer id) {
+        HoaDonChiTiet hdDelete = daoHDCT.findByID(id);
+        int slHienTai = hdDelete.getSoluong();
+        daoHDCT.deleteById(id);
+        SanPhamChiTiet spUpdateQuantity = hdDelete.getSanphamchitiet();
+        spUpdateQuantity.setSoluong(spUpdateQuantity.getSoluong() + slHienTai);
+        daoSPCT.addSPCT(spUpdateQuantity);
+        return "redirect:/hoa-don/showDetail";
+    }
 
+    @GetMapping("update-sp-hdct/{id}/{sl}")
+    public String updateSPHDCT(@PathVariable("id") Integer id, @PathVariable("sl") Integer sl) {
+        HoaDonChiTiet hdDelete = daoHDCT.findByID(id);
+        SanPhamChiTiet spUpdateQuantity = hdDelete.getSanphamchitiet();
+        if (hdDelete.getSoluong() == sl) {
+            return "redirect:/hoa-don/showDetail";
+        } else {
+            if (hdDelete.getSoluong() < sl) {
+                //tăng sl
+                int sltang = sl - hdDelete.getSoluong();
+                spUpdateQuantity.setSoluong(spUpdateQuantity.getSoluong() - sltang);
+                daoSPCT.addSPCT(spUpdateQuantity);
+                hdDelete.setSoluong(sl);
+                daoHDCT.capnhat(hdDelete);
+                return "redirect:/hoa-don/showDetail";
+            }
+        }
+        //sl giảm
+        int slgiam = hdDelete.getSoluong() - sl;
+        spUpdateQuantity.setSoluong(spUpdateQuantity.getSoluong() + slgiam);
+        daoSPCT.addSPCT(spUpdateQuantity);
+        hdDelete.setSoluong(sl);
+        daoHDCT.capnhat(hdDelete);
+        return "redirect:/hoa-don/showDetail";
+    }
+
+    //truyền model attribute
     @ModelAttribute("dsChatLieu")
     public List<ChatLieu> dsChatLieu() {
         return daoChatLieu.findAll();

@@ -87,9 +87,6 @@
 
     <div class="wrapper">
         <!-- Ban đầu mở là hiển thị logo thương hiệu -->
-        <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="../dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
-        </div>
         <!-- end -->
 
         <!-- navbar-->
@@ -1136,7 +1133,7 @@
                                                     <th>Số lượng</th>
                                                     <th>Tổng tiền</th>
                                                     <th>Trạng thái</th>
-                                                    <th>Thao tác</th>
+                                                    <th colspan="2">Thao tác</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -1150,7 +1147,7 @@
                                                         <p th:text="${a.sanphamchitiet.sanpham.tensanpham}"
                                                             style="font-family: 'Times New Roman'; font-size: 15px; font-weight: bold;">
                                                             ></p>
-                                                        <p th:text="${a.giasanpham}"
+                                                        <p th:text="${#numbers.formatDecimal(a.giasanpham, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
                                                             style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
                                                             ></p>
                                                         <p th:text="${'Size: '+a.sanphamchitiet.kichco.ten}"
@@ -1160,6 +1157,7 @@
                                                     <td th:text="${a.sanphamchitiet.mausac.ten}"></td>
 
                                                     <td><input class="form-control form-control-sm" type="number"
+                                                            onchange="changeQuantity()"
                                                             aria-label=".form-control-sm example" style="width: 100px;"
                                                             th:value="${a.soluong}" min="1" max="100"></td>
 
@@ -1171,8 +1169,16 @@
                                                             th:text="${a.trangthai==true?'thành công':'thất bại'}"></p>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger"><i
-                                                                class="bi bi-trash3"></i></button>
+                                                        <a th:href="@{delete-sp-hdct/{id}(id=${a.id})}">
+                                                            <button class="btn btn-outline-danger"
+                                                                onclick="return confirm('Bạn có muốn xóa sản phẩm này không?')"
+                                                                type="button"><i class="bi bi-trash3"></i></button></a>
+                                                        <a
+                                                            th:href="@{update-sp-hdct/{id}/{sl}(id=${a.id},sl=${a.soluong})}">
+                                                            <button class="btn btn-outline-warning"
+                                                                onclick="return confirm('Bạn có muốn cập nhật lại sản phẩm này không?')"
+                                                                type="button"><i
+                                                                    class="bi bi-arrow-clockwise bi-warning"></i></button></a>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -2219,6 +2225,10 @@
             });
         });
     </script> -->
+   <!-- tạo khoảng giá -->
+ <script>
+
+ </script>
 
 </body>
 
