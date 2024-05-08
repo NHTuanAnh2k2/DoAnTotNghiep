@@ -149,48 +149,59 @@
                                             </div>
                                             <div th:object="${diachi}">
                                                 <div class="d-flex">
-                                                    <input th:field="*{id}" th:hidden="true">
-                                                    <p>Tỉnh/Thành phố:
-                                                        <select th:field="*{tinhthanhpho}" class="form-control"
-                                                                onchange="getDiaChi()" style="width: 550px">
-                                                            <option th:value="*{tinhthanhpho}"
-                                                                    th:text="*{tinhthanhpho}">Chọn tỉnh/thành phố
-                                                            </option>
-                                                            <option th:each="city : ${cities}"
-                                                                    th:value="${city.getName()}"
-                                                                    th:text="${city.getName()}"
-                                                            >
-                                                                City
-                                                            </option>
-                                                        </select>
-                                                    </p>
-                                                    <p style="margin-left: 20px">Quận/Huyện:
-                                                        <select class="form-control" th:field="*{quanhuyen}"
-                                                                onchange="getQuanHuyen()"
-                                                                style="width: 550px">
-                                                            <option th:value="*{quanhuyen}"
-                                                                    th:text="*{quanhuyen}">Chọn quận/huyện
-                                                            </option>
-                                                        </select>
-                                                    </p>
+                                                    <div>
+                                                        <input th:field="*{id}" th:hidden="true">
+                                                        <p>Tỉnh/Thành phố:
+                                                            <select th:field="*{tinhthanhpho}" class="form-control"
+                                                                    onchange="getDiaChi()" style="width: 550px">
+                                                                <option th:value="*{tinhthanhpho}"
+                                                                        th:text="*{tinhthanhpho}">Chọn tỉnh/thành phố
+                                                                </option>
+                                                                <option th:each="city : ${cities}"
+                                                                        th:value="${city.getName()}"
+                                                                        th:text="${city.getName()}">City
+                                                                </option>
+                                                            </select>
+                                                        </p>
+                                                    </div>
+                                                    <div>
+                                                        <p style="margin-left: 20px">Quận/Huyện:
+                                                            <select class="form-control" th:field="*{quanhuyen}"
+                                                                    onchange="getQuanHuyen()"
+                                                                    style="width: 550px">
+                                                                <option th:value="*{quanhuyen}"
+                                                                        th:text="*{quanhuyen}">Chọn quận/huyện
+                                                                </option>
+                                                            </select>
+                                                        </p>
+                                                        <p th:if="${#fields.hasErrors('quanhuyen')}"
+                                                           th:errors="*{quanhuyen}"
+                                                           style="color: red; padding-left: 20px"></p>
+                                                    </div>
                                                 </div>
 
                                                 <div class="d-flex">
-                                                    <p>Xã/Phường:
-                                                        <select class="form-control" style="width: 550px"
-                                                                th:field="*{xaphuong}">
-                                                            <option th:value="*{xaphuong}"
-                                                                    th:text="*{xaphuong}">Chọn xã/phường
-                                                            </option>
-                                                        </select>
-                                                    </p>
-                                                    <p style="margin-left: 20px">Số nhà/Ngõ/Đường:
-                                                        <input placeholder="Số nhà/Ngõ/Đường" class="form-control"
-                                                               style="width: 550px" th:field="*{tenduong}">
-                                                    <p th:if="${#fields.hasErrors('tenduong')}"
-                                                       th:errors="*{tenduong}"
-                                                       style="color: red; padding-left: 20px"></p>
-                                                    </p>
+                                                    <div>
+                                                        <p>Xã/Phường:
+                                                            <select class="form-control" style="width: 550px"
+                                                                    th:field="*{xaphuong}">
+                                                                <option th:value="*{xaphuong}"
+                                                                        th:text="*{xaphuong}">Chọn xã/phường
+                                                                </option>
+                                                            </select>
+                                                        </p>
+                                                        <p th:if="${#fields.hasErrors('xaphuong')}"
+                                                           th:errors="*{xaphuong}"
+                                                           style="color: red; padding-left: 20px"></p>
+                                                    </div>
+                                                    <div>
+                                                        <p style="margin-left: 20px">Số nhà/Ngõ/Đường:
+                                                            <input placeholder="Số nhà/Ngõ/Đường" class="form-control"
+                                                                   style="width: 550px" th:field="*{tenduong}"></p>
+                                                        <p th:if="${#fields.hasErrors('tenduong')}"
+                                                           th:errors="*{tenduong}"
+                                                           style="color: red; padding-left: 20px"></p>
+                                                    </div>
                                                 </div>
                                                 <button type="submit" class="btn btn-primary">Sửa khách hàng</button>
                                                 <a th:href="@{/khachhang}" class="btn btn-danger">Thoát</a>

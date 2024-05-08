@@ -14,8 +14,11 @@ public class DiaChiKHInfo {
     Integer id;
     @NotBlank(message = "Không được để trống tên đường")
     String tenduong;
+    @NotBlank(message = "Không được để trống Xã/Phường")
     String xaphuong;
+    @NotBlank(message = "Không được để trống Quận/Huyện")
     String quanhuyen;
+    @NotBlank(message = "Không được để trống Tỉnh/Thành phố")
     String tinhthanhpho;
     String sdtnguoinhan;
     String hotennguoinhan;

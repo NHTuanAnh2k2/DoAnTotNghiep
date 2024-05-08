@@ -69,44 +69,61 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
 
     @Override
     public KhachHang add(KhachHang khachHang, NguoiDung nguoiDung, DiaChi diaChi, String tinhthanhpho, String quanhuyen, String xaphuong, String tenduong) {
-        int usernameLength = 8;
-        int passwordLength = 10;
-        String username = generateRandomPassword(usernameLength);
-        String password = generateRandomPassword(passwordLength);
-
-        LocalDateTime currentDate = LocalDateTime.now();
-
-        nguoiDung.setTaikhoan(username);
-        nguoiDung.setMatkhau(password);
-        nguoiDung.setNgaytao(Timestamp.valueOf(currentDate));
-        nguoiDung.setLancapnhatcuoi(Timestamp.valueOf(currentDate));
-        nguoiDung.setTrangthai(true);
-        nguoiDungRepository.save(nguoiDung);
-
-        diaChi.setTenduong(tenduong);
-        diaChi.setQuanhuyen(quanhuyen);
-        diaChi.setXaphuong(xaphuong);
-        diaChi.setSdtnguoinhan(nguoiDung.getSodienthoai());
-        diaChi.setNguoidung(nguoiDung);
-        diaChi.setTrangthai(nguoiDung.getTrangthai());
-        diaChi.setTinhthanhpho(tinhthanhpho);
-        diaChi.setNgaytao(nguoiDung.getNgaytao());
-        diaChi.setLancapnhatcuoi(nguoiDung.getLancapnhatcuoi());
-        diaChi.setHotennguoinhan(nguoiDung.getHovaten());
-        diaChiRepository.save(diaChi);
-
-        String maKH = "KH" + (totalCustomer() + 1);
-        khachHang.setMakhachhang(maKH);
-        khachHang.setNguoidung(nguoiDung);
-        khachHang.setTrangthai(nguoiDung.getTrangthai());
-        khachHang.setNgaytao(nguoiDung.getNgaytao());
-        khachHang.setLancapnhatcuoi(nguoiDung.getLancapnhatcuoi());
-        khachHangRepostory.save(khachHang);
-
-        String nguoiNhan = diaChi.getNguoidung().getEmail();
-        String tenNguoiNhan = nguoiDung.getHovaten();
-        this.sendEmail(nguoiNhan, username, password, tenNguoiNhan);
+//        int usernameLength = 8;
+//        int passwordLength = 10;
+//        String username = generateRandomPassword(usernameLength);
+//        String password = generateRandomPassword(passwordLength);
+//
+//        LocalDateTime currentDate = LocalDateTime.now();
+//
+//        nguoiDung.setTaikhoan(username);
+//        nguoiDung.setMatkhau(password);
+//        nguoiDung.setNgaytao(Timestamp.valueOf(currentDate));
+//        nguoiDung.setLancapnhatcuoi(Timestamp.valueOf(currentDate));
+//        nguoiDung.setTrangthai(true);
+//        nguoiDungRepository.save(nguoiDung);
+//
+//        diaChi.setTenduong(tenduong);
+//        diaChi.setQuanhuyen(quanhuyen);
+//        diaChi.setXaphuong(xaphuong);
+//        diaChi.setSdtnguoinhan(nguoiDung.getSodienthoai());
+//        diaChi.setNguoidung(nguoiDung);
+//        diaChi.setTrangthai(nguoiDung.getTrangthai());
+//        diaChi.setTinhthanhpho(tinhthanhpho);
+//        diaChi.setNgaytao(nguoiDung.getNgaytao());
+//        diaChi.setLancapnhatcuoi(nguoiDung.getLancapnhatcuoi());
+//        diaChi.setHotennguoinhan(nguoiDung.getHovaten());
+//        diaChiRepository.save(diaChi);
+//
+//        String maKH = "KH" + (totalCustomer() + 1);
+//        khachHang.setMakhachhang(maKH);
+//        khachHang.setNguoidung(nguoiDung);
+//        khachHang.setTrangthai(nguoiDung.getTrangthai());
+//        khachHang.setNgaytao(nguoiDung.getNgaytao());
+//        khachHang.setLancapnhatcuoi(nguoiDung.getLancapnhatcuoi());
+//        khachHangRepostory.save(khachHang);
+//
+//        String nguoiNhan = diaChi.getNguoidung().getEmail();
+//        String tenNguoiNhan = nguoiDung.getHovaten();
+//        this.sendEmail(nguoiNhan, username, password, tenNguoiNhan);
         return khachHang;
+    }
+
+    @Override
+    public DiaChi addDiaChi(DiaChi diaChi) {
+        diaChiRepository.save(diaChi);
+        return diaChi;
+    }
+    @Override
+    public KhachHang addKhachHang(KhachHang khachHang) {
+        khachHangRepostory.save(khachHang);
+        return khachHang;
+    }
+
+    @Override
+    public NguoiDung addNguoiDung(NguoiDung nguoiDung) {
+        nguoiDungRepository.save(nguoiDung);
+        return nguoiDung;
     }
 
     @Override
@@ -126,11 +143,6 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
         return nguoiDungRepository.save(nguoiDung);
     }
 
-    public int totalCustomer() {
-        List<KhachHang> lstKhachHang = khachHangRepostory.findAll();
-        int total = lstKhachHang.size();
-        return total;
-    }
     public String generateRandomPassword(int length) {
         if (length < 4) throw new IllegalArgumentException("Length too short, minimum 4 characters required");
         StringBuilder password = new StringBuilder(length);

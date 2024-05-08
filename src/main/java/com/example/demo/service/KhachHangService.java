@@ -19,6 +19,9 @@ public interface KhachHangService {
 
     //Add khách hàng
     KhachHang add(KhachHang khachHang, NguoiDung nguoiDung, DiaChi diaChi, String tinhthanhpho, String quanhuyen, String xaphuong, String tenduong);
+    DiaChi addDiaChi(DiaChi diaChi);
+    KhachHang addKhachHang(KhachHang khachHang);
+    NguoiDung addNguoiDung(NguoiDung nguoiDung);
 
     //Update khách hàng
     DiaChi updateDiaChi(DiaChi diaChi);
