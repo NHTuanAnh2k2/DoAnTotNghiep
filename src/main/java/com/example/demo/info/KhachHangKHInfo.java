@@ -13,5 +13,6 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class KhachHangKHInfo {
+    String makhachhang;
     Timestamp lancapnhatcuoi;
 }

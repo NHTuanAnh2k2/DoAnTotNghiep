@@ -68,7 +68,8 @@ public class KhachHangController {
     }
 
     @GetMapping("/add")
-    public String form(@ModelAttribute("nguoidung") NguoiDung nguoidung,
+    public String form(@ModelAttribute("nguoidung") NguoiDungKHInfo nguoidung,
+                       @ModelAttribute("diachi") DiaChiKHInfo diachi,
                        Model model
     ) {
         List<Province> cities = khachHangService.getCities();
@@ -77,16 +78,12 @@ public class KhachHangController {
     }
 
     @PostMapping("/add")
-    public String add(@Valid @ModelAttribute("khachhang") KhachHang khachHang,
+    public String add(@Valid @ModelAttribute("khachhang") KhachHang khachhang,
                       BindingResult khBindingResult,
-                      @Valid @ModelAttribute("nguoidung") NguoiDung nguoiDung,
+                      @Valid @ModelAttribute("nguoidung") NguoiDungKHInfo nguoidung,
                       BindingResult ndBindingResult,
-                      @Valid @ModelAttribute("diachi") DiaChi diaChi,
+                      @Valid @ModelAttribute("diachi") DiaChiKHInfo diachi,
                       BindingResult dcBindingResult,
-                      @RequestParam("tinhthanhpho") String tinhthanhpho,
-                      @RequestParam("quanhuyen") String quanhuyen,
-                      @RequestParam("xaphuong") String xaphuong,
-                      @RequestParam("tenduong") String tenduong,
                       Model model
     ) throws IOException {
         List<Province> cities = khachHangService.getCities();
@@ -100,7 +97,54 @@ public class KhachHangController {
             model.addAttribute("cities", cities);
             return "admin/addkhachhang";
         }
-        khachHangService.add(khachHang, nguoiDung, diaChi, tinhthanhpho, quanhuyen, xaphuong, tenduong);
+
+        LocalDateTime currentDate = LocalDateTime.now();
+        int usernameLength = 8;
+        int passwordLength = 10;
+        String username = khachHangService.generateRandomPassword(usernameLength);
+        String password = khachHangService.generateRandomPassword(passwordLength);
+
+        NguoiDung nd = new NguoiDung();
+        nd.setEmail(nguoidung.getEmail());
+        nd.setHovaten(nguoidung.getHovaten());
+        nd.setNgaysinh(nguoidung.getNgaysinh());
+        nd.setCccd(nguoidung.getCccd());
+        nd.setSodienthoai(nguoidung.getSodienthoai());
+        nd.setGioitinh(nguoidung.getGioitinh());
+        nd.setLancapnhatcuoi(Timestamp.valueOf(currentDate));
+        nd.setTaikhoan(username);
+        nd.setMatkhau(password);
+        nd.setNgaytao(Timestamp.valueOf(currentDate));
+        nd.setLancapnhatcuoi(Timestamp.valueOf(currentDate));
+        nd.setTrangthai(true);
+        khachHangService.addNguoiDung(nd);
+
+        DiaChi dc = new DiaChi();
+        dc.setTinhthanhpho(diachi.getTinhthanhpho());
+        dc.setQuanhuyen(diachi.getQuanhuyen());
+        dc.setXaphuong(diachi.getXaphuong());
+        dc.setTenduong(diachi.getTenduong());
+        dc.setNguoidung(nd);
+        dc.setHotennguoinhan(nd.getHovaten());
+        dc.setSdtnguoinhan(nd.getSodienthoai());
+        dc.setTrangthai(nd.getTrangthai());
+        dc.setNgaytao(nd.getNgaytao());
+        dc.setLancapnhatcuoi(nd.getLancapnhatcuoi());
+        khachHangService.addDiaChi(dc);
+
+        KhachHang kh = new KhachHang();
+        List<KhachHang> lstKhachHang = khachHangService.findAllKhachHang();
+        int total = lstKhachHang.size();
+        String maKH = "KH" + (total + 1);
+        kh.setMakhachhang(maKH);
+        kh.setNguoidung(nd);
+        kh.setTrangthai(nd.getTrangthai());
+        kh.setNgaytao(nd.getNgaytao());
+        kh.setLancapnhatcuoi(nd.getLancapnhatcuoi());
+        khachHangService.addKhachHang(kh);
+
+        khachHangService.sendEmail(nd.getEmail(), nd.getTaikhoan(), nd.getMatkhau(), nd.getHovaten());
+
         model.addAttribute("cities", cities);
         return "redirect:/khachhang/add";
     }
@@ -161,6 +205,7 @@ public class KhachHangController {
         khachHangService.updateNguoiDung(nd);
 
         KhachHang kh = khachHangService.findKhachHangByIdNguoiDung(nd.getId());
+        System.out.println(kh);
         kh.setLancapnhatcuoi(dc.getLancapnhatcuoi());
         khachHangService.updateKhachHang(kh);
 
@@ -168,42 +213,21 @@ public class KhachHangController {
         return "redirect:/khachhang";
     }
 
-//    @PostMapping("/upload")
-//    public ModelAndView uploadQRCode(@RequestParam("file") MultipartFile file) {
-//        ModelAndView modelAndView = new ModelAndView();
-//        try {
-//            File qrCodeImage = File.createTempFile("qrcode", ".png");
-//            file.transferTo(qrCodeImage);
-//            String qrCodeText = khachHangService.readQRCode(qrCodeImage);
-//            modelAndView.addObject("qrCodeText", qrCodeText);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        modelAndView.setViewName("result");
-//        return modelAndView;
-//    }
+    @GetMapping("/detail/{id}")
+    public String detail(@PathVariable("id") Integer id,
+                         @ModelAttribute("nguoidung") NguoiDungKHInfo nguoidung,
+                         @ModelAttribute("khachhang") KhachHangKHInfo khachhang,
+                         @ModelAttribute("diachi") DiaChiKHInfo diachi,
+                         Model model
+                         ) {
+        DiaChi diachiSelect = khachHangService.findDiaChiById(id);
+        NguoiDung nguoidungSelect = khachHangService.findNguoiDungById(diachiSelect.getNguoidung().getId());
+        KhachHang khachhangSelect = khachHangService.findKhachHangByIdNguoiDung(nguoidungSelect.getId());
+        model.addAttribute("nguoidung", nguoidungSelect);
+        model.addAttribute("diachi", diachiSelect);
+        model.addAttribute("khachhang", khachhangSelect);
 
-//    @PostMapping("/upload")
-//    public String uploadQRCode(@RequestParam("imageData") String imageData) {
-//        try {
-//            // Decode base64 image data
-//            byte[] imageBytes = Base64.getDecoder().decode(imageData);
-//            BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageBytes));
-//
-//            // Decode QR code
-//            BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(new BufferedImageLuminanceSource(bufferedImage)));
-//            MultiFormatReader reader = new MultiFormatReader();
-//            Result result = reader.decode(binaryBitmap);
-//
-//            // Return QR code text
-//            return result.getText();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return "Error: " + e.getMessage();
-//        }
-//    }
-
-//    @PostMapping("/scan")
-//    public String scan()
+        return "admin/detailkhachhang";
+    }
 
 }
