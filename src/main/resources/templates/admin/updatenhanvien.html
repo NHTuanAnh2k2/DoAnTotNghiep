@@ -100,7 +100,7 @@
                             <div class="card-body">
                                 <section class="content">
                                     <div class="container">
-                                        <form th:method="post" th:object="${nd}" id="updateForm" th:action="@{/updateNhanVien/{id}(id=${nd.id})}">
+                                        <form th:method="post" th:object="${nd}" th:action="@{/updateNhanVien/{id}(id=${nd.id})}">
                                             <div class="d-flex">
                                                 <div>
                                                     <p>Tên nhân viên:
@@ -266,19 +266,49 @@
 </script>
 <script>
     function confirmUpdate() {
+        // Sử dụng SweetAlert2 thay vì hộp thoại confirm
         Swal.fire({
-            title: "Bạn có muốn cập nhật nhân viên không?",
-            // showDenyButton: true,
+            title: 'Bạn có muốn update không?',
+            icon: 'question',
             showCancelButton: true,
-            confirmButtonText: "Cập nhật",
-            cancelButtonText: "Hủy"
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không'
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire("Update thành công!", "", "success");
-                document.getElementById('updateForm').submit();
-                window.location.href = 'admin/qlnhanvien';
+                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "success",
+                    title: "Update thành công!"
+                });
+
+                setTimeout(function () {
+                    document.getElementById('addForm').submit();
+                    window.location.href = 'admin/qlnhanvien';
+                }, 3000);
+
+            } else  if(result.cancelButtonText){
+                // Nếu người dùng chọn Không, đóng hộp thoại và không thực hiện hành động nào
+                // Swal.fire('Đã hủy', 'Dữ liệu không được thêm vào.', 'info');
+                document.getElementById('addForm').addEventListener('submit', function(event) {
+                    event.preventDefault(); // Ngăn chặn hành động mặc định của sự kiện submit
+                    // Các xử lý khác có thể được thực hiện ở đây
+                });
+                return false;
             }
-        })
+        });
+        return false;
     }
     function goBack() {
         window.location.href = 'admin/qlnhanvien';

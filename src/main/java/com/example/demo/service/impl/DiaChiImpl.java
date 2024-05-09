@@ -18,7 +18,7 @@ public class DiaChiImpl implements DiaChiService {
     DiaChiRepository diaChiRepository;
     @Override
     public List<DiaChi> getAll() {
-        return diaChiRepository.getAllByOrderByIdDesc();
+        return diaChiRepository.getAll();
     }
 
     @Override
