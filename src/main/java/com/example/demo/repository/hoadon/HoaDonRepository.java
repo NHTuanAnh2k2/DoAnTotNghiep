@@ -1,11 +1,17 @@
 package com.example.demo.repository.hoadon;
 
 import com.example.demo.entity.HoaDon;
+import com.itextpdf.html2pdf.ConverterProperties;
+import com.itextpdf.html2pdf.HtmlConverter;
+import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
+import com.itextpdf.io.source.ByteArrayOutputStream;
+import com.itextpdf.kernel.pdf.PdfWriter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.io.FileOutputStream;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;

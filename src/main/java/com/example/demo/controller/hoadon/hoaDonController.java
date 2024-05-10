@@ -3,6 +3,7 @@ package com.example.demo.controller.hoadon;
 import com.example.demo.entity.*;
 import com.example.demo.info.HoaDonCustom;
 import com.example.demo.info.LichSuHoaDonCustom;
+import com.example.demo.info.MauHoaDon;
 import com.example.demo.info.ThayDoiTTHoaDon_KHInfo;
 import com.example.demo.repository.*;
 import com.example.demo.repository.hoadon.HoaDonRepository;
@@ -21,6 +22,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -32,6 +35,8 @@ import java.util.*;
 @Controller
 @RequestMapping("hoa-don")
 public class hoaDonController {
+    @Autowired
+    SpringTemplateEngine dao1;
     @Autowired
     ChatLieuRepository daoChatLieu;
     @Autowired
@@ -534,6 +539,13 @@ public class hoaDonController {
         dao.capNhatHD(hdTT);
         lshd.setTrangthai(trangthaiset);
         daoLS.add(lshd);
+        MauHoaDon u = new MauHoaDon("FSPORT", "HDHGD03843784", "20/12/2022 21:32:22", "Chương trình phổ thông cao đẳng FPT Polytechnic, Phương Canh Nam Từ Liêm, Hà Nội",
+                "Chương trình phổ thông cao đẳng FPT Polytechnic, Phương Canh Nam Từ Liêm, Hà Nội",
+                "0379036606", "0379036604");
+        String finalhtml = null;
+        Context data = dao.setData(u);
+        finalhtml = dao1.process("index", data);
+        dao.htmlToPdf(finalhtml);
         return "redirect:/hoa-don/showDetail";
     }
 
@@ -685,6 +697,7 @@ public class hoaDonController {
         daoSPCT.addSPCT(spUpdateQuantity);
         return "redirect:/hoa-don/showDetail";
     }
+
 
     @GetMapping("update-sp-hdct/{id}/{sl}")
     public String updateSPHDCT(@PathVariable("id") Integer id, @PathVariable("sl") Integer sl) {
