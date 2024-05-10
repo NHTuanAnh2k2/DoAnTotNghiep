@@ -1157,10 +1157,10 @@
                                                     <td th:text="${a.sanphamchitiet.mausac.ten}"></td>
 
                                                     <td><input class="form-control form-control-sm" type="text"
-                                                            th:classappend="${trangThaiHienTai!=0?'readonly':''}"
                                                             th:id="${a.id}" oninput="changeQuantity(event)"
                                                             aria-label=".form-control-sm example" style="width: 100px;"
-                                                            th:value="${a.soluong}"></td>
+                                                            th:value="${a.soluong}"
+                                                            th:readonly="${trangThaiHienTai != 0}"></td>
 
                                                     <td th:text="${#numbers.formatDecimal(a.giasanpham*a.soluong, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
                                                         style="color: red;">
@@ -1170,15 +1170,26 @@
                                                             th:text="${a.trangthai==true?'thành công':'thất bại'}"></p>
                                                     </td>
                                                     <td>
-                                                        <a th:href="@{delete-sp-hdct/{id}(id=${a.id})}">
+
+                                                        <a th:if="${trangThaiHienTai==0}"
+                                                            th:href="@{delete-sp-hdct/{id}(id=${a.id})}">
                                                             <button class="btn btn-outline-danger"
-                                                                th:classappend="${trangThaiHienTai!=0?'disabled':''}"
                                                                 onclick="return confirm('Bạn có muốn xóa sản phẩm này không?')"
                                                                 type="button"><i class="bi bi-trash3"></i></button></a>
-                                                        <a th:id="${a.id+'fsport'}"
+
+
+                                                        <button class="btn btn-outline-danger"
+                                                            th:if="${trangThaiHienTai!=0}" disabled type="button"><i
+                                                                class="bi bi-trash3"></i></button>
+
+
+                                                        <button class="btn btn-outline-warning"
+                                                            th:if="${trangThaiHienTai!=0}" disabled type="button"><i
+                                                                class="bi bi-arrow-clockwise bi-warning"></i></button>
+
+                                                        <a th:if="${trangThaiHienTai==0}" th:id="${a.id+'fsport'}"
                                                             th:href="@{update-sp-hdct/{id}/{sl}(id=${a.id},sl=${a.soluong})}">
                                                             <button class="btn btn-outline-warning"
-                                                                th:classappend="${trangThaiHienTai!=0?'disabled':''}"
                                                                 onclick="return confirm('Bạn có muốn cập nhật lại sản phẩm này không?')"
                                                                 type="button"><i
                                                                     class="bi bi-arrow-clockwise bi-warning"></i></button></a>
