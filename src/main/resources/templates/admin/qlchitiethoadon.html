@@ -303,8 +303,8 @@
                                                                         th:object="${ghichu}">
 
                                                                         <input placeholder="Nhập nội dung mô tả..."
-                                                                        oninput="validateInput(this)" id="huy"
-                                                                        style="padding-left: 25px; margin-bottom: 20px; height: 100px;"
+                                                                            oninput="validateInput(this)" id="huy"
+                                                                            style="padding-left: 25px; margin-bottom: 20px; height: 100px;"
                                                                             class="form-control" th:field="*{key}">
                                                                         <label
                                                                             style="position: absolute; top: 0; left: 25px; background-color: white; padding: 0 5px; font-size: 18px; color: #999;">Mô
@@ -314,8 +314,8 @@
                                                                         </p>
 
                                                                         <div class="d-flex flex-row-reverse">
-                                                                            <button type="submit" id="huybtn"
-                                                                                disabled class="btn btn-primary">Xác
+                                                                            <button type="submit" id="huybtn" disabled
+                                                                                class="btn btn-primary">Xác
                                                                                 nhận</button>
                                                                             <button type="button"
                                                                                 class="btn btn-secondary ms-1"
@@ -343,14 +343,27 @@
                                                                 <div class="modal-body">
                                                                     <form th:action="@{quay-lai}" method="get"
                                                                         th:object="${ghichu}">
-                                                                        <p>Nhập ghi chú:
-                                                                            <input placeholder="Ghi chú"
-                                                                                class="form-control" th:field="*{key}">
+
+                                                                        <input placeholder="Nhập nội dung mô tả..."
+                                                                            oninput="validateInput(this)" id="quaylai"
+                                                                            style="padding-left: 25px; margin-bottom: 20px; height: 100px;"
+                                                                            class="form-control" th:field="*{key}">
+                                                                        <label
+                                                                            style="position: absolute; top: 0; left: 25px; background-color: white; padding: 0 5px; font-size: 18px; color: #999;">Mô
+                                                                            tả</label>
+                                                                        <p>
+                                                                            <i id="quaylaier" style="color: red;"></i>
                                                                         </p>
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-bs-dismiss="modal">Hủy</button>
-                                                                        <button type="submit"
-                                                                            class="btn btn-primary">Xác nhận</button>
+
+                                                                        <div class="d-flex flex-row-reverse">
+                                                                            <button type="submit" id="quaylaibtn"
+                                                                                disabled class="btn btn-primary">Xác
+                                                                                nhận</button>
+                                                                            <button type="button"
+                                                                                class="btn btn-secondary ms-1"
+                                                                                data-bs-dismiss="modal">Hủy</button>
+
+                                                                        </div>
                                                                     </form>
                                                                 </div>
 
@@ -358,7 +371,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="modal fade" id="chogiao" aria-hidden="true"
+                                                    <!-- <div class="modal fade" id="chogiao" aria-hidden="true"
                                                         aria-labelledby="exampleModalToggleLabel" tabindex="-1">
                                                         <div class="modal-dialog modal-dialog-centered">
                                                             <div class="modal-content">
@@ -387,8 +400,8 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="modal fade" id="exampleModalToggle2" aria-hidden="true"
+                                                    </div> -->
+                                                    <div class="modal fade" id="chogiao" aria-hidden="true"
                                                         aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
                                                         <div class="modal-dialog modal-dialog-centered">
                                                             <div class="modal-content">
@@ -398,14 +411,28 @@
                                                                 <div class="modal-body">
                                                                     <form th:action="@{xac-nhan-don}" method="get"
                                                                         th:object="${ghichu}">
-                                                                        <p>Nhập ghi chú:
-                                                                            <input placeholder="Ghi chú"
-                                                                                class="form-control" th:field="*{key}">
+
+                                                                        <input placeholder="Nhập nội dung mô tả..."
+                                                                            oninput="validateInput(this)" id="chogiao"
+                                                                            style="padding-left: 25px; margin-bottom: 20px; height: 100px;"
+                                                                            class="form-control" th:field="*{key}">
+                                                                        <label
+                                                                            style="position: absolute; top: 0; left: 25px; background-color: white; padding: 0 5px; font-size: 18px; color: #999;">Mô
+                                                                            tả</label>
+                                                                        <p>
+                                                                            <i id="chogiaoer" style="color: red;"></i>
                                                                         </p>
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-bs-dismiss="modal">Hủy</button>
-                                                                        <button type="submit"
-                                                                            class="btn btn-primary">Xác nhận</button>
+
+
+                                                                        <div class="d-flex flex-row-reverse">
+                                                                            <button type="submit" id="chogiaobtn"
+                                                                                disabled class="btn btn-primary">Xác
+                                                                                nhận</button>
+                                                                            <button type="button"
+                                                                                class="btn btn-secondary ms-1"
+                                                                                data-bs-dismiss="modal">Hủy</button>
+
+                                                                        </div>
                                                                     </form>
                                                                 </div>
 
@@ -427,14 +454,29 @@
                                                                 <div class="modal-body">
                                                                     <form th:action="@{xac-nhan-don}" method="get"
                                                                         th:object="${ghichu}">
-                                                                        <p>Nhập ghi chú:
-                                                                            <input placeholder="Ghi chú"
-                                                                                class="form-control" th:field="*{key}">
+
+                                                                        <input placeholder="Nhập nội dung mô tả..."
+                                                                            oninput="validateInput(this)" id="vanchuyen"
+                                                                            style="padding-left: 25px; margin-bottom: 20px; height: 100px;"
+                                                                            class="form-control" th:field="*{key}">
+
+                                                                        <label
+                                                                            style="position: absolute; top: 0; left: 25px; background-color: white; padding: 0 5px; font-size: 18px; color: #999;">Mô
+                                                                            tả</label>
+                                                                        <p>
+                                                                            <i id="vanchuyener" style="color: red;"></i>
                                                                         </p>
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-bs-dismiss="modal">Hủy</button>
-                                                                        <button type="submit"
-                                                                            class="btn btn-primary">Xác nhận</button>
+
+
+                                                                        <div class="d-flex flex-row-reverse">
+                                                                            <button type="submit" id="vanchuyenbtn"
+                                                                                disabled class="btn btn-primary">Xác
+                                                                                nhận</button>
+                                                                            <button type="button"
+                                                                                class="btn btn-secondary ms-1"
+                                                                                data-bs-dismiss="modal">Hủy</button>
+
+                                                                        </div>
                                                                     </form>
                                                                 </div>
 
@@ -457,14 +499,27 @@
                                                                 <div class="modal-body">
                                                                     <form th:action="@{xac-nhan-don}" method="get"
                                                                         th:object="${ghichu}">
-                                                                        <p>Nhập ghi chú:
-                                                                            <input placeholder="Ghi chú"
-                                                                                class="form-control" th:field="*{key}">
+
+                                                                        <input placeholder="Nhập nội dung mô tả..."
+                                                                            oninput="validateInput(this)" id="thanhtoan"
+                                                                            style="padding-left: 25px; margin-bottom: 20px; height: 100px;"
+                                                                            class="form-control" th:field="*{key}">
+                                                                        <label
+                                                                            style="position: absolute; top: 0; left: 25px; background-color: white; padding: 0 5px; font-size: 18px; color: #999;">Mô
+                                                                            tả</label>
+                                                                        <p>
+                                                                            <i id="thanhtoaner" style="color: red;"></i>
                                                                         </p>
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-bs-dismiss="modal">Hủy</button>
-                                                                        <button type="submit"
-                                                                            class="btn btn-primary">Xác nhận</button>
+
+                                                                        <div class="d-flex flex-row-reverse">
+                                                                            <button type="submit" id="thanhtoanbtn"
+                                                                                disabled class="btn btn-primary">Xác
+                                                                                nhận</button>
+                                                                            <button type="button"
+                                                                                class="btn btn-secondary ms-1"
+                                                                                data-bs-dismiss="modal">Hủy</button>
+
+                                                                        </div>
                                                                     </form>
                                                                 </div>
 
@@ -487,14 +542,27 @@
                                                                 <div class="modal-body">
                                                                     <form th:action="@{xac-nhan-don}" method="get"
                                                                         th:object="${ghichu}">
-                                                                        <p>Nhập ghi chú:
-                                                                            <input placeholder="Ghi chú"
-                                                                                class="form-control" th:field="*{key}">
+
+                                                                        <input placeholder="Nhập nội dung mô tả..."
+                                                                            oninput="validateInput(this)" id="hoanthanh"
+                                                                            style="padding-left: 25px; margin-bottom: 20px; height: 100px;"
+                                                                            class="form-control" th:field="*{key}">
+                                                                        <label
+                                                                            style="position: absolute; top: 0; left: 25px; background-color: white; padding: 0 5px; font-size: 18px; color: #999;">Mô
+                                                                            tả</label>
+                                                                        <p>
+                                                                            <i id="hoanthanher" style="color: red;"></i>
                                                                         </p>
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-bs-dismiss="modal">Hủy</button>
-                                                                        <button type="submit"
-                                                                            class="btn btn-primary">Xác nhận</button>
+
+                                                                        <div class="d-flex flex-row-reverse">
+                                                                            <button type="submit" id="hoanthanhbtn"
+                                                                                disabled class="btn btn-primary">Xác
+                                                                                nhận</button>
+                                                                            <button type="button"
+                                                                                class="btn btn-secondary ms-1"
+                                                                                data-bs-dismiss="modal">Hủy</button>
+
+                                                                        </div>
                                                                     </form>
                                                                 </div>
 
@@ -2301,8 +2369,8 @@
 
     <script>
         function validateInput(input) {
-            var id=input.id+'btn';
-            var ider=input.id+'er'
+            var id = input.id + 'btn';
+            var ider = input.id + 'er'
             var button = document.getElementById(id);
             var inputValue = input.value.trim();
             var errorMessage = "";
