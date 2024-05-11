@@ -686,7 +686,7 @@
                                                                     method="post" th:object="${thayDoiTT}"
                                                                     onsubmit="return run()">
                                                                     <div class="col-md-12">
-                                                                        <label class="form-label">Tên khách
+                                                                        <label class="form-label">Tên khách 
                                                                             hàng:</label>
                                                                         <input type="text" class="form-control" required
                                                                             th:field="*{ten}">
@@ -964,7 +964,7 @@
                                             <div class="d-flex justify-content-between">
                                                 <h6 style="font-family: 'Times New Roman'; font-weight: bold">Tổng tiền
                                                     đơn hàng:</h6>
-                                                <p th:text="${#numbers.formatDecimal(hoaDonDT.tongtien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                <p th:text="${#numbers.formatDecimal(tongTienSP, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
                                                     style="font-family: 'Times New Roman'; font-size: 16px; color: red">
                                                 </p>
                                             </div>

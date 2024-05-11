@@ -5,6 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -12,9 +17,12 @@ import lombok.Setter;
 public class MauHoaDon {
     String name;
     String ma;
-    String date;
+    Timestamp date;
     String tu;
     String den;
     String sdtshop;
     String sdtnhan;
+    String tennguoinhan;
+    List<sanPhamIn> lst;
+    BigDecimal tongtien;
 }

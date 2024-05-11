@@ -30,6 +30,6 @@ public interface HoaDonService {
     Page<HoaDon> LocTheoLoaiDon( Boolean loaihd, Pageable p);
     List<HoaDon> timTheoID(Integer id);
     void capNhatHD(HoaDon hd);
-    public  String htmlToPdf(String htmlfile);
+    public  String htmlToPdf(String htmlfile,String pdfname);
     public Context setData(MauHoaDon userList);
 }

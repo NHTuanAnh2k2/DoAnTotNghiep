@@ -36,7 +36,7 @@
         </div>
         <div class="col">
             <h3>Đến:</h3>
-            <h5>Dương Thanh Tùng</h5>
+            <h5 th:text="${user.tennguoinhan}">Dương Thanh Tùng</h5>
             <p th:text="${user.den}">Chương trình phổ thông cao đẳng FPT Polytechnic, Phương Canh Nam Từ Liêm, Hà Nội</p>
             <p th:text="${user.sdtnhan}">0379036606</p>
         </div>
@@ -46,16 +46,10 @@
         <div class="col">
             <h3>Nội dung đơn hàng(Tổng số lượng sản phẩm: 2)</h3>
             <table class="table">
-                <tr>
-                    <td>1</td>
-                    <td>Giày lười</td>
-                    <td>SL: 1</td>
-                </tr>
-    
-                <tr>
-                    <td>2</td>
-                    <td>Giày da</td>
-                    <td>SL: 3</td>
+                <tr th:each="a:${user.lst}">
+                    <td th:text="${aStat.index+1}"></td>
+                    <td th:text="${a.tensanpham}"></td>
+                    <td th:text="'SL: '+${a.soluong}"></td>
                 </tr>
             </table>
         </div>
@@ -67,11 +61,10 @@
     <div class="row">
         <div class="col">
             <h3>Tiền thu người nhận:</h3>
-            <h2>
+            <h2 th:text="${#numbers.formatDecimal(user.tongtien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}">
                 50.000 đ
             </h2>
             <p>Chỉ dẫn giao hàng: Được đồng kiểm</p>
-    
         </div>
         <div class="col text-end me-5">
             <div  style="border: 1px dotted black; padding: 5px; margin-left: 120px;">

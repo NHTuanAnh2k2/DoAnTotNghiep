@@ -1,10 +1,7 @@
 package com.example.demo.controller.hoadon;
 
 import com.example.demo.entity.*;
-import com.example.demo.info.HoaDonCustom;
-import com.example.demo.info.LichSuHoaDonCustom;
-import com.example.demo.info.MauHoaDon;
-import com.example.demo.info.ThayDoiTTHoaDon_KHInfo;
+import com.example.demo.info.*;
 import com.example.demo.repository.*;
 import com.example.demo.repository.hoadon.HoaDonRepository;
 import com.example.demo.restcontroller.khachhang.Province;
@@ -505,6 +502,7 @@ public class hoaDonController {
                 hoaDonXem.getTennguoinhan(), hoaDonXem.getSdt(),
                 tinh, huyen, xa, diachiCT, hoaDonXem.getPhivanchuyen(), hoaDonXem.getGhichu()
         );
+        model.addAttribute("tongTienSP", tongTienSP);
         model.addAttribute("thayDoiTT", formChangesTTKH);
         model.addAttribute("tongTT", tongTT);
         model.addAttribute("hoaDonDT", hoaDonXem);
@@ -540,13 +538,24 @@ public class hoaDonController {
         dao.capNhatHD(hdTT);
         lshd.setTrangthai(trangthaiset);
         daoLS.add(lshd);
-        MauHoaDon u = new MauHoaDon("FSPORT", "HDHGD03843784", "20/12/2022 21:32:22", "Chương trình phổ thông cao đẳng FPT Polytechnic, Phương Canh Nam Từ Liêm, Hà Nội",
-                "Chương trình phổ thông cao đẳng FPT Polytechnic, Phương Canh Nam Từ Liêm, Hà Nội",
-                "0379036606", "0379036604");
+        List<HoaDonChiTiet> lstsp = daoHDCT.getListSPHD(hdTT);
+        List<sanPhamIn> lstin = new ArrayList<>();
+        BigDecimal tongTienSP = new BigDecimal("0");
+        List<PhieuGiamGiaChiTiet> lstPGGCT = daoPGGCT.timListPhieuTheoHD(hdTT);
+        PhieuGiamGiaChiTiet phieuGiamCT = lstPGGCT.get(0);
+        for (HoaDonChiTiet a : lstsp
+        ) {
+            tongTienSP = tongTienSP.add(a.getGiasanpham().multiply(new BigDecimal(a.getSoluong())));
+            lstin.add(new sanPhamIn(a.getSanphamchitiet().getSanpham().getTensanpham(), a.getSoluong()));
+
+        }
+        BigDecimal tongTT = (tongTienSP.add(hdTT.getPhivanchuyen())).subtract(phieuGiamCT.getTiengiam());
+        MauHoaDon u = new MauHoaDon("FSPORT", hdTT.getMahoadon(), hdTT.getNgaytao(), "Lô H023, Nhà số 39, Ngõ 148, Xuân Phương, Phương Canh,Nam Từ Liêm, Hà Nội",
+                hdTT.getDiachi(), "0379036607", hdTT.getSdt(), hdTT.getTennguoinhan(), lstin, tongTT);
         String finalhtml = null;
         Context data = dao.setData(u);
         finalhtml = dao1.process("index", data);
-        dao.htmlToPdf(finalhtml);
+        dao.htmlToPdf(finalhtml, hdTT.getMahoadon());
         return "redirect:/hoa-don/showDetail";
     }
 
