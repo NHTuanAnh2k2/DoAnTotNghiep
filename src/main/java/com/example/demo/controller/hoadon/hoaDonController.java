@@ -432,6 +432,8 @@ public class hoaDonController {
         Pageable p = PageRequest.of(page, 5);
         Page<HoaDon> lst = dao.timKiemTT(6, p);
         model.addAttribute("lst", lst);
+
+
         model.addAttribute("pageNo", page);
         model.addAttribute("checkTT", 6);
         model.addAttribute("tt0", dao.tinhTong(0));
