@@ -1,13 +1,12 @@
 package com.example.demo.controller.hoadon;
 
 import com.example.demo.entity.*;
-import com.example.demo.info.HoaDonCustom;
-import com.example.demo.info.LichSuHoaDonCustom;
-import com.example.demo.info.ThayDoiTTHoaDon_KHInfo;
+import com.example.demo.info.*;
 import com.example.demo.repository.*;
 import com.example.demo.repository.hoadon.HoaDonRepository;
 import com.example.demo.restcontroller.khachhang.Province;
 import com.example.demo.service.*;
+import com.example.demo.service.impl.NguoiDungImpl1;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +20,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -32,6 +33,8 @@ import java.util.*;
 @Controller
 @RequestMapping("hoa-don")
 public class hoaDonController {
+    @Autowired
+    SpringTemplateEngine dao1;
     @Autowired
     ChatLieuRepository daoChatLieu;
     @Autowired
@@ -427,6 +430,8 @@ public class hoaDonController {
         Pageable p = PageRequest.of(page, 5);
         Page<HoaDon> lst = dao.timKiemTT(6, p);
         model.addAttribute("lst", lst);
+
+
         model.addAttribute("pageNo", page);
         model.addAttribute("checkTT", 6);
         model.addAttribute("tt0", dao.tinhTong(0));
@@ -498,6 +503,7 @@ public class hoaDonController {
                 hoaDonXem.getTennguoinhan(), hoaDonXem.getSdt(),
                 tinh, huyen, xa, diachiCT, hoaDonXem.getPhivanchuyen(), hoaDonXem.getGhichu()
         );
+        model.addAttribute("tongTienSP", tongTienSP);
         model.addAttribute("thayDoiTT", formChangesTTKH);
         model.addAttribute("tongTT", tongTT);
         model.addAttribute("hoaDonDT", hoaDonXem);
@@ -508,7 +514,6 @@ public class hoaDonController {
         model.addAttribute("phieuGiamCT", phieuGiamCT);
         model.addAttribute("trangThaiHienTai", lstLichSuHoaDon.get(lstLichSuHoaDon.size() - 1).getTrangthai());
         model.addAttribute("pageSPHD", daoHDCT.getDSSPHD(hoaDonXem, p));
-
         return "admin/qlchitiethoadon";
     }
 
@@ -534,6 +539,24 @@ public class hoaDonController {
         dao.capNhatHD(hdTT);
         lshd.setTrangthai(trangthaiset);
         daoLS.add(lshd);
+        List<HoaDonChiTiet> lstsp = daoHDCT.getListSPHD(hdTT);
+        List<sanPhamIn> lstin = new ArrayList<>();
+        BigDecimal tongTienSP = new BigDecimal("0");
+        List<PhieuGiamGiaChiTiet> lstPGGCT = daoPGGCT.timListPhieuTheoHD(hdTT);
+        PhieuGiamGiaChiTiet phieuGiamCT = lstPGGCT.get(0);
+        for (HoaDonChiTiet a : lstsp
+        ) {
+            tongTienSP = tongTienSP.add(a.getGiasanpham().multiply(new BigDecimal(a.getSoluong())));
+            lstin.add(new sanPhamIn(a.getSanphamchitiet().getSanpham().getTensanpham(), a.getSoluong()));
+
+        }
+        BigDecimal tongTT = (tongTienSP.add(hdTT.getPhivanchuyen())).subtract(phieuGiamCT.getTiengiam());
+        MauHoaDon u = new MauHoaDon("FSPORT", hdTT.getMahoadon(), hdTT.getNgaytao(), "Lô H023, Nhà số 39, Ngõ 148, Xuân Phương, Phương Canh,Nam Từ Liêm, Hà Nội",
+                hdTT.getDiachi(), "0379036607", hdTT.getSdt(), hdTT.getTennguoinhan(), lstin, tongTT);
+        String finalhtml = null;
+        Context data = dao.setData(u);
+        finalhtml = dao1.process("index", data);
+        dao.htmlToPdf(finalhtml, hdTT.getMahoadon());
         return "redirect:/hoa-don/showDetail";
     }
 
@@ -685,6 +708,7 @@ public class hoaDonController {
         daoSPCT.addSPCT(spUpdateQuantity);
         return "redirect:/hoa-don/showDetail";
     }
+
 
     @GetMapping("update-sp-hdct/{id}/{sl}")
     public String updateSPHDCT(@PathVariable("id") Integer id, @PathVariable("sl") Integer sl) {

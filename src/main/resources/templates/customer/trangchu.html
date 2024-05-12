@@ -42,7 +42,7 @@
             <!--nội dung-->
             <div class="tab-pane fade text-center active show" id="gird">
                 <div class="single-products row" >
-                    <div class="col-md-3" th:each="sp, stt : ${page.content}">
+                    <div class="col-md-3" th:each="sp, stt : ${page}">
                         <div class="product-item margin40">
                             <div class="pro-img">
                                 <a th:href="@{/detailsanphamCustomer/{id}(id=${sp[0]})}">

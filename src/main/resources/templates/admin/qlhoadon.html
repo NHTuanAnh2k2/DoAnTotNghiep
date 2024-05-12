@@ -362,24 +362,27 @@
                                                     </tbody>
                                                 </table>
                                                 <br>
-                                                <nav style="margin-left: 88%;" aria-label="Page navigation example"
-                                                    th:if="${lst.totalPages>1}">
-                                                    <ul class="pagination">
-                                                        <li class="page-item" th:if="${lst.number>0}"><a
-                                                                class="page-link"
-                                                                th:href="@{'?page='+${lst.number-1}}">Previous</a>
-                                                        </li>
-                                                        <li class="page-item"
-                                                            th:each="i:${#numbers.sequence(1,lst.totalPages)}"
-                                                            th:classappend="${pageNo==i-1?'active':''}"><a
-                                                                class="page-link" th:href="@{'?page='+${i-1}}"
-                                                                th:text="${i}"></a></li>
-                                                        <li class="page-item" th:if="${lst.number<lst.totalPages-1}"><a
-                                                                class="page-link"
-                                                                th:href="@{'?page='+${lst.number+1}}">Next</a>
-                                                        </li>
-                                                    </ul>
-                                                </nav>
+                                                <div class="d-flex flex-row-reverse">
+                                                    <nav aria-label="Page navigation example"
+                                                        th:if="${lst.totalPages>1}">
+                                                        <ul class="pagination">
+                                                            <li class="page-item" th:if="${lst.number>0}"><a
+                                                                    class="page-link"
+                                                                    th:href="@{'?page='+${lst.number-1}}">Previous</a>
+                                                            </li>
+                                                            <li class="page-item"
+                                                                th:each="i:${#numbers.sequence(1,lst.totalPages)}"
+                                                                th:classappend="${pageNo==i-1?'active':''}"><a
+                                                                    class="page-link" th:href="@{'?page='+${i-1}}"
+                                                                    th:text="${i}"></a></li>
+                                                            <li class="page-item"
+                                                                th:if="${lst.number<lst.totalPages-1}"><a
+                                                                    class="page-link"
+                                                                    th:href="@{'?page='+${lst.number+1}}">Next</a>
+                                                            </li>
+                                                        </ul>
+                                                    </nav>
+                                                </div>
                                             </div>
                                         </div>
                                         <!--Tab hiện thị hóa đơn chờ xác nhận-->

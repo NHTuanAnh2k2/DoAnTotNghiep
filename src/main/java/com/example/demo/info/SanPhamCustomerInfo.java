@@ -4,18 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.List;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SanPhamChiTietInfo {
+public class SanPhamCustomerInfo {
     String key;
-    Integer idThuongHieu;
+    List<Integer> idThuongHieu;
     Integer idDeGiay;
-    Integer idKichCo;
+    List<Integer> idKichCo2;
     Integer idMauSac;
     Integer idChatLieu;
     Boolean gioitinh;

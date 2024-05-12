@@ -25,33 +25,60 @@ public interface SanPhamRepositoty extends JpaRepository<SanPham, Integer> {
 
     Boolean existsByTensanpham(String tensanpham);
 
-    @Query("SELECT sp.id, sp.tensanpham, sp.ngaytao,SUM(spct.soluong) as tongSoLuong ,sp.trangthai " +
+    @Query("SELECT sp.id, sp.tensanpham, sp.ngaytao,SUM(spct.soluong) as tongSoLuong ,sp.trangthai,sp.masanpham " +
             "FROM SanPham sp " +
             "JOIN sp.spct spct " +
-            "WHERE (sp.tensanpham LIKE ?1)AND(?2 IS NULL OR sp.trangthai=?2) " +
-            "GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai " +
+            "WHERE (sp.masanpham LIKE?1 OR sp.tensanpham LIKE ?2)AND(?3 IS NULL OR sp.trangthai=?3) " +
+            "GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai, sp.masanpham " +
             "ORDER BY sp.ngaytao DESC, tongSoLuong DESC")
-    Page<Object[]> findByTenSanPhamAndTrangThai(String key, Boolean trangthai, Pageable pageable);
+    Page<Object[]> findByMasanphamAndTenSanPhamAndTrangThai(String masanpham,String key, Boolean trangthai, Pageable pageable);
 
 
-    @Query("SELECT sp.id, sp.tensanpham, sp.ngaytao, SUM(spct.soluong) AS tongSoLuong,sp.trangthai " +
+    @Query("SELECT sp.id, sp.tensanpham, sp.ngaytao, SUM(spct.soluong) AS tongSoLuong,sp.trangthai, sp.masanpham " +
             "FROM SanPham sp JOIN sp.spct spct " +
-            "GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai " +
+            "GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai, sp.masanpham " +
             "ORDER BY sp.ngaytao DESC, tongSoLuong DESC")
     Page<Object[]> findProductsWithTotalQuantityOrderByDateDesc(Pageable pageable);
 
-    @Query( nativeQuery = true,value = """
-           SELECT sp.id, sp.tensanpham, sp.ngaytao, tongSoLuong, sp.trangthai, spct.giatien, anh.tenanh\s
-           FROM SanPham sp\s
-           JOIN (
-               SELECT IdSanPham, SUM(soluong) AS tongSoLuong, giatien
-               FROM SanPhamChiTiet
-               GROUP BY IdSanPham, giatien
-           ) spct ON sp.id = spct.IdSanPham
-           JOIN Anh anh ON sp.id = anh.Id
-           ORDER BY sp.ngaytao DESC, tongSoLuong DESC;
-              """ )
-    Page<Object[]> findProductsWithTotalQuantityOrderByDateDesc2(Pageable pageable);
+    //dùng cho sp client
+    @Query(nativeQuery = true, value = """
+            SELECT top 8 sp.id, sp.tensanpham, sp.ngaytao, tongSoLuong, sp.trangthai, spct.giatien, anh.tenanh\s
+            FROM SanPham sp\s
+            JOIN (
+                SELECT IdSanPham, SUM(soluong) AS tongSoLuong, giatien
+                FROM SanPhamChiTiet
+                GROUP BY IdSanPham, giatien
+            ) spct ON sp.id = spct.IdSanPham
+            JOIN Anh anh ON sp.id = anh.Id
+            ORDER BY sp.ngaytao DESC, tongSoLuong DESC;
+               """)
+    List<Object[]> findProductsWithTotalQuantityOrderByDateDesc2();
+    // dùng cho sp detail
+    @Query(nativeQuery = true, value = """
+            SELECT top 4 sp.id, sp.tensanpham, sp.ngaytao, tongSoLuong, sp.trangthai, spct.giatien, anh.tenanh\s
+            FROM SanPham sp\s
+            JOIN (
+                SELECT IdSanPham, SUM(soluong) AS tongSoLuong, giatien
+                FROM SanPhamChiTiet
+                GROUP BY IdSanPham, giatien
+            ) spct ON sp.id = spct.IdSanPham
+            JOIN Anh anh ON sp.id = anh.Id
+            ORDER BY sp.ngaytao DESC, tongSoLuong DESC;
+               """)
+    List<Object[]> findProductsWithTotalQuantityOrderByDateDesc3();
+    // dùng cho sp nổi bật detail
+    @Query(nativeQuery = true, value = """
+            SELECT top 4 sp.id, sp.tensanpham, sp.ngaytao, tongSoLuong, sp.trangthai, spct.giatien, anh.tenanh\s
+            FROM SanPham sp\s
+            JOIN (
+                SELECT IdSanPham, SUM(soluong) AS tongSoLuong, giatien
+                FROM SanPhamChiTiet
+                GROUP BY IdSanPham, giatien
+            ) spct ON sp.id = spct.IdSanPham
+            JOIN Anh anh ON sp.id = anh.Id
+            ORDER BY sp.ngaytao ASC , tongSoLuong ASC;
+               """)
+    List<Object[]> findProductsWithTotalQuantityOrderByDateDesc4();
 
 
     @Query("SELECT sp.id, sp.tensanpham, spct.soluong FROM SanPham sp " +

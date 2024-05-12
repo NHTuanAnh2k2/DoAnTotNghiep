@@ -9,201 +9,184 @@
 <nav th:replace="~{/layout/header.html}"></nav>
 <!-- header section end -->
 
-<!-- page banner area start -->
-<nav th:replace="~{/layout/banner.html}"></nav>
-<!-- page banner area end -->
-
 <!-- product details area start -->
-<section class="product-details section-padding-top">
+<section class="product-content section-padding">
     <div class="container">
-        <div class="row" th:each="spct, stt : ${sanphamchitiet}">
+        <div class="row">
+            <!--        <div class="row" th:each="spct, stt : ${sanphamchitiet}">-->
             <div class="col-md-6">
                 <div class="left">
                     <!-- Single-pro-slider Big-photo start -->
                     <div class="large-slider zoom-gallery">
-                        <div th:id="'carouselExample' + ${spct.id}" class="carousel">
-                            <div class="carousel-inner">
-                                <th:block th:each="anhs, index : ${spct.anh}">
-                                    <div th:classappend="${index.index == 0} ? 'carousel-item active' : 'carousel-item'">
-                                        <img th:if="${anhs.tenanh != null}"
-                                             th:src="@{'/upload/' + ${anhs.tenanh.substring(anhs.tenanh.lastIndexOf('upload') + 6)}}"
-                                             class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
-                                    </div>
-                                </th:block>
-                            </div>
-                            <button class="carousel-control-prev" type="button"
-                                    th:data-bs-target="'#carouselExample' + ${spct.id}"
-                                    data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button"
-                                    th:data-bs-target="'#carouselExample' + ${spct.id}"
-                                    data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
-                        </div>
+                        <!--                        <div th:id="'carouselExample' + ${spct.id}" class="carousel">-->
+                        <!--                            <div class="carousel-inner">-->
+                        <!--                                    <div th:classappend="${index.index == 0} ? 'carousel-item active' : 'carousel-item'">-->
+                        <img th:if="${anh!= null}"
+                             th:src="@{'/upload/' + ${anh.substring(anh.lastIndexOf('upload') + 6)}}"
+                             class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
+                        <!--                                    </div>-->
+                        <!--                            </div>-->
+                        <!--                            <button class="carousel-control-prev" type="button"-->
+                        <!--                                    th:data-bs-target="'#carouselExample' + ${spct.id}"-->
+                        <!--                                    data-bs-slide="prev">-->
+                        <!--                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>-->
+                        <!--                                <span class="visually-hidden">Previous</span>-->
+                        <!--                            </button>-->
+                        <!--                            <button class="carousel-control-next" type="button"-->
+                        <!--                                    th:data-bs-target="'#carouselExample' + ${spct.id}"-->
+                        <!--                                    data-bs-slide="next">-->
+                        <!--                                <span class="carousel-control-next-icon" aria-hidden="true"></span>-->
+                        <!--                                <span class="visually-hidden">Next</span>-->
+                        <!--                            </button>-->
+                        <!--                        </div>-->
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="right">
                     <div class="singl-pro-title">
+                        <h3 th:text="${sanpham.tensanpham}"></h3>
+                        <!--                        <h1 style="color: red;font-weight: bold"  th:text="${#numbers.formatDecimal(spct.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></h1>-->
+                        <h6>Kích cỡ:</h6>
+                        <!--                        <p>-->
+                        <!--                            <input type="number" th:value="${spct.soluong}">-->
+                        <!--                        </p>-->
+                        <div class="d-flex">
+                            <div th:each="spct, stt : ${sanphamchitiet}">
+                                <div style="margin-right: 10px">
+                                    <a style="background-color: rgb(249,72,42);color: white" class="btn"
+                                       th:text="${spct.kichco.ten}"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <h6>Màu sắc:</h6>
+                        <div class="d-flex">
+                            <div th:each="spct, stt : ${sanphamchitiet}">
+                                <div style="margin-right: 10px">
+                                    <a style="background-color: rgb(249,72,42);color: white" class="btn"
+                                       th:text="${spct.mausac.ten}"></a>
+                                </div>
+                            </div>
+                        </div>
 
-                        <h3 th:text="${spct.sanpham.tensanpham}"></h3>
-                        <td th:text="'SPCT00000'+${spct.id + 1}" style="font-weight: bold"></td>
-                        <h1 style="color: red;font-weight: bold"  th:text="${#numbers.formatDecimal(spct.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></h1>
-                        Kích cỡ:
-                        <p>
-                            <a style="background-color: rgb(249,72,42);color: white" class="btn" th:text="${spct.kichco.ten}"></a>
-
-                        </p>
-                        Số lượng:
-                        <p>
-
-                            <input type="number" th:value="${spct.soluong}">
-                        </p>
-                        <p>Mô tả</p>
                     </div>
                 </div>
             </div>
+            <h3 style="margin-top: 30px" class="text-center">CÁC SẢN PHẨM NỔI BẬT</h3>
+            <hr class="border border-danger border opacity-50">
+            <div class="tab-content">
+                <!--nội dung-->
+                <div class="tab-pane fade text-center active show" id="gird">
+                    <div class="single-products row" >
+                        <div class="col-md-3" th:each="sp, stt : ${page2}">
+                            <div class="product-item margin40">
+                                <div class="pro-img">
+                                    <a th:href="@{/detailsanphamCustomer/{id}(id=${sp[0]})}">
+                                        <img th:if="${sp[6] != null}"
+                                             th:src="@{'/upload/' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
+                                             class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
+                                    </a>
+                                    <div class="tag-n-s">
+                                        <span>New</span>
+                                    </div>
+                                    <div class="actions-btn">
+                                        <ul class="clearfix">
+                                            <li>
+                                                <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i class="fa fa-heart"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                        class="fa fa-eye"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-title">
+                                    <a href="#"><h3 class="title" th:text="${sp[1]}"></h3></a>
+                                    <div class="ratting">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star gray-star"></i>
+                                    </div>
+                                    <p>
+                                        <span style="color: red;font-weight: bold"  th:text="${#numbers.formatDecimal(sp[5], 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
+                                        <!--                                    <del >$170.00</del>-->
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!---end-->
+                    </div>
+                </div>
+                <!--end-->
+            </div>
+
+            <!--những sản phẩm đang được giảm giá-->
+            <h3 style="margin-top: 30px" class="text-center">CÁC SẢN PHẨM MỚI NHẤT</h3>
+            <hr class="border border-danger border opacity-50">
+            <div class="tab-content">
+                <!--nội dung-->
+                <div class="tab-pane fade text-center active show" id="gird">
+                    <div class="single-products row" >
+                        <div class="col-md-3" th:each="sp, stt : ${page}">
+                            <div class="product-item margin40">
+                                <div class="pro-img">
+                                    <a th:href="@{/detailsanphamCustomer/{id}(id=${sp[0]})}">
+                                        <img th:if="${sp[6] != null}"
+                                             th:src="@{'/upload/' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
+                                             class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
+                                    </a>
+                                    <div class="tag-n-s">
+                                        <span>New</span>
+                                    </div>
+                                    <div class="actions-btn">
+                                        <ul class="clearfix">
+                                            <li>
+                                                <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i class="fa fa-heart"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                        class="fa fa-eye"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-title">
+                                    <a href="#"><h3 class="title" th:text="${sp[1]}"></h3></a>
+                                    <div class="ratting">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star gray-star"></i>
+                                    </div>
+                                    <p>
+                                        <span style="color: red;font-weight: bold"  th:text="${#numbers.formatDecimal(sp[5], 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
+                                        <!--                                    <del >$170.00</del>-->
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!---end-->
+                    </div>
+                </div>
+                <!--end-->
+            </div>
+            <!--end-->
         </div>
     </div>
 </section>
 <!-- product details area end -->
 
 <!-- related product section start -->
-<section class="related-area riding-one">
-    <div class="container">
-        <div class="related-title">
-            <h5>NHỮNG SẢN PHẨM TƯƠNG TỰ</h5>
-        </div>
-        <div class="row text-center my-5">
-            <div class="col-12">
-                <div class="related-slider single-products">
-
-                    <div class="product-item-wrap">
-                        <div class="product-item">
-                            <div class="pro-img">
-                                <a href="product-details.html"><img src="../dist/img/bong1.jpg" width="263" height="299" alt="Product" /></a>
-                                <div class="tag-n-s">
-                                    <span>New</span>
-                                </div>
-                            </div>
-                            <div class="riding-title clearfix">
-                                <div class="product-title text-start floatleft">
-                                    <a href="#"><h3 class="title">Copenhagen Spitfire Chair</h3></a>
-                                    <div class="ratting">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star gray-star"></i>
-                                    </div>
-                                    <p><span>$170</span> <del>$175</del></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-item-wrap">
-                        <div class="product-item">
-                            <div class="pro-img">
-                                <a href="product-details.html"><img src="../dist/img/bong2.jpg" width="263" height="299" alt="Product" /></a>
-                            </div>
-                            <div class="riding-title clearfix">
-                                <div class="product-title text-start floatleft">
-                                    <a href="#"><h3 class="title">Copenhagen Spitfire Chair</h3></a>
-                                    <div class="ratting">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star gray-star"></i>
-                                        <i class="fa fa-star gray-star"></i>
-                                    </div>
-                                    <p><span>$170</span> <del>$175</del></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-item-wrap">
-                        <div class="product-item">
-                            <div class="pro-img">
-                                <a href="product-details.html"><img src="../dist/img/bong3.jpg" width="263" height="299" alt="Product" /></a>
-                                <div class="tag-n-s">
-                                    <span>Sell</span>
-                                </div>
-                            </div>
-                            <div class="riding-title clearfix">
-                                <div class="product-title text-start floatleft">
-                                    <a href="#"><h3 class="title">Copenhagen Spitfire Chair</h3></a>
-                                    <div class="ratting">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star gray-star"></i>
-                                    </div>
-                                    <p><span>$170</span> <del>$175</del></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-item-wrap">
-                        <div class="product-item">
-                            <div class="pro-img">
-                                <a href="product-details.html"><img src="../dist/img/bong1.jpg" width="263" height="299" alt="Product" /></a>
-                                <div class="tag-n-s">
-                                    <span>New</span>
-                                </div>
-                            </div>
-                            <div class="riding-title clearfix">
-                                <div class="product-title text-start floatleft">
-                                    <a href="#"><h3 class="title">Copenhagen Spitfire Chair</h3></a>
-                                    <div class="ratting">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star gray-star"></i>
-                                    </div>
-                                    <p><span>$170</span> <del>$175</del></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-item-wrap">
-                        <div class="product-item">
-                            <div class="pro-img">
-                                <a href="product-details.html"><img src="../dist/img/bong1.jpg" width="263" height="299" alt="Product" /></a>
-                                <div class="tag-n-s">
-                                    <span>New</span>
-                                </div>
-                            </div>
-                            <div class="riding-title clearfix">
-                                <div class="product-title text-start floatleft">
-                                    <a href="#"><h3 class="title">Copenhagen Spitfire Chair</h3></a>
-                                    <div class="ratting">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star gray-star"></i>
-                                    </div>
-                                    <p><span>$170</span> <del>$175</del></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 <!-- related product section end -->
 
 <!-- footer section start -->
