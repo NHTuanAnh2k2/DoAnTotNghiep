@@ -53,6 +53,32 @@ public interface SanPhamRepositoty extends JpaRepository<SanPham, Integer> {
             ORDER BY sp.ngaytao DESC, tongSoLuong DESC;
                """)
     List<Object[]> findProductsWithTotalQuantityOrderByDateDesc2();
+    // dùng cho sp detail
+    @Query(nativeQuery = true, value = """
+            SELECT top 4 sp.id, sp.tensanpham, sp.ngaytao, tongSoLuong, sp.trangthai, spct.giatien, anh.tenanh\s
+            FROM SanPham sp\s
+            JOIN (
+                SELECT IdSanPham, SUM(soluong) AS tongSoLuong, giatien
+                FROM SanPhamChiTiet
+                GROUP BY IdSanPham, giatien
+            ) spct ON sp.id = spct.IdSanPham
+            JOIN Anh anh ON sp.id = anh.Id
+            ORDER BY sp.ngaytao DESC, tongSoLuong DESC;
+               """)
+    List<Object[]> findProductsWithTotalQuantityOrderByDateDesc3();
+    // dùng cho sp nổi bật detail
+    @Query(nativeQuery = true, value = """
+            SELECT top 4 sp.id, sp.tensanpham, sp.ngaytao, tongSoLuong, sp.trangthai, spct.giatien, anh.tenanh\s
+            FROM SanPham sp\s
+            JOIN (
+                SELECT IdSanPham, SUM(soluong) AS tongSoLuong, giatien
+                FROM SanPhamChiTiet
+                GROUP BY IdSanPham, giatien
+            ) spct ON sp.id = spct.IdSanPham
+            JOIN Anh anh ON sp.id = anh.Id
+            ORDER BY sp.ngaytao ASC , tongSoLuong ASC;
+               """)
+    List<Object[]> findProductsWithTotalQuantityOrderByDateDesc4();
 
 
     @Query("SELECT sp.id, sp.tensanpham, spct.soluong FROM SanPham sp " +

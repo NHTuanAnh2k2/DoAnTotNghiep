@@ -156,10 +156,22 @@ public class SanPhamController {
                 KichCo kichCo = kichCoRepository.findByTen(sizeName);
                 if (kichCo != null) {
                     if (sanPhamChiTietList == null||sanPhamChiTietList.isEmpty()) {
+                        int doDaiChuoi2 = 10;
+                        // Chuỗi chứa tất cả các ký tự có thể có trong chuỗi ngẫu nhiên
+                        String kiTu2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                        // Tạo đối tượng Random
+                        Random random2 = new Random();
+                        // StringBuilder để xây dựng chuỗi ngẫu nhiên
+                        StringBuilder chuoiNgauNhien2 = new StringBuilder(doDaiChuoi2);
+                        // Lặp để thêm ký tự ngẫu nhiên vào chuỗi
+                        for (int i = 0; i < doDaiChuoi2; i++) {
+                            // Lấy một ký tự ngẫu nhiên từ chuỗi kiTu và thêm vào chuỗi ngẫu nhiên
+                            chuoiNgauNhien2.append(kiTu2.charAt(random2.nextInt(kiTu2.length())));
+                        }
                         nextId2++;
                         SanPhamChiTiet spct = new SanPhamChiTiet();
                         spct.setId(nextId2);
-                        spct.setMasanphamchitiet(chuoiNgauNhien.toString());
+                        spct.setMasanphamchitiet(chuoiNgauNhien2.toString());
                         spct.setSanpham(sanPham);
                         spct.setSoluong(1);
                         spct.setGiatien(BigDecimal.valueOf(100.000));
@@ -178,6 +190,18 @@ public class SanPhamController {
                             System.out.println("kichco:" + spcts.getMausac().getTen());
                         }
                     } else {
+                        int doDaiChuoi2 = 10;
+                        // Chuỗi chứa tất cả các ký tự có thể có trong chuỗi ngẫu nhiên
+                        String kiTu2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                        // Tạo đối tượng Random
+                        Random random2 = new Random();
+                        // StringBuilder để xây dựng chuỗi ngẫu nhiên
+                        StringBuilder chuoiNgauNhien2 = new StringBuilder(doDaiChuoi2);
+                        // Lặp để thêm ký tự ngẫu nhiên vào chuỗi
+                        for (int i = 0; i < doDaiChuoi2; i++) {
+                            // Lấy một ký tự ngẫu nhiên từ chuỗi kiTu và thêm vào chuỗi ngẫu nhiên
+                            chuoiNgauNhien2.append(kiTu2.charAt(random2.nextInt(kiTu2.length())));
+                        }
                         int lastIndex = sanPhamChiTietList.size() - 1;
                         SanPhamChiTiet lastItem = sanPhamChiTietList.get(lastIndex);
                         int count = lastItem.getId();
@@ -185,6 +209,7 @@ public class SanPhamController {
                         SanPhamChiTiet spct = new SanPhamChiTiet();
                         spct.setId(count);
                         spct.setSanpham(sanPham);
+                        spct.setMasanphamchitiet(chuoiNgauNhien2.toString());
                         spct.setSoluong(1);
                         spct.setGiatien(BigDecimal.valueOf(100.000));
                         spct.setMota(mota);
