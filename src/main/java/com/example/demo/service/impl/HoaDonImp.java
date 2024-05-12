@@ -117,4 +117,9 @@ public class HoaDonImp implements HoaDonService {
         return context;
     }
 
+    @Override
+    public List<HoaDon> timTheoTrangThaiVaLoai(Integer id, Boolean loaihd) {
+        return dao.findAllByTrangthaiAndLoaihoadon(id,loaihd);
+    }
+
 }

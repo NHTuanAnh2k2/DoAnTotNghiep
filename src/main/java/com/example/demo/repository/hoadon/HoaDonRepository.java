@@ -34,4 +34,5 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Integer> {
 
     Page<HoaDon> findAllByLoaihoadon( Boolean loaihd, Pageable p);
     List<HoaDon> findAllById(Integer id);
+    List<HoaDon> findAllByTrangthaiAndLoaihoadon(Integer id,Boolean loadHD);
 }

@@ -32,4 +32,5 @@ public interface HoaDonService {
     void capNhatHD(HoaDon hd);
     public  String htmlToPdf(String htmlfile,String pdfname);
     public Context setData(MauHoaDon userList);
+    List<HoaDon> timTheoTrangThaiVaLoai(Integer id,Boolean loaihd);
 }
