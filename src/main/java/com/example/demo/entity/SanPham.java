@@ -23,6 +23,7 @@ public class SanPham {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     String qrcode;
+    String masanpham;
     String tensanpham;
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

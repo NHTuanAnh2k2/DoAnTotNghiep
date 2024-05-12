@@ -1,6 +1,7 @@
 package com.example.demo.controller.customer;
 
 import com.example.demo.entity.SanPham;
+import com.example.demo.entity.SanPhamChiTiet;
 import com.example.demo.repository.AnhRepository;
 import com.example.demo.repository.KichCoRepository;
 import com.example.demo.repository.SanPhamChiTietRepository;
@@ -16,6 +17,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Controller
 public class TrangChuCustomerController {
@@ -57,8 +60,7 @@ public class TrangChuCustomerController {
 
     @GetMapping("/customer/trangchu")
     public String hienthiTrangChu(@RequestParam(defaultValue = "0") int p, Model model) {
-        Pageable pageable = PageRequest.of(p, 20);
-        Page<Object[]> page = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc2(pageable);
+        List<Object[]> page = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc2();
         model.addAttribute("page", page);
         return "customer/trangchu";
     }
@@ -68,6 +70,24 @@ public class TrangChuCustomerController {
         SanPham sanPham = sanPhamRepositoty.findById(id).orElse(null);
         model.addAttribute("sanpham", sanPham);
         model.addAttribute("sanphamchitiet", sanPham.getSpct());
+        List<SanPhamChiTiet> sanPhamChiTietList=sanPham.getSpct();
+        String anh=sanPhamChiTietList.get(0).getAnh().get(0).getTenanh();
+        model.addAttribute("anh",anh);
         return "customer/product-details";
     }
+
+//    @GetMapping("/detailsanphamCustomer/{id}")
+//    public String detailsanphamCustomer(@PathVariable Integer id, Model model) {
+//        // Truy vấn sản phẩm chính
+//        SanPham sanPham = sanPhamRepositoty.findById(id).orElse(null);
+//
+//        // Truy vấn danh sách chi tiết sản phẩm
+//        List<SanPhamChiTiet> sanPhamChiTietList = sanPhamChiTietRepository.findBySanPham(sanPham);
+//
+//        model.addAttribute("sanpham", sanPham);
+//        model.addAttribute("sanphamchitiet", sanPhamChiTietList);
+//
+//        return "customer/product-details";
+//    }
+
 }

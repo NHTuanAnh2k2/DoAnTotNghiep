@@ -261,7 +261,7 @@
                                                    th:value="${spct.id}" onchange="luuGiaTri2(this)">
                                             <span style="margin-left: 7px" th:text="${stt.index+1}"></span>
                                         </td>
-                                        <td th:text="'SPCT00000'+${spct.id + 1}" style="font-weight: bold"></td>
+                                        <th th:text="${spct.masanphamchitiet}"></th>
                                         <td>
                                             <div th:id="'carouselExample' + ${spct.id}" class="carousel">
                                                 <div class="carousel-inner">
