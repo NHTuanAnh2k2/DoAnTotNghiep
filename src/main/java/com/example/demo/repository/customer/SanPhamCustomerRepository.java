@@ -37,7 +37,7 @@ public interface SanPhamCustomerRepository extends JpaRepository<SanPham,Integer
          GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai, spct.giatien, anh.tenanh, spct.gioitinh
          ORDER BY sp.ngaytao DESC, tongSoLuong DESC
                """)
-    List<Object[]> searchByGender(List<Integer> idthuonghieu, List<Integer> idkichco);
+    List<Object[]> searchByGender0(List<Integer> idthuonghieu, List<Integer> idkichco);
 
 
     //dùng cho sp client có giới tính là 1
@@ -54,4 +54,18 @@ public interface SanPhamCustomerRepository extends JpaRepository<SanPham,Integer
          ORDER BY sp.ngaytao DESC, tongSoLuong DESC
                """)
     List<Object[]> findProductsGioiTinh1();
+
+    //dùng để lọc sp client có giới tính là 1 và theo thương hiệu, kích cỡ
+    @Query(value = """
+         SELECT sp.id, sp.tensanpham, sp.ngaytao, SUM(spct.soluong) AS tongSoLuong, sp.trangthai, spct.giatien, anh.tenanh, spct.gioitinh
+         FROM SanPham sp
+         JOIN sp.spct spct
+         JOIN spct.anh anh
+         WHERE spct.gioitinh = true 
+             AND (?1 IS NULL OR spct.thuonghieu.id IN (?1))
+             OR (?2 IS NULL OR spct.kichco.id IN (?2))
+         GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai, spct.giatien, anh.tenanh, spct.gioitinh
+         ORDER BY sp.ngaytao DESC, tongSoLuong DESC
+               """)
+    List<Object[]> searchByGender1(List<Integer> idthuonghieu, List<Integer> idkichco);
 }

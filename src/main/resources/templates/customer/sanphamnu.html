@@ -1,8 +1,15 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <!--thư viện-->
+<nav th:replace="~{/layoutadmin/head.html}"></nav>
 <nav th:replace="~{/layout/head.html}"></nav>
 <!--end-->
+<style>
+    /*checkbox*/
+    .checkbox-red:checked {
+        background-color: red;
+    }
+</style>
 <body>
 
 <!-- header -->
@@ -20,48 +27,34 @@
             <div class="col-lg-3 order-2 order-lg-1 pt-5 pt-lg-0">
                 <div class="sidebar left-sidebar">
                     <div class="category single-side">
-                        <div class="sidebar-title">
-                            <h3>THƯƠNG HIỆU</h3>
-                            <p><input type="checkbox"> ADDIDAS</p>
-                            <p><input type="checkbox"> NIKES</p>
-
-                        </div>
-                        <div class="sidebar-title">
-                            <h3>ĐẾ GIÀY</h3>
-                            <p><input type="checkbox"> VẢI</p>
-                            <p><input type="checkbox"> NHỰA</p>
-                            <p><input type="checkbox"> CAO SU</p>
-
-                        </div>
-                        <div class="sidebar-title">
-                            <h3>CHẤT LIỆU</h3>
-                            <select class="form-control">
-                                <option>CAO SU</option>
-                                <option>NHỰA</option>
-                                <option>VẢI</option>
-                            </select>
-                        </div>
-                        <p></p>
-                        <div class="sidebar-title">
-                            <h3>MÀU SẮC</h3>
-                            <p><input type="checkbox"> MÀU ĐỎ</p>
-                            <p><input type="checkbox"> MÀU XANH</p>
-                            <p><input type="checkbox"> MÀU VÀNG</p>
-                        </div>
-
-                        <div class="sidebar-title">
-                            <h3>SIZE</h3>
-                            <p><input type="checkbox"> 40</p>
-                            <p><input type="checkbox"> 41</p>
-                            <p><input type="checkbox"> 42</p>
-                        </div>
-
+                        <form id="filterForm" th:method="get" th:object="${search2}">
+                            <div class="sidebar-title">
+                                <h3>SIZE</h3>
+                                <div th:each="kichco : ${kc}">
+                                    <p class="custom-control custom-switch">
+                                        <input type="checkbox" th:field="*{idKichCo2}" th:value="${kichco.id}" style="color: rgb(249, 72, 42); font-weight: bold;" class="custom-control-input" th:id="'customSwitch-' + ${kichco.id}"onchange="filterProducts2()"/>
+                                        <label th:text="${kichco.ten}" style="margin-right: 10px;" class="custom-control-label" th:for="'customSwitch-' + ${kichco.id}"></label>
+                                    </p>
+                                </div>
+                            </div>
+                            <p></p>
+                            <div class="sidebar-title">
+                                <h3>THƯƠNG HIỆU</h3>
+                                <div th:each="thuonghieu : ${th}">
+                                    <p>
+                                        <input type="checkbox" th:field="*{idThuongHieu}" th:value="${thuonghieu.id}" style="color: rgb(249, 72, 42); font-weight: bold;" class="form-check-input checkbox checkbox-red" onchange="filterProducts()">
+                                        <label th:text="${thuonghieu.ten}" style="margin-left: 25px;"></label>
+                                    </p>
+                                </div>
+                            </div>
+                        </form>
                         <div class="sidebar-title">
                             <h3>Giá tiền</h3>
                             <div class="slidecontainer" style="width: 300px;">
-                                <input type="range" min="1" max="100" value="50" style="width: 100%;">
+                                <input type="range" min="1" max="100" value="50" style="width: 70%;">
                             </div>
                         </div>
+
                     </div>
                     <!--ảnh hover-->
                     <div class="sidebar-banner banner-hover">
@@ -77,7 +70,7 @@
                         <!--tăng dần, giảm dần-->
                         <ul>
                             <li>
-                                <div class="custom-select">
+                                <div>
                                     <select class="form-control">
                                         <option>12</option>
                                         <option>13</option>
@@ -90,7 +83,7 @@
                                 <p>Tăng dần</p>
                             </li>
                             <li>
-                                <div class="custom-select">
+                                <div >
                                     <select class="form-control">
                                         <option>Bike</option>
                                         <option>Aikes</option>
@@ -275,8 +268,23 @@
 
 <!-- footer start -->
 <nav th:replace="~{/layout/footer.html}"></nav>
+<!--script-->
+<nav th:replace="~{/layoutadmin/script.html}"></nav>
 <!-- footer end -->
 
 </body>
 </html>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    function filterProducts() {
+        var form = document.getElementById('filterForm');
+        form.submit();
+    }
+    function filterProducts2() {
+        var form = document.getElementById('filterForm');
+        form.submit();
+    }
+    /*]]>*/
+</script>
 

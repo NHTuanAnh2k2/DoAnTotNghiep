@@ -29,6 +29,16 @@
                     <div class="category single-side">
                         <form id="filterForm" th:method="get" th:object="${search2}">
                             <div class="sidebar-title">
+                                <h3>SIZE</h3>
+                                <div th:each="kichco : ${kc}">
+                                    <p class="custom-control custom-switch">
+                                        <input type="checkbox" th:field="*{idKichCo2}" th:value="${kichco.id}" style="color: rgb(249, 72, 42); font-weight: bold;" class="custom-control-input" th:id="'customSwitch-' + ${kichco.id}"onchange="filterProducts2()"/>
+                                        <label th:text="${kichco.ten}" style="margin-right: 10px;" class="custom-control-label" th:for="'customSwitch-' + ${kichco.id}"></label>
+                                    </p>
+                                </div>
+                            </div>
+                            <p></p>
+                            <div class="sidebar-title">
                                 <h3>THƯƠNG HIỆU</h3>
                                 <div th:each="thuonghieu : ${th}">
                                     <p>
@@ -37,16 +47,6 @@
                                     </p>
                                 </div>
                             </div>
-                        <p></p>
-                        <div class="sidebar-title">
-                            <h3>SIZE</h3>
-                            <div th:each="kichco : ${kc}">
-                                <p class="custom-control custom-switch">
-                                    <input type="checkbox" th:field="*{idKichCo2}" th:value="${kichco.id}" style="color: rgb(249, 72, 42); font-weight: bold;" class="custom-control-input" th:id="'customSwitch-' + ${kichco.id}"onchange="filterProducts2()"/>
-                                    <label th:text="${kichco.ten}" style="margin-right: 10px;" class="custom-control-label" th:for="'customSwitch-' + ${kichco.id}"></label>
-                                </p>
-                            </div>
-                        </div>
                         </form>
                         <div class="sidebar-title">
                             <h3>Giá tiền</h3>
@@ -97,7 +97,6 @@
                         <!--end-->
                     </div>
                 </div>
-
                 <div class="tab-content">
                     <!--nội dung-->
                     <div class="tab-pane fade text-center active show" id="gird">
@@ -149,9 +148,7 @@
                     </div>
                     <!--end-->
                 </div>
-
             </div>
-
         </div>
         <h3 style="margin-top: 30px" class="text-center">CÁC SẢN PHẨM NỔI BẬT</h3>
         <hr class="border border-danger border opacity-50">

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-
 import java.util.List;
 
 @Controller
@@ -74,10 +73,28 @@ public class SanPhamCustomerController {
         model.addAttribute("cl", listChatLieu);
         model.addAttribute("spct", listSanPhamChiTiet);
         List<Object[]> list=null;
-        if(info.getIdThuongHieu()==null){
-            list=sanPhamCustomerRepository.findProductsGioiTinh0();
-        }else {
-            list=sanPhamCustomerRepository.searchByGender(info.getIdThuongHieu(),info.getIdKichCo2());
+        boolean filterByGender = (info != null && info.getIdThuongHieu() == null && info.getIdKichCo2() == null);
+        boolean allUnchecked = true;
+        if (info != null && info.getIdThuongHieu() != null) {
+            for (Integer idThuongHieu : info.getIdThuongHieu()) {
+                if (idThuongHieu != null) {
+                    allUnchecked = false;
+                    break;
+                }
+            }
+        }
+        if (info != null && info.getIdKichCo2() != null) {
+            for (Integer idKichCo2 : info.getIdKichCo2()) {
+                if (idKichCo2 != null) {
+                    allUnchecked = false;
+                    break;
+                }
+            }
+        }
+        if (allUnchecked) {
+            list = sanPhamCustomerRepository.findProductsGioiTinh0();
+        } else {
+            list = sanPhamCustomerRepository.searchByGender0(info.getIdThuongHieu(), info.getIdKichCo2());
         }
         model.addAttribute("list0", list);
         List<Object[]> page = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc4();
@@ -88,9 +105,46 @@ public class SanPhamCustomerController {
     }
 
     @GetMapping("/customer/sanphamnu")
-    public String sanphamnu(Model model) {
-        List<Object[]> list1 = sanPhamCustomerRepository.findProductsGioiTinh1();
-        model.addAttribute("list1", list1);
+    public String sanphamnu(Model model,@ModelAttribute("search2") SanPhamCustomerInfo info) {
+        List<SanPham> listSanPham = sanPhamImp.findAll();
+        List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
+        List<MauSac> listMauSac = mauSacImp.findAll();
+        List<KichCo> listKichCo = kichCoImp.findAll();
+        List<DeGiay> listDeGiay = deGiayImp.findAll();
+        List<ChatLieu> listChatLieu = chatLieuImp.findAll();
+        List<SanPhamChiTiet> listSanPhamChiTiet = sanPhamChiTietRepository.findAll();
+        model.addAttribute("sp", listSanPham);
+        model.addAttribute("th", listThuongHieu);
+        model.addAttribute("ms", listMauSac);
+        model.addAttribute("kc", listKichCo);
+        model.addAttribute("dg", listDeGiay);
+        model.addAttribute("cl", listChatLieu);
+        model.addAttribute("spct", listSanPhamChiTiet);
+        List<Object[]> list=null;
+        boolean filterByGender = (info != null && info.getIdThuongHieu() == null && info.getIdKichCo2() == null);
+        boolean allUnchecked = true;
+        if (info != null && info.getIdThuongHieu() != null) {
+            for (Integer idThuongHieu : info.getIdThuongHieu()) {
+                if (idThuongHieu != null) {
+                    allUnchecked = false;
+                    break;
+                }
+            }
+        }
+        if (info != null && info.getIdKichCo2() != null) {
+            for (Integer idKichCo2 : info.getIdKichCo2()) {
+                if (idKichCo2 != null) {
+                    allUnchecked = false;
+                    break;
+                }
+            }
+        }
+        if (allUnchecked) {
+            list = sanPhamCustomerRepository.findProductsGioiTinh1();
+        } else {
+            list = sanPhamCustomerRepository.searchByGender1(info.getIdThuongHieu(), info.getIdKichCo2());
+        }
+        model.addAttribute("list1", list);
         List<Object[]> page = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc4();
         model.addAttribute("page", page);
         List<Object[]> page2 = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc3();
