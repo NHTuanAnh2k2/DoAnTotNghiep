@@ -67,7 +67,7 @@ public class SanPhamController {
         Pageable pageable = PageRequest.of(p, 20);
         Page<Object[]> page = null;
         if (info.getKey() != null) {
-            page = sanPhamRepositoty.findByTenSanPhamAndTrangThai("%" + info.getKey() + "%", info.getTrangthai(), pageable);
+            page = sanPhamRepositoty.findByMasanphamAndTenSanPhamAndTrangThai("%" + info.getKey() + "%","%" + info.getKey() + "%", info.getTrangthai(), pageable);
         } else {
             page = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc(pageable);
         }
@@ -128,7 +128,20 @@ public class SanPhamController {
         }
         nextId++;
         SanPham sanPham = new SanPham();
+        int doDaiChuoi = 10;
+        // Chuỗi chứa tất cả các ký tự có thể có trong chuỗi ngẫu nhiên
+        String kiTu = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        // Tạo đối tượng Random
+        Random random = new Random();
+        // StringBuilder để xây dựng chuỗi ngẫu nhiên
+        StringBuilder chuoiNgauNhien = new StringBuilder(doDaiChuoi);
+        // Lặp để thêm ký tự ngẫu nhiên vào chuỗi
+        for (int i = 0; i < doDaiChuoi; i++) {
+            // Lấy một ký tự ngẫu nhiên từ chuỗi kiTu và thêm vào chuỗi ngẫu nhiên
+            chuoiNgauNhien.append(kiTu.charAt(random.nextInt(kiTu.length())));
+        }
         sanPham.setId(nextId);
+        sanPham.setMasanpham(chuoiNgauNhien.toString());
         sanPham.setTensanpham(tensp);
         sanPham.setTrangthai(true);
         LocalDateTime currentTime = LocalDateTime.now();
@@ -146,6 +159,7 @@ public class SanPhamController {
                         nextId2++;
                         SanPhamChiTiet spct = new SanPhamChiTiet();
                         spct.setId(nextId2);
+                        spct.setMasanphamchitiet(chuoiNgauNhien.toString());
                         spct.setSanpham(sanPham);
                         spct.setSoluong(1);
                         spct.setGiatien(BigDecimal.valueOf(100.000));

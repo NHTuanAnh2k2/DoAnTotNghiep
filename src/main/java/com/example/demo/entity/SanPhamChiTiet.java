@@ -30,6 +30,7 @@ public class SanPhamChiTiet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     String qrcode;
+    String masanphamchitiet;
     String mota;
     Boolean gioitinh;
     Integer soluong;
