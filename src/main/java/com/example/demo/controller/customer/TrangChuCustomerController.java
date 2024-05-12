@@ -59,7 +59,7 @@ public class TrangChuCustomerController {
     HttpServletRequest request;
 
     @GetMapping("/customer/trangchu")
-    public String hienthiTrangChu(@RequestParam(defaultValue = "0") int p, Model model) {
+    public String hienthiTrangChu(Model model) {
         List<Object[]> page = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc2();
         model.addAttribute("page", page);
         return "customer/trangchu";
@@ -73,6 +73,10 @@ public class TrangChuCustomerController {
         List<SanPhamChiTiet> sanPhamChiTietList=sanPham.getSpct();
         String anh=sanPhamChiTietList.get(0).getAnh().get(0).getTenanh();
         model.addAttribute("anh",anh);
+        List<Object[]> page = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc3();
+        model.addAttribute("page", page);
+        List<Object[]> page2 = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc4();
+        model.addAttribute("page2", page2);
         return "customer/product-details";
     }
 

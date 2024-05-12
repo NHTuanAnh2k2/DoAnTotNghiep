@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 
 @Controller
@@ -137,12 +138,26 @@ public class SanPhamChiTietController {
                              @RequestParam(name = "anhs") List<MultipartFile> anhFiles,
                              @RequestParam(name = "spctIds") Integer spctId
     ) {
+        int doDaiChuoi = 10;
+        // Chuỗi chứa tất cả các ký tự có thể có trong chuỗi ngẫu nhiên
+        String kiTu = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        // Tạo đối tượng Random
+        Random random = new Random();
+        // StringBuilder để xây dựng chuỗi ngẫu nhiên
+        StringBuilder chuoiNgauNhien = new StringBuilder(doDaiChuoi);
+        // Lặp để thêm ký tự ngẫu nhiên vào chuỗi
+        for (int i = 0; i < doDaiChuoi; i++) {
+            // Lấy một ký tự ngẫu nhiên từ chuỗi kiTu và thêm vào chuỗi ngẫu nhiên
+            chuoiNgauNhien.append(kiTu.charAt(random.nextInt(kiTu.length())));
+        }
         LocalDateTime currentTime = LocalDateTime.now();
         sanPhamChiTiet.setId(id);
+        sanPhamChiTiet.setMasanphamchitiet(chuoiNgauNhien.toString());
         sanPhamChiTiet.setNgaytao(currentTime);
         sanPhamChiTiet.setLancapnhatcuoi(currentTime);
         SanPham sanPham = sanPhamChiTiet.getSanpham();
         sanPham.setId(id);
+        sanPham.setMasanpham(chuoiNgauNhien.toString());
         sanPham.setTrangthai(true);
         sanPham.setNgaytao(currentTime);
         sanPham.setLancapnhatcuoi(currentTime);
