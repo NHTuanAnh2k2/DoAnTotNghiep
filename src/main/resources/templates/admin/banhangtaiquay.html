@@ -3163,7 +3163,7 @@
 
         //tạo hóa đơn mới
         function taoNewHD() {
-            const urlPage = `/ban-hang-tai-quay/hoa-don-cho`;
+            var urlPage = `/ban-hang-tai-quay/hoa-don-cho`;
             fetch(urlPage)
                 .then(function (a) {
                     return a.json();
@@ -3172,17 +3172,15 @@
                     if (b.length == 5) {
                         showToast();
                     } else {
-
-                        const urlPage = `/ban-hang-tai-quay/hoa-don-cho`;
-                        fetch(urlPage)
+                        var urlTao = `/ban-hang-tai-quay/tao-don-cho`;
+                        fetch(urlTao)
                             .then(function (a) {
                                 return a.json();
                             })
                             .then(function (b) {
-                                if (b.length == 5) {
-                                    showToast();
-                                } else {
-
+                                document.getElementById("tabContainer").innerHTML='';
+                                for (var i = 1; i <= b.length; i++) {
+                                    loadTab(i);
                                 }
                             })
 

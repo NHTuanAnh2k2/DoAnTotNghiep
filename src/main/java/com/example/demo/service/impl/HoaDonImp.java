@@ -122,4 +122,10 @@ public class HoaDonImp implements HoaDonService {
         return dao.findAllByTrangthaiAndLoaihoadon(id,loaihd);
     }
 
+    @Override
+    public HoaDon timBanGhiDuocTaoGanNhat() {
+        return dao.timHDGanNhat().get(0);
+    }
+
+
 }
