@@ -1,8 +1,10 @@
 package com.example.demo.controller.banhang;
 
 import com.example.demo.entity.HoaDon;
+import com.example.demo.entity.HoaDonChiTiet;
 import com.example.demo.entity.NhanVien;
 import com.example.demo.entity.SanPhamChiTiet;
+import com.example.demo.service.HoaDonChiTietService;
 import com.example.demo.service.HoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,9 @@ import java.util.List;
 public class BanHangController {
     @Autowired
     HoaDonService daoHD;
+
+    @Autowired
+    HoaDonChiTietService daoHDCT;
 
     @GetMapping("hoa-don-cho")
     @ResponseBody
@@ -48,6 +53,16 @@ public class BanHangController {
         hoadonCho.setNgaytao(Timestamp.valueOf(currentDateTime));
         daoHD.capNhatHD(hoadonCho);
         List<HoaDon> lst = daoHD.timTheoTrangThaiVaLoai(0, false);
+        return ResponseEntity.ok(lst);
+    }
+
+    @GetMapping("tim-coutSP-theoHD")
+    @ResponseBody
+    public ResponseEntity<?> timCoutSPTheoMaHD(@RequestParam("maHD") String maHD
+    ) {
+        List<HoaDonChiTiet> lst=daoHDCT.timDSHDTCTTheoMaHD(maHD);
+        System.out.println("aaaaaa");
+        System.out.println(lst.size());
         return ResponseEntity.ok(lst);
     }
 
