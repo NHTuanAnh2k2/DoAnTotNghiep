@@ -3,153 +3,187 @@
 <!--thư viện-->
 <nav th:replace="~{/layout/head.html}"></nav>
 <!--end-->
+<style>
+    .quantity-container {
+        display: flex;
+        align-items: center;
+        position: absolute;
+        right: 250px;
+        bottom: 22px;
+    }
+
+    .quantity-button {
+        background-color: rgba(255, 255, 255, 0.4);
+        color: black;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        cursor: pointer;
+        border-radius: 10px;
+    }
+
+    .quantity-input {
+        width: 40px;
+        text-align: center;
+        font-size: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 10px;
+    }
+    .card-header {
+        display: flex;
+        justify-content: start;
+        position: relative;
+        margin-top: 10px;
+    }
+    .ten_sp {
+        display: flex;
+        margin-left: 10px;
+        justify-content: start;
+    }
+    .ten_sp p {
+        font-size: 18px;
+    }
+
+    .ten_sp a {
+        text-decoration: none;
+        color: black;
+        font-size: 20px;
+        font-weight: bold;
+        position: absolute;
+        right: 15px;
+        top: 0;
+    }
+    .thong_tin_sp {
+        display: flex;
+        justify-content: start;
+        margin-left: 10px;
+        align-items: center;
+    }
+    .giatien {
+        font-size: 18px;
+    }
+    .mausac {
+        font-size: 15px;
+        position: absolute;
+        left: 250px;
+    }
+    .size {
+        font-size: 15px;
+        position: absolute;
+        left: 500px;
+    }
+    .thong_tin_sp strong {
+        font-size: 20px;
+        font-weight: bold;
+        position: absolute;
+        right: 15px;
+    }
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type="number"] {
+        /* Hiển thị biểu tượng bước lên/xuống mặc định */
+        -moz-appearance: textfield;
+    }
+
+</style>
 <body>
 
 <!-- header section start -->
 <nav th:replace="~{/layout/header.html}"></nav>
 <!-- header section end -->
-
-<!-- page banner area start -->
-<nav th:replace="~{/layout/banner.html}"></nav>
-<!-- page banner area end -->
-
-<!-- cart page content section start -->
-<section class="cart-page section-padding">
-    <h3 style="margin-left: 120px">GIỎ HÀNG CỦA TÔI</h3>
-    <hr>
-    <div class="container">
-        <table class="table">
-            <tr>
-                <th></th>
-                <th>Ảnh</th>
-                <th>Tên sản phẩm</th>
-                <th>Đơn giá</th>
-                <th>Số lượng</th>
-                <th>Số tiền</th>
-                <th>Thao tác</th>
-            </tr>
-            <tr>
-                <th>
-                    <input type="checkbox">
-                </th>
-                <th>
-                    <img src="../dist/img/bong2.jpg" width="70px" height="40px"/>
-                </th>
-                <th>GIÀY ĐÁ BÓNG NIKES</th>
-                <th>500.000 VNĐ</th>
-                <th>
-                    <input type="number" min="1" value="1">
-                </th>
-                <th>1.000.000 VNĐ</th>
-                <th>
-                    <a href="#" class="btn btn-danger">Xóa</a>
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    <input type="checkbox">
-                </th>
-                <th>
-                    <img src="../dist/img/bong2.jpg" width="70px" height="40px"/>
-                </th>
-                <th>GIÀY ĐÁ BÓNG NIKES</th>
-                <th>500.000 VNĐ</th>
-                <th>
-                    <input type="number" min="1" value="1">
-                </th>
-                <th>1.000.000 VNĐ</th>
-                <th>
-                    <a href="#" class="btn btn-danger">Xóa</a>
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    <input type="checkbox">
-                </th>
-                <th>
-                    <img src="../dist/img/bong2.jpg" width="70px" height="40px"/>
-                </th>
-                <th>GIÀY ĐÁ BÓNG NIKES</th>
-                <th>500.000 VNĐ</th>
-                <th>
-                    <input type="number" min="1" value="1">
-                </th>
-                <th>1.000.000 VNĐ</th>
-                <th>
-                    <a href="#" class="btn btn-danger">Xóa</a>
-                </th>
-            </tr>
-        </table>
-
-
-        <div class="row">
-            <div class="col-md-4">
-                <div class="estimate-text">
-                    <h3>Vận chuyển và thuế</h3>
-                    <form action="#">
-                        <div class="single-select">
-                            <label>Tỉnh/Thành phố</label>
-                            <div class="custom-select">
-                                <select class="form-control">
-                                    <option>Options</option>
-                                    <option>Aruba</option>
-                                    <option>Australia</option>
-                                    <option>Bahrain</option>
-                                    <option>Bangladesh</option>
-                                    <option>Chile</option>
-                                </select>
+<!--<nav th:replace="~{/layout/banner.html}"></nav>-->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-9">
+            <h3 class="mt-5">GIỎ HÀNG CỦA BẠN</h3>
+            <hr>
+            <p>Bạn đang có <strong>2 sản phẩm</strong> trong giỏ hàng</p>
+            <section class="content">
+                <div class="card">
+                    <div class="card-header">
+                        <img src="../dist/img/bong2.jpg" width="80px" height="80px"/>
+                        <div>
+                            <div class="ten_sp">
+                                <p style="font-size: 18px;">Giày Thể Thao Nam Biti's Hunter Street Go For Love 2K24 HSM006500 hugyfrdr</p>
+                                <a href="#">X</a>
+                            </div>
+                            <div class="thong_tin_sp">
+                                <p class="giatien">720.000đ</p>
+                                <p class="mausac">Màu sắc: Trắng</p>
+                                <p class="size">Size: 39</p>
+                                <div class="quantity-container">
+                                    <button class="quantity-button decrement">-</button>
+                                    <input type="number" class="quantity-input" value="1" min="1">
+                                    <button class="quantity-button increment">+</button>
+                                </div>
+                                <strong>720.000đ</strong>
                             </div>
                         </div>
-                        <div class="single-select">
-                            <label>Quận/Huyện</label>
-                            <div class="custom-select">
-                                <select class="form-control">
-                                    <option>Options</option>
-                                    <option>Kerala</option>
-                                    <option>Madhya</option>
-                                    <option>Manipur</option>
-                                    <option>Dhaka</option>
-                                    <option>Chili</option>
-                                </select>
+                        <hr>
+                    </div>
+                    <div class="card-header">
+                        <img src="../dist/img/bong2.jpg" width="80px" height="80px"/>
+                        <div>
+                            <div class="ten_sp">
+                                <p style="font-size: 18px;">Giày Thể Thao Nam Biti's Hunter</p>
+                                <a href="#">X</a>
+                            </div>
+                            <div class="thong_tin_sp">
+                                <p class="giatien">720.000đ</p>
+                                <p class="mausac">Màu sắc: Trắng</p>
+                                <p class="size">Size: 39</p>
+                                <div class="quantity-container">
+                                    <button class="quantity-button decrement">-</button>
+                                    <input type="number" class="quantity-input" value="1" min="1">
+                                    <button class="quantity-button increment">+</button>
+                                </div>
+                                <strong>720.000đ</strong>
                             </div>
                         </div>
-                    </form>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="estimate-text coupon">
-                    <h3>Mã giảm giá</h3>
-                    <p>Vui lòng chọn 1 mã giảm giá nếu có!</p>
-                    <form action="#">
-                        <div class="input-text">
-                            <input type="text" name="coupon"/>
-                        </div>
-                        <div class="submit-text">
-                            <button>Áp dụng mã giảm giá</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="estimate-text responsive">
-                    <div class="subtotal clearfix">
-                        <p>Tổng phụ: <span class="floatright">$156.87</span></p>
-                        <p>Tổng tiền: <span class="floatright">$156.87</span></p>
-                    </div>
-                    <div class="default-btn text-right">
-                        <a class="btn-style" href="checkout.html">Thanh toán</a>
+                        <hr>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
     </div>
-</section>
+</div>
 <!-- cart page content section end -->
-
+<br>
+<br>
 <!-- footer section start -->
 <nav th:replace="~{/layout/footer.html}"></nav>
 <!-- footer section end -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Handle increment buttons
+        const incrementButtons = document.querySelectorAll('.quantity-button.increment');
+        incrementButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const input = this.previousElementSibling;
+                input.value = parseInt(input.value) + 1;
+            });
+        });
 
+        // Handle decrement buttons
+        const decrementButtons = document.querySelectorAll('.quantity-button.decrement');
+        decrementButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const input = this.nextElementSibling;
+                if (parseInt(input.value) > 1) {  // Prevent decrementing below 1
+                    input.value = parseInt(input.value) - 1;
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>
 

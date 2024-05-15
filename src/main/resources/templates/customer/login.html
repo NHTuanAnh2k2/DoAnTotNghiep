@@ -69,6 +69,24 @@
             font-size: 12px;
             background: white;
         }
+        .link-container {
+            display: flex;
+            justify-content: start;
+            padding-left: 15px;
+            margin: 0; /* Đặt margin cho link-container */
+        }
+
+        .link-container p {
+            margin: 0;
+        }
+
+        .link-container + .link-container {
+            margin-top: 0; /* Đảm bảo khoảng cách giữa các container là 0 */
+        }
+
+        #abc .link-container {
+            margin-bottom: 0; /* Đảm bảo khoảng cách giữa các container bên trong abc là 0 */
+        }
 </style>
 <body>
 <nav th:replace="~{/layout/header.html}"></nav>
@@ -81,9 +99,65 @@
 
 <div id="login" class="tabcontent">
 <!--    <h3>Form Đăng Nhập</h3>-->
-    <form>
-        <!-- Đưa ra các trường đăng nhập ở đây -->
-
+    <form id="formDangNhap">
+        <div class="form123 mt-3">
+            <input type="text" placeholder="Vui lòng nhập tên đăng nhập hoặc email"/>
+            <label>Tên đăng nhập</label>
+        </div>
+        <div class="form123 mt-4">
+            <input type="password" placeholder="Vui lòng nhập mật khẩu"/>
+            <label>Mật khẩu</label>
+        </div>
+        <div class="mt-6 d-flex justify-content-start">
+            <button style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 46px; border-radius: 15px; border-color: rgb(249,72,42);">ĐĂNG NHẬP</button>
+            <div id="abc">
+                <div class="link-container">
+                    <p>Bạn chưa có tài khoản?</p>
+                    <a href="#" id="registerLink" style="color: rgb(249,72,42); padding-left: 5px; text-decoration: none;">Đăng ký ngay</a>
+                </div>
+                <div class="link-container">
+                    <p >Bạn quên mật khẩu?</p>
+                    <a href="#" id="khoiphucmk" style="color: rgb(249,72,42); padding-left: 5px; text-decoration: none;">Khôi phục mật khẩu</a>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!--FORM KHOI PHUC MAT KHAU-->
+    <form id="formKhoiPhuc">
+        <h4 class="mt-3 d-flex justify-content-start">Khôi phục mật khẩu</h4>
+        <div class="form123 mt-3">
+            <input type="text" placeholder="Vui lòng nhập email"/>
+            <label>Email</label>
+        </div>
+        <div class="mt-6 d-flex justify-content-start">
+            <button id="btnKhoiPhuc" type="button" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 46px; border-radius: 15px; border-color: rgb(249,72,42);">GỬI</button>
+        </div>
+    </form>
+    <!--FORM XAC NHAN TAI KHOAN-->
+    <form id="formXacNhan">
+        <h4 class="mt-3 d-flex justify-content-start">Xác nhân tài khoản</h4>
+        <div class="form123 mt-3">
+            <input type="text" placeholder="Vui lòng nhập mã xác nhận"/>
+            <label>Mã xác nhận</label>
+        </div>
+        <div class="mt-6 d-flex justify-content-start">
+            <button id="btnXacNhan" type="button" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 46px; border-radius: 15px; border-color: rgb(249,72,42);">XÁC NHẬN</button>
+        </div>
+    </form>
+    <!--FORM ĐỔI MẬT KHẨU-->
+    <form id="formDoiMatKhau">
+        <h4 class="mt-3 d-flex justify-content-start">Thiết lập mật khẩu mới</h4>
+        <div class="form123 mt-3">
+            <input type="text" placeholder="Vui lòng nhập mật khẩu mới"/>
+            <label>Mật khẩu mới</label>
+        </div>
+        <div class="form123 mt-3">
+            <input type="text" placeholder="Vui lòng xác nhận mật khẩu"/>
+            <label>Xác nhận mật khẩu</label>
+        </div>
+        <div class="mt-6 d-flex justify-content-start">
+            <button id="btnDoiMatKhau" type="button" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 150px; height: 46px; border-radius: 15px; border-color: rgb(249,72,42);">ĐỔI MẬT KHẨU</button>
+        </div>
     </form>
 </div>
 
@@ -136,14 +210,16 @@
         <div class="mt-6 d-flex justify-content-start">
             <button style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 46px; border-radius: 15px; border-color: rgb(249,72,42);">ĐĂNG KÝ</button>
             <p style="padding-left: 15px; margin-top: 10px;">Bạn đã có tài khoản?</p>
-            <a href="#" id="loginLink" style="color: rgb(249,72,42); padding-left: 5px; margin-top: 10px;">Đăng nhập ngay</a>
+            <a href="#" id="loginLink" style="color: rgb(249,72,42); padding-left: 5px; margin-top: 10px; text-decoration: none;">Đăng nhập ngay</a>
         </div>
     </form>
-</div>6
+</div>
 
 <script>
     document.getElementById("defaultOpen").click();
-
+    document.getElementById("formKhoiPhuc").style.display = "none";
+    document.getElementById("formXacNhan").style.display = "none";
+    document.getElementById("formDoiMatKhau").style.display = "none";
     function openTab(evt, tabName) {
         var i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tabcontent");
@@ -158,19 +234,33 @@
         evt.currentTarget.className += " active";
     }
     document.getElementById("loginLink").addEventListener("click", function(event) {
-        // Ngăn chặn hành động mặc định của liên kết (không chuyển hướng trang)
         event.preventDefault();
-        // Loại bỏ lớp 'active' từ tất cả các tablinks
-        var tablinks = document.getElementsByClassName("tablinks");
-        for (var i = 0; i < tablinks.length; i++) {
-            tablinks[i].classList.remove("active");
-        }
+        document.getElementById("dangnhap").click();
+    });
 
-        // Thêm lớp 'active' cho thẻ có id là "dangnhap"
-        document.getElementById("dangnhap").classList.add("active");
-
-        // Gọi hàm openTab để hiển thị tab "login"
-        openTab(event, 'login');
+    document.getElementById("registerLink").addEventListener("click", function(event) {
+        event.preventDefault();
+        document.getElementById("defaultOpen").click();
+    });
+    document.getElementById("khoiphucmk").addEventListener("click", function(event) {
+        event.preventDefault();
+        document.getElementById("formDangNhap").style.display = "none";
+        document.getElementById("formKhoiPhuc").style.display = "block";
+    });
+    document.getElementById("btnKhoiPhuc").addEventListener("click", function(event) {
+        event.preventDefault();
+        document.getElementById("formKhoiPhuc").style.display = "none";
+        document.getElementById("formXacNhan").style.display = "block";
+    });
+    document.getElementById("btnXacNhan").addEventListener("click", function(event) {
+        event.preventDefault();
+        document.getElementById("formXacNhan").style.display = "none";
+        document.getElementById("formDoiMatKhau").style.display = "block";
+    });
+    document.getElementById("btnDoiMatKhau").addEventListener("click", function(event) {
+        event.preventDefault();
+        document.getElementById("formDoiMatKhau").style.display = "none";
+        document.getElementById("formDangNhap").style.display = "block";
     });
 </script>
 
