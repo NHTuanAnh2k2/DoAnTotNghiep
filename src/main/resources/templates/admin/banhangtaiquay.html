@@ -754,6 +754,7 @@
                 })
                 .then(function (b) {
                     var html = '';
+                    var htmlTR = '';
                     if (b.length < 1) {
                         html = `
 <div class="tab-pane fade show active text-center fw-bold"
@@ -766,6 +767,42 @@
                                         </div>`;
                     }
                     if (b.length > 0) {
+                        var stt = 0;
+                        for (const hd of b) {
+                            stt++;
+                            htmlTR += `
+                            <tr>
+            <td class="text-center" style="vertical-align: middle;">
+                <input type="checkbox" class="form-check-input checkbox checkbox-red">
+                <span style="margin-left: 7px">${stt}</span>
+            </td>
+            <td style="vertical-align: middle;">
+                <img src="../dist/img/bong2.jpg" width="100px" height="100px" />
+            </td>
+            <td style="vertical-align: middle;">
+                <p style="font-weight: bold">${hd.sanphamchitiet.sanpham.tensanpham}</p>
+                <p style="color: red;font-weight: bold">${hd.giasanpham.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+                <p> Size: ${hd.sanphamchitiet.kichco.ten}</p>
+            </td>
+            <td style="vertical-align: middle;">
+                <input class="form-control" style="width: 90px;height: 30px" type="number" value="5">
+            </td>
+            <td style="color: red;font-weight: bold;vertical-align: middle;">2,500,000đ</td>
+            <td style="vertical-align: middle;">
+                <a style="color: rgb(249,72,42)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                        class="bi bi-trash3" viewBox="0 0 16 16">
+                        <path
+                            d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                    </svg>
+                </a>
+            </td>
+        </tr>
+                            `;
+                        }
+
+
+
                         html = `
 <div class="tab-pane fade show active text-center fw-bold"
 id="tatCaHoaDon-tab-pane" role="tabpanel" aria-labelledby="tatCaHoaDon-tab"
@@ -781,61 +818,8 @@ tabindex="0">
             <th>Thao tác</th>
         </tr>
     </thead>
-    <tbody>
-        <tr>
-            <td class="text-center">
-                <input type="checkbox" class="form-check-input checkbox checkbox-red">
-                <span style="margin-left: 7px">1</span>
-            </td>
-            <td>
-                <img src="../dist/img/bong2.jpg" width="100px" height="100px" />
-            </td>
-            <td>
-                <p style="font-weight: bold"> Giày thể thao New Balance 574</p>
-                <p style="color: red;font-weight: bold"> 500,000đ</p>
-                <p> Size 41</p>
-            </td>
-            <td>
-                <input class="form-control" style="width: 90px;height: 30px" type="number" value="5">
-            </td>
-            <td style="color: red;font-weight: bold">2,500,000đ</td>
-            <td>
-                <a style="color: rgb(249,72,42)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                        class="bi bi-trash3" viewBox="0 0 16 16">
-                        <path
-                            d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
-                    </svg>
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <td class="text-center">
-                <input type="checkbox" class="form-check-input checkbox checkbox-red">
-                <span style="margin-left: 7px">2</span>
-            </td>
-            <td>
-                <img src="../dist/img/bong2.jpg" width="100px" height="100px" />
-            </td>
-            <td>
-                <p style="font-weight: bold"> Giày thể thao New Balance 574</p>
-                <p style="color: red;font-weight: bold"> 500,000đ</p>
-                <p> Size 41</p>
-            </td>
-            <td>
-                <input class="form-control" style="width: 90px;height: 30px" type="number" value="5">
-            </td>
-            <td style="color: red;font-weight: bold">2,500,000đ</td>
-            <td>
-                <a style="color: rgb(249,72,42)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                        class="bi bi-trash3" viewBox="0 0 16 16">
-                        <path
-                            d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
-                    </svg>
-                </a>
-            </td>
-        </tr>
+    <tbody>`+ htmlTR + `
+
     </tbody>
 </table>
 </div>`;
