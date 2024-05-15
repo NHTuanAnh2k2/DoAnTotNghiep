@@ -209,21 +209,24 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
         List<KhachHang> lstKhachHang = this.findAllKhachHang();
         Collections.sort(lstKhachHang, Comparator.comparing(KhachHang::getNgaytao).reversed());
 
-        List<DiaChi> lstDiaChi = diaChiRepository.findAll();
-        Collections.sort(lstDiaChi, Comparator.comparing(DiaChi::getNgaytao).reversed());
-
-
         List<KhachHangInfo> lstkhachhanginfo = new ArrayList<>();
-        int minSize = Math.min(lstKhachHang.size(), lstDiaChi.size());
-        for (int i = 0; i < minSize; i++) {
-            KhachHangInfo khachHangInfo = new KhachHangInfo();
-            khachHangInfo.setKhachhang(lstKhachHang.get(i));
-            khachHangInfo.setDiachi(lstDiaChi.get(i));
-            lstkhachhanginfo.add(khachHangInfo);
+
+        for (KhachHang khachHang : lstKhachHang) {
+            int idNguoiDung = khachHang.getNguoidung().getId();
+            List<DiaChi> lstDiaChi = diaChiRepository.findDiaChiByIdNd(idNguoiDung);
+            Collections.sort(lstDiaChi, Comparator.comparing(DiaChi::getNgaytao).reversed());
+
+            if (!lstDiaChi.isEmpty()) {
+                KhachHangInfo khachHangInfo = new KhachHangInfo();
+                khachHangInfo.setKhachhang(khachHang);
+                khachHangInfo.setDiachi(lstDiaChi.get(0));
+                lstkhachhanginfo.add(khachHangInfo);
+            }
         }
 
         return lstkhachhanginfo;
     }
+
 
     @Override
     public KhachHang findKhachHangByIdNguoiDung(Integer id) {
