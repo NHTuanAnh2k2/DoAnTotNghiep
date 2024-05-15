@@ -55,4 +55,10 @@ public class HoaDonChiTietImp implements HoaDonChiTietService {
         dao.deleteById(id);
     }
 
+    @Override
+    public List<HoaDonChiTiet> timDSHDTCTTheoMaHD(String mahd) {
+        return dao.timDSHDCTTheoMaHD(mahd);
+    }
+
+
 }

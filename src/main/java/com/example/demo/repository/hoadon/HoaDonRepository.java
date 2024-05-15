@@ -9,6 +9,7 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.io.FileOutputStream;
@@ -29,10 +30,17 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Integer> {
     Page<HoaDon> findAllByLoaihoadonAndNgaytaoGreaterThanEqualAndNgaytaoLessThanEqual(Boolean loaihd, Date tu, Date den, Pageable p);
 
     Page<HoaDon> findAllByTrangthaiAndNgaytaoGreaterThanEqualAndNgaytaoLessThanEqual(Integer trangThai, Date tu, Date den, Pageable p);
+
     Page<HoaDon> findAllByTrangthaiAndLoaihoadon(Integer trangThai, Boolean loaihd, Pageable p);
+
     Page<HoaDon> findAllByNgaytaoGreaterThanEqualAndNgaytaoLessThanEqual(Date tu, Date den, Pageable p);
 
-    Page<HoaDon> findAllByLoaihoadon( Boolean loaihd, Pageable p);
+    Page<HoaDon> findAllByLoaihoadon(Boolean loaihd, Pageable p);
+
     List<HoaDon> findAllById(Integer id);
-    List<HoaDon> findAllByTrangthaiAndLoaihoadon(Integer id,Boolean loadHD);
+
+    List<HoaDon> findAllByTrangthaiAndLoaihoadon(Integer id, Boolean loadHD);
+
+    @Query("SELECT h FROM HoaDon h ORDER BY h.ngaytao DESC")
+    List<HoaDon> timHDGanNhat();
 }

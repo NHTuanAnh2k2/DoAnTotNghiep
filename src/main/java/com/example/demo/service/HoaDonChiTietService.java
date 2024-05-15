@@ -23,4 +23,6 @@ public interface HoaDonChiTietService {
     HoaDonChiTiet findByID(Integer id);
 
     void deleteById(Integer id);
+
+    List<HoaDonChiTiet> timDSHDTCTTheoMaHD(String mahd);
 }
