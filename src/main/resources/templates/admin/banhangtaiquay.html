@@ -58,8 +58,10 @@
 </style>
 <script src="../sweetalert2/dist/sweetalert2.min.js/"></script>
 <link rel="stylesheet" type="text/css" href="../sweetalert2/dist/sweetalert2.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 <body class="hold-transition sidebar-mini" style="font-family: 'Bahnschrift'">
+
     <div class="wrapper">
         <!-- Navbar -->
         <nav th:replace="~{/layoutadmin/navbar.html}"></nav>
@@ -134,7 +136,7 @@
                     Quét QR Sản phẩm
                 </a>
                 <a class="btn" style="margin-left: 20px;background-color: rgb(249,72,42);color: white"
-                    data-bs-toggle="modal" data-bs-target="#modalThemSanPhamHD5">
+                    data-bs-toggle="modal" data-bs-target="#modalThemSanPhamHD" id="changeSP">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                         class="bi bi-plus" viewBox="0 0 16 16">
                         <path
@@ -317,13 +319,15 @@
 
             <!-- thêm sản phẩm vào hóa đơn -->
 
-            <div class="modal fade" id="modalThemSanPhamHD5" tabindex="-1" aria-labelledby="exampleModalThemSanPhamHD5"
+            <!--Modal thêm sản phẩm vào hóa đơn-->
+            <!-- Modal -->
+            <div class="modal fade" id="modalThemSanPhamHD" tabindex="-1" aria-labelledby="exampleModalThemSanPhamHD"
                 aria-hidden="true">
                 <div class="modal-dialog modal-xl modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h3 class="modal-title fs-5" id="exampleModalThemSanPhamHD5">Thêm
-                                sản phẩm vào hóa đơn</h3>
+                            <h3 class="modal-title fs-5" id="exampleModalThemSanPhamHD">Thêm
+                                sản phẩm vào đơn hàng</h3>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -332,13 +336,11 @@
                                     <nav class="navbar bg-body-tertiary">
                                         <form>
                                             <div class="d-flex align-items-center">
-                                                <input class="form-control me-2" type="search" placeholder="Search"
-                                                    aria-label="Search" style="width: 800px;">
-                                                <button class="btn btn-outline-success" type="submit"
-                                                    style="margin-right: 35px; margin-left: 35px;">Search
-                                                </button>
-                                                <button class="btn btn-outline-danger" type="submit">Làm mới
-                                                </button>
+                                                <input class="form-control me-2" type="search" id="tensp"
+                                                    placeholder="Nhập tên sản phẩm..." aria-label="Search"
+                                                    style="width: 984px;">
+                                                <button type="button" id="reloadsp" class="btn btn-outline-warning"><i
+                                                        class="bi bi-arrow-clockwise"></i></button>
                                             </div>
                                             <!--Bộ lọc-->
                                             <div class="align-items-center">
@@ -346,46 +348,66 @@
                                                     <div>
                                                         <label class="col-form-label">Chất
                                                             liệu</label>
-                                                        <select class="form-select" style="width: 120px;">
-                                                            <option selected disabled value="">Choose...
+                                                        <select class="form-select" onchange="SearchSPHDCT()"
+                                                            id="chatlieu" style="width: 120px;">
+                                                            <option value="all" selected>
+                                                                ----</option>
+                                                            <option th:each="a:${dsChatLieu}" th:value="${a.ten}"
+                                                                th:text="${a.ten}">
+
                                                             </option>
-                                                            <option>...</option>
                                                         </select>
                                                     </div>
                                                     <div>
                                                         <label class="col-form-label">Thương
                                                             hiệu</label>
-                                                        <select class="form-select" style="width: 120px;">
-                                                            <option selected disabled value="">Choose...
+                                                        <select class="form-select" onchange="SearchSPHDCT()"
+                                                            id="thuonghieu" style="width: 120px;">
+                                                            <option value="all" selected>
+                                                                ----</option>
+                                                            <option th:each="a:${dsThuongHieu}" th:value="${a.ten}"
+                                                                th:text="${a.ten}">
+
                                                             </option>
-                                                            <option>...</option>
                                                         </select>
                                                     </div>
                                                     <div>
                                                         <label class="col-form-label">Đế
                                                             giày</label>
-                                                        <select class="form-select" style="width: 120px;">
-                                                            <option selected disabled value="">Choose...
+                                                        <select class="form-select" onchange="SearchSPHDCT()"
+                                                            id="degiay" style="width: 120px;">
+                                                            <option value="all" selected>
+                                                                ----</option>
+                                                            <option th:each="a:${dsDe}" th:value="${a.ten}"
+                                                                th:text="${a.ten}">
+
                                                             </option>
-                                                            <option>...</option>
                                                         </select>
                                                     </div>
                                                     <div>
                                                         <label class="col-form-label">Kích
                                                             cỡ</label>
-                                                        <select class="form-select" style="width: 120px;">
-                                                            <option selected disabled value="">Choose...
+                                                        <select class="form-select" onchange="SearchSPHDCT()"
+                                                            id="kichco" style="width: 120px;">
+                                                            <option value="all" selected>
+                                                                ----</option>
+                                                            <option th:each="a:${dsKichCo}" th:value="${a.ten}"
+                                                                th:text="${a.ten}">
+
                                                             </option>
-                                                            <option>...</option>
                                                         </select>
                                                     </div>
                                                     <div>
                                                         <label class="col-form-label">Màu
                                                             sắc</label>
-                                                        <select class="form-select" style="width: 120px;">
-                                                            <option selected disabled value="">Choose...
+                                                        <select class="form-select" oninput="SearchSPHDCT()" id="mausac"
+                                                            style="width: 120px;">
+                                                            <option value="all" selected>
+                                                                ----</option>
+                                                            <option th:each="a:${dsMauSac}" th:value="${a.ten}"
+                                                                th:text="${a.ten}">
+
                                                             </option>
-                                                            <option>...</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -393,31 +415,24 @@
                                             </div>
                                             <div class="d-flex justify-content-evenly">
                                                 <div>
-                                                    <label class="col-form-label">Thể
-                                                        loại</label>
-                                                    <select class="form-select" style="width: 120px;">
-                                                        <option selected disabled value="">
-                                                            Choose...
-                                                        </option>
-                                                        <option>...</option>
-                                                    </select>
-                                                </div>
-                                                <div>
                                                     <label class="col-form-label">Giới
                                                         tính</label>
-                                                    <select class="form-select" style="width: 120px;">
-                                                        <option selected disabled value="">
-                                                            Choose...
-                                                        </option>
-                                                        <option>...</option>
+                                                    <select class="form-select" onchange="SearchSPHDCT()" id="gioitinh"
+                                                        style="width: 120px;">
+
+                                                        <option value="true">Nam</option>
+                                                        <option value="false">Nữ</option>
                                                     </select>
                                                 </div>
                                                 <div>
                                                     <label class="col-form-label">Khoảng
-                                                        giá</label>
-                                                    <div>
-                                                        <input type="range" min="1" max="100" value="50"
-                                                            style="width: 200px;">
+                                                        giá: <span id="priceRangeValue">500,000 đ
+                                                        </span></label>
+
+                                                    <div class="slidecontainer mt-1" style="width: 495px;">
+                                                        <input type="range" min="100000" onchange="SearchSPHDCT()"
+                                                            max="8000000" value="500000" style="width: 100%;"
+                                                            id="priceRange">
                                                     </div>
                                                 </div>
                                             </div>
@@ -425,13 +440,12 @@
                                     </nav>
                                 </div>
                                 <br>
-                                <table style="width: 100%" class="table-bordered table-hover text-center">
-                                    <thead style="background-color:rgb(249,72,42);height: 50px">
+                                <table class="table table-bordered table-hover text-center">
+                                    <thead class="table table-danger">
                                         <tr>
                                             <th>STT</th>
-                                            <th>Ảnh</th>
+                                            <th>Ảnh sản phẩm</th>
                                             <th>Tên sản phẩm</th>
-                                            <th>Giá bán</th>
                                             <th>Số lượng</th>
                                             <th>Kích cỡ</th>
                                             <th>Màu sắc</th>
@@ -439,42 +453,30 @@
                                             <th>Thao tác</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>abc</td>
-                                            <td>abc</td>
-                                            <td>abc</td>
-                                            <td>abc</td>
-                                            <td>abc</td>
-                                            <td>abc</td>
-                                            <td>abc</td>
-                                            <td>
-                                                <a style="color: rgb(249,72,42)">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
-                                                        fill="currentColor" class="bi bi-check2-circle"
-                                                        viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
-                                                        <path
-                                                            d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z" />
-                                                    </svg>
-                                                </a>
-                                            </td>
-                                        </tr>
+                                    <tbody id="tbl_sp_them">
                                     </tbody>
                                 </table>
+                                <br>
+                                <nav aria-label="Page navigation example" id="navAddSPHDCT">
+                                    <ul class="pagination">
+                                        <li class="page-item" id="btn_prev_page"><a class="page-link"
+                                                id="prevPageSP">Previous</a>
+                                        </li>
+                                        <li class="d-flex flex-row page-item" id="numberPageSP">
+
+
+                                        </li>
+                                        <li class="page-item" id="btn_next_page">
+                                            <a class="page-link" id="nextPageSP">Next</a>
+                                        </li>
+                                    </ul>
+                                </nav>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Hủy
-                            </button>
-                            <button type="button" class="btn"
-                                style="background-color: rgb(249,72,42);color: white">OK</button>
                         </div>
                     </div>
                 </div>
             </div>
+            <!--Kết thúc Modal thêm sản phẩm vào hóa đơn-->
 
 
             <!--</div>-->
@@ -483,7 +485,7 @@
                 <hr>
                 <div class="d-flex">
                     <h5 style="margin-left: 820px">Tổng tiền:</h5>
-                    <h5 style="margin-left: 25px;color: red">5,000,000đ</h5>
+                    <h5 style="margin-left: 25px;color: red" id="tongTien"></h5>
                 </div>
                 <br>
                 <div class="d-flex">
@@ -753,6 +755,7 @@
                     return a.json();
                 })
                 .then(function (b) {
+                    var tongTien = 0;
                     var html = '';
                     var htmlTR = '';
                     if (b.length < 1) {
@@ -769,11 +772,11 @@
                     if (b.length > 0) {
                         var stt = 0;
                         for (const hd of b) {
+                            tongTien += hd.soluong * hd.giasanpham;
                             stt++;
                             htmlTR += `
                             <tr>
             <td class="text-center" style="vertical-align: middle;">
-                <input type="checkbox" class="form-check-input checkbox checkbox-red">
                 <span style="margin-left: 7px">${stt}</span>
             </td>
             <td style="vertical-align: middle;">
@@ -785,17 +788,15 @@
                 <p> Size: ${hd.sanphamchitiet.kichco.ten}</p>
             </td>
             <td style="vertical-align: middle;">
-                <input class="form-control" style="width: 90px;height: 30px" type="number" value="5">
+                <input class="form-control" style="width: 120px;height: 30px; margin-left: 20%;" type="text" value="${hd.soluong}" oninput="changeQuantity(event)">
             </td>
-            <td style="color: red;font-weight: bold;vertical-align: middle;">2,500,000đ</td>
+            <td style="color: red;font-weight: bold;vertical-align: middle;">${(hd.soluong * hd.giasanpham).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
             <td style="vertical-align: middle;">
-                <a style="color: rgb(249,72,42)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                        class="bi bi-trash3" viewBox="0 0 16 16">
-                        <path
-                            d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
-                    </svg>
-                </a>
+                <a 
+                 href="#">
+                <button class="btn btn-outline-danger"
+                onclick="return confirm('Bạn có muốn xóa sản phẩm này không?')"
+                type="button"><i class="bi bi-trash3"></i></button></a>
             </td>
         </tr>
                             `;
@@ -825,6 +826,7 @@ tabindex="0">
 </div>`;
                     }
                     document.getElementById(invoiceName).innerHTML = html;
+                    document.getElementById("tongTien").innerHTML = tongTien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                 })
 
 
@@ -867,6 +869,503 @@ tabindex="0">
                 title: "Bạn đã tạo tối đa 5 hóa đơn!"
             });
         }
+
+        //thay đổi số lượng ở table
+        function changeQuantity(event) {
+            const input = event.target;
+            let inputValue = input.value;
+
+            // Loại bỏ tất cả các ký tự không phải số từ giá trị đầu vào
+            inputValue = inputValue.replace(/\D/g, '');
+
+            // Chuyển đổi giá trị thành số
+            let numericValue = parseInt(inputValue);
+
+            // Kiểm tra xem giá trị nhập vào có rỗng không
+            if (inputValue === '') {
+                input.value = '';
+                return;
+            }
+
+            // Kiểm tra xem giá trị có nằm trong khoảng từ 1 đến 100 không
+            if (numericValue < 1 || isNaN(numericValue)) {
+                numericValue = 1;
+            } else if (numericValue > 100) {
+                numericValue = 100;
+            }
+
+            // Cập nhật giá trị của input
+            input.value = numericValue;
+
+            var element = document.getElementById(input.id + 'fsport');
+            var newHref = "update-sp-hdct/" + input.id + "/" + input.value;
+            element.setAttribute("href", newHref);
+        }
+    </script>
+    <!-- thay đổi sản phẩm hdct -->
+    <script>
+        let thisNumberSPPage = 0;
+        var reloadSP = document.getElementById('reloadsp');
+        var btnSP = document.getElementById('changeSP');
+        var nextPageSP = document.getElementById('nextPageSP');
+        var prevPageSP = document.getElementById('prevPageSP');
+        var tensp = document.getElementById('tensp');
+        var chatlieu = document.getElementById('chatlieu');
+        var thuonghieu = document.getElementById('thuonghieu');
+        var degiay = document.getElementById('degiay');
+        var kichco = document.getElementById('kichco');
+        var mausac = document.getElementById('mausac');
+        var gioitinh = document.getElementById('gioitinh');
+        var khoanggia = document.getElementById('priceRange');
+
+        function SearchSPHDCT() {
+            var tentim = tensp.value;
+            var cl = chatlieu.value;
+            var th = thuonghieu.value;
+            var dg = degiay.value;
+            var kc = kichco.value;
+            var ms = mausac.value;
+            var gt = gioitinh.value;
+            var kg = khoanggia.value;
+            var list = [
+                tentim, cl, th, dg, kc, ms, gt, kg
+            ]
+            var urltimSPCT = `/hoa-don/searchSP?lstData=${list}`;
+            fetch(urltimSPCT)
+                .then(function (c) {
+                    return c.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let htmlSP = '';
+                    let htmlNumberPageSP = '';
+                    for (const hd of b) {
+                        STT++;
+                        htmlSP += `<tr>
+                                   <td>${STT}</td>
+                                   <td> 
+                                    <img src="${hd.anh.tenanh}" alt=""
+                                                                style="height: 100px; width: 100px;">
+                                    
+                                    </td>
+                                   <td>${hd.sanpham.tensanpham}</td>
+                                   <td>${hd.soluong}</td>
+                                   <td>${hd.kichco.ten}</td>
+                                   <td>${hd.mausac.ten}</td>
+                                   <td>
+                                    <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                        ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                        </p>
+                                    </td>
+                                   <td>
+                                    <a href="ChoseSP/${hd.id}"><button
+                                    class="btn btn-warning">
+                                    chọn
+                                     </button></a>
+                                     </td>
+                                </tr>`;
+                    }
+                    document.getElementById("tbl_sp_them").innerHTML = htmlSP;
+                    document.getElementById('navAddSPHDCT').style.display = 'none';
+
+                })
+        }
+
+
+
+
+        tensp.onkeyup = function () {
+            var tentim = tensp.value;
+            var cl = chatlieu.value;
+            var th = thuonghieu.value;
+            var dg = degiay.value;
+            var kc = kichco.value;
+            var ms = mausac.value;
+            var gt = gioitinh.value;
+            var kg = khoanggia.value;
+            var list = [
+                tentim, cl, th, dg, kc, ms, gt, kg
+            ]
+            var urltimSPCT = `/hoa-don/searchSP?lstData=${list}`;
+            fetch(urltimSPCT)
+                .then(function (c) {
+                    return c.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let htmlSP = '';
+                    let htmlNumberPageSP = '';
+                    for (const hd of b) {
+                        STT++;
+                        htmlSP += `<tr>
+                                   <td>${STT}</td>
+                                   <td> 
+                                    <img src="${hd.anh.tenanh}" alt=""
+                                                                style="height: 100px; width: 100px;">
+                                    
+                                    </td>
+                                   <td>${hd.sanpham.tensanpham}</td>
+                                   <td>${hd.soluong}</td>
+                                   <td>${hd.kichco.ten}</td>
+                                   <td>${hd.mausac.ten}</td>
+                                   <td>
+                                    <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                        ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                        </p>
+                                    </td>
+                                   <td>
+                                    <a href="ChoseSP/${hd.id}"><button
+                                    class="btn btn-warning">
+                                    chọn
+                                     </button></a>
+                                     </td>
+                                </tr>`;
+                    }
+                    document.getElementById("tbl_sp_them").innerHTML = htmlSP;
+                    document.getElementById('navAddSPHDCT').style.display = 'none';
+
+                })
+        }
+
+
+
+
+
+
+
+        reloadSP.onclick = function () {
+            const pageSPChanges = localStorage.getItem("pageSPChanges") ?? 0;
+            const urlPage = `/hoa-don/viewSPChanges?pageSPChanges=${pageSPChanges}`;
+
+            fetch(urlPage)
+                .then(function (c) {
+                    return c.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let htmlSP = '';
+                    let htmlNumberPageSP = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        htmlSP += `<tr>
+                                   <td>${STT}</td>
+                                   <td> 
+                                    <img src="${hd.anh.tenanh}" alt=""
+                                                                style="height: 100px; width: 100px;">
+                                    
+                                    </td>
+                                   <td>${hd.sanpham.tensanpham}</td>
+                                   <td>${hd.soluong}</td>
+                                   <td>${hd.kichco.ten}</td>
+                                   <td>${hd.mausac.ten}</td>
+                                   <td>
+                                    <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                        ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                        </p>
+                                    </td>
+                                   <td>
+                                    <a href="ChoseSP/${hd.id}"><button
+                                    class="btn btn-warning">
+                                    chọn
+                                     </button></a>
+                                     </td>
+                                </tr>`;
+                    }
+
+                    if (thisNumberSPPage < 1) {
+                        prevPageSP.style.display = 'none';
+                    } else {
+                        prevPageSP.style.display = 'block';
+                    }
+                    if (thisNumberSPPage >= b.totalPages - 1) {
+                        nextPageSP.style.display = 'none';
+                    } else {
+                        nextPageSP.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPageSP += `
+                            <a class="page-link" onclick="pageClickSP( ${i - 1})">
+                                                                                        ${i}
+                             </a>
+                            `;
+                    }
+                    document.getElementById('navAddSPHDCT').style.display = 'block';
+                    document.getElementById("numberPageSP").innerHTML = htmlNumberPageSP;
+                    document.getElementById("tbl_sp_them").innerHTML = htmlSP;
+                   
+                })
+        }
+
+
+        btnSP.onclick = function () {
+            const pageSPChanges = localStorage.getItem("pageSPChanges") ?? 0;
+            const urlPage = `/hoa-don/viewSPChanges?pageSPChanges=${pageSPChanges}`;
+
+            fetch(urlPage)
+                .then(function (c) {
+                    return c.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let htmlSP = '';
+                    let htmlNumberPageSP = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        htmlSP += `<tr>
+                                   <td>${STT}</td>
+                                   <td> 
+                                    <img src="${hd.anh.tenanh}" alt=""
+                                                                style="height: 100px; width: 100px;">
+                                    
+                                    </td>
+                                   <td>${hd.sanpham.tensanpham}</td>
+                                   <td>${hd.soluong}</td>
+                                   <td>${hd.kichco.ten}</td>
+                                   <td>${hd.mausac.ten}</td>
+                                   <td>
+                                    <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                        ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                        </p>
+                                    </td>
+                                   <td>
+                                    <a href="ChoseSP/${hd.id}"><button
+                                    class="btn btn-warning">
+                                    chọn
+                                     </button></a>
+                                     </td>
+                                </tr>`;
+                    }
+
+                    if (thisNumberSPPage < 1) {
+                        prevPageSP.style.display = 'none';
+                    } else {
+                        prevPageSP.style.display = 'block';
+                    }
+                    if (thisNumberSPPage >= b.totalPages - 1) {
+                        nextPageSP.style.display = 'none';
+                    } else {
+                        nextPageSP.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPageSP += `
+                            <a class="page-link" onclick="pageClickSP( ${i - 1})">
+                                                                                        ${i}
+                             </a>
+                            `;
+                    }
+                    document.getElementById("numberPageSP").innerHTML = htmlNumberPageSP;
+                    document.getElementById("tbl_sp_them").innerHTML = htmlSP;
+
+                })
+        }
+
+        function pageClickSP(numbers) {
+            const pageSPChanges = localStorage.getItem("pageSPChanges") ?? numbers;
+            const urlPage = `/hoa-don/viewSPChanges?pageSPChanges=${pageSPChanges}`;
+            fetch(urlPage)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    console.log(b)
+                    var STT = 0;
+                    let htmlSP = '';
+                    let htmlNumberPageSP = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        htmlSP += `<tr>
+                                   <td>${STT}</td>
+                                   <td> 
+                                    <img src="${hd.anh.tenanh}" alt=""
+                                                                style="height: 100px; width: 100px;">
+                                    
+                                    </td>
+                                   <td>${hd.sanpham.tensanpham}</td>
+                                   <td>${hd.soluong}</td>
+                                   <td>${hd.kichco.ten}</td>
+                                   <td>${hd.mausac.ten}</td>
+                                   <td>
+                                    <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                        ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                        </p>
+                                    </td>
+                                   <td>
+                                    <a href="ChoseSP/${hd.id}"><button
+                                    class="btn btn-warning">
+                                    chọn
+                                     </button></a>
+                                     </td>
+                                </tr>`;
+                    }
+
+                    if (thisNumberSPPage < 1) {
+                        prevPageSP.style.display = 'none';
+                    } else {
+                        prevPageSP.style.display = 'block';
+                    }
+                    if (thisNumberSPPage >= b.totalPages - 1) {
+                        nextPageSP.style.display = 'none';
+                    } else {
+                        nextPageSP.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPageSP += `
+                            <a class="page-link" onclick="pageClickSP( ${i - 1})">
+                                                                                        ${i}
+                             </a>
+                            `;
+                    }
+                    document.getElementById("numberPageSP").innerHTML = htmlNumberPageSP;
+                    document.getElementById("tbl_sp_them").innerHTML = htmlSP;
+
+                })
+        }
+
+
+        nextPageSP.onclick = function () {
+            thisNumberSPPage++;
+            const pageSPChanges = localStorage.getItem("pageSPChanges") ?? thisNumberSPPage;
+            const urlPage = `/hoa-don/viewSPChanges?pageSPChanges=${pageSPChanges}`;
+            fetch(urlPage)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    console.log(b)
+                    var STT = 0;
+                    let htmlSP = '';
+                    let htmlNumberPageSP = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        htmlSP += `<tr>
+                                   <td>${STT}</td>
+                                   <td> 
+                                    <img src="${hd.anh.tenanh}" alt=""
+                                                                style="height: 100px; width: 100px;">
+                                    
+                                    </td>
+                                   <td>${hd.sanpham.tensanpham}</td>
+                                   <td>${hd.soluong}</td>
+                                   <td>${hd.kichco.ten}</td>
+                                   <td>${hd.mausac.ten}</td>
+                                   <td>
+                                    <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                        ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                        </p>
+                                    </td>
+                                   <td>
+                                    <a href="ChoseSP/${hd.id}"><button
+                                    class="btn btn-warning">
+                                    chọn
+                                     </button></a>
+                                     </td>
+                                </tr>`;
+                    }
+
+                    if (thisNumberSPPage < 1) {
+                        prevPageSP.style.display = 'none';
+                    } else {
+                        prevPageSP.style.display = 'block';
+                    }
+                    if (thisNumberSPPage >= b.totalPages - 1) {
+                        nextPageSP.style.display = 'none';
+                    } else {
+                        nextPageSP.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPageSP += `
+                            <a class="page-link" onclick="pageClickSP( ${i - 1})">
+                                                                                        ${i}
+                             </a>
+                            `;
+                    }
+                    document.getElementById("numberPageSP").innerHTML = htmlNumberPageSP;
+                    document.getElementById("tbl_sp_them").innerHTML = htmlSP;
+
+                })
+        }
+
+
+
+        prevPageSP.onclick = function () {
+
+            thisNumberSPPage--;
+            const pageSPChanges = localStorage.getItem("pageSPChanges") ?? thisNumberSPPage;
+            const urlPage = `/hoa-don/viewSPChanges?pageSPChanges=${pageSPChanges}`;
+            fetch(urlPage)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    console.log(b)
+                    var STT = 0;
+                    let htmlSP = '';
+                    let htmlNumberPageSP = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        htmlSP += `<tr>
+                                   <td>${STT}</td>
+                                   <td> 
+                                    <img src="${hd.anh.tenanh}" alt=""
+                                                                style="height: 100px; width: 100px;">
+                                    
+                                    </td>
+                                   <td>${hd.sanpham.tensanpham}</td>
+                                   <td>${hd.soluong}</td>
+                                   <td>${hd.kichco.ten}</td>
+                                   <td>${hd.mausac.ten}</td>
+                                   <td>
+                                    <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                        ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                        </p>
+                                    </td>
+                                   <td>
+                                    <a href="ChoseSP/${hd.id}"><button
+                                    class="btn btn-warning">
+                                    chọn
+                                     </button></a>
+                                     </td>
+                                </tr>`;
+                    }
+
+                    if (thisNumberSPPage < 1) {
+                        prevPageSP.style.display = 'none';
+                    } else {
+                        prevPageSP.style.display = 'block';
+                    }
+                    if (thisNumberSPPage >= b.totalPages - 1) {
+                        nextPageSP.style.display = 'none';
+                    } else {
+                        nextPageSP.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPageSP += `
+                            <a class="page-link" onclick="pageClickSP( ${i - 1})">
+                                                                                        ${i}
+                             </a>
+                            `;
+                    }
+                    document.getElementById("numberPageSP").innerHTML = htmlNumberPageSP;
+                    document.getElementById("tbl_sp_them").innerHTML = htmlSP;
+
+                })
+        }
+
+    </script>
+    <script>
+        // Lấy phần tử thanh trượt và phần tử hiển thị giá trị
+        var priceRange = document.getElementById("priceRange");
+        var priceRangeValue = document.getElementById("priceRangeValue");
+
+        // Lắng nghe sự kiện khi người dùng thay đổi giá trị thanh trượt
+        priceRange.oninput = function () {
+            // Cập nhật giá trị hiển thị
+            var show = this.value
+                .replace(/\D/g, "")
+                .replace(/([0-9])([0-9]{})$/, '$1.$2')
+                .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",");
+            priceRangeValue.innerText = show + ' đ';
+        };
     </script>
 </body>
 

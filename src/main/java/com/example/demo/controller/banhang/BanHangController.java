@@ -61,8 +61,6 @@ public class BanHangController {
     public ResponseEntity<?> timCoutSPTheoMaHD(@RequestParam("maHD") String maHD
     ) {
         List<HoaDonChiTiet> lst=daoHDCT.timDSHDTCTTheoMaHD(maHD);
-        System.out.println("aaaaaa");
-        System.out.println(lst.size());
         return ResponseEntity.ok(lst);
     }
 
