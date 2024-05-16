@@ -686,7 +686,7 @@
                                                                     method="post" th:object="${thayDoiTT}"
                                                                     onsubmit="return run()">
                                                                     <div class="col-md-12">
-                                                                        <label class="form-label">Tên khách 
+                                                                        <label class="form-label">Tên khách
                                                                             hàng:</label>
                                                                         <input type="text" class="form-control" required
                                                                             th:field="*{ten}">
@@ -1231,12 +1231,12 @@
                                             </thead>
                                             <tbody>
                                                 <tr th:each="a:${pageSPHD}">
-                                                    <td th:text="${aStat.index+1}"></td>
-                                                    <td>
+                                                    <td th:text="${aStat.index+1}" style="vertical-align: middle;"></td>
+                                                    <td style="vertical-align: middle;">
                                                         <img src="a.sanphamchitiet.anh.get(0).getTenanh()" alt=""
                                                             style="height: 100px; width: 100px;">
                                                     </td>
-                                                    <td>
+                                                    <td style="vertical-align: middle; text-align: center;">
                                                         <p th:text="${a.sanphamchitiet.sanpham.tensanpham}"
                                                             style="font-family: 'Times New Roman'; font-size: 15px; font-weight: bold;">
                                                             ></p>
@@ -1247,22 +1247,24 @@
                                                             style="font-family: 'Times New Roman'; font-size: 15px;font-weight: bold;">
                                                             ></p>
                                                     </td>
-                                                    <td th:text="${a.sanphamchitiet.mausac.ten}"></td>
+                                                    <td th:text="${a.sanphamchitiet.mausac.ten}"
+                                                        style="vertical-align: middle;"></td>
 
-                                                    <td><input class="form-control form-control-sm" type="text"
+                                                    <td style="vertical-align: middle;"><input
+                                                            class="form-control form-control-sm" type="text"
                                                             th:id="${a.id}" oninput="changeQuantity(event)"
                                                             aria-label=".form-control-sm example" style="width: 100px;"
                                                             th:value="${a.soluong}"
                                                             th:readonly="${trangThaiHienTai != 0}"></td>
 
                                                     <td th:text="${#numbers.formatDecimal(a.giasanpham*a.soluong, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
-                                                        style="color: red;">
+                                                        style="color: red; vertical-align: middle;">
                                                     </td>
-                                                    <td>
+                                                    <td style="vertical-align: middle;">
                                                         <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;"
                                                             th:text="${a.trangthai==true?'thành công':'thất bại'}"></p>
                                                     </td>
-                                                    <td>
+                                                    <td style="vertical-align: middle;">
 
                                                         <a th:if="${trangThaiHienTai==0}"
                                                             th:href="@{delete-sp-hdct/{id}(id=${a.id})}">
@@ -2253,7 +2255,7 @@
                     console.log(b)
                     var STT = 0;
                     let htmlSP = '';
-                    let htmlNumberPageSP = '';  
+                    let htmlNumberPageSP = '';
                     for (const hd of b.content) {
                         STT++;
                         htmlSP += `<tr>
