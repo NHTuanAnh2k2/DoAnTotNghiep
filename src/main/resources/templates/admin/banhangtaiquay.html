@@ -488,7 +488,7 @@
                     <h5 style="margin-left: 25px;color: red" id="tongTien"></h5>
                 </div>
                 <br>
-                <div class="d-flex">
+                <div class="d-flex pe-1 ps-1">
                     <h5 class="me-auto">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-person" viewBox="0 0 16 16">
@@ -508,21 +508,12 @@
                     </a>
                 </div>
                 <hr>
-                <div class="d-flex">
-                    <p style="margin-left: 20px">Tên khách hàng:</p>
-                    <p style="margin-left: 20px">Nguyễn Văn Duy</p>
-                </div>
-                <div class="d-flex">
-                    <p style="margin-left: 20px">Số điện thoại:</p>
-                    <p style="margin-left: 20px">0123456789</p>
-                </div>
-                <div class="d-flex">
-                    <p style="margin-left: 20px">Email:</p>
-                    <p style="margin-left: 20px">duynvph30146@fpt.edu.vn</p>
+                <div id="thongTinTaiKhoan">
+
                 </div>
                 <br>
-                <div class="d-flex">
-                    <h5 style="margin-left: 25px">
+                <div class="d-flex justify-content-between pe-1 ps-1">
+                    <h5>
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-person" viewBox="0 0 16 16">
                             <path
@@ -530,7 +521,7 @@
                         </svg>
                         Khách hàng
                     </h5>
-                    <button class="btn" style="margin-left: 890px;background-color: rgb(249,72,42);color: white">
+                    <button class="btn" style="background-color: rgb(249,72,42);color: white">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-plus" viewBox="0 0 16 16">
                             <path
@@ -540,7 +531,7 @@
                     </button>
                 </div>
                 <hr>
-                <div class="row">
+                <div class="row ps-2 pe-2">
                     <div class="col-7">
                         <p>
                             <input type="text" class="form-control" placeholder="Nhập họ và tên">
@@ -758,6 +749,44 @@
                     var tongTien = 0;
                     var html = '';
                     var htmlTR = '';
+
+
+                    var urltimHD = `/ban-hang-tai-quay/tim-HD-TheoMaHD?maHD=${invoiceName}`;
+                    fetch(urltimHD)
+                        .then(function (a) {
+                            return a.json();
+                        })
+                        .then(function (b) {
+                            var htmlTTTK = '';
+                            if (b.khachhang == null) {
+                                htmlTTTK = `
+                            <div class="d-flex">
+                        <p style="margin-left: 20px">Tên khách hàng:</p>
+                        <p style="margin-left: 20px">Khách lẻ</p>
+                    </div>
+                            `;
+                            } else {
+                                console.log(b)
+                                htmlTTTK = `
+                                <div class="d-flex">
+                        <p style="margin-left: 20px">Tên khách hàng:</p>
+                        <p style="margin-left: 20px">${b.khachhang.nguoidung.hovaten}</p>
+                    </div>
+                    <div class="d-flex">
+                        <p style="margin-left: 20px">Số điện thoại:</p>
+                        <p style="margin-left: 20px">${b.khachhang.nguoidung.sodienthoai}</p>
+                    </div>
+                    <div class="d-flex">
+                        <p style="margin-left: 20px">Email:</p>
+                        <p style="margin-left: 20px">${b.khachhang.nguoidung.email}</p>
+                    </div>
+                                `;
+                            }
+
+                            document.getElementById("thongTinTaiKhoan").innerHTML = htmlTTTK;
+                        })
+
+
                     if (b.length < 1) {
                         html = `
 <div class="tab-pane fade show active text-center fw-bold"
@@ -825,6 +854,8 @@ tabindex="0">
 </table>
 </div>`;
                     }
+
+
                     document.getElementById(invoiceName).innerHTML = html;
                     document.getElementById("tongTien").innerHTML = tongTien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                 })
@@ -1092,7 +1123,7 @@ tabindex="0">
                     document.getElementById('navAddSPHDCT').style.display = 'block';
                     document.getElementById("numberPageSP").innerHTML = htmlNumberPageSP;
                     document.getElementById("tbl_sp_them").innerHTML = htmlSP;
-                   
+
                 })
         }
 

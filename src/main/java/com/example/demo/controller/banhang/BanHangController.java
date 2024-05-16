@@ -64,4 +64,12 @@ public class BanHangController {
         return ResponseEntity.ok(lst);
     }
 
+    @GetMapping("tim-HD-TheoMaHD")
+    @ResponseBody
+    public ResponseEntity<?> timHDTheoMaHD(@RequestParam("maHD") String maHD
+    ) {
+        HoaDon hd=daoHD.timHDTheoMaHD(maHD);
+        return ResponseEntity.ok(hd);
+    }
+
 }

@@ -43,4 +43,8 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Integer> {
 
     @Query("SELECT h FROM HoaDon h ORDER BY h.ngaytao DESC")
     List<HoaDon> timHDGanNhat();
+
+    @Query("SELECT h FROM HoaDon h  WHERE h.mahoadon =?1")
+    HoaDon timHDTheoMaHD(String mahd);
+
 }
