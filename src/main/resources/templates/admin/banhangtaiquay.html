@@ -243,79 +243,72 @@
                 </div>
             </div>
 
-            <!-- modal thay đổi nhân viên -->
-
-            <div class="modal fade" id="modalChuyenNhanVien5" tabindex="-1"
-                aria-labelledby="exampleModalChuyenNhanVien5" aria-hidden="true">
+            <!--Modal thay đổi nhân viên-->
+            <!-- Modal -->
+            <div class="modal fade" id="modalChuyenNhanVien" tabindex="-1" aria-labelledby="exampleModalChuyenNhanVien"
+                aria-hidden="true">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h class="modal-title fs-5" id="exampleModalChuyenNhanVien5">Khách hàng
-                            </h>
+                            <h3 class="modal-title fs-5" id="exampleModalChuyenNhanVien">Chuyển nhân viên
+                            </h3>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="card-body">
-                                <nav class="navbar bg-body-tertiary">
-                                    <div class="container-fluid">
-                                        <form class="d-flex" role="search">
-                                            <input class="form-control me-2" type="search"
-                                                placeholder="Tìm kiếm theo tên và số điện thoại" aria-label="Search"
-                                                style="width: 900px">
-                                            <a class="btn btn-outline-success" type="submit"
-                                                style="margin-left: 20px">Tìm
-                                                kiếm</a>
-                                        </form>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        thêm nhanh nhân viên+
                                     </div>
-                                </nav>
+                                    <nav class="navbar bg-body-tertiary">
+                                        <div class="container-fluid">
+                                            <form class="d-flex" role="search">
+                                                <input class="form-control me-2" type="search"
+                                                    placeholder="Nhập mã nhân viên..." aria-label="Search"
+                                                    id="searchNV">
+                                                <button type="button" id="reloadnv" class="btn btn-outline-warning"><i
+                                                        class="bi bi-arrow-clockwise"></i></button>
+                                            </form>
+                                        </div>
+                                    </nav>
+                                </div>
 
 
-                                <table style="width: 100%" class="table-bordered table-hover text-center">
-                                    <thead style="background-color:rgb(249,72,42);height: 50px">
+                                <table class="table table-bordered table-hover text-center">
+                                    <thead class="table table-danger">
                                         <tr>
                                             <th>STT</th>
-                                            <th>Ảnh</th>
-                                            <th>Tên khách hàng</th>
-                                            <th>Email</th>
+                                            <th>Mã nhân viên</th>
+                                            <th>Tên nhân viên</th>
                                             <th>Số điện thoại</th>
+                                            <th>Ngày sinh</th>
+                                            <th>Giới tính</th>
                                             <th>Thao tác</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>abc</td>
-                                            <td>abc</td>
-                                            <td>abc</td>
-                                            <td>abc</td>
-                                            <td>
-                                                <a style="color: rgb(249,72,42)">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
-                                                        fill="currentColor" class="bi bi-check2-circle"
-                                                        viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
-                                                        <path
-                                                            d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z" />
-                                                    </svg>
-                                                </a>
-                                            </td>
+                                    <tbody id="tbl_doi_nv">
 
-                                        </tr>
                                     </tbody>
                                 </table>
                                 <br>
+                                <nav aria-label="Page navigation example" id="navNV">
+                                    <ul class="pagination">
+                                        <li class="page-item" id="btn_prev_page"><a class="page-link"
+                                                id="prevPage">Previous</a>
+                                        </li>
+                                        <li class="d-flex flex-row page-item" id="numberPage">
+                                        </li>
+                                        <li class="page-item" id="btn_next_page">
+                                            <a class="page-link" id="nextPage">Next</a>
+                                        </li>
+                                    </ul>
+                                </nav>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Hủy</button>
-                            <button type="button" class="btn"
-                                style="background-color: rgb(249,72,42);color: white">OK</button>
                         </div>
                     </div>
                 </div>
             </div>
-
+            <!--Kết thúc modal thay đổi nhân viên-->
 
             <!-- thêm sản phẩm vào hóa đơn -->
 
@@ -498,7 +491,7 @@
                         Tài khoản
                     </h5>
                     <a class="btn ms-auto" style="background-color: rgb(249,72,42);color: white" data-bs-toggle="modal"
-                        data-bs-target="#modalChuyenNhanVien5">
+                        data-bs-target="#modalChuyenNhanVien" id="changeNV">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-plus" viewBox="0 0 16 16">
                             <path
@@ -1397,6 +1390,320 @@ tabindex="0">
                 .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",");
             priceRangeValue.innerText = show + ' đ';
         };
+    </script>
+
+
+
+    <!-- thay đổi nhân viên -->
+    <script>
+        let thisNumberPage = 0;
+
+        var reload = document.getElementById('reloadnv');
+        var btn = document.getElementById('changeNV');
+        var nextPage = document.getElementById('nextPage');
+        var prevPage = document.getElementById('prevPage');
+        var navNV = document.getElementById('navNV');
+
+        reload.onclick = function () {
+            const pageNVChanges = localStorage.getItem("pageNVChanges") ?? 0;
+            const url = `/hoa-don/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+            fetch(url)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let html = '';
+                    let htmlNumberPage = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        html += `<tr>
+                               <td>${STT}</td>
+                               <td>${hd.manhanvien}</td>
+                               <td>${hd.nguoidung.hovaten}</td>
+                               <td>${hd.nguoidung.sodienthoai}</td>
+                               <td>${hd.nguoidung.ngaysinh}</td>
+                               <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
+                               <td>
+                                <a href="ChoseNV/${hd.id}"><button
+                                class="btn btn-warning">
+                                chọn
+                                 </button></a>
+                                 </td>
+                            </tr>`;
+                    }
+
+                    if (thisNumberPage < 1) {
+                        prevPage.style.display = 'none';
+                    } else {
+                        prevPage.style.display = 'block';
+                    }
+                    if (thisNumberPage >= b.totalPages - 1) {
+                        nextPage.style.display = 'none';
+                    } else {
+                        nextPage.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPage += `
+                        <a class="page-link" onclick="pageClick( ${i - 1})">
+                                                                                    ${i}
+                         </a>
+                        `;
+                    }
+                    document.getElementById("numberPage").innerHTML = htmlNumberPage;
+                    document.getElementById("tbl_doi_nv").innerHTML = html;
+
+                })
+        }
+
+
+
+
+        btn.onclick = function () {
+            const pageNVChanges = localStorage.getItem("pageNVChanges") ?? 0;
+            const url = `/hoa-don/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+            fetch(url)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let html = '';
+                    let htmlNumberPage = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        html += `<tr>
+                               <td>${STT}</td>
+                               <td>${hd.manhanvien}</td>
+                               <td>${hd.nguoidung.hovaten}</td>
+                               <td>${hd.nguoidung.sodienthoai}</td>
+                               <td>${hd.nguoidung.ngaysinh}</td>
+                               <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
+                               <td>
+                                <a href="ChoseNV/${hd.id}"><button
+                                class="btn btn-warning">
+                                chọn
+                                 </button></a>
+                                 </td>
+                            </tr>`;
+                    }
+
+                    if (thisNumberPage < 1) {
+                        prevPage.style.display = 'none';
+                    } else {
+                        prevPage.style.display = 'block';
+                    }
+                    if (thisNumberPage >= b.totalPages - 1) {
+                        nextPage.style.display = 'none';
+                    } else {
+                        nextPage.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPage += `
+                        <a class="page-link" onclick="pageClick( ${i - 1})">
+                                                                                    ${i}
+                         </a>
+                        `;
+                    }
+                    document.getElementById("numberPage").innerHTML = htmlNumberPage;
+                    document.getElementById("tbl_doi_nv").innerHTML = html;
+
+                })
+        }
+
+        var searchNV = document.getElementById('searchNV');
+
+        searchNV.onkeyup = function () {
+            var keySearch = searchNV.value;
+            var url = `/hoa-don/searchNV?keySearch=${keySearch}`;
+            fetch(url)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let html = '';
+                    for (const hd of b) {
+                        STT++;
+                        html += `<tr>
+                       <td>${STT}</td>
+                       <td>${hd.manhanvien}</td>
+                       <td>${hd.nguoidung.hovaten}</td>
+                       <td>${hd.nguoidung.sodienthoai}</td>
+                       <td>${hd.nguoidung.ngaysinh}</td>
+                       <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
+                       <td>
+                        <a href="ChoseNV/${hd.id}"><button
+                        class="btn btn-warning">
+                        chọn
+                         </button></a>
+                         </td>
+                    </tr>`;
+                    }
+                    document.getElementById("tbl_doi_nv").innerHTML = html;
+                })
+        }
+
+
+        function pageClick(number) {
+            const pageNVChanges = localStorage.getItem("pageNVChanges") ?? number;
+            const url = `/hoa-don/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+            fetch(url)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let html = '';
+                    let htmlNumberPage = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        html += `<tr>
+                               <td>${STT}</td>
+                               <td>${hd.manhanvien}</td>
+                               <td>${hd.nguoidung.hovaten}</td>
+                               <td>${hd.nguoidung.sodienthoai}</td>
+                               <td>${hd.nguoidung.ngaysinh}</td>
+                               <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
+                               <td>
+                                <a href="ChoseNV/${hd.id}"><button
+                                class="btn btn-warning">
+                                chọn
+                                 </button></a>
+                                 </td>
+                            </tr>`;
+                    }
+                    if (thisNumberPage < 1) {
+                        prevPage.style.display = 'none';
+                    } else {
+                        prevPage.style.display = 'block';
+                    }
+                    if (thisNumberPage >= b.totalPages - 1) {
+                        nextPage.style.display = 'none';
+                    } else {
+                        nextPage.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPage += `
+                        <a class="page-link" onclick="pageClick( ${i - 1})">
+                                                                                    ${i}
+                         </a>
+                        `;
+                    }
+                    document.getElementById("numberPage").innerHTML = htmlNumberPage;
+                    document.getElementById("tbl_doi_nv").innerHTML = html;
+
+                })
+        }
+
+        nextPage.onclick = function () {
+            thisNumberPage++;
+            const pageNVChanges = localStorage.getItem("pageNVChanges") ?? thisNumberPage;
+            const url = `/hoa-don/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+            fetch(url)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let html = '';
+                    let htmlNumberPage = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        html += `<tr>
+                               <td>${STT}</td>
+                               <td>${hd.manhanvien}</td>
+                               <td>${hd.nguoidung.hovaten}</td>
+                               <td>${hd.nguoidung.sodienthoai}</td>
+                               <td>${hd.nguoidung.ngaysinh}</td>
+                               <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
+                               <td>
+                                <a href="ChoseNV/${hd.id}"><button
+                                class="btn btn-warning">
+                                chọn
+                                 </button></a>
+                                 </td>
+                            </tr>`;
+                    }
+                    if (thisNumberPage < 1) {
+                        prevPage.style.display = 'none';
+                    } else {
+                        prevPage.style.display = 'block';
+                    }
+                    if (thisNumberPage >= b.totalPages - 1) {
+                        nextPage.style.display = 'none';
+                    } else {
+                        nextPage.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPage += `
+                        <a class="page-link" onclick="pageClick( ${i - 1})">
+                                                                                    ${i}
+                         </a>
+                        `;
+                    }
+                    document.getElementById("numberPage").innerHTML = htmlNumberPage;
+                    document.getElementById("tbl_doi_nv").innerHTML = html;
+
+                })
+        }
+
+
+
+        prevPage.onclick = function () {
+
+            thisNumberPage--;
+            const pageNVChanges = localStorage.getItem("pageNVChanges") ?? thisNumberPage;
+            const url = `/hoa-don/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+            fetch(url)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let html = '';
+                    let htmlNumberPage = '';
+
+                    for (const hd of b.content) {
+                        STT++;
+                        html += `<tr>
+                               <td>${STT}</td>
+                               <td>${hd.manhanvien}</td>
+                               <td>${hd.nguoidung.hovaten}</td>
+                               <td>${hd.nguoidung.sodienthoai}</td>
+                               <td>${hd.nguoidung.ngaysinh}</td>
+                               <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
+                               <td>
+                                <a href="ChoseNV/${hd.id}"><button
+                                class="btn btn-warning">
+                                chọn
+                                 </button></a>
+                                 </td>
+                            </tr>`;
+                    }
+                    if (thisNumberPage < 1) {
+                        prevPage.style.display = 'none';
+                    } else {
+                        prevPage.style.display = 'block';
+                    }
+                    if (thisNumberPage >= b.totalPages - 1) {
+                        nextPage.style.display = 'none';
+                    } else {
+                        nextPage.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPage += `
+                        <a class="page-link" onclick="pageClick( ${i - 1})">
+                                                                                    ${i}
+                         </a>
+                        `;
+                    }
+                    document.getElementById("numberPage").innerHTML = htmlNumberPage;
+                    document.getElementById("tbl_doi_nv").innerHTML = html;
+
+                })
+        }
+
     </script>
 </body>
 
