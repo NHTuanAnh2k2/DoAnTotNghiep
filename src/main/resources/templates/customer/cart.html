@@ -10,7 +10,7 @@
         align-items: center;
         position: absolute;
         right: 150px;
-        bottom: 15px;
+        bottom: 34px;
     }
 
     .quantity-button {
@@ -39,7 +39,8 @@
         justify-content: start;
         position: relative;
         border-bottom: 1px solid #DDDDDD;
-        margin: 20px 10px 20px 15px;
+        margin: 10px 10px 0px 15px;
+        padding-bottom: 20px;
 
     }
     .ten_sp {
@@ -61,10 +62,6 @@
         display: flex;
         justify-content: start;
         margin-left: 10px;
-        align-items: center;
-    }
-    .giatien {
-        font-size: 18px;
     }
     .mausac {
         font-size: 15px;
@@ -118,6 +115,51 @@
         border-color: #007BFF;
         box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
     }
+    .ma_giam_gia{
+        width: 100%;
+        margin-bottom: 15px;
+        padding: 5px 10px;
+        background: #fff;
+        display: flex;
+        border-radius: 15px;
+    }
+    .ma-item-left {
+        width: 30%;
+        padding-right: 10px;
+        display: flex;
+        align-items: center;
+        border-right: 1px dashed #ccc;
+    }
+    .anh_ma {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+    }
+    .ma-item-right {
+        padding-left: 10px;
+        position: relative;
+        width: 70%;
+    }
+    .ma-item-des {
+        display: flex;
+        justify-content: space-between;
+        align-items: self-end;
+        font-size: 10px;
+    }
+    .code {
+        background: yellow;
+        color: red;
+        font-weight: bolder;
+    }
+    .right {
+        font-weight: 700;
+        padding: 5px 7px;
+        background: rgb(249,72,42);
+        color: white;
+        border-radius: 15px;
+        cursor: pointer;
+        margin-bottom: 26px;
+    }
 </style>
 <body>
 
@@ -127,7 +169,7 @@
 <!--<nav th:replace="~{/layout/banner.html}"></nav>-->
 <div class="container mt-5">
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-8" id="cart_left">
             <section class="content">
                 <div class="card">
                     <div class="card-body">
@@ -143,7 +185,10 @@
                                         <button type="button" class="btn-close" aria-label="Close"></button>
                                     </div>
                                     <div class="thong_tin_sp">
-                                        <p class="giatien">720.000đ</p>
+                                        <div class="giatien d-flex justify-content-start align-items-center">
+                                            <h5>720.000</h5>
+                                            <strong>đ</strong>
+                                        </div>
                                         <p class="mausac">Màu sắc: Trắng</p>
                                         <p class="size">Size: 39</p>
                                         <div class="quantity-container">
@@ -151,8 +196,8 @@
                                             <input type="number" class="quantity-input" value="1" min="1">
                                             <button class="quantity-button increment">+</button>
                                         </div>
-                                        <div class="giaban d-flex justify-content-start">
-                                            <h6>720.000</h6>
+                                        <div class="giaban d-flex justify-content-start align-items-center">
+                                            <h5>720.000</h5>
                                             <strong>đ</strong>
                                         </div>
                                     </div>
@@ -166,7 +211,10 @@
                                         <button type="button" class="btn-close" aria-label="Close"></button>
                                     </div>
                                     <div class="thong_tin_sp">
-                                        <p class="giatien">720.000đ</p>
+                                        <div class="giatien d-flex justify-content-start align-items-center">
+                                            <h5>720.000</h5>
+                                            <strong>đ</strong>
+                                        </div>
                                         <p class="mausac">Màu sắc: Trắng</p>
                                         <p class="size">Size: 39</p>
                                         <div class="quantity-container">
@@ -174,8 +222,8 @@
                                             <input type="number" class="quantity-input" value="1" min="1">
                                             <button class="quantity-button increment">+</button>
                                         </div>
-                                        <div class="giaban d-flex justify-content-start">
-                                            <h6>720.000</h6>
+                                        <div class="giaban d-flex justify-content-start align-items-center">
+                                            <h5>720.000</h5>
                                             <strong>đ</strong>
                                         </div>
                                     </div>
@@ -190,22 +238,90 @@
                 </div>
             </section>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-4" id="cart_right">
             <section class="content">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body" >
                         <h3>THÔNG TIN ĐƠN HÀNG</h3>
                         <hr class="border border-danger border-2 opacity-50">
                         <div class="d-flex justify-content-between align-items-center">
                             <h6>Tổng tiền:</h6>
-                            <div class="d-flex justify-content-start">
+                            <div class="d-flex justify-content-start align-items-center">
                                 <h4 style="color: red">1,234,000</h4>
                                 <strong style="color: red">đ</strong>
                             </div>
                         </div>
-
-
-
+                        <hr class="border border-danger border-2 opacity-50">
+                        <ul style="list-style-type: disc;  margin-left: 0; padding-left: 15px;">
+                            <li>Phí vận chuyển được tính ở trang thanh toán</li>
+                            <li>Bạn có thể nhập mã giảm giá ở trang thanh toán</li>
+                        </ul>
+                        <button style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100%; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); margin-top: 15px;">ĐẶT HÀNG NGAY</button>
+                    </div>
+                </div>
+            </section>
+            <section class="content">
+                <div class="card">
+                    <div class="card-body" style="background-color: #DDDDDD">
+                        <div class="ma_giam_gia">
+                            <div class="ma-item-left">
+                                <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
+                            </div>
+                            <div class="ma-item-right">
+                                <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;">Giảm 120.000đ</h4>
+                                <p style="font-size: 14px; margin: 0; padding: 0; color: black">Đơn hàng từ 890.000đ trở lên</p>
+                                <div class="ma-item-des">
+                                    <div class="left">
+                                        <p style="margin: 0; white-space: nowrap;">Mã: <b class="code">14FRMGR24MNFNS</b></p>
+                                        <p>HSD: 31/05/2024</p>
+                                    </div>
+                                    <div class="right">
+                                        Sao chép mã
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ma_giam_gia">
+                            <div class="ma-item-left">
+                                <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
+                            </div>
+                            <div class="ma-item-right">
+                                <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;">Giảm 120.000đ</h4>
+                                <p style="font-size: 14px; margin: 0; padding: 0; color: black">Đơn hàng từ 890.000đ trở lên</p>
+                                <div class="ma-item-des">
+                                    <div class="left">
+                                        <p style="margin: 0; white-space: nowrap;">Mã: <b class="code">14FRMGR24MNFNS</b></p>
+                                        <p>HSD: 31/05/2024</p>
+                                    </div>
+                                    <div class="right">
+                                        Sao chép mã
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ma_giam_gia">
+                            <div class="ma-item-left">
+                                <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
+                            </div>
+                            <div class="ma-item-right">
+                                <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;">Giảm 120.000đ</h4>
+                                <p style="font-size: 14px; margin: 0; padding: 0; color: black">Đơn hàng từ 890.000đ trở lên</p>
+                                <div class="ma-item-des">
+                                    <div class="left">
+                                        <p style="margin: 0; white-space: nowrap;">Mã: <b class="code">14FRMGR24MNFNS</b></p>
+                                        <p>HSD: 31/05/2024</p>
+                                    </div>
+                                    <div class="right">
+                                        Sao chép mã
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="color: black; margin-bottom: 0;">Để nhận tư vấn hoặc hỗ trợ khi phát sinh khó khăn trong lúc mua hàng, hãy liên hệ Biti's thông qua:</p>
+                        <ul style="list-style-type: disc;  margin: 0; padding-left: 15px; color: black; font-size: 15px;">
+                            <li>Gọi 0966.158.666</li>
+                            <li>Email tới địa chỉ chamsockhachhang@fsport.com.vn</li>
+                        </ul>
                     </div>
                 </div>
             </section>
@@ -251,6 +367,7 @@
     // Optional: Adjust the height on page load
     textarea.style.height = 'auto';
     textarea.style.height = (textarea.scrollHeight) + 'px';
+
 </script>
 </body>
 </html>
