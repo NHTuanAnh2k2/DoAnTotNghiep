@@ -88,6 +88,7 @@
                                 </svg>
                                 BÁN HÀNG TẠI QUẦY
                             </h1>
+                            <div id="dataContainer" th:data-my-attribute="${check}" style="display:none;"></div>
                         </div>
                         <!--                    <div class="col-sm-6">-->
                         <!--                        <ol class="breadcrumb float-sm-right">-->
@@ -250,7 +251,7 @@
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h3 class="modal-title fs-5" id="exampleModalChuyenNhanVien">Chuyển nhân viên
+                            <h3 class="modal-title fs-5" id="exampleModalChuyenNhanVien">Chọn khách hàng
                             </h3>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
@@ -258,13 +259,15 @@
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        thêm nhanh nhân viên+
+                                        <button type="button" class="btn"
+                                            style="background-color: rgb(249,72,42);color: white">+Thêm khách
+                                            hàng</button>
                                     </div>
                                     <nav class="navbar bg-body-tertiary">
                                         <div class="container-fluid">
                                             <form class="d-flex" role="search">
-                                                <input class="form-control me-2" type="search"
-                                                    placeholder="Nhập mã nhân viên..." aria-label="Search"
+                                                <input style="width: 400px;" class="form-control me-2" type="search"
+                                                    placeholder="Nhập họ tên hoặc số điện thoại..." aria-label="Search"
                                                     id="searchNV">
                                                 <button type="button" id="reloadnv" class="btn btn-outline-warning"><i
                                                         class="bi bi-arrow-clockwise"></i></button>
@@ -278,8 +281,8 @@
                                     <thead class="table table-danger">
                                         <tr>
                                             <th>STT</th>
-                                            <th>Mã nhân viên</th>
-                                            <th>Tên nhân viên</th>
+                                            <th>Mã khách hàng</th>
+                                            <th>Tên khách hàng</th>
                                             <th>Số điện thoại</th>
                                             <th>Ngày sinh</th>
                                             <th>Giới tính</th>
@@ -291,6 +294,7 @@
                                     </tbody>
                                 </table>
                                 <br>
+
                                 <nav aria-label="Page navigation example" id="navNV">
                                     <ul class="pagination">
                                         <li class="page-item" id="btn_prev_page"><a class="page-link"
@@ -586,18 +590,19 @@
                             <p style="font-weight: bold">Mã giảm giá:</p>
                             <p>JFKSIFNH15</p>
                         </div>
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between ">
                             <p style="font-weight: bold">Trả sau:</p>
-                            <p class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="customSwitch8">
-                                <label class="custom-control-label" for="customSwitch"></label>
+                            <p class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch"
+                                    id="flexSwitchCheckDefault">
+
                             </p>
                         </div>
                         <div class="d-flex justify-content-between">
                             <p style="font-weight: bold">Giao hàng:</p>
-                            <p class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="customSwitch9">
-                                <label class="custom-control-label" for="customSwitch1"></label>
+                            <p class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch"
+                                    id="flexSwitchCheckDefault">
                             </p>
                         </div>
                         <div class="d-flex justify-content-between">
@@ -654,7 +659,23 @@
                         </div>`;
                 }
                 document.getElementById('GhiDeTab').innerHTML = htmlDiv;
+                // var check = null;
+                // const dataContainer = document.getElementById('dataContainer');
+                // const attributeValue = dataContainer.getAttribute('data-my-attribute');
+                // if (attributeValue != null) {
+                //     check = attributeValue;
+                // }
+                // console.log(check)
+                // console.log(at)
+                // if (check == null) {
+                //     openInvoice(event, b[0].mahoadon);
+                // } else {
+                //     openInvoice(event, check);
+                // }
                 openInvoice(event, b[0].mahoadon);
+
+
+
             })
 
 
@@ -701,9 +722,9 @@
                             .then(function (b) {
 
                                 document.getElementById("tabContainer").innerHTML = '';
-                                for (var i = 1; i <= b.length; i++) {
+                                for (const hd of b) {
 
-                                    loadTab(i);
+                                    loadTab(hd.mahoadon);
 
                                 }
 
@@ -1394,7 +1415,7 @@ tabindex="0">
 
 
 
-    <!-- thay đổi nhân viên -->
+    <!-- thay đổi khách hàng -->
     <script>
         let thisNumberPage = 0;
 
@@ -1406,7 +1427,7 @@ tabindex="0">
 
         reload.onclick = function () {
             const pageNVChanges = localStorage.getItem("pageNVChanges") ?? 0;
-            const url = `/hoa-don/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+            const url = `/ban-hang-tai-quay/viewNVChanges?pageNVChanges=${pageNVChanges}`;
             fetch(url)
                 .then(function (a) {
                     return a.json();
@@ -1419,13 +1440,13 @@ tabindex="0">
                         STT++;
                         html += `<tr>
                                <td>${STT}</td>
-                               <td>${hd.manhanvien}</td>
+                               <td>${hd.makhachhang}</td>
                                <td>${hd.nguoidung.hovaten}</td>
                                <td>${hd.nguoidung.sodienthoai}</td>
                                <td>${hd.nguoidung.ngaysinh}</td>
                                <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
                                <td>
-                                <a href="ChoseNV/${hd.id}"><button
+                                <a href="http://localhost:8080/ban-hang-tai-quay/ChoseKH/${hd.id}"><button
                                 class="btn btn-warning">
                                 chọn
                                  </button></a>
@@ -1450,6 +1471,7 @@ tabindex="0">
                          </a>
                         `;
                     }
+                    document.getElementById('navNV').style.display = 'block';
                     document.getElementById("numberPage").innerHTML = htmlNumberPage;
                     document.getElementById("tbl_doi_nv").innerHTML = html;
 
@@ -1461,7 +1483,7 @@ tabindex="0">
 
         btn.onclick = function () {
             const pageNVChanges = localStorage.getItem("pageNVChanges") ?? 0;
-            const url = `/hoa-don/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+            const url = `/ban-hang-tai-quay/viewNVChanges?pageNVChanges=${pageNVChanges}`;
             fetch(url)
                 .then(function (a) {
                     return a.json();
@@ -1474,13 +1496,13 @@ tabindex="0">
                         STT++;
                         html += `<tr>
                                <td>${STT}</td>
-                               <td>${hd.manhanvien}</td>
+                               <td>${hd.makhachhang}</td>
                                <td>${hd.nguoidung.hovaten}</td>
                                <td>${hd.nguoidung.sodienthoai}</td>
                                <td>${hd.nguoidung.ngaysinh}</td>
                                <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
                                <td>
-                                <a href="ChoseNV/${hd.id}"><button
+                                <a href="http://localhost:8080/ban-hang-tai-quay/ChoseKH/${hd.id}"><button
                                 class="btn btn-warning">
                                 chọn
                                  </button></a>
@@ -1505,6 +1527,7 @@ tabindex="0">
                          </a>
                         `;
                     }
+                    document.getElementById('navNV').style.display = 'block';
                     document.getElementById("numberPage").innerHTML = htmlNumberPage;
                     document.getElementById("tbl_doi_nv").innerHTML = html;
 
@@ -1515,7 +1538,7 @@ tabindex="0">
 
         searchNV.onkeyup = function () {
             var keySearch = searchNV.value;
-            var url = `/hoa-don/searchNV?keySearch=${keySearch}`;
+            var url = `/ban-hang-tai-quay/searchNV?keySearch=${keySearch}`;
             fetch(url)
                 .then(function (a) {
                     return a.json();
@@ -1527,19 +1550,20 @@ tabindex="0">
                         STT++;
                         html += `<tr>
                        <td>${STT}</td>
-                       <td>${hd.manhanvien}</td>
+                       <td>${hd.makhachhang}</td>
                        <td>${hd.nguoidung.hovaten}</td>
                        <td>${hd.nguoidung.sodienthoai}</td>
                        <td>${hd.nguoidung.ngaysinh}</td>
                        <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
                        <td>
-                        <a href="ChoseNV/${hd.id}"><button
+                        <a href="http://localhost:8080/ban-hang-tai-quay/ChoseKH/${hd.id}"><button
                         class="btn btn-warning">
                         chọn
                          </button></a>
                          </td>
                     </tr>`;
                     }
+                    document.getElementById('navNV').style.display = 'none';
                     document.getElementById("tbl_doi_nv").innerHTML = html;
                 })
         }
@@ -1547,7 +1571,7 @@ tabindex="0">
 
         function pageClick(number) {
             const pageNVChanges = localStorage.getItem("pageNVChanges") ?? number;
-            const url = `/hoa-don/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+            const url = `/ban-hang-tai-quay/viewNVChanges?pageNVChanges=${pageNVChanges}`;
             fetch(url)
                 .then(function (a) {
                     return a.json();
@@ -1560,13 +1584,13 @@ tabindex="0">
                         STT++;
                         html += `<tr>
                                <td>${STT}</td>
-                               <td>${hd.manhanvien}</td>
+                               <td>${hd.makhachhang}</td>
                                <td>${hd.nguoidung.hovaten}</td>
                                <td>${hd.nguoidung.sodienthoai}</td>
                                <td>${hd.nguoidung.ngaysinh}</td>
                                <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
                                <td>
-                                <a href="ChoseNV/${hd.id}"><button
+                                <a href="http://localhost:8080/ban-hang-tai-quay/ChoseKH/${hd.id}"><button
                                 class="btn btn-warning">
                                 chọn
                                  </button></a>
@@ -1599,7 +1623,7 @@ tabindex="0">
         nextPage.onclick = function () {
             thisNumberPage++;
             const pageNVChanges = localStorage.getItem("pageNVChanges") ?? thisNumberPage;
-            const url = `/hoa-don/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+            const url = `/ban-hang-tai-quay/viewNVChanges?pageNVChanges=${pageNVChanges}`;
             fetch(url)
                 .then(function (a) {
                     return a.json();
@@ -1612,13 +1636,13 @@ tabindex="0">
                         STT++;
                         html += `<tr>
                                <td>${STT}</td>
-                               <td>${hd.manhanvien}</td>
+                               <td>${hd.makhachhang}</td>
                                <td>${hd.nguoidung.hovaten}</td>
                                <td>${hd.nguoidung.sodienthoai}</td>
                                <td>${hd.nguoidung.ngaysinh}</td>
                                <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
                                <td>
-                                <a href="ChoseNV/${hd.id}"><button
+                                <a href="http://localhost:8080/ban-hang-tai-quay/ChoseKH/${hd.id}"><button
                                 class="btn btn-warning">
                                 chọn
                                  </button></a>
@@ -1654,7 +1678,7 @@ tabindex="0">
 
             thisNumberPage--;
             const pageNVChanges = localStorage.getItem("pageNVChanges") ?? thisNumberPage;
-            const url = `/hoa-don/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+            const url = `/ban-hang-tai-quay/viewNVChanges?pageNVChanges=${pageNVChanges}`;
             fetch(url)
                 .then(function (a) {
                     return a.json();
@@ -1668,13 +1692,13 @@ tabindex="0">
                         STT++;
                         html += `<tr>
                                <td>${STT}</td>
-                               <td>${hd.manhanvien}</td>
+                               <td>${hd.makhachhang}</td>
                                <td>${hd.nguoidung.hovaten}</td>
                                <td>${hd.nguoidung.sodienthoai}</td>
                                <td>${hd.nguoidung.ngaysinh}</td>
                                <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
                                <td>
-                                <a href="ChoseNV/${hd.id}"><button
+                                <a href="http://localhost:8080/ban-hang-tai-quay/ChoseKH/${hd.id}"><button
                                 class="btn btn-warning">
                                 chọn
                                  </button></a>

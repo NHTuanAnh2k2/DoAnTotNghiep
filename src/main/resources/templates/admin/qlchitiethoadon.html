@@ -659,15 +659,22 @@
                                 <div class="col-12">
                                     <div class="card" style="height: 326px;">
                                         <div class="card-header">
-                                            <div class="d-flex justify-content-end align-content-center">
+                                            <div class="d-flex justify-content-between align-content-center">
                                                 <h4 th:text="${'Thông tin đơn hàng: '+hoaDonDT.mahoadon}">
-
                                                 </h4>
-                                                <button style="margin-right: 50px; margin-left: 140px;" type="button"
-                                                    class="btn btn-outline-secondary" data-bs-toggle="modal"
-                                                    data-bs-target="#modalThayDoiHoaDon"
-                                                    th:classappend="${trangThaiHienTai!=0?'disabled':''}">Thay
-                                                    đổi</button>
+                                                <div >
+                                                    <button 
+                                                        type="button" class="btn btn-outline-secondary"
+                                                        data-bs-toggle="modal" data-bs-target="#modalThayDoiHoaDon"
+                                                        th:classappend="${trangThaiHienTai!=0?'disabled':''}">Thay
+                                                        đổi</button>
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="changeNV" data-bs-toggle="modal"
+                                                        data-bs-target="#modalChuyenNhanVien"
+                                                        th:classappend="${trangThaiHienTai!=0?'disabled':''}">Chuyển
+                                                        nhân viên</button>
+                                                </div>
+
                                                 <!--Modal thay đổi thông tin hóa đơn-->
                                                 <!-- Modal -->
                                                 <div class="modal fade" id="modalThayDoiHoaDon" tabindex="-1"
@@ -754,10 +761,7 @@
                                                     </div>
                                                 </div>
                                                 <!--/Kết thúc modal thay đổi thông tin-->
-                                                <button type="button" class="btn btn-outline-secondary" id="changeNV"
-                                                    data-bs-toggle="modal" data-bs-target="#modalChuyenNhanVien"
-                                                    th:classappend="${trangThaiHienTai!=0?'disabled':''}">Chuyển
-                                                    nhân viên</button>
+
                                                 <!--Modal thay đổi nhân viên-->
                                                 <!-- Modal -->
                                                 <div class="modal fade" id="modalChuyenNhanVien" tabindex="-1"
@@ -2048,7 +2052,7 @@
                     document.getElementById('navAddSPHDCT').style.display = 'block';
                     document.getElementById("numberPageSP").innerHTML = htmlNumberPageSP;
                     document.getElementById("tbl_sp_them").innerHTML = htmlSP;
-                   
+
 
                 })
         }
