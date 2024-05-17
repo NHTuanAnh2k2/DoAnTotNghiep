@@ -1,33 +1,38 @@
 package com.example.demo.controller.banhang;
 
-import com.example.demo.entity.HoaDon;
-import com.example.demo.entity.HoaDonChiTiet;
-import com.example.demo.entity.NhanVien;
-import com.example.demo.entity.SanPhamChiTiet;
+import com.example.demo.entity.*;
+import com.example.demo.repository.khachhang.KhachHangRepostory;
 import com.example.demo.service.HoaDonChiTietService;
 import com.example.demo.service.HoaDonService;
+import com.example.demo.service.KhachHangService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("ban-hang-tai-quay")
 public class BanHangController {
     @Autowired
+    KhachHangRepostory daoKH;
+
+    @Autowired
     HoaDonService daoHD;
 
     @Autowired
     HoaDonChiTietService daoHDCT;
+    private HoaDon hdHienTai;
 
     @GetMapping("hoa-don-cho")
     @ResponseBody
@@ -60,7 +65,7 @@ public class BanHangController {
     @ResponseBody
     public ResponseEntity<?> timCoutSPTheoMaHD(@RequestParam("maHD") String maHD
     ) {
-        List<HoaDonChiTiet> lst=daoHDCT.timDSHDTCTTheoMaHD(maHD);
+        List<HoaDonChiTiet> lst = daoHDCT.timDSHDTCTTheoMaHD(maHD);
         return ResponseEntity.ok(lst);
     }
 
@@ -68,8 +73,35 @@ public class BanHangController {
     @ResponseBody
     public ResponseEntity<?> timHDTheoMaHD(@RequestParam("maHD") String maHD
     ) {
-        HoaDon hd=daoHD.timHDTheoMaHD(maHD);
+        HoaDon hd = daoHD.timHDTheoMaHD(maHD);
+        hdHienTai = hd;
         return ResponseEntity.ok(hd);
+    }
+
+    @GetMapping("viewNVChanges")
+    @ResponseBody
+    public ResponseEntity<?> getlistKH(@RequestParam("pageNVChanges") Optional<Integer> pageParam) {
+        Pageable p = PageRequest.of(pageParam.orElse(0), 5);
+        Page<KhachHang> pageNV = daoKH.findAll(p);
+        return ResponseEntity.ok(pageNV);
+    }
+
+    // lựa chọn khách hàng tại hóa đơn tại quầy khi khách hàng cung cấp thông tin
+    @GetMapping("ChoseKH/{id}")
+    public String choseNV(@PathVariable("id") Integer id, Model model) {
+        HoaDon hdset = hdHienTai;
+        Optional<KhachHang> kh = daoKH.findById(id);
+        hdset.setKhachhang(kh.get());
+        daoHD.capNhatHD(hdset);
+        model.addAttribute("check", hdHienTai.getMahoadon());
+        return "redirect:/hoa-don/ban-hang";
+    }
+
+    @GetMapping("searchNV")
+    @ResponseBody
+    public ResponseEntity<?> timlistKH(@RequestParam("keySearch") String key) {
+        List<KhachHang> pageNV = daoKH.timNVTheoMa(key);
+        return ResponseEntity.ok(pageNV);
     }
 
 }
