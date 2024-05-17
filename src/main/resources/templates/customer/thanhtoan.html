@@ -18,8 +18,31 @@
     }
     .right {
         position: relative;
+        padding-top: 45px;
+        padding-left: 25px;
         width: 40%;
     }
+    .spacer-row {
+        height: 15px; /* Chiều cao của hàng trống */
+    }
+    .xemthem {
+        font-size: 14px;
+        font-family: 'futura-REGULAR', sans-serif;
+        cursor: pointer;
+        color: #338dbc;
+        fill: none;
+        margin-bottom: 15px;
+    }
+    .a {
+        font-size: 14px;
+        font-family: 'futura-REGULAR', sans-serif;
+        cursor: pointer;
+        margin-bottom: 5px;
+        padding: 10px;
+        margin-right: 5px;
+        border: 1px solid red;
+    }
+
 </style>
 <body class="container">
 <div class="tong">
@@ -85,17 +108,67 @@
         </form>
     </div>
     <div class="right">
-        <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;">Giảm 120.000đ</h4>
-        <p style="font-size: 14px; margin: 0; padding: 0; color: black">Đơn hàng từ 890.000đ trở lên</p>
-        <div class="ma-item-des">
+        <table>
+            <tbody>
             <div>
-                <p style="margin: 0; white-space: nowrap;">Mã: <b class="code">14FRMGR24MNFNS</b></p>
-                <p>HSD: 31/05/2024</p>
+                <tr>
+                    <td class="anhsp" style="width: 15%;">
+                        <img src="../dist/img/bong2.jpg" width="100%" height="40px"/>
+                        <span class="position-absolute top-1 start-85 translate-middle badge rounded-pill bg-danger">3</span>
+                    </td>
+                    <td style="width: 60%; padding-left: 15px;">
+                        <h8 style="margin: 0;padding-top: 0;">Giày Thể Thao Nữ Biti's Hunter x DC Batman DSWH09099</h8>
+                        <p style="margin: 0;padding-top: 0;">Đen / 36</p>
+                    </td>
+                    <td style="width: 25%; text-align: right;">
+                        <div class="d-flex justify-content-end align-items-center">
+                            <b>720.000</b>
+                            <b style="font-size: 10px;">đ</b>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="spacer-row"><td colspan="3"></td></tr>
+                <tr>
+                    <td class="anhsp" style="width: 15%;">
+                        <img src="../dist/img/bong2.jpg" width="100%" height="40px"/>
+                        <span class="position-absolute top-1 start-85 translate-middle badge rounded-pill bg-danger">3</span>
+                    </td>
+                    <td style="width: 60%; padding-left: 15px;">
+                        <h8 style="margin: 0;padding-top: 0;">Giày Thể Thao Nữ Biti's Hunter x DC Batman DSWH09099</h8>
+                        <p style="margin: 0;padding-top: 0;">Đen / 36</p>
+                    </td>
+                    <td style="width: 25%; text-align: right;">
+                        <div class="d-flex justify-content-end align-items-center">
+                            <b>720.000</b>
+                            <b style="font-size: 10px;">đ</b>
+                        </div>
+                    </td>
+                </tr>
             </div>
-            <div>
-                Sao chép mã
+            </tbody>
+        </table>
+        <hr>
+        <div class="d-flex justify-content-between mb-3">
+            <div class="form-floating" style="width: 70%; padding-right: 20px;">
+                <input type="email" class="form-control" id="magiamgia" placeholder="Mã giảm giá">
+                <label for="magiamgia">Mã giảm giá</label>
             </div>
+            <button style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 30%; height: 55px; border-radius: 10px; border-color: rgb(249,72,42);">Sử dụng</button>
         </div>
+        <div class="xemthem">
+            <svg width="15" height="10" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M17.3337 5.3335V2.00016C17.3337 1.07516 16.5837 0.333496 15.667 0.333496H2.33366C1.41699 0.333496 0.675326 1.07516 0.675326 2.00016V5.3335C1.59199 5.3335 2.33366 6.0835 2.33366 7.00016C2.33366 7.91683 1.59199 8.66683 0.666992 8.66683V12.0002C0.666992 12.9168 1.41699 13.6668 2.33366 13.6668H15.667C16.5837 13.6668 17.3337 12.9168 17.3337 12.0002V8.66683C16.417 8.66683 15.667 7.91683 15.667 7.00016C15.667 6.0835 16.417 5.3335 17.3337 5.3335ZM15.667 4.11683C14.6753 4.69183 14.0003 5.77516 14.0003 7.00016C14.0003 8.22516 14.6753 9.3085 15.667 9.8835V12.0002H2.33366V9.8835C3.32533 9.3085 4.00033 8.22516 4.00033 7.00016C4.00033 5.76683 3.33366 4.69183 2.34199 4.11683L2.33366 2.00016H15.667V4.11683ZM9.83366 9.50016H8.16699V11.1668H9.83366V9.50016ZM8.16699 6.16683H9.83366V7.8335H8.16699V6.16683ZM9.83366 2.8335H8.16699V4.50016H9.83366V2.8335Z" fill="#318DBB"></path>
+            </svg>
+            <span>Xem thêm mã giảm giá</span>
+        </div>
+        <div id="list_short_coupon">
+            <div class="a"><span data-code="50K1605KM3105KM">Giảm 50,000 ₫</span></div>
+
+            <div class="a"><span data-code="90K1605KM3105KM">Giảm 90,000 ₫</span></div>
+
+            <div class="a"><span data-code="120K1605KM3105KM">Giảm 120,000 ₫</span></div>
+        </div>
+
     </div>
 </div>
 </body>
