@@ -529,39 +529,8 @@
                 </div>
                 <hr>
                 <div class="row ps-2 pe-2">
-                    <div class="col-7">
-                        <p>
-                            <input type="text" class="form-control" placeholder="Nhập họ và tên">
-                        </p>
-                        <p>
-                            <input type="text" class="form-control" placeholder="Nhập số điện thoại">
-                        </p>
-                        <p>
-                            <input type="text" class="form-control" placeholder="Nhập email">
-                        </p>
-                        <p>
-                            <input type="text" class="form-control" placeholder="Nhập địa chỉ">
-                        </p>
-                        <p class="d-flex">
-                            <select class="form-control">
-                                <option>Chọn tỉnh</option>
-                                <option>Hà Nội</option>
-                                <option>Hải Phòng</option>
-                            </select>
-                            <select style="margin-left: 20px" class="form-control">
-                                <option>Chọn quận</option>
-                                <option>Hà Nội</option>
-                                <option>Hải Phòng</option>
-                            </select>
-                            <select style="margin-left: 20px" class="form-control">
-                                <option>Chọn xã</option>
-                                <option>Hà Nội</option>
-                                <option>Hải Phòng</option>
-                            </select>
-                        </p>
-                        <p>
-                            <textarea class="form-control" placeholder="Ghi chú"></textarea>
-                        </p>
+                    <div class="col-7" id="diachihtml">
+
                     </div>
                     <div class="col-5">
                         <h5>
@@ -590,19 +559,14 @@
                             <p style="font-weight: bold">Mã giảm giá:</p>
                             <p>JFKSIFNH15</p>
                         </div>
-                        <div class="d-flex justify-content-between ">
-                            <p style="font-weight: bold">Trả sau:</p>
-                            <p class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch"
-                                    id="flexSwitchCheckDefault">
+                        <div class="d-flex justify-content-between " id="trasauhtml">
 
-                            </p>
                         </div>
                         <div class="d-flex justify-content-between">
                             <p style="font-weight: bold">Giao hàng:</p>
                             <p class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch"
-                                    id="flexSwitchCheckDefault">
+                                <input class="form-check-input" type="checkbox" role="switch" onclick="giaohang()"
+                                    id="checktrasau">
                             </p>
                         </div>
                         <div class="d-flex justify-content-between">
@@ -1727,6 +1691,60 @@ tabindex="0">
 
                 })
         }
+        //hiển thị nút trả sau trước
+        function giaohang() {
+            var htmltrasau = '';
+            var htmldiachi = '';
+
+
+
+            htmltrasau = `  <p style="font-weight: bold">Trả sau:</p>
+                            <p class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="trasau">
+                            </p>`;
+            htmldiachi = `                        <p>
+                            <input type="text" class="form-control" placeholder="Nhập họ và tên">
+                        </p>
+                        <p>
+                            <input type="text" class="form-control" placeholder="Nhập số điện thoại">
+                        </p>
+                        <p>
+                            <input type="text" class="form-control" placeholder="Nhập email">
+                        </p>
+                        <p>
+                            <input type="text" class="form-control" placeholder="Nhập địa chỉ">
+                        </p>
+                        <p class="d-flex">
+                            <select class="form-control">
+                                <option>Chọn tỉnh</option>
+                                <option>Hà Nội</option>
+                                <option>Hải Phòng</option>
+                            </select>
+                            <select style="margin-left: 20px" class="form-control">
+                                <option>Chọn quận</option>
+                                <option>Hà Nội</option>
+                                <option>Hải Phòng</option>
+                            </select>
+                            <select style="margin-left: 20px" class="form-control">
+                                <option>Chọn xã</option>
+                                <option>Hà Nội</option>
+                                <option>Hải Phòng</option>
+                            </select>
+                        </p>
+                        <p>
+                            <textarea class="form-control" placeholder="Ghi chú"></textarea>
+                        </p>`;
+            var checkBox = document.getElementById('checktrasau');
+            if (checkBox.checked) {
+                document.getElementById('trasauhtml').innerHTML = htmltrasau;
+                document.getElementById('diachihtml').innerHTML = htmldiachi;
+            } else {
+                document.getElementById('trasauhtml').innerHTML = '';
+                document.getElementById('diachihtml').innerHTML = '';
+            }
+
+        }
+
 
     </script>
 </body>
