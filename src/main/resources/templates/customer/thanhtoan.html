@@ -1,0 +1,102 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<!--thư viện-->
+<nav th:replace="~{/layout/head.html}"></nav>
+<nav th:replace="~{/layoutadmin/head.html}"></nav>
+<!--end-->
+<style>
+    .tong{
+        width: 100%;
+        background: #fff;
+        display: flex;
+    }
+    .left {
+        width: 60%;
+        padding-right: 25px;
+        border-right: 1px solid #ccc;
+        padding-top: 70px;
+    }
+    .right {
+        position: relative;
+        width: 40%;
+    }
+</style>
+<body class="container">
+<div class="tong">
+    <div class="left">
+        <img class="logo" src="../dist/img/logo_bong2.jpg" height="70" width="130">
+        <p style="color: red; margin: 0;padding: 0;">Mang đến sự tự tin trong bạn</p>
+        <h6 style="margin-top: 50px;">THÔNG TIN GIAO HÀNG</h6>
+        <div class="mt-3 d-flex justify-content-start">
+            <p>Bạn đã có tài khoản?</p>
+            <a href="#" style="color: rgb(249,72,42); padding-left: 5px; text-decoration: none; text-transform: none;">Đăng nhập</a>
+        </div>
+        <form>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="hovaten" placeholder="Họ và tên">
+                <label for="hovaten">Họ và tên</label>
+            </div>
+            <div class="d-flex justify-content-between mb-3">
+                <div class="form-floating" style="width: 70%; padding-right: 20px;">
+                    <input type="email" class="form-control" id="email" placeholder="name@example.com">
+                    <label for="email">Email</label>
+                </div>
+                <div class="form-floating" style="width: 30%;">
+                    <input type="text" class="form-control" id="sdt" placeholder="Số điện thoại">
+                    <label for="sdt">Số điện thoại</label>
+                </div>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="diachi" placeholder="Địa chỉ">
+                <label for="diachi">Địa chỉ</label>
+            </div>
+            <div class="d-flex justify-content-between mb-4">
+                <div class="form-floating" style="padding-right: 20px;">
+                    <select class="form-select" id="tinh" aria-label="Floating label select example">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                    <label for="tinh">Tỉnh/thành phố</label>
+                </div>
+                <div class="form-floating" style="padding-right: 20px;">
+                    <select class="form-select" id="huyen" aria-label="Floating label select example">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                    <label for="huyen">Quận/huyện</label>
+                </div>
+                <div class="form-floating">
+                    <select class="form-select" id="xa" aria-label="Floating label select example">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                    <label for="xa">Phường/xã</label>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end mb-4">
+                <button style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 40%; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">Tiếp tục đến phương thức thanh toán</button>
+            </div>
+        </form>
+    </div>
+    <div class="right">
+        <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;">Giảm 120.000đ</h4>
+        <p style="font-size: 14px; margin: 0; padding: 0; color: black">Đơn hàng từ 890.000đ trở lên</p>
+        <div class="ma-item-des">
+            <div>
+                <p style="margin: 0; white-space: nowrap;">Mã: <b class="code">14FRMGR24MNFNS</b></p>
+                <p>HSD: 31/05/2024</p>
+            </div>
+            <div>
+                Sao chép mã
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
