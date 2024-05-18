@@ -55,6 +55,37 @@ public interface SanPhamCustomerRepository extends JpaRepository<SanPham,Integer
                """)
     List<Object[]> findProductsGioiTinh1();
 
+
+    //tăng dần nam theo giá tiền
+    @Query(nativeQuery = true, value = """
+         SELECT sp.id, sp.tensanpham, sp.ngaytao, tongSoLuong, sp.trangthai, spct.giatien, anh.tenanh, spct.GioiTinh
+         FROM SanPham sp
+         JOIN (
+             SELECT IdSanPham, SUM(soluong) AS tongSoLuong, giatien, GioiTinh
+             FROM SanPhamChiTiet
+             GROUP BY IdSanPham, giatien, GioiTinh
+         ) spct ON sp.id = spct.IdSanPham
+         JOIN Anh anh ON sp.id = anh.Id
+         WHERE spct.GioiTinh = 1
+         ORDER BY spct.giatien ASC 
+               """)
+    List<Object[]> loctangdan();
+
+    //giảm dần nam theo giá tiền
+    @Query(nativeQuery = true, value = """
+         SELECT sp.id, sp.tensanpham, sp.ngaytao, tongSoLuong, sp.trangthai, spct.giatien, anh.tenanh, spct.GioiTinh
+         FROM SanPham sp
+         JOIN (
+             SELECT IdSanPham, SUM(soluong) AS tongSoLuong, giatien, GioiTinh
+             FROM SanPhamChiTiet
+             GROUP BY IdSanPham, giatien, GioiTinh
+         ) spct ON sp.id = spct.IdSanPham
+         JOIN Anh anh ON sp.id = anh.Id
+         WHERE spct.GioiTinh = 1
+         ORDER BY spct.giatien DESC 
+               """)
+    List<Object[]> locgiamdan();
+
     //dùng để lọc sp client có giới tính là 1 và theo thương hiệu, kích cỡ
     @Query(value = """
          SELECT sp.id, sp.tensanpham, sp.ngaytao, SUM(spct.soluong) AS tongSoLuong, sp.trangthai, spct.giatien, anh.tenanh, spct.gioitinh
@@ -68,4 +99,33 @@ public interface SanPhamCustomerRepository extends JpaRepository<SanPham,Integer
          ORDER BY sp.ngaytao DESC, tongSoLuong DESC
                """)
     List<Object[]> searchByGender1(List<Integer> idthuonghieu, List<Integer> idkichco);
+    // tang dan nu theo gia tien
+    @Query(nativeQuery = true, value = """
+         SELECT sp.id, sp.tensanpham, sp.ngaytao, tongSoLuong, sp.trangthai, spct.giatien, anh.tenanh, spct.GioiTinh
+         FROM SanPham sp
+         JOIN (
+             SELECT IdSanPham, SUM(soluong) AS tongSoLuong, giatien, GioiTinh
+             FROM SanPhamChiTiet
+             GROUP BY IdSanPham, giatien, GioiTinh
+         ) spct ON sp.id = spct.IdSanPham
+         JOIN Anh anh ON sp.id = anh.Id
+         WHERE spct.GioiTinh = 0
+         ORDER BY spct.giatien ASC 
+               """)
+    List<Object[]> loctangdannu();
+
+    // tang dan nu theo gia tien
+    @Query(nativeQuery = true, value = """
+         SELECT sp.id, sp.tensanpham, sp.ngaytao, tongSoLuong, sp.trangthai, spct.giatien, anh.tenanh, spct.GioiTinh
+         FROM SanPham sp
+         JOIN (
+             SELECT IdSanPham, SUM(soluong) AS tongSoLuong, giatien, GioiTinh
+             FROM SanPhamChiTiet
+             GROUP BY IdSanPham, giatien, GioiTinh
+         ) spct ON sp.id = spct.IdSanPham
+         JOIN Anh anh ON sp.id = anh.Id
+         WHERE spct.GioiTinh = 0
+         ORDER BY spct.giatien DESC 
+               """)
+    List<Object[]> locgiamdannu();
 }
