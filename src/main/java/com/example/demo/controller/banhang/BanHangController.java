@@ -137,8 +137,8 @@ public class BanHangController {
         return "redirect:/hoa-don/ban-hang";
     }
 
-    @GetMapping("delete-sp-hdct/{id}")
-    public String deleteSPHDCT(@PathVariable("id") Integer id) {
+    @GetMapping("delete/{id}")
+    public String deleteSP(@PathVariable("id") Integer id) {
         HoaDonChiTiet hdDelete = daoHDCT.findByID(id);
         int slHienTai = hdDelete.getSoluong();
         daoHDCT.deleteById(id);
@@ -149,8 +149,8 @@ public class BanHangController {
     }
 
 
-    @GetMapping("update-sp-hdct/{id}/{sl}")
-    public String updateSPHDCT(@PathVariable("id") Integer id, @PathVariable("sl") Integer sl) {
+    @GetMapping("update/{id}/{sl}")
+    public String updateSP(@PathVariable("id") Integer id, @PathVariable("sl") Integer sl) {
         HoaDonChiTiet hdDelete = daoHDCT.findByID(id);
         SanPhamChiTiet spUpdateQuantity = hdDelete.getSanphamchitiet();
         if (hdDelete.getSoluong() == sl) {

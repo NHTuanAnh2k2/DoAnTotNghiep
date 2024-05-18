@@ -799,14 +799,14 @@
             </td>
             <td style="color: red;font-weight: bold;vertical-align: middle;">${(hd.soluong * hd.giasanpham).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
             <td style="vertical-align: middle;">
-                                                           <a href="http://localhost:8080/ban-hang-tai-quay/delete-sp-hdct/${hd.id}"
+                                                           <a href="http://localhost:8080/ban-hang-tai-quay/delete/${hd.id}"
                                                             >
                                                             <button class="btn btn-outline-danger"
                                                                 onclick="return confirm('Bạn có muốn xóa sản phẩm này không?')"
                                                                 type="button"><i class="bi bi-trash3"></i></button></a>
 
 
-                                                                <a href="http://localhost:8080/ban-hang-tai-quay/update-sp-hdct/${hd.id}/${hd.soluong}" id="${hd.id+'fsport'}"
+                                                                <a href="http://localhost:8080/ban-hang-tai-quay/update/${hd.id}/${hd.soluong}" id="${hd.id + 'fsport'}"
                                                             >
                                                             <button class="btn btn-outline-warning"
                                                                 onclick="return confirm('Bạn có muốn cập nhật lại sản phẩm này không?')"
@@ -915,7 +915,7 @@ tabindex="0">
             input.value = numericValue;
 
             var element = document.getElementById(input.id + 'fsport');
-            var newHref = "update-sp-hdct/" + input.id + "/" + input.value;
+            var newHref = " http://localhost:8080/ban-hang-tai-quay/update/" + input.id + "/" + input.value;
             element.setAttribute("href", newHref);
         }
     </script>
