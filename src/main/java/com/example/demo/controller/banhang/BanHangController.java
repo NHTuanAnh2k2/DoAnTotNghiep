@@ -1,6 +1,7 @@
 package com.example.demo.controller.banhang;
 
 import com.example.demo.entity.*;
+import com.example.demo.info.NguoiDungKHInfo;
 import com.example.demo.repository.khachhang.KhachHangRepostory;
 import com.example.demo.service.HoaDonChiTietService;
 import com.example.demo.service.HoaDonService;
@@ -175,5 +176,9 @@ public class BanHangController {
         return "redirect:/hoa-don/ban-hang";
     }
 
+    @ModelAttribute("nguoidung")
+    public NguoiDungKHInfo dsMauSac() {
+        return new NguoiDungKHInfo();
+    }
 
 }
