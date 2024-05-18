@@ -787,7 +787,7 @@
                 <span style="margin-left: 7px">${stt}</span>
             </td>
             <td style="vertical-align: middle;">
-                <img src="../dist/img/bong2.jpg" width="100px" height="100px" />
+                <img src="${hd.sanphamchitiet.anh}" width="100px" height="100px" />
             </td>
             <td style="vertical-align: middle;">
                 <p style="font-weight: bold">${hd.sanphamchitiet.sanpham.tensanpham}</p>
@@ -795,15 +795,23 @@
                 <p> Size: ${hd.sanphamchitiet.kichco.ten}</p>
             </td>
             <td style="vertical-align: middle;">
-                <input class="form-control" style="width: 120px;height: 30px; margin-left: 20%;" type="text" value="${hd.soluong}" oninput="changeQuantity(event)">
+                <input class="form-control" style="width: 120px;height: 30px; margin-left: 20%;" type="text" id="${hd.id}" value="${hd.soluong}" oninput="changeQuantity(event)">
             </td>
             <td style="color: red;font-weight: bold;vertical-align: middle;">${(hd.soluong * hd.giasanpham).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
             <td style="vertical-align: middle;">
-                <a 
-                 href="#">
-                <button class="btn btn-outline-danger"
-                onclick="return confirm('Bạn có muốn xóa sản phẩm này không?')"
-                type="button"><i class="bi bi-trash3"></i></button></a>
+                                                           <a href="http://localhost:8080/ban-hang-tai-quay/delete-sp-hdct/${hd.id}"
+                                                            >
+                                                            <button class="btn btn-outline-danger"
+                                                                onclick="return confirm('Bạn có muốn xóa sản phẩm này không?')"
+                                                                type="button"><i class="bi bi-trash3"></i></button></a>
+
+
+                                                                <a href="http://localhost:8080/ban-hang-tai-quay/update-sp-hdct/${hd.id}/${hd.soluong}" id="${hd.id+'fsport'}"
+                                                            >
+                                                            <button class="btn btn-outline-warning"
+                                                                onclick="return confirm('Bạn có muốn cập nhật lại sản phẩm này không?')"
+                                                                type="button"><i
+                                                                    class="bi bi-arrow-clockwise bi-warning"></i></button></a>
             </td>
         </tr>
                             `;
@@ -967,7 +975,7 @@ tabindex="0">
                                         </p>
                                     </td>
                                    <td>
-                                    <a href="ChoseSP/${hd.id}"><button
+                                    <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
                                     class="btn btn-warning">
                                     chọn
                                      </button></a>
@@ -1023,7 +1031,7 @@ tabindex="0">
                                         </p>
                                     </td>
                                    <td>
-                                    <a href="ChoseSP/${hd.id}"><button
+                                    <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
                                     class="btn btn-warning">
                                     chọn
                                      </button></a>
@@ -1073,7 +1081,7 @@ tabindex="0">
                                         </p>
                                     </td>
                                    <td>
-                                    <a href="ChoseSP/${hd.id}"><button
+                                    <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
                                     class="btn btn-warning">
                                     chọn
                                      </button></a>
@@ -1137,7 +1145,7 @@ tabindex="0">
                                         </p>
                                     </td>
                                    <td>
-                                    <a href="ChoseSP/${hd.id}"><button
+                                    <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
                                     class="btn btn-warning">
                                     chọn
                                      </button></a>
@@ -1199,7 +1207,7 @@ tabindex="0">
                                         </p>
                                     </td>
                                    <td>
-                                    <a href="ChoseSP/${hd.id}"><button
+                                    <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
                                     class="btn btn-warning">
                                     chọn
                                      </button></a>
@@ -1263,7 +1271,7 @@ tabindex="0">
                                         </p>
                                     </td>
                                    <td>
-                                    <a href="ChoseSP/${hd.id}"><button
+                                    <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
                                     class="btn btn-warning">
                                     chọn
                                      </button></a>
@@ -1329,7 +1337,7 @@ tabindex="0">
                                         </p>
                                     </td>
                                    <td>
-                                    <a href="ChoseSP/${hd.id}"><button
+                                    <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
                                     class="btn btn-warning">
                                     chọn
                                      </button></a>
