@@ -485,52 +485,49 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="">
+                            <form th:action="@{http://localhost:8080/ban-hang-tai-quay/add-nhanh}" th:object="${AddKHNhanh}" method="post">
                                 <p>
-                                    <input type="text" class="form-control" placeholder="Nhập họ và tên">
+                                    <input type="text" class="form-control" placeholder="Nhập họ và tên"
+                                        th:field="*{ten}">
                                 </p>
                                 <p>
-                                    <input type="text" class="form-control" placeholder="Nhập số điện thoại">
+                                    <input type="text" class="form-control" placeholder="Nhập số điện thoại"
+                                        th:field="*{sdt}">
                                 </p>
                                 <p>
-                                    <input type="text" class="form-control" placeholder="Nhập email">
-                                </p>
-                                <p>
-                                    <input type="text" class="form-control" placeholder="Nhập địa chỉ">
+                                    <input type="text" class="form-control" placeholder="Nhập email"
+                                        th:field="*{email}">
                                 </p>
                                 <p class="d-flex">
-                                    <select class="form-control">
-                                        <option>Chọn tỉnh</option>
-                                        <option>Hà Nội</option>
-                                        <option>Hải Phòng</option>
+                                    <select class="form-select form-select-sm mb-3" id="city" th:field="*{tinh}">
+                                        <option value="" th:text="*{tinh}" selected>
+                                            Chọn tỉnh thành</option>
                                     </select>
-                                    <select style="margin-left: 20px" class="form-control">
-                                        <option>Chọn quận</option>
-                                        <option>Hà Nội</option>
-                                        <option>Hải Phòng</option>
+                                    <select class="form-select form-select-sm mb-3" id="district" th:field="*{huyen}">
+                                        <option value="" th:text="*{huyen}" selected>Chọn quận huyện</option>
                                     </select>
-                                    <select style="margin-left: 20px" class="form-control">
-                                        <option>Chọn xã</option>
-                                        <option>Hà Nội</option>
-                                        <option>Hải Phòng</option>
+                                    <select class="form-select form-select-sm mb-3" id="ward" th:field="*{xa}">
+                                        <option value="" th:text="*{xa}" selected>
+                                            Chọn phường xã</option>
                                     </select>
                                 </p>
                                 <p>
-                                    <textarea class="form-control" placeholder="Ghi chú"></textarea>
+                                    <textarea class="form-control" placeholder="Số nhà/đường" th:field="*{diachi}"></textarea>
                                 </p>
                                 <div class="d-flex justify-content-start">
                                     <p class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" role="switch" checked
-                                            id="inputThemNhanh" onclick="seton()">
+                                            id="inputThemNhanh" onclick="seton()"  th:field="*{check}">
                                     </p>
                                     <div class="ms-3" id="showndcheck">
 
-                                        <p style="font-style: italic;">Thêm nhanh và lựa chọn khách hàng cho hóa đơn!</p>
+                                        <p style="font-style: italic;">Thêm nhanh và lựa chọn khách hàng cho hóa đơn!
+                                        </p>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-end">
-                                    <button type="button" class="btn"
-                                        style="background-color: rgb(249,72,42);color: white">Thêm</button>
+                                    <button type="submit" class="btn"
+                                        style="background-color: rgb(249,72,42);color: white">Thêm nhanh</button>
                                 </div>
                             </form>
 
@@ -1825,7 +1822,7 @@ tabindex="0">
                 htmlshowon = ` <p style="font-style: italic;">Thêm nhanh và lựa chọn khách hàng cho hóa đơn!</p>`;
                 show.innerHTML = htmlshowon;
             }
-            
+
             else {
                 htmlshowon = ` <p style="text-decoration: line-through; font-style: italic;">Thêm nhanh và lựa chọn khách hàng cho hóa đơn!</p>`;
                 show.innerHTML = htmlshowon;
@@ -1833,8 +1830,65 @@ tabindex="0">
         }
     </script>
 
-    <!-- thêm nhanh khách hàng -->
 
+    <!-- call api địa chỉ cho thêm nhanh khách hàng -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script>
+        var citis = document.getElementById("city");
+        var districts = document.getElementById("district");
+        var wards = document.getElementById("ward");
+        var Parameter = {
+            url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
+            method: "GET",
+            responseType: "application/json",
+        };
+        var promise = axios(Parameter);
+        promise.then(function (result) {
+            renderCity(result.data);
+        });
+
+        function renderCity(data) {
+            for (const x of data) {
+                var opt = document.createElement('option');
+                opt.value = x.Name;
+                opt.text = x.Name;
+                opt.setAttribute('data-id', x.Id);
+                citis.options.add(opt);
+            }
+            citis.onchange = function () {
+                district.length = 1;
+                ward.length = 1;
+                if (this.options[this.selectedIndex].dataset.id != "") {
+                    const result = data.filter(n => n.Id === this.options[this.selectedIndex].dataset.id);
+
+                    for (const k of result[0].Districts) {
+                        var opt = document.createElement('option');
+                        opt.value = k.Name;
+                        opt.text = k.Name;
+                        opt.setAttribute('data-id', k.Id);
+                        district.options.add(opt);
+                    }
+                }
+            };
+            district.onchange = function () {
+                ward.length = 1;
+                const dataCity = data.filter((n) => n.Id === citis.options[citis.selectedIndex].dataset.id);
+                if (this.options[this.selectedIndex].dataset.id != "") {
+                    const dataWards = dataCity[0].Districts.filter(n => n.Id === this.options[this.selectedIndex].dataset.id)[0].Wards;
+
+                    for (const w of dataWards) {
+                        var opt = document.createElement('option');
+                        opt.value = w.Name;
+                        opt.text = w.Name;
+                        opt.setAttribute('data-id', w.Id);
+                        wards.options.add(opt);
+                    }
+                }
+            };
+        }
+    </script>
 
 
 </body>

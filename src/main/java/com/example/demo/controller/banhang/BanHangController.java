@@ -1,7 +1,11 @@
 package com.example.demo.controller.banhang;
 
 import com.example.demo.entity.*;
+import com.example.demo.info.AddKHNhanhFormBanHang;
 import com.example.demo.info.NguoiDungKHInfo;
+import com.example.demo.info.ThayDoiTTHoaDon_KHInfo;
+import com.example.demo.repository.DiaChiRepository;
+import com.example.demo.repository.NguoiDungRepository;
 import com.example.demo.repository.khachhang.KhachHangRepostory;
 import com.example.demo.service.HoaDonChiTietService;
 import com.example.demo.service.HoaDonService;
@@ -26,6 +30,10 @@ import java.util.Optional;
 @Controller
 @RequestMapping("ban-hang-tai-quay")
 public class BanHangController {
+    @Autowired
+    NguoiDungRepository daoNguoiDung;
+    @Autowired
+    DiaChiRepository daoDiaChi;
     @Autowired
     SanPhamChiTietService daoSPCT;
     @Autowired
@@ -176,9 +184,34 @@ public class BanHangController {
         return "redirect:/hoa-don/ban-hang";
     }
 
-    @ModelAttribute("nguoidung")
-    public NguoiDungKHInfo dsMauSac() {
-        return new NguoiDungKHInfo();
+
+    @PostMapping("add-nhanh")
+    public String changesTTDH(Model model, @ModelAttribute("AddKHNhanh") AddKHNhanhFormBanHang kh) {
+        NguoiDung nguoidung = new NguoiDung();
+        nguoidung.setHovaten(kh.getTen());
+        nguoidung.setSodienthoai(kh.getSdt());
+        nguoidung.setEmail(kh.getEmail());
+        nguoidung.setGioitinh(true);
+        nguoidung.setNgaysinh(Date.valueOf("2020-06-06"));
+        nguoidung.setCccd("024099013632");
+        daoNguoiDung.save(nguoidung);
+        NguoiDung nguoidungtim = daoNguoiDung.findByEmail(kh.getEmail());
+        DiaChi diachi = new DiaChi();
+        diachi.setTenduong(kh.getDiachi());
+        diachi.setXaphuong(kh.getXa());
+        diachi.setQuanhuyen(kh.getHuyen());
+        diachi.setTinhthanhpho(kh.getTinh());
+        diachi.setNguoidung(nguoidungtim);
+        daoDiaChi.save(diachi);
+        KhachHang khAdd = new KhachHang();
+        khAdd.setNguoidung(nguoidungtim);
+        daoKH.save(khAdd);
+
+        if (kh.getCheck()) {
+            hdHienTai.setKhachhang(khAdd);
+            return "redirect:/hoa-don/ban-hang";
+        }
+        return "redirect:/hoa-don/ban-hang";
     }
 
 }
