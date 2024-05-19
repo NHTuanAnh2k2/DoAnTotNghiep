@@ -14,7 +14,9 @@
 <!-- page banner area end -->
 
 <!-- cart page content section start -->
+
 <section class="content" style="margin-top: 50px">
+    <h6 style="margin-left: 20px"><a th:href="@{/customer/trangchu}">Trang chủ </a>/ Tài khoản của tôi</h6>
     <!-- /.container-fluid -->
 
     <div class="container-fluid">
@@ -25,19 +27,38 @@
                          aria-orientation="vertical">
                         <button class="nav-link active text-start" id="v-pills-home-tab" data-bs-toggle="pill"
                                 data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home"
-                                aria-selected="true">Hồ sơ
+                                aria-selected="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-card-heading" viewBox="0 0 16 16">
+                                <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"/>
+                                <path d="M3 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m0-5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5z"/>
+                            </svg>
+                            Hồ sơ
                         </button>
                         <button class="nav-link text-start" id="v-pills-profile-tab" data-bs-toggle="pill"
                                 data-bs-target="#v-pills-profile" type="button" role="tab"
-                                aria-controls="v-pills-profile" aria-selected="false">Địa chỉ
+                                aria-controls="v-pills-profile" aria-selected="false">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-house-add" viewBox="0 0 16 16">
+                                <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h4a.5.5 0 1 0 0-1h-4a.5.5 0 0 1-.5-.5V7.207l5-5 6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z"/>
+                                <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 1 0 1 0v-1h1a.5.5 0 1 0 0-1h-1v-1a.5.5 0 0 0-.5-.5"/>
+                            </svg>
+                            Địa chỉ
                         </button>
                         <button class="nav-link text-start" id="v-pills-disabled-tab" data-bs-toggle="pill"
                                 data-bs-target="#v-pills-disabled" type="button" role="tab"
-                                aria-controls="v-pills-disabled" aria-selected="false">Đổi mật khẩu
+                                aria-controls="v-pills-disabled" aria-selected="false">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-key" viewBox="0 0 16 16">
+                                <path d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8m4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5"/>
+                                <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                            </svg>
+                            Đổi mật khẩu
                         </button>
                         <button class="nav-link text-start" id="v-pills-messages-tab" data-bs-toggle="pill"
                                 data-bs-target="#v-pills-messages" type="button" role="tab"
-                                aria-controls="v-pills-messages" aria-selected="false">Đơn hàng đã mua
+                                aria-controls="v-pills-messages" aria-selected="false">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-border-style" viewBox="0 0 16 16">
+                                <path d="M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm-4 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm-4-4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5z"/>
+                            </svg>
+                            Đơn hàng đã mua
                         </button>
                     </div>
 
@@ -46,28 +67,33 @@
             </div>
             <!-- /.col -->
             <div class="col-10">
-                <div class="card" style="margin-right: 150px">
+                <div class="card" style="width: 100%;height: 100%">
                     <div class="card-header">
                         <div class="tab-content" id="v-pills-tabContent">
                             <!--hồ sơ cá nhân-->
                             <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
                                  aria-labelledby="v-pills-home-tab" tabindex="0">
                                 <h3>Hồ sơ của tôi</h3>
-                                <p>Email:
+                                <h6 style="color: red;font-style: italic">Quản lý thông tin hồ sơ để bảo mật tài khoản</h6>
+                                <hr class="border border-danger border opacity-50">
+                                <p><span style="color: red">(*)</span> Tên khách hàng:
                                     <input class="form-control">
                                 </p>
-                                <p>SĐT:
+                                <p><span style="color: red">(*)</span> Email:
                                     <input class="form-control">
                                 </p>
-                                <p>Giới tính:
+                                <p><span style="color: red">(*)</span> SĐT:
+                                    <input class="form-control">
+                                </p>
+                                <p><span style="color: red">(*)</span> Giới tính:
                                     <input type="radio" checked="true">Nam
                                     <input type="radio" checked="true">Nữ
                                 </p>
-                                <p>Ngày sinh:
+                                <p><span style="color: red">(*)</span> Ngày sinh:
                                     <input type="date" class="form-control">
                                 </p>
                                 <p>
-                                    <button class="btn btn-primary">Lưu</button>
+                                    <button class="btn" style="background-color: rgb(249,72,42);color: white">Lưu</button>
                                 </p>
                             </div>
                             <!--end-->
@@ -133,7 +159,7 @@
                                                     <input class="form-control">
                                                 </p>
                                                 <p>
-                                                    <button class="btn btn-primary">Hoàn thành</button>
+                                                    <button class="btn" style="background-color: rgb(249,72,42);color: white">Hoàn thành</button>
                                                 </p>
                                             </div>
 
@@ -142,8 +168,8 @@
                                 </div>
                                 <!--end -->
                                 <p>
-                                    <button class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#themdiachimoi">Thêm địa chỉ mới
+                                    <button class="btn" data-bs-toggle="modal"
+                                            data-bs-target="#themdiachimoi" style="background-color: rgb(249,72,42);color: white">+ Thêm địa chỉ mới
                                     </button>
                                 </p>
                                 <!-- Modal -->
@@ -164,6 +190,13 @@
                                                 <p>SĐT:
                                                     <input class="form-control">
                                                 </p>
+                                                <p>Tỉnh/Thành phố:
+                                                    <select class="form-control">
+                                                        <option>Hà Nội</option>
+                                                        <option>Hà Nội</option>
+                                                        <option>Hà Nội</option>
+                                                    </select>
+                                                </p>
                                                 <p>Quận/Huyện:
                                                     <select class="form-control">
                                                         <option>Hà Nội</option>
@@ -182,7 +215,7 @@
                                                     <input class="form-control">
                                                 </p>
                                                 <p>
-                                                    <button class="btn btn-primary">Hoàn thành</button>
+                                                    <button class="btn" style="background-color: rgb(249,72,42);color: white;margin-left: 350px">Hoàn thành</button>
                                                 </p>
                                             </div>
 
@@ -198,17 +231,19 @@
                             <div class="tab-pane fade" id="v-pills-disabled" role="tabpanel"
                                  aria-labelledby="v-pills-disabled-tab" tabindex="0">
                                 <h3>Đổi mật khẩu</h3>
-                                <p>Mật khẩu hiện tại:
+                                <h6 style="color: red;font-style: italic">Để bảo mật tài khoản, vui lòng không chia sẻ mật khẩu cho người khác</h6>
+                                <hr class="border border-danger border opacity-50">
+                                <p><span style="color: red">(*)</span> Mật khẩu hiện tại:
                                     <input type="password" class="form-control">
                                 </p>
-                                <p>Mật khẩu mới:
+                                <p><span style="color: red">(*)</span> Mật khẩu mới:
                                     <input type="password" class="form-control">
                                 </p>
-                                <p>Xác nhận mật khẩu mới:
+                                <p><span style="color: red">(*)</span> Xác nhận mật khẩu mới:
                                     <input type="password" class="form-control">
                                 </p>
                                 <p>
-                                    <button class="btn btn-warning">Đổi mật khẩu</button>
+                                    <button class="btn" style="background-color: rgb(249,72,42);color: white">Đổi mật khẩu</button>
                                 </p>
                             </div>
                             <!--end-->
@@ -257,8 +292,8 @@
                                                 </td>
                                             </tr>
                                         </table>
-                                        <button class="btn btn-primary">Mua lại</button>
-                                        <button class="btn btn-warning">Đánh giá</button>
+                                        <button class="btn" style="background-color: rgb(249,72,42);color: white">Mua lại</button>
+                                        <button class="btn btn-dark">Đánh giá</button>
                                     </div>
                                     <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
                                         <table class="table">
@@ -279,8 +314,8 @@
                                                 </td>
                                             </tr>
                                         </table>
-                                        <button class="btn btn-primary">Mua lại</button>
-                                        <button class="btn btn-warning">Đánh giá</button>
+                                        <button class="btn" style="background-color: rgb(249,72,42);color: white">Mua lại</button>
+                                        <button class="btn btn-dark">Đánh giá</button>
                                     </div>
                                     <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
                                         <table class="table">
@@ -301,8 +336,8 @@
                                                 </td>
                                             </tr>
                                         </table>
-                                        <button class="btn btn-primary">Mua lại</button>
-                                        <button class="btn btn-warning">Đánh giá</button>
+                                        <button class="btn" style="background-color: rgb(249,72,42);color: white">Mua lại</button>
+                                        <button class="btn btn-dark">Đánh giá</button>
                                     </div>
                                     <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">
                                         <table class="table">
@@ -323,8 +358,8 @@
                                                 </td>
                                             </tr>
                                         </table>
-                                        <button class="btn btn-primary">Mua lại</button>
-                                        <button class="btn btn-warning">Đánh giá</button>
+                                        <button class="btn" style="background-color: rgb(249,72,42);color: white">Mua lại</button>
+                                        <button class="btn btn-dark">Đánh giá</button>
                                     </div>
                                 </div>
 
