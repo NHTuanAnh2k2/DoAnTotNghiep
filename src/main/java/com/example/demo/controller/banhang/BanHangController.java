@@ -206,9 +206,11 @@ public class BanHangController {
         KhachHang khAdd = new KhachHang();
         khAdd.setNguoidung(nguoidungtim);
         daoKH.save(khAdd);
-
+        KhachHang khTim = daoKH.findByNguoiDung(nguoidungtim.getId());
+        hdHienTai.setKhachhang(khTim);
         if (kh.getCheck()) {
-            hdHienTai.setKhachhang(khAdd);
+            hdHienTai.setKhachhang(khTim);
+            daoHD.capNhatHD(hdHienTai);
             return "redirect:/hoa-don/ban-hang";
         }
         return "redirect:/hoa-don/ban-hang";
