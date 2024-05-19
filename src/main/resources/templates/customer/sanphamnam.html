@@ -5,6 +5,24 @@
 <nav th:replace="~{/layout/head.html}"></nav>
 <!--end-->
 <style>
+    /*phantrang*/
+    .custom-btn {
+        border-color: rgb(249, 72, 42);
+        color: black;
+        border-radius: 25px;
+        margin-left: 5px;
+    }
+
+    .custom-btn.active {
+        background-color: rgb(249, 72, 42);
+        color: white !important;
+    }
+
+    .disabled {
+        pointer-events: none;
+        opacity: 0.5;
+    }
+
     /*checkbox*/
     .checkbox-red:checked {
         background-color: red;
@@ -82,7 +100,8 @@
                     <div class="left floatleft">
                         <div style="margin-left: auto; margin-right: 20px;">
                             <div style="position: relative;">
-                                <input class="form-control" type="search" placeholder="Tìm kiếm sản phẩm..." aria-label="Search" style="width: 784px; padding-right: 40px;">
+                                <input class="form-control" type="search" placeholder="Tìm kiếm sản phẩm..."
+                                       aria-label="Search" style="width: 784px; padding-right: 40px;">
                                 <span style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%);">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search"
                viewBox="0 0 16 16">
@@ -95,12 +114,15 @@
                     <div class="right floatright">
                         <!--tăng dần, giảm dần-->
                         <div class="dropdown">
-                            <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Sắp xếp theo giá
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" th:href="@{/customer/sanphamnam/sap-xep-tangdan}" style="font-family:'Bahnschrift">Tăng dần</a>
-                                <a class="dropdown-item" th:href="@{/customer/sanphamnam/sap-xep-giamdan}" style="font-family:'Bahnschrift">Giảm dần</a>
+                                <a class="dropdown-item" th:href="@{/customer/sanphamnam/sap-xep-tangdan}"
+                                   style="font-family:'Bahnschrift">Tăng dần</a>
+                                <a class="dropdown-item" th:href="@{/customer/sanphamnam/sap-xep-giamdan}"
+                                   style="font-family:'Bahnschrift">Giảm dần</a>
                             </div>
                         </div>
                         <!--end-->
@@ -110,7 +132,7 @@
                     <!--nội dung-->
                     <div class="tab-pane fade text-center active show" id="gird">
                         <div class="single-products row">
-                            <div class="col-md-3" th:each="sp, stt : ${listnam}">
+                            <div class="col-md-3" th:each="sp, stt : ${listnam.content}">
                                 <div class="product-item margin40">
                                     <div class="pro-img">
                                         <a th:href="@{/detailsanphamCustomer/{id}(id=${sp[0]})}">
@@ -155,23 +177,54 @@
                             </div>
                             <!---end-->
                         </div>
-                        <div th:if="${listnam.size() == 0}">
+                        <div th:if="${listnam.empty}">
                             <div>
-<!--                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-search"-->
-<!--                                     viewBox="0 0 16 16">-->
-<!--                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>-->
-<!--                                </svg>-->
                                 <img src="../../dist/img/norecord.png" style="width: 250px;height: 150px">
                             </div>
                             <div style="margin-left: 10px">Không tìm thấy kết quả</div>
                         </div>
                     </div>
                     <!--end-->
+                    <!--phân trang-->
+                    <div class="d-flex justify-content-center align-items-center">
+                        <!-- Nút trang trước -->
+                        <a th:href="@{/customer/sanphamnam(p=${listnam.number-1})}" class="text-decoration-none mx-2"
+                           th:classappend="${listnam.number == 0} ? 'disabled' : ''" style="color: black;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                 class="bi bi-chevron-left" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                      d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+                            </svg>
+                        </a>
+
+                        <!-- Các trang -->
+                        <div th:if="${listnam.totalPages > 0}" class="d-flex mx-2">
+                            <div th:each="i : ${#numbers.sequence(0, listnam.totalPages-1)}">
+                                <a th:href="@{/customer/sanphamnam(p=${i})}"
+                                   th:classappend="${i == listnam.number} ? 'active' : ''"
+                                   class="text-decoration-none btn custom-btn mx-1"
+                                   th:text="${i + 1}"></a>
+                            </div>
+                        </div>
+
+                        <!-- Nút trang sau -->
+                        <a th:href="@{/customer/sanphamnam(p=${listnam.number+1})}" class="text-decoration-none mx-2"
+                           th:classappend="${listnam.number + 1 >= listnam.totalPages} ? 'disabled' : ''" style="color: black;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                 class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                      d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+                            </svg>
+                        </a>
+                    </div>
+
                 </div>
             </div>
         </div>
 
-        <h3 style="margin-top: 30px;color:rgb(249,72,42);font-family: 'Lucida Sans Typewriter' " class="text-center">CÁC SẢN PHẨM NỔI BẬT</h3>
+
+        <h3 style="margin-top: 30px;color:rgb(249,72,42);font-family: 'Lucida Sans Typewriter' " class="text-center">CÁC
+            SẢN PHẨM NỔI BẬT</h3>
         <hr class="border border-danger border opacity-50">
         <div class="tab-content">
             <!--nội dung-->
@@ -227,7 +280,8 @@
         </div>
 
         <!--những sản phẩm đang được giảm giá-->
-        <h3 style="margin-top: 30px;color:rgb(249,72,42);font-family: 'Lucida Sans Typewriter'" class="text-center">CÁC SẢN PHẨM MỚI NHẤT</h3>
+        <h3 style="margin-top: 30px;color:rgb(249,72,42);font-family: 'Lucida Sans Typewriter'" class="text-center">CÁC
+            SẢN PHẨM MỚI NHẤT</h3>
         <hr class="border border-danger border opacity-50">
         <div class="tab-content">
             <!--nội dung-->

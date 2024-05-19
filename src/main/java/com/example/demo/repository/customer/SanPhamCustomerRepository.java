@@ -1,6 +1,8 @@
 package com.example.demo.repository.customer;
 
 import com.example.demo.entity.SanPham;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -53,7 +55,7 @@ public interface SanPhamCustomerRepository extends JpaRepository<SanPham,Integer
          WHERE spct.GioiTinh = 1
          ORDER BY sp.ngaytao DESC, tongSoLuong DESC
                """)
-    List<Object[]> findProductsGioiTinh1();
+    Page<Object[]> findProductsGioiTinh1(Pageable pageable);
 
 
     //tăng dần nam theo giá tiền
@@ -69,7 +71,7 @@ public interface SanPhamCustomerRepository extends JpaRepository<SanPham,Integer
          WHERE spct.GioiTinh = 1
          ORDER BY spct.giatien ASC 
                """)
-    List<Object[]> loctangdan();
+    Page<Object[]> loctangdan(Pageable pageable);
 
     //giảm dần nam theo giá tiền
     @Query(nativeQuery = true, value = """
@@ -84,7 +86,7 @@ public interface SanPhamCustomerRepository extends JpaRepository<SanPham,Integer
          WHERE spct.GioiTinh = 1
          ORDER BY spct.giatien DESC 
                """)
-    List<Object[]> locgiamdan();
+    Page<Object[]> locgiamdan(Pageable pageable);
 
     //dùng để lọc sp client có giới tính là 1 và theo thương hiệu, kích cỡ
     @Query(value = """
@@ -98,7 +100,7 @@ public interface SanPhamCustomerRepository extends JpaRepository<SanPham,Integer
          GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai, spct.giatien, anh.tenanh, spct.gioitinh
          ORDER BY sp.ngaytao DESC, tongSoLuong DESC
                """)
-    List<Object[]> searchByGender1(List<Integer> idthuonghieu, List<Integer> idkichco);
+    Page<Object[]> searchByGender1(List<Integer> idthuonghieu, List<Integer> idkichco,Pageable pageable);
     // tang dan nu theo gia tien
     @Query(nativeQuery = true, value = """
          SELECT sp.id, sp.tensanpham, sp.ngaytao, tongSoLuong, sp.trangthai, spct.giatien, anh.tenanh, spct.GioiTinh
