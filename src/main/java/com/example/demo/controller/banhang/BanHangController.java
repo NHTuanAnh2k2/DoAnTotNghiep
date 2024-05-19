@@ -5,6 +5,7 @@ import com.example.demo.info.AddKHNhanhFormBanHang;
 import com.example.demo.info.NguoiDungKHInfo;
 import com.example.demo.info.ThayDoiTTHoaDon_KHInfo;
 import com.example.demo.repository.DiaChiRepository;
+import com.example.demo.repository.KhachHangPhieuGiamRepository;
 import com.example.demo.repository.NguoiDungRepository;
 import com.example.demo.repository.khachhang.KhachHangRepostory;
 import com.example.demo.service.HoaDonChiTietService;
@@ -24,12 +25,16 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("ban-hang-tai-quay")
 public class BanHangController {
+
+    @Autowired
+    KhachHangPhieuGiamRepository daoKHPG;
     @Autowired
     NguoiDungRepository daoNguoiDung;
     @Autowired
@@ -214,6 +219,39 @@ public class BanHangController {
             return "redirect:/hoa-don/ban-hang";
         }
         return "redirect:/hoa-don/ban-hang";
+    }
+
+    @GetMapping("fillMaGiam")
+    @ResponseBody
+    public ResponseEntity<?> fillMaGiam() {
+        KhachHangPhieuGiam result1 = new KhachHangPhieuGiam();
+        KhachHang kh = hdHienTai.getKhachhang();
+        List<HoaDonChiTiet> lsthdct = daoHDCT.getListSPHD(hdHienTai);
+        BigDecimal tongTienSP = new BigDecimal("0");
+        for (HoaDonChiTiet b : lsthdct
+        ) {
+            tongTienSP = tongTienSP.add(b.getGiasanpham().multiply(new BigDecimal(b.getSoluong())));
+        }
+        List<KhachHangPhieuGiam> lst = daoKHPG.findAllByKhachhang(kh);
+        if (lst.size() > 1) {
+            List<KhachHangPhieuGiam> lstnew = new ArrayList<>();
+            for (KhachHangPhieuGiam a : lst
+            ) {
+                if (a.getPhieugiamgia().getDontoithieu().compareTo(tongTienSP) <= 0) {
+                    lstnew.add(a);
+                }
+            }
+            KhachHangPhieuGiam result = lstnew.get(0);
+
+            for (KhachHangPhieuGiam a : lstnew
+            ) {
+                if (a.getPhieugiamgia().getGiatrigiamtoida().compareTo(result.getPhieugiamgia().getGiatrigiamtoida()) == 1) {
+                    result = a;
+                }
+            }
+            result1 = result;
+        }
+        return ResponseEntity.ok(result1);
     }
 
 }
