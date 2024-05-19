@@ -24,8 +24,36 @@ public interface SanPhamCustomerRepository extends JpaRepository<SanPham,Integer
          WHERE spct.GioiTinh = 0
          ORDER BY sp.ngaytao DESC, tongSoLuong DESC
                """)
-    List<Object[]> findProductsGioiTinh0();
+    Page<Object[]> findProductsGioiTinh0(Pageable pageable);
+    // tang dan nu theo gia tien
+    @Query(nativeQuery = true, value = """
+         SELECT sp.id, sp.tensanpham, sp.ngaytao, tongSoLuong, sp.trangthai, spct.giatien, anh.tenanh, spct.GioiTinh
+         FROM SanPham sp
+         JOIN (
+             SELECT IdSanPham, SUM(soluong) AS tongSoLuong, giatien, GioiTinh
+             FROM SanPhamChiTiet
+             GROUP BY IdSanPham, giatien, GioiTinh
+         ) spct ON sp.id = spct.IdSanPham
+         JOIN Anh anh ON sp.id = anh.Id
+         WHERE spct.GioiTinh = 0
+         ORDER BY spct.giatien ASC 
+               """)
+    Page<Object[]> loctangdannu(Pageable pageable);
 
+    // tang dan nu theo gia tien
+    @Query(nativeQuery = true, value = """
+         SELECT sp.id, sp.tensanpham, sp.ngaytao, tongSoLuong, sp.trangthai, spct.giatien, anh.tenanh, spct.GioiTinh
+         FROM SanPham sp
+         JOIN (
+             SELECT IdSanPham, SUM(soluong) AS tongSoLuong, giatien, GioiTinh
+             FROM SanPhamChiTiet
+             GROUP BY IdSanPham, giatien, GioiTinh
+         ) spct ON sp.id = spct.IdSanPham
+         JOIN Anh anh ON sp.id = anh.Id
+         WHERE spct.GioiTinh = 0
+         ORDER BY spct.giatien DESC 
+               """)
+    Page<Object[]> locgiamdannu(Pageable pageable);
 
     //dùng để lọc sp client có giới tính là 0 và theo thương hiệu, kích cỡ
     @Query(value = """
@@ -39,7 +67,7 @@ public interface SanPhamCustomerRepository extends JpaRepository<SanPham,Integer
          GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai, spct.giatien, anh.tenanh, spct.gioitinh
          ORDER BY sp.ngaytao DESC, tongSoLuong DESC
                """)
-    List<Object[]> searchByGender0(List<Integer> idthuonghieu, List<Integer> idkichco);
+    Page<Object[]> searchByGender0(List<Integer> idthuonghieu, List<Integer> idkichco,Pageable pageable);
 
 
     //dùng cho sp client có giới tính là 1
@@ -101,33 +129,31 @@ public interface SanPhamCustomerRepository extends JpaRepository<SanPham,Integer
          ORDER BY sp.ngaytao DESC, tongSoLuong DESC
                """)
     Page<Object[]> searchByGender1(List<Integer> idthuonghieu, List<Integer> idkichco,Pageable pageable);
-    // tang dan nu theo gia tien
-    @Query(nativeQuery = true, value = """
-         SELECT sp.id, sp.tensanpham, sp.ngaytao, tongSoLuong, sp.trangthai, spct.giatien, anh.tenanh, spct.GioiTinh
-         FROM SanPham sp
-         JOIN (
-             SELECT IdSanPham, SUM(soluong) AS tongSoLuong, giatien, GioiTinh
-             FROM SanPhamChiTiet
-             GROUP BY IdSanPham, giatien, GioiTinh
-         ) spct ON sp.id = spct.IdSanPham
-         JOIN Anh anh ON sp.id = anh.Id
-         WHERE spct.GioiTinh = 0
-         ORDER BY spct.giatien ASC 
-               """)
-    List<Object[]> loctangdannu();
 
-    // tang dan nu theo gia tien
-    @Query(nativeQuery = true, value = """
-         SELECT sp.id, sp.tensanpham, sp.ngaytao, tongSoLuong, sp.trangthai, spct.giatien, anh.tenanh, spct.GioiTinh
+    // tìm kiếm theo mã và tên sản phẩm nam
+    @Query(value = """
+         SELECT sp.id, sp.tensanpham, sp.ngaytao, SUM(spct.soluong) AS tongSoLuong, sp.trangthai, spct.giatien, anh.tenanh, spct.gioitinh
          FROM SanPham sp
-         JOIN (
-             SELECT IdSanPham, SUM(soluong) AS tongSoLuong, giatien, GioiTinh
-             FROM SanPhamChiTiet
-             GROUP BY IdSanPham, giatien, GioiTinh
-         ) spct ON sp.id = spct.IdSanPham
-         JOIN Anh anh ON sp.id = anh.Id
-         WHERE spct.GioiTinh = 0
-         ORDER BY spct.giatien DESC 
+         JOIN sp.spct spct
+         JOIN spct.anh anh
+         WHERE spct.gioitinh = true 
+             AND (sp.masanpham LIKE?1 OR sp.tensanpham LIKE ?2)
+         GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai, spct.giatien, anh.tenanh, spct.gioitinh
+         ORDER BY sp.ngaytao DESC, tongSoLuong DESC
                """)
-    List<Object[]> locgiamdannu();
+    Page<Object[]> searchByMaAnhTenSP(String masanpham,String tensanpham,Pageable pageable);
+
+    // tìm kiếm theo mã và tên sản phẩm nữ
+    @Query(value = """
+         SELECT sp.id, sp.tensanpham, sp.ngaytao, SUM(spct.soluong) AS tongSoLuong, sp.trangthai, spct.giatien, anh.tenanh, spct.gioitinh
+         FROM SanPham sp
+         JOIN sp.spct spct
+         JOIN spct.anh anh
+         WHERE spct.gioitinh = false 
+             AND (sp.masanpham LIKE?1 OR sp.tensanpham LIKE ?2)
+         GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai, spct.giatien, anh.tenanh, spct.gioitinh
+         ORDER BY sp.ngaytao DESC, tongSoLuong DESC
+               """)
+    Page<Object[]> searchByMaAnhTenSPNu(String masanpham,String tensanpham,Pageable pageable);
+
 }
