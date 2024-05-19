@@ -224,34 +224,30 @@ public class BanHangController {
     @GetMapping("fillMaGiam")
     @ResponseBody
     public ResponseEntity<?> fillMaGiam() {
-        KhachHangPhieuGiam result1 = new KhachHangPhieuGiam();
         KhachHang kh = hdHienTai.getKhachhang();
+        List<KhachHangPhieuGiam> lst = daoKHPG.findAllByKhachhang(kh);
         List<HoaDonChiTiet> lsthdct = daoHDCT.getListSPHD(hdHienTai);
         BigDecimal tongTienSP = new BigDecimal("0");
         for (HoaDonChiTiet b : lsthdct
         ) {
             tongTienSP = tongTienSP.add(b.getGiasanpham().multiply(new BigDecimal(b.getSoluong())));
         }
-        List<KhachHangPhieuGiam> lst = daoKHPG.findAllByKhachhang(kh);
-        if (lst.size() > 1) {
-            List<KhachHangPhieuGiam> lstnew = new ArrayList<>();
-            for (KhachHangPhieuGiam a : lst
-            ) {
-                if (a.getPhieugiamgia().getDontoithieu().compareTo(tongTienSP) <= 0) {
-                    lstnew.add(a);
-                }
+        List<KhachHangPhieuGiam> lstnew = new ArrayList<>();
+        for (KhachHangPhieuGiam a : lst
+        ) {
+            if (a.getPhieugiamgia().getDontoithieu().compareTo(tongTienSP) <= 0) {
+                lstnew.add(a);
             }
-            KhachHangPhieuGiam result = lstnew.get(0);
-
-            for (KhachHangPhieuGiam a : lstnew
-            ) {
-                if (a.getPhieugiamgia().getGiatrigiamtoida().compareTo(result.getPhieugiamgia().getGiatrigiamtoida()) == 1) {
-                    result = a;
-                }
-            }
-            result1 = result;
         }
-        return ResponseEntity.ok(result1);
+        KhachHangPhieuGiam result = lstnew.get(0);
+
+        for (KhachHangPhieuGiam a : lstnew
+        ) {
+            if (a.getPhieugiamgia().getGiatrigiamtoida().compareTo(result.getPhieugiamgia().getGiatrigiamtoida()) == 1) {
+                result = a;
+            }
+        }
+        return ResponseEntity.ok(result);
     }
 
 }
