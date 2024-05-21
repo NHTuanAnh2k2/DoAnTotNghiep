@@ -239,6 +239,9 @@ public class BanHangController {
                 lstnew.add(a);
             }
         }
+        if (lstnew.size() < 1) {
+            return ResponseEntity.ok(new KhachHangPhieuGiam());
+        }
         KhachHangPhieuGiam result = lstnew.get(0);
 
         for (KhachHangPhieuGiam a : lstnew
