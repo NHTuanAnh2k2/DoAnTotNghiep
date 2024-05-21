@@ -1,10 +1,17 @@
 package com.example.demo.controller.banhang;
 
 import com.example.demo.entity.*;
+import com.example.demo.info.AddKHNhanhFormBanHang;
+import com.example.demo.info.NguoiDungKHInfo;
+import com.example.demo.info.ThayDoiTTHoaDon_KHInfo;
+import com.example.demo.repository.DiaChiRepository;
+import com.example.demo.repository.KhachHangPhieuGiamRepository;
+import com.example.demo.repository.NguoiDungRepository;
 import com.example.demo.repository.khachhang.KhachHangRepostory;
 import com.example.demo.service.HoaDonChiTietService;
 import com.example.demo.service.HoaDonService;
 import com.example.demo.service.KhachHangService;
+import com.example.demo.service.SanPhamChiTietService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,12 +25,22 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("ban-hang-tai-quay")
 public class BanHangController {
+
+    @Autowired
+    KhachHangPhieuGiamRepository daoKHPG;
+    @Autowired
+    NguoiDungRepository daoNguoiDung;
+    @Autowired
+    DiaChiRepository daoDiaChi;
+    @Autowired
+    SanPhamChiTietService daoSPCT;
     @Autowired
     KhachHangRepostory daoKH;
 
@@ -102,6 +119,135 @@ public class BanHangController {
     public ResponseEntity<?> timlistKH(@RequestParam("keySearch") String key) {
         List<KhachHang> pageNV = daoKH.timNVTheoMa(key);
         return ResponseEntity.ok(pageNV);
+    }
+
+    // thêm sản phẩm tại hdct
+    @GetMapping("ChoseSP/{id}")
+    public String choseSP(@PathVariable("id") Integer id) {
+        SanPhamChiTiet spct = daoSPCT.findById(id);
+        SanPhamChiTiet spctCapNhatSL = spct;
+        spctCapNhatSL.setSoluong(spctCapNhatSL.getSoluong() - 1);
+        List<HoaDon> hd = daoHD.timTheoID(hdHienTai.getId());
+        HoaDon hdset = hd.get(0);
+        Boolean result = daoHDCT.checkHDCT(hdset, spct);
+
+        if (result == true) {
+            List<HoaDonChiTiet> lstTim = daoHDCT.timHDCT(hdset, spct);
+            HoaDonChiTiet hdct = lstTim.get(0);
+            int sl = hdct.getSoluong() + 1;
+            hdct.setSoluong(sl);
+            daoSPCT.addSPCT(spctCapNhatSL);
+            daoHDCT.capnhat(hdct);
+            return "redirect:/hoa-don/ban-hang";
+        }
+        HoaDonChiTiet hdctNew = new HoaDonChiTiet();
+        hdctNew.setHoadon(hdset);
+        hdctNew.setSanphamchitiet(spct);
+        hdctNew.setSoluong(1);
+        hdctNew.setTrangthai(true);
+        hdctNew.setGiasanpham(spct.getGiatien());
+        daoSPCT.addSPCT(spctCapNhatSL);
+        daoHDCT.capnhat(hdctNew);
+        return "redirect:/hoa-don/ban-hang";
+    }
+
+    @GetMapping("delete/{id}")
+    public String deleteSP(@PathVariable("id") Integer id) {
+        HoaDonChiTiet hdDelete = daoHDCT.findByID(id);
+        int slHienTai = hdDelete.getSoluong();
+        daoHDCT.deleteById(id);
+        SanPhamChiTiet spUpdateQuantity = hdDelete.getSanphamchitiet();
+        spUpdateQuantity.setSoluong(spUpdateQuantity.getSoluong() + slHienTai);
+        daoSPCT.addSPCT(spUpdateQuantity);
+        return "redirect:/hoa-don/ban-hang";
+    }
+
+
+    @GetMapping("update/{id}/{sl}")
+    public String updateSP(@PathVariable("id") Integer id, @PathVariable("sl") Integer sl) {
+        HoaDonChiTiet hdDelete = daoHDCT.findByID(id);
+        SanPhamChiTiet spUpdateQuantity = hdDelete.getSanphamchitiet();
+        if (hdDelete.getSoluong() == sl) {
+            return "redirect:/hoa-don/ban-hang";
+        } else {
+            if (hdDelete.getSoluong() < sl) {
+                //tăng sl
+                int sltang = sl - hdDelete.getSoluong();
+                spUpdateQuantity.setSoluong(spUpdateQuantity.getSoluong() - sltang);
+                daoSPCT.addSPCT(spUpdateQuantity);
+                hdDelete.setSoluong(sl);
+                daoHDCT.capnhat(hdDelete);
+                return "redirect:/hoa-don/ban-hang";
+            }
+        }
+        //sl giảm
+        int slgiam = hdDelete.getSoluong() - sl;
+        spUpdateQuantity.setSoluong(spUpdateQuantity.getSoluong() + slgiam);
+        daoSPCT.addSPCT(spUpdateQuantity);
+        hdDelete.setSoluong(sl);
+        daoHDCT.capnhat(hdDelete);
+        return "redirect:/hoa-don/ban-hang";
+    }
+
+
+    @PostMapping("add-nhanh")
+    public String changesTTDH(Model model, @ModelAttribute("AddKHNhanh") AddKHNhanhFormBanHang kh) {
+        NguoiDung nguoidung = new NguoiDung();
+        nguoidung.setHovaten(kh.getTen());
+        nguoidung.setSodienthoai(kh.getSdt());
+        nguoidung.setEmail(kh.getEmail());
+        nguoidung.setGioitinh(true);
+        nguoidung.setNgaysinh(Date.valueOf("2020-06-06"));
+        nguoidung.setCccd("024099013632");
+        daoNguoiDung.save(nguoidung);
+        NguoiDung nguoidungtim = daoNguoiDung.findByEmail(kh.getEmail());
+        DiaChi diachi = new DiaChi();
+        diachi.setTenduong(kh.getDiachi());
+        diachi.setXaphuong(kh.getXa());
+        diachi.setQuanhuyen(kh.getHuyen());
+        diachi.setTinhthanhpho(kh.getTinh());
+        diachi.setNguoidung(nguoidungtim);
+        daoDiaChi.save(diachi);
+        KhachHang khAdd = new KhachHang();
+        khAdd.setNguoidung(nguoidungtim);
+        daoKH.save(khAdd);
+        KhachHang khTim = daoKH.findByNguoiDung(nguoidungtim.getId());
+        hdHienTai.setKhachhang(khTim);
+        if (kh.getCheck()) {
+            hdHienTai.setKhachhang(khTim);
+            daoHD.capNhatHD(hdHienTai);
+            return "redirect:/hoa-don/ban-hang";
+        }
+        return "redirect:/hoa-don/ban-hang";
+    }
+
+    @GetMapping("fillMaGiam")
+    @ResponseBody
+    public ResponseEntity<?> fillMaGiam() {
+        KhachHang kh = hdHienTai.getKhachhang();
+        List<KhachHangPhieuGiam> lst = daoKHPG.findAllByKhachhang(kh);
+        List<HoaDonChiTiet> lsthdct = daoHDCT.getListSPHD(hdHienTai);
+        BigDecimal tongTienSP = new BigDecimal("0");
+        for (HoaDonChiTiet b : lsthdct
+        ) {
+            tongTienSP = tongTienSP.add(b.getGiasanpham().multiply(new BigDecimal(b.getSoluong())));
+        }
+        List<KhachHangPhieuGiam> lstnew = new ArrayList<>();
+        for (KhachHangPhieuGiam a : lst
+        ) {
+            if (a.getPhieugiamgia().getDontoithieu().compareTo(tongTienSP) <= 0) {
+                lstnew.add(a);
+            }
+        }
+        KhachHangPhieuGiam result = lstnew.get(0);
+
+        for (KhachHangPhieuGiam a : lstnew
+        ) {
+            if (a.getPhieugiamgia().getGiatrigiamtoida().compareTo(result.getPhieugiamgia().getGiatrigiamtoida()) == 1) {
+                result = a;
+            }
+        }
+        return ResponseEntity.ok(result);
     }
 
 }

@@ -15,9 +15,9 @@ import java.util.List;
 public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, Integer> {
     @Query("SELECT c FROM SanPhamChiTiet c WHERE c.sanpham.tensanpham like %?1% and c.chatlieu.ten like %?2% and c.thuonghieu.ten like %?3% and c.degiay.ten like %?4% and c.kichco.ten like %?5% and c.mausac.ten like %?6% and c.gioitinh = ?7 and c.giatien <= ?8")
     List<SanPhamChiTiet> searchSPCT(String tenSp, String chatlieu,
-                              String ThuongHieu, String De,
-                              String KichCo, String MauSac,
-                              Boolean gioitinh, BigDecimal gia);
+                                    String ThuongHieu, String De,
+                                    String KichCo, String MauSac,
+                                    Boolean gioitinh, BigDecimal gia);
 
     @Query(value = "SELECT MAX(spct.id) FROM SanPhamChiTiet spct")
     Integer findMaxIdSPCT();
@@ -37,4 +37,12 @@ public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, 
 
     @Query("SELECT s.sanpham.id FROM SanPhamChiTiet s WHERE s.id = :spctId")
     Integer findIdBySanpham(Integer spctId);
+
+    //nam
+    @Query(nativeQuery = true, value = "SELECT COUNT(th.ten) FROM SanPhamChiTiet AS spct JOIN ThuongHieu AS th ON spct.IdThuongHieu = th.Id WHERE th.ten = 'Nike' AND spct.gioitinh=1")
+    int countByThuongHieuTenIsNikeNam();
+
+    //nu
+    @Query(nativeQuery = true, value = "SELECT COUNT(th.ten) FROM SanPhamChiTiet AS spct JOIN ThuongHieu AS th ON spct.IdThuongHieu = th.Id WHERE th.ten = 'Nike' AND spct.gioitinh=0")
+    int countByThuongHieuTenIsNikeNu();
 }

@@ -5,6 +5,37 @@
 <nav th:replace="~{/layout/head.html}"></nav>
 <!--end-->
 <style>
+    /*dungthanhcuonngang*/
+    .tab-pane.horizontal-scrollable .single-products.row {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch; /* Cho thanh cuộn ngang trên iOS */
+    }
+
+    .tab-pane.horizontal-scrollable .col-md-3 {
+        flex: 0 0 auto;
+        width: 25%; /* Hiển thị 4 cột trên mỗi hàng */
+    }
+
+    /*phantrang*/
+    .custom-btn {
+        border-color: rgb(249, 72, 42);
+        color: black;
+        border-radius: 25px;
+        margin-left: 5px;
+    }
+
+    .custom-btn.active {
+        background-color: rgb(249, 72, 42);
+        color: white !important;
+    }
+
+    .disabled {
+        pointer-events: none;
+        opacity: 0.5;
+    }
+
     /*checkbox*/
     .checkbox-red:checked {
         background-color: red;
@@ -26,39 +57,169 @@
         <div class="row">
             <div class="col-lg-3 order-2 order-lg-1 pt-5 pt-lg-0">
                 <div class="sidebar left-sidebar">
-                    <div class="category single-side">
-                        <form id="filterForm" th:method="get" th:object="${search2}">
-                            <div class="sidebar-title">
-                                <h3>SIZE</h3>
-                                <div th:each="kichco : ${kc}">
-                                    <p class="custom-control custom-switch">
-                                        <input type="checkbox" th:field="*{idKichCo2}" th:value="${kichco.id}" style="color: rgb(249, 72, 42); font-weight: bold;" class="custom-control-input" th:id="'customSwitch-' + ${kichco.id}"onchange="filterProducts2()"/>
-                                        <label th:text="${kichco.ten}" style="margin-right: 10px;" class="custom-control-label" th:for="'customSwitch-' + ${kichco.id}"></label>
-                                    </p>
-                                </div>
-                            </div>
-                            <p></p>
-                            <div class="sidebar-title">
-                                <h3>THƯƠNG HIỆU</h3>
-                                <div th:each="thuonghieu : ${th}">
+
+                    <nav class="mt-2">
+                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                            data-accordion="false">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
                                     <p>
-                                        <input type="checkbox" th:field="*{idThuongHieu}" th:value="${thuonghieu.id}" style="color: rgb(249, 72, 42); font-weight: bold;" class="form-check-input checkbox checkbox-red" onchange="filterProducts()">
-                                        <label th:text="${thuonghieu.ten}" style="margin-left: 25px;"></label>
+                                        Lọc sản phẩm
+                                        <i class="right fas fa-angle-left"></i>
                                     </p>
-                                </div>
-                            </div>
-                        </form>
-                        <div class="sidebar-title">
-                            <h3>Giá tiền</h3>
-                            <div class="slidecontainer" style="width: 300px;">
-                                <input type="range" min="1" max="100" value="50" style="width: 70%;">
-                            </div>
-                        </div>
+                                </a>
+                                <!-- Lọc sản phẩm -->
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <form id="filterForm" th:method="get" th:object="${search2}"
+                                                  th:action="@{/customer/sanphamnam}">
+                                                <div class="sidebar-title">
+                                                    <h3>SIZE</h3>
+                                                    <div th:each="kichco : ${kc}"
+                                                         class="d-flex align-items-center justify-content-between">
+                                                        <p class="custom-control custom-switch">
+                                                            <input type="checkbox" th:field="*{idKichCo2}"
+                                                                   th:value="${kichco.id}"
+                                                                   style="color: rgb(249, 72, 42); font-weight: bold;"
+                                                                   class="custom-control-input"
+                                                                   th:id="'customSwitch-' + ${kichco.id}"
+                                                                   onchange="filterProducts2()"/>
+                                                            <label th:text="${kichco.ten}" style="margin-right: 10px;"
+                                                                   class="custom-control-label"
+                                                                   th:for="'customSwitch-' + ${kichco.id}"></label>
+                                                        </p>
+                                                        <span class="ml-3">(5)</span>
+                                                    </div>
+                                                </div>
+                                                <p></p>
+                                                <div class="sidebar-title">
+                                                    <br>
+                                                    <h3>THƯƠNG HIỆU</h3>
+                                                    <div th:each="thuonghieu : ${th}"
+                                                         class="d-flex align-items-center justify-content-between">
+                                                        <p>
+                                                            <input type="checkbox" th:field="*{idThuongHieu}"
+                                                                   th:value="${thuonghieu.id}"
+                                                                   style="color: rgb(249, 72, 42); font-weight: bold;"
+                                                                   class="form-check-input checkbox checkbox-red"
+                                                                   onchange="filterProducts()">
+                                                            <label th:text="${thuonghieu.ten}"
+                                                                   style="margin-left: 25px;"></label>
+                                                        </p>
+                                                        <span class="ml-3"
+                                                              th:text="${'('+soLuongThuongHieu+')'}"></span>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <!--                            <li class="nav-item">-->
+                            <!--                                <a href="#" class="nav-link">-->
+                            <!--                                    <p>-->
+                            <!--                                        Thương Hiêu-->
+                            <!--                                        <i class="right fas fa-angle-left"></i>-->
+                            <!--                                    </p>-->
+                            <!--                                </a>-->
+                            <!--                                &lt;!&ndash; Lọc sản phẩm &ndash;&gt;-->
+                            <!--                                <ul class="nav nav-treeview">-->
+                            <!--                                    <li class="nav-item">-->
+                            <!--                                        <a href="#" class="nav-link">-->
+                            <!--                                            <form id="filterForm" th:method="get" th:object="${search2}">-->
+                            <!--                                                <div class="sidebar-title">-->
+                            <!--                                                    <h3>SIZE</h3>-->
+                            <!--                                                    <div th:each="kichco : ${kc}"-->
+                            <!--                                                         class="d-flex align-items-center justify-content-between">-->
+                            <!--                                                        <p class="custom-control custom-switch">-->
+                            <!--                                                            <input type="checkbox" th:field="*{idKichCo2}"-->
+                            <!--                                                                   th:value="${kichco.id}"-->
+                            <!--                                                                   style="color: rgb(249, 72, 42); font-weight: bold;"-->
+                            <!--                                                                   class="custom-control-input"-->
+                            <!--                                                                   th:id="'customSwitch-' + ${kichco.id}"-->
+                            <!--                                                                   onchange="filterProducts2()"/>-->
+                            <!--                                                            <label th:text="${kichco.ten}" style="margin-right: 10px;"-->
+                            <!--                                                                   class="custom-control-label"-->
+                            <!--                                                                   th:for="'customSwitch-' + ${kichco.id}"></label>-->
+                            <!--                                                        </p>-->
+                            <!--                                                        <span class="ml-3">(5)</span>-->
+                            <!--                                                    </div>-->
+                            <!--                                                </div>-->
+                            <!--                                                <p></p>-->
+                            <!--                                                <div class="sidebar-title">-->
+                            <!--                                                    <br>-->
+                            <!--                                                    <h3>THƯƠNG HIỆU</h3>-->
+                            <!--                                                    <div th:each="thuonghieu : ${th}"-->
+                            <!--                                                         class="d-flex align-items-center justify-content-between">-->
+                            <!--                                                        <p>-->
+                            <!--                                                            <input type="checkbox" th:field="*{idThuongHieu}"-->
+                            <!--                                                                   th:value="${thuonghieu.id}"-->
+                            <!--                                                                   style="color: rgb(249, 72, 42); font-weight: bold;"-->
+                            <!--                                                                   class="form-check-input checkbox checkbox-red"-->
+                            <!--                                                                   onchange="filterProducts()">-->
+                            <!--                                                            <label th:text="${thuonghieu.ten}"-->
+                            <!--                                                                   style="margin-left: 25px;"></label>-->
+                            <!--                                                        </p>-->
+                            <!--                                                        <span class="ml-3"-->
+                            <!--                                                              th:text="${'('+soLuongThuongHieu+')'}"></span>-->
+                            <!--                                                    </div>-->
+                            <!--                                                </div>-->
+                            <!--                                            </form>-->
+                            <!--                                        </a>-->
+                            <!--                                    </li>-->
+                            <!--                                </ul>-->
+                            <!--                            </li>-->
+                        </ul>
+                    </nav>
+
+                    <!--loc du phong-->
+                    <div class="category single-side">
+                        <!--                        <form id="filterForm" th:method="get" th:object="${search2}">-->
+                        <!--                            <div class="sidebar-title">-->
+                        <!--                                <h3>SIZE</h3>-->
+                        <!--                                <div th:each="kichco : ${kc}" class="d-flex align-items-center justify-content-between">-->
+                        <!--                                    <p class="custom-control custom-switch">-->
+                        <!--                                        <input type="checkbox" th:field="*{idKichCo2}" th:value="${kichco.id}"-->
+                        <!--                                               style="color: rgb(249, 72, 42); font-weight: bold;"-->
+                        <!--                                               class="custom-control-input" th:id="'customSwitch-' + ${kichco.id}"-->
+                        <!--                                               onchange="filterProducts2()"/>-->
+                        <!--                                        <label th:text="${kichco.ten}" style="margin-right: 10px;"-->
+                        <!--                                               class="custom-control-label"-->
+                        <!--                                               th:for="'customSwitch-' + ${kichco.id}"></label>-->
+                        <!--                                    </p>-->
+                        <!--                                    <span class="ml-3">(5)</span>-->
+                        <!--                                </div>-->
+                        <!--                            </div>-->
+                        <!--                            <p></p>-->
+                        <!--                            <div class="sidebar-title">-->
+                        <!--                                <h3>THƯƠNG HIỆU</h3>-->
+                        <!--                                <div th:each="thuonghieu : ${th}"-->
+                        <!--                                     class="d-flex align-items-center justify-content-between">-->
+                        <!--                                    <p>-->
+                        <!--                                        <input type="checkbox" th:field="*{idThuongHieu}" th:value="${thuonghieu.id}"-->
+                        <!--                                               style="color: rgb(249, 72, 42); font-weight: bold;"-->
+                        <!--                                               class="form-check-input checkbox checkbox-red"-->
+                        <!--                                               onchange="filterProducts()">-->
+                        <!--                                        <label th:text="${thuonghieu.ten}" style="margin-left: 25px;"></label>-->
+                        <!--                                    </p>-->
+                        <!--                                    <span class="ml-3" th:text="${'('+soLuongThuongHieu+')'}"></span>-->
+                        <!--                                </div>-->
+
+                        <!--                            </div>-->
+                        <!--                        </form>-->
+                        <!--                        <div class="sidebar-title">-->
+                        <!--                            <h3>Giá tiền</h3>-->
+                        <!--                            <div class="slidecontainer" style="width: 300px;">-->
+                        <!--                                <input type="range" min="1" max="100" value="50" style="width: 70%;">-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
 
                     </div>
                     <!--ảnh hover-->
                     <div class="sidebar-banner banner-hover">
-                        <a href="#"><img src="../dist/img/sale.jpg" width="263" height="406" alt="Banner"/></a>
+                        <a href="#"><img src="../../dist/img/sale.jpg" width="263" height="406" alt="Banner"/></a>
                     </div>
                     <!--end-->
                 </div>
@@ -66,42 +227,46 @@
 
             <div class="col-lg-9 order-1 order-lg-2">
                 <div class="shop-menu clearfix">
+                    <form id="searchForm" th:method="get" th:object="${searchspnam}"
+                          th:action="@{/customer/searchMaAnhTen/spnam}">
+                        <div class="left floatleft">
+                            <div style="margin-left: auto; margin-right: 20px;">
+                                <div style="position: relative;">
+                                    <input class="form-control" type="search" placeholder="Tìm kiếm sản phẩm..."
+                                           aria-label="Search" style="width: 784px; padding-right: 40px;"
+                                           id="searchInput" name="key" th:value="${fillSearch}">
+                                    <span style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search"
+               viewBox="0 0 16 16">
+  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+</svg>
+        </span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                     <div class="right floatright">
                         <!--tăng dần, giảm dần-->
-                        <ul>
-                            <li>
-                                <div>
-                                    <select class="form-control">
-                                        <option>12</option>
-                                        <option>13</option>
-                                        <option>14</option>
-                                        <option>15</option>
-                                        <option>16</option>
-                                        <option>17</option>
-                                    </select>
-                                </div>
-                                <p>Tăng dần</p>
-                            </li>
-                            <li>
-                                <div >
-                                    <select class="form-control">
-                                        <option>Bike</option>
-                                        <option>Aikes</option>
-                                        <option>Biike</option>
-                                        <option>Uike</option>
-                                    </select>
-                                </div>
-                                <p>Giảm dần</p>
-                            </li>
-                        </ul>
+                        <div class="dropdown">
+                            <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Sắp xếp theo giá
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" th:href="@{/customer/sanphamnam/sap-xep-tangdan}"
+                                   style="font-family:'Bahnschrift">Tăng dần</a>
+                                <a class="dropdown-item" th:href="@{/customer/sanphamnam/sap-xep-giamdan}"
+                                   style="font-family:'Bahnschrift">Giảm dần</a>
+                            </div>
+                        </div>
                         <!--end-->
                     </div>
                 </div>
                 <div class="tab-content">
                     <!--nội dung-->
                     <div class="tab-pane fade text-center active show" id="gird">
-                        <div class="single-products row" >
-                            <div class="col-md-3" th:each="sp, stt : ${list0}">
+                        <div class="single-products row">
+                            <div class="col-md-3" th:each="sp, stt : ${listnam.content}">
                                 <div class="product-item margin40">
                                     <div class="pro-img">
                                         <a th:href="@{/detailsanphamCustomer/{id}(id=${sp[0]})}">
@@ -137,7 +302,8 @@
                                             <i class="fa fa-star gray-star"></i>
                                         </div>
                                         <p>
-                                            <span style="color: red;font-weight: bold"  th:text="${#numbers.formatDecimal(sp[5], 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
+                                            <span style="color: red;font-weight: bold"
+                                                  th:text="${#numbers.formatDecimal(sp[5], 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
                                             <!--                                    <del >$170.00</del>-->
                                         </p>
                                     </div>
@@ -145,17 +311,60 @@
                             </div>
                             <!---end-->
                         </div>
+                        <div th:if="${listnam.empty}">
+                            <div>
+                                <img src="../../dist/img/norecord.png" style="width: 250px;height: 150px">
+                            </div>
+                            <div style="margin-left: 10px">Không tìm thấy kết quả</div>
+                        </div>
                     </div>
                     <!--end-->
+                    <!--phân trang-->
+                    <div class="d-flex justify-content-center align-items-center">
+                        <!-- Nút trang trước -->
+                        <a th:href="@{/customer/sanphamnam(p=${listnam.number-1})}" class="text-decoration-none mx-2"
+                           th:classappend="${listnam.number == 0} ? 'disabled' : ''" style="color: black;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                 class="bi bi-chevron-left" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                      d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+                            </svg>
+                        </a>
+
+                        <!-- Các trang -->
+                        <div th:if="${listnam.totalPages > 0}" class="d-flex mx-2">
+                            <div th:each="i : ${#numbers.sequence(0, listnam.totalPages-1)}">
+                                <a th:href="@{/customer/sanphamnam(p=${i})}"
+                                   th:classappend="${i == listnam.number} ? 'active' : ''"
+                                   class="text-decoration-none btn custom-btn mx-1"
+                                   th:text="${i + 1}"></a>
+                            </div>
+                        </div>
+
+                        <!-- Nút trang sau -->
+                        <a th:href="@{/customer/sanphamnam(p=${listnam.number+1})}" class="text-decoration-none mx-2"
+                           th:classappend="${listnam.number + 1 >= listnam.totalPages} ? 'disabled' : ''"
+                           style="color: black;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                 class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                      d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+                            </svg>
+                        </a>
+                    </div>
+
                 </div>
             </div>
         </div>
-        <h3 style="margin-top: 30px" class="text-center">CÁC SẢN PHẨM NỔI BẬT</h3>
+
+
+        <h3 style="margin-top: 30px;color:rgb(249,72,42);font-family: 'Lucida Sans Typewriter' " class="text-center">CÁC
+            SẢN PHẨM NỔI BẬT</h3>
         <hr class="border border-danger border opacity-50">
         <div class="tab-content">
             <!--nội dung-->
-            <div class="tab-pane fade text-center active show" id="gird">
-                <div class="single-products row" >
+            <div class="tab-pane fade text-center active show horizontal-scrollable" id="gird">
+                <div class="single-products row">
                     <div class="col-md-3" th:each="sp, stt : ${page}">
                         <div class="product-item margin40">
                             <div class="pro-img">
@@ -192,7 +401,8 @@
                                     <i class="fa fa-star gray-star"></i>
                                 </div>
                                 <p>
-                                    <span style="color: red;font-weight: bold"  th:text="${#numbers.formatDecimal(sp[5], 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
+                                    <span style="color: red;font-weight: bold"
+                                          th:text="${#numbers.formatDecimal(sp[5], 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
                                     <!--                                    <del >$170.00</del>-->
                                 </p>
                             </div>
@@ -205,12 +415,13 @@
         </div>
 
         <!--những sản phẩm đang được giảm giá-->
-        <h3 style="margin-top: 30px" class="text-center">CÁC SẢN PHẨM MỚI NHẤT</h3>
+        <h3 style="margin-top: 30px;color:rgb(249,72,42);font-family: 'Lucida Sans Typewriter'" class="text-center">CÁC
+            SẢN PHẨM MỚI NHẤT</h3>
         <hr class="border border-danger border opacity-50">
         <div class="tab-content">
             <!--nội dung-->
-            <div class="tab-pane fade text-center active show" id="gird">
-                <div class="single-products row" >
+            <div class="tab-pane fade text-center active show horizontal-scrollable" id="gird">
+                <div class="single-products row">
                     <div class="col-md-3" th:each="sp, stt : ${page2}">
                         <div class="product-item margin40">
                             <div class="pro-img">
@@ -247,7 +458,8 @@
                                     <i class="fa fa-star gray-star"></i>
                                 </div>
                                 <p>
-                                    <span style="color: red;font-weight: bold"  th:text="${#numbers.formatDecimal(sp[5], 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
+                                    <span style="color: red;font-weight: bold"
+                                          th:text="${#numbers.formatDecimal(sp[5], 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
                                     <!--                                    <del >$170.00</del>-->
                                 </p>
                             </div>
@@ -278,10 +490,18 @@
         var form = document.getElementById('filterForm');
         form.submit();
     }
+
     function filterProducts2() {
         var form = document.getElementById('filterForm');
         form.submit();
     }
+
     /*]]>*/
 </script>
 
+<script>
+    // Lắng nghe sự kiện change trong các trường input
+    document.getElementById('searchInput').addEventListener('change', function () {
+        document.getElementById('searchForm').submit(); // Gửi form khi có sự thay đổi
+    });
+</script>

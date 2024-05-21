@@ -22,4 +22,6 @@ public interface NguoiDungRepository extends JpaRepository<NguoiDung, Integer> {
     List<NguoiDung> findNguoiDungByNgaysinhBetween(@Param("startDate")Date startDate,
                                                    @Param("endDate") Date endDate);
 
+    NguoiDung findByEmail(String email);
+
 }

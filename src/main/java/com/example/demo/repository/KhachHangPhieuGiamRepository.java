@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.entity.KhachHang;
 import com.example.demo.entity.KhachHangPhieuGiam;
 import com.example.demo.entity.SanPhamDotGiam;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,6 @@ import java.util.List;
 public interface KhachHangPhieuGiamRepository extends JpaRepository<KhachHangPhieuGiam,Integer> {
     @Query("SELECT s FROM KhachHangPhieuGiam s WHERE s.phieugiamgia.id =:IdPhieu")
     List<KhachHangPhieuGiam> findKhachHangPhieuGiamByIdPhieugiamgia(Integer IdPhieu);
+
+    List<KhachHangPhieuGiam> findAllByKhachhang(KhachHang kh);
 }
