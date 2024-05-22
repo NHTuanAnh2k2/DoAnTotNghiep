@@ -37,13 +37,13 @@
                 <a th:href="@{/customer/sanphamnu}" class="text-decoration-none text-dark" style="font-weight: bold;">NỮ</a>
             </li>
             <li class="text-dark" style="padding-left: 20px;">
-                <a href="#" class="text-decoration-none text-dark" style="font-weight: bold;">GIỚI THIỆU</a>
+                <a th:href="@{/customer/gioithieu}" class="text-decoration-none text-dark" style="font-weight: bold;">GIỚI THIỆU</a>
             </li>
             <li class="text-dark" style="padding-left: 20px;">
-                <a href="#" class="text-decoration-none text-dark" style="font-weight: bold;">VỀ CHÚNG TÔI</a>
+                <a th:href="@{/customer/vechungtoi}"class="text-decoration-none text-dark" style="font-weight: bold;">VỀ CHÚNG TÔI</a>
             </li>
             <li class="text-dark" style="padding-left: 20px;">
-                <a href="#" class="text-decoration-none text-dark" style="font-weight: bold;">LIÊN HỆ</a>
+                <a th:href="@{/customer/lienhe}" class="text-decoration-none text-dark" style="font-weight: bold;">LIÊN HỆ</a>
             </li>
         </ul>
     </div>
@@ -58,8 +58,7 @@
             <li style="margin-top: 20px">
                 <div style="margin-left: auto; margin-right: 20px;">
                     <div style="position: relative;">
-                        <input class="form-control" type="search" placeholder="Bạn cần tìm gì?..." aria-label="Search"
-                               style="width: 300px; padding-right: 40px;">
+                        <input class="form-control" type="search" placeholder="Bạn cần tìm gì?..." aria-label="Search" style="width: 300px; padding-right: 40px;">
                         <span style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%);">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search"
                viewBox="0 0 16 16">
@@ -96,16 +95,17 @@
                  aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">HỒ SƠ CÁ NHÂN</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                        </div>
+<!--                        <div class="modal-header">-->
+<!--                            <h1 class="modal-title fs-5" id="exampleModalLabel">HỒ SƠ CÁ NHÂN</h1>-->
+<!--                            <button type="button" class="btn-close" data-bs-dismiss="modal"-->
+<!--                                    aria-label="Close"></button>-->
+<!--                        </div>-->
                         <div class="modal-body">
-                            <p><a th:href="@{/hosokhachhang}">HỒ SƠ KHÁCH HÀNG</a></p>
-                            <p><a th:href="@{/same/login}">ĐĂNG NHẬP</a></p>
-                            <p><a href="#">ĐĂNG XUẤT</a></p>
+                            <p><a th:href="@{/hosokhachhang}" class="text-decoration-none" style="font-weight: bold;color: black">Tài khoản của tôi</a></p>
+                            <p><a th:href="@{/same/login}" class="text-decoration-none" style="font-weight: bold;color: black">Đăng nhập</a></p>
+                            <p><a href="#" class="text-decoration-none" style="font-weight: bold;color: black">Đăng xuất</a></p>
                         </div>
+
 
                     </div>
                 </div>

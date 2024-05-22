@@ -127,5 +127,10 @@ public class HoaDonImp implements HoaDonService {
         return dao.timHDGanNhat().get(0);
     }
 
+    @Override
+    public HoaDon timHDTheoMaHD(String mahd) {
+        return dao.timHDTheoMaHD(mahd);
+    }
+
 
 }

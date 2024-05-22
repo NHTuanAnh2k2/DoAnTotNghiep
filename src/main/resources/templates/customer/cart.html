@@ -2,14 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <!--thư viện-->
 <nav th:replace="~{/layout/head.html}"></nav>
+<nav th:replace="~{/layoutadmin/head.html}"></nav>
 <!--end-->
 <style>
     .quantity-container {
         display: flex;
         align-items: center;
         position: absolute;
-        right: 250px;
-        bottom: 22px;
+        right: 150px;
+        bottom: 34px;
     }
 
     .quantity-button {
@@ -33,11 +34,14 @@
         border: 1px solid rgba(255, 255, 255, 0.4);
         border-radius: 10px;
     }
-    .card-header {
+    .giohang {
         display: flex;
         justify-content: start;
         position: relative;
-        margin-top: 10px;
+        border-bottom: 1px solid #DDDDDD;
+        margin: 10px 10px 0px 15px;
+        padding-bottom: 20px;
+
     }
     .ten_sp {
         display: flex;
@@ -46,41 +50,32 @@
     }
     .ten_sp p {
         font-size: 18px;
+        padding-top: 10px;
     }
 
-    .ten_sp a {
-        text-decoration: none;
-        color: black;
-        font-size: 20px;
-        font-weight: bold;
+    .ten_sp button {
         position: absolute;
-        right: 15px;
+        right: 0;
         top: 0;
     }
     .thong_tin_sp {
         display: flex;
         justify-content: start;
         margin-left: 10px;
-        align-items: center;
-    }
-    .giatien {
-        font-size: 18px;
     }
     .mausac {
         font-size: 15px;
         position: absolute;
-        left: 250px;
+        left: 220px;
     }
     .size {
         font-size: 15px;
         position: absolute;
-        left: 500px;
+        left: 430px;
     }
-    .thong_tin_sp strong {
-        font-size: 20px;
-        font-weight: bold;
+    .giaban {
         position: absolute;
-        right: 15px;
+        right: 0px;
     }
     input[type="number"]::-webkit-outer-spin-button,
     input[type="number"]::-webkit-inner-spin-button {
@@ -92,7 +87,79 @@
         /* Hiển thị biểu tượng bước lên/xuống mặc định */
         -moz-appearance: textfield;
     }
+    .ghichu {
+        background-color: #EEEEEE;
+        margin-top: 20px;
+    }
+    label {
+        font-size: 16px;
+        font-weight: bold;
+        padding-top: 15px;
+        margin-bottom: 10px;
+        display: block;
+    }
+    .text_ghichu {
+        width: 100%;
+        min-height: 45px;
+        max-height: 300px;
+        margin-bottom: 10px;
+        font-size: 16px;
+        padding: 15px;
+        border: 1px solid #DDDDDD;
+        outline: none;
+        resize: none;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
 
+    .text_ghichu:focus {
+        border-color: #007BFF;
+        box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+    }
+    .ma_giam_gia{
+        width: 100%;
+        margin-bottom: 15px;
+        padding: 5px 10px;
+        background: #fff;
+        display: flex;
+        border-radius: 15px;
+    }
+    .ma-item-left {
+        width: 30%;
+        padding-right: 10px;
+        display: flex;
+        align-items: center;
+        border-right: 1px dashed #ccc;
+    }
+    .anh_ma {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+    }
+    .ma-item-right {
+        padding-left: 10px;
+        position: relative;
+        width: 70%;
+    }
+    .ma-item-des {
+        display: flex;
+        justify-content: space-between;
+        align-items: self-end;
+        font-size: 10px;
+    }
+    .code {
+        background: yellow;
+        color: red;
+        font-weight: bolder;
+    }
+    .right {
+        font-weight: 700;
+        padding: 5px 7px;
+        background: rgb(249,72,42);
+        color: white;
+        border-radius: 15px;
+        cursor: pointer;
+        margin-bottom: 26px;
+    }
 </style>
 <body>
 
@@ -100,55 +167,161 @@
 <nav th:replace="~{/layout/header.html}"></nav>
 <!-- header section end -->
 <!--<nav th:replace="~{/layout/banner.html}"></nav>-->
-<div class="container">
+<div class="container mt-5">
     <div class="row">
-        <div class="col-lg-9">
-            <h3 class="mt-5">GIỎ HÀNG CỦA BẠN</h3>
-            <hr>
-            <p>Bạn đang có <strong>2 sản phẩm</strong> trong giỏ hàng</p>
+        <div class="col-lg-8">
             <section class="content">
                 <div class="card">
-                    <div class="card-header">
-                        <img src="../dist/img/bong2.jpg" width="80px" height="80px"/>
-                        <div>
-                            <div class="ten_sp">
-                                <p style="font-size: 18px;">Giày Thể Thao Nam Biti's Hunter Street Go For Love 2K24 HSM006500 hugyfrdr</p>
-                                <a href="#">X</a>
-                            </div>
-                            <div class="thong_tin_sp">
-                                <p class="giatien">720.000đ</p>
-                                <p class="mausac">Màu sắc: Trắng</p>
-                                <p class="size">Size: 39</p>
-                                <div class="quantity-container">
-                                    <button class="quantity-button decrement">-</button>
-                                    <input type="number" class="quantity-input" value="1" min="1">
-                                    <button class="quantity-button increment">+</button>
+                    <div class="card-body">
+                        <h3>GIỎ HÀNG CỦA BẠN</h3>
+                        <hr class="border border-danger border-2 opacity-50">
+                        <p>Bạn đang có <strong>2 sản phẩm</strong> trong giỏ hàng</p>
+                        <div style="border: 1px solid #DDDDDD; border-radius: 10px;" class="container-fluid">
+                            <div class="giohang">
+                                <img style="padding-top: 10px" src="../dist/img/bong2.jpg" width="80px" height="80px"/>
+                                <div>
+                                    <div class="ten_sp">
+                                        <p style="font-size: 18px;">Giày Thể Thao Nam Biti's Hunter Street Go For Love 2K24 HSM006500 hugyfrdr</p>
+                                        <button type="button" class="btn-close" aria-label="Close"></button>
+                                    </div>
+                                    <div class="thong_tin_sp">
+                                        <div class="giatien d-flex justify-content-start align-items-center">
+                                            <h5>720.000</h5>
+                                            <strong>đ</strong>
+                                        </div>
+                                        <p class="mausac">Màu sắc: Trắng</p>
+                                        <p class="size">Size: 39</p>
+                                        <div class="quantity-container">
+                                            <button class="quantity-button decrement">-</button>
+                                            <input type="number" class="quantity-input" value="1" min="1">
+                                            <button class="quantity-button increment">+</button>
+                                        </div>
+                                        <div class="giaban d-flex justify-content-start align-items-center">
+                                            <h5>720.000</h5>
+                                            <strong>đ</strong>
+                                        </div>
+                                    </div>
                                 </div>
-                                <strong>720.000đ</strong>
+                            </div>
+                            <div class="giohang">
+                                <img style="padding-top: 10px" src="../dist/img/bong2.jpg" width="80px" height="80px"/>
+                                <div>
+                                    <div class="ten_sp">
+                                        <p style="font-size: 18px;">Giày Thể Thao Nam Biti's Hunter</p>
+                                        <button type="button" class="btn-close" aria-label="Close"></button>
+                                    </div>
+                                    <div class="thong_tin_sp">
+                                        <div class="giatien d-flex justify-content-start align-items-center">
+                                            <h5>720.000</h5>
+                                            <strong>đ</strong>
+                                        </div>
+                                        <p class="mausac">Màu sắc: Trắng</p>
+                                        <p class="size">Size: 39</p>
+                                        <div class="quantity-container">
+                                            <button class="quantity-button decrement">-</button>
+                                            <input type="number" class="quantity-input" value="1" min="1">
+                                            <button class="quantity-button increment">+</button>
+                                        </div>
+                                        <div class="giaban d-flex justify-content-start align-items-center">
+                                            <h5>720.000</h5>
+                                            <strong>đ</strong>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <hr>
+                        <div class="ghichu container-fluid">
+                            <label class="lable_ghichu">Ghi chú đơn hàng</label>
+                            <textarea class="text_ghichu" id="text_ghichu" ></textarea>
+                        </div>
                     </div>
-                    <div class="card-header">
-                        <img src="../dist/img/bong2.jpg" width="80px" height="80px"/>
-                        <div>
-                            <div class="ten_sp">
-                                <p style="font-size: 18px;">Giày Thể Thao Nam Biti's Hunter</p>
-                                <a href="#">X</a>
-                            </div>
-                            <div class="thong_tin_sp">
-                                <p class="giatien">720.000đ</p>
-                                <p class="mausac">Màu sắc: Trắng</p>
-                                <p class="size">Size: 39</p>
-                                <div class="quantity-container">
-                                    <button class="quantity-button decrement">-</button>
-                                    <input type="number" class="quantity-input" value="1" min="1">
-                                    <button class="quantity-button increment">+</button>
-                                </div>
-                                <strong>720.000đ</strong>
+                </div>
+            </section>
+        </div>
+        <div class="col-lg-4">
+            <section class="content">
+                <div class="card">
+                    <div class="card-body" >
+                        <h3>THÔNG TIN ĐƠN HÀNG</h3>
+                        <hr class="border border-danger border-2 opacity-50">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6>Tổng tiền:</h6>
+                            <div class="d-flex justify-content-start align-items-center">
+                                <h4 style="color: red">1,234,000</h4>
+                                <strong style="color: red">đ</strong>
                             </div>
                         </div>
-                        <hr>
+                        <hr class="border border-danger border-2 opacity-50">
+                        <ul style="list-style-type: disc;  margin-left: 0; padding-left: 15px;">
+                            <li>Phí vận chuyển được tính ở trang thanh toán</li>
+                            <li>Bạn có thể nhập mã giảm giá ở trang thanh toán</li>
+                        </ul>
+                        <button style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100%; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); margin-top: 15px;">ĐẶT HÀNG NGAY</button>
+                    </div>
+                </div>
+            </section>
+            <section class="content">
+                <div class="card">
+                    <div class="card-body" style="background-color: #DDDDDD">
+                        <div class="ma_giam_gia">
+                            <div class="ma-item-left">
+                                <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
+                            </div>
+                            <div class="ma-item-right">
+                                <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;">Giảm 120.000đ</h4>
+                                <p style="font-size: 14px; margin: 0; padding: 0; color: black">Đơn hàng từ 890.000đ trở lên</p>
+                                <div class="ma-item-des">
+                                    <div class="left">
+                                        <p style="margin: 0; white-space: nowrap;">Mã: <b class="code">14FRMGR24MNFNS</b></p>
+                                        <p>HSD: 31/05/2024</p>
+                                    </div>
+                                    <div class="right">
+                                        Sao chép mã
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ma_giam_gia">
+                            <div class="ma-item-left">
+                                <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
+                            </div>
+                            <div class="ma-item-right">
+                                <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;">Giảm 120.000đ</h4>
+                                <p style="font-size: 14px; margin: 0; padding: 0; color: black">Đơn hàng từ 890.000đ trở lên</p>
+                                <div class="ma-item-des">
+                                    <div class="left">
+                                        <p style="margin: 0; white-space: nowrap;">Mã: <b class="code">14FRMGR24MNFNS</b></p>
+                                        <p>HSD: 31/05/2024</p>
+                                    </div>
+                                    <div class="right">
+                                        Sao chép mã
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ma_giam_gia">
+                            <div class="ma-item-left">
+                                <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
+                            </div>
+                            <div class="ma-item-right">
+                                <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;">Giảm 120.000đ</h4>
+                                <p style="font-size: 14px; margin: 0; padding: 0; color: black">Đơn hàng từ 890.000đ trở lên</p>
+                                <div class="ma-item-des">
+                                    <div class="left">
+                                        <p style="margin: 0; white-space: nowrap;">Mã: <b class="code">14FRMGR24MNFNS</b></p>
+                                        <p>HSD: 31/05/2024</p>
+                                    </div>
+                                    <div class="right">
+                                        Sao chép mã
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="color: black; margin-bottom: 0;">Để nhận tư vấn hoặc hỗ trợ khi phát sinh khó khăn trong lúc mua hàng, hãy liên hệ Biti's thông qua:</p>
+                        <ul style="list-style-type: disc;  margin: 0; padding-left: 15px; color: black; font-size: 15px;">
+                            <li>Gọi 0966.158.666</li>
+                            <li>Email tới địa chỉ chamsockhachhang@fsport.com.vn</li>
+                        </ul>
                     </div>
                 </div>
             </section>
@@ -183,6 +356,17 @@
             });
         });
     });
+    const textarea = document.getElementById('text_ghichu');
+
+    textarea.addEventListener('input', function () {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+    });
+
+    // Optional: Adjust the height on page load
+    textarea.style.height = 'auto';
+    textarea.style.height = (textarea.scrollHeight) + 'px';
+
 </script>
 </body>
 </html>

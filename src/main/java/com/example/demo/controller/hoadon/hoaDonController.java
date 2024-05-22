@@ -764,5 +764,9 @@ public class hoaDonController {
         return daoMauSac.findAll();
     }
 
+    @ModelAttribute("AddKHNhanh")
+    public AddKHNhanhFormBanHang addKHNhanh() {
+        return new AddKHNhanhFormBanHang(null,null,null,"chọn tỉnh","chọn huyện","chọn xã",null,true);
+    }
 
 }

@@ -1,0 +1,529 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<!--thư viện-->
+<nav th:replace="~{/layout/head.html}"></nav>
+<nav th:replace="~{/layoutadmin/head.html}"></nav>
+<!--end-->
+<style>
+    .tong{
+        width: 100%;
+        background: #fff;
+        display: flex;
+    }
+    .left {
+        width: 60%;
+        padding-right: 25px;
+        border-right: 1px solid #ccc;
+        padding-top: 70px;
+    }
+    .right {
+        position: relative;
+        padding-top: 45px;
+        padding-left: 25px;
+        width: 40%;
+    }
+    .spacer-row {
+        height: 15px; /* Chiều cao của hàng trống */
+    }
+    .xemthem {
+        font-size: 14px;
+        font-family: 'futura-REGULAR', sans-serif;
+        cursor: pointer;
+        color: #338dbc;
+        fill: none;
+        margin-bottom: 15px;
+    }
+    .qaz {
+        padding: 10px 10px; /* Thay đổi padding để đảm bảo không tràn */
+        overflow: hidden;
+        position: relative;
+        margin-bottom: 5px;
+        cursor: pointer;
+        margin-left: 0;
+        display: inline-block; /* Đảm bảo các phần tử hiển thị inline */
+    }
+    .qaz>span::before {
+        content: "";
+        display: block;
+        width: 15px;
+        height: 15px;
+        background: #fff;
+        border-right: 1px solid red;
+        z-index: 1;
+        left: 1px; /* Căn chỉnh chính xác bên trái */
+        top: 50%;
+        position: absolute;
+        border-radius: 50%;
+        transform: translateY(-50%);
+    }
+    .qaz::after {
+        content: "";
+        display: block;
+        width: 15px;
+        height: 15px;
+        background: #fff;
+        border-left: 1px solid red;
+        z-index: 1;
+        right: 1px; /* Căn chỉnh chính xác bên phải */
+        top: 50%;
+        position: absolute;
+        border-radius: 50%;
+        transform: translateY(-50%);
+    }
+    .qaz span {
+        border: 1px solid red;
+        color: #000;
+        padding: 5px 10px;
+        border-radius: 3px;
+        background: #fff;
+        font-weight: 700;
+    }
+    .ma_giam_gia{
+        width: 100%;
+        margin-bottom: 15px;
+        padding: 5px 10px;
+        background: #fff;
+        display: flex;
+        border-radius: 15px;
+    }
+    .ma-item-left {
+        width: 30%;
+        padding-right: 10px;
+        display: flex;
+        align-items: center;
+        border-right: 1px dashed #ccc;
+    }
+    .anh_ma {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+    }
+    .ma-item-right {
+        padding-left: 10px;
+        position: relative;
+        width: 70%;
+    }
+    .ma-item-des {
+        display: flex;
+        justify-content: space-between;
+        align-items: self-end;
+        font-size: 10px;
+    }
+    .code {
+        background: yellow;
+        color: red;
+        font-weight: bolder;
+    }
+    .right_magiam {
+        font-weight: 700;
+        padding: 5px 7px;
+        background: rgb(249,72,42);
+        color: white;
+        border-radius: 15px;
+        cursor: pointer;
+        margin-bottom: 26px;
+    }
+    .opcion-radio input[type=radio] + label:before {
+        content: '';
+        background: #F4F5F8;
+        border-radius: 100%;
+        border: 1px solid #a6aec6;
+        display: inline-block;
+        width: 1.4em;
+        height: 1.4em;
+        position: relative;
+        top: -.2em;
+        margin-right: .5em;
+        vertical-align: top;
+        cursor: pointer;
+        text-align: center;
+        -webkit-transition: all 250ms ease;
+        transition: all 250ms ease;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .opcion-radio input[type=radio]:checked + label:before {
+        background-color: #8879FF;
+        box-shadow: inset 0 0 0 4px #F4F5F8;
+    }
+    .opcion-radio label {
+        display: inline-block;
+        vertical-align: middle;
+        line-height: 32px;
+    }
+</style>
+<body class="container">
+<div class="tong">
+    <div class="left">
+        <div id="left1" class="left1">
+            <img class="logo" src="../dist/img/logo_bong2.jpg" height="70" width="130">
+            <p style="color: red; margin: 0;padding: 0;">Mang đến sự tự tin trong bạn</p>
+            <h6 style="margin-top: 50px;">THÔNG TIN GIAO HÀNG</h6>
+            <div class="mt-3 d-flex justify-content-start">
+                <p>Bạn đã có tài khoản?</p>
+                <a href="#" style="color: rgb(249,72,42); padding-left: 5px; text-decoration: none; text-transform: none;">Đăng nhập</a>
+            </div>
+            <form>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="hovaten" placeholder="Họ và tên">
+                    <label for="hovaten">Họ và tên</label>
+                </div>
+                <div class="d-flex justify-content-between mb-3">
+                    <div class="form-floating" style="width: 70%; padding-right: 20px;">
+                        <input type="email" class="form-control" id="email" placeholder="name@example.com">
+                        <label for="email">Email</label>
+                    </div>
+                    <div class="form-floating" style="width: 30%;">
+                        <input type="text" class="form-control" id="sdt" placeholder="Số điện thoại">
+                        <label for="sdt">Số điện thoại</label>
+                    </div>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="diachi" placeholder="Địa chỉ">
+                    <label for="diachi">Địa chỉ</label>
+                </div>
+                <div class="d-flex justify-content-between mb-4">
+                    <div class="form-floating" style="padding-right: 20px;">
+                        <select class="form-select" id="tinh" aria-label="Floating label select example">
+                            <option selected>Open this select menu</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                        <label for="tinh">Tỉnh/thành phố</label>
+                    </div>
+                    <div class="form-floating" style="padding-right: 20px;">
+                        <select class="form-select" id="huyen" aria-label="Floating label select example">
+                            <option selected>Open this select menu</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                        <label for="huyen">Quận/huyện</label>
+                    </div>
+                    <div class="form-floating">
+                        <select class="form-select" id="xa" aria-label="Floating label select example">
+                            <option selected>Open this select menu</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                        <label for="xa">Phường/xã</label>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end mb-4">
+                    <button id="button_left1" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 40%; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">Tiếp tục đến phương thức thanh toán</button>
+                </div>
+            </form>
+        </div>
+        <div id="left2" class="left2">
+            <img class="logo" src="../dist/img/logo_bong2.jpg" height="70" width="130">
+            <p style="color: red; margin: 0;padding: 0;">Mang đến sự tự tin trong bạn</p>
+            <h6 style="margin-top: 50px;">THÔNG TIN GIAO HÀNG</h6>
+            <div class="d-flex justify-content-start mt-4">
+                <div style="margin-right: 15px;">
+                    <img src="../dist/img/user7-128x128.jpg" style="border-radius: 7px;" width="70px" height="70px">
+                </div>
+                <p style="padding-top: 7px;">
+                    Văn Hoa Nguyễn (nguyeenxvawnhoa@gmail.com)
+                    <br>
+                    <a href="#" style="color: rgb(249,72,42); text-decoration: none; text-transform: none;">Đăng xuất</a>
+                </p>
+            </div>
+            <form class="mt-4">
+                <div class="form-floating mb-3">
+                    <select class="form-select" id="diachidaluu" aria-label="Floating label select example">
+                        <option selected>Thêm địa chỉ mới</option>
+                        <option value="1">0865858245,Tây Hồ, Hà Nội</option>
+                        <option value="2">0865858245,Tây Hồ, Hà Nội</option>
+                        <option value="3">0865858245,Tây Hồ, Hà Nội</option>
+                    </select>
+                    <label for="diachidaluu">Địa chỉ đã lưu</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="hovaten2" placeholder="Họ và tên">
+                    <label for="hovaten2">Họ và tên</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="sdt2" placeholder="Số điện thoại">
+                    <label for="sdt2">Số điện thoại</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="diachi2" placeholder="Địa chỉ">
+                    <label for="diachi2">Địa chỉ</label>
+                </div>
+                <div class="d-flex justify-content-between mb-4">
+                    <div class="form-floating" style="padding-right: 20px;">
+                        <select class="form-select" id="tinh2" aria-label="Floating label select example">
+                            <option selected>Open this select menu</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                        <label for="tinh2">Tỉnh/thành phố</label>
+                    </div>
+                    <div class="form-floating" style="padding-right: 20px;">
+                        <select class="form-select" id="huyen2" aria-label="Floating label select example">
+                            <option selected>Open this select menu</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                        <label for="huyen2">Quận/huyện</label>
+                    </div>
+                    <div class="form-floating">
+                        <select class="form-select" id="xa2" aria-label="Floating label select example">
+                            <option selected>Open this select menu</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                        <label for="xa2">Phường/xã</label>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end mb-4">
+                    <button id="button_left2" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 40%; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">Tiếp tục đến phương thức thanh toán</button>
+                </div>
+            </form>
+        </div>
+        <div id="left3" class="left3">
+            <img class="logo" src="../dist/img/logo_bong2.jpg" height="70" width="130">
+            <p style="color: red; margin: 0;padding: 0;">Mang đến sự tự tin trong bạn</p>
+            <h6 style="margin-top: 50px; margin-bottom: 25px;">PHƯƠNG THỨC VẬN CHUYỂN</h6>
+            <ul class="list-group">
+                <li class="list-group-item" style="width: 100%; height: 70px;">
+                    <div class="opciones-radio">
+                        <div class="form-group" style="padding-top: 7px;">
+                        <span class="opcion-radio">
+                            <input type="radio" id="comida_mexicana" name="abc" checked>
+                            <label for="comida_mexicana">Miễn phí vận chuyển cho đơn hàng 1,5 triệu</label>
+                        </span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <h6 style="margin-top: 35px; margin-bottom: 25px;">PHƯƠNG THỨC THANH TOÁN</h6>
+            <ul class="list-group">
+                <li class="list-group-item" style="width: 100%; height: 70px;">
+                    <div class="opciones-radio">
+                        <div class="form-group" style="padding-top: 7px;">
+                        <span class="opcion-radio">
+                            <input type="radio" id="comida_mexicana1" name="pttt" checked>
+                            <label for="comida_mexicana1">
+                                <img class="main-img" src="https://hstatic.net/0/0/global/design/seller/image/payment/cod.svg?v=6">
+                                Thanh toán khi nhận hàng (COD)</label>
+                        </span>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item" style="width: 100%; height: 70px;">
+                    <div class="opciones-radio">
+                        <div class="form-group" style="padding-top: 7px;">
+                        <span class="opcion-radio">
+                            <input type="radio" id="comida_mexicana2" name="pttt">
+                            <label for="comida_mexicana2">Thanh toán qua ví điện tử VNPay</label>
+                        </span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div class="d-flex justify-content-end mb-4" style="margin-top: 30px;">
+                <button style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 40%; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">Hoàn tất đơn hàng</button>
+            </div>
+        </div>
+    </div>
+    <div class="right">
+        <table>
+            <tbody>
+            <div>
+                <tr>
+                    <td class="anhsp" style="width: 15%;">
+                        <img src="../dist/img/bong2.jpg" width="100%" height="40px"/>
+                        <span class="position-absolute top-1 start-85 translate-middle badge rounded-pill bg-danger">3</span>
+                    </td>
+                    <td style="width: 60%; padding-left: 15px;">
+                        <h8 style="margin: 0;padding-top: 0;">Giày Thể Thao Nữ Biti's Hunter x DC Batman DSWH09099</h8>
+                        <p style="margin: 0;padding-top: 0;">Đen / 36</p>
+                    </td>
+                    <td style="width: 25%; text-align: right;">
+                        <div class="d-flex justify-content-end align-items-center">
+                            <b>720.000</b>
+                            <b style="font-size: 10px;">đ</b>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="spacer-row"><td colspan="3"></td></tr>
+                <tr>
+                    <td class="anhsp" style="width: 15%;">
+                        <img src="../dist/img/bong2.jpg" width="100%" height="40px"/>
+                        <span class="position-absolute top-1 start-85 translate-middle badge rounded-pill bg-danger">3</span>
+                    </td>
+                    <td style="width: 60%; padding-left: 15px;">
+                        <h8 style="margin: 0;padding-top: 0;">Giày Thể Thao Nữ Biti's Hunter x DC Batman DSWH09099</h8>
+                        <p style="margin: 0;padding-top: 0;">Đen / 36</p>
+                    </td>
+                    <td style="width: 25%; text-align: right;">
+                        <div class="d-flex justify-content-end align-items-center">
+                            <b>720.000</b>
+                            <b style="font-size: 10px;">đ</b>
+                        </div>
+                    </td>
+                </tr>
+            </div>
+            </tbody>
+        </table>
+        <hr>
+        <div class="d-flex justify-content-between mb-3">
+            <div class="form-floating" style="width: 70%; padding-right: 20px;">
+                <input type="email" class="form-control" id="magiamgia" placeholder="Mã giảm giá">
+                <label for="magiamgia">Mã giảm giá</label>
+            </div>
+            <button style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 30%; height: 55px; border-radius: 10px; border-color: rgb(249,72,42);">Sử dụng</button>
+        </div>
+        <div class="xemthem" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            <svg width="15" height="10" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M17.3337 5.3335V2.00016C17.3337 1.07516 16.5837 0.333496 15.667 0.333496H2.33366C1.41699 0.333496 0.675326 1.07516 0.675326 2.00016V5.3335C1.59199 5.3335 2.33366 6.0835 2.33366 7.00016C2.33366 7.91683 1.59199 8.66683 0.666992 8.66683V12.0002C0.666992 12.9168 1.41699 13.6668 2.33366 13.6668H15.667C16.5837 13.6668 17.3337 12.9168 17.3337 12.0002V8.66683C16.417 8.66683 15.667 7.91683 15.667 7.00016C15.667 6.0835 16.417 5.3335 17.3337 5.3335ZM15.667 4.11683C14.6753 4.69183 14.0003 5.77516 14.0003 7.00016C14.0003 8.22516 14.6753 9.3085 15.667 9.8835V12.0002H2.33366V9.8835C3.32533 9.3085 4.00033 8.22516 4.00033 7.00016C4.00033 5.76683 3.33366 4.69183 2.34199 4.11683L2.33366 2.00016H15.667V4.11683ZM9.83366 9.50016H8.16699V11.1668H9.83366V9.50016ZM8.16699 6.16683H9.83366V7.8335H8.16699V6.16683ZM9.83366 2.8335H8.16699V4.50016H9.83366V2.8335Z" fill="#318DBB"></path>
+            </svg>
+            <span>Xem thêm mã giảm giá</span>
+        </div>
+        <div style="display: flex; justify-content: center;">
+            <span class="qaz" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                <span data-code="50K1605KM3105KM">Giảm 50,000 ₫</span>
+            </span>
+            <span class="qaz" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><span data-code="90K1605KM3105KM">Giảm 90,000 ₫</span></span>
+            <span class="qaz" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><span data-code="120K1605KM3105KM">Giảm 120,000 ₫</span></span>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" style="width: 430px;">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #EEEEEE;">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Danh sách phiếu khuyến mãi:</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="background-color: #e6f2f4;">
+                        <div class="ma_giam_gia">
+                            <div class="ma-item-left">
+                                <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
+                            </div>
+                            <div class="ma-item-right">
+                                <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;">Giảm 120.000đ</h4>
+                                <p style="font-size: 14px; margin: 0; padding: 0; color: black">Đơn hàng từ 890.000đ trở lên</p>
+                                <div class="ma-item-des">
+                                    <div class="left_magiam">
+                                        <p style="margin: 0; white-space: nowrap;">Mã: <b class="code">14FRMGR24MNFNS</b></p>
+                                        <p>HSD: 31/05/2024</p>
+                                    </div>
+                                    <div class="right_magiam">
+                                        Áp dụng
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ma_giam_gia">
+                            <div class="ma-item-left">
+                                <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
+                            </div>
+                            <div class="ma-item-right">
+                                <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;">Giảm 120.000đ</h4>
+                                <p style="font-size: 14px; margin: 0; padding: 0; color: black">Đơn hàng từ 890.000đ trở lên</p>
+                                <div class="ma-item-des">
+                                    <div class="left_magiam">
+                                        <p style="margin: 0; white-space: nowrap;">Mã: <b class="code">14FRMGR24MNFNS</b></p>
+                                        <p>HSD: 31/05/2024</p>
+                                    </div>
+                                    <div class="right_magiam">
+                                        Áp dụng
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ma_giam_gia">
+                            <div class="ma-item-left">
+                                <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
+                            </div>
+                            <div class="ma-item-right">
+                                <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;">Giảm 120.000đ</h4>
+                                <p style="font-size: 14px; margin: 0; padding: 0; color: black">Đơn hàng từ 890.000đ trở lên</p>
+                                <div class="ma-item-des">
+                                    <div class="left_magiam">
+                                        <p style="margin: 0; white-space: nowrap;">Mã: <b class="code">14FRMGR24MNFNS</b></p>
+                                        <p>HSD: 31/05/2024</p>
+                                    </div>
+                                    <div class="right_magiam">
+                                        Áp dụng
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="d-flex justify-content-between align-items-center">
+            <p style="color: #AAAAAA; font-size: 18px;">Tạm tính</p>
+            <div style="display: flex; align-items: center;">
+                <h5>720.000</h5>
+                <b style="font-size: 14px;">đ</b>
+            </div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center">
+            <p style="color: #AAAAAA; font-size: 18px;">Phí vận chuyển</p>
+            <div style="display: flex; align-items: center;">
+                <h5>20.000</h5>
+                <b style="font-size: 14px;">đ</b>
+            </div>
+        </div>
+        <hr>
+        <div class="d-flex justify-content-between align-items-center">
+            <p style="color: #000; font-size: 20px;">Tổng cộng</p>
+            <div style="display: flex; align-items: center;">
+                <h4 style="color: #000;">20.000</h4>
+                <b style="font-size: 14px;">đ</b>
+            </div>
+        </div>
+        <div style="position: relative; padding: 10px 0; color: #666;">
+            <div style="position: relative; z-index: 1;text-align: center;">
+                <span style="background: #f2f2f2; padding: 0 15px;">Lý do bạn chọn FSPORT</span>
+                <span style="position: absolute; height: 1px; width: 100%; top: 50%; background: #dfdfdf;left: 0;z-index: -1;"></span>
+            </div>
+            <div class="wyuscs" style="overflow: auto;margin-top: 16px;">
+                <div class="wyuscs1" style="float: left;width: 20%">
+                    <img style="max-width: 64px;" src="https://file.hstatic.net/1000230642/file/0x500_mail-truck-64e12_05e20103f8814bcfb554c07e67ba839f.png">
+                </div>
+                <div class="wyuscs2" style="float:right;width: 80%;">
+                    <strong style="font-weight: bolder;color: #000;font-size: 1.1em;">Hơn 800.000 đơn hàng được FSPORT vận chuyển đến tay khách hàng thành công.</strong>
+                    <p>FSPORT luôn làm đảm bảo khách hàng hài lòng khi nhận sản phẩm. Bạn chỉ cần đặt hàng giao hàng hãy để đội ngũ FSPORT lo.</p>
+                </div>
+            </div>
+            <div class="wyuscs" style="overflow: auto;margin-top: 16px;">
+                <div class="wyuscs1" style="float: left;width: 20%">
+                    <img style="max-width: 64px;" src="https://file.hstatic.net/1000230642/file/reload_44f0185e8a834a108fb386db12182dd3.png">
+                </div>
+                <div class="wyuscs2" style="float:right;width: 80%">
+                    <span style="font-weight: bolder;color: #000;font-size: 1.1em;">An tâm đặt hàng online với chính sách đổi trả</span>
+                    <p>FSPORT có chính sách đổi hàng tại quầy trong vòng 7 ngày.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById("left2").style.display = "none";
+    document.getElementById("left3").style.display = "none";
+    document.getElementById("button_left1").addEventListener("click", function(event) {
+        event.preventDefault();
+        document.getElementById("left1").style.display = "none";
+        document.getElementById("left2").style.display = "none";
+        document.getElementById("left3").style.display = "block";
+    });
+    document.getElementById("button_left2").addEventListener("click", function(event) {
+        event.preventDefault();
+        document.getElementById("left1").style.display = "none";
+        document.getElementById("left2").style.display = "none";
+        document.getElementById("left3").style.display = "block";
+    });
+</script>
+</body>
+</html>

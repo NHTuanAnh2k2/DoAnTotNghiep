@@ -34,4 +34,5 @@ public interface HoaDonService {
     public Context setData(MauHoaDon userList);
     List<HoaDon> timTheoTrangThaiVaLoai(Integer id,Boolean loaihd);
     HoaDon timBanGhiDuocTaoGanNhat();
+    HoaDon timHDTheoMaHD(String mahd);
 }

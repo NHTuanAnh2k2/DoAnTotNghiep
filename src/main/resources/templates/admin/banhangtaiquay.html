@@ -58,8 +58,10 @@
 </style>
 <script src="../sweetalert2/dist/sweetalert2.min.js/"></script>
 <link rel="stylesheet" type="text/css" href="../sweetalert2/dist/sweetalert2.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 <body class="hold-transition sidebar-mini" style="font-family: 'Bahnschrift'">
+
     <div class="wrapper">
         <!-- Navbar -->
         <nav th:replace="~{/layoutadmin/navbar.html}"></nav>
@@ -86,6 +88,7 @@
                                 </svg>
                                 BÁN HÀNG TẠI QUẦY
                             </h1>
+                            <div id="dataContainer" th:data-my-attribute="${check}" style="display:none;"></div>
                         </div>
                         <!--                    <div class="col-sm-6">-->
                         <!--                        <ol class="breadcrumb float-sm-right">-->
@@ -134,7 +137,7 @@
                     Quét QR Sản phẩm
                 </a>
                 <a class="btn" style="margin-left: 20px;background-color: rgb(249,72,42);color: white"
-                    data-bs-toggle="modal" data-bs-target="#modalThemSanPhamHD5">
+                    data-bs-toggle="modal" data-bs-target="#modalThemSanPhamHD" id="changeSP">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                         class="bi bi-plus" viewBox="0 0 16 16">
                         <path
@@ -241,89 +244,88 @@
                 </div>
             </div>
 
-            <!-- modal thay đổi nhân viên -->
-
-            <div class="modal fade" id="modalChuyenNhanVien5" tabindex="-1"
-                aria-labelledby="exampleModalChuyenNhanVien5" aria-hidden="true">
+            <!--Modal thay đổi nhân viên-->
+            <!-- Modal -->
+            <div class="modal fade" id="modalChuyenNhanVien" tabindex="-1" aria-labelledby="exampleModalChuyenNhanVien"
+                aria-hidden="true">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h class="modal-title fs-5" id="exampleModalChuyenNhanVien5">Khách hàng
-                            </h>
+                            <h3 class="modal-title fs-5" id="exampleModalChuyenNhanVien">Chọn khách hàng
+                            </h3>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="card-body">
-                                <nav class="navbar bg-body-tertiary">
-                                    <div class="container-fluid">
-                                        <form class="d-flex" role="search">
-                                            <input class="form-control me-2" type="search"
-                                                placeholder="Tìm kiếm theo tên và số điện thoại" aria-label="Search"
-                                                style="width: 900px">
-                                            <a class="btn btn-outline-success" type="submit"
-                                                style="margin-left: 20px">Tìm
-                                                kiếm</a>
-                                        </form>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <button type="button" class="btn" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal"
+                                            style="background-color: rgb(249,72,42);color: white">+Thêm khách
+                                            hàng</button>
                                     </div>
-                                </nav>
+                                    <nav class="navbar bg-body-tertiary">
+                                        <div class="container-fluid">
+                                            <form class="d-flex" role="search">
+                                                <input style="width: 400px;" class="form-control me-2" type="search"
+                                                    placeholder="Nhập họ tên hoặc số điện thoại..." aria-label="Search"
+                                                    id="searchNV">
+                                                <button type="button" id="reloadnv" class="btn btn-outline-warning"><i
+                                                        class="bi bi-arrow-clockwise"></i></button>
+                                            </form>
+                                        </div>
+                                    </nav>
+                                </div>
 
 
-                                <table style="width: 100%" class="table-bordered table-hover text-center">
-                                    <thead style="background-color:rgb(249,72,42);height: 50px">
+                                <table class="table table-bordered table-hover text-center">
+                                    <thead class="table table-danger">
                                         <tr>
                                             <th>STT</th>
-                                            <th>Ảnh</th>
+                                            <th>Mã khách hàng</th>
                                             <th>Tên khách hàng</th>
-                                            <th>Email</th>
                                             <th>Số điện thoại</th>
+                                            <th>Ngày sinh</th>
+                                            <th>Giới tính</th>
                                             <th>Thao tác</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>abc</td>
-                                            <td>abc</td>
-                                            <td>abc</td>
-                                            <td>abc</td>
-                                            <td>
-                                                <a style="color: rgb(249,72,42)">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
-                                                        fill="currentColor" class="bi bi-check2-circle"
-                                                        viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
-                                                        <path
-                                                            d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z" />
-                                                    </svg>
-                                                </a>
-                                            </td>
+                                    <tbody id="tbl_doi_nv">
 
-                                        </tr>
                                     </tbody>
                                 </table>
                                 <br>
+
+                                <nav aria-label="Page navigation example" id="navNV">
+                                    <ul class="pagination">
+                                        <li class="page-item" id="btn_prev_page"><a class="page-link"
+                                                id="prevPage">Previous</a>
+                                        </li>
+                                        <li class="d-flex flex-row page-item" id="numberPage">
+                                        </li>
+                                        <li class="page-item" id="btn_next_page">
+                                            <a class="page-link" id="nextPage">Next</a>
+                                        </li>
+                                    </ul>
+                                </nav>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Hủy</button>
-                            <button type="button" class="btn"
-                                style="background-color: rgb(249,72,42);color: white">OK</button>
                         </div>
                     </div>
                 </div>
             </div>
-
+            <!--Kết thúc modal thay đổi nhân viên-->
 
             <!-- thêm sản phẩm vào hóa đơn -->
 
-            <div class="modal fade" id="modalThemSanPhamHD5" tabindex="-1" aria-labelledby="exampleModalThemSanPhamHD5"
+            <!--Modal thêm sản phẩm vào hóa đơn-->
+            <!-- Modal -->
+            <div class="modal fade" id="modalThemSanPhamHD" tabindex="-1" aria-labelledby="exampleModalThemSanPhamHD"
                 aria-hidden="true">
                 <div class="modal-dialog modal-xl modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h3 class="modal-title fs-5" id="exampleModalThemSanPhamHD5">Thêm
-                                sản phẩm vào hóa đơn</h3>
+                            <h3 class="modal-title fs-5" id="exampleModalThemSanPhamHD">Thêm
+                                sản phẩm vào đơn hàng</h3>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -332,13 +334,11 @@
                                     <nav class="navbar bg-body-tertiary">
                                         <form>
                                             <div class="d-flex align-items-center">
-                                                <input class="form-control me-2" type="search" placeholder="Search"
-                                                    aria-label="Search" style="width: 800px;">
-                                                <button class="btn btn-outline-success" type="submit"
-                                                    style="margin-right: 35px; margin-left: 35px;">Search
-                                                </button>
-                                                <button class="btn btn-outline-danger" type="submit">Làm mới
-                                                </button>
+                                                <input class="form-control me-2" type="search" id="tensp"
+                                                    placeholder="Nhập tên sản phẩm..." aria-label="Search"
+                                                    style="width: 984px;">
+                                                <button type="button" id="reloadsp" class="btn btn-outline-warning"><i
+                                                        class="bi bi-arrow-clockwise"></i></button>
                                             </div>
                                             <!--Bộ lọc-->
                                             <div class="align-items-center">
@@ -346,46 +346,66 @@
                                                     <div>
                                                         <label class="col-form-label">Chất
                                                             liệu</label>
-                                                        <select class="form-select" style="width: 120px;">
-                                                            <option selected disabled value="">Choose...
+                                                        <select class="form-select" onchange="SearchSPHDCT()"
+                                                            id="chatlieu" style="width: 120px;">
+                                                            <option value="all" selected>
+                                                                ----</option>
+                                                            <option th:each="a:${dsChatLieu}" th:value="${a.ten}"
+                                                                th:text="${a.ten}">
+
                                                             </option>
-                                                            <option>...</option>
                                                         </select>
                                                     </div>
                                                     <div>
                                                         <label class="col-form-label">Thương
                                                             hiệu</label>
-                                                        <select class="form-select" style="width: 120px;">
-                                                            <option selected disabled value="">Choose...
+                                                        <select class="form-select" onchange="SearchSPHDCT()"
+                                                            id="thuonghieu" style="width: 120px;">
+                                                            <option value="all" selected>
+                                                                ----</option>
+                                                            <option th:each="a:${dsThuongHieu}" th:value="${a.ten}"
+                                                                th:text="${a.ten}">
+
                                                             </option>
-                                                            <option>...</option>
                                                         </select>
                                                     </div>
                                                     <div>
                                                         <label class="col-form-label">Đế
                                                             giày</label>
-                                                        <select class="form-select" style="width: 120px;">
-                                                            <option selected disabled value="">Choose...
+                                                        <select class="form-select" onchange="SearchSPHDCT()"
+                                                            id="degiay" style="width: 120px;">
+                                                            <option value="all" selected>
+                                                                ----</option>
+                                                            <option th:each="a:${dsDe}" th:value="${a.ten}"
+                                                                th:text="${a.ten}">
+
                                                             </option>
-                                                            <option>...</option>
                                                         </select>
                                                     </div>
                                                     <div>
                                                         <label class="col-form-label">Kích
                                                             cỡ</label>
-                                                        <select class="form-select" style="width: 120px;">
-                                                            <option selected disabled value="">Choose...
+                                                        <select class="form-select" onchange="SearchSPHDCT()"
+                                                            id="kichco" style="width: 120px;">
+                                                            <option value="all" selected>
+                                                                ----</option>
+                                                            <option th:each="a:${dsKichCo}" th:value="${a.ten}"
+                                                                th:text="${a.ten}">
+
                                                             </option>
-                                                            <option>...</option>
                                                         </select>
                                                     </div>
                                                     <div>
                                                         <label class="col-form-label">Màu
                                                             sắc</label>
-                                                        <select class="form-select" style="width: 120px;">
-                                                            <option selected disabled value="">Choose...
+                                                        <select class="form-select" oninput="SearchSPHDCT()" id="mausac"
+                                                            style="width: 120px;">
+                                                            <option value="all" selected>
+                                                                ----</option>
+                                                            <option th:each="a:${dsMauSac}" th:value="${a.ten}"
+                                                                th:text="${a.ten}">
+
                                                             </option>
-                                                            <option>...</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -393,45 +413,39 @@
                                             </div>
                                             <div class="d-flex justify-content-evenly">
                                                 <div>
-                                                    <label class="col-form-label">Thể
-                                                        loại</label>
-                                                    <select class="form-select" style="width: 120px;">
-                                                        <option selected disabled value="">
-                                                            Choose...
-                                                        </option>
-                                                        <option>...</option>
-                                                    </select>
-                                                </div>
-                                                <div>
                                                     <label class="col-form-label">Giới
                                                         tính</label>
-                                                    <select class="form-select" style="width: 120px;">
-                                                        <option selected disabled value="">
-                                                            Choose...
-                                                        </option>
-                                                        <option>...</option>
+                                                    <select class="form-select" onchange="SearchSPHDCT()" id="gioitinh"
+                                                        style="width: 120px;">
+
+                                                        <option value="true">Nam</option>
+                                                        <option value="false">Nữ</option>
                                                     </select>
                                                 </div>
                                                 <div>
                                                     <label class="col-form-label">Khoảng
-                                                        giá</label>
-                                                    <div>
-                                                        <input type="range" min="1" max="100" value="50"
-                                                            style="width: 200px;">
+                                                        giá: <span id="priceRangeValue">500,000 đ
+                                                        </span></label>
+
+                                                    <div class="slidecontainer mt-1" style="width: 495px;">
+                                                        <input type="range" min="100000" onchange="SearchSPHDCT()"
+                                                            max="8000000" value="500000" style="width: 100%;"
+                                                            id="priceRange">
                                                     </div>
+
+
                                                 </div>
                                             </div>
                                         </form>
                                     </nav>
                                 </div>
                                 <br>
-                                <table style="width: 100%" class="table-bordered table-hover text-center">
-                                    <thead style="background-color:rgb(249,72,42);height: 50px">
+                                <table class="table table-bordered table-hover text-center">
+                                    <thead class="table table-danger">
                                         <tr>
                                             <th>STT</th>
-                                            <th>Ảnh</th>
+                                            <th>Ảnh sản phẩm</th>
                                             <th>Tên sản phẩm</th>
-                                            <th>Giá bán</th>
                                             <th>Số lượng</th>
                                             <th>Kích cỡ</th>
                                             <th>Màu sắc</th>
@@ -439,54 +453,104 @@
                                             <th>Thao tác</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>abc</td>
-                                            <td>abc</td>
-                                            <td>abc</td>
-                                            <td>abc</td>
-                                            <td>abc</td>
-                                            <td>abc</td>
-                                            <td>abc</td>
-                                            <td>
-                                                <a style="color: rgb(249,72,42)">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
-                                                        fill="currentColor" class="bi bi-check2-circle"
-                                                        viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
-                                                        <path
-                                                            d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z" />
-                                                    </svg>
-                                                </a>
-                                            </td>
-                                        </tr>
+                                    <tbody id="tbl_sp_them">
+
                                     </tbody>
                                 </table>
+                                <br>
+                                <nav aria-label="Page navigation example" id="navAddSPHDCT">
+                                    <ul class="pagination">
+                                        <li class="page-item" id="btn_prev_page"><a class="page-link"
+                                                id="prevPageSP">Previous</a>
+                                        </li>
+                                        <li class="d-flex flex-row page-item" id="numberPageSP">
+
+
+                                        </li>
+                                        <li class="page-item" id="btn_next_page">
+                                            <a class="page-link" id="nextPageSP">Next</a>
+                                        </li>
+                                    </ul>
+                                </nav>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Hủy
-                            </button>
-                            <button type="button" class="btn"
-                                style="background-color: rgb(249,72,42);color: white">OK</button>
                         </div>
                     </div>
                 </div>
             </div>
+            <!--Kết thúc Modal thêm sản phẩm vào hóa đơn-->
+            <!-- thêm khách hàng -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm nhanh khách hàng</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form th:action="@{http://localhost:8080/ban-hang-tai-quay/add-nhanh}"
+                                th:object="${AddKHNhanh}" method="post">
+                                <p>
+                                    <input type="text" class="form-control" placeholder="Nhập họ và tên"
+                                        th:field="*{ten}">
+                                </p>
+                                <p>
+                                    <input type="text" class="form-control" placeholder="Nhập số điện thoại"
+                                        th:field="*{sdt}">
+                                </p>
+                                <p>
+                                    <input type="text" class="form-control" placeholder="Nhập email"
+                                        th:field="*{email}">
+                                </p>
+                                <p class="d-flex">
+                                    <select class="form-select form-select-sm mb-3" id="city" th:field="*{tinh}">
+                                        <option value="" th:text="*{tinh}" selected>
+                                            Chọn tỉnh thành</option>
+                                    </select>
+                                    <select class="form-select form-select-sm mb-3" id="district" th:field="*{huyen}">
+                                        <option value="" th:text="*{huyen}" selected>Chọn quận huyện</option>
+                                    </select>
+                                    <select class="form-select form-select-sm mb-3" id="ward" th:field="*{xa}">
+                                        <option value="" th:text="*{xa}" selected>
+                                            Chọn phường xã</option>
+                                    </select>
+                                </p>
+                                <p>
+                                    <textarea class="form-control" placeholder="Số nhà/đường"
+                                        th:field="*{diachi}"></textarea>
+                                </p>
+                                <div class="d-flex justify-content-start">
+                                    <p class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" checked
+                                            id="inputThemNhanh" onclick="seton()" th:field="*{check}">
+                                    </p>
+                                    <div class="ms-3" id="showndcheck">
 
+                                        <p style="font-style: italic;">Thêm nhanh và lựa chọn khách hàng cho hóa đơn!
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn"
+                                        style="background-color: rgb(249,72,42);color: white">Thêm nhanh</button>
+                                </div>
+                            </form>
 
+                        </div>
+
+                    </div>
+                </div>
+            </div>
             <!--</div>-->
             <!--end-->
             <div>
                 <hr>
                 <div class="d-flex">
                     <h5 style="margin-left: 820px">Tổng tiền:</h5>
-                    <h5 style="margin-left: 25px;color: red">5,000,000đ</h5>
+                    <h5 style="margin-left: 25px;color: red" id="tongTien"></h5>
                 </div>
                 <br>
-                <div class="d-flex">
+                <div class="d-flex pe-1 ps-1">
                     <h5 class="me-auto">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-person" viewBox="0 0 16 16">
@@ -496,7 +560,7 @@
                         Tài khoản
                     </h5>
                     <a class="btn ms-auto" style="background-color: rgb(249,72,42);color: white" data-bs-toggle="modal"
-                        data-bs-target="#modalChuyenNhanVien5">
+                        data-bs-target="#modalChuyenNhanVien" id="changeNV">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-plus" viewBox="0 0 16 16">
                             <path
@@ -506,21 +570,12 @@
                     </a>
                 </div>
                 <hr>
-                <div class="d-flex">
-                    <p style="margin-left: 20px">Tên khách hàng:</p>
-                    <p style="margin-left: 20px">Nguyễn Văn Duy</p>
-                </div>
-                <div class="d-flex">
-                    <p style="margin-left: 20px">Số điện thoại:</p>
-                    <p style="margin-left: 20px">0123456789</p>
-                </div>
-                <div class="d-flex">
-                    <p style="margin-left: 20px">Email:</p>
-                    <p style="margin-left: 20px">duynvph30146@fpt.edu.vn</p>
+                <div id="thongTinTaiKhoan">
+
                 </div>
                 <br>
-                <div class="d-flex">
-                    <h5 style="margin-left: 25px">
+                <div class="d-flex justify-content-between pe-1 ps-1">
+                    <h5>
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-person" viewBox="0 0 16 16">
                             <path
@@ -528,50 +583,12 @@
                         </svg>
                         Khách hàng
                     </h5>
-                    <button class="btn" style="margin-left: 890px;background-color: rgb(249,72,42);color: white">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                            class="bi bi-plus" viewBox="0 0 16 16">
-                            <path
-                                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                        </svg>
-                        Chọn địa chỉ
-                    </button>
+                    <p></p>
                 </div>
                 <hr>
-                <div class="row">
-                    <div class="col-7">
-                        <p>
-                            <input type="text" class="form-control" placeholder="Nhập họ và tên">
-                        </p>
-                        <p>
-                            <input type="text" class="form-control" placeholder="Nhập số điện thoại">
-                        </p>
-                        <p>
-                            <input type="text" class="form-control" placeholder="Nhập email">
-                        </p>
-                        <p>
-                            <input type="text" class="form-control" placeholder="Nhập địa chỉ">
-                        </p>
-                        <p class="d-flex">
-                            <select class="form-control">
-                                <option>Chọn tỉnh</option>
-                                <option>Hà Nội</option>
-                                <option>Hải Phòng</option>
-                            </select>
-                            <select style="margin-left: 20px" class="form-control">
-                                <option>Chọn quận</option>
-                                <option>Hà Nội</option>
-                                <option>Hải Phòng</option>
-                            </select>
-                            <select style="margin-left: 20px" class="form-control">
-                                <option>Chọn xã</option>
-                                <option>Hà Nội</option>
-                                <option>Hải Phòng</option>
-                            </select>
-                        </p>
-                        <p>
-                            <textarea class="form-control" placeholder="Ghi chú"></textarea>
-                        </p>
+                <div class="row ps-2 pe-2">
+                    <div class="col-7" id="diachihtml">
+
                     </div>
                     <div class="col-5">
                         <h5>
@@ -594,35 +611,32 @@
                                     </svg>
                                 </a>
                             </p>
-                            <p>0đ</p>
+                            <p></p>
                         </div>
-                        <div class="d-flex justify-content-between">
-                            <p style="font-weight: bold">Mã giảm giá:</p>
-                            <p>JFKSIFNH15</p>
+                        <div class="d-flex justify-content-between mb-1">
+                            <p style="font-weight: bold; margin-top: 10px;"> Mã giảm giá:</p>
+                            <p 
+                            style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white; padding-top: 10px;"
+                            id="maGiamFill">HFGGD07234-TUNGDT</p>
+
+                            <button class="btn btn-light" style="margin-bottom: 20px;">Chọn mã giảm</button>
                         </div>
-                        <div class="d-flex justify-content-between">
-                            <p style="font-weight: bold">Trả sau:</p>
-                            <p class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="customSwitch8">
-                                <label class="custom-control-label" for="customSwitch"></label>
-                            </p>
+                        <div class="d-flex justify-content-between " id="trasauhtml">
+
                         </div>
                         <div class="d-flex justify-content-between">
                             <p style="font-weight: bold">Giao hàng:</p>
-                            <p class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="customSwitch9">
-                                <label class="custom-control-label" for="customSwitch1"></label>
+                            <p class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" onclick="giaohang()"
+                                    id="checktrasau">
                             </p>
+                        </div>
+                        <div class="d-flex justify-content-between" id="phiShip">
+
                         </div>
                         <div class="d-flex justify-content-between">
                             <p style="font-weight: bold">Tiền hàng:</p>
-                            <p>
-                                <input type="number" style="width: 180px;height: 30px" class="form-control">
-                            </p>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <p style="font-weight: bold">Phí vận chuyển:</p>
-                            <p style="font-weight: bold">2,500,000đ</p>
+                            <p style="font-weight: bold" id="tongTienTTTT"></p>
                         </div>
                         <div class="d-flex justify-content-between">
                             <p style="font-weight: bold">Giảm giá:</p>
@@ -630,7 +644,7 @@
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between">
-                            <p style="font-weight: bold">Tổng tiền:</p>
+                            <p style="font-weight: bold">Tổng thanh toán:</p>
                             <p style="color: red;font-weight: bold">2,200,000đ</p>
                         </div>
                         <p>
@@ -668,7 +682,23 @@
                         </div>`;
                 }
                 document.getElementById('GhiDeTab').innerHTML = htmlDiv;
+                // var check = null;
+                // const dataContainer = document.getElementById('dataContainer');
+                // const attributeValue = dataContainer.getAttribute('data-my-attribute');
+                // if (attributeValue != null) {
+                //     check = attributeValue;
+                // }
+                // console.log(check)
+                // console.log(at)
+                // if (check == null) {
+                //     openInvoice(event, b[0].mahoadon);
+                // } else {
+                //     openInvoice(event, check);
+                // }
                 openInvoice(event, b[0].mahoadon);
+
+
+
             })
 
 
@@ -715,9 +745,9 @@
                             .then(function (b) {
 
                                 document.getElementById("tabContainer").innerHTML = '';
-                                for (var i = 1; i <= b.length; i++) {
+                                for (const hd of b) {
 
-                                    loadTab(i);
+                                    loadTab(hd.mahoadon);
 
                                 }
 
@@ -753,8 +783,61 @@
                     return a.json();
                 })
                 .then(function (b) {
+                    var tongTien = 0;
                     var html = '';
                     var htmlTR = '';
+                    var htmlMaGiam = '';
+
+                    var urltimHD = `/ban-hang-tai-quay/tim-HD-TheoMaHD?maHD=${invoiceName}`;
+                    fetch(urltimHD)
+                        .then(function (a) {
+                            return a.json();
+                        })
+                        .then(function (b) {
+
+                            fetch(`http://localhost:8080/ban-hang-tai-quay/fillMaGiam`)
+                                .then(function (a) {
+                                    return a.json();
+                                })
+                                .then(function (b) {
+                                  if(b.id!=null){
+                                     document.getElementById('maGiamFill').innerHTML=b.phieugiamgia.macode;
+                                  }else{
+                                     document.getElementById('maGiamFill').innerHTML='chưa có mã nào phù hợp!';
+                                  }
+
+                                })
+
+                            var htmlTTTK = '';
+                            if (b.khachhang == null) {
+                                htmlTTTK = `
+                            <div class="d-flex">
+                        <p style="margin-left: 20px">Tên khách hàng:</p>
+                        <p style="margin-left: 20px">Khách lẻ</p>
+                    </div>
+                            `;
+                            } else {
+                              
+                                htmlTTTK = `
+                                <div class="d-flex">
+                        <p style="margin-left: 20px">Tên khách hàng:</p>
+                        <p style="margin-left: 20px">${b.khachhang.nguoidung.hovaten}</p>
+                    </div>
+                    <div class="d-flex">
+                        <p style="margin-left: 20px">Số điện thoại:</p>
+                        <p style="margin-left: 20px">${b.khachhang.nguoidung.sodienthoai}</p>
+                    </div>
+                    <div class="d-flex">
+                        <p style="margin-left: 20px">Email:</p>
+                        <p style="margin-left: 20px">${b.khachhang.nguoidung.email}</p>
+                    </div>
+                                `;
+                            }
+
+                            document.getElementById("thongTinTaiKhoan").innerHTML = htmlTTTK;
+                        })
+
+
                     if (b.length < 1) {
                         html = `
 <div class="tab-pane fade show active text-center fw-bold"
@@ -769,15 +852,15 @@
                     if (b.length > 0) {
                         var stt = 0;
                         for (const hd of b) {
+                            tongTien += hd.soluong * hd.giasanpham;
                             stt++;
                             htmlTR += `
                             <tr>
             <td class="text-center" style="vertical-align: middle;">
-                <input type="checkbox" class="form-check-input checkbox checkbox-red">
                 <span style="margin-left: 7px">${stt}</span>
             </td>
             <td style="vertical-align: middle;">
-                <img src="../dist/img/bong2.jpg" width="100px" height="100px" />
+                <img src="${hd.sanphamchitiet.anh}" width="100px" height="100px" />
             </td>
             <td style="vertical-align: middle;">
                 <p style="font-weight: bold">${hd.sanphamchitiet.sanpham.tensanpham}</p>
@@ -785,17 +868,23 @@
                 <p> Size: ${hd.sanphamchitiet.kichco.ten}</p>
             </td>
             <td style="vertical-align: middle;">
-                <input class="form-control" style="width: 90px;height: 30px" type="number" value="5">
+                <input class="form-control" style="width: 120px;height: 30px; margin-left: 20%;" type="text" id="${hd.id}" value="${hd.soluong}" oninput="changeQuantity(event)">
             </td>
-            <td style="color: red;font-weight: bold;vertical-align: middle;">2,500,000đ</td>
+            <td style="color: red;font-weight: bold;vertical-align: middle;">${(hd.soluong * hd.giasanpham).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
             <td style="vertical-align: middle;">
-                <a style="color: rgb(249,72,42)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                        class="bi bi-trash3" viewBox="0 0 16 16">
-                        <path
-                            d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
-                    </svg>
-                </a>
+                                                           <a href="http://localhost:8080/ban-hang-tai-quay/delete/${hd.id}"
+                                                            >
+                                                            <button class="btn btn-outline-danger"
+                                                                onclick="return confirm('Bạn có muốn xóa sản phẩm này không?')"
+                                                                type="button"><i class="bi bi-trash3"></i></button></a>
+
+
+                                                                <a href="http://localhost:8080/ban-hang-tai-quay/update/${hd.id}/${hd.soluong}" id="${hd.id + 'fsport'}"
+                                                            >
+                                                            <button class="btn btn-outline-warning"
+                                                                onclick="return confirm('Bạn có muốn cập nhật lại sản phẩm này không?')"
+                                                                type="button"><i
+                                                                    class="bi bi-arrow-clockwise bi-warning"></i></button></a>
             </td>
         </tr>
                             `;
@@ -824,7 +913,13 @@ tabindex="0">
 </table>
 </div>`;
                     }
+
+
+
+
                     document.getElementById(invoiceName).innerHTML = html;
+                    document.getElementById("tongTien").innerHTML = tongTien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                    document.getElementById("tongTienTTTT").innerHTML = tongTien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                 })
 
 
@@ -846,7 +941,7 @@ tabindex="0">
                 numberOfInvoices--; // Giảm số lượng tab đã tạo
             }
         }
-        ;
+
 
         // Hàm để hiển thị thông báo Toast
         function showToast() {
@@ -867,7 +962,959 @@ tabindex="0">
                 title: "Bạn đã tạo tối đa 5 hóa đơn!"
             });
         }
+
+        //thay đổi số lượng ở table
+        function changeQuantity(event) {
+            const input = event.target;
+            let inputValue = input.value;
+
+            // Loại bỏ tất cả các ký tự không phải số từ giá trị đầu vào
+            inputValue = inputValue.replace(/\D/g, '');
+
+            // Chuyển đổi giá trị thành số
+            let numericValue = parseInt(inputValue);
+
+            // Kiểm tra xem giá trị nhập vào có rỗng không
+            if (inputValue === '') {
+                input.value = '';
+                return;
+            }
+
+            // Kiểm tra xem giá trị có nằm trong khoảng từ 1 đến 100 không
+            if (numericValue < 1 || isNaN(numericValue)) {
+                numericValue = 1;
+            } else if (numericValue > 100) {
+                numericValue = 100;
+            }
+
+            // Cập nhật giá trị của input
+            input.value = numericValue;
+
+            var element = document.getElementById(input.id + 'fsport');
+            var newHref = " http://localhost:8080/ban-hang-tai-quay/update/" + input.id + "/" + input.value;
+            element.setAttribute("href", newHref);
+        }
     </script>
+    <!-- thay đổi sản phẩm hdct -->
+    <script>
+        let thisNumberSPPage = 0;
+        var reloadSP = document.getElementById('reloadsp');
+        var btnSP = document.getElementById('changeSP');
+        var nextPageSP = document.getElementById('nextPageSP');
+        var prevPageSP = document.getElementById('prevPageSP');
+        var tensp = document.getElementById('tensp');
+        var chatlieu = document.getElementById('chatlieu');
+        var thuonghieu = document.getElementById('thuonghieu');
+        var degiay = document.getElementById('degiay');
+        var kichco = document.getElementById('kichco');
+        var mausac = document.getElementById('mausac');
+        var gioitinh = document.getElementById('gioitinh');
+        var khoanggia = document.getElementById('priceRange');
+
+        function SearchSPHDCT() {
+            var tentim = tensp.value;
+            var cl = chatlieu.value;
+            var th = thuonghieu.value;
+            var dg = degiay.value;
+            var kc = kichco.value;
+            var ms = mausac.value;
+            var gt = gioitinh.value;
+            var kg = khoanggia.value;
+            var list = [
+                tentim, cl, th, dg, kc, ms, gt, kg
+            ]
+            var urltimSPCT = `/hoa-don/searchSP?lstData=${list}`;
+            fetch(urltimSPCT)
+                .then(function (c) {
+                    return c.json();
+                })
+                .then(function (b) {
+
+                    var STT = 0;
+                    let htmlSP = '';
+                    let htmlNumberPageSP = '';
+                    for (const hd of b) {
+                        STT++;
+                        htmlSP += `<tr>
+                                   <td>${STT}</td>
+                                   <td> 
+                                    <img src="${hd.anh.tenanh}" alt=""
+                                                                style="height: 100px; width: 100px;">
+                                    
+                                    </td>
+                                   <td>${hd.sanpham.tensanpham}</td>
+                                   <td>${hd.soluong}</td>
+                                   <td>${hd.kichco.ten}</td>
+                                   <td>${hd.mausac.ten}</td>
+                                   <td>
+                                    <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                        ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                        </p>
+                                    </td>
+                                   <td>
+                                    <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
+                                    class="btn btn-warning">
+                                    chọn
+                                     </button></a>
+                                     </td>
+                                </tr>`;
+                    }
+                    document.getElementById("tbl_sp_them").innerHTML = htmlSP;
+                    document.getElementById('navAddSPHDCT').style.display = 'none';
+
+                })
+        }
+
+
+
+
+        tensp.onkeyup = function () {
+            var tentim = tensp.value;
+            var cl = chatlieu.value;
+            var th = thuonghieu.value;
+            var dg = degiay.value;
+            var kc = kichco.value;
+            var ms = mausac.value;
+            var gt = gioitinh.value;
+            var kg = khoanggia.value;
+            var list = [
+                tentim, cl, th, dg, kc, ms, gt, kg
+            ]
+            var urltimSPCT = `/hoa-don/searchSP?lstData=${list}`;
+            fetch(urltimSPCT)
+                .then(function (c) {
+                    return c.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let htmlSP = '';
+                    let htmlNumberPageSP = '';
+                    for (const hd of b) {
+                        STT++;
+                        htmlSP += `<tr>
+                                   <td>${STT}</td>
+                                   <td> 
+                                    <img src="${hd.anh.tenanh}" alt=""
+                                                                style="height: 100px; width: 100px;">
+                                    
+                                    </td>
+                                   <td>${hd.sanpham.tensanpham}</td>
+                                   <td>${hd.soluong}</td>
+                                   <td>${hd.kichco.ten}</td>
+                                   <td>${hd.mausac.ten}</td>
+                                   <td>
+                                    <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                        ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                        </p>
+                                    </td>
+                                   <td>
+                                    <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
+                                    class="btn btn-warning">
+                                    chọn
+                                     </button></a>
+                                     </td>
+                                </tr>`;
+                    }
+                    document.getElementById("tbl_sp_them").innerHTML = htmlSP;
+                    document.getElementById('navAddSPHDCT').style.display = 'none';
+
+                })
+        }
+
+
+
+
+
+
+
+        reloadSP.onclick = function () {
+            const pageSPChanges = localStorage.getItem("pageSPChanges") ?? 0;
+            const urlPage = `/hoa-don/viewSPChanges?pageSPChanges=${pageSPChanges}`;
+
+            fetch(urlPage)
+                .then(function (c) {
+                    return c.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let htmlSP = '';
+                    let htmlNumberPageSP = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        htmlSP += `<tr>
+                                   <td>${STT}</td>
+                                   <td> 
+                                    <img src="${hd.anh.tenanh}" alt=""
+                                                                style="height: 100px; width: 100px;">
+                                    
+                                    </td>
+                                   <td>${hd.sanpham.tensanpham}</td>
+                                   <td>${hd.soluong}</td>
+                                   <td>${hd.kichco.ten}</td>
+                                   <td>${hd.mausac.ten}</td>
+                                   <td>
+                                    <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                        ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                        </p>
+                                    </td>
+                                   <td>
+                                    <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
+                                    class="btn btn-warning">
+                                    chọn
+                                     </button></a>
+                                     </td>
+                                </tr>`;
+                    }
+
+                    if (thisNumberSPPage < 1) {
+                        prevPageSP.style.display = 'none';
+                    } else {
+                        prevPageSP.style.display = 'block';
+                    }
+                    if (thisNumberSPPage >= b.totalPages - 1) {
+                        nextPageSP.style.display = 'none';
+                    } else {
+                        nextPageSP.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPageSP += `
+                            <a class="page-link" onclick="pageClickSP( ${i - 1})">
+                                                                                        ${i}
+                             </a>
+                            `;
+                    }
+                    document.getElementById('navAddSPHDCT').style.display = 'block';
+                    document.getElementById("numberPageSP").innerHTML = htmlNumberPageSP;
+                    document.getElementById("tbl_sp_them").innerHTML = htmlSP;
+
+                })
+        }
+
+
+        btnSP.onclick = function () {
+            const pageSPChanges = localStorage.getItem("pageSPChanges") ?? 0;
+            const urlPage = `/hoa-don/viewSPChanges?pageSPChanges=${pageSPChanges}`;
+
+            fetch(urlPage)
+                .then(function (c) {
+                    return c.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let htmlSP = '';
+                    let htmlNumberPageSP = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        htmlSP += `<tr>
+                                   <td>${STT}</td>
+                                   <td> 
+                                    <img src="${hd.anh.tenanh}" alt=""
+                                                                style="height: 100px; width: 100px;">
+                                    
+                                    </td>
+                                   <td>${hd.sanpham.tensanpham}</td>
+                                   <td>${hd.soluong}</td>
+                                   <td>${hd.kichco.ten}</td>
+                                   <td>${hd.mausac.ten}</td>
+                                   <td>
+                                    <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                        ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                        </p>
+                                    </td>
+                                   <td>
+                                    <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
+                                    class="btn btn-warning">
+                                    chọn
+                                     </button></a>
+                                     </td>
+                                </tr>`;
+                    }
+
+                    if (thisNumberSPPage < 1) {
+                        prevPageSP.style.display = 'none';
+                    } else {
+                        prevPageSP.style.display = 'block';
+                    }
+                    if (thisNumberSPPage >= b.totalPages - 1) {
+                        nextPageSP.style.display = 'none';
+                    } else {
+                        nextPageSP.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPageSP += `
+                            <a class="page-link" onclick="pageClickSP( ${i - 1})">
+                                                                                        ${i}
+                             </a>
+                            `;
+                    }
+                    document.getElementById("numberPageSP").innerHTML = htmlNumberPageSP;
+                    document.getElementById("tbl_sp_them").innerHTML = htmlSP;
+
+                })
+        }
+
+        function pageClickSP(numbers) {
+            const pageSPChanges = localStorage.getItem("pageSPChanges") ?? numbers;
+            const urlPage = `/hoa-don/viewSPChanges?pageSPChanges=${pageSPChanges}`;
+            fetch(urlPage)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                   
+                    var STT = 0;
+                    let htmlSP = '';
+                    let htmlNumberPageSP = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        htmlSP += `<tr>
+                                   <td>${STT}</td>
+                                   <td> 
+                                    <img src="${hd.anh.tenanh}" alt=""
+                                                                style="height: 100px; width: 100px;">
+                                    
+                                    </td>
+                                   <td>${hd.sanpham.tensanpham}</td>
+                                   <td>${hd.soluong}</td>
+                                   <td>${hd.kichco.ten}</td>
+                                   <td>${hd.mausac.ten}</td>
+                                   <td>
+                                    <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                        ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                        </p>
+                                    </td>
+                                   <td>
+                                    <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
+                                    class="btn btn-warning">
+                                    chọn
+                                     </button></a>
+                                     </td>
+                                </tr>`;
+                    }
+
+                    if (thisNumberSPPage < 1) {
+                        prevPageSP.style.display = 'none';
+                    } else {
+                        prevPageSP.style.display = 'block';
+                    }
+                    if (thisNumberSPPage >= b.totalPages - 1) {
+                        nextPageSP.style.display = 'none';
+                    } else {
+                        nextPageSP.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPageSP += `
+                            <a class="page-link" onclick="pageClickSP( ${i - 1})">
+                                                                                        ${i}
+                             </a>
+                            `;
+                    }
+                    document.getElementById("numberPageSP").innerHTML = htmlNumberPageSP;
+                    document.getElementById("tbl_sp_them").innerHTML = htmlSP;
+
+                })
+        }
+
+
+        nextPageSP.onclick = function () {
+            thisNumberSPPage++;
+            const pageSPChanges = localStorage.getItem("pageSPChanges") ?? thisNumberSPPage;
+            const urlPage = `/hoa-don/viewSPChanges?pageSPChanges=${pageSPChanges}`;
+            fetch(urlPage)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                 
+                    var STT = 0;
+                    let htmlSP = '';
+                    let htmlNumberPageSP = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        htmlSP += `<tr>
+                                   <td>${STT}</td>
+                                   <td> 
+                                    <img src="${hd.anh.tenanh}" alt=""
+                                                                style="height: 100px; width: 100px;">
+                                    
+                                    </td>
+                                   <td>${hd.sanpham.tensanpham}</td>
+                                   <td>${hd.soluong}</td>
+                                   <td>${hd.kichco.ten}</td>
+                                   <td>${hd.mausac.ten}</td>
+                                   <td>
+                                    <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                        ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                        </p>
+                                    </td>
+                                   <td>
+                                    <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
+                                    class="btn btn-warning">
+                                    chọn
+                                     </button></a>
+                                     </td>
+                                </tr>`;
+                    }
+
+                    if (thisNumberSPPage < 1) {
+                        prevPageSP.style.display = 'none';
+                    } else {
+                        prevPageSP.style.display = 'block';
+                    }
+                    if (thisNumberSPPage >= b.totalPages - 1) {
+                        nextPageSP.style.display = 'none';
+                    } else {
+                        nextPageSP.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPageSP += `
+                            <a class="page-link" onclick="pageClickSP( ${i - 1})">
+                                                                                        ${i}
+                             </a>
+                            `;
+                    }
+                    document.getElementById("numberPageSP").innerHTML = htmlNumberPageSP;
+                    document.getElementById("tbl_sp_them").innerHTML = htmlSP;
+
+                })
+        }
+
+
+
+        prevPageSP.onclick = function () {
+
+            thisNumberSPPage--;
+            const pageSPChanges = localStorage.getItem("pageSPChanges") ?? thisNumberSPPage;
+            const urlPage = `/hoa-don/viewSPChanges?pageSPChanges=${pageSPChanges}`;
+            fetch(urlPage)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                 
+                    var STT = 0;
+                    let htmlSP = '';
+                    let htmlNumberPageSP = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        htmlSP += `<tr>
+                                   <td>${STT}</td>
+                                   <td> 
+                                    <img src="${hd.anh.tenanh}" alt=""
+                                                                style="height: 100px; width: 100px;">
+                                    
+                                    </td>
+                                   <td>${hd.sanpham.tensanpham}</td>
+                                   <td>${hd.soluong}</td>
+                                   <td>${hd.kichco.ten}</td>
+                                   <td>${hd.mausac.ten}</td>
+                                   <td>
+                                    <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                        ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                        </p>
+                                    </td>
+                                   <td>
+                                    <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
+                                    class="btn btn-warning">
+                                    chọn
+                                     </button></a>
+                                     </td>
+                                </tr>`;
+                    }
+
+                    if (thisNumberSPPage < 1) {
+                        prevPageSP.style.display = 'none';
+                    } else {
+                        prevPageSP.style.display = 'block';
+                    }
+                    if (thisNumberSPPage >= b.totalPages - 1) {
+                        nextPageSP.style.display = 'none';
+                    } else {
+                        nextPageSP.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPageSP += `
+                            <a class="page-link" onclick="pageClickSP( ${i - 1})">
+                                                                                        ${i}
+                             </a>
+                            `;
+                    }
+                    document.getElementById("numberPageSP").innerHTML = htmlNumberPageSP;
+                    document.getElementById("tbl_sp_them").innerHTML = htmlSP;
+
+                })
+        }
+
+    </script>
+    
+    <script>
+        // Lấy phần tử thanh trượt và phần tử hiển thị giá trị
+        var priceRange = document.getElementById("priceRange");
+        var priceRangeValue = document.getElementById("priceRangeValue");
+
+        // Lắng nghe sự kiện khi người dùng thay đổi giá trị thanh trượt
+        priceRange.oninput = function () {
+            // Cập nhật giá trị hiển thị
+            var show = this.value
+                .replace(/\D/g, "")
+                .replace(/([0-9])([0-9]{})$/, '$1.$2')
+                .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",");
+            priceRangeValue.innerText = show + ' đ';
+        };
+    </script>
+
+
+
+    <!-- thay đổi khách hàng -->
+    <script>
+        let thisNumberPage = 0;
+
+        var reload = document.getElementById('reloadnv');
+        var btn = document.getElementById('changeNV');
+        var nextPage = document.getElementById('nextPage');
+        var prevPage = document.getElementById('prevPage');
+        var navNV = document.getElementById('navNV');
+
+        reload.onclick = function () {
+            const pageNVChanges = localStorage.getItem("pageNVChanges") ?? 0;
+            const url = `/ban-hang-tai-quay/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+            fetch(url)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let html = '';
+                    let htmlNumberPage = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        html += `<tr>
+                               <td>${STT}</td>
+                               <td>${hd.makhachhang}</td>
+                               <td>${hd.nguoidung.hovaten}</td>
+                               <td>${hd.nguoidung.sodienthoai}</td>
+                               <td>${hd.nguoidung.ngaysinh}</td>
+                               <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
+                               <td>
+                                <a href="http://localhost:8080/ban-hang-tai-quay/ChoseKH/${hd.id}"><button
+                                class="btn btn-warning">
+                                chọn
+                                 </button></a>
+                                 </td>
+                            </tr>`;
+                    }
+
+                    if (thisNumberPage < 1) {
+                        prevPage.style.display = 'none';
+                    } else {
+                        prevPage.style.display = 'block';
+                    }
+                    if (thisNumberPage >= b.totalPages - 1) {
+                        nextPage.style.display = 'none';
+                    } else {
+                        nextPage.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPage += `
+                        <a class="page-link" onclick="pageClick( ${i - 1})">
+                                                                                    ${i}
+                         </a>
+                        `;
+                    }
+                    document.getElementById('navNV').style.display = 'block';
+                    document.getElementById("numberPage").innerHTML = htmlNumberPage;
+                    document.getElementById("tbl_doi_nv").innerHTML = html;
+
+                })
+        }
+
+
+
+
+        btn.onclick = function () {
+            const pageNVChanges = localStorage.getItem("pageNVChanges") ?? 0;
+            const url = `/ban-hang-tai-quay/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+            fetch(url)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let html = '';
+                    let htmlNumberPage = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        html += `<tr>
+                               <td>${STT}</td>
+                               <td>${hd.makhachhang}</td>
+                               <td>${hd.nguoidung.hovaten}</td>
+                               <td>${hd.nguoidung.sodienthoai}</td>
+                               <td>${hd.nguoidung.ngaysinh}</td>
+                               <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
+                               <td>
+                                <a href="http://localhost:8080/ban-hang-tai-quay/ChoseKH/${hd.id}"><button
+                                class="btn btn-warning">
+                                chọn
+                                 </button></a>
+                                 </td>
+                            </tr>`;
+                    }
+
+                    if (thisNumberPage < 1) {
+                        prevPage.style.display = 'none';
+                    } else {
+                        prevPage.style.display = 'block';
+                    }
+                    if (thisNumberPage >= b.totalPages - 1) {
+                        nextPage.style.display = 'none';
+                    } else {
+                        nextPage.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPage += `
+                        <a class="page-link" onclick="pageClick( ${i - 1})">
+                                                                                    ${i}
+                         </a>
+                        `;
+                    }
+                    document.getElementById('navNV').style.display = 'block';
+                    document.getElementById("numberPage").innerHTML = htmlNumberPage;
+                    document.getElementById("tbl_doi_nv").innerHTML = html;
+
+                })
+        }
+
+        var searchNV = document.getElementById('searchNV');
+
+        searchNV.onkeyup = function () {
+            var keySearch = searchNV.value;
+            var url = `/ban-hang-tai-quay/searchNV?keySearch=${keySearch}`;
+            fetch(url)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let html = '';
+                    for (const hd of b) {
+                        STT++;
+                        html += `<tr>
+                       <td>${STT}</td>
+                       <td>${hd.makhachhang}</td>
+                       <td>${hd.nguoidung.hovaten}</td>
+                       <td>${hd.nguoidung.sodienthoai}</td>
+                       <td>${hd.nguoidung.ngaysinh}</td>
+                       <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
+                       <td>
+                        <a href="http://localhost:8080/ban-hang-tai-quay/ChoseKH/${hd.id}"><button
+                        class="btn btn-warning">
+                        chọn
+                         </button></a>
+                         </td>
+                    </tr>`;
+                    }
+                    document.getElementById('navNV').style.display = 'none';
+                    document.getElementById("tbl_doi_nv").innerHTML = html;
+                })
+        }
+
+
+        function pageClick(number) {
+            const pageNVChanges = localStorage.getItem("pageNVChanges") ?? number;
+            const url = `/ban-hang-tai-quay/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+            fetch(url)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let html = '';
+                    let htmlNumberPage = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        html += `<tr>
+                               <td>${STT}</td>
+                               <td>${hd.makhachhang}</td>
+                               <td>${hd.nguoidung.hovaten}</td>
+                               <td>${hd.nguoidung.sodienthoai}</td>
+                               <td>${hd.nguoidung.ngaysinh}</td>
+                               <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
+                               <td>
+                                <a href="http://localhost:8080/ban-hang-tai-quay/ChoseKH/${hd.id}"><button
+                                class="btn btn-warning">
+                                chọn
+                                 </button></a>
+                                 </td>
+                            </tr>`;
+                    }
+                    if (thisNumberPage < 1) {
+                        prevPage.style.display = 'none';
+                    } else {
+                        prevPage.style.display = 'block';
+                    }
+                    if (thisNumberPage >= b.totalPages - 1) {
+                        nextPage.style.display = 'none';
+                    } else {
+                        nextPage.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPage += `
+                        <a class="page-link" onclick="pageClick( ${i - 1})">
+                                                                                    ${i}
+                         </a>
+                        `;
+                    }
+                    document.getElementById("numberPage").innerHTML = htmlNumberPage;
+                    document.getElementById("tbl_doi_nv").innerHTML = html;
+
+                })
+        }
+
+        nextPage.onclick = function () {
+            thisNumberPage++;
+            const pageNVChanges = localStorage.getItem("pageNVChanges") ?? thisNumberPage;
+            const url = `/ban-hang-tai-quay/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+            fetch(url)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let html = '';
+                    let htmlNumberPage = '';
+                    for (const hd of b.content) {
+                        STT++;
+                        html += `<tr>
+                               <td>${STT}</td>
+                               <td>${hd.makhachhang}</td>
+                               <td>${hd.nguoidung.hovaten}</td>
+                               <td>${hd.nguoidung.sodienthoai}</td>
+                               <td>${hd.nguoidung.ngaysinh}</td>
+                               <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
+                               <td>
+                                <a href="http://localhost:8080/ban-hang-tai-quay/ChoseKH/${hd.id}"><button
+                                class="btn btn-warning">
+                                chọn
+                                 </button></a>
+                                 </td>
+                            </tr>`;
+                    }
+                    if (thisNumberPage < 1) {
+                        prevPage.style.display = 'none';
+                    } else {
+                        prevPage.style.display = 'block';
+                    }
+                    if (thisNumberPage >= b.totalPages - 1) {
+                        nextPage.style.display = 'none';
+                    } else {
+                        nextPage.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPage += `
+                        <a class="page-link" onclick="pageClick( ${i - 1})">
+                                                                                    ${i}
+                         </a>
+                        `;
+                    }
+                    document.getElementById("numberPage").innerHTML = htmlNumberPage;
+                    document.getElementById("tbl_doi_nv").innerHTML = html;
+
+                })
+        }
+
+
+
+        prevPage.onclick = function () {
+
+            thisNumberPage--;
+            const pageNVChanges = localStorage.getItem("pageNVChanges") ?? thisNumberPage;
+            const url = `/ban-hang-tai-quay/viewNVChanges?pageNVChanges=${pageNVChanges}`;
+            fetch(url)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var STT = 0;
+                    let html = '';
+                    let htmlNumberPage = '';
+
+                    for (const hd of b.content) {
+                        STT++;
+                        html += `<tr>
+                               <td>${STT}</td>
+                               <td>${hd.makhachhang}</td>
+                               <td>${hd.nguoidung.hovaten}</td>
+                               <td>${hd.nguoidung.sodienthoai}</td>
+                               <td>${hd.nguoidung.ngaysinh}</td>
+                               <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
+                               <td>
+                                <a href="http://localhost:8080/ban-hang-tai-quay/ChoseKH/${hd.id}"><button
+                                class="btn btn-warning">
+                                chọn
+                                 </button></a>
+                                 </td>
+                            </tr>`;
+                    }
+                    if (thisNumberPage < 1) {
+                        prevPage.style.display = 'none';
+                    } else {
+                        prevPage.style.display = 'block';
+                    }
+                    if (thisNumberPage >= b.totalPages - 1) {
+                        nextPage.style.display = 'none';
+                    } else {
+                        nextPage.style.display = 'block';
+                    }
+                    for (var i = 1; i <= b.totalPages; i++) {
+                        htmlNumberPage += `
+                        <a class="page-link" onclick="pageClick( ${i - 1})">
+                                                                                    ${i}
+                         </a>
+                        `;
+                    }
+                    document.getElementById("numberPage").innerHTML = htmlNumberPage;
+                    document.getElementById("tbl_doi_nv").innerHTML = html;
+
+                })
+        }
+        //hiển thị nút trả sau trước
+
+        function giaohang() {
+            var htmltrasau = '';
+            var htmldiachi = '';
+            var htmlPhiVanChuyen = '';
+
+            htmlPhiVanChuyen = ` <p style="font-weight: bold">Phí vận chuyển:</p>
+                            <p>
+                                <input type="number" style="width: 180px;height: 30px" class="form-control">
+                            </p>`;
+
+            htmltrasau = `  <p style="font-weight: bold">Trả sau:</p>
+                            <p class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="trasau">
+                            </p>`;
+            htmldiachi = `                        <p>
+                            <input type="text" class="form-control" placeholder="Nhập họ và tên">
+                        </p>
+                        <p>
+                            <input type="text" class="form-control" placeholder="Nhập số điện thoại">
+                        </p>
+                        <p>
+                            <input type="text" class="form-control" placeholder="Nhập email">
+                        </p>
+                        <p>
+                            <input type="text" class="form-control" placeholder="Nhập địa chỉ">
+                        </p>
+                        <p class="d-flex">
+                            <select class="form-control">
+                                <option>Chọn tỉnh</option>
+                                <option>Hà Nội</option>
+                                <option>Hải Phòng</option>
+                            </select>
+                            <select style="margin-left: 20px" class="form-control">
+                                <option>Chọn quận</option>
+                                <option>Hà Nội</option>
+                                <option>Hải Phòng</option>
+                            </select>
+                            <select style="margin-left: 20px" class="form-control">
+                                <option>Chọn xã</option>
+                                <option>Hà Nội</option>
+                                <option>Hải Phòng</option>
+                            </select>
+                        </p>
+                        <p>
+                            <textarea class="form-control" placeholder="Ghi chú"></textarea>
+                        </p>`;
+            var checkBox = document.getElementById('checktrasau');
+            if (checkBox.checked) {
+                document.getElementById('trasauhtml').innerHTML = htmltrasau;
+                document.getElementById('diachihtml').innerHTML = htmldiachi;
+                document.getElementById('phiShip').innerHTML = htmlPhiVanChuyen;
+            } else {
+                document.getElementById('trasauhtml').innerHTML = '';
+                document.getElementById('diachihtml').innerHTML = '';
+                document.getElementById('phiShip').innerHTML = '';
+            }
+
+        }
+
+        function seton() {
+            var check = document.getElementById('inputThemNhanh');
+            var show = document.getElementById('showndcheck');
+            var htmlshowon = '';
+            if (check.checked) {
+                htmlshowon = ` <p style="font-style: italic;">Thêm nhanh và lựa chọn khách hàng cho hóa đơn!</p>`;
+                show.innerHTML = htmlshowon;
+            }
+
+            else {
+                htmlshowon = ` <p style="text-decoration: line-through; font-style: italic;">Thêm nhanh và lựa chọn khách hàng cho hóa đơn!</p>`;
+                show.innerHTML = htmlshowon;
+            }
+        }
+    </script>
+
+
+    <!-- call api địa chỉ cho thêm nhanh khách hàng -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script>
+        var citis = document.getElementById("city");
+        var districts = document.getElementById("district");
+        var wards = document.getElementById("ward");
+        var Parameter = {
+            url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
+            method: "GET",
+            responseType: "application/json",
+        };
+        var promise = axios(Parameter);
+        promise.then(function (result) {
+            renderCity(result.data);
+        });
+
+        function renderCity(data) {
+            for (const x of data) {
+                var opt = document.createElement('option');
+                opt.value = x.Name;
+                opt.text = x.Name;
+                opt.setAttribute('data-id', x.Id);
+                citis.options.add(opt);
+            }
+            citis.onchange = function () {
+                district.length = 1;
+                ward.length = 1;
+                if (this.options[this.selectedIndex].dataset.id != "") {
+                    const result = data.filter(n => n.Id === this.options[this.selectedIndex].dataset.id);
+
+                    for (const k of result[0].Districts) {
+                        var opt = document.createElement('option');
+                        opt.value = k.Name;
+                        opt.text = k.Name;
+                        opt.setAttribute('data-id', k.Id);
+                        district.options.add(opt);
+                    }
+                }
+            };
+            district.onchange = function () {
+                ward.length = 1;
+                const dataCity = data.filter((n) => n.Id === citis.options[citis.selectedIndex].dataset.id);
+                if (this.options[this.selectedIndex].dataset.id != "") {
+                    const dataWards = dataCity[0].Districts.filter(n => n.Id === this.options[this.selectedIndex].dataset.id)[0].Wards;
+
+                    for (const w of dataWards) {
+                        var opt = document.createElement('option');
+                        opt.value = w.Name;
+                        opt.text = w.Name;
+                        opt.setAttribute('data-id', w.Id);
+                        wards.options.add(opt);
+                    }
+                }
+            };
+        }
+    </script>
+
+
 </body>
 
 </html>
