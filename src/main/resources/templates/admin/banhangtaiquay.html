@@ -681,19 +681,6 @@
                         </div>`;
                 }
                 document.getElementById('GhiDeTab').innerHTML = htmlDiv;
-                // var check = null;
-                // const dataContainer = document.getElementById('dataContainer');
-                // const attributeValue = dataContainer.getAttribute('data-my-attribute');
-                // if (attributeValue != null) {
-                //     check = attributeValue;
-                // }
-                // console.log(check)
-                // console.log(at)
-                // if (check == null) {
-                //     openInvoice(event, b[0].mahoadon);
-                // } else {
-                //     openInvoice(event, check);
-                // }
                 openInvoice(event, b[0].mahoadon);
 
 
@@ -928,15 +915,12 @@ tabindex="0">
                                 }
                                 tongThanhT = tongTien - tienGiamT;
                                 document.getElementById('maGiamFill').innerHTML = b.phieugiamgia.macode;
-                                document.getElementById('giamgia').innerHTML = tienGiamT.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-                                document.getElementById('tongThanhToan').innerHTML = tongThanhT.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-
                             } else {
                                 document.getElementById('maGiamFill').innerHTML = 'chưa có mã nào phù hợp!';
-                                var bcv = 0;
-                                document.getElementById('giamgia').innerHTML = bvc.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-                                document.getElementById("tongTien").innerHTML = tongTien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                                tongThanhT=tongTien;
                             }
+                            document.getElementById('giamgia').innerHTML = tienGiamT.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                            document.getElementById('tongThanhToan').innerHTML = tongThanhT.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 
                         })
                     document.getElementById(invoiceName).innerHTML = html;

@@ -55,6 +55,7 @@ public class BanHangController {
     @ResponseBody
     public ResponseEntity<?> getLstCho() {
         List<HoaDon> lst = daoHD.timTheoTrangThaiVaLoai(0, false);
+        hdHienTai = lst.get(0);
         return ResponseEntity.ok(lst);
     }
 
@@ -82,6 +83,7 @@ public class BanHangController {
     @ResponseBody
     public ResponseEntity<?> timCoutSPTheoMaHD(@RequestParam("maHD") String maHD
     ) {
+        hdHienTai = daoHD.timHDTheoMaHD(maHD);
         List<HoaDonChiTiet> lst = daoHDCT.timDSHDTCTTheoMaHD(maHD);
         return ResponseEntity.ok(lst);
     }
