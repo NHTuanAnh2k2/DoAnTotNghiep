@@ -615,9 +615,8 @@
                         </div>
                         <div class="d-flex justify-content-between mb-1">
                             <p style="font-weight: bold; margin-top: 10px;"> Mã giảm giá:</p>
-                            <p 
-                            style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white; padding-top: 10px;"
-                            id="maGiamFill">HFGGD07234-TUNGDT</p>
+                            <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white; padding-top: 10px;"
+                                id="maGiamFill">HFGGD07234-TUNGDT</p>
 
                             <button class="btn btn-light" style="margin-bottom: 20px;">Chọn mã giảm</button>
                         </div>
@@ -640,12 +639,12 @@
                         </div>
                         <div class="d-flex justify-content-between">
                             <p style="font-weight: bold">Giảm giá:</p>
-                            <p style="font-weight: bold">300,000đ</p>
+                            <p style="font-weight: bold" id="giamgia">300,000đ</p>
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between">
                             <p style="font-weight: bold">Tổng thanh toán:</p>
-                            <p style="color: red;font-weight: bold">2,200,000đ</p>
+                            <p style="color: red;font-weight: bold" id="tongThanhToan">2,200,000đ</p>
                         </div>
                         <p>
                             <button style="margin-left: 332px" class="btn btn-dark">Xác nhận thanh toán</button>
@@ -758,8 +757,11 @@
                 })
         }
 
+
+
         // JavaScript để mở tab
         function openInvoice(evt, invoiceName) {
+
             var i, tabcontent, tablinks;
 
             // Ẩn tất cả các tabcontent trước khi hiển thị tab được chọn
@@ -784,6 +786,8 @@
                 })
                 .then(function (b) {
                     var tongTien = 0;
+                    var tongThanhT = 0;
+                    var tienGiamT = 0;
                     var html = '';
                     var htmlTR = '';
                     var htmlMaGiam = '';
@@ -795,18 +799,7 @@
                         })
                         .then(function (b) {
 
-                            fetch(`http://localhost:8080/ban-hang-tai-quay/fillMaGiam`)
-                                .then(function (a) {
-                                    return a.json();
-                                })
-                                .then(function (b) {
-                                  if(b.id!=null){
-                                     document.getElementById('maGiamFill').innerHTML=b.phieugiamgia.macode;
-                                  }else{
-                                     document.getElementById('maGiamFill').innerHTML='chưa có mã nào phù hợp!';
-                                  }
 
-                                })
 
                             var htmlTTTK = '';
                             if (b.khachhang == null) {
@@ -817,7 +810,7 @@
                     </div>
                             `;
                             } else {
-                              
+
                                 htmlTTTK = `
                                 <div class="d-flex">
                         <p style="margin-left: 20px">Tên khách hàng:</p>
@@ -914,9 +907,38 @@ tabindex="0">
 </div>`;
                     }
 
+                    fetch(`http://localhost:8080/ban-hang-tai-quay/fillMaGiam`)
+                        .then(function (a) {
+                            return a.json();
+                        })
+                        .then(function (b) {
+                            var b2 = b;
+                            if (b.id != null) {
+                                if (b2.phieugiamgia.loaiphieu == true) {
+                                    // phiếu %
+                                    if (b2.phieugiamgia.giatrigiam * (tongTien / 100) > b2.phieugiamgia.giatrigiamtoida) {
+                                        tienGiamT = b2.phieugiamgia.giatrigiamtoida;
+                                    } else {
+                                        tienGiamT = b2.phieugiamgia.giatrigiam * (tongTien / 100);
+                                    }
 
+                                } else {
+                                    // phiếu vnđ
+                                    tienGiamT = b2.phieugiamgia.giatrigiam;
+                                }
+                                tongThanhT = tongTien - tienGiamT;
+                                document.getElementById('maGiamFill').innerHTML = b.phieugiamgia.macode;
+                                document.getElementById('giamgia').innerHTML = tienGiamT.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                                document.getElementById('tongThanhToan').innerHTML = tongThanhT.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 
+                            } else {
+                                document.getElementById('maGiamFill').innerHTML = 'chưa có mã nào phù hợp!';
+                                var bcv = 0;
+                                document.getElementById('giamgia').innerHTML = bvc.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                                document.getElementById("tongTien").innerHTML = tongTien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                            }
 
+                        })
                     document.getElementById(invoiceName).innerHTML = html;
                     document.getElementById("tongTien").innerHTML = tongTien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                     document.getElementById("tongTienTTTT").innerHTML = tongTien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
@@ -1261,7 +1283,7 @@ tabindex="0">
                     return a.json();
                 })
                 .then(function (b) {
-                   
+
                     var STT = 0;
                     let htmlSP = '';
                     let htmlNumberPageSP = '';
@@ -1325,7 +1347,7 @@ tabindex="0">
                     return a.json();
                 })
                 .then(function (b) {
-                 
+
                     var STT = 0;
                     let htmlSP = '';
                     let htmlNumberPageSP = '';
@@ -1391,7 +1413,7 @@ tabindex="0">
                     return a.json();
                 })
                 .then(function (b) {
-                 
+
                     var STT = 0;
                     let htmlSP = '';
                     let htmlNumberPageSP = '';
@@ -1446,7 +1468,7 @@ tabindex="0">
         }
 
     </script>
-    
+
     <script>
         // Lấy phần tử thanh trượt và phần tử hiển thị giá trị
         var priceRange = document.getElementById("priceRange");
