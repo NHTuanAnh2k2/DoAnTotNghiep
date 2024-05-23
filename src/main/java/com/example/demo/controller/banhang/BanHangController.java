@@ -8,10 +8,7 @@ import com.example.demo.repository.DiaChiRepository;
 import com.example.demo.repository.KhachHangPhieuGiamRepository;
 import com.example.demo.repository.NguoiDungRepository;
 import com.example.demo.repository.khachhang.KhachHangRepostory;
-import com.example.demo.service.HoaDonChiTietService;
-import com.example.demo.service.HoaDonService;
-import com.example.demo.service.KhachHangService;
-import com.example.demo.service.SanPhamChiTietService;
+import com.example.demo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,7 +29,8 @@ import java.util.Optional;
 @Controller
 @RequestMapping("ban-hang-tai-quay")
 public class BanHangController {
-
+    @Autowired
+    PhuongThucThanhToanService daoPTTT;
     @Autowired
     KhachHangPhieuGiamRepository daoKHPG;
     @Autowired
@@ -253,6 +251,49 @@ public class BanHangController {
             }
         }
         return ResponseEntity.ok(result);
+    }
+
+    // thanh toán
+
+    @GetMapping("thanh-toan")
+    @ResponseBody
+    public ResponseEntity<?> thanhtoan() {
+        List<PhuongThucThanhToan> lstpttt = daoPTTT.timTheoHoaDon(hdHienTai);
+
+        List<PhuongThucThanhToan> lstrt = new ArrayList<>();
+        for (PhuongThucThanhToan a : lstpttt
+        ) {
+            if (a.getTrangthai() == true) {
+                lstrt.add(a);
+            }
+        }
+        return ResponseEntity.ok(lstrt);
+    }
+
+    @GetMapping("xac-nhan-phuong-thuc")
+    @ResponseBody
+    public ResponseEntity<?> xacNhanPhuongThuc(@RequestParam("phuongthuc") List<String> lst) {
+        String mota = Integer.valueOf(lst.get(0)) == 1 ? "tiền mặt" : "chuyển khoản";
+        PhuongThucThanhToan phuongThucInsert = new PhuongThucThanhToan();
+        phuongThucInsert.setHoadon(hdHienTai);
+        phuongThucInsert.setTenphuongthuc("trả trước");
+        phuongThucInsert.setTongtien(BigDecimal.valueOf(Double.valueOf(lst.get(1))));
+        phuongThucInsert.setMota(mota);
+        phuongThucInsert.setTrangthai(true);
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        phuongThucInsert.setNgaytao(Timestamp.valueOf(currentDateTime));
+        daoPTTT.add_update(phuongThucInsert);
+        List<PhuongThucThanhToan> lstpttt = daoPTTT.timTheoHoaDon(hdHienTai);
+        List<PhuongThucThanhToan> lstrt = new ArrayList<>();
+        for (PhuongThucThanhToan a : lstpttt
+        ) {
+            if (a.getTrangthai() == true) {
+                lstrt.add(a);
+            }
+        }
+        System.out.println("aaaaaaaaaaaaaaaaaa");
+        System.out.println(lstrt.size());
+        return ResponseEntity.ok(lstrt);
     }
 
 }
