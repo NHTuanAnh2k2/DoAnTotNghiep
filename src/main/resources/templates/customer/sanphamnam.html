@@ -5,6 +5,44 @@
 <nav th:replace="~{/layout/head.html}"></nav>
 <!--end-->
 <style>
+    /* Ghi đè màu nền và màu chữ của liên kết trong treeview */
+    .nav-sidebar .nav-link {
+        background-color: transparent !important;
+        color: inherit !important;
+    }
+
+    /* Ghi đè màu nền và màu chữ của liên kết khi được chọn */
+    .nav-sidebar .nav-link.active {
+        background-color: transparent !important;
+        color: inherit !important;
+    }
+
+    /* Ghi đè màu nền và màu chữ của liên kết khi được hover */
+    .nav-sidebar .nav-link:hover {
+        background-color: transparent !important;
+        color: inherit !important;
+    }
+
+    /* Ghi đè màu nền và màu chữ của menu treeview */
+    .nav-treeview > .nav-item > .nav-link {
+        background-color: transparent !important;
+        color: inherit !important;
+    }
+
+    /* Ghi đè màu nền và màu chữ của menu treeview khi được chọn */
+    .nav-treeview > .nav-item > .nav-link.active {
+        background-color: transparent !important;
+        color: inherit !important;
+    }
+
+    /* Ghi đè màu nền và màu chữ của menu treeview khi được hover */
+    .nav-treeview > .nav-item > .nav-link:hover {
+        background-color: transparent !important;
+        color: inherit !important;
+    }
+
+
+
     /*dungthanhcuonngang*/
     .tab-pane.horizontal-scrollable .single-products.row {
         display: flex;
@@ -59,9 +97,8 @@
                 <div class="sidebar left-sidebar">
 
                     <nav class="mt-2">
-                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                            data-accordion="false">
-                            <li class="nav-item">
+                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                            <li class="nav-item has-treeview" id="product-filter-treeview">
                                 <a href="#" class="nav-link">
                                     <p>
                                         Lọc sản phẩm
@@ -72,22 +109,16 @@
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
                                         <a href="#" class="nav-link">
-                                            <form id="filterForm" th:method="get" th:object="${search2}"
-                                                  th:action="@{/customer/sanphamnam}">
+                                            <form id="filterForm" th:method="get" th:object="${search2}" th:action="@{/customer/sanphamnam}">
                                                 <div class="sidebar-title">
                                                     <h3>SIZE</h3>
-                                                    <div th:each="kichco : ${kc}"
-                                                         class="d-flex align-items-center justify-content-between">
+                                                    <div th:each="kichco : ${kc}" class="d-flex align-items-center justify-content-between">
                                                         <p class="custom-control custom-switch">
-                                                            <input type="checkbox" th:field="*{idKichCo2}"
-                                                                   th:value="${kichco.id}"
-                                                                   style="color: rgb(249, 72, 42); font-weight: bold;"
-                                                                   class="custom-control-input"
-                                                                   th:id="'customSwitch-' + ${kichco.id}"
-                                                                   onchange="filterProducts2()"/>
+                                                            <input type="checkbox" th:field="*{idKichCo2}" th:value="${kichco.id}"
+                                                                   style="color: rgb(249, 72, 42); font-weight: bold;" class="custom-control-input"
+                                                                   th:id="'customSwitch-' + ${kichco.id}" onchange="filterProducts2()"/>
                                                             <label th:text="${kichco.ten}" style="margin-right: 10px;"
-                                                                   class="custom-control-label"
-                                                                   th:for="'customSwitch-' + ${kichco.id}"></label>
+                                                                   class="custom-control-label" th:for="'customSwitch-' + ${kichco.id}"></label>
                                                         </p>
                                                         <span class="ml-3">(5)</span>
                                                     </div>
@@ -96,19 +127,14 @@
                                                 <div class="sidebar-title">
                                                     <br>
                                                     <h3>THƯƠNG HIỆU</h3>
-                                                    <div th:each="thuonghieu : ${th}"
-                                                         class="d-flex align-items-center justify-content-between">
+                                                    <div th:each="thuonghieu : ${th}" class="d-flex align-items-center justify-content-between">
                                                         <p>
-                                                            <input type="checkbox" th:field="*{idThuongHieu}"
-                                                                   th:value="${thuonghieu.id}"
+                                                            <input type="checkbox" th:field="*{idThuongHieu}" th:value="${thuonghieu.id}"
                                                                    style="color: rgb(249, 72, 42); font-weight: bold;"
-                                                                   class="form-check-input checkbox checkbox-red"
-                                                                   onchange="filterProducts()">
-                                                            <label th:text="${thuonghieu.ten}"
-                                                                   style="margin-left: 25px;"></label>
+                                                                   class="form-check-input checkbox checkbox-red" onchange="filterProducts()">
+                                                            <label th:text="${thuonghieu.ten}" style="margin-left: 25px;"></label>
                                                         </p>
-                                                        <span class="ml-3"
-                                                              th:text="${'('+soLuongThuongHieu+')'}"></span>
+                                                        <span class="ml-3" th:text="${'('+soLuongThuongHieu+')'}"></span>
                                                     </div>
                                                 </div>
                                             </form>
@@ -116,63 +142,9 @@
                                     </li>
                                 </ul>
                             </li>
-
-                            <!--                            <li class="nav-item">-->
-                            <!--                                <a href="#" class="nav-link">-->
-                            <!--                                    <p>-->
-                            <!--                                        Thương Hiêu-->
-                            <!--                                        <i class="right fas fa-angle-left"></i>-->
-                            <!--                                    </p>-->
-                            <!--                                </a>-->
-                            <!--                                &lt;!&ndash; Lọc sản phẩm &ndash;&gt;-->
-                            <!--                                <ul class="nav nav-treeview">-->
-                            <!--                                    <li class="nav-item">-->
-                            <!--                                        <a href="#" class="nav-link">-->
-                            <!--                                            <form id="filterForm" th:method="get" th:object="${search2}">-->
-                            <!--                                                <div class="sidebar-title">-->
-                            <!--                                                    <h3>SIZE</h3>-->
-                            <!--                                                    <div th:each="kichco : ${kc}"-->
-                            <!--                                                         class="d-flex align-items-center justify-content-between">-->
-                            <!--                                                        <p class="custom-control custom-switch">-->
-                            <!--                                                            <input type="checkbox" th:field="*{idKichCo2}"-->
-                            <!--                                                                   th:value="${kichco.id}"-->
-                            <!--                                                                   style="color: rgb(249, 72, 42); font-weight: bold;"-->
-                            <!--                                                                   class="custom-control-input"-->
-                            <!--                                                                   th:id="'customSwitch-' + ${kichco.id}"-->
-                            <!--                                                                   onchange="filterProducts2()"/>-->
-                            <!--                                                            <label th:text="${kichco.ten}" style="margin-right: 10px;"-->
-                            <!--                                                                   class="custom-control-label"-->
-                            <!--                                                                   th:for="'customSwitch-' + ${kichco.id}"></label>-->
-                            <!--                                                        </p>-->
-                            <!--                                                        <span class="ml-3">(5)</span>-->
-                            <!--                                                    </div>-->
-                            <!--                                                </div>-->
-                            <!--                                                <p></p>-->
-                            <!--                                                <div class="sidebar-title">-->
-                            <!--                                                    <br>-->
-                            <!--                                                    <h3>THƯƠNG HIỆU</h3>-->
-                            <!--                                                    <div th:each="thuonghieu : ${th}"-->
-                            <!--                                                         class="d-flex align-items-center justify-content-between">-->
-                            <!--                                                        <p>-->
-                            <!--                                                            <input type="checkbox" th:field="*{idThuongHieu}"-->
-                            <!--                                                                   th:value="${thuonghieu.id}"-->
-                            <!--                                                                   style="color: rgb(249, 72, 42); font-weight: bold;"-->
-                            <!--                                                                   class="form-check-input checkbox checkbox-red"-->
-                            <!--                                                                   onchange="filterProducts()">-->
-                            <!--                                                            <label th:text="${thuonghieu.ten}"-->
-                            <!--                                                                   style="margin-left: 25px;"></label>-->
-                            <!--                                                        </p>-->
-                            <!--                                                        <span class="ml-3"-->
-                            <!--                                                              th:text="${'('+soLuongThuongHieu+')'}"></span>-->
-                            <!--                                                    </div>-->
-                            <!--                                                </div>-->
-                            <!--                                            </form>-->
-                            <!--                                        </a>-->
-                            <!--                                    </li>-->
-                            <!--                                </ul>-->
-                            <!--                            </li>-->
                         </ul>
                     </nav>
+
 
                     <!--loc du phong-->
                     <div class="category single-side">
@@ -503,5 +475,25 @@
     // Lắng nghe sự kiện change trong các trường input
     document.getElementById('searchInput').addEventListener('change', function () {
         document.getElementById('searchForm').submit(); // Gửi form khi có sự thay đổi
+    });
+</script>
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var treeview = document.getElementById("product-filter-treeview");
+
+        // Check if the treeview was previously opened
+        if (localStorage.getItem("treeview-open") === "true") {
+            treeview.classList.add("menu-open");
+            treeview.querySelector(".nav-link").classList.add("active");
+        }
+
+        // Add click event to toggle the state
+        treeview.querySelector(".nav-link").addEventListener("click", function() {
+            var isOpen = treeview.classList.contains("menu-open");
+            localStorage.setItem("treeview-open", !isOpen);
+        });
     });
 </script>
