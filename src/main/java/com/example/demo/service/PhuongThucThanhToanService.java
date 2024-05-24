@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface PhuongThucThanhToanService {
     List<PhuongThucThanhToan> timTheoHoaDon(HoaDon hd);
+    void add_update(PhuongThucThanhToan pt);
 }

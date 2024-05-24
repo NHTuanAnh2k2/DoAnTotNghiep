@@ -21,4 +21,10 @@ public class PhuongThucThanhToanImp implements PhuongThucThanhToanService {
     public List<PhuongThucThanhToan> timTheoHoaDon(HoaDon hd) {
         return dao.findAllByHoadon(hd);
     }
+
+    @Override
+    public void add_update(PhuongThucThanhToan pt) {
+        dao.save(pt);
+    }
+
 }
