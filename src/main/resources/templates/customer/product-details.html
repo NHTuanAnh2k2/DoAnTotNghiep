@@ -17,28 +17,21 @@
             <div class="col-md-6">
                 <div class="left">
                     <!-- Single-pro-slider Big-photo start -->
-                    <div class="large-slider zoom-gallery">
-                        <!--                        <div th:id="'carouselExample' + ${spct.id}" class="carousel">-->
-                        <!--                            <div class="carousel-inner">-->
-                        <!--                                    <div th:classappend="${index.index == 0} ? 'carousel-item active' : 'carousel-item'">-->
-                        <img th:if="${anh!= null}"
-                             th:src="@{'/upload/' + ${anh.substring(anh.lastIndexOf('upload') + 6)}}"
-                             class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
-                        <!--                                    </div>-->
-                        <!--                            </div>-->
-                        <!--                            <button class="carousel-control-prev" type="button"-->
-                        <!--                                    th:data-bs-target="'#carouselExample' + ${spct.id}"-->
-                        <!--                                    data-bs-slide="prev">-->
-                        <!--                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>-->
-                        <!--                                <span class="visually-hidden">Previous</span>-->
-                        <!--                            </button>-->
-                        <!--                            <button class="carousel-control-next" type="button"-->
-                        <!--                                    th:data-bs-target="'#carouselExample' + ${spct.id}"-->
-                        <!--                                    data-bs-slide="next">-->
-                        <!--                                <span class="carousel-control-next-icon" aria-hidden="true"></span>-->
-                        <!--                                <span class="visually-hidden">Next</span>-->
-                        <!--                            </button>-->
-                        <!--                        </div>-->
+                    <div id="carouselExample" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <div th:each="tenanh, index : ${anh}" th:classappend="${index.index == 0} ? 'carousel-item active' : 'carousel-item'">
+                                <img th:src="@{'/upload/' + ${tenanh.substring(tenanh.lastIndexOf('upload') + 6)}}"
+                                     class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
+                            </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExample" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </a>
                     </div>
                 </div>
             </div>

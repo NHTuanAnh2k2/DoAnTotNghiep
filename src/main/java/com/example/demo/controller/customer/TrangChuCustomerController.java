@@ -1,5 +1,6 @@
 package com.example.demo.controller.customer;
 
+import com.example.demo.entity.Anh;
 import com.example.demo.entity.SanPham;
 import com.example.demo.entity.SanPhamChiTiet;
 import com.example.demo.repository.AnhRepository;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -67,18 +69,30 @@ public class TrangChuCustomerController {
 
     @GetMapping("/detailsanphamCustomer/{id}")
     public String detailsanphamCustomer(@PathVariable Integer id, Model model) {
+        // Lấy sản phẩm theo id
         SanPham sanPham = sanPhamRepositoty.findById(id).orElse(null);
         model.addAttribute("sanpham", sanPham);
         model.addAttribute("sanphamchitiet", sanPham.getSpct());
-        List<SanPhamChiTiet> sanPhamChiTietList=sanPham.getSpct();
-        String anh=sanPhamChiTietList.get(0).getAnh().get(0).getTenanh();
-        model.addAttribute("anh",anh);
+
+        // Lấy danh sách ảnh
+        List<SanPhamChiTiet> sanPhamChiTietList = sanPham.getSpct();
+        List<String> danhSachAnh = new ArrayList<>();
+        for (SanPhamChiTiet spct : sanPhamChiTietList) {
+            for (Anh anh : spct.getAnh()) {
+                danhSachAnh.add(anh.getTenanh());
+            }
+        }
+        model.addAttribute("anh", danhSachAnh);
+
+        // Lấy danh sách sản phẩm theo điều kiện
         List<Object[]> page = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc3();
         model.addAttribute("page", page);
         List<Object[]> page2 = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc4();
         model.addAttribute("page2", page2);
+
         return "customer/product-details";
     }
+
 
 //    @GetMapping("/detailsanphamCustomer/{id}")
 //    public String detailsanphamCustomer(@PathVariable Integer id, Model model) {
