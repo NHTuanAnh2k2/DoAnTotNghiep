@@ -189,7 +189,26 @@ public interface SanPhamCustomerRepository extends JpaRepository<SanPham, Intege
 //               """)
 //    Page<Object[]> searchByGender0(List<Integer> idthuonghieu, List<Integer> idkichco,Pageable pageable);
 
-    @Query(value = """
+//    @Query(value = """
+//            SELECT sp.id, sp.tensanpham, sp.ngaytao, SUM(spct.soluong) AS tongSoLuong, sp.trangthai, MAX(spct.giatien) AS maxGiaTien, MAX(anh.tenanh) AS maxTenAnh, spct.gioitinh
+//            FROM SanPham sp
+//            JOIN sp.spct spct
+//            JOIN spct.anh anh
+//            WHERE spct.gioitinh = false
+//                AND ((:brandIds IS NULL OR spct.thuonghieu.id IN (:brandIds))
+//                OR (:sizeIds IS NULL OR spct.kichco.id IN (:sizeIds)))
+//                AND (:minPrice IS NULL OR spct.giatien >= :minPrice)
+//                AND (:maxPrice IS NULL OR spct.giatien <= :maxPrice)
+//            GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai, spct.gioitinh
+//            ORDER BY sp.ngaytao DESC, tongSoLuong DESC
+//           """)
+//    List<Object[]> findProductsByCriteria(
+//            @Param("brandIds") List<Long> brandIds,
+//            @Param("sizeIds") List<Long> sizeIds,
+//            @Param("minPrice") BigDecimal minPrice,
+//            @Param("maxPrice") BigDecimal maxPrice
+//    );
+        @Query(value = """
             SELECT sp.id, sp.tensanpham, sp.ngaytao, SUM(spct.soluong) AS tongSoLuong, sp.trangthai, MAX(spct.giatien) AS maxGiaTien, MAX(anh.tenanh) AS maxTenAnh, spct.gioitinh
             FROM SanPham sp
             JOIN sp.spct spct
