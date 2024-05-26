@@ -54,17 +54,17 @@
                                  aria-labelledby="v-pills-home-tab" tabindex="0">
                                 <h3>Hồ sơ của tôi</h3>
                                 <p>Email:
-                                    <input class="form-control">
+                                    <input class="form-control" th:value="${nguoidung.email}">
                                 </p>
                                 <p>SĐT:
-                                    <input class="form-control">
+                                    <input class="form-control" th:value="${nguoidung.sodienthoai}">
                                 </p>
                                 <p>Giới tính:
                                     <input type="radio" checked="true">Nam
                                     <input type="radio" checked="true">Nữ
                                 </p>
                                 <p>Ngày sinh:
-                                    <input type="date" class="form-control">
+                                    <input type="date" class="form-control" th:value="${nguoidung.ngaysinh}">
                                 </p>
                                 <p>
                                     <button class="btn btn-primary">Lưu</button>
@@ -85,10 +85,10 @@
                                         <th>Action</th>
                                     </tr>
                                     <tr>
-                                        <td>Hà Nội</td>
-                                        <td>Hà Nội</td>
-                                        <td>Hà Nội</td>
-                                        <td>Hà Nội</td>
+                                        <td th:text="${diachi.tinhthanhpho}">Hà Nội</td>
+                                        <td th:text="${diachi.quanhuyen}">Hà Nội</td>
+                                        <td th:text="${diachi.xaphuong}">Hà Nội</td>
+                                        <td th:text="${diachi.tenduong}">Hà Nội</td>
                                         <td>
                                             <a href="#" class="btn btn-danger" data-bs-toggle="modal"
                                                data-bs-target="#capnhatdiachi">Cập nhật</a>

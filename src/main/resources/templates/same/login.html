@@ -20,7 +20,7 @@
             <div class="col-md-6">
                 <div class="row">
                     <div class="single-check">
-                        <form th:method="post" th:object="${nguoidung}" th:action="@{/same/login}">
+                        <form th:method="post"  th:action="@{/dangnhap}">
                             <div class="single-input p-bottom50 clearfix">
                                 <div class="col-12">
                                     <div class="check-title">
@@ -40,6 +40,9 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
+                                    <p style="color: red" th:text="${dangnhapthatbai}"></p>
+                                </div>
+                                <div class="col-12">
                                     <div class="forget">
                                         <a th:href="@{/quenmatkhau}">Quên mật khẩu?</a>
                                     </div>
@@ -56,7 +59,7 @@
             </div>
             <div class="col-md-6">
                 <div class="single-input p-bottom50 clearfix">
-                    <form action="my-account.html">
+                    <form th:method="post" th:object="${nguoidung}" th:action="@{/same/login}">
                         <div class="row">
                             <div class="col-12">
                                 <div class="check-title">
@@ -66,37 +69,59 @@
                             <div class="col-md-6">
                                 <label>Tên:</label>
                                 <div class="input-text">
-                                    <input type="text" name="name" class="form-control"/>
+                                    <input type="text" th:field="*{ten}" class="form-control"/>
+                                    <p th:if="${#fields.hasErrors('ten')}"
+                                       th:errors="*{ten}" style="color: red;"></p>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <label>Họ:</label>
                                 <div class="input-text">
-                                    <input type="text" name="name" class="form-control"/>
+                                    <input type="text" th:field="*{ho}" class="form-control"/>
+                                    <p th:if="${#fields.hasErrors('ho')}"
+                                       th:errors="*{ho}" style="color: red;"></p>
                                 </div>
                             </div>
-                            <div class="col-12">
-                                <label>Địa chỉ:</label>
+                            <div class="col-md-12">
+                                <label>Họ:</label>
                                 <div class="input-text">
-                                    <input type="text" name="address" class="form-control"/>
+                                    <input type="date" th:field="*{ngaysinh}" class="form-control"/>
+                                    <p th:if="${#fields.hasErrors('ngaysinh')}"
+                                       th:errors="*{ngaysinh}" style="color: red;"></p>
                                 </div>
                             </div>
-                            <div class="col-12">
-                                <label>Tỉnh/Thành phố:</label>
-                                <div class="input-text">
-                                    <input type="text" name="city" class="form-control"/>
+                            <div th:object="${diachi}">
+                                <div class="col-12">
+                                    <label>Địa chỉ:</label>
+                                    <div class="input-text">
+                                        <input type="text" th:field="*{diachi}" class="form-control"/>
+                                        <p th:if="${#fields.hasErrors('diachi')}"
+                                           th:errors="*{diachi}" style="color: red;"></p>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <label>Tỉnh/Thành phố:</label>
+                                    <div class="input-text">
+                                        <input type="text" th:field="*{tinhthanhpho}" class="form-control"/>
+                                        <p th:if="${#fields.hasErrors('tinhthanhpho')}"
+                                           th:errors="*{tinhthanhpho}" style="color: red;"></p>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <label>Email:</label>
                                 <div class="input-text">
-                                    <input type="text" name="email" class="form-control"/>
+                                    <input type="text" th:field="*{email}" class="form-control"/>
+                                    <p th:if="${#fields.hasErrors('email')}"
+                                       th:errors="*{email}" style="color: red;"></p>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <label>SĐT:</label>
                                 <div class="input-text">
-                                    <input type="text" name="phone" class="form-control"/>
+                                    <input type="text" th:field="*{sodienthoai}" class="form-control"/>
+                                    <p th:if="${#fields.hasErrors('sodienthoai')}"
+                                       th:errors="*{sodienthoai}" style="color: red;"></p>
                                 </div>
                             </div>
                             <div class="col-12">

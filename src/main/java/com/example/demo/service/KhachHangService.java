@@ -46,6 +46,14 @@ public interface KhachHangService {
     //Tìm kiếm
     List<KhachHangInfo> findByTenSdtMa(String tenSdtMa);
 
+    NguoiDung findByEmail(String email);
+
+    void sendEmailDoiMk(String recipient, String username, String password, String name);
+
+    NguoiDung findNguoiDungByTaikhoan(String taikhoan);
+
+    DiaChi findDiaChiByIdNguoidung(Integer idNd);
+
     void scanQr() throws NotFoundException;
     String readQRCode(File qrCodeImage) throws IOException;
 }
