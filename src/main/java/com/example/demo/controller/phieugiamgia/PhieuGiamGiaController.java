@@ -152,6 +152,7 @@ public class PhieuGiamGiaController {
             phieuGiamGia.setLoaiphieu(loaiphieu);
             phieuGiamGia.setKieuphieu(kieuphieu);
             phieuGiamGia.setNguoitao("Tuan Anh");
+            phieuGiamGia.setNguoicapnhat("Tuan Anh");
             Timestamp ngayBatDauTimestamp = Timestamp.valueOf(ngayBatDau.replace("T", " ") + ":00");
             Timestamp ngayKetThucTimestamp = Timestamp.valueOf(ngayKetThuc.replace("T", " ") + ":00");
             phieuGiamGia.setNgaybatdau(ngayBatDauTimestamp);
@@ -165,6 +166,7 @@ public class PhieuGiamGiaController {
             }
 
             phieuGiamGia.setNgaytao(new Timestamp(System.currentTimeMillis()));
+            phieuGiamGia.setLancapnhatcuoi(new Timestamp(System.currentTimeMillis()));
             phieuGiamGiaImp.AddPhieuGiamGia(phieuGiamGia);
             List<String> listString = Arrays.asList(choncheckbox);
             List<Integer> listInt= new ArrayList<>();
@@ -219,6 +221,7 @@ public class PhieuGiamGiaController {
             phieuGiamGia.setLoaiphieu(loaiphieu);
             phieuGiamGia.setKieuphieu(kieuphieu);
             phieuGiamGia.setNguoitao("Tuan Anh");
+            phieuGiamGia.setNguoicapnhat("Tuan Anh");
             Timestamp ngayBatDauTimestamp = Timestamp.valueOf(ngayBatDau.replace("T", " ") + ":00");
             Timestamp ngayKetThucTimestamp = Timestamp.valueOf(ngayKetThuc.replace("T", " ") + ":00");
             phieuGiamGia.setNgaybatdau(ngayBatDauTimestamp);
@@ -232,7 +235,18 @@ public class PhieuGiamGiaController {
             }
 
             phieuGiamGia.setNgaytao(new Timestamp(System.currentTimeMillis()));
+            phieuGiamGia.setLancapnhatcuoi(new Timestamp(System.currentTimeMillis()));
             phieuGiamGiaImp.AddPhieuGiamGia(phieuGiamGia);
+
+            List<KhachHang> lstKH= khachHangImp.findAll();
+            String subject = "Mã giảm giá mới!";
+            String body = "Chào bạn,\n\n"
+                    + "Chúng tôi rất vui thông báo rằng bạn đã nhận được một mã giảm giá mới!\n\n"
+                    + "Mã giảm giá của bạn là: " + phieuGiamGiaImp.findFirstByOrderByNgaytaoDesc().getMacode() + "\n\n"
+                    + "Xin cảm ơn và chúc bạn có một ngày tốt lành!\n";
+            for(KhachHang e :lstKH){
+                emailService.sendEmail(e.getNguoidung().getEmail(), subject,body);
+            }
             return "redirect:/admin/hien-thi-phieu-giam-gia";
         }
 
@@ -257,12 +271,14 @@ public class PhieuGiamGiaController {
                                   @RequestParam("ngayBatDau") String ngayBatDau,
                                   @RequestParam("ngayKetThuc") String ngayKetThuc,
                                       @RequestParam("choncheckbox") String[] choncheckbox,
-                                      @RequestParam("loaiphieu") Boolean loaiphieu){
+                                      @RequestParam("loaiphieu") Boolean loaiphieu,
+                                      @RequestParam("trangthaicn") Boolean trangthaicn){
         PhieuGiamGia phieu= phieuGiamGiaImp.findPhieuGiamGiaById(Id);
         phieuGiamGia.setId(Id);
         phieuGiamGia.setTenphieu(phieuGiamGia.getTenphieu().trim());
         phieuGiamGia.setNguoitao(phieu.getNguoitao());
         phieuGiamGia.setNgaytao(phieu.getNgaytao());
+        phieuGiamGia.setMacode(phieu.getMacode());
         phieuGiamGia.setLoaiphieu(loaiphieu);
         phieuGiamGia.setKieuphieu(phieu.getKieuphieu());
         phieuGiamGia.setMacode(phieu.getMacode());
@@ -273,14 +289,15 @@ public class PhieuGiamGiaController {
         Timestamp ngayHT= new Timestamp(System.currentTimeMillis());
         phieuGiamGia.setLancapnhatcuoi(new Timestamp(System.currentTimeMillis()));
         phieuGiamGia.setNguoicapnhat("Tuan Anh");
-        if (phieu.getTrangthai() == 2) {
-            phieuGiamGia.setTrangthai(2);
-        } else {
+        if(trangthaicn==false){
             if (ngayBatDauTimestamp.getTime() > ngayHT.getTime()) {
                 phieuGiamGia.setTrangthai(0);
             } else {
                 phieuGiamGia.setTrangthai(1);
             }
+        }
+        if(trangthaicn==true){
+            phieuGiamGia.setTrangthai(2);
         }
         if(choncheckbox !=null){
             phieuGiamGiaImp.AddPhieuGiamGia(phieuGiamGia);

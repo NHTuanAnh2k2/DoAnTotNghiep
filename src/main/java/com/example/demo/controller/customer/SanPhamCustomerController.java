@@ -99,7 +99,7 @@ public class SanPhamCustomerController {
 
     @GetMapping("/customer/sanphamnam")
     public String sanphamnam(Model model, @ModelAttribute("search2") SanPhamCustomerInfo info, @RequestParam(defaultValue = "0") int p) {
-        Pageable pageable = PageRequest.of(p, 10);
+        Pageable pageable = PageRequest.of(p, 8);
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
         List<MauSac> listMauSac = mauSacImp.findAll();

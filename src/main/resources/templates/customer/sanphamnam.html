@@ -4,12 +4,13 @@
 <nav th:replace="~{/layoutadmin/head.html}"></nav>
 <nav th:replace="~{/layout/head.html}"></nav>
 <!--end-->
+<!--Các sản phẩm nổi bật-->
 <style>
-    /*dungthanhcuonngang*/
+    /* Dùng thanh cuộn ngang */
     .tab-pane.horizontal-scrollable .single-products.row {
         display: flex;
         flex-wrap: nowrap;
-        overflow-x: auto;
+        overflow-x: hidden; /* Ẩn thanh cuộn ngang */
         -webkit-overflow-scrolling: touch; /* Cho thanh cuộn ngang trên iOS */
     }
 
@@ -18,6 +19,66 @@
         width: 25%; /* Hiển thị 4 cột trên mỗi hàng */
     }
 
+    .tab-pane.horizontal-scrollable {
+        position: relative; /* Đặt vị trí tương đối để các nút cuộn được định vị dựa trên phần tử cha */
+    }
+
+    .scroll-prev, .scroll-next {
+        position: absolute; /* Đặt vị trí tuyệt đối để căn chỉnh chính xác */
+        top: 30%; /* Đặt vị trí theo chiều dọc giữa của phần tử cha */
+        transform: translateY(-50%); /* Dịch chuyển các nút lên hoặc xuống để căn chỉnh theo chiều dọc */
+        z-index: 10; /* Đảm bảo nút nằm trên các phần tử khác */
+    }
+
+    .scroll-prev {
+        left: 0; /* Đặt vị trí của nút cuộn về trước */
+    }
+
+    .scroll-next {
+        right: 0; /* Đặt vị trí của nút cuộn về sau */
+    }
+
+</style>
+
+<style>
+    /* Ghi đè màu nền và màu chữ của liên kết trong treeview */
+    .nav-sidebar .nav-link {
+        background-color: transparent !important;
+        color: inherit !important;
+    }
+
+    /* Ghi đè màu nền và màu chữ của liên kết khi được chọn */
+    .nav-sidebar .nav-link.active {
+        background-color: transparent !important;
+        color: inherit !important;
+    }
+
+    /* Ghi đè màu nền và màu chữ của liên kết khi được hover */
+    .nav-sidebar .nav-link:hover {
+        background-color: transparent !important;
+        color: inherit !important;
+    }
+
+    /* Ghi đè màu nền và màu chữ của menu treeview */
+    .nav-treeview > .nav-item > .nav-link {
+        background-color: transparent !important;
+        color: inherit !important;
+    }
+
+    /* Ghi đè màu nền và màu chữ của menu treeview khi được chọn */
+    .nav-treeview > .nav-item > .nav-link.active {
+        background-color: transparent !important;
+        color: inherit !important;
+    }
+
+    /* Ghi đè màu nền và màu chữ của menu treeview khi được hover */
+    .nav-treeview > .nav-item > .nav-link:hover {
+        background-color: transparent !important;
+        color: inherit !important;
+    }
+</style>
+
+<style>
     /*phantrang*/
     .custom-btn {
         border-color: rgb(249, 72, 42);
@@ -41,6 +102,41 @@
         background-color: red;
     }
 </style>
+<!--Các sản phẩm mới nhất-->
+<style>
+    /* Dùng thanh cuộn ngang cho sản phẩm mới nhất */
+    .tab-pane.horizontal-scrollable-new .single-products-new.row {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: hidden; /* Ẩn thanh cuộn ngang */
+        -webkit-overflow-scrolling: touch; /* Cho thanh cuộn ngang trên iOS */
+    }
+
+    .tab-pane.horizontal-scrollable-new .col-md-3 {
+        flex: 0 0 auto;
+        width: 25%; /* Hiển thị 4 cột trên mỗi hàng */
+    }
+
+    .tab-pane.horizontal-scrollable-new {
+        position: relative; /* Đặt vị trí tương đối để các nút cuộn được định vị dựa trên phần tử cha */
+    }
+
+    .scroll-prev-new, .scroll-next-new {
+        position: absolute; /* Đặt vị trí tuyệt đối để căn chỉnh chính xác */
+        top: 30%; /* Đặt vị trí theo chiều dọc giữa của phần tử cha */
+        transform: translateY(-50%); /* Dịch chuyển các nút lên hoặc xuống để căn chỉnh theo chiều dọc */
+        z-index: 10; /* Đảm bảo nút nằm trên các phần tử khác */
+    }
+
+    .scroll-prev-new {
+        left: 0; /* Đặt vị trí của nút cuộn về trước */
+    }
+
+    .scroll-next-new {
+        right: 0; /* Đặt vị trí của nút cuộn về sau */
+    }
+
+</style>
 <body>
 
 <!-- header -->
@@ -61,7 +157,7 @@
                     <nav class="mt-2">
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                             data-accordion="false">
-                            <li class="nav-item">
+                            <li class="nav-item has-treeview" id="product-filter-treeview">
                                 <a href="#" class="nav-link">
                                     <p>
                                         Lọc sản phẩm
@@ -116,63 +212,9 @@
                                     </li>
                                 </ul>
                             </li>
-
-                            <!--                            <li class="nav-item">-->
-                            <!--                                <a href="#" class="nav-link">-->
-                            <!--                                    <p>-->
-                            <!--                                        Thương Hiêu-->
-                            <!--                                        <i class="right fas fa-angle-left"></i>-->
-                            <!--                                    </p>-->
-                            <!--                                </a>-->
-                            <!--                                &lt;!&ndash; Lọc sản phẩm &ndash;&gt;-->
-                            <!--                                <ul class="nav nav-treeview">-->
-                            <!--                                    <li class="nav-item">-->
-                            <!--                                        <a href="#" class="nav-link">-->
-                            <!--                                            <form id="filterForm" th:method="get" th:object="${search2}">-->
-                            <!--                                                <div class="sidebar-title">-->
-                            <!--                                                    <h3>SIZE</h3>-->
-                            <!--                                                    <div th:each="kichco : ${kc}"-->
-                            <!--                                                         class="d-flex align-items-center justify-content-between">-->
-                            <!--                                                        <p class="custom-control custom-switch">-->
-                            <!--                                                            <input type="checkbox" th:field="*{idKichCo2}"-->
-                            <!--                                                                   th:value="${kichco.id}"-->
-                            <!--                                                                   style="color: rgb(249, 72, 42); font-weight: bold;"-->
-                            <!--                                                                   class="custom-control-input"-->
-                            <!--                                                                   th:id="'customSwitch-' + ${kichco.id}"-->
-                            <!--                                                                   onchange="filterProducts2()"/>-->
-                            <!--                                                            <label th:text="${kichco.ten}" style="margin-right: 10px;"-->
-                            <!--                                                                   class="custom-control-label"-->
-                            <!--                                                                   th:for="'customSwitch-' + ${kichco.id}"></label>-->
-                            <!--                                                        </p>-->
-                            <!--                                                        <span class="ml-3">(5)</span>-->
-                            <!--                                                    </div>-->
-                            <!--                                                </div>-->
-                            <!--                                                <p></p>-->
-                            <!--                                                <div class="sidebar-title">-->
-                            <!--                                                    <br>-->
-                            <!--                                                    <h3>THƯƠNG HIỆU</h3>-->
-                            <!--                                                    <div th:each="thuonghieu : ${th}"-->
-                            <!--                                                         class="d-flex align-items-center justify-content-between">-->
-                            <!--                                                        <p>-->
-                            <!--                                                            <input type="checkbox" th:field="*{idThuongHieu}"-->
-                            <!--                                                                   th:value="${thuonghieu.id}"-->
-                            <!--                                                                   style="color: rgb(249, 72, 42); font-weight: bold;"-->
-                            <!--                                                                   class="form-check-input checkbox checkbox-red"-->
-                            <!--                                                                   onchange="filterProducts()">-->
-                            <!--                                                            <label th:text="${thuonghieu.ten}"-->
-                            <!--                                                                   style="margin-left: 25px;"></label>-->
-                            <!--                                                        </p>-->
-                            <!--                                                        <span class="ml-3"-->
-                            <!--                                                              th:text="${'('+soLuongThuongHieu+')'}"></span>-->
-                            <!--                                                    </div>-->
-                            <!--                                                </div>-->
-                            <!--                                            </form>-->
-                            <!--                                        </a>-->
-                            <!--                                    </li>-->
-                            <!--                                </ul>-->
-                            <!--                            </li>-->
                         </ul>
                     </nav>
+
 
                     <!--loc du phong-->
                     <div class="category single-side">
@@ -357,13 +399,20 @@
             </div>
         </div>
 
-
-        <h3 style="margin-top: 30px;color:rgb(249,72,42);font-family: 'Lucida Sans Typewriter' " class="text-center">CÁC
-            SẢN PHẨM NỔI BẬT</h3>
+        <!--các snar phẩm nổi bật-->
+        <h3 style="margin-top: 30px; color: rgb(249, 72, 42); font-family: 'Lucida Sans Typewriter'"
+            class="text-center">CÁC SẢN PHẨM NỔI BẬT</h3>
         <hr class="border border-danger border opacity-50">
         <div class="tab-content">
             <!--nội dung-->
             <div class="tab-pane fade text-center active show horizontal-scrollable" id="gird">
+                <button class="scroll-prev btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                         class="bi bi-chevron-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                              d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+                    </svg>
+                </button> <!-- Nút cuộn về trước -->
                 <div class="single-products row">
                     <div class="col-md-3" th:each="sp, stt : ${page}">
                         <div class="product-item margin40">
@@ -401,27 +450,42 @@
                                     <i class="fa fa-star gray-star"></i>
                                 </div>
                                 <p>
-                                    <span style="color: red;font-weight: bold"
+                                    <span style="color: red; font-weight: bold"
                                           th:text="${#numbers.formatDecimal(sp[5], 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
-                                    <!--                                    <del >$170.00</del>-->
+                                    <!-- <del>$170.00</del> -->
                                 </p>
                             </div>
                         </div>
                     </div>
                     <!---end-->
                 </div>
+                <button class="scroll-next btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                         class="bi bi-chevron-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                              d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+                    </svg>
+                </button> <!-- Nút cuộn về sau -->
             </div>
             <!--end-->
         </div>
+        <!--end-->
 
-        <!--những sản phẩm đang được giảm giá-->
-        <h3 style="margin-top: 30px;color:rgb(249,72,42);font-family: 'Lucida Sans Typewriter'" class="text-center">CÁC
-            SẢN PHẨM MỚI NHẤT</h3>
+        <!--Các sản phẩm mới nhất-->
+        <h3 style="margin-top: 30px; color: rgb(249, 72, 42); font-family: 'Lucida Sans Typewriter'"
+            class="text-center">CÁC SẢN PHẨM MỚI NHẤT</h3>
         <hr class="border border-danger border opacity-50">
         <div class="tab-content">
             <!--nội dung-->
-            <div class="tab-pane fade text-center active show horizontal-scrollable" id="gird">
-                <div class="single-products row">
+            <div class="tab-pane fade text-center active show horizontal-scrollable-new" id="new-products">
+                <button class="scroll-prev-new btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                         class="bi bi-chevron-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                              d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+                    </svg>
+                </button> <!-- Nút cuộn về trước -->
+                <div class="single-products-new row">
                     <div class="col-md-3" th:each="sp, stt : ${page2}">
                         <div class="product-item margin40">
                             <div class="pro-img">
@@ -458,15 +522,22 @@
                                     <i class="fa fa-star gray-star"></i>
                                 </div>
                                 <p>
-                                    <span style="color: red;font-weight: bold"
+                                    <span style="color: red; font-weight: bold"
                                           th:text="${#numbers.formatDecimal(sp[5], 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
-                                    <!--                                    <del >$170.00</del>-->
+                                    <!-- <del>$170.00</del> -->
                                 </p>
                             </div>
                         </div>
                     </div>
                     <!---end-->
                 </div>
+                <button class="scroll-next-new btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                         class="bi bi-chevron-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                              d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+                    </svg>
+                </button> <!-- Nút cuộn về sau -->
             </div>
             <!--end-->
         </div>
@@ -504,4 +575,73 @@
     document.getElementById('searchInput').addEventListener('change', function () {
         document.getElementById('searchForm').submit(); // Gửi form khi có sự thay đổi
     });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var treeview = document.getElementById("product-filter-treeview");
+
+        // Check if the treeview was previously opened
+        if (localStorage.getItem("treeview-open") === "true") {
+            treeview.classList.add("menu-open");
+            treeview.querySelector(".nav-link").classList.add("active");
+        }
+
+        // Add click event to toggle the state
+        treeview.querySelector(".nav-link").addEventListener("click", function () {
+            var isOpen = treeview.classList.contains("menu-open");
+            localStorage.setItem("treeview-open", !isOpen);
+        });
+    });
+</script>
+
+<!-- các sản phẩm nổi bật-->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const scrollableContainer = document.querySelector(".tab-pane.horizontal-scrollable .single-products.row");
+        const scrollPrevBtn = document.querySelector(".scroll-prev");
+        const scrollNextBtn = document.querySelector(".scroll-next");
+
+        scrollPrevBtn.addEventListener("click", function () {
+            if (scrollableContainer.scrollLeft === 0) {
+                scrollableContainer.scrollLeft = scrollableContainer.scrollWidth - scrollableContainer.clientWidth;
+            } else {
+                scrollableContainer.scrollBy({left: -200, behavior: "smooth"});
+            }
+        });
+
+        scrollNextBtn.addEventListener("click", function () {
+            if (scrollableContainer.scrollLeft >= (scrollableContainer.scrollWidth - scrollableContainer.clientWidth)) {
+                scrollableContainer.scrollLeft = 0;
+            } else {
+                scrollableContainer.scrollBy({left: 200, behavior: "smooth"});
+            }
+        });
+    });
+
+</script>
+<!-- các sản phẩm mới nhất-->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const scrollableContainerNew = document.querySelector(".tab-pane.horizontal-scrollable-new .single-products-new.row");
+        const scrollPrevBtnNew = document.querySelector(".scroll-prev-new");
+        const scrollNextBtnNew = document.querySelector(".scroll-next-new");
+
+        scrollPrevBtnNew.addEventListener("click", function () {
+            if (scrollableContainerNew.scrollLeft === 0) {
+                scrollableContainerNew.scrollLeft = scrollableContainerNew.scrollWidth - scrollableContainerNew.clientWidth;
+            } else {
+                scrollableContainerNew.scrollBy({left: -200, behavior: "smooth"});
+            }
+        });
+
+        scrollNextBtnNew.addEventListener("click", function () {
+            if (scrollableContainerNew.scrollLeft >= (scrollableContainerNew.scrollWidth - scrollableContainerNew.clientWidth)) {
+                scrollableContainerNew.scrollLeft = 0;
+            } else {
+                scrollableContainerNew.scrollBy({left: 200, behavior: "smooth"});
+            }
+        });
+    });
+
 </script>

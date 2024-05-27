@@ -159,80 +159,60 @@
                 <div class="modal-dialog modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h3 class="modal-title fs-5" id="exampleModalThayDoiHoaDon5">Thanh toán</h3>
+                            <h3 class="modal-title fs-5" id="exampleModalThayDoiHoaDon5">Thanh toán hóa đơn: <span
+                                    id="hdThanhToanShow"></span></h3>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form>
-                                <div>
-                                    Số tiền
-                                    <input type="text" class="form-control">
-                                </div>
-                                <br>
-                                <div class="d-flex">
-                                    <a class="btn"
-                                        style="width: 217px;background-color: rgb(249,72,42);color: white">Tiền
-                                        mặt</a>
-                                    <a style="margin-left: 15px;width: 217px;background-color: rgb(249,72,42);color: white"
-                                        class="btn">Chuyển khoản</a>
-                                </div>
-                                <br>
-                                <div class="d-flex justify-content-between">
-                                    <p>
-                                        Tiền thiếu
-                                    </p>
-                                    <p style="color: red;font-weight: bold">
-                                        5,500,000đ
-                                    </p>
-                                </div>
 
-                                <table style="width: 100%" class="table-bordered table-hover text-center">
-                                    <thead style="height: 50px">
-                                        <tr>
-                                            <th>STT</th>
-                                            <th>Mã giao dịch</th>
-                                            <th>Số tiền</th>
-                                            <th>Phương thức</th>
-                                            <th>Thao tác</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>abc</td>
-                                            <td>abc</td>
-                                            <td>abc</td>
-                                            <td>
-                                                <a style="color: rgb(249,72,42)">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                        fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
-                                                    </svg>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <br>
-                                <div class="d-flex justify-content-between">
-                                    <p>
-                                        Khách thanh toán
-                                    </p>
-                                    <p style="color: red;font-weight: bold">
-                                        0đ
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <p>
-                                        Tiền thiếu
-                                    </p>
-                                    <p style="color: #0a53be;font-weight: bold">
-                                        5,500,000đ
-                                    </p>
-                                </div>
+                            <div>
+                                Số tiền
+                                <input type="text" class="form-control" id="sotienhienthi">
+                            </div>
+                            <br>
+                            <div class="d-flex">
+                                <button class="btn" style="width: 217px;background-color: rgb(249,72,42);color: white"
+                                    id="tienmat" onclick="xacnhanphuongthuc(1)">Tiền
+                                    mặt</button>
+                                <button
+                                    style="margin-left: 15px;width: 217px;background-color: rgb(249,72,42);color: white"
+                                    id="chuyenkhoan" class="btn" onclick="xacnhanphuongthuc(0)">Chuyển
+                                    khoản</button>
+                            </div>
+                            <br>
+                            <table style="width: 100%" class="table-bordered table-hover text-center">
+                                <thead style="height: 50px">
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Mã giao dịch</th>
+                                        <th>Số tiền</th>
+                                        <th>Phương thức</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="showpt">
 
-                            </form>
+                                </tbody>
+                            </table>
+                            <br>
+                            <div class="d-flex justify-content-between">
+                                <p>
+                                    Khách thanh toán
+                                </p>
+                                <p style="color: #0a53be;font-weight: bold" id="dathanhtoanroi">
+                                    0đ
+                                </p>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <p>
+                                    Tiền thiếu
+                                </p>
+                                <p style="color: red;font-weight: bold" id="tienthieu">
+                                    5,500,000đ
+                                </p>
+                            </div>
+
+
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Hủy</button>
@@ -601,7 +581,8 @@
                         </h5>
                         <div class="d-flex justify-content-between">
                             <p style="font-weight: bold">Khách thanh toán:
-                                <a class="btn" data-bs-toggle="modal" data-bs-target="#modalThayDoiHoaDon5">
+                                <a class="btn" data-bs-toggle="modal" data-bs-target="#modalThayDoiHoaDon5"
+                                    onclick="thanhtoan()">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                                         class="bi bi-credit-card" viewBox="0 0 16 16">
                                         <path
@@ -615,9 +596,8 @@
                         </div>
                         <div class="d-flex justify-content-between mb-1">
                             <p style="font-weight: bold; margin-top: 10px;"> Mã giảm giá:</p>
-                            <p 
-                            style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white; padding-top: 10px;"
-                            id="maGiamFill">HFGGD07234-TUNGDT</p>
+                            <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white; padding-top: 10px;"
+                                id="maGiamFill">HFGGD07234-TUNGDT</p>
 
                             <button class="btn btn-light" style="margin-bottom: 20px;">Chọn mã giảm</button>
                         </div>
@@ -640,12 +620,12 @@
                         </div>
                         <div class="d-flex justify-content-between">
                             <p style="font-weight: bold">Giảm giá:</p>
-                            <p style="font-weight: bold">300,000đ</p>
+                            <p style="font-weight: bold" id="giamgia">300,000đ</p>
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between">
                             <p style="font-weight: bold">Tổng thanh toán:</p>
-                            <p style="color: red;font-weight: bold">2,200,000đ</p>
+                            <p style="color: red;font-weight: bold" id="tongThanhToan">2,200,000đ</p>
                         </div>
                         <p>
                             <button style="margin-left: 332px" class="btn btn-dark">Xác nhận thanh toán</button>
@@ -666,6 +646,9 @@
 
 
     <script>
+        //tạo biến toàn cũng để sử dụng
+        var tienkhachthanhtoan;
+        var hdHienTai;
         // JavaScript để tạo tab mới
         const urlPage = `/ban-hang-tai-quay/hoa-don-cho`;
         fetch(urlPage)
@@ -682,19 +665,6 @@
                         </div>`;
                 }
                 document.getElementById('GhiDeTab').innerHTML = htmlDiv;
-                // var check = null;
-                // const dataContainer = document.getElementById('dataContainer');
-                // const attributeValue = dataContainer.getAttribute('data-my-attribute');
-                // if (attributeValue != null) {
-                //     check = attributeValue;
-                // }
-                // console.log(check)
-                // console.log(at)
-                // if (check == null) {
-                //     openInvoice(event, b[0].mahoadon);
-                // } else {
-                //     openInvoice(event, check);
-                // }
                 openInvoice(event, b[0].mahoadon);
 
 
@@ -758,8 +728,11 @@
                 })
         }
 
+
+
         // JavaScript để mở tab
         function openInvoice(evt, invoiceName) {
+
             var i, tabcontent, tablinks;
 
             // Ẩn tất cả các tabcontent trước khi hiển thị tab được chọn
@@ -784,6 +757,8 @@
                 })
                 .then(function (b) {
                     var tongTien = 0;
+                    var tongThanhT = 0;
+                    var tienGiamT = 0;
                     var html = '';
                     var htmlTR = '';
                     var htmlMaGiam = '';
@@ -795,18 +770,7 @@
                         })
                         .then(function (b) {
 
-                            fetch(`http://localhost:8080/ban-hang-tai-quay/fillMaGiam`)
-                                .then(function (a) {
-                                    return a.json();
-                                })
-                                .then(function (b) {
-                                  if(b.id!=null){
-                                     document.getElementById('maGiamFill').innerHTML=b.phieugiamgia.macode;
-                                  }else{
-                                     document.getElementById('maGiamFill').innerHTML='chưa có mã nào phù hợp!';
-                                  }
 
-                                })
 
                             var htmlTTTK = '';
                             if (b.khachhang == null) {
@@ -817,7 +781,7 @@
                     </div>
                             `;
                             } else {
-                              
+
                                 htmlTTTK = `
                                 <div class="d-flex">
                         <p style="margin-left: 20px">Tên khách hàng:</p>
@@ -914,9 +878,39 @@ tabindex="0">
 </div>`;
                     }
 
+                    fetch(`http://localhost:8080/ban-hang-tai-quay/fillMaGiam`)
+                        .then(function (a) {
+                            return a.json();
+                        })
+                        .then(function (b) {
+                            var b2 = b;
+                            if (b.id != null) {
+                                if (b2.phieugiamgia.loaiphieu == true) {
+                                    // phiếu %
+                                    if (b2.phieugiamgia.giatrigiam * (tongTien / 100) > b2.phieugiamgia.giatrigiamtoida) {
+                                        tienGiamT = b2.phieugiamgia.giatrigiamtoida;
+                                    } else {
+                                        tienGiamT = b2.phieugiamgia.giatrigiam * (tongTien / 100);
+                                    }
+
+                                } else {
+                                    // phiếu vnđ
+                                    tienGiamT = b2.phieugiamgia.giatrigiam;
+                                }
+                                tongThanhT = tongTien - tienGiamT;
+                                document.getElementById('maGiamFill').innerHTML = b.phieugiamgia.macode;
+                            } else {
+                                document.getElementById('maGiamFill').innerHTML = 'chưa có mã nào phù hợp!';
+                                tongThanhT = tongTien;
+                            }
+                            tienkhachthanhtoan = tongThanhT;
+                            hdHienTai = maHD;
 
 
+                            document.getElementById('giamgia').innerHTML = tienGiamT.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                            document.getElementById('tongThanhToan').innerHTML = tongThanhT.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 
+                        })
                     document.getElementById(invoiceName).innerHTML = html;
                     document.getElementById("tongTien").innerHTML = tongTien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                     document.getElementById("tongTienTTTT").innerHTML = tongTien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
@@ -1261,7 +1255,7 @@ tabindex="0">
                     return a.json();
                 })
                 .then(function (b) {
-                   
+
                     var STT = 0;
                     let htmlSP = '';
                     let htmlNumberPageSP = '';
@@ -1325,7 +1319,7 @@ tabindex="0">
                     return a.json();
                 })
                 .then(function (b) {
-                 
+
                     var STT = 0;
                     let htmlSP = '';
                     let htmlNumberPageSP = '';
@@ -1391,7 +1385,7 @@ tabindex="0">
                     return a.json();
                 })
                 .then(function (b) {
-                 
+
                     var STT = 0;
                     let htmlSP = '';
                     let htmlNumberPageSP = '';
@@ -1446,7 +1440,7 @@ tabindex="0">
         }
 
     </script>
-    
+
     <script>
         // Lấy phần tử thanh trượt và phần tử hiển thị giá trị
         var priceRange = document.getElementById("priceRange");
@@ -1911,6 +1905,93 @@ tabindex="0">
                     }
                 }
             };
+        }
+
+
+        // thanh toán modal hóa đơn
+        function thanhtoan() {
+            const urlthanhtoan = `http://localhost:8080/ban-hang-tai-quay/thanh-toan`;
+            fetch(urlthanhtoan)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var htmlpt = '';
+                    if (b.length > 0) {
+                        var stt = 0;
+                        for (const hd of b) {
+                            stt++;
+                            htmlpt += ` <tr>
+                                            <td>${stt}</td>
+                                            <td>${hd.magiaodichvnpay == null ? '' : hd.magiaodichvnpay}</td>
+                                            <td>${hd.tongtien}</td>
+                                            <td>${hd.mota}</td>
+                                            <td>
+                                                <a style="color: rgb(249,72,42)">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                        fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                                                    </svg>
+                                                </a>
+                                            </td>
+                                        </tr>`;
+                        }
+                        document.getElementById('showpt').innerHTML = htmlpt;
+
+                    } else {
+                        var showTien = document.getElementById('sotienhienthi');
+                        showTien.value = tienkhachthanhtoan.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                        document.getElementById('tienthieu').innerHTML = tienkhachthanhtoan.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                        document.getElementById('hdThanhToanShow').innerHTML = hdHienTai;
+
+                    }
+
+                })
+        }
+
+        function xacnhanphuongthuc(inputv) {
+            const kieuTT = [inputv, tienkhachthanhtoan];
+            const urlthanhtoan = `http://localhost:8080/ban-hang-tai-quay/xac-nhan-phuong-thuc?phuongthuc=${kieuTT}`;
+            fetch(urlthanhtoan)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var htmlphuongthuc = '';
+                    if (b.length > 0) {
+                        //xác nhận phương thức
+                        if (inputv == 1) {
+                            document.getElementById('tienmat').disabled = true;
+                        }
+                        var stt = 0;
+                        for (const hd of b) {
+                            stt++;
+                            htmlphuongthuc += ` <tr>
+                                            <td>${stt}</td>
+                                            <td>${hd.magiaodichvnpay == null ? '' : hd.magiaodichvnpay}</td>
+                                            <td>${hd.tongtien}</td>
+                                            <td>${hd.mota}</td>
+                                            <td>
+                                                <a style="color: rgb(249,72,42)">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                        fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                                                    </svg>
+                                                </a>
+                                            </td>
+                                        </tr>`;
+                        }
+
+                        document.getElementById('showpt').innerHTML = htmlphuongthuc;
+                    } else {
+
+                        //lỗi không xác định
+
+                    }
+
+                })
         }
     </script>
 

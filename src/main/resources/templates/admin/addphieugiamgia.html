@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <nav th:replace="~{/layoutadmin/head.html}"></nav>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <style>
     .form123{
@@ -25,7 +26,7 @@
         color: black;
         padding: 0 10px;
         background: transparent;
-        border: 1.2px solid black;
+        /*border: 1.2px solid black;*/
         outline: none;
         border-radius: 5px;
     }
@@ -68,7 +69,7 @@
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
-                    <div class="col-sm-6">
+                    <div class="col-lg-6">
                         <h1>
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
                                  class="bi bi-bookmark-dash-fill" viewBox="0 0 16 16">
@@ -77,12 +78,6 @@
                             </svg>
                             THÊM MỚI PHIẾU GIẢM GIÁ
                         </h1>
-                    </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">QUẢN LÝ PHIẾU GIẢM GIÁ</li>
-                        </ol>
                     </div>
                 </div>
             </div><!-- /.container-fluid -->
@@ -94,21 +89,21 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-5">
-                                <form id="formThemPhieu" th:action="@{/admin/them-phieu-giam-gia}" th:object="${phieuGiamGia}" method="post" onsubmit="return validateForm()">
-                                    <div class="form123">
+                                <form id="formThemPhieu" th:action="@{/admin/them-phieu-giam-gia}" th:object="${phieuGiamGia}" method="post" onsubmit="return validateForm(event)">
+                                    <div class="form123 mb-4">
                                         <input id="inputMa" type="text" th:field="*{macode}" placeholder="Mã phiếu giảm giá"/>
                                         <label>Mã phiếu giảm giá</label>
                                         <div style="color: red; font-weight: initial;" id="errorMa"></div>
                                     </div>
-                                    <div class="form123">
+                                    <div class="form123 mb-4">
                                         <input id="inputTen" type="text" th:field="*{tenphieu}" placeholder="Tên phiếu giảm giá"/>
                                         <label>Tên phiếu giảm giá</label>
                                         <div style="color: red; font-weight: initial;" id="errorTen"></div>
                                     </div>
                                     <input type="hidden" name="choncheckbox" value="-1">
                                     <input type="hidden" id="loaiphieu" value="true" name="loaiphieu">
-                                    <div class="d-flex justify-content-between">
-                                        <div class="form123">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <div class="form123" style="width: 230px;">
                                             <input id="inputGiaTri" type="number" th:field="*{giatrigiam}" placeholder="Giá trị giảm"/>
                                             <label>Giá trị giảm</label>
                                             <button type="button" class="btn btn-light" style="position: absolute; right: 30px; top: 30%; transform: translateY(-50%); width: 25px; height: 25px; border-radius: 50%;" onclick="GanValue1()">
@@ -123,35 +118,35 @@
                                             </button>
                                             <div style="color: red; font-weight: initial;" id="errorGiaTri"></div>
                                         </div>
-                                        <div class="form123">
+                                        <div class="form123" style="width: 230px;">
                                             <input id="inputToiThieu" type="number" th:field="*{dontoithieu}" placeholder="Giá trị hóa đơn tối thiểu"/>
                                             <label>Hóa đơn tối thiểu</label>
                                             <div style="color: red; font-weight: initial;" id="errorToiThieu"></div>
                                         </div>
                                     </div>
-                                    <div class="d-flex justify-content-between">
-                                        <div class="form123">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <div class="form123" style="width: 230px;">
                                             <input id="inputToiDa" type="number" th:field="*{giatrigiamtoida}" placeholder="Giá tiền giảm tối đa"/>
                                             <label>Giảm tối đa</label>
                                             <div style="color: red; font-weight: initial;" id="errorToiDa"></div>
                                         </div>
-                                        <div class="form123">
+                                        <div class="form123" style="width: 230px;">
                                             <input id="inputSoLuong" type="number" th:field="*{soluong}" placeholder="Số lượng"/>
                                             <label>Số lượng</label>
                                             <div style="color: red; font-weight: initial;" id="errorSoLuong"></div>
                                         </div>
                                     </div>
-                                    <div class="form123">
+                                    <div class="form123 mb-4">
                                         <input id="inputTuNgay" name="ngayBatDau" type="datetime-local"/>
                                         <label>Ngày bắt đầu</label>
                                         <div style="color: red; font-weight: initial;" id="errorTuNgay"></div>
                                     </div>
-                                    <div class="form123">
+                                    <div class="form123 mb-4">
                                         <input id="inputDenNgay" name="ngayKetThuc" type="datetime-local"/>
                                         <label>Ngày kết thúc</label>
                                         <div style="color: red; font-weight: initial;" id="errorDenNgay"></div>
                                     </div>
-                                    <div class="d-flex justify-content-start">
+                                    <div class="d-flex justify-content-start mb-2">
                                         <p style="font-size: 14px; font-weight: bold">Kiểu phiếu giảm giá: </p>
                                         <div style="margin-left: 15px;" class="form-check">
                                             <input class="form-check-input" type="radio" name="kieuphieu" value="false" id="radio1" onchange="radioChanged1()" checked>
@@ -282,7 +277,8 @@
         // Sử dụng biểu thức chính quy để tìm các mẫu có ít nhất hai khoảng trắng liên tiếp giữa các từ
         return /\s{2,}/.test(str.trim());
     }
-    function validateForm(){
+    function validateForm(event){
+        event.preventDefault();
         var inputMa=document.getElementById("inputMa").value;
         var errorMa=document.getElementById("errorMa");
         var isMaValid = true;
@@ -290,6 +286,7 @@
             var obj = objectsFromController[i];
             if(inputMa === obj.macode){
                 errorMa.innerText = "Mã phiếu đã tồn tại!";
+                document.getElementById("inputMa").style.border = "1.2px solid red";
                 isMaValid = false;
                 break;
             }
@@ -297,10 +294,12 @@
         if(inputMa.trim().length > 0){
             if(checkCoKhoangTrang(inputMa)){
                 errorMa.innerText = "Mã phiếu không được chứa khoảng trắng!";
+                document.getElementById("inputMa").style.border = "1.2px solid red";
                 isMaValid = false;
             }
         }
         if (isMaValid) {
+            document.getElementById("inputMa").style.border = "";
             errorMa.innerText = "";
         }
         var inputTen=document.getElementById("inputTen").value;
@@ -308,15 +307,18 @@
         var isTenValid = true;
         if(inputTen.trim() === ""){
             errorTen.innerText = "Tên phiếu không được để trống!";
+            document.getElementById("inputTen").style.border="1.2px solid red";
             isTenValid = false;
         }
         if(inputTen.trim().length > 0){
             if(checkNhieuKhoangTrang(inputTen)){
                 errorTen.innerText = "Giữa các từ không được nhiều hơn 1 khoảng trắng!";
+                document.getElementById("inputTen").style.border="1.2px solid red";
                 isTenValid = false;
             }
         }
         if(isTenValid){
+            document.getElementById("inputTen").style.border="";
             errorTen.innerText = "";
         }
         var inputGiaTri=document.getElementById("inputGiaTri").value;
@@ -324,20 +326,24 @@
         var loaiPhieu = document.getElementById("loaiphieu").value;
         var isGiaTriValid = true;
         if (inputGiaTri === "") {
+            document.getElementById("inputGiaTri").style.border="1.2px solid red";
             errorGiaTri.innerText = "Giá trị giảm không được để trống!";
             isGiaTriValid = false;
         }else if(loaiPhieu === "true"){
             if(inputGiaTri < 1 || inputGiaTri > 100){
-                errorGiaTri.innerText = "Phần trăm giảm phải từ 1 -> 100!";
+                document.getElementById("inputGiaTri").style.border="1.2px solid red";
+                errorGiaTri.innerText = "Phần trăm giảm phải từ 1% đến 100%!";
                 isGiaTriValid = false;
             }
         }else if(loaiPhieu === "false"){
             if(inputGiaTri < 1){
-                errorGiaTri.innerText = "Giá trị giảm phải > 0!";
+                document.getElementById("inputGiaTri").style.border="1.2px solid red";
+                errorGiaTri.innerText = "Giá trị giảm phải lớn hơn 0!";
                 isGiaTriValid = false;
             }
         }
         if(isGiaTriValid){
+            document.getElementById("inputGiaTri").style.border="";
             errorGiaTri.innerText = "";
         }
         var inputToiThieu=document.getElementById("inputToiThieu").value;
@@ -345,12 +351,15 @@
         var isToiThieuValid = true;
         if (inputToiThieu !== "") {
             if(inputToiThieu < 0){
-                errorToiThieu.innerText = "Hóa đơn tối thiểu phải >= 0!";
+                document.getElementById("inputToiThieu").style.border="1.2px solid red";
+                errorToiThieu.innerText = "Hóa đơn tối thiểu phải lớn hơn hoặc bằng 0!";
                 isGiaTriValid = false;
             }else{
+                document.getElementById("inputToiThieu").style.border="";
                 errorToiThieu.innerText = "";
             }
         }else{
+            document.getElementById("inputToiThieu").style.border="";
             errorToiThieu.innerText = "";
         }
         var inputToiDa=document.getElementById("inputToiDa").value;
@@ -358,30 +367,37 @@
         var isToiDaValid = true;
         if (inputToiDa !== "") {
             if(inputToiDa < 0){
-                errorToiDa.innerText = "Giá trị giảm tối đa phải >= 0!";
+                document.getElementById("inputToiDa").style.border="1.2px solid red";
+                errorToiDa.innerText = "Giá trị giảm tối đa phải lớn hơn 0!";
                 isToiDaValid = false;
             }else{
+                document.getElementById("inputToiDa").style.border="";
                 errorToiDa.innerText = "";
             }
         }else{
+            document.getElementById("inputToiDa").style.border="";
             errorToiDa.innerText = "";
         }
         var inputSoLuong=document.getElementById("inputSoLuong").value;
         var errorSoLuong=document.getElementById("errorSoLuong");
         var isSoLuongValid = true;
         if(inputSoLuong === ""){
+            document.getElementById("inputSoLuong").style.border="1.2px solid red";
             errorSoLuong.innerText = "Số lượng không được bỏ trống!";
             isSoLuongValid = false;
         }
         if (inputSoLuong !== "") {
-            if(inputSoLuong <= 0){
-                errorSoLuong.innerText = "Số lượng phải > 0!";
+            if(inputSoLuong < 0){
+                document.getElementById("inputSoLuong").style.border="1.2px solid red";
+                errorSoLuong.innerText = "Số lượng phải lớn hơn hoặc bằng 0!";
                 isSoLuongValid = false;
             }else{
+                document.getElementById("inputSoLuong").style.border="";
                 errorSoLuong.innerText = "";
             }
         }
         if(isSoLuongValid){
+            document.getElementById("inputSoLuong").style.border="";
             errorSoLuong.innerText = "";
         }
         var inputTuNgay=document.getElementById("inputTuNgay").value;
@@ -392,17 +408,24 @@
         var isDenNgayValid = true;
         var dateNow = new Date();
         if(!inputTuNgay){
+            document.getElementById("inputTuNgay").style.border="1.2px solid red";
             errorTuNgay.innerText="Ngày bắt đầu không được bỏ trống!";
             isTuNgayValid= false;
         }
         if(inputTuNgay){
             var date1 = new Date(inputTuNgay);
-            if(date1.getDate()< dateNow.getDate()){
-                errorTuNgay.innerText="Ngày bắt đầu phải >= ngày hiện tại!";
+            if(date1.getTime()< dateNow.getTime()){
+                document.getElementById("inputTuNgay").style.border="1.2px solid red";
+                errorTuNgay.innerText="Ngày giờ bắt đầu phải lớn hơn hoặc bằng ngày giờ hiện tại!";
                 isTuNgayValid= false;
             }
         }
+        if(isTuNgayValid){
+            document.getElementById("inputTuNgay").style.border="";
+            errorTuNgay.innerText="";
+        }
         if(!inputDenNgay){
+            document.getElementById("inputDenNgay").style.border="1.2px solid red";
             errorDenNgay.innerText="Ngày kết thúc không được bỏ trống!";
             isDenNgayValid= false;
         }
@@ -410,14 +433,13 @@
             var date1 = new Date(inputTuNgay);
             var date2 = new Date(inputDenNgay);
             if(date1.getTime() >= date2.getTime()){
-                errorDenNgay.innerText="Ngày kết thúc phải lớn hơn ngày bắt đầu!";
+                document.getElementById("inputDenNgay").style.border="1.2px solid red";
+                errorDenNgay.innerText="Ngày giờ kết thúc phải lớn hơn ngày giờ bắt đầu!";
                 isDenNgayValid= false;
             }
         }
-        if(isTuNgayValid){
-            errorTuNgay.innerText="";
-        }
         if(isDenNgayValid){
+            document.getElementById("inputDenNgay").style.border="";
             errorDenNgay.innerText="";
         }
         if(isMaValid && isTenValid && isGiaTriValid && isToiThieuValid && isToiDaValid && isSoLuongValid && isTuNgayValid && isDenNgayValid){
@@ -431,13 +453,83 @@
             }
             if (document.getElementById('radio').checked){
                 if(giaTriDaChon.length <= 0){
-                    alert("Vui lòng chọn khách hàng áp dụng!");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi',
+                        text: 'Vui lòng chọn khách hàng muốn áp dụng!',
+                        confirmButtonText: 'OK'
+                    });
+                    return false;
+                }else{
+                    Swal.fire({
+                        title: 'Bạn có chắc chắn muốn thêm phiếu giảm giá mới không?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Có',
+                        cancelButtonText: 'Không'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.onmouseenter = Swal.stopTimer;
+                                    toast.onmouseleave = Swal.resumeTimer;
+                                }
+                            });
+
+                            Toast.fire({
+                                icon: "success",
+                                title: "Thêm thành công!"
+                            });
+
+                            setTimeout(function () {
+                                document.getElementById("formThemPhieu").submit();
+                            }, 3000);
+                        }
+                    });
+                    // Ngăn form được gửi đi ngay lập tức
                     return false;
                 }
+            }else{
+                Swal.fire({
+                    title: 'Bạn có chắc chắn muốn thêm phiếu giảm giá mới không?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Có',
+                    cancelButtonText: 'Không'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            }
+                        });
+
+                        Toast.fire({
+                            icon: "success",
+                            title: "Thêm thành công!"
+                        });
+
+                        setTimeout(function () {
+                            document.getElementById("formThemPhieu").submit();
+                        }, 3000);
+                    }
+                });
+                // Ngăn form được gửi đi ngay lập tức
+                return false;
             }
-
-
-            return true;
         }else{
             return false;
         }
