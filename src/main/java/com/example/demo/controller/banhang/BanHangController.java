@@ -151,6 +151,7 @@ public class BanHangController {
         return "redirect:/hoa-don/ban-hang";
     }
 
+
     @GetMapping("delete/{id}")
     public String deleteSP(@PathVariable("id") Integer id) {
         HoaDonChiTiet hdDelete = daoHDCT.findByID(id);
@@ -253,22 +254,8 @@ public class BanHangController {
         return ResponseEntity.ok(result);
     }
 
-    // thanh toán
-
-    @GetMapping("thanh-toan")
-    @ResponseBody
-    public ResponseEntity<?> thanhtoan() {
-        List<PhuongThucThanhToan> lstpttt = daoPTTT.timTheoHoaDon(hdHienTai);
-
-        List<PhuongThucThanhToan> lstrt = new ArrayList<>();
-        for (PhuongThucThanhToan a : lstpttt
-        ) {
-            if (a.getTrangthai() == true) {
-                lstrt.add(a);
-            }
-        }
-        return ResponseEntity.ok(lstrt);
-    }
+    //chứa bản ghi thanh toán tạm
+    List<PhuongThucThanhToan> lstPTTT = new ArrayList<>();
 
     @GetMapping("xac-nhan-phuong-thuc")
     @ResponseBody
@@ -277,23 +264,41 @@ public class BanHangController {
         PhuongThucThanhToan phuongThucInsert = new PhuongThucThanhToan();
         phuongThucInsert.setHoadon(hdHienTai);
         phuongThucInsert.setTenphuongthuc("trả trước");
-        phuongThucInsert.setTongtien(BigDecimal.valueOf(Double.valueOf(lst.get(1))));
+        phuongThucInsert.setTongtien(BigDecimal.valueOf(Double.valueOf(convertCurrency(lst.get(1)))));
         phuongThucInsert.setMota(mota);
         phuongThucInsert.setTrangthai(true);
         LocalDateTime currentDateTime = LocalDateTime.now();
         phuongThucInsert.setNgaytao(Timestamp.valueOf(currentDateTime));
-        daoPTTT.add_update(phuongThucInsert);
-        List<PhuongThucThanhToan> lstpttt = daoPTTT.timTheoHoaDon(hdHienTai);
-        List<PhuongThucThanhToan> lstrt = new ArrayList<>();
-        for (PhuongThucThanhToan a : lstpttt
+        lstPTTT.add(phuongThucInsert);
+        return ResponseEntity.ok(lstPTTT);
+    }
+
+    // thanh toán
+
+    @GetMapping("thanh-toan")
+    @ResponseBody
+    public ResponseEntity<?> thanhtoan() {
+        return ResponseEntity.ok(lstPTTT);
+    }
+
+    public static String convertCurrency(String formattedAmount) {
+        // Xóa ký hiệu "₫" và các dấu phân cách
+        String numericAmount = formattedAmount.replaceAll("[^\\d]", "");
+        return numericAmount;
+    }
+
+    //xóa bản ghi thanh toán tạm
+    @GetMapping("delete-pttt/{id}")
+    @ResponseBody
+    public ResponseEntity<?> deletePTTT(@PathVariable("id") String tien) {
+        BigDecimal tienp = BigDecimal.valueOf(Double.valueOf(convertCurrency(tien)));
+        for (PhuongThucThanhToan a : lstPTTT
         ) {
-            if (a.getTrangthai() == true) {
-                lstrt.add(a);
+            if (a.getTongtien() == tienp) {
+                lstPTTT.remove(a);
             }
         }
-        System.out.println("aaaaaaaaaaaaaaaaaa");
-        System.out.println(lstrt.size());
-        return ResponseEntity.ok(lstrt);
+        return ResponseEntity.ok(lstPTTT);
     }
 
 }

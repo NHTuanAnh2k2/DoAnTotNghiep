@@ -167,7 +167,8 @@
 
                             <div>
                                 Số tiền
-                                <input type="text" class="form-control" id="sotienhienthi">
+                                <input type="text" class="form-control" id="sotienhienthi"
+                                    oninput="showcasst('sotienhienthi')">
                             </div>
                             <br>
                             <div class="d-flex">
@@ -216,8 +217,8 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Hủy</button>
-                            <button type="button" class="btn"
-                                style="background-color: rgb(249,72,42);color: white">OK</button>
+                            <button type="button" class="btn" style="background-color: rgb(249,72,42);color: white"
+                                data-bs-dismiss="modal">Xác nhận</button>
 
                         </div>
                     </div>
@@ -1919,83 +1920,140 @@ tabindex="0">
                     var htmlpt = '';
                     if (b.length > 0) {
                         var stt = 0;
+                        var tiendathanhtoan = 0;
+                        var checktienmat = 0;
+                        var checkchuyenkhoan = 0;
                         for (const hd of b) {
+                            if (hd.mota == 'tiền mặt') {
+                                checktienmat = 1;
+
+                            }
+                            if (hd.mota == 'chuyển khoản') {
+                                checkchuyenkhoan = 1;
+                            }
+                            tiendathanhtoan += hd.tongtien;
                             stt++;
                             htmlpt += ` <tr>
-                                            <td>${stt}</td>
-                                            <td>${hd.magiaodichvnpay == null ? '' : hd.magiaodichvnpay}</td>
-                                            <td>${hd.tongtien}</td>
-                                            <td>${hd.mota}</td>
-                                            <td>
-                                                <a style="color: rgb(249,72,42)">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                        fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
-                                                    </svg>
-                                                </a>
-                                            </td>
-                                        </tr>`;
+                                              <td>${stt}</td>
+                                              <td>${hd.magiaodichvnpay == null ? '' : hd.magiaodichvnpay}</td>
+                                              <td>${hd.tongtien}</td>
+                                              <td>${hd.mota}</td>
+                                              <td>
+                                                <a href="http://localhost:8080/ban-hang-tai-quay/delete-pttt/${hd.tongtien}"
+                                                            >
+                                                            <button class="btn btn-outline-danger"
+                                                                onclick="return confirm('Bạn muốn loại bỏ bản giao dịch này?')"
+                                                                type="button"><i class="bi bi-trash3"></i></button></a>
+                                              </td>
+                                          </tr>`;
                         }
+                        if (checkchuyenkhoan == 1) {
+                            document.getElementById('chuyenkhoan').disabled = true;
+                        }
+                        if (checktienmat == 1) {
+                            document.getElementById('tienmat').disabled = true;
+                        }
+                        document.getElementById('dathanhtoanroi').innerHTML = tiendathanhtoan;
                         document.getElementById('showpt').innerHTML = htmlpt;
+                        var showTien = document.getElementById('sotienhienthi');
+                        showTien.value = (tienkhachthanhtoan - tiendathanhtoan).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                        document.getElementById('tienthieu').innerHTML = (tienkhachthanhtoan - tiendathanhtoan).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                        document.getElementById('hdThanhToanShow').innerHTML = hdHienTai;
 
                     } else {
                         var showTien = document.getElementById('sotienhienthi');
                         showTien.value = tienkhachthanhtoan.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                         document.getElementById('tienthieu').innerHTML = tienkhachthanhtoan.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                         document.getElementById('hdThanhToanShow').innerHTML = hdHienTai;
-
+                        document.getElementById('dathanhtoanroi').innerHTML = '0đ';
                     }
 
                 })
         }
+        // Xóa ký hiệu "₫" và các dấu phân cách khỏi tiền 
+        function convertCurrency(formattedAmount) {
+            // Xóa ký hiệu "₫" và các dấu phân cách
+            let numericAmount = formattedAmount.replace(/[^0-9]/g, '');
+            return numericAmount;
+        }
+        // định dạng show tiền tệ dựa trên onclick
+        function showcasst(elementId) {
+            $('#' + elementId).keyup(function (event) {
+                $(this).val(function (index, value) {
+                    return value
+                        .replace(/\D/g, "")
+                        .replace(/([0-9])([0-9]{})$/, '$1.$2')
+                        .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".")
+                        + ' ₫';
+                });
+            });
+        }
 
         function xacnhanphuongthuc(inputv) {
-            const kieuTT = [inputv, tienkhachthanhtoan];
+            const kieuTT = [inputv, document.getElementById('sotienhienthi').value];
             const urlthanhtoan = `http://localhost:8080/ban-hang-tai-quay/xac-nhan-phuong-thuc?phuongthuc=${kieuTT}`;
             fetch(urlthanhtoan)
                 .then(function (a) {
                     return a.json();
                 })
                 .then(function (b) {
+
                     var htmlphuongthuc = '';
                     if (b.length > 0) {
                         //xác nhận phương thức
-                        if (inputv == 1) {
-                            document.getElementById('tienmat').disabled = true;
-                        }
                         var stt = 0;
+                        var tiendathanhtoan = 0;
+                        var checktienmat = 0;
+                        var checkchuyenkhoan = 0;
                         for (const hd of b) {
+                            if (hd.mota == 'tiền mặt') {
+                                checktienmat = 1;
+
+                            }
+                            if (hd.mota == 'chuyển khoản') {
+                                checkchuyenkhoan = 1;
+                            }
+                            tiendathanhtoan += hd.tongtien;
                             stt++;
                             htmlphuongthuc += ` <tr>
                                             <td>${stt}</td>
                                             <td>${hd.magiaodichvnpay == null ? '' : hd.magiaodichvnpay}</td>
-                                            <td>${hd.tongtien}</td>
+                                            <td>${hd.tongtien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
                                             <td>${hd.mota}</td>
                                             <td>
-                                                <a style="color: rgb(249,72,42)">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                        fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
-                                                    </svg>
-                                                </a>
+                                                <a href="http://localhost:8080/ban-hang-tai-quay/delete-pttt/${hd.tongtien}"
+                                                            >
+                                                            <button class="btn btn-outline-danger"
+                                                                onclick="return confirm('Bạn muốn loại bỏ bản giao dịch này?')"
+                                                                type="button"><i class="bi bi-trash3"></i></button></a>
                                             </td>
                                         </tr>`;
                         }
 
-                        document.getElementById('showpt').innerHTML = htmlphuongthuc;
-                    } else {
+                        if (convertCurrency(document.getElementById('sotienhienthi').value) > 0) {
+                            if (checkchuyenkhoan == 1) {
+                                document.getElementById('chuyenkhoan').disabled = true;
+                            }
+                            if (checktienmat == 1) {
+                                document.getElementById('tienmat').disabled = true;
+                            }
+                            var tienthieuconlai = tienkhachthanhtoan - tiendathanhtoan;
+                            document.getElementById('showpt').innerHTML = htmlphuongthuc;
+                            document.getElementById('dathanhtoanroi').innerHTML = tiendathanhtoan.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });;
+                            var showTien = document.getElementById('sotienhienthi');
+                            showTien.value = tienthieuconlai.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                            document.getElementById('tienthieu').innerHTML = tienthieuconlai.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                            document.getElementById('hdThanhToanShow').innerHTML = hdHienTai;
+                        }
 
-                        //lỗi không xác định
+                    } else {
 
                     }
 
                 })
         }
+
     </script>
-
-
 </body>
 
 </html>
