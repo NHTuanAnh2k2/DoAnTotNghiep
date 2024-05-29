@@ -270,6 +270,9 @@ public class BanHangController {
         phuongThucInsert.setTrangthai(true);
         LocalDateTime currentDateTime = LocalDateTime.now();
         phuongThucInsert.setNgaytao(Timestamp.valueOf(currentDateTime));
+        if (BigDecimal.valueOf(Double.valueOf(convertCurrency(lst.get(1)))).compareTo(new BigDecimal("0.00")) <= 0) {
+            return ResponseEntity.ok(lstPTTT);
+        }
         lstPTTT.add(phuongThucInsert);
         return ResponseEntity.ok(lstPTTT);
     }
@@ -301,6 +304,23 @@ public class BanHangController {
             }
         }
         return ResponseEntity.ok(lstPTTT);
+    }
+
+    //http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan
+    // xác nhận thanh toán lưu vào db
+    @GetMapping("xacnhanthanhtoan")
+    public String xacnhanPTTT() {
+        HoaDon hdset = hdHienTai;
+        hdset.setTrangthai(5);
+        BigDecimal tienTong=new BigDecimal("0.00");
+        for (PhuongThucThanhToan a : lstPTTT
+        ) {
+            tienTong=tienTong.add(a.getTongtien());
+            daoPTTT.add_update(a);
+        }
+        hdset.setTongtien(tienTong);
+        daoHD.capNhatHD(hdset);
+        return "redirect:/hoa-don/ban-hang";
     }
 
 }

@@ -218,7 +218,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Hủy</button>
                             <button type="button" class="btn" style="background-color: rgb(249,72,42);color: white"
-                                data-bs-dismiss="modal" id="xacnhanPT">Xác nhận</button>
+                                data-bs-dismiss="modal" id="xacnhanPT" onclick="xacnhanPTTT()">Xác nhận</button>
 
                         </div>
                     </div>
@@ -629,7 +629,10 @@
                             <p style="color: red;font-weight: bold" id="tongThanhToan">2,200,000đ</p>
                         </div>
                         <p>
-                            <button style="margin-left: 332px" class="btn btn-dark">Xác nhận thanh toán</button>
+                            <a href="http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan">
+                                <button style="margin-left: 332px" class="btn btn-dark" disabled
+                                    id="xacnhanthanhtoanhoadon">Xác nhận thanh toán</button>
+                            </a>
                         </p>
 
                     </div>
@@ -1942,7 +1945,7 @@ tabindex="0">
                                                 <a onclick="xoaphuongthuc('http://localhost:8080/ban-hang-tai-quay/delete-pttt/${hd.tongtien}')"
                                                             >
                                                             <button class="btn btn-outline-danger"
-                                                                onclick="return confirm('Bạn muốn loại bỏ bản giao dịch này?')"
+                                                                
                                                                 type="button"><i class="bi bi-trash3"></i></button></a>
                                               </td>
                                           </tr>`;
@@ -1959,7 +1962,12 @@ tabindex="0">
                         showTien.value = (tienkhachthanhtoan - tiendathanhtoan).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                         document.getElementById('tienthieu').innerHTML = (tienkhachthanhtoan - tiendathanhtoan).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                         document.getElementById('hdThanhToanShow').innerHTML = hdHienTai;
-                       
+                        if (convertCurrency(document.getElementById('sotienhienthi').value) == 0) {
+                            document.getElementById('xacnhanPT').disabled = false;
+                        } else {
+                            document.getElementById('xacnhanPT').disabled = true;
+                        }
+
 
                     } else {
 
@@ -1968,7 +1976,12 @@ tabindex="0">
                         document.getElementById('tienthieu').innerHTML = tienkhachthanhtoan.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                         document.getElementById('hdThanhToanShow').innerHTML = hdHienTai;
                         document.getElementById('dathanhtoanroi').innerHTML = '0đ';
-                        
+                        if (convertCurrency(document.getElementById('sotienhienthi').value) == 0) {
+                            document.getElementById('xacnhanPT').disabled = false;
+                        } else {
+                            document.getElementById('xacnhanPT').disabled = true;
+                        }
+
                     }
 
                 })
@@ -2024,10 +2037,10 @@ tabindex="0">
                                             <td>${hd.tongtien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
                                             <td>${hd.mota}</td>
                                             <td>
-                                                <a onclick="xoaphuongthuc('http://localhost:8080/ban-hang-tai-quay/delete-pttt/${hd.tongtien}')"
+                                                <a onclick="xoaphuongthuc('http://localhost:8080/ban-hang-tai-quay/delete-pttt/${hd.tongtien}')"  
                                                             >
                                                             <button class="btn btn-outline-danger"
-                                                                onclick="return confirm('Bạn muốn loại bỏ bản giao dịch này?')"
+                                                               
                                                                 type="button"><i class="bi bi-trash3"></i></button></a>
                                             </td>
                                         </tr>`;
@@ -2048,7 +2061,12 @@ tabindex="0">
                             showTien.value = tienthieuconlai.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                             document.getElementById('tienthieu').innerHTML = tienthieuconlai.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                             document.getElementById('hdThanhToanShow').innerHTML = hdHienTai;
-                           
+                            if (convertCurrency(document.getElementById('sotienhienthi').value) == 0) {
+                                document.getElementById('xacnhanPT').disabled = false;
+                            } else {
+                                document.getElementById('xacnhanPT').disabled = true;
+                            }
+
                         }
 
                     } else {
@@ -2057,29 +2075,53 @@ tabindex="0">
 
                 })
         }
+        function xacnhanthanhcongcf() {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: "success",
+                title: "Xác nhận thanh toán thành công!"
+            });
+        }
+        //xác nhận phương thức thanh toán
+        function xacnhanPTTT() {
+            document.getElementById('xacnhanthanhtoanhoadon').disabled = false;
+            xacnhanthanhcongcf();
+        }
         //xóa bản ghi phương thức thanh toán
         function xoaphuongthuc(url) {
-            fetch(url)
-                .then(function (a) {
-                    return a.json();
-                })
-                .then(function (b) {
-                    var htmlpt = '';
-                    var checkchuyenkhoan = 0;
-                    var checktienmat = 0;
-                    if (b.length > 0) {
-                        var stt = 0;
-                        var tiendathanhtoan = 0;
-                        for (const hd of b) {
-                            if (hd.mota == 'tiền mặt') {
-                                checktienmat = 1;
-                            }
-                            if (hd.mota == 'chuyển khoản') {
-                                checkchuyenkhoan = 1;
-                            }
-                            tiendathanhtoan += hd.tongtien;
-                            stt++;
-                            htmlpt += ` <tr>
+            if (confirm('Bạn muốn loại bỏ bản giao dịch này?')) {
+                fetch(url)
+                    .then(function (a) {
+                        return a.json();
+                    })
+                    .then(function (b) {
+                        var htmlpt = '';
+                        var checkchuyenkhoan = 0;
+                        var checktienmat = 0;
+                        if (b.length > 0) {
+                            var stt = 0;
+                            var tiendathanhtoan = 0;
+                            for (const hd of b) {
+                                if (hd.mota == 'tiền mặt') {
+                                    checktienmat = 1;
+                                }
+                                if (hd.mota == 'chuyển khoản') {
+                                    checkchuyenkhoan = 1;
+                                }
+                                tiendathanhtoan += hd.tongtien;
+                                stt++;
+                                htmlpt += ` <tr>
                                               <td>${stt}</td>
                                               <td>${hd.magiaodichvnpay == null ? '' : hd.magiaodichvnpay}</td>
                                               <td>${hd.tongtien}</td>
@@ -2088,42 +2130,53 @@ tabindex="0">
                                                 <a onclick="xoaphuongthuc('http://localhost:8080/ban-hang-tai-quay/delete-pttt/${hd.tongtien}')"
                                                             >
                                                             <button class="btn btn-outline-danger"
-                                                                onclick="return confirm('Bạn muốn loại bỏ bản giao dịch này?')"
+                                                                
                                                                 type="button"><i class="bi bi-trash3"></i></button></a>
                                               </td>
                                           </tr>`;
-                        }
-                        if (checkchuyenkhoan == 1) {
-                            document.getElementById('chuyenkhoan').disabled = true;
+                            }
+                            if (checkchuyenkhoan == 1) {
+                                document.getElementById('chuyenkhoan').disabled = true;
+                            } else {
+                                document.getElementById('chuyenkhoan').disabled = false;
+                            }
+                            if (checktienmat == 1) {
+                                document.getElementById('tienmat').disabled = true;
+                            } else {
+                                document.getElementById('tienmat').disabled = false;
+                            }
+
+                            document.getElementById('dathanhtoanroi').innerHTML = tiendathanhtoan;
+                            document.getElementById('showpt').innerHTML = htmlpt;
+                            var showTien = document.getElementById('sotienhienthi');
+                            showTien.value = (tienkhachthanhtoan - tiendathanhtoan).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                            document.getElementById('tienthieu').innerHTML = (tienkhachthanhtoan - tiendathanhtoan).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                            document.getElementById('hdThanhToanShow').innerHTML = hdHienTai;
+                            if (convertCurrency(document.getElementById('sotienhienthi').value) == 0) {
+                                document.getElementById('xacnhanPT').disabled = false;
+                            } else {
+                                document.getElementById('xacnhanPT').disabled = true;
+                            }
+
                         } else {
+
                             document.getElementById('chuyenkhoan').disabled = false;
-                        }
-                        if (checktienmat == 1) {
-                            document.getElementById('tienmat').disabled = true;
-                        } else {
                             document.getElementById('tienmat').disabled = false;
+                            document.getElementById('showpt').innerHTML = htmlpt;
+                            var showTien = document.getElementById('sotienhienthi');
+                            showTien.value = tienkhachthanhtoan.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                            document.getElementById('tienthieu').innerHTML = tienkhachthanhtoan.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                            document.getElementById('hdThanhToanShow').innerHTML = hdHienTai;
+                            document.getElementById('dathanhtoanroi').innerHTML = '0đ';
+                            if (convertCurrency(document.getElementById('sotienhienthi').value) == 0) {
+                                document.getElementById('xacnhanPT').disabled = false;
+                            } else {
+                                document.getElementById('xacnhanPT').disabled = true;
+                            }
                         }
-                      
-                        document.getElementById('dathanhtoanroi').innerHTML = tiendathanhtoan;
-                        document.getElementById('showpt').innerHTML = htmlpt;
-                        var showTien = document.getElementById('sotienhienthi');
-                        showTien.value = (tienkhachthanhtoan - tiendathanhtoan).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-                        document.getElementById('tienthieu').innerHTML = (tienkhachthanhtoan - tiendathanhtoan).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-                        document.getElementById('hdThanhToanShow').innerHTML = hdHienTai;
 
-                    } else {
-                       
-                        document.getElementById('chuyenkhoan').disabled = false;
-                        document.getElementById('tienmat').disabled = false;
-                        document.getElementById('showpt').innerHTML = htmlpt;
-                        var showTien = document.getElementById('sotienhienthi');
-                        showTien.value = tienkhachthanhtoan.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-                        document.getElementById('tienthieu').innerHTML = tienkhachthanhtoan.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-                        document.getElementById('hdThanhToanShow').innerHTML = hdHienTai;
-                        document.getElementById('dathanhtoanroi').innerHTML = '0đ';
-                    }
-
-                })
+                    })
+            }
         }
     </script>
 </body>

@@ -335,7 +335,7 @@
                                                             <td th:text="${aStat.index+1}"></td>
                                                             <td th:text="${a.mahoadon}"></td>
                                                             <td th:text="${a.nhanvien.manhanvien}"></td>
-                                                            <td th:text="${a.khachhang.nguoidung.hovaten}"></td>
+                                                            <td th:text="${a.khachhang==null?'':a.khachhang.nguoidung.hovaten}"></td>
                                                             <td th:text="${a.sdt}"></td>
                                                             <td th:text="${a.loaihoadon==true?'online':'tại quầy'}">
                                                             </td>
