@@ -23,6 +23,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -291,11 +292,12 @@ public class BanHangController {
     @GetMapping("delete-pttt/{id}")
     @ResponseBody
     public ResponseEntity<?> deletePTTT(@PathVariable("id") String tien) {
-        BigDecimal tienp = BigDecimal.valueOf(Double.valueOf(convertCurrency(tien)));
-        for (PhuongThucThanhToan a : lstPTTT
-        ) {
-            if (a.getTongtien() == tienp) {
-                lstPTTT.remove(a);
+        BigDecimal tienp = BigDecimal.valueOf(Double.valueOf(tien));
+        Iterator<PhuongThucThanhToan> iterator = lstPTTT.iterator();
+        while (iterator.hasNext()) {
+            PhuongThucThanhToan a = iterator.next();
+            if (a.getTongtien().compareTo(tienp) == 0) {
+                iterator.remove();
             }
         }
         return ResponseEntity.ok(lstPTTT);
