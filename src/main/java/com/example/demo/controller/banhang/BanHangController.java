@@ -319,6 +319,7 @@ public class BanHangController {
             daoPTTT.add_update(a);
         }
         hdset.setTongtien(tienTong);
+        hdset.setPhivanchuyen(new BigDecimal("0.00"));
         daoHD.capNhatHD(hdset);
         return "redirect:/hoa-don/ban-hang";
     }
