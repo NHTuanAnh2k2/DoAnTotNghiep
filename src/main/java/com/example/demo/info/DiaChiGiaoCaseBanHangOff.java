@@ -19,4 +19,5 @@ public class DiaChiGiaoCaseBanHangOff {
     String diachi;
     String ghichu;
     Boolean trasau;
+    String phivanchuyen;
 }

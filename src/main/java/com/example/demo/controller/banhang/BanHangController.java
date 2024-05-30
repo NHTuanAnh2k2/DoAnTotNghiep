@@ -2,6 +2,7 @@ package com.example.demo.controller.banhang;
 
 import com.example.demo.entity.*;
 import com.example.demo.info.AddKHNhanhFormBanHang;
+import com.example.demo.info.DiaChiGiaoCaseBanHangOff;
 import com.example.demo.info.NguoiDungKHInfo;
 import com.example.demo.info.ThayDoiTTHoaDon_KHInfo;
 import com.example.demo.repository.DiaChiRepository;
@@ -306,21 +307,24 @@ public class BanHangController {
         return ResponseEntity.ok(lstPTTT);
     }
 
-    //http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan
     // xác nhận thanh toán lưu vào db
-    @GetMapping("xacnhanthanhtoan")
-    public String xacnhanPTTT() {
-        HoaDon hdset = hdHienTai;
-        hdset.setTrangthai(5);
-        BigDecimal tienTong=new BigDecimal("0.00");
-        for (PhuongThucThanhToan a : lstPTTT
-        ) {
-            tienTong=tienTong.add(a.getTongtien());
-            daoPTTT.add_update(a);
-        }
-        hdset.setTongtien(tienTong);
-        hdset.setPhivanchuyen(new BigDecimal("0.00"));
-        daoHD.capNhatHD(hdset);
+    @GetMapping("xacnhanthanhtoan/{magiao}")
+    public String xacnhanPTTT(@PathVariable("magiao") Integer magiao,@ModelAttribute("thongtingiaohang") DiaChiGiaoCaseBanHangOff thongTin) {
+       if(magiao==1){
+           HoaDon hdset = hdHienTai;
+           hdset.setTrangthai(5);
+           BigDecimal tienTong = new BigDecimal("0.00");
+           for (PhuongThucThanhToan a : lstPTTT
+           ) {
+               tienTong = tienTong.add(a.getTongtien());
+               daoPTTT.add_update(a);
+           }
+           hdset.setTongtien(tienTong);
+           hdset.setPhivanchuyen(new BigDecimal("0.00"));
+           daoHD.capNhatHD(hdset);
+           return "redirect:/hoa-don/ban-hang";
+       }
+       
         return "redirect:/hoa-don/ban-hang";
     }
 

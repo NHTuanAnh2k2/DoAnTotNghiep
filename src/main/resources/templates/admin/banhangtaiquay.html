@@ -602,10 +602,14 @@
                                     </select>
                                 </p>
                                 <p>
+                                    <input type="text" class="form-control" placeholder="Phí vận chuyển"
+                                        oninput="showcasst('phigiaohang')" id="phigiaohang" th:field="*{phivanchuyen}">
+                                </p>
+                                <p>
                                     <textarea class="form-control" placeholder="Ghi chú"
                                         th:field="*{ghichu}"></textarea>
                                 </p>
-                                <div class="d-flex justify-content-between">
+                                <div class="d-flex justify-content-between ms-1">
                                     <p>Trả sau:</p>
                                     <p class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" role="switch"
@@ -654,13 +658,6 @@
                                     id="checktrasau">
                             </p>
                         </div>
-                        <div class="d-flex justify-content-between" id="phiShip">
-                            <p style="font-weight: bold">Phí vận chuyển:</p>
-                            <p>
-                                <input type="text" style="width: 180px;height: 30px" class="form-control"
-                                    oninput="showcasst('phigiaohang')" id="phigiaohang">
-                            </p>
-                        </div>
                         <div class="d-flex justify-content-between">
                             <p style="font-weight: bold">Tiền hàng:</p>
                             <p style="font-weight: bold" id="tongTienTTTT"></p>
@@ -675,7 +672,7 @@
                             <p style="color: red;font-weight: bold" id="tongThanhToan">2,200,000đ</p>
                         </div>
                         <p>
-                            <a href="http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan">
+                            <a href="http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/1" id="xacnhanthanhtoanhref">
                                 <button style="margin-left: 332px" class="btn btn-dark" disabled
                                     id="xacnhanthanhtoanhoadon">Xác nhận thanh toán</button>
                             </a>
@@ -1825,11 +1822,14 @@ tabindex="0">
         function giaohang(event) {
             var isChecked = event.target.checked;
             if (isChecked) {
-                // hiển thị div
+                // hiển thị div 
                 document.getElementById('diachidiv').style.display = 'block';
+                document.getElementById('xacnhanthanhtoanhref').href  = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/2';
+
             } else {
                 // ẩn div
                 document.getElementById('diachidiv').style.display = 'none';
+                document.getElementById('xacnhanthanhtoanhref').href  = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/1';
             }
         }
 

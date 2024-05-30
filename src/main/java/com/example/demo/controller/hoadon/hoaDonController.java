@@ -771,7 +771,7 @@ public class hoaDonController {
 
     @ModelAttribute("thongtingiaohang")
     public DiaChiGiaoCaseBanHangOff diachigiaohangtaiquay() {
-        return new DiaChiGiaoCaseBanHangOff(null, null, null, "chọn tỉnh", "chọn huyện", "chọn xã", null, null,null);
+        return new DiaChiGiaoCaseBanHangOff(null, null, null, "chọn tỉnh", "chọn huyện", "chọn xã", null, null,null,null);
     }
 
 }
