@@ -574,19 +574,19 @@
                             <form th:object="${thongtingiaohang}">
                                 <p>
                                     <input type="text" class="form-control" placeholder="Nhập họ và tên"
-                                        th:field="*{ten}">
+                                        id="thongtingiao_ten" th:field="*{ten}">
                                 </p>
                                 <p>
                                     <input type="text" class="form-control" placeholder="Nhập số điện thoại"
-                                        th:field="*{sdt}">
+                                        id="thongtingiao_sdt" th:field="*{sdt}">
                                 </p>
                                 <p>
                                     <input type="text" class="form-control" placeholder="Nhập email"
-                                        th:field="*{email}">
+                                        id="thongtingiao_email" th:field="*{email}">
                                 </p>
                                 <p>
                                     <input type="text" class="form-control" placeholder="Nhập địa chỉ"
-                                        th:field="*{diachi}">
+                                        id="thongtingiao_diachi" th:field="*{diachi}">
                                 </p>
                                 <p class="d-flex">
                                     <select class="form-select form-select-sm mb-3" id="tinhthanh" th:field="*{tinh}">
@@ -613,7 +613,7 @@
                                     <p>Trả sau:</p>
                                     <p class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" role="switch"
-                                            th:field="*{trasau}">
+                                            th:field="*{trasau}" onchange="handleCheckboxChange(event)">
                                     </p>
                                 </div>
 
@@ -672,7 +672,8 @@
                             <p style="color: red;font-weight: bold" id="tongThanhToan">2,200,000đ</p>
                         </div>
                         <p>
-                            <a href="http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/1" id="xacnhanthanhtoanhref">
+                            <a href="http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/1"
+                                onclick="handleLinkClick(event)" id="xacnhanthanhtoanhref">
                                 <button style="margin-left: 332px" class="btn btn-dark" disabled
                                     id="xacnhanthanhtoanhoadon">Xác nhận thanh toán</button>
                             </a>
@@ -1824,12 +1825,12 @@ tabindex="0">
             if (isChecked) {
                 // hiển thị div 
                 document.getElementById('diachidiv').style.display = 'block';
-                document.getElementById('xacnhanthanhtoanhref').href  = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/2';
-
+                document.getElementById('xacnhanthanhtoanhref').href = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/2';
+                showdiachimacdinh();
             } else {
                 // ẩn div
                 document.getElementById('diachidiv').style.display = 'none';
-                document.getElementById('xacnhanthanhtoanhref').href  = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/1';
+                document.getElementById('xacnhanthanhtoanhref').href = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/1';
             }
         }
 
@@ -2347,6 +2348,86 @@ tabindex="0">
                     })
             }
         }
+
+        //thông báo dùng chung
+        //         "success": Biểu tượng thành công (dấu kiểm xanh).
+        // "error": Biểu tượng lỗi (dấu chéo đỏ).
+        // "warning": Biểu tượng cảnh báo (dấu chấm than vàng).
+        // "info": Biểu tượng thông tin (chữ 'i' trong vòng tròn xanh).
+        // "question": Biểu tượng câu hỏi (dấu chấm hỏi trong vòng tròn xanh).
+        function thongbao(title, iconsz) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: iconsz,
+                title: title
+            });
+        }
+        //chặn đường dẫn thẻ a
+        function handleLinkClick(event) {
+            var button = document.getElementById('xacnhanthanhtoanhoadon');
+
+            // Kiểm tra nếu nút bị vô hiệu hóa
+            if (button.disabled) {
+                // Ngăn chặn hành động mặc định của thẻ a
+                event.preventDefault();
+                thongbao('Chưa xác nhận thông tin thanh toán!!!', 'warning');
+
+            }
+        }
+        //xác định nghiệp vụ trả sau trả trước
+        function handleCheckboxChange(event) {
+            // Lấy phần tử checkbox từ sự kiện
+            var checkbox = event.target;
+
+            // Kiểm tra trạng thái của checkbox
+            if (checkbox.checked) {
+                //hóa đơn lựa chọn trả sau_mở nút xác nhận thanh toán và không cần thanh toán trước
+                document.getElementById('xacnhanthanhtoanhoadon').disabled = false;
+
+            } else {
+                //hóa đơn lựa chọn trả trước đóng nút xác nhận thanh toán và yêu cầu thanh toán trước
+                document.getElementById('xacnhanthanhtoanhoadon').disabled = true;
+            }
+        }
+
+        //http://localhost:8080/ban-hang-tai-quay/fillDiachi
+        function showdiachimacdinh() {
+            const urldcgiao = `http://localhost:8080/ban-hang-tai-quay/fillDiachi`;
+            fetch(urldcgiao)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    console.log(b)
+                    document.getElementById('thongtingiao_ten').value = b.ten;
+                    document.getElementById('thongtingiao_sdt').value = b.sdt;
+                    document.getElementById('thongtingiao_email').value = b.email;
+                    document.getElementById('thongtingiao_diachi').value = b.diachi;
+                    document.getElementById('tinhthanh').value = b.tinh;
+                    document.getElementById('quanhuyen').innerHTML='';
+                    var optionhuyen = document.createElement('option');
+                    optionhuyen.value = b.huyen;
+                    optionhuyen.textContent = b.huyen;
+                    document.getElementById('quanhuyen').appendChild(optionhuyen);
+                    document.getElementById('xaphuong').innerHTML ='';
+                    var optionxa = document.createElement('option');
+                    optionxa.value = b.xa;
+                    optionxa.textContent = b.xa;
+                    document.getElementById('xaphuong').appendChild(optionxa);
+                })
+        }
+
     </script>
 </body>
 

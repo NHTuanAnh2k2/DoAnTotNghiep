@@ -23,10 +23,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("ban-hang-tai-quay")
@@ -253,6 +250,7 @@ public class BanHangController {
                 result = a;
             }
         }
+
         return ResponseEntity.ok(result);
     }
 
@@ -309,23 +307,62 @@ public class BanHangController {
 
     // xác nhận thanh toán lưu vào db
     @GetMapping("xacnhanthanhtoan/{magiao}")
-    public String xacnhanPTTT(@PathVariable("magiao") Integer magiao,@ModelAttribute("thongtingiaohang") DiaChiGiaoCaseBanHangOff thongTin) {
-       if(magiao==1){
-           HoaDon hdset = hdHienTai;
-           hdset.setTrangthai(5);
-           BigDecimal tienTong = new BigDecimal("0.00");
-           for (PhuongThucThanhToan a : lstPTTT
-           ) {
-               tienTong = tienTong.add(a.getTongtien());
-               daoPTTT.add_update(a);
-           }
-           hdset.setTongtien(tienTong);
-           hdset.setPhivanchuyen(new BigDecimal("0.00"));
-           daoHD.capNhatHD(hdset);
-           return "redirect:/hoa-don/ban-hang";
-       }
-       
+    public String xacnhanPTTT(@PathVariable("magiao") Integer magiao, @ModelAttribute("thongtingiaohang") DiaChiGiaoCaseBanHangOff thongTin) {
+        //thanh toán đơn không giao hàng
+        if (magiao == 1) {
+            HoaDon hdset = hdHienTai;
+            hdset.setTrangthai(5);
+            BigDecimal tienTong = new BigDecimal("0.00");
+            for (PhuongThucThanhToan a : lstPTTT
+            ) {
+                tienTong = tienTong.add(a.getTongtien());
+                daoPTTT.add_update(a);
+            }
+            hdset.setTongtien(tienTong);
+            hdset.setPhivanchuyen(new BigDecimal("0.00"));
+            daoHD.capNhatHD(hdset);
+            return "redirect:/hoa-don/ban-hang";
+        }
+        // thanh toán đơn có giao hàng
+        HoaDon hdset = hdHienTai;
+        //trả sau
+        if (lstPTTT.size() == 0) {
+
+        } else {
+            //trả trước
+
+        }
+
         return "redirect:/hoa-don/ban-hang";
+    }
+
+    //bấm giao hàng hiển thị tự động thông tin dựa theo hóa đơn đã có khách hàng
+    //http://localhost:8080/ban-hang-tai-quay/fillDiachi
+    @GetMapping("fillDiachi")
+    @ResponseBody
+    public ResponseEntity<?> fillDiachi() {
+        HoaDon hddc = daoHD.timHDTheoMaHD(hdHienTai.getMahoadon());
+        System.out.println("aaaaaaaaaaaaa");
+        System.out.println(hddc.getMahoadon());
+        DiaChiGiaoCaseBanHangOff diachiRT = new DiaChiGiaoCaseBanHangOff();
+
+        List<String> diachiLst = Arrays.asList(hddc.getDiachi().split(", "));
+        String diachiCT = diachiLst.get(0);
+        String xa = diachiLst.get(1);
+        String huyen = diachiLst.get(2);
+        String tinh = diachiLst.get(3);
+        diachiRT.setDiachi(diachiCT);
+        diachiRT.setTinh(tinh);
+        diachiRT.setHuyen(huyen);
+        diachiRT.setXa(xa);
+        diachiRT.setTen(hddc.getTennguoinhan());
+        diachiRT.setSdt(hddc.getSdt());
+        diachiRT.setEmail(hddc.getEmail());
+
+        if (hddc.getKhachhang() == null) {
+            return ResponseEntity.ok(new DiaChiGiaoCaseBanHangOff());
+        }
+        return ResponseEntity.ok(diachiRT);
     }
 
 }
