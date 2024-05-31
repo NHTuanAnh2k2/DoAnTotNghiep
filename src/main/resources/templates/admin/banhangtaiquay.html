@@ -590,7 +590,7 @@
                                 </p>
                                 <p class="d-flex">
                                     <select class="form-select form-select-sm mb-3" id="tinhthanh" th:field="*{tinh}">
-                                        <option value="" th:text="*{tinh}" selected>
+                                        <option value="chọn tỉnh" th:text="*{tinh}" selected>
                                             Chọn tỉnh thành</option>
                                     </select>
                                     <select class="form-select form-select-sm mb-3" id="quanhuyen" th:field="*{huyen}">
@@ -2409,22 +2409,43 @@ tabindex="0">
                     return a.json();
                 })
                 .then(function (b) {
-                    console.log(b)
                     document.getElementById('thongtingiao_ten').value = b.ten;
                     document.getElementById('thongtingiao_sdt').value = b.sdt;
                     document.getElementById('thongtingiao_email').value = b.email;
                     document.getElementById('thongtingiao_diachi').value = b.diachi;
                     document.getElementById('tinhthanh').value = b.tinh;
-                    document.getElementById('quanhuyen').innerHTML='';
+
+                    document.getElementById('quanhuyen').innerHTML = '';
                     var optionhuyen = document.createElement('option');
                     optionhuyen.value = b.huyen;
                     optionhuyen.textContent = b.huyen;
                     document.getElementById('quanhuyen').appendChild(optionhuyen);
-                    document.getElementById('xaphuong').innerHTML ='';
+
+
+                    document.getElementById('xaphuong').innerHTML = '';
                     var optionxa = document.createElement('option');
                     optionxa.value = b.xa;
                     optionxa.textContent = b.xa;
                     document.getElementById('xaphuong').appendChild(optionxa);
+
+
+                    if (b.xa == null) {
+                        var optionxaa = document.createElement('option');
+                        optionxaa.value = 'chọn xã';
+                        optionxaa.textContent = 'chọn xã';
+                        optionxaa.selected = true;
+                        document.getElementById('xaphuong').appendChild(optionxaa);
+                    }
+                    if (b.huyen == null) {
+                        var optionhuyena = document.createElement('option');
+                        optionhuyena.value = 'chọn huyện';
+                        optionhuyena.textContent = 'chọn huyện';
+                        optionhuyena.selected = true;
+                        document.getElementById('quanhuyen').appendChild(optionhuyena);
+                    }
+                    if (b.tinh == null) {
+                        document.getElementById('tinhthanh').value = 'chọn tỉnh';
+                    }
                 })
         }
 
