@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
-////
+
 @Controller
 public class TrangChuCustomerController {
     @Autowired
@@ -69,27 +69,37 @@ public class TrangChuCustomerController {
 
     @GetMapping("/detailsanphamCustomer/{id}")
     public String detailsanphamCustomer(@PathVariable Integer id, Model model) {
-        // Lấy sản phẩm theo id
         SanPham sanPham = sanPhamRepositoty.findById(id).orElse(null);
         model.addAttribute("sanpham", sanPham);
         model.addAttribute("sanphamchitiet", sanPham.getSpct());
-
-        // Lấy danh sách ảnh
-        List<SanPhamChiTiet> sanPhamChiTietList = sanPham.getSpct();
         List<String> danhSachAnh = new ArrayList<>();
-        for (SanPhamChiTiet spct : sanPhamChiTietList) {
+        for (SanPhamChiTiet spct : sanPham.getSpct()) {
             for (Anh anh : spct.getAnh()) {
                 danhSachAnh.add(anh.getTenanh());
             }
         }
-        model.addAttribute("anh", danhSachAnh);
-
+        model.addAttribute("danhSachAnh", danhSachAnh);
+        // Khởi tạo danh sách sizes và colors
+        List<String> sizes = new ArrayList<>();
+        List<String> colors = new ArrayList<>();
+        for (SanPhamChiTiet spct : sanPham.getSpct()) {
+            // Kiểm tra và thêm kích cỡ vào danh sách sizes
+            if (!sizes.contains(spct.getKichco().getTen())) {
+                sizes.add(spct.getKichco().getTen());
+            }
+            // Kiểm tra và thêm màu sắc vào danh sách colors
+            if (!colors.contains(spct.getMausac().getTen())) {
+                colors.add(spct.getMausac().getTen());
+            }
+        }
+        // Thêm danh sách sizes và colors vào model
+        model.addAttribute("sizes", sizes);
+        model.addAttribute("colors", colors);
         // Lấy danh sách sản phẩm theo điều kiện
         List<Object[]> page = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc3();
         model.addAttribute("page", page);
         List<Object[]> page2 = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc4();
         model.addAttribute("page2", page2);
-
         return "customer/product-details";
     }
 
