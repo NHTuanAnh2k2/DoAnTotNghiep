@@ -2,9 +2,192 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <!--thư viện-->
 <nav th:replace="~{/layout/head.html}"></nav>
+<!--Các sản phẩm nổi bật-->
+<style>
+    /* Dùng thanh cuộn ngang */
+    .tab-pane.horizontal-scrollable .single-products.row {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: hidden; /* Ẩn thanh cuộn ngang */
+        -webkit-overflow-scrolling: touch; /* Cho thanh cuộn ngang trên iOS */
+    }
+
+    .tab-pane.horizontal-scrollable .col-md-3 {
+        flex: 0 0 auto;
+        width: 25%; /* Hiển thị 4 cột trên mỗi hàng */
+    }
+
+    .tab-pane.horizontal-scrollable {
+        position: relative; /* Đặt vị trí tương đối để các nút cuộn được định vị dựa trên phần tử cha */
+    }
+
+    .scroll-prev, .scroll-next {
+        position: absolute; /* Đặt vị trí tuyệt đối để căn chỉnh chính xác */
+        top: 30%; /* Đặt vị trí theo chiều dọc giữa của phần tử cha */
+        transform: translateY(-50%); /* Dịch chuyển các nút lên hoặc xuống để căn chỉnh theo chiều dọc */
+        z-index: 10; /* Đảm bảo nút nằm trên các phần tử khác */
+    }
+
+    .scroll-prev {
+        left: 0; /* Đặt vị trí của nút cuộn về trước */
+    }
+
+    .scroll-next {
+        right: 0; /* Đặt vị trí của nút cuộn về sau */
+    }
+
+</style>
+<!--Các sản phẩm mới nhất-->
+<style>
+    /* Dùng thanh cuộn ngang cho sản phẩm mới nhất */
+    .tab-pane.horizontal-scrollable-new .single-products-new.row {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: hidden; /* Ẩn thanh cuộn ngang */
+        -webkit-overflow-scrolling: touch; /* Cho thanh cuộn ngang trên iOS */
+    }
+
+    .tab-pane.horizontal-scrollable-new .col-md-3 {
+        flex: 0 0 auto;
+        width: 25%; /* Hiển thị 4 cột trên mỗi hàng */
+    }
+
+    .tab-pane.horizontal-scrollable-new {
+        position: relative; /* Đặt vị trí tương đối để các nút cuộn được định vị dựa trên phần tử cha */
+    }
+
+    .scroll-prev-new, .scroll-next-new {
+        position: absolute; /* Đặt vị trí tuyệt đối để căn chỉnh chính xác */
+        top: 30%; /* Đặt vị trí theo chiều dọc giữa của phần tử cha */
+        transform: translateY(-50%); /* Dịch chuyển các nút lên hoặc xuống để căn chỉnh theo chiều dọc */
+        z-index: 10; /* Đảm bảo nút nằm trên các phần tử khác */
+    }
+
+    .scroll-prev-new {
+        left: 0; /* Đặt vị trí của nút cuộn về trước */
+    }
+
+    .scroll-next-new {
+        right: 0; /* Đặt vị trí của nút cuộn về sau */
+    }
+
+</style>
+
+<style>
+    #carouselExample .carousel-indicators img {
+        width: 200px;
+        height: 50px;
+        object-fit: cover;
+    }
+
+</style>
+
+<style>
+    .row {
+        display: flex; /* Sử dụng flexbox để căn giữa các phần tử con */
+        justify-content: center; /* Căn giữa theo chiều ngang */
+    }
+
+    .column {
+        /*margin: 0 auto; !* Tự động căn giữa theo chiều ngang *!*/
+        text-align: center; /* Căn giữa nội dung của ảnh */
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    /* Position the image container (needed to position the left and right arrows) */
+    .container {
+        position: relative;
+    }
+
+    /* Hide the images by default */
+    .mySlides {
+        display: none;
+    }
+
+    /* Add a pointer when hovering over the thumbnail images */
+    .cursor {
+        cursor: pointer;
+    }
+
+    .mySlides {
+        position: relative; /* Đặt phần tử cha là relative */
+    }
+
+    .prev, .next {
+        position: absolute; /* Đặt vị trí tuyệt đối */
+        top: 50%; /* Đặt top ở giữa */
+        transform: translateY(-50%); /* Dịch chuyển lên trên 50% của phần tử cha */
+        width: auto;
+        padding: 16px;
+        color: white;
+        font-weight: bold;
+        font-size: 20px;
+        border-radius: 0 3px 3px 0;
+        user-select: none;
+        -webkit-user-select: none;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .prev {
+        left: 0; /* Đặt nút prev ở bên trái */
+    }
+
+    .next {
+        right: 0; /* Đặt nút next ở bên phải */
+    }
+
+
+    /* On hover, add a black background color with a little bit see-through */
+    .prev:hover,
+    .next:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    /* Number text (1/3 etc) */
+    .numbertext {
+        color: #f2f2f2;
+        font-size: 12px;
+        padding: 8px 12px;
+        position: absolute;
+        top: 0;
+    }
+
+    /* Container for image text */
+    .caption-container {
+        text-align: center;
+        background-color: #222;
+        padding: 2px 16px;
+        color: white;
+    }
+
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    /* Six columns side by side */
+    .column {
+        float: left;
+        width: 16.66%;
+    }
+
+    /* Add a transparency effect for thumbnail images */
+    .demo {
+        opacity: 0.6;
+    }
+
+    .active,
+    .demo:hover {
+        opacity: 1;
+    }
+
+</style>
 <!--end-->
 <body>
-
 <!-- header section start -->
 <nav th:replace="~{/layout/header.html}"></nav>
 <!-- header section end -->
@@ -13,79 +196,89 @@
 <section class="product-content section-padding">
     <div class="container">
         <div class="row">
-            <!--        <div class="row" th:each="spct, stt : ${sanphamchitiet}">-->
             <div class="col-md-6">
+<!--                <div class="left">-->
+<!--                                        <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">-->
+<!--                                            <div class="carousel-inner">-->
+<!--                                                <div th:each="tenanh, index : ${danhSachAnh}" th:classappend="${index.index == 0} ? 'carousel-item active' : 'carousel-item'">-->
+<!--                                                    <img th:src="@{'/upload/' + ${tenanh.substring(tenanh.lastIndexOf('upload') + 6)}}" class="d-block w-100 carousel-img rounded-3" alt="Ảnh">-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">-->
+<!--                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>-->
+<!--                                                <span class="visually-hidden">Previous</span>-->
+<!--                                            </button>-->
+<!--                                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">-->
+<!--                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>-->
+<!--                                                <span class="visually-hidden">Next</span>-->
+<!--                                            </button>-->
+<!--                                            &lt;!&ndash; Indicators &ndash;&gt;-->
+<!--                                            <br>-->
+<!--                                            <br>-->
+<!--                                            <div class="carousel-indicators">-->
+<!--                                                <div th:each="tenanh, index : ${danhSachAnh}" th:attr="data-bs-target='#carouselExample'" th:attrappend="data-bs-slide-to=${index.index}" th:classappend="${index.index == 0} ? 'active' : ''">-->
+<!--                                                    <img th:src="@{'/upload/' + ${tenanh.substring(tenanh.lastIndexOf('upload') + 6)}}" class="d-block rounded-3 carousel-thumbnail" alt="Ảnh" width="500px">-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                </div>-->
                 <div class="left">
-                    <!-- Single-pro-slider Big-photo start -->
-                    <div id="carouselExample" class="carousel slide" data-ride="carousel">
-                        <div class="carousel-inner">
-                            <div th:each="tenanh, index : ${anh}" th:classappend="${index.index == 0} ? 'carousel-item active' : 'carousel-item'">
-                                <img th:src="@{'/upload/' + ${tenanh.substring(tenanh.lastIndexOf('upload') + 6)}}"
-                                     class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
-                            </div>
-                        </div>
-                        <a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </a>
-                        <a class="carousel-control-next" href="#carouselExample" role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </a>
+                    <!-- Full-width images with number text -->
+                    <div th:each="image, index : ${danhSachAnh}" class="mySlides">
+                        <div class="numbertext" th:text="${index.index + 1} + ' / ' + ${danhSachAnh.size()}"></div>
+                        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                        <img th:src="@{'/upload/' + ${image.substring(image.lastIndexOf('upload') + 6)}}" style="width:100%" alt="Ảnh">
+                        <a class="next" onclick="plusSlides(1)">&#10095;</a>
                     </div>
+                    <!-- Next and previous buttons -->
+                    <!-- Image text -->
+                    <div class="caption-container">
+                        <p id="caption"></p>
+                    </div>
+                    <!-- Thumbnail images -->
+                    <p>
+                    <div class="row">
+                        <div th:each="image, index : ${danhSachAnh}" class="column">
+                            <img class="demo cursor" th:src="@{'/upload/' + ${image.substring(image.lastIndexOf('upload') + 6)}}" style="width:100%" onclick="currentSlide(${index.index + 1})" alt="Ảnh">
+                        </div>
+                    </div>
+                    </p>
                 </div>
             </div>
+
             <div class="col-md-6">
                 <div class="right">
                     <div class="singl-pro-title">
                         <h3 th:text="${sanpham.tensanpham}"></h3>
                         <h6 style="color: red">52573 lượt xem| 1803 lượt mua online</h6>
                         <div class="d-flex">
-                           <div>
-                               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                                   <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.56.56 0 0 0-.163-.505L1.71 6.745l4.052-.576a.53.53 0 0 0 .393-.288L8 2.223l1.847 3.658a.53.53 0 0 0 .393.288l4.052.575-2.906 2.77a.56.56 0 0 0-.163.506l.694 3.957-3.686-1.894a.5.5 0 0 0-.461 0z"/>
-                               </svg>
-                               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                                   <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.56.56 0 0 0-.163-.505L1.71 6.745l4.052-.576a.53.53 0 0 0 .393-.288L8 2.223l1.847 3.658a.53.53 0 0 0 .393.288l4.052.575-2.906 2.77a.56.56 0 0 0-.163.506l.694 3.957-3.686-1.894a.5.5 0 0 0-.461 0z"/>
-                               </svg>
-                               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                                   <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.56.56 0 0 0-.163-.505L1.71 6.745l4.052-.576a.53.53 0 0 0 .393-.288L8 2.223l1.847 3.658a.53.53 0 0 0 .393.288l4.052.575-2.906 2.77a.56.56 0 0 0-.163.506l.694 3.957-3.686-1.894a.5.5 0 0 0-.461 0z"/>
-                               </svg>
-                               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                                   <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.56.56 0 0 0-.163-.505L1.71 6.745l4.052-.576a.53.53 0 0 0 .393-.288L8 2.223l1.847 3.658a.53.53 0 0 0 .393.288l4.052.575-2.906 2.77a.56.56 0 0 0-.163.506l.694 3.957-3.686-1.894a.5.5 0 0 0-.461 0z"/>
-                               </svg>
-                               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                                   <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.56.56 0 0 0-.163-.505L1.71 6.745l4.052-.576a.53.53 0 0 0 .393-.288L8 2.223l1.847 3.658a.53.53 0 0 0 .393.288l4.052.575-2.906 2.77a.56.56 0 0 0-.163.506l.694 3.957-3.686-1.894a.5.5 0 0 0-.461 0z"/>
-                               </svg>
-                           </div>
                             <h6 style="margin-top: 5px;margin-left: 5px">18 đánh giá</h6>
                         </div>
                         <h6>Tình trạng: Không có hàng</h6>
-
-                        <!--                        <h1 style="color: red;font-weight: bold"  th:text="${#numbers.formatDecimal(spct.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></h1>-->
-                        <h6>Kích cỡ:</h6>
-                        <!--                        <p>-->
-                        <!--                            <input type="number" th:value="${spct.soluong}">-->
-                        <!--                        </p>-->
+                        <h6>Màu sắc:</h6>
+                        <div class="row">
+                            <div th:each="image, index : ${danhSachAnh}" class="column">
+                                <img class="demo cursor" th:src="@{'/upload/' + ${image.substring(image.lastIndexOf('upload') + 6)}}" style="width:100%" onclick="currentSlide2(${index.index + 1})" alt="Ảnh">
+                            </div>
+                        </div>
+                        <p></p>
                         <div class="d-flex">
-                            <div th:each="spct, stt : ${sanphamchitiet}">
+                            <div th:each="color : ${colors}">
                                 <div style="margin-right: 10px">
-                                    <a  class="btn btn-outline-dark"
-                                       th:text="${spct.kichco.ten}"></a>
+                                    <a class="btn btn-outline-dark" th:text="${color}"></a>
                                 </div>
                             </div>
                         </div>
-                        <h6>Màu sắc:</h6>
+                        <p></p>
+                        <h6>Kích cỡ: <a href="">(Cách chọn size)</a></h6>
                         <div class="d-flex">
-                            <div th:each="spct, stt : ${sanphamchitiet}">
+                            <div th:each="size : ${sizes}">
                                 <div style="margin-right: 10px">
-                                    <a  class="btn btn-outline-dark"
-                                       th:text="${spct.mausac.ten}"></a>
+                                    <a class="btn btn-outline-dark" th:text="${size}"></a>
                                 </div>
                             </div>
                         </div>
                         <br>
-
                         <button class="btn btn" style="background-color: rgb(249,72,42);color: white;width: 370px">Thêm vào giỏ hàng</button>
                         <br>
                         <br>
@@ -93,71 +286,30 @@
                         <h6>Miễn phí vẫn chuyển toàn quốc cho đơn hàng trên 1 triệu</h6>
                         <h6>Giao nhanh 2h trong nội thành HN</h6>
                         <h6>Thồi gian vận chuyển trung bình 3-4 ngày</h6>
-
                     </div>
                 </div>
             </div>
-            <h3 style="margin-top: 30px" class="text-center">CÁC SẢN PHẨM NỔI BẬT</h3>
-            <hr class="border border-danger border opacity-50">
-            <div class="tab-content">
-                <!--nội dung-->
-                <div class="tab-pane fade text-center active show" id="gird">
-                    <div class="single-products row" >
-                        <div class="col-md-3" th:each="sp, stt : ${page2}">
-                            <div class="product-item margin40">
-                                <div class="pro-img">
-                                    <a th:href="@{/detailsanphamCustomer/{id}(id=${sp[0]})}">
-                                        <img th:if="${sp[6] != null}"
-                                             th:src="@{'/upload/' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
-                                             class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
-                                    </a>
-                                    <div class="tag-n-s">
-                                        <span>New</span>
-                                    </div>
-                                    <div class="actions-btn">
-                                        <ul class="clearfix">
-                                            <li>
-                                                <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><i class="fa fa-heart"></i></a>
-                                            </li>
-                                            <li>
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
-                                                        class="fa fa-eye"></i></a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="product-title">
-                                    <a href="#"><h3 class="title" th:text="${sp[1]}"></h3></a>
-                                    <div class="ratting">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star gray-star"></i>
-                                    </div>
-                                    <p>
-                                        <span style="color: red;font-weight: bold"  th:text="${#numbers.formatDecimal(sp[5], 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
-                                        <!--                                    <del >$170.00</del>-->
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <!---end-->
-                    </div>
-                </div>
-                <!--end-->
-            </div>
 
-            <!--những sản phẩm đang được giảm giá-->
-            <h3 style="margin-top: 30px" class="text-center">CÁC SẢN PHẨM MỚI NHẤT</h3>
+            <!--                        <h1 style="color: red;font-weight: bold"  th:text="${#numbers.formatDecimal(spct.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></h1>-->
+            <!--                        <p>-->
+            <!--                            <input type="number" th:value="${spct.soluong}">-->
+            <!--                        </p>-->
+
+
+            <h3 style="margin-top: 30px; color: rgb(249, 72, 42); font-family: 'Lucida Sans Typewriter'"
+                class="text-center">CÁC SẢN PHẨM NỔI BẬT</h3>
             <hr class="border border-danger border opacity-50">
             <div class="tab-content">
                 <!--nội dung-->
-                <div class="tab-pane fade text-center active show" id="gird">
-                    <div class="single-products row" >
+                <div class="tab-pane fade text-center active show horizontal-scrollable" id="gird">
+                    <button class="scroll-prev btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                             class="bi bi-chevron-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                  d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+                        </svg>
+                    </button> <!-- Nút cuộn về trước -->
+                    <div class="single-products row">
                         <div class="col-md-3" th:each="sp, stt : ${page}">
                             <div class="product-item margin40">
                                 <div class="pro-img">
@@ -194,14 +346,93 @@
                                         <i class="fa fa-star gray-star"></i>
                                     </div>
                                     <p>
-                                        <span style="color: red;font-weight: bold"  th:text="${#numbers.formatDecimal(sp[5], 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
-                                        <!--                                    <del >$170.00</del>-->
+                                    <span style="color: red; font-weight: bold"
+                                          th:text="${#numbers.formatDecimal(sp[5], 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
+                                        <!-- <del>$170.00</del> -->
                                     </p>
                                 </div>
                             </div>
                         </div>
                         <!---end-->
                     </div>
+                    <button class="scroll-next btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                             class="bi bi-chevron-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                  d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+                        </svg>
+                    </button> <!-- Nút cuộn về sau -->
+                </div>
+                <!--end-->
+            </div>
+
+            <!--Các sản phẩm mới nhất-->
+            <h3 style="margin-top: 30px; color: rgb(249, 72, 42); font-family: 'Lucida Sans Typewriter'"
+                class="text-center">CÁC SẢN PHẨM MỚI NHẤT</h3>
+            <hr class="border border-danger border opacity-50">
+            <div class="tab-content">
+                <!--nội dung-->
+                <div class="tab-pane fade text-center active show horizontal-scrollable-new" id="new-products">
+                    <button class="scroll-prev-new btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                             class="bi bi-chevron-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                  d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+                        </svg>
+                    </button> <!-- Nút cuộn về trước -->
+                    <div class="single-products-new row">
+                        <div class="col-md-3" th:each="sp, stt : ${page2}">
+                            <div class="product-item margin40">
+                                <div class="pro-img">
+                                    <a th:href="@{/detailsanphamCustomer/{id}(id=${sp[0]})}">
+                                        <img th:if="${sp[6] != null}"
+                                             th:src="@{'/upload/' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
+                                             class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
+                                    </a>
+                                    <div class="tag-n-s">
+                                        <span>New</span>
+                                    </div>
+                                    <div class="actions-btn">
+                                        <ul class="clearfix">
+                                            <li>
+                                                <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i class="fa fa-heart"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
+                                                        class="fa fa-eye"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-title">
+                                    <a href="#"><h3 class="title" th:text="${sp[1]}"></h3></a>
+                                    <div class="ratting">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star gray-star"></i>
+                                    </div>
+                                    <p>
+                                    <span style="color: red; font-weight: bold"
+                                          th:text="${#numbers.formatDecimal(sp[5], 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
+                                        <!-- <del>$170.00</del> -->
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!---end-->
+                    </div>
+                    <button class="scroll-next-new btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                             class="bi bi-chevron-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                  d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+                        </svg>
+                    </button> <!-- Nút cuộn về sau -->
                 </div>
                 <!--end-->
             </div>
@@ -220,3 +451,97 @@
 
 </body>
 </html>
+<script>
+    let slideIndex = 1;
+    showSlides(slideIndex);
+
+    // Next/previous controls
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    // Thumbnail image controls
+    function currentSlide(n) {
+        showSlides(slideIndex = n);
+    }
+    function currentSlide2(n) {
+        showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+        let i;
+        let slides = document.getElementsByClassName("mySlides");
+        let dots = document.getElementsByClassName("demo");
+        let captionText = document.getElementById("caption");
+        if (n > slides.length) {slideIndex = 1}
+        if (n < 1) {slideIndex = slides.length}
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex-1].style.display = "block";
+        dots[slideIndex-1].className += " active";
+        captionText.innerHTML = dots[slideIndex-1].alt;
+    }
+
+    // Add event listeners to thumbnail images
+    let thumbnails = document.getElementsByClassName("demo");
+    for (let i = 0; i < thumbnails.length; i++) {
+        thumbnails[i].addEventListener("click", function() {
+            currentSlide(i + 1);
+        });
+    }
+</script>
+<!-- các sản phẩm nổi bật-->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const scrollableContainer = document.querySelector(".tab-pane.horizontal-scrollable .single-products.row");
+        const scrollPrevBtn = document.querySelector(".scroll-prev");
+        const scrollNextBtn = document.querySelector(".scroll-next");
+
+        scrollPrevBtn.addEventListener("click", function () {
+            if (scrollableContainer.scrollLeft === 0) {
+                scrollableContainer.scrollLeft = scrollableContainer.scrollWidth - scrollableContainer.clientWidth;
+            } else {
+                scrollableContainer.scrollBy({left: -200, behavior: "smooth"});
+            }
+        });
+
+        scrollNextBtn.addEventListener("click", function () {
+            if (scrollableContainer.scrollLeft >= (scrollableContainer.scrollWidth - scrollableContainer.clientWidth)) {
+                scrollableContainer.scrollLeft = 0;
+            } else {
+                scrollableContainer.scrollBy({left: 200, behavior: "smooth"});
+            }
+        });
+    });
+
+</script>
+
+<!-- các sản phẩm mới nhất-->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const scrollableContainerNew = document.querySelector(".tab-pane.horizontal-scrollable-new .single-products-new.row");
+        const scrollPrevBtnNew = document.querySelector(".scroll-prev-new");
+        const scrollNextBtnNew = document.querySelector(".scroll-next-new");
+
+        scrollPrevBtnNew.addEventListener("click", function () {
+            if (scrollableContainerNew.scrollLeft === 0) {
+                scrollableContainerNew.scrollLeft = scrollableContainerNew.scrollWidth - scrollableContainerNew.clientWidth;
+            } else {
+                scrollableContainerNew.scrollBy({left: -200, behavior: "smooth"});
+            }
+        });
+
+        scrollNextBtnNew.addEventListener("click", function () {
+            if (scrollableContainerNew.scrollLeft >= (scrollableContainerNew.scrollWidth - scrollableContainerNew.clientWidth)) {
+                scrollableContainerNew.scrollLeft = 0;
+            } else {
+                scrollableContainerNew.scrollBy({left: 200, behavior: "smooth"});
+            }
+        });
+    });
+
+</script>
