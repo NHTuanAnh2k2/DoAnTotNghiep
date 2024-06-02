@@ -53,7 +53,8 @@ public class PhieuGiamGiaController {
                                  @RequestParam(value = "denngaySearch",required = false) String denngaySearch,
                                  @RequestParam(value = "kieuSearch",required = false) String kieuSearch,
                                  @RequestParam(value = "loaiSearch",required = false) String loaiSearch,
-                                 @RequestParam(value = "ttSearch",required = false) String ttSearch) {
+                                 @RequestParam(value = "ttSearch",required = false) String ttSearch,
+                                 HttpSession session) {
         Timestamp tungay;
         Timestamp denngay;
         if(tungaySearch==null ||tungaySearch.isEmpty()){
@@ -87,24 +88,34 @@ public class PhieuGiamGiaController {
         }
         List<PhieuGiamGia> lstPhieu= phieuGiamGiaImp.findAll();
         Timestamp ngayHT= new Timestamp(System.currentTimeMillis());
-        for(PhieuGiamGia phieu :lstPhieu){
-            if(phieu.getSoluong()==0){
-                phieu.setTrangthai(2);
-                phieu.setId(phieu.getId());
-                phieuGiamGiaImp.AddPhieuGiamGia(phieu);
-            }
-            if(phieu.getTrangthai()==0 && phieu.getNgaybatdau().getTime()<=ngayHT.getTime()){
-                phieu.setTrangthai(1);
-                phieu.setId(phieu.getId());
-                phieuGiamGiaImp.AddPhieuGiamGia(phieu);
-            }
-            if(phieu.getTrangthai()==1 && phieu.getNgayketthuc().getTime()<ngayHT.getTime()){
-                phieu.setTrangthai(2);
-                phieu.setId(phieu.getId());
-                phieuGiamGiaImp.AddPhieuGiamGia(phieu);
+//        for(PhieuGiamGia phieu :lstPhieu){
+//            if(phieu.getSoluong()==0){
+//                phieu.setTrangthai(2);
+//                phieu.setId(phieu.getId());
+//                phieuGiamGiaImp.AddPhieuGiamGia(phieu);
+//            }
+//            if(phieu.getTrangthai()==0 && phieu.getNgaybatdau().getTime()<=ngayHT.getTime()){
+//                phieu.setTrangthai(1);
+//                phieu.setId(phieu.getId());
+//                phieuGiamGiaImp.AddPhieuGiamGia(phieu);
+//            }
+//            if(phieu.getTrangthai()==1 && phieu.getNgayketthuc().getTime()<ngayHT.getTime()){
+//                phieu.setTrangthai(2);
+//                phieu.setId(phieu.getId());
+//                phieuGiamGiaImp.AddPhieuGiamGia(phieu);
+//            }
+//        }
+        Integer size= lstPhieu.size();
+        int sotrang= 0;
+        if(size<10){
+            sotrang=1;
+        }else{
+            if(size%10==0){
+                sotrang=size/10;
+            }else{
+                sotrang=size/10 +1;
             }
         }
-        Integer size= lstPhieu.size();
         Pageable pageable = PageRequest.of(p, size);
         Page<PhieuGiamGia> pagePGG = phieuGiamGiaImp.findAllOrderByNgayTaoDESC(keySearch,tungay,denngay,kieu,loai,tt,pageable);
         model.addAttribute("pagePGG",pagePGG);
@@ -114,6 +125,7 @@ public class PhieuGiamGiaController {
         model.addAttribute("kieu",kieu);
         model.addAttribute("loai",loai);
         model.addAttribute("tt",tt);
+        session.setAttribute("sotrang", sotrang);
         return "admin/qlphieugiamgia";
     }
     @GetMapping("/admin/xem-them-phieu-giam-gia")
