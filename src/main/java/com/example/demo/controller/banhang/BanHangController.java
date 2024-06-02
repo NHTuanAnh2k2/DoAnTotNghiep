@@ -2,6 +2,7 @@ package com.example.demo.controller.banhang;
 
 import com.example.demo.entity.*;
 import com.example.demo.info.AddKHNhanhFormBanHang;
+import com.example.demo.info.DiaChiGiaoCaseBanHangOff;
 import com.example.demo.info.NguoiDungKHInfo;
 import com.example.demo.info.ThayDoiTTHoaDon_KHInfo;
 import com.example.demo.repository.DiaChiRepository;
@@ -22,9 +23,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("ban-hang-tai-quay")
@@ -108,7 +107,13 @@ public class BanHangController {
     public String choseNV(@PathVariable("id") Integer id, Model model) {
         HoaDon hdset = hdHienTai;
         Optional<KhachHang> kh = daoKH.findById(id);
+        KhachHang khach = kh.get();
+        DiaChi diaChi = daoDiaChi.TimIdNguoiDungMacDinh(khach.getNguoidung().getId());
         hdset.setKhachhang(kh.get());
+        hdset.setTennguoinhan(diaChi.getHotennguoinhan());
+        hdset.setSdt(diaChi.getSdtnguoinhan());
+        hdset.setEmail(khach.getNguoidung().getEmail());
+        hdset.setDiachi(diaChi.getTenduong() + ", " + diaChi.getXaphuong() + ", " + diaChi.getQuanhuyen() + ", " + diaChi.getTinhthanhpho());
         daoHD.capNhatHD(hdset);
         model.addAttribute("check", hdHienTai.getMahoadon());
         return "redirect:/hoa-don/ban-hang";
@@ -150,6 +155,7 @@ public class BanHangController {
         daoHDCT.capnhat(hdctNew);
         return "redirect:/hoa-don/ban-hang";
     }
+
 
     @GetMapping("delete/{id}")
     public String deleteSP(@PathVariable("id") Integer id) {
@@ -250,25 +256,12 @@ public class BanHangController {
                 result = a;
             }
         }
+
         return ResponseEntity.ok(result);
     }
 
-    // thanh toán
-
-    @GetMapping("thanh-toan")
-    @ResponseBody
-    public ResponseEntity<?> thanhtoan() {
-        List<PhuongThucThanhToan> lstpttt = daoPTTT.timTheoHoaDon(hdHienTai);
-
-        List<PhuongThucThanhToan> lstrt = new ArrayList<>();
-        for (PhuongThucThanhToan a : lstpttt
-        ) {
-            if (a.getTrangthai() == true) {
-                lstrt.add(a);
-            }
-        }
-        return ResponseEntity.ok(lstrt);
-    }
+    //chứa bản ghi thanh toán tạm
+    List<PhuongThucThanhToan> lstPTTT = new ArrayList<>();
 
     @GetMapping("xac-nhan-phuong-thuc")
     @ResponseBody
@@ -277,23 +270,103 @@ public class BanHangController {
         PhuongThucThanhToan phuongThucInsert = new PhuongThucThanhToan();
         phuongThucInsert.setHoadon(hdHienTai);
         phuongThucInsert.setTenphuongthuc("trả trước");
-        phuongThucInsert.setTongtien(BigDecimal.valueOf(Double.valueOf(lst.get(1))));
+        phuongThucInsert.setTongtien(BigDecimal.valueOf(Double.valueOf(convertCurrency(lst.get(1)))));
         phuongThucInsert.setMota(mota);
         phuongThucInsert.setTrangthai(true);
         LocalDateTime currentDateTime = LocalDateTime.now();
         phuongThucInsert.setNgaytao(Timestamp.valueOf(currentDateTime));
-        daoPTTT.add_update(phuongThucInsert);
-        List<PhuongThucThanhToan> lstpttt = daoPTTT.timTheoHoaDon(hdHienTai);
-        List<PhuongThucThanhToan> lstrt = new ArrayList<>();
-        for (PhuongThucThanhToan a : lstpttt
-        ) {
-            if (a.getTrangthai() == true) {
-                lstrt.add(a);
+        if (BigDecimal.valueOf(Double.valueOf(convertCurrency(lst.get(1)))).compareTo(new BigDecimal("0.00")) <= 0) {
+            return ResponseEntity.ok(lstPTTT);
+        }
+        lstPTTT.add(phuongThucInsert);
+        return ResponseEntity.ok(lstPTTT);
+    }
+
+    // thanh toán
+
+    @GetMapping("thanh-toan")
+    @ResponseBody
+    public ResponseEntity<?> thanhtoan() {
+        return ResponseEntity.ok(lstPTTT);
+    }
+
+    public static String convertCurrency(String formattedAmount) {
+        // Xóa ký hiệu "₫" và các dấu phân cách
+        String numericAmount = formattedAmount.replaceAll("[^\\d]", "");
+        return numericAmount;
+    }
+
+    //xóa bản ghi thanh toán tạm
+    @GetMapping("delete-pttt/{id}")
+    @ResponseBody
+    public ResponseEntity<?> deletePTTT(@PathVariable("id") String tien) {
+        BigDecimal tienp = BigDecimal.valueOf(Double.valueOf(tien));
+        Iterator<PhuongThucThanhToan> iterator = lstPTTT.iterator();
+        while (iterator.hasNext()) {
+            PhuongThucThanhToan a = iterator.next();
+            if (a.getTongtien().compareTo(tienp) == 0) {
+                iterator.remove();
             }
         }
-        System.out.println("aaaaaaaaaaaaaaaaaa");
-        System.out.println(lstrt.size());
-        return ResponseEntity.ok(lstrt);
+        return ResponseEntity.ok(lstPTTT);
+    }
+
+    // xác nhận thanh toán lưu vào db
+    @GetMapping("xacnhanthanhtoan/{magiao}")
+    public String xacnhanPTTT(@PathVariable("magiao") Integer magiao, @ModelAttribute("thongtingiaohang") DiaChiGiaoCaseBanHangOff thongTin) {
+        //thanh toán đơn không giao hàng
+        if (magiao == 1) {
+            HoaDon hdset = hdHienTai;
+            hdset.setTrangthai(5);
+            BigDecimal tienTong = new BigDecimal("0.00");
+            for (PhuongThucThanhToan a : lstPTTT
+            ) {
+                tienTong = tienTong.add(a.getTongtien());
+                daoPTTT.add_update(a);
+            }
+            hdset.setTongtien(tienTong);
+            hdset.setPhivanchuyen(new BigDecimal("0.00"));
+            daoHD.capNhatHD(hdset);
+            return "redirect:/hoa-don/ban-hang";
+        }
+        // thanh toán đơn có giao hàng
+        HoaDon hdset = hdHienTai;
+        //trả sau
+        if (lstPTTT.size() == 0) {
+
+        } else {
+            //trả trước
+
+        }
+
+        return "redirect:/hoa-don/ban-hang";
+    }
+
+    //bấm giao hàng hiển thị tự động thông tin dựa theo hóa đơn đã có khách hàng
+    //http://localhost:8080/ban-hang-tai-quay/fillDiachi
+    @GetMapping("fillDiachi")
+    @ResponseBody
+    public ResponseEntity<?> fillDiachi() {
+        HoaDon hddc = daoHD.timHDTheoMaHD(hdHienTai.getMahoadon());
+        DiaChiGiaoCaseBanHangOff diachiRT = new DiaChiGiaoCaseBanHangOff();
+        if (hddc.getKhachhang() != null) {
+            List<String> diachiLst = Arrays.asList(hddc.getDiachi().split(", "));
+            String diachiCT = diachiLst.get(0);
+            String xa = diachiLst.get(1);
+            String huyen = diachiLst.get(2);
+            String tinh = diachiLst.get(3);
+            diachiRT.setDiachi(diachiCT);
+            diachiRT.setTinh(tinh);
+            diachiRT.setHuyen(huyen);
+            diachiRT.setXa(xa);
+            diachiRT.setTen(hddc.getTennguoinhan());
+            diachiRT.setSdt(hddc.getSdt());
+            diachiRT.setEmail(hddc.getEmail());
+        }
+        if (hddc.getKhachhang() == null) {
+            return ResponseEntity.ok(new DiaChiGiaoCaseBanHangOff());
+        }
+        return ResponseEntity.ok(diachiRT);
     }
 
 }
