@@ -205,7 +205,7 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
     }
 
     @Override
-    public void sendEmailDoiMk(String recipient, String username, String password, String name) {
+    public void sendEmailQuenMatKhau(String recipient, String name, String maDoiMatKhau) {
         // Cấu hình thông tin email
         String host = "smtp.gmail.com";
         String port = "587";
@@ -235,14 +235,11 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
 
             // Thiết lập tiêu đề
-            message.setSubject("Đặt lại mật khẩu thành công");
+            message.setSubject("Mã Xác Nhận Đặt Lại Mật Khẩu");
 
             // Thiết lập nội dung email
             String emailContent = "Xin chào, " + name + "\n\n";
-            emailContent += "Đây là thông tin mật khẩu mới của bạn:\n";
-            emailContent += "Tài khoản: " + username + "\n";
-            emailContent += "Mật khẩu: " + password + "\n\n";
-            emailContent += "Hãy sử dụng thông tin này để đăng nhập vào hệ thống của chúng tôi.\n\n";
+            emailContent += "Đây là mã đặt lại mật khẩu của bạn: " + maDoiMatKhau + "\n\n";
             emailContent += "Trân trọng,\n";
             emailContent += "Đỗ Quốc Thịnh";
 
@@ -427,6 +424,7 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
             return null;
         }
     }
+
 
     @Override
     public NguoiDung findNguoiDungByTaikhoan(String taikhoan) {

@@ -11,9 +11,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class DangKyDCInfo {
     Integer id;
-    @NotBlank(message = "Không được để trống địa chỉ")
     String diachi;
-    @NotBlank(message = "Không được để trống Tỉnh/Thành phố")
     String tinhthanhpho;
     String sdtnguoinhan;
     String hotennguoinhan;

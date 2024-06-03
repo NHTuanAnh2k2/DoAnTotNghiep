@@ -78,10 +78,10 @@ public class LoginController {
         int passwordLength = 10;
         String username = khachHangService.generateRandomPassword(usernameLength);
         String password = khachHangService.generateRandomPassword(passwordLength);
-        String hoten = nguoidung.getHo() + " " + nguoidung.getTen();
+//        String hoten = nguoidung.getHo() + " " + nguoidung.getTen();
 
         NguoiDung nd = new NguoiDung();
-        nd.setHovaten(hoten);
+//        nd.setHovaten(hoten);
         nd.setEmail(nguoidung.getEmail());
         nd.setSodienthoai(nguoidung.getSodienthoai());
         nd.setNgaytao(Timestamp.valueOf(currentDate));
@@ -123,19 +123,19 @@ public class LoginController {
         dc.setTrangthai(nd.getTrangthai());
         khachHangService.addDiaChi(dc);
 
-        khachHangService.sendEmail(nd.getEmail(), nd.getTaikhoan(), nd.getMatkhau(), hoten);
+//        khachHangService.sendEmail(nd.getEmail(), nd.getTaikhoan(), nd.getMatkhau(), hoten);
 
         return "same/login";
     }
 
-    @PostMapping("/quenmatkhau")
+    @PostMapping("/a")
     public String quenmatkhau(@RequestParam("email") String email, Model model) {
         NguoiDung nd = khachHangService.findByEmail(email);
         if (nd != null) {
             String matkhaumoi = khachHangService.generateRandomPassword(10);
             nd.setMatkhau(matkhaumoi);
             khachHangService.updateNguoiDung(nd);
-            khachHangService.sendEmailDoiMk(email, nd.getTaikhoan(), nd.getMatkhau(), nd.getHovaten());
+//            khachHangService.sendEmailDoiMk(email, nd.getTaikhoan(), nd.getMatkhau(), nd.getHovaten());
             model.addAttribute("message", "Mật khẩu mới đã được gửi đến địa chỉ email của bạn");
             model.addAttribute("dangnhap", true);
             return "same/quenmatkhau";
@@ -146,7 +146,7 @@ public class LoginController {
         }
     }
 
-    @PostMapping("/dangnhap")
+    @PostMapping("/dangnhap1")
     public String login(@RequestParam("taikhoan") String taikhoan,
                         @RequestParam("matkhau") String matkhau,
                         HttpSession session,

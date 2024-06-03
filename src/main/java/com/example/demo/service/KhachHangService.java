@@ -48,7 +48,7 @@ public interface KhachHangService {
 
     NguoiDung findByEmail(String email);
 
-    void sendEmailDoiMk(String recipient, String username, String password, String name);
+    void sendEmailQuenMatKhau(String recipient, String name, String maDoiMatKhau);
 
     NguoiDung findNguoiDungByTaikhoan(String taikhoan);
 
