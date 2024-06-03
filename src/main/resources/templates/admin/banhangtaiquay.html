@@ -571,8 +571,7 @@
                 <div class="row ps-2 pe-2">
                     <div class="col-7">
                         <div style="display: none;" id="diachidiv">
-                            <form id="thongtingiaohangform" th:object="${thongtingiaohang}" method="post"
-                                action="">
+                            <form id="thongtingiaohangform" th:object="${thongtingiaohang}" method="post" action="">
                                 <p>
                                     <input type="text" class="form-control" placeholder="Nhập họ và tên"
                                         id="thongtingiao_ten" th:field="*{ten}">
@@ -632,7 +631,7 @@
                         </h5>
                         <div class="d-flex justify-content-between">
                             <p style="font-weight: bold">Khách thanh toán:
-                                <a class="btn" data-bs-toggle="modal" data-bs-target="#modalThayDoiHoaDon5"
+                                <a class="btn" data-bs-toggle="modal" data-bs-target="#modalThayDoiHoaDon5" id="chantrasau"
                                     onclick="thanhtoan()">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                                         class="bi bi-credit-card" viewBox="0 0 16 16">
@@ -2089,6 +2088,7 @@ tabindex="0">
                 })
                 .then(function (b) {
                     var htmlpt = '';
+                    console.log(b)
                     if (b.length > 0) {
                         var stt = 0;
                         var tiendathanhtoan = 0;
@@ -2140,6 +2140,7 @@ tabindex="0">
                     } else {
 
                         var showTien = document.getElementById('sotienhienthi');
+                        document.getElementById('showpt').innerHTML = htmlpt;
                         showTien.value = tienkhachthanhtoan.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                         document.getElementById('tienthieu').innerHTML = tienkhachthanhtoan.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                         document.getElementById('hdThanhToanShow').innerHTML = hdHienTai;
@@ -2382,10 +2383,12 @@ tabindex="0">
                 //giao hàng submit
                 actionGiao.action = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/2';
                 actionGiao.submit();
+                thongbao('Đặt đơn thành công', 'success');
             } else {
                 //giao hàng submit
                 actionGiao.action = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/1';
                 actionGiao.submit();
+                thongbao('Đặt đơn thành công', 'success');
             }
             // thongbao('Chưa xác nhận thông tin thanh toán!!!', 'warning');
 
@@ -2393,6 +2396,7 @@ tabindex="0">
         //xác định nghiệp vụ trả sau trả trước
         function handleCheckboxChange(event) {
             // Lấy phần tử checkbox từ sự kiện
+            // document.getElementById('chantrasau')
             var checkbox = event.target;
 
             // Kiểm tra trạng thái của checkbox
