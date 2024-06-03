@@ -37,6 +37,11 @@ public class LayPhieuGiamGiaController {
         List<KhachHang> lstKH = (List<KhachHang>) session.getAttribute("lstKH");
         return lstKH;
     }
+    @GetMapping("/khach-hang-xem-them")
+    public List<KhachHang> khachhangxemthem(HttpSession session){
+        List<KhachHang> lstKH = (List<KhachHang>) session.getAttribute("lstKHViewThem");
+        return lstKH;
+    }
     @GetMapping("/lay-khach-hang-phieu-giam")
     public List<KhachHangPhieuGiam> layKhachHangPhieuGiam(HttpSession session){
         List<KhachHangPhieuGiam> lstKHPG = (List<KhachHangPhieuGiam>) session.getAttribute("lstKHPG");
@@ -70,4 +75,15 @@ public Flux<ServerSentEvent<PhieuGiamGia>> streamDiscounts() {
         }
         return lstPhieu;
     }
+    @GetMapping("/them-thanh-cong")
+    public Integer themthanhcong(HttpSession session){
+        Integer dathem = (Integer) session.getAttribute("themthanhcong");
+        return dathem;
+    }
+    @GetMapping("/cap-nhat-thanh-cong")
+    public Integer capnhatthanhcong(HttpSession session){
+        Integer dacapnhat = (Integer) session.getAttribute("capnhatthanhcong");
+        return dacapnhat;
+    }
+
 }

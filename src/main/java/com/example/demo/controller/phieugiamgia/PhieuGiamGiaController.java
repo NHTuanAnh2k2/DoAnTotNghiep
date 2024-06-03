@@ -87,37 +87,13 @@ public class PhieuGiamGiaController {
             tt=null;
         }
         List<PhieuGiamGia> lstPhieu= phieuGiamGiaImp.findAll();
-        Timestamp ngayHT= new Timestamp(System.currentTimeMillis());
-//        for(PhieuGiamGia phieu :lstPhieu){
-//            if(phieu.getSoluong()==0){
-//                phieu.setTrangthai(2);
-//                phieu.setId(phieu.getId());
-//                phieuGiamGiaImp.AddPhieuGiamGia(phieu);
-//            }
-//            if(phieu.getTrangthai()==0 && phieu.getNgaybatdau().getTime()<=ngayHT.getTime()){
-//                phieu.setTrangthai(1);
-//                phieu.setId(phieu.getId());
-//                phieuGiamGiaImp.AddPhieuGiamGia(phieu);
-//            }
-//            if(phieu.getTrangthai()==1 && phieu.getNgayketthuc().getTime()<ngayHT.getTime()){
-//                phieu.setTrangthai(2);
-//                phieu.setId(phieu.getId());
-//                phieuGiamGiaImp.AddPhieuGiamGia(phieu);
-//            }
-//        }
+
         Integer size= lstPhieu.size();
-        int sotrang= 0;
-        if(size<10){
-            sotrang=1;
-        }else{
-            if(size%10==0){
-                sotrang=size/10;
-            }else{
-                sotrang=size/10 +1;
-            }
-        }
+
         Pageable pageable = PageRequest.of(p, size);
+
         Page<PhieuGiamGia> pagePGG = phieuGiamGiaImp.findAllOrderByNgayTaoDESC(keySearch,tungay,denngay,kieu,loai,tt,pageable);
+
         model.addAttribute("pagePGG",pagePGG);
         model.addAttribute("keySearch",keySearch);
         model.addAttribute("tungay",tungay);
@@ -125,13 +101,13 @@ public class PhieuGiamGiaController {
         model.addAttribute("kieu",kieu);
         model.addAttribute("loai",loai);
         model.addAttribute("tt",tt);
-        session.setAttribute("sotrang", sotrang);
         return "admin/qlphieugiamgia";
     }
     @GetMapping("/admin/xem-them-phieu-giam-gia")
-    public String qlxemthemphieugiamgia(@ModelAttribute("phieuGiamGia") PhieuGiamGia phieuGiamGia, Model model){
+    public String qlxemthemphieugiamgia(@ModelAttribute("phieuGiamGia") PhieuGiamGia phieuGiamGia, Model model,HttpSession session){
         model.addAttribute("lstPGG",phieuGiamGiaImp.findAll());
-        model.addAttribute("lstKH", khachHangImp.findAll());
+        session.setAttribute("lstKHViewThem", khachHangImp.findAll());
+
         return "admin/addphieugiamgia";
     }
     @PostMapping("/admin/them-phieu-giam-gia")
@@ -140,7 +116,9 @@ public class PhieuGiamGiaController {
                                   @RequestParam("ngayKetThuc") String ngayKetThuc,
                                   @RequestParam("loaiphieu") Boolean loaiphieu,
                                   @RequestParam("kieuphieu") Boolean kieuphieu,
-                                  @RequestParam("choncheckbox") String[] choncheckbox){
+                                  @RequestParam("choncheckbox") String[] choncheckbox,
+                                  HttpSession session){
+        Integer checkthem=0;
         if(phieuGiamGia.getKieuphieu()){
             if(phieuGiamGia.getMacode()=="" || phieuGiamGia.getMacode().isEmpty()){
                 int doDaiChuoi = 10;
@@ -208,7 +186,8 @@ public class PhieuGiamGiaController {
             for(String e :lstEmail){
                 emailService.sendEmail(e,subject,body);
             }
-
+            checkthem=1;
+            session.setAttribute("themthanhcong",checkthem);
             return "redirect:/admin/hien-thi-phieu-giam-gia";
 
         }else{
@@ -250,15 +229,17 @@ public class PhieuGiamGiaController {
             phieuGiamGia.setLancapnhatcuoi(new Timestamp(System.currentTimeMillis()));
             phieuGiamGiaImp.AddPhieuGiamGia(phieuGiamGia);
 
-            List<KhachHang> lstKH= khachHangImp.findAll();
-            String subject = "Mã giảm giá mới!";
-            String body = "Chào bạn,\n\n"
-                    + "Chúng tôi rất vui thông báo rằng bạn đã nhận được một mã giảm giá mới!\n\n"
-                    + "Mã giảm giá của bạn là: " + phieuGiamGiaImp.findFirstByOrderByNgaytaoDesc().getMacode() + "\n\n"
-                    + "Xin cảm ơn và chúc bạn có một ngày tốt lành!\n";
-            for(KhachHang e :lstKH){
-                emailService.sendEmail(e.getNguoidung().getEmail(), subject,body);
-            }
+//            List<KhachHang> lstKH= khachHangImp.findAll();
+//            String subject = "Mã giảm giá mới!";
+//            String body = "Chào bạn,\n\n"
+//                    + "Chúng tôi rất vui thông báo rằng bạn đã nhận được một mã giảm giá mới!\n\n"
+//                    + "Mã giảm giá của bạn là: " + phieuGiamGiaImp.findFirstByOrderByNgaytaoDesc().getMacode() + "\n\n"
+//                    + "Xin cảm ơn và chúc bạn có một ngày tốt lành!\n";
+//            for(KhachHang e :lstKH){
+//                emailService.sendEmail(e.getNguoidung().getEmail(), subject,body);
+//            }
+            checkthem=1;
+            session.setAttribute("themthanhcong",checkthem);
             return "redirect:/admin/hien-thi-phieu-giam-gia";
         }
 
@@ -284,7 +265,9 @@ public class PhieuGiamGiaController {
                                   @RequestParam("ngayKetThuc") String ngayKetThuc,
                                       @RequestParam("choncheckbox") String[] choncheckbox,
                                       @RequestParam("loaiphieu") Boolean loaiphieu,
-                                      @RequestParam("trangthaicn") Boolean trangthaicn){
+                                      @RequestParam("trangthaicn") Boolean trangthaicn,
+                                      HttpSession session){
+        Integer checkcapnhat=0;
         PhieuGiamGia phieu= phieuGiamGiaImp.findPhieuGiamGiaById(Id);
         phieuGiamGia.setId(Id);
         phieuGiamGia.setTenphieu(phieuGiamGia.getTenphieu().trim());
@@ -339,10 +322,13 @@ public class PhieuGiamGiaController {
             for(String e :lstEmail){
                 emailService.sendEmail(e,subject,body);
             }
-
+            checkcapnhat=1;
+            session.setAttribute("capnhatthanhcong",checkcapnhat);
             return "redirect:/admin/hien-thi-phieu-giam-gia";
         }else{
             phieuGiamGiaImp.AddPhieuGiamGia(phieuGiamGia);
+            checkcapnhat=1;
+            session.setAttribute("capnhatthanhcong",checkcapnhat);
             return "redirect:/admin/hien-thi-phieu-giam-gia";
         }
 
@@ -353,9 +339,26 @@ public class PhieuGiamGiaController {
     @RequestMapping("/admin/cap-nhat-trang-thai-phieu-giam-gia/{Id}")
     public String CapNhatTrangThaiPhieuGiamGia(@PathVariable("Id") Integer Id){
         PhieuGiamGia phieuGiamGia= phieuGiamGiaImp.findPhieuGiamGiaById(Id);
-        phieuGiamGia.setId(Id);
-        phieuGiamGia.setTrangthai(2);
-        phieuGiamGiaImp.AddPhieuGiamGia(phieuGiamGia);
-        return "redirect:/admin/hien-thi-phieu-giam-gia";
+        if(phieuGiamGia.getTrangthai()==0 ||phieuGiamGia.getTrangthai()==1){
+            phieuGiamGia.setId(Id);
+            phieuGiamGia.setTrangthai(2);
+            phieuGiamGiaImp.AddPhieuGiamGia(phieuGiamGia);
+            return "redirect:/admin/hien-thi-phieu-giam-gia";
+        }else{
+            Timestamp ngayHT = new Timestamp(System.currentTimeMillis());
+            if(phieuGiamGia.getNgaybatdau().getTime() <= ngayHT.getTime()){
+                phieuGiamGia.setId(Id);
+                phieuGiamGia.setTrangthai(1);
+                phieuGiamGiaImp.AddPhieuGiamGia(phieuGiamGia);
+            }
+            if(phieuGiamGia.getNgaybatdau().getTime()>ngayHT.getTime()){
+                phieuGiamGia.setId(Id);
+                phieuGiamGia.setTrangthai(0);
+                phieuGiamGiaImp.AddPhieuGiamGia(phieuGiamGia);
+            }
+
+            return "redirect:/admin/hien-thi-phieu-giam-gia";
+        }
+
     }
 }
