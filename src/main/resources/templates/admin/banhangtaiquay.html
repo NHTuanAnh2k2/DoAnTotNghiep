@@ -571,7 +571,8 @@
                 <div class="row ps-2 pe-2">
                     <div class="col-7">
                         <div style="display: none;" id="diachidiv">
-                            <form th:object="${thongtingiaohang}">
+                            <form id="thongtingiaohangform" th:object="${thongtingiaohang}" method="post"
+                                action="">
                                 <p>
                                     <input type="text" class="form-control" placeholder="Nhập họ và tên"
                                         id="thongtingiao_ten" th:field="*{ten}">
@@ -672,11 +673,8 @@
                             <p style="color: red;font-weight: bold" id="tongThanhToan">2,200,000đ</p>
                         </div>
                         <p>
-                            <a href="http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/1"
-                                onclick="handleLinkClick(event)" id="xacnhanthanhtoanhref">
-                                <button style="margin-left: 332px" class="btn btn-dark" disabled
-                                    id="xacnhanthanhtoanhoadon">Xác nhận thanh toán</button>
-                            </a>
+                            <button style="margin-left: 332px" class="btn btn-dark" disabled id="xacnhanthanhtoanhoadon"
+                                onclick="handleLinkClick()">Xác nhận thanh toán</button>
                         </p>
 
                     </div>
@@ -780,7 +778,8 @@
 
         // JavaScript để mở tab
         function openInvoice(evt, invoiceName) {
-
+            document.getElementById('diachidiv').style.display = 'none';
+            document.getElementById("checktrasau").checked = false;
             var i, tabcontent, tablinks;
 
             // Ẩn tất cả các tabcontent trước khi hiển thị tab được chọn
@@ -1825,12 +1824,11 @@ tabindex="0">
             if (isChecked) {
                 // hiển thị div 
                 document.getElementById('diachidiv').style.display = 'block';
-                document.getElementById('xacnhanthanhtoanhref').href = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/2';
                 showdiachimacdinh();
             } else {
                 // ẩn div
                 document.getElementById('diachidiv').style.display = 'none';
-                document.getElementById('xacnhanthanhtoanhref').href = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/1';
+
             }
         }
 
@@ -2267,6 +2265,9 @@ tabindex="0">
         function xacnhanPTTT() {
             document.getElementById('xacnhanthanhtoanhoadon').disabled = false;
             xacnhanthanhcongcf();
+
+            // disabled hết các nút sau khi xác nhận
+
         }
         //xóa bản ghi phương thức thanh toán
         function xoaphuongthuc(url) {
@@ -2374,16 +2375,20 @@ tabindex="0">
             });
         }
         //chặn đường dẫn thẻ a
-        function handleLinkClick(event) {
-            var button = document.getElementById('xacnhanthanhtoanhoadon');
-
-            // Kiểm tra nếu nút bị vô hiệu hóa
-            if (button.disabled) {
-                // Ngăn chặn hành động mặc định của thẻ a
-                event.preventDefault();
-                thongbao('Chưa xác nhận thông tin thanh toán!!!', 'warning');
-
+        function handleLinkClick() {
+            var checkgiaohang = document.getElementById('checktrasau');
+            var actionGiao = document.getElementById('thongtingiaohangform');
+            if (checkgiaohang.checked) {
+                //giao hàng submit
+                actionGiao.action = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/2';
+                actionGiao.submit();
+            } else {
+                //giao hàng submit
+                actionGiao.action = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/1';
+                actionGiao.submit();
             }
+            // thongbao('Chưa xác nhận thông tin thanh toán!!!', 'warning');
+
         }
         //xác định nghiệp vụ trả sau trả trước
         function handleCheckboxChange(event) {

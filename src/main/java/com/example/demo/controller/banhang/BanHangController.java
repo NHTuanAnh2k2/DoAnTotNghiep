@@ -312,7 +312,7 @@ public class BanHangController {
     }
 
     // xác nhận thanh toán lưu vào db
-    @GetMapping("xacnhanthanhtoan/{magiao}")
+    @PostMapping("xacnhanthanhtoan/{magiao}")
     public String xacnhanPTTT(@PathVariable("magiao") Integer magiao, @ModelAttribute("thongtingiaohang") DiaChiGiaoCaseBanHangOff thongTin) {
         //thanh toán đơn không giao hàng
         if (magiao == 1) {
@@ -330,12 +330,39 @@ public class BanHangController {
             return "redirect:/hoa-don/ban-hang";
         }
         // thanh toán đơn có giao hàng
-        HoaDon hdset = hdHienTai;
-        //trả sau
-        if (lstPTTT.size() == 0) {
-
+        HoaDon hdset1 = hdHienTai;
+        if (thongTin.getTrasau() == true) {
+            //trả sau_đợi call api giao hàng nhanh
+            hdset1.setTrangthai(1);
+            BigDecimal tienTong = new BigDecimal("0.00");
+            hdset1.setTongtien(tienTong);
+            //set phí vận chuyển tạm tính 30k sau đó call từ giao hàng nhanh
+            hdset1.setPhivanchuyen(new BigDecimal(convertCurrency(thongTin.getPhivanchuyen())));
+            //set địa chỉ
+            hdset1.setDiachi(thongTin.getDiachi() + ", " + thongTin.getXa() + ", " + thongTin.getHuyen() + ", " + thongTin.getTinh());
+            hdset1.setTennguoinhan(thongTin.getTen());
+            hdset1.setSdt(thongTin.getSdt());
+            hdset1.setEmail(thongTin.getEmail());
+            daoHD.capNhatHD(hdset1);
         } else {
             //trả trước
+            hdset1.setTrangthai(5);
+            BigDecimal tienTong = new BigDecimal("0.00");
+            for (PhuongThucThanhToan a : lstPTTT
+            ) {
+                tienTong = tienTong.add(a.getTongtien());
+                daoPTTT.add_update(a);
+            }
+            hdset1.setTongtien(tienTong);
+            //set phí vận chuyển
+            hdset1.setPhivanchuyen(new BigDecimal(convertCurrency(thongTin.getPhivanchuyen())));
+            //set địa chỉ
+            hdset1.setDiachi(thongTin.getDiachi() + ", " + thongTin.getXa() + ", " + thongTin.getHuyen() + ", " + thongTin.getTinh());
+            hdset1.setTennguoinhan(thongTin.getTen());
+            hdset1.setSdt(thongTin.getSdt());
+            hdset1.setEmail(thongTin.getEmail());
+            daoHD.capNhatHD(hdset1);
+            return "redirect:/hoa-don/ban-hang";
 
         }
 
