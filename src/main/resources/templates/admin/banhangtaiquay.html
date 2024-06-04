@@ -718,14 +718,208 @@
                         </div>`;
                     }
                     document.getElementById('GhiDeTab').innerHTML = htmlDiv;
-                    openInvoice(event, b[0].mahoadon);
+                     openInvoice1(event, b[0].mahoadon);
                 } else {
 
                 }
 
             })
+        // JavaScript để mở tab lúc load
+        function openInvoice1(evt, invoiceName) {
+
+            document.getElementById('changeNV').disabled = false;
+            document.getElementById('changeSP').disabled = false;
+            document.getElementById('tienmat').disabled = false;
+            document.getElementById('chuyenkhoan').disabled = false;
+            document.getElementById('diachidiv').style.display = 'none';
+            document.getElementById("checktrasau").checked = false;
+            var i, tabcontent, tablinks;
+
+            // Ẩn tất cả các tabcontent trước khi hiển thị tab được chọn
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Loại bỏ class "active" từ tất cả các tablinks
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active"); // Loại bỏ lớp "active" từ tất cả các tab
+            }
+            //tạo mã html cho hóa đơn được gọi
+            const maHD = invoiceName;
+            const urlGetListSP = `/ban-hang-tai-quay/tim-coutSP-theoHD?maHD=${maHD}`;
+            fetch(urlGetListSP)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var tongTien = 0;
+                    var tongThanhT = 0;
+                    var tienGiamT = 0;
+                    var html = '';
+                    var htmlTR = '';
+                    var htmlMaGiam = '';
+
+                    var urltimHD = `/ban-hang-tai-quay/tim-HD-TheoMaHD?maHD=${invoiceName}`;
+                    fetch(urltimHD)
+                        .then(function (a) {
+                            return a.json();
+                        })
+                        .then(function (b) {
+                            var htmlTTTK = '';
+                            if (b.khachhang == null) {
+                                htmlTTTK = `
+                <div class="d-flex">
+            <p style="margin-left: 20px">Tên khách hàng:</p>
+            <p style="margin-left: 20px">Khách lẻ</p>
+        </div>
+                `;
+                            } else {
+
+                                htmlTTTK = `
+                    <div class="d-flex">
+            <p style="margin-left: 20px">Tên khách hàng:</p>
+            <p style="margin-left: 20px">${b.khachhang.nguoidung.hovaten}</p>
+        </div>
+        <div class="d-flex">
+            <p style="margin-left: 20px">Số điện thoại:</p>
+            <p style="margin-left: 20px">${b.khachhang.nguoidung.sodienthoai}</p>
+        </div>
+        <div class="d-flex">
+            <p style="margin-left: 20px">Email:</p>
+            <p style="margin-left: 20px">${b.khachhang.nguoidung.email}</p>
+        </div>
+                    `;
+                            }
+
+                            document.getElementById("thongTinTaiKhoan").innerHTML = htmlTTTK;
+                        })
 
 
+                    if (b.length < 1) {
+                        html = `
+<div class="tab-pane fade show active text-center fw-bold"
+                                id="tatCaHoaDon-tab-pane" role="tabpanel" aria-labelledby="tatCaHoaDon-tab"
+                                tabindex="0">
+                                <br>
+                                <img src="../dist/img/no_product.png" width="500px" height="300px">
+                                <h3 class="text text-danger"><i>Danh sách sản phẩm hiện đang trống!! <i
+                                            class="bi bi-emoji-tear"></i>!</i></h3>
+                            </div>`;
+                    }
+                    if (b.length > 0) {
+                        var stt = 0;
+                        for (const hd of b) {
+                            tongTien += hd.soluong * hd.giasanpham;
+                            stt++;
+                            htmlTR += `
+                <tr>
+<td class="text-center" style="vertical-align: middle;">
+    <span style="margin-left: 7px">${stt}</span>
+</td>
+<td style="vertical-align: middle;">
+    <img src="${hd.sanphamchitiet.anh}" width="100px" height="100px" />
+</td>
+<td style="vertical-align: middle;">
+    <p style="font-weight: bold">${hd.sanphamchitiet.sanpham.tensanpham}</p>
+    <p style="color: red;font-weight: bold">${hd.giasanpham.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+    <p> Size: ${hd.sanphamchitiet.kichco.ten}</p>
+</td>
+<td style="vertical-align: middle;">
+    <input class="form-control" style="width: 120px;height: 30px; margin-left: 20%;" type="text" id="${hd.id}" value="${hd.soluong}" oninput="changeQuantity(event)">
+</td>
+<td style="color: red;font-weight: bold;vertical-align: middle;">${(hd.soluong * hd.giasanpham).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+<td style="vertical-align: middle;">
+                                               <a href="http://localhost:8080/ban-hang-tai-quay/delete/${hd.id}"
+                                                >
+                                                <button class="btn btn-outline-danger"
+                                                    onclick="return confirm('Bạn có muốn xóa sản phẩm này không?')"
+                                                    type="button"><i class="bi bi-trash3"></i></button></a>
+
+
+                                                    <a href="http://localhost:8080/ban-hang-tai-quay/update/${hd.id}/${hd.soluong}" id="${hd.id + 'fsport'}"
+                                                >
+                                                <button class="btn btn-outline-warning"
+                                                    onclick="return confirm('Bạn có muốn cập nhật lại sản phẩm này không?')"
+                                                    type="button"><i
+                                                        class="bi bi-arrow-clockwise bi-warning"></i></button></a>
+</td>
+</tr>
+                `;
+                        }
+
+                        html = `
+<div class="tab-pane fade show active text-center fw-bold"
+id="tatCaHoaDon-tab-pane" role="tabpanel" aria-labelledby="tatCaHoaDon-tab"
+tabindex="0">
+<table style="width: 100%" class="table">
+<thead style="height: 50px">
+<tr>
+<th>STT</th>
+<th>Ảnh</th>
+<th>Sản phẩm</th>
+<th>Số lượng</th>
+<th>Tổng tiền</th>
+<th>Thao tác</th>
+</tr>
+</thead>
+<tbody>`+ htmlTR + `
+
+</tbody>
+</table>
+</div>`;
+                    }
+
+                    fetch(`http://localhost:8080/ban-hang-tai-quay/fillMaGiam`)
+                        .then(function (a) {
+                            return a.json();
+                        })
+                        .then(function (b) {
+                            var b2 = b;
+                            if (b.phieugiamgia.id != null) {
+                                if (b2.phieugiamgia.loaiphieu == true) {
+                                    // phiếu %
+                                    if (b2.phieugiamgia.giatrigiam * (tongTien / 100) > b2.phieugiamgia.giatrigiamtoida) {
+                                        tienGiamT = b2.phieugiamgia.giatrigiamtoida;
+                                    } else {
+                                        tienGiamT = b2.phieugiamgia.giatrigiam * (tongTien / 100);
+                                    }
+
+                                } else {
+                                    // phiếu vnđ
+                                    tienGiamT = b2.phieugiamgia.giatrigiam;
+                                }
+                                tongThanhT = tongTien - tienGiamT;
+                                document.getElementById('maGiamFill').innerHTML = b.phieugiamgia.macode;
+                            } else {
+                                document.getElementById('maGiamFill').innerHTML = 'chưa có mã nào phù hợp!';
+                                tongThanhT = tongTien;
+                            }
+                            tienkhachthanhtoan = tongThanhT;
+                            hdHienTai = maHD;
+
+
+                            document.getElementById('giamgia').innerHTML = tienGiamT.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                            document.getElementById('tongThanhToan').innerHTML = tongThanhT.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+
+                        })
+                    document.getElementById('GhiDeTab').innerHTML = html;
+
+                    //document.getElementById(invoiceName).innerHTML = html;
+                    document.getElementById("tongTien").innerHTML = tongTien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                    document.getElementById("tongTienTTTT").innerHTML = tongTien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+
+                })
+
+
+            // Hiển thị nội dung của tab được chọn và thêm class "active" cho tab đó
+
+            document.getElementById(invoiceName).style.display = "block";
+
+        }
+
+        //load tab
         function loadTab(inputs) {
 
             var tabContainer = document.getElementById("tabContainer");
@@ -806,7 +1000,8 @@
             for (i = 0; i < tablinks.length; i++) {
                 tablinks[i].classList.remove("active"); // Loại bỏ lớp "active" từ tất cả các tab
             }
-        
+            evt.currentTarget.classList.add("active"); // Thêm lớp "active" cho tab được chọn
+
 
             //tạo mã html cho hóa đơn được gọi
             const maHD = invoiceName;
@@ -967,11 +1162,11 @@ tabindex="0">
 
                         })
                     document.getElementById('GhiDeTab').innerHTML = html;
-                    evt.currentTarget.classList.add("active"); // Thêm lớp "active" cho tab được chọn
+
                     //document.getElementById(invoiceName).innerHTML = html;
                     document.getElementById("tongTien").innerHTML = tongTien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                     document.getElementById("tongTienTTTT").innerHTML = tongTien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-                
+
                 })
 
 
