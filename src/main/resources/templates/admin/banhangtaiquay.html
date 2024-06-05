@@ -55,6 +55,54 @@
         border-bottom: 2px solid red;
         /* Đường viền dưới màu đỏ cho tab khi được chọn */
     }
+
+
+    /* css cho modal mã giảm giá */
+
+
+    .ma_giam_gia{
+        width: 100%;
+        margin-bottom: 15px;
+        padding: 5px 10px;
+        background: #fff;
+        display: flex;
+        border-radius: 15px;
+    }
+    .ma-item-left {
+        width: 30%;
+        padding-right: 10px;
+        display: flex;
+        align-items: center;
+        border-right: 1px dashed #ccc;
+    }
+    .anh_ma {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+    }
+    .ma-item-right {
+        padding-left: 10px;
+        position: relative;
+        width: 70%;
+    }
+    .ma-item-des {
+        display: flex;
+        justify-content: space-between;
+        align-items: self-end;
+        font-size: 10px;
+    }
+    
+    .right_magiam {
+        font-weight: 700;
+        padding: 5px 7px;
+        background: rgb(249,72,42);
+        color: white;
+        border-radius: 15px;
+        cursor: pointer;
+        margin-bottom: 26px;
+    }
+   
+   
 </style>
 <script src="../sweetalert2/dist/sweetalert2.min.js/"></script>
 <link rel="stylesheet" type="text/css" href="../sweetalert2/dist/sweetalert2.min.css">
@@ -100,6 +148,7 @@
                 </div><!-- /.container-fluid -->
             </section>
             <!-- Nút để tạo hóa đơn -->
+
             <button class="btn" style="margin-left: 1100px;background-color: rgb(249,72,42);color: white"
                 onclick="taoNewHD()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus"
@@ -530,6 +579,82 @@
                 </div>
             </div>
             <!--</div>-->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" style="width: 430px;">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color: #EEEEEE;">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Danh sách phiếu khuyến mãi:</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" style="background-color: #e6f2f4;">
+                            <div class="ma_giam_gia">
+                                <div class="ma-item-left">
+                                    <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
+                                </div>
+                                <div class="ma-item-right">
+                                    <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;">Giảm 120.000đ
+                                    </h4>
+                                    <p style="font-size: 14px; margin: 0; padding: 0; color: black">Đơn hàng từ 890.000đ
+                                        trở lên</p>
+                                    <div class="ma-item-des">
+                                        <div class="left_magiam">
+                                            <p style="margin: 0; white-space: nowrap;">Mã: <b
+                                                    class="code">14FRMGR24MNFNS</b></p>
+                                            <p>HSD: 31/05/2024</p>
+                                        </div>
+                                        <div class="right_magiam">
+                                            Áp dụng
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ma_giam_gia">
+                                <div class="ma-item-left">
+                                    <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
+                                </div>
+                                <div class="ma-item-right">
+                                    <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;">Giảm 120.000đ
+                                    </h4>
+                                    <p style="font-size: 14px; margin: 0; padding: 0; color: black">Đơn hàng từ 890.000đ
+                                        trở lên</p>
+                                    <div class="ma-item-des">
+                                        <div class="left_magiam">
+                                            <p style="margin: 0; white-space: nowrap;">Mã: <b
+                                                    class="code">14FRMGR24MNFNS</b></p>
+                                            <p>HSD: 31/05/2024</p>
+                                        </div>
+                                        <div class="right_magiam">
+                                            Áp dụng
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ma_giam_gia">
+                                <div class="ma-item-left">
+                                    <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
+                                </div>
+                                <div class="ma-item-right">
+                                    <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;">Giảm 120.000đ
+                                    </h4>
+                                    <p style="font-size: 14px; margin: 0; padding: 0; color: black">Đơn hàng từ 890.000đ
+                                        trở lên</p>
+                                    <div class="ma-item-des">
+                                        <div class="left_magiam">
+                                            <p style="margin: 0; white-space: nowrap;">Mã: <b
+                                                    class="code">14FRMGR24MNFNS</b></p>
+                                            <p>HSD: 31/05/2024</p>
+                                        </div>
+                                        <div class="right_magiam">
+                                            Áp dụng
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!--end-->
             <div>
                 <hr>
@@ -655,7 +780,10 @@
                             <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white; padding-top: 10px;"
                                 id="maGiamFill">Chưa có mã giảm phù hợp!</p>
 
-                            <button class="btn btn-light" style="margin-bottom: 20px;">Chọn mã giảm</button>
+                            <button class="btn btn-light" style="margin-bottom: 20px;"
+                            data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                            >
+                                Chọn mã giảm</button>
                         </div>
                         <div class="d-flex justify-content-between">
                             <p style="font-weight: bold">Giao hàng:</p>
@@ -718,7 +846,7 @@
                         </div>`;
                     }
                     document.getElementById('GhiDeTab').innerHTML = htmlDiv;
-                     openInvoice1(event, b[0].mahoadon);
+                    openInvoice1(event, b[0].mahoadon);
                 } else {
 
                 }
@@ -809,6 +937,7 @@
                             </div>`;
                     }
                     if (b.length > 0) {
+
                         var stt = 0;
                         for (const hd of b) {
                             tongTien += hd.soluong * hd.giasanpham;
@@ -819,7 +948,7 @@
     <span style="margin-left: 7px">${stt}</span>
 </td>
 <td style="vertical-align: middle;">
-    <img src="${hd.sanphamchitiet.anh}" width="100px" height="100px" />
+    <img src="${hd.sanphamchitiet.anh[0].tenanh}" width="100px" height="100px" />
 </td>
 <td style="vertical-align: middle;">
     <p style="font-weight: bold">${hd.sanphamchitiet.sanpham.tensanpham}</p>
@@ -1066,6 +1195,7 @@ tabindex="0">
                                         </div>`;
                     }
                     if (b.length > 0) {
+
                         var stt = 0;
                         for (const hd of b) {
                             tongTien += hd.soluong * hd.giasanpham;
@@ -1076,7 +1206,7 @@ tabindex="0">
                 <span style="margin-left: 7px">${stt}</span>
             </td>
             <td style="vertical-align: middle;">
-                <img src="${hd.sanphamchitiet.anh}" width="100px" height="100px" />
+                <img src="${hd.sanphamchitiet.anh[0].tenanh}" width="100px" height="100px" />
             </td>
             <td style="vertical-align: middle;">
                 <p style="font-weight: bold">${hd.sanphamchitiet.sanpham.tensanpham}</p>
@@ -1283,22 +1413,22 @@ tabindex="0">
                     for (const hd of b) {
                         STT++;
                         htmlSP += `<tr>
-                                   <td>${STT}</td>
+                                   <td style="vertical-align: middle;">${STT}</td>
                                    <td> 
-                                    <img src="${hd.anh.tenanh}" alt=""
+                                    <img src="${hd.anh[0].tenanh}" alt=""
                                                                 style="height: 100px; width: 100px;">
                                     
                                     </td>
-                                   <td>${hd.sanpham.tensanpham}</td>
-                                   <td>${hd.soluong}</td>
-                                   <td>${hd.kichco.ten}</td>
-                                   <td>${hd.mausac.ten}</td>
-                                   <td>
+                                   <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
+                                   <td style="vertical-align: middle;">${hd.soluong}</td>
+                                   <td style="vertical-align: middle;">${hd.kichco.ten}</td>
+                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
                                         </p>
                                     </td>
-                                   <td>
+                                   <td style="vertical-align: middle;">
                                     <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
                                     class="btn btn-warning">
                                     chọn
@@ -1339,22 +1469,22 @@ tabindex="0">
                     for (const hd of b) {
                         STT++;
                         htmlSP += `<tr>
-                                   <td>${STT}</td>
+                                   <td style="vertical-align: middle;">${STT}</td>
                                    <td> 
-                                    <img src="${hd.anh.tenanh}" alt=""
+                                    <img src="${hd.anh[0].tenanh}" alt=""
                                                                 style="height: 100px; width: 100px;">
                                     
                                     </td>
-                                   <td>${hd.sanpham.tensanpham}</td>
-                                   <td>${hd.soluong}</td>
-                                   <td>${hd.kichco.ten}</td>
-                                   <td>${hd.mausac.ten}</td>
-                                   <td>
+                                   <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
+                                   <td style="vertical-align: middle;">${hd.soluong}</td>
+                                   <td style="vertical-align: middle;">${hd.kichco.ten}</td>
+                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
                                         </p>
                                     </td>
-                                   <td>
+                                   <td style="vertical-align: middle;">
                                     <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
                                     class="btn btn-warning">
                                     chọn
@@ -1389,22 +1519,22 @@ tabindex="0">
                     for (const hd of b.content) {
                         STT++;
                         htmlSP += `<tr>
-                                   <td>${STT}</td>
+                                   <td style="vertical-align: middle;">${STT}</td>
                                    <td> 
-                                    <img src="${hd.anh.tenanh}" alt=""
+                                    <img src="${hd.anh[0].tenanh}" alt=""
                                                                 style="height: 100px; width: 100px;">
                                     
                                     </td>
-                                   <td>${hd.sanpham.tensanpham}</td>
-                                   <td>${hd.soluong}</td>
-                                   <td>${hd.kichco.ten}</td>
-                                   <td>${hd.mausac.ten}</td>
-                                   <td>
+                                   <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
+                                   <td style="vertical-align: middle;">${hd.soluong}</td>
+                                   <td style="vertical-align: middle;">${hd.kichco.ten}</td>
+                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
                                         </p>
                                     </td>
-                                   <td>
+                                   <td style="vertical-align: middle;">
                                     <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
                                     class="btn btn-warning">
                                     chọn
@@ -1453,22 +1583,22 @@ tabindex="0">
                     for (const hd of b.content) {
                         STT++;
                         htmlSP += `<tr>
-                                   <td>${STT}</td>
+                                   <td style="vertical-align: middle;">${STT}</td>
                                    <td> 
-                                    <img src="${hd.anh.tenanh}" alt=""
+                                    <img src="${hd.anh[0].tenanh}" alt=""
                                                                 style="height: 100px; width: 100px;">
                                     
                                     </td>
-                                   <td>${hd.sanpham.tensanpham}</td>
-                                   <td>${hd.soluong}</td>
-                                   <td>${hd.kichco.ten}</td>
-                                   <td>${hd.mausac.ten}</td>
-                                   <td>
+                                   <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
+                                   <td style="vertical-align: middle;">${hd.soluong}</td>
+                                   <td style="vertical-align: middle;">${hd.kichco.ten}</td>
+                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
                                         </p>
                                     </td>
-                                   <td>
+                                   <td style="vertical-align: middle;">
                                     <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
                                     class="btn btn-warning">
                                     chọn
@@ -1515,22 +1645,22 @@ tabindex="0">
                     for (const hd of b.content) {
                         STT++;
                         htmlSP += `<tr>
-                                   <td>${STT}</td>
+                                   <td style="vertical-align: middle;">${STT}</td>
                                    <td> 
-                                    <img src="${hd.anh.tenanh}" alt=""
+                                    <img src="${hd.anh[0].tenanh}" alt=""
                                                                 style="height: 100px; width: 100px;">
                                     
                                     </td>
-                                   <td>${hd.sanpham.tensanpham}</td>
-                                   <td>${hd.soluong}</td>
-                                   <td>${hd.kichco.ten}</td>
-                                   <td>${hd.mausac.ten}</td>
-                                   <td>
+                                   <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
+                                   <td style="vertical-align: middle;">${hd.soluong}</td>
+                                   <td style="vertical-align: middle;">${hd.kichco.ten}</td>
+                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
                                         </p>
                                     </td>
-                                   <td>
+                                   <td style="vertical-align: middle;">
                                     <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
                                     class="btn btn-warning">
                                     chọn
@@ -1579,22 +1709,22 @@ tabindex="0">
                     for (const hd of b.content) {
                         STT++;
                         htmlSP += `<tr>
-                                   <td>${STT}</td>
+                                   <td style="vertical-align: middle;">${STT}</td>
                                    <td> 
-                                    <img src="${hd.anh.tenanh}" alt=""
+                                    <img src="${hd.anh[0].tenanh}" alt=""
                                                                 style="height: 100px; width: 100px;">
                                     
                                     </td>
-                                   <td>${hd.sanpham.tensanpham}</td>
-                                   <td>${hd.soluong}</td>
-                                   <td>${hd.kichco.ten}</td>
-                                   <td>${hd.mausac.ten}</td>
-                                   <td>
+                                   <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
+                                   <td style="vertical-align: middle;">${hd.soluong}</td>
+                                   <td style="vertical-align: middle;">${hd.kichco.ten}</td>
+                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
                                         </p>
                                     </td>
-                                   <td>
+                                   <td style="vertical-align: middle;">
                                     <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
                                     class="btn btn-warning">
                                     chọn
@@ -1645,22 +1775,22 @@ tabindex="0">
                     for (const hd of b.content) {
                         STT++;
                         htmlSP += `<tr>
-                                   <td>${STT}</td>
+                                   <td style="vertical-align: middle;">${STT}</td>
                                    <td> 
-                                    <img src="${hd.anh.tenanh}" alt=""
+                                    <img src="${hd.anh[0].tenanh}" alt=""
                                                                 style="height: 100px; width: 100px;">
                                     
                                     </td>
-                                   <td>${hd.sanpham.tensanpham}</td>
-                                   <td>${hd.soluong}</td>
-                                   <td>${hd.kichco.ten}</td>
-                                   <td>${hd.mausac.ten}</td>
-                                   <td>
+                                   <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
+                                   <td style="vertical-align: middle;">${hd.soluong}</td>
+                                   <td style="vertical-align: middle;">${hd.kichco.ten}</td>
+                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
                                         </p>
                                     </td>
-                                   <td>
+                                   <td style="vertical-align: middle;">
                                     <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
                                     class="btn btn-warning">
                                     chọn
