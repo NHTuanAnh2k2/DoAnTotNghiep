@@ -2,11 +2,14 @@ package com.example.demo.controller.banhang;
 
 import com.example.demo.entity.*;
 import com.example.demo.info.AddKHNhanhFormBanHang;
+import com.example.demo.info.DiaChiGiaoCaseBanHangOff;
 import com.example.demo.info.NguoiDungKHInfo;
 import com.example.demo.info.ThayDoiTTHoaDon_KHInfo;
 import com.example.demo.repository.DiaChiRepository;
 import com.example.demo.repository.KhachHangPhieuGiamRepository;
 import com.example.demo.repository.NguoiDungRepository;
+import com.example.demo.repository.PhieuGiamGiaChiTiet.PhieuGiamChiTietRepository;
+import com.example.demo.repository.PhieuGiamGiaRepository;
 import com.example.demo.repository.khachhang.KhachHangRepostory;
 import com.example.demo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +22,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("ban-hang-tai-quay")
 public class BanHangController {
+    @Autowired
+    PhieuGiamChiTietRepository daoPGGCT;
+    @Autowired
+    PhieuGiamGiaRepository daoPGG;
     @Autowired
     PhuongThucThanhToanService daoPTTT;
     @Autowired
@@ -48,12 +54,21 @@ public class BanHangController {
     @Autowired
     HoaDonChiTietService daoHDCT;
     private HoaDon hdHienTai;
+    //chứa bản ghi thanh toán tạm
+    List<PhuongThucThanhToan> lstPTTT = new ArrayList<>();
+    //chứa bản ghi của phiếu giảm
+    PhieuGiamGia phieugiamsaoluu = new PhieuGiamGia();
+    //chứa tổng tiền của đơn hiện tại
+    BigDecimal tongtienhoadonhientai = new BigDecimal("0");
+    BigDecimal sotiengiam = new BigDecimal("0");
 
     @GetMapping("hoa-don-cho")
     @ResponseBody
     public ResponseEntity<?> getLstCho() {
         List<HoaDon> lst = daoHD.timTheoTrangThaiVaLoai(0, false);
-        hdHienTai = lst.get(0);
+        if(lst.size()>0){
+            hdHienTai = lst.get(0);
+        }
         return ResponseEntity.ok(lst);
     }
 
@@ -81,6 +96,7 @@ public class BanHangController {
     @ResponseBody
     public ResponseEntity<?> timCoutSPTheoMaHD(@RequestParam("maHD") String maHD
     ) {
+        lstPTTT = new ArrayList<>();
         hdHienTai = daoHD.timHDTheoMaHD(maHD);
         List<HoaDonChiTiet> lst = daoHDCT.timDSHDTCTTheoMaHD(maHD);
         return ResponseEntity.ok(lst);
@@ -108,7 +124,13 @@ public class BanHangController {
     public String choseNV(@PathVariable("id") Integer id, Model model) {
         HoaDon hdset = hdHienTai;
         Optional<KhachHang> kh = daoKH.findById(id);
+        KhachHang khach = kh.get();
+        DiaChi diaChi = daoDiaChi.TimIdNguoiDungMacDinh(khach.getNguoidung().getId());
         hdset.setKhachhang(kh.get());
+        hdset.setTennguoinhan(diaChi.getHotennguoinhan());
+        hdset.setSdt(diaChi.getSdtnguoinhan());
+        hdset.setEmail(khach.getNguoidung().getEmail());
+        hdset.setDiachi(diaChi.getTenduong() + ", " + diaChi.getXaphuong() + ", " + diaChi.getQuanhuyen() + ", " + diaChi.getTinhthanhpho());
         daoHD.capNhatHD(hdset);
         model.addAttribute("check", hdHienTai.getMahoadon());
         return "redirect:/hoa-don/ban-hang";
@@ -150,6 +172,7 @@ public class BanHangController {
         daoHDCT.capnhat(hdctNew);
         return "redirect:/hoa-don/ban-hang";
     }
+
 
     @GetMapping("delete/{id}")
     public String deleteSP(@PathVariable("id") Integer id) {
@@ -232,43 +255,129 @@ public class BanHangController {
         ) {
             tongTienSP = tongTienSP.add(b.getGiasanpham().multiply(new BigDecimal(b.getSoluong())));
         }
-        List<KhachHangPhieuGiam> lstnew = new ArrayList<>();
+        tongtienhoadonhientai = new BigDecimal("0");
+        tongtienhoadonhientai = tongTienSP;
+
+        //lst phiếu giảm cá nhân đang kích hoạt trạng thái là 1
+        List<PhieuGiamGia> lstPhieuGiamCaNhan = new ArrayList<>();
         for (KhachHangPhieuGiam a : lst
         ) {
-            if (a.getPhieugiamgia().getDontoithieu().compareTo(tongTienSP) <= 0) {
-                lstnew.add(a);
+            if (a.getPhieugiamgia().getTrangthai() == 1) {
+                lstPhieuGiamCaNhan.add(a.getPhieugiamgia());
             }
         }
-        if (lstnew.size() < 1) {
-            return ResponseEntity.ok(new KhachHangPhieuGiam());
-        }
-        KhachHangPhieuGiam result = lstnew.get(0);
 
-        for (KhachHangPhieuGiam a : lstnew
+
+        //lấy phiếu công khai
+        List<PhieuGiamGia> lstphieuPublic = daoPGG.findAllByKieuphieuaAndTrangthais(false, 1);
+        // add phiếu cá nhân và phiếu công khai về cùng 1 lst cá nhân
+        for (PhieuGiamGia a : lstphieuPublic
         ) {
-            if (a.getPhieugiamgia().getGiatrigiamtoida().compareTo(result.getPhieugiamgia().getGiatrigiamtoida()) == 1) {
-                result = a;
+            lstPhieuGiamCaNhan.add(a);
+        }
+
+        //hoàn thành, phiếu cá nhân đã có đầy đủ ds phiếu giảm cả công khai và cá nhân với trang thái đã kích hoạt(1)
+        //tạo lst lưu trữ cuối dùng
+
+        List<PhieuGiamGia> lstThoaMan = new ArrayList<>();
+        //for vào ds tổng để tìm ra mã nào thỏa mãn điều kiện đơn tối thiểu của hóa đơn
+        for (PhieuGiamGia a : lstPhieuGiamCaNhan
+        ) {
+            if (a.getDontoithieu().compareTo(tongTienSP) <= 0) {
+                lstThoaMan.add(a);
             }
         }
+        //tách phiếu % và phiếu giảm tiền mặt
+        List<PhieuGiamGia> lstphantram = new ArrayList<>();
+        List<PhieuGiamGia> lsttienmat = new ArrayList<>();
+
+        for (PhieuGiamGia a : lstThoaMan
+        ) {
+            if (a.getLoaiphieu() == true) {
+                // phần %
+                lstphantram.add(a);
+            } else {
+                //tiền mặt
+                lsttienmat.add(a);
+
+            }
+        }
+        //giả định mã % thơm, tiền mặt thơm
+        PhieuGiamGia phantram = lstphantram.size() > 0 ? lstphantram.get(0) : new PhieuGiamGia();
+        PhieuGiamGia tienmat = lsttienmat.size() > 0 ? lsttienmat.get(0) : new PhieuGiamGia();
+
+        if (lstphantram.size() > 0) {
+            //for vào ds % để tìm mã thơm nhất:)))
+            for (PhieuGiamGia a : lstphantram
+            ) {
+                BigDecimal tien0 = (tongTienSP.divide(new BigDecimal("100"), 4, RoundingMode.HALF_UP)).multiply(BigDecimal.valueOf(Double.valueOf("" + a.getGiatrigiam())));
+                BigDecimal tien1 = (tongTienSP.divide(new BigDecimal("100"), 4, RoundingMode.HALF_UP)).multiply(BigDecimal.valueOf(Double.valueOf("" + phantram.getGiatrigiam())));
+                BigDecimal tientaiday = tien0.compareTo(a.getGiatrigiamtoida()) > 0 ? a.getGiatrigiamtoida() : tien0;
+                BigDecimal tiensosanh = tien1.compareTo(phantram.getGiatrigiamtoida()) > 0 ? phantram.getGiatrigiamtoida() : tien1;
+                if (tientaiday.compareTo(tiensosanh) > 0) {
+                    phantram = a;
+                }
+
+            }
+        }
+        if (lsttienmat.size() > 0) {
+            //for vào ds tienmat để tìm mã thơm nhất:)))
+            for (PhieuGiamGia a : lsttienmat
+            ) {
+                if (a.getGiatrigiam().compareTo(tienmat.getGiatrigiam()) > 0) {
+                    tienmat = a;
+                }
+            }
+        }
+
+        //reset số tiền giảm
+        sotiengiam = new BigDecimal("0");
+
+        KhachHangPhieuGiam result = new KhachHangPhieuGiam();
+        result.setPhieugiamgia(new PhieuGiamGia());
+        if (tienmat.getId() != null && phantram.getId() != null) {
+            BigDecimal tiengiam = BigDecimal.valueOf(Double.valueOf("" + tienmat.getGiatrigiam()));
+            BigDecimal phantramgiam = (tongTienSP.divide(new BigDecimal("100"), 4, RoundingMode.HALF_UP)).multiply(BigDecimal.valueOf(Double.valueOf("" + phantram.getGiatrigiam())));
+            BigDecimal maxphantram = phantramgiam.compareTo(phantram.getGiatrigiamtoida()) > 0 ? phantram.getGiatrigiamtoida() : phantramgiam;
+            // so sánh để đưa ra mã ngon nhất
+            if (tiengiam.compareTo(maxphantram) > 0) {
+                result.setPhieugiamgia(tienmat);
+                sotiengiam = tiengiam;
+            } else {
+                if (tiengiam.compareTo(maxphantram) == 0) {
+                    result.setPhieugiamgia(tienmat);
+                    sotiengiam = tiengiam;
+                } else {
+                    result.setPhieugiamgia(phantram);
+                    sotiengiam = maxphantram;
+                }
+            }
+
+        } else {
+            if (phantram.getId() == null && tienmat.getId()==null) {
+                return ResponseEntity.ok(result);
+            }
+
+            if (phantram.getId() == null && tienmat.getId()!=null) {
+                result.setPhieugiamgia(tienmat);
+                BigDecimal tiengiam = BigDecimal.valueOf(Double.valueOf("" + tienmat.getGiatrigiam()));
+                sotiengiam = tiengiam;
+
+            }
+            if (tienmat.getId() == null && phantram.getId()!=null) {
+                BigDecimal phantramgiam = (tongTienSP.divide(new BigDecimal("100"), 4, RoundingMode.HALF_UP)).multiply(BigDecimal.valueOf(Double.valueOf("" + phantram.getGiatrigiam())));
+                BigDecimal maxphantram = phantramgiam.compareTo(phantram.getGiatrigiamtoida()) > 0 ? phantram.getGiatrigiamtoida() : phantramgiam;
+                result.setPhieugiamgia(phantram);
+                sotiengiam = maxphantram;
+
+            }
+        }
+        phieugiamsaoluu = result.getPhieugiamgia();
+
+
         return ResponseEntity.ok(result);
     }
 
-    // thanh toán
-
-    @GetMapping("thanh-toan")
-    @ResponseBody
-    public ResponseEntity<?> thanhtoan() {
-        List<PhuongThucThanhToan> lstpttt = daoPTTT.timTheoHoaDon(hdHienTai);
-
-        List<PhuongThucThanhToan> lstrt = new ArrayList<>();
-        for (PhuongThucThanhToan a : lstpttt
-        ) {
-            if (a.getTrangthai() == true) {
-                lstrt.add(a);
-            }
-        }
-        return ResponseEntity.ok(lstrt);
-    }
 
     @GetMapping("xac-nhan-phuong-thuc")
     @ResponseBody
@@ -277,23 +386,159 @@ public class BanHangController {
         PhuongThucThanhToan phuongThucInsert = new PhuongThucThanhToan();
         phuongThucInsert.setHoadon(hdHienTai);
         phuongThucInsert.setTenphuongthuc("trả trước");
-        phuongThucInsert.setTongtien(BigDecimal.valueOf(Double.valueOf(lst.get(1))));
+        phuongThucInsert.setTongtien(BigDecimal.valueOf(Double.valueOf(convertCurrency(lst.get(1)))));
         phuongThucInsert.setMota(mota);
         phuongThucInsert.setTrangthai(true);
         LocalDateTime currentDateTime = LocalDateTime.now();
         phuongThucInsert.setNgaytao(Timestamp.valueOf(currentDateTime));
-        daoPTTT.add_update(phuongThucInsert);
-        List<PhuongThucThanhToan> lstpttt = daoPTTT.timTheoHoaDon(hdHienTai);
-        List<PhuongThucThanhToan> lstrt = new ArrayList<>();
-        for (PhuongThucThanhToan a : lstpttt
-        ) {
-            if (a.getTrangthai() == true) {
-                lstrt.add(a);
+        if (BigDecimal.valueOf(Double.valueOf(convertCurrency(lst.get(1)))).compareTo(new BigDecimal("0.00")) <= 0) {
+            return ResponseEntity.ok(lstPTTT);
+        }
+        lstPTTT.add(phuongThucInsert);
+        return ResponseEntity.ok(lstPTTT);
+    }
+
+    // thanh toán
+
+    @GetMapping("thanh-toan")
+    @ResponseBody
+    public ResponseEntity<?> thanhtoan() {
+        return ResponseEntity.ok(lstPTTT);
+    }
+
+    public static String convertCurrency(String formattedAmount) {
+        // Xóa ký hiệu "₫" và các dấu phân cách
+        String numericAmount = formattedAmount.replaceAll("[^\\d]", "");
+        return numericAmount;
+    }
+
+    //xóa bản ghi thanh toán tạm
+    @GetMapping("delete-pttt/{id}")
+    @ResponseBody
+    public ResponseEntity<?> deletePTTT(@PathVariable("id") String tien) {
+        BigDecimal tienp = BigDecimal.valueOf(Double.valueOf(tien));
+        Iterator<PhuongThucThanhToan> iterator = lstPTTT.iterator();
+        while (iterator.hasNext()) {
+            PhuongThucThanhToan a = iterator.next();
+            if (a.getTongtien().compareTo(tienp) == 0) {
+                iterator.remove();
             }
         }
-        System.out.println("aaaaaaaaaaaaaaaaaa");
-        System.out.println(lstrt.size());
-        return ResponseEntity.ok(lstrt);
+        return ResponseEntity.ok(lstPTTT);
+    }
+
+    // xác nhận thanh toán lưu vào db
+    @PostMapping("xacnhanthanhtoan/{magiao}")
+    public String xacnhanPTTT(@PathVariable("magiao") Integer magiao, @ModelAttribute("thongtingiaohang") DiaChiGiaoCaseBanHangOff thongTin) {
+
+        PhieuGiamGiaChiTiet phieugiamgiachtietset = new PhieuGiamGiaChiTiet();
+        //thanh toán đơn không giao hàng
+        if (magiao == 1) {
+            HoaDon hdset = hdHienTai;
+            hdset.setTrangthai(5);
+            BigDecimal tienTong = new BigDecimal("0.00");
+            for (PhuongThucThanhToan a : lstPTTT
+            ) {
+                tienTong = tienTong.add(a.getTongtien());
+                daoPTTT.add_update(a);
+            }
+            hdset.setTongtien(tienTong);
+            hdset.setPhivanchuyen(new BigDecimal("0.00"));
+            daoHD.capNhatHD(hdset);
+            //tạo phiếu giảm giá chi tiết
+            phieugiamgiachtietset.setHoadon(hdset);
+            phieugiamgiachtietset.setPhieugiamgia(phieugiamsaoluu);
+            phieugiamgiachtietset.setGiasauapdung(hdset.getTongtien());
+            phieugiamgiachtietset.setGiabandau(tongtienhoadonhientai);
+            phieugiamgiachtietset.setTiengiam(sotiengiam);
+            LocalDateTime currentDateTime = LocalDateTime.now();
+            phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
+            daoPGGCT.save(phieugiamgiachtietset);
+            lstPTTT = new ArrayList<>();
+            return "redirect:/hoa-don/ban-hang";
+        }
+        // thanh toán đơn có giao hàng
+        HoaDon hdset1 = hdHienTai;
+        if (thongTin.getTrasau() == true) {
+            //trả sau_đợi call api giao hàng nhanh
+            hdset1.setTrangthai(1);
+            BigDecimal tienTong = new BigDecimal("0.00");
+            hdset1.setTongtien(tienTong);
+            //set phí vận chuyển tạm tính 30k sau đó call từ giao hàng nhanh
+            hdset1.setPhivanchuyen(new BigDecimal(convertCurrency(thongTin.getPhivanchuyen())));
+            //set địa chỉ
+            hdset1.setDiachi(thongTin.getDiachi() + ", " + thongTin.getXa() + ", " + thongTin.getHuyen() + ", " + thongTin.getTinh());
+            hdset1.setTennguoinhan(thongTin.getTen());
+            hdset1.setSdt(thongTin.getSdt());
+            hdset1.setEmail(thongTin.getEmail());
+            daoHD.capNhatHD(hdset1);
+            phieugiamgiachtietset.setHoadon(hdset1);
+            phieugiamgiachtietset.setPhieugiamgia(phieugiamsaoluu);
+            phieugiamgiachtietset.setGiasauapdung(hdset1.getTongtien());
+            phieugiamgiachtietset.setGiabandau(tongtienhoadonhientai);
+            phieugiamgiachtietset.setTiengiam(sotiengiam);
+            LocalDateTime currentDateTime = LocalDateTime.now();
+            phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
+            daoPGGCT.save(phieugiamgiachtietset);
+            lstPTTT = new ArrayList<>();
+        } else {
+            //trả trước
+            hdset1.setTrangthai(5);
+            BigDecimal tienTong = new BigDecimal("0.00");
+            for (PhuongThucThanhToan a : lstPTTT
+            ) {
+                tienTong = tienTong.add(a.getTongtien());
+                daoPTTT.add_update(a);
+            }
+            hdset1.setTongtien(tienTong);
+            //set phí vận chuyển
+            hdset1.setPhivanchuyen(new BigDecimal(convertCurrency(thongTin.getPhivanchuyen())));
+            //set địa chỉ
+            hdset1.setDiachi(thongTin.getDiachi() + ", " + thongTin.getXa() + ", " + thongTin.getHuyen() + ", " + thongTin.getTinh());
+            hdset1.setTennguoinhan(thongTin.getTen());
+            hdset1.setSdt(thongTin.getSdt());
+            hdset1.setEmail(thongTin.getEmail());
+            daoHD.capNhatHD(hdset1);
+            phieugiamgiachtietset.setHoadon(hdset1);
+            phieugiamgiachtietset.setPhieugiamgia(phieugiamsaoluu);
+            phieugiamgiachtietset.setGiasauapdung(hdset1.getTongtien());
+            phieugiamgiachtietset.setGiabandau(tongtienhoadonhientai);
+            phieugiamgiachtietset.setTiengiam(sotiengiam);
+            LocalDateTime currentDateTime = LocalDateTime.now();
+            phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
+            daoPGGCT.save(phieugiamgiachtietset);
+            lstPTTT = new ArrayList<>();
+            return "redirect:/hoa-don/ban-hang";
+
+        }
+        return "redirect:/hoa-don/ban-hang";
+    }
+
+    //bấm giao hàng hiển thị tự động thông tin dựa theo hóa đơn đã có khách hàng
+    //http://localhost:8080/ban-hang-tai-quay/fillDiachi
+    @GetMapping("fillDiachi")
+    @ResponseBody
+    public ResponseEntity<?> fillDiachi() {
+        HoaDon hddc = daoHD.timHDTheoMaHD(hdHienTai.getMahoadon());
+        DiaChiGiaoCaseBanHangOff diachiRT = new DiaChiGiaoCaseBanHangOff();
+        if (hddc.getKhachhang() != null) {
+            List<String> diachiLst = Arrays.asList(hddc.getDiachi().split(", "));
+            String diachiCT = diachiLst.get(0);
+            String xa = diachiLst.get(1);
+            String huyen = diachiLst.get(2);
+            String tinh = diachiLst.get(3);
+            diachiRT.setDiachi(diachiCT);
+            diachiRT.setTinh(tinh);
+            diachiRT.setHuyen(huyen);
+            diachiRT.setXa(xa);
+            diachiRT.setTen(hddc.getTennguoinhan());
+            diachiRT.setSdt(hddc.getSdt());
+            diachiRT.setEmail(hddc.getEmail());
+        }
+        if (hddc.getKhachhang() == null) {
+            return ResponseEntity.ok(new DiaChiGiaoCaseBanHangOff());
+        }
+        return ResponseEntity.ok(diachiRT);
     }
 
 }

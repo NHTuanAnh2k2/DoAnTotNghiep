@@ -51,6 +51,35 @@
     .sticky-thead th {
         position: sticky;
         top: 0;
+        z-index: 1;
+    }
+    .checkbox{
+        width: 18px;
+        height: 18px;
+        background-color: #eee;
+        border-radius: 5px;
+        border: 1px solid #dcdcdc;
+        cursor: pointer;
+        -webkit-appearance: none; /* Tắt kiểu mặc định của trình duyệt cho checkbox */
+        appearance: none;
+        position: relative;
+    }
+
+    /* Styling the checkbox when it's checked */
+    .checkbox:checked {
+        background-color: rgb(249,72,42);
+        border: 1px solid rgb(249,72,42);
+    }
+    .checkbox:checked::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 6px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
     }
 </style>
 <body class="hold-transition sidebar-mini">
@@ -175,30 +204,29 @@
                                                 <path d="M220.6 130.3l-67.2 28.2V43.2L98.7 233.5l54.7-24.2v130.3l67.2-209.3zm-83.2-96.7l-1.3 4.7-15.2 52.9C80.6 106.7 52 145.8 52 191.5c0 52.3 34.3 95.9 83.4 105.5v53.6C57.5 340.1 0 272.4 0 191.6c0-80.5 59.8-147.2 137.4-158zm311.4 447.2c-11.2 11.2-23.1 12.3-28.6 10.5-5.4-1.8-27.1-19.9-60.4-44.4-33.3-24.6-33.6-35.7-43-56.7-9.4-20.9-30.4-42.6-57.5-52.4l-9.7-14.7c-24.7 16.9-53 26.9-81.3 28.7l2.1-6.6 15.9-49.5c46.5-11.9 80.9-54 80.9-104.2 0-54.5-38.4-102.1-96-107.1V32.3C254.4 37.4 320 106.8 320 191.6c0 33.6-11.2 64.7-29 90.4l14.6 9.6c9.8 27.1 31.5 48 52.4 57.4s32.2 9.7 56.8 43c24.6 33.2 42.7 54.9 44.5 60.3s.7 17.3-10.5 28.5zm-9.9-17.9c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8z"/>
                                             </svg>
                                         </span>
-                                        <input type="search" class="form-control" placeholder="Nhập tên, số điện thoại, ngày sinh" aria-label="Username" aria-describedby="basic-addon1">
+                                        <input type="text" id="searchInput" class="form-control" placeholder="Nhập tên hoặc số điện thoại" onkeyup="filterTable()">
                                     </div>
                                 </form>
                                 <div class="table-responsive" style="margin-top: 10px; padding-bottom: 15px; max-height: 400px;">
-                                    <table class="table table-bordered table-hover">
-                                        <thead class="table table-danger align-middle text-center sticky-thead">
+                                    <table class="table table-bordered table-hover align-middle text-center" id="bangkhachhangthem">
+                                        <thead class="table table-danger sticky-thead">
                                         <th></th>
+                                        <th>STT</th>
                                         <th>Tên</th>
                                         <th>Số điện thoại</th>
                                         <th>Email</th>
-                                        <th>Ngày sinh</th>
                                         </thead>
                                         <tbody>
-                                        <tr th:each="kh,stt:${lstKH}">
-                                            <th class="align-middle text-center">
-                                                <div class="form-check">
-                                                    <input class="form-check-input checkbox" th:value="${kh.id}" type="checkbox" onchange="luuGiaTri(this)" disabled>
-                                                </div>
-                                            </th>
-                                            <td th:text="${kh.nguoidung.hovaten}"></td>
-                                            <td th:text="${kh.nguoidung.sodienthoai}"></td>
-                                            <td th:text="${kh.nguoidung.email}"></td>
-                                            <td th:text="${kh.nguoidung.ngaysinh}"></td>
-                                        </tr>
+<!--                                        <tr th:each="kh,stt:${lstKH}">-->
+<!--                                            <th class="align-middle text-center">-->
+<!--                                                <div class="form-check">-->
+<!--                                                    <input class="form-check-input checkbox" th:value="${kh.id}" type="checkbox" onchange="luuGiaTri(this)" disabled>-->
+<!--                                                </div>-->
+<!--                                            </th>-->
+<!--                                            <td th:text="${kh.nguoidung.hovaten}"></td>-->
+<!--                                            <td th:text="${kh.nguoidung.sodienthoai}"></td>-->
+<!--                                            <td th:text="${kh.nguoidung.email}"></td>-->
+<!--                                        </tr>-->
                                         </tbody>
                                     </table>
                                 </div>
@@ -216,6 +244,7 @@
     <nav th:replace="~{/layoutadmin/footer.html}"></nav>
 </div>
 <script>
+    let index= 0;
     document.addEventListener('DOMContentLoaded', function() {
         // Mặc định chọn biểu tượng 1
         document.getElementById('icon1').classList.add('active');
@@ -251,6 +280,7 @@
                 giaTriTuCheckbox.splice(index, 1);
             }
         }
+        console.log(giaTriTuCheckbox);
     }
 
     function layGiaTri() {
@@ -261,6 +291,58 @@
                 input.name = "choncheckbox";
                 input.value= giaTriTuCheckbox[i];
                 document.getElementById("formThemPhieu").appendChild(input);
+            }
+        }
+    }
+    // Hàm để lấy danh sách sản phẩm từ server
+    async function getKhachHangXemThem() {
+        const response = await fetch('/khach-hang-xem-them');
+        return await response.json();
+    }
+    async function displaylstKhachHang() {
+        const lstKhachHang = await getKhachHangXemThem();
+        const khachHangTableBody = document.querySelector("#bangkhachhangthem tbody");
+        lstKhachHang.forEach(kh => {
+            const row = khachHangTableBody.insertRow();
+            const checkboxCell = row.insertCell();
+            const checkbox = document.createElement("input");
+            checkbox.className="checkbox";
+            checkbox.type = "checkbox";
+            checkbox.value = kh.id;
+            checkbox.onchange = function() {
+                luuGiaTri(this);
+            };
+            checkbox.disabled=true;
+            checkboxCell.appendChild(checkbox);
+
+            const numberCell = row.insertCell();
+            numberCell.textContent = ++index; // T
+
+            const nameCell = row.insertCell();
+            nameCell.textContent = kh.nguoidung.hovaten;
+
+            const sdtCell = row.insertCell();
+            sdtCell.textContent = kh.nguoidung.sodienthoai;
+
+            const emailCell = row.insertCell();
+            emailCell.textContent = kh.nguoidung.email;
+        });
+    }
+    displaylstKhachHang();
+    function filterTable() {
+        const input = document.getElementById('searchInput');
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById('bangkhachhangthem');
+        const trs = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < trs.length; i++) {
+            const tds = trs[i].getElementsByTagName('td');
+            const name = tds[2].textContent.toLowerCase();
+            const phone = tds[3].textContent.toLowerCase();
+            if (name.includes(filter) || phone.includes(filter)) {
+                trs[i].style.display = '';
+            } else {
+                trs[i].style.display = 'none';
             }
         }
     }
@@ -453,11 +535,21 @@
             }
             if (document.getElementById('radio').checked){
                 if(giaTriDaChon.length <= 0){
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Lỗi',
-                        text: 'Vui lòng chọn khách hàng muốn áp dụng!',
-                        confirmButtonText: 'OK'
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+
+                    Toast.fire({
+                        icon: "error",
+                        title: "Vui lòng chọn khách hàng áp dụng!"
                     });
                     return false;
                 }else{
@@ -482,14 +574,14 @@
                                 }
                             });
 
-                            Toast.fire({
-                                icon: "success",
-                                title: "Thêm thành công!"
-                            });
+                            // Toast.fire({
+                            //     icon: "success",
+                            //     title: "Thêm thành công!"
+                            // });
 
                             setTimeout(function () {
                                 document.getElementById("formThemPhieu").submit();
-                            }, 3000);
+                            }, 500);
                         }
                     });
                     // Ngăn form được gửi đi ngay lập tức
@@ -517,14 +609,14 @@
                             }
                         });
 
-                        Toast.fire({
-                            icon: "success",
-                            title: "Thêm thành công!"
-                        });
+                        // Toast.fire({
+                        //     icon: "success",
+                        //     title: "Thêm thành công!"
+                        // });
 
                         setTimeout(function () {
                             document.getElementById("formThemPhieu").submit();
-                        }, 3000);
+                        }, 500);
                     }
                 });
                 // Ngăn form được gửi đi ngay lập tức

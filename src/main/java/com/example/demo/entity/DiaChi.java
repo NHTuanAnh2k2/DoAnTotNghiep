@@ -21,7 +21,6 @@ public class DiaChi {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    @NotBlank(message = "Không được để trống tên đường")
     String tenduong;
     String xaphuong;
     String quanhuyen;

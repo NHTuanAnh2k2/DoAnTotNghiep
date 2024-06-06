@@ -99,6 +99,7 @@
                             <!--hồ sơ cá nhân-->
                             <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
                                  aria-labelledby="v-pills-home-tab" tabindex="0">
+<<<<<<< HEAD
                                 <div id="xemthongtintaikhoan">
                                     <p style="font-size: 18px; font-weight: 650; padding-top: 7px;">THÔNG TIN TÀI KHOẢN</p>
                                     <hr class="border border-danger border opacity-50">
@@ -193,12 +194,32 @@
 
                                 </div>
 
+=======
+                                <h3>Hồ sơ của tôi</h3>
+                                <p>Email:
+                                    <input class="form-control" th:value="${nguoidung.email}">
+                                </p>
+                                <p>SĐT:
+                                    <input class="form-control" th:value="${nguoidung.sodienthoai}">
+                                </p>
+                                <p>Giới tính:
+                                    <input type="radio" checked="true">Nam
+                                    <input type="radio" checked="true">Nữ
+                                </p>
+                                <p>Ngày sinh:
+                                    <input type="date" class="form-control" th:value="${nguoidung.ngaysinh}">
+                                </p>
+                                <p>
+                                    <button class="btn btn-primary">Lưu</button>
+                                </p>
+>>>>>>> thinh
                             </div>
                             <!--end-->
 
                             <!--địa chỉ của tôi-->
                             <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
                                  aria-labelledby="v-pills-profile-tab" tabindex="0">
+<<<<<<< HEAD
                                 <p style="font-size: 18px; font-weight: 650; padding-top: 7px;">THÔNG TIN ĐỊA CHỈ</p>
                                 <hr class="border border-danger border opacity-50">
                                 <div>
@@ -282,6 +303,39 @@
                                                         </div>
                                                     </form>
                                                 </div>
+=======
+                                <h3>Địa chỉ của tôi</h3>
+                                <table class="table">
+                                    <tr>
+                                        <th>Tỉnh/Thành phố</th>
+                                        <th>Quận/Huyện</th>
+                                        <th>Xã/Phường</th>
+                                        <th>Địa chỉ cụ thể</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    <tr>
+                                        <td th:text="${diachi.tinhthanhpho}">Hà Nội</td>
+                                        <td th:text="${diachi.quanhuyen}">Hà Nội</td>
+                                        <td th:text="${diachi.xaphuong}">Hà Nội</td>
+                                        <td th:text="${diachi.tenduong}">Hà Nội</td>
+                                        <td>
+                                            <a href="#" class="btn btn-danger" data-bs-toggle="modal"
+                                               data-bs-target="#capnhatdiachi">Cập nhật</a>
+                                            <a href="#" class="btn btn-danger">Thiết lập mặc định</a>
+                                            <a href="#" class="btn btn-danger">Xóa</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <!--Modal-->
+                                <div class="modal fade" id="capnhatdiachi" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Cập nhật địa chỉ</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+>>>>>>> thinh
                                             </div>
                                         </div>
                                         <div class="col-lg-6">

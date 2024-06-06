@@ -36,13 +36,10 @@ public class NguoiDung {
 //    @Temporal(TemporalType.DATE)
     @NotNull(message = "Không được để trống ngày sinh")
     Date ngaysinh;
-    @NotNull(message = "Không được để trống căn cước công dân")
-    @Pattern(regexp="^0[0-9]{11}$", message="Sai định dạng số căn cước")
     String cccd;
     @NotNull(message = "Không được để trống số điện thoại")
     @Pattern(regexp="^0[0-9]{9}$", message="Sai định dạng số điện thoại")
     String sodienthoai;
-    @NotNull(message = "Không được để trống giới tính")
     Boolean gioitinh;
     String anh;
     Timestamp ngaytao;

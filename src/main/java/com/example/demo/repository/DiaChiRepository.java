@@ -15,6 +15,9 @@ public interface DiaChiRepository extends JpaRepository<DiaChi, Integer> {
     List<DiaChi> getDiaChiByTrangthai(Boolean trangThai);
     @Query("SELECT c FROM DiaChi c JOIN NhanVien n on n.nguoidung.id = c.nguoidung.id Order by c.nguoidung.id desc")
     List<DiaChi> getAll();
+    List<DiaChi> getAllByOrderByIdDesc();
+    @Query("SELECT c FROM DiaChi c  WHERE c.nguoidung.id = ?1 and c.trangthai=true")
+    DiaChi TimIdNguoiDungMacDinh(Integer id);
     @Query("SELECT c FROM DiaChi c  WHERE c.nguoidung.id = ?1")
     DiaChi TimIdNguoiDung(Integer id);
     @Query("SELECT c FROM DiaChi c  WHERE c.nguoidung.hovaten = ?1 OR c.nguoidung.sodienthoai = ?1")
@@ -54,4 +57,8 @@ public interface DiaChiRepository extends JpaRepository<DiaChi, Integer> {
     List<DiaChi> findDiaChiByTinhthanhpho(@Param("tinhthanhpho") String tinhthanhpho);
     @Query("SELECT d FROM DiaChi d WHERE d.nguoidung.id = ?1")
     List<DiaChi> findDiaChiByIdNd(Integer idNd);
+
+    @Query("SELECT d FROM DiaChi d WHERE d.nguoidung.id = ?1")
+    DiaChi findDiaChiByIdNguoidung(Integer idNd);
+
 }

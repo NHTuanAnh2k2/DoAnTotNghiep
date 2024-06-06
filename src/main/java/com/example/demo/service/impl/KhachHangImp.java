@@ -205,6 +205,56 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
     }
 
     @Override
+    public void sendEmailQuenMatKhau(String recipient, String name, String maDoiMatKhau) {
+        // Cấu hình thông tin email
+        String host = "smtp.gmail.com";
+        String port = "587";
+        String senderEmail = "thinhdqph28839@fpt.edu.vn";
+        String senderPassword = "isniscmsyjdmqjmo";
+
+        // Cấu hình cài đặt
+        Properties properties = System.getProperties();
+        properties.put("mail.smtp.host", host);
+        properties.put("mail.smtp.port", port);
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+
+        // Tạo phiên gửi email
+        Session session = Session.getInstance(properties, new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(senderEmail, senderPassword);
+            }
+        });
+
+        try {
+            // Tạo đối tượng MimeMessage
+            MimeMessage message = new MimeMessage(session);
+
+            // Thiết lập người nhận
+            message.setFrom(new InternetAddress(senderEmail));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
+
+            // Thiết lập tiêu đề
+            message.setSubject("Mã Xác Nhận Đặt Lại Mật Khẩu");
+
+            // Thiết lập nội dung email
+            String emailContent = "Xin chào, " + name + "\n\n";
+            emailContent += "Đây là mã đặt lại mật khẩu của bạn: " + maDoiMatKhau + "\n\n";
+            emailContent += "Trân trọng,\n";
+            emailContent += "Đỗ Quốc Thịnh";
+
+            // Thiết lập nội dung
+            message.setText(emailContent);
+
+            // Gửi email
+            Transport.send(message);
+            System.out.println("Email sent successfully");
+        } catch (MessagingException mex) {
+            mex.printStackTrace();
+        }
+    }
+
+    @Override
     public List<KhachHangInfo> displayKhachHang() {
         List<KhachHang> lstKhachHang = this.findAllKhachHang();
         Collections.sort(lstKhachHang, Comparator.comparing(KhachHang::getNgaytao).reversed());
@@ -257,6 +307,12 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
 
         return lstkhachhanginfo;
     }
+
+    @Override
+    public NguoiDung findByEmail(String email) {
+        return nguoiDungRepository.findNguoiDungByEmail(email);
+    }
+
 
 
     @Override
@@ -367,6 +423,19 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
             e.printStackTrace();
             return null;
         }
+    }
+
+
+    @Override
+    public NguoiDung findNguoiDungByTaikhoan(String taikhoan) {
+        NguoiDung nd = nguoiDungRepository.findNguoiDungByTaikhoan(taikhoan);
+        return nd;
+    }
+
+    @Override
+    public DiaChi findDiaChiByIdNguoidung(Integer idNd) {
+        DiaChi dc = diaChiRepository.findDiaChiByIdNguoidung(idNd);
+        return dc;
     }
 
 }

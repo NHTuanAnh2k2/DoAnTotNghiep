@@ -766,7 +766,12 @@ public class hoaDonController {
 
     @ModelAttribute("AddKHNhanh")
     public AddKHNhanhFormBanHang addKHNhanh() {
-        return new AddKHNhanhFormBanHang(null,null,null,"chọn tỉnh","chọn huyện","chọn xã",null,true);
+        return new AddKHNhanhFormBanHang(null, null, null, "chọn tỉnh", "chọn huyện", "chọn xã", null, true);
+    }
+
+    @ModelAttribute("thongtingiaohang")
+    public DiaChiGiaoCaseBanHangOff diachigiaohangtaiquay() {
+        return new DiaChiGiaoCaseBanHangOff(null, null, null, "chọn tỉnh", "chọn huyện", "chọn xã", null, null,null,null);
     }
 
 }
