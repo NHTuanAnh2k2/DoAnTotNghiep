@@ -1,5 +1,46 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+    }
+
+    .chartMenu {
+        width: 100vw;
+        height: 40px;
+        background: #1A1A1A;
+        color: rgba(54, 162, 235, 1);
+    }
+
+    .chartMenu p {
+        padding: 10px;
+        font-size: 20px;
+    }
+
+    .chartCard {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .chartBox {
+        width: 100%;
+        padding: 100px;
+        border-radius: 20px;
+        background: white;
+    }
+    .chartBox1 {
+        width: 100%;
+    }
+    .ten {
+        font-size: 30px;
+        font-weight: bolder;
+        text-align: center;
+    }
+</style>
 <nav th:replace="~{/layoutadmin/head.html}"></nav>
 
 <body class="hold-transition sidebar-mini layout-fixed" style="font-family: 'Bahnschrift'">
@@ -25,14 +66,8 @@
         <div class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">THỐNG KÊ</h1>
-                    </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Thống kê</li>
-                        </ol>
+                    <div class="col-sm-12">
+                        <h1 style="text-align: center; font-weight: bolder; margin-top: 10px">THỐNG KÊ</h1>
                     </div>
                 </div>
             </div>
@@ -44,67 +79,200 @@
         <section class="content">
             <div class="container-fluid">
                 <!-- Small boxes (Stat box) -->
-                <div class="row">
+                <div class="row ">
+                    <div class="col-lg-1 col-6"></div>
                     <div class="col-lg-3 col-6">
                         <!-- small box -->
-                        <div class="small-box bg-info">
+                        <div class="small-box bg-white">
                             <div class="inner">
-                                <h3>150</h3>
+                                <h4>Doanh số tháng này</h4>
 
-                                <p>New Orders</p>
+                                <p style="color: #c87f0a;"><span th:text="${slhdtt}"></span> đơn hàng / <span th:text="${ttt}"></span> VND</p>
                             </div>
-                            <div class="icon">
-                                <i class="ion ion-bag"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
                     <div class="col-lg-3 col-6">
                         <!-- small box -->
-                        <div class="small-box bg-success">
+                        <div class="small-box bg-white">
                             <div class="inner">
-                                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                                <h4>Doanh số hôm nay</h4>
 
-                                <p>Bounce Rate</p>
+                                <p style="color: #c87f0a;"><span th:text="${slhdtn}"></span> đơn hàng / <span th:text="${ttn}"></span> VND</p>
                             </div>
-                            <div class="icon">
-                                <i class="ion ion-stats-bars"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+<!--                            <div class="icon">-->
+<!--                                <i class="ion ion-stats-bars"></i>-->
+<!--                            </div>-->
+<!--                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>-->
                         </div>
                     </div>
                     <!-- ./col -->
                     <div class="col-lg-3 col-6">
                         <!-- small box -->
-                        <div class="small-box bg-warning">
+                        <div class="small-box bg-white">
                             <div class="inner">
-                                <h3>44</h3>
+                                <h4>Hàng bán được tháng này</h4>
 
-                                <p>User Registrations</p>
+                                <p style="color: #c87f0a;"><span th:text="${sptt}"></span> sản phẩm</p>
                             </div>
-                            <div class="icon">
-                                <i class="ion ion-person-add"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+<!--                            <div class="icon">-->
+<!--                                <i class="ion ion-person-add"></i>-->
+<!--                            </div>-->
+<!--                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>-->
                         </div>
                     </div>
                     <!-- ./col -->
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-danger">
-                            <div class="inner">
-                                <h3>65</h3>
+                </div>
+                <div class="row" style="margin-bottom: 20px">
+                    <div class="col-lg-6 col-6"></div>
+                    <div class="col-lg-6 col-6">
+                        <button type="button" class="btn active  btn-lg">Xuất Excel</button>
+                        <button type="button" class="btn active btn-lg">Bộ lọc</button>
+                        <button type="button" class="btn active btn-lg">7 ngày trước</button>
+                        <button type="button" class="btn active btn-lg">Tháng</button>
+                        <button type="button" class="btn active btn-lg">Năm</button>
+                        <button type="button" class="btn active btn-lg">Tùy chỉnh</button>
+                    </div>
+                </div>
+                <div class="row"></div>
+                <div class="chartCard"  style="margin-bottom: 20px">
+                    <div class="chartBox">
+                        <p class="ten">Biểu đồ thống kê hóa đơn và sản phẩm</p>
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+                <div class="row" style="padding: 10px">
+                    <div class="col-lg-6 col-6" >
+                        <div class="col-lg-12 col-6 bg-white">
+                            <p class="ten" style="margin-top: 10px">Top sản phẩm bán chạy tháng này</p>
+                            <table id="example2" class="table table-bordered table-hover text-center">
+                                <thead class="table table-danger">
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Mã sản phẩm</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Giá bán</th>
+                                    <th>Số lượng đã bán</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="data,stt : ${sp}">
+                                    <td th:text="${stt.index + 1}"></td>
+                                    <td th:text="${data[0]}"></td>
+                                    <td th:text="${data[1]}"></td>
+                                    <td th:text="${data[2]}"></td>
+                                    <td th:text="${data[3]}"></td>
+                                </tr>
+                                </tbody>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="col-lg-12 col-6 bg-white">
 
-                                <p>Unique Visitors</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-pie-graph"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <p class="ten" style="margin-top: 10px">Sản phẩm sắp hết hàng</p>
+                        <table id="example3" class="table table-bordered table-hover text-center">
+                            <thead class="table table-danger">
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã sản phẩm</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Giá bán</th>
+                                <th>Số lượng đã bán</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="data,stt : ${slt}">
+                                <td th:text="${stt.index + 1}"></td>
+                                <td th:text="${data[0]}"></td>
+                                <td th:text="${data[1]}"></td>
+                                <td th:text="${data[2]}"></td>
+                                <td th:text="${data[3]}"></td>
+                            </tr>
+                            </tbody>
+                            </tfoot>
+                        </table>
                         </div>
                     </div>
-                    <!-- ./col -->
+                    <div class="col-lg-6 col-6">
+                        <div class="col-lg-12 col-6 bg-white">
+                            <p class="ten" style="margin-top: 10px">Trạng thái đơn hàng tháng này</p>
+                            <div class="chartCard1">
+                                <div class="chartBox1">
+                                    <canvas id="myChart1"></canvas>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-12 col-6 bg-white">
+                            <p class="ten" style="margin-top: 10px">Tốc độ tăng trưởng của cửa hàng</p>
+                            <div class="small-box bg-dark" style="padding: 5px; margin-top: 5px">
+                                <div class="row" style="margin-top: 10px">
+                                    <p class="col-lg-4"><svg style="margin-right: 15px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event-fill" viewBox="0 0 16 16">
+                                        <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2m-3.5-7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5"/>
+                                    </svg>Doanh thu ngày</p>
+                                    <p  class="col-lg-5"><span th:text="${ttdsn}"></span> VND</p>
+                                    <p class="col-lg-2"><svg style="margin-right: 10px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07"/>
+                                    </svg>  <span th:text="${ptdsn}"></span> %</p>
+                                </div>
+                            </div>
+                            <div class="small-box bg-dark" style="padding: 5px;">
+                                <div class="row" style="margin-top: 10px">
+                                    <p class="col-lg-4"><svg style="margin-right: 15px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event-fill" viewBox="0 0 16 16">
+                                        <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2m-3.5-7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5"/>
+                                    </svg>Doanh thu tháng</p>
+                                    <p  class="col-lg-5"><span th:text="${ttdst}"></span> VND</p>
+                                    <p class="col-lg-2"><svg style="margin-right: 10px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07"/>
+                                    </svg> <span th:text="${ptdst}"></span> %</p>
+                                </div>
+                            </div>
+                            <div class="small-box bg-dark" style="padding: 5px;">
+                                <div class="row" style="margin-top: 10px">
+                                    <p class="col-lg-4"><svg style="margin-right: 15px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event-fill" viewBox="0 0 16 16">
+                                        <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2m-3.5-7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5"/>
+                                    </svg>Sản phẩm ngày</p>
+                                    <p  class="col-lg-5"><span th:text="${ttspn}"></span> sản phẩm</p>
+                                    <p class="col-lg-2"><svg style="margin-right: 10px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07"/>
+                                    </svg>  <span th:text="${ptspn}"></span> %</p>
+                                </div>
+                            </div>
+                            <div class="small-box bg-dark" style="padding: 5px;">
+                                <div class="row" style="margin-top: 10px">
+                                    <p class="col-lg-4"><svg style="margin-right: 15px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event-fill" viewBox="0 0 16 16">
+                                        <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2m-3.5-7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5"/>
+                                    </svg>Sản phẩm tháng</p>
+                                    <p  class="col-lg-5"><span th:text="${ttspt}"></span> sản phẩm</p>
+                                    <p class="col-lg-2"><svg style="margin-right: 10px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07"/>
+                                    </svg> <span th:text="${ptspt}"></span> %</p>
+                                </div>
+                            </div>
+                            <div class="small-box bg-dark" style="padding: 5px;">
+                                <div class="row" style="margin-top: 10px">
+                                    <p class="col-lg-4"><svg style="margin-right: 15px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event-fill" viewBox="0 0 16 16">
+                                        <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2m-3.5-7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5"/>
+                                    </svg>Hóa đơn ngày</p>
+                                    <p  class="col-lg-5"><span th:text="${tthdn}"></span> hóa đơn</p>
+                                    <p class="col-lg-2"><svg style="margin-right: 10px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07"/>
+                                    </svg>  <span th:text="${pthdn}"></span> %</p>
+                                </div>
+                            </div>
+                            <div class="small-box bg-dark" style="padding: 5px;">
+                                <div class="row" style="margin-top: 10px">
+                                    <p class="col-lg-4"><svg style="margin-right: 15px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event-fill" viewBox="0 0 16 16">
+                                        <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2m-3.5-7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5"/>
+                                    </svg>Hóa đơn tháng</p>
+                                    <p  class="col-lg-5"><span th:text="${tthdt}"></span> hóa đơn</p>
+                                    <p class="col-lg-2"><svg style="margin-right: 10px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07"/>
+                                    </svg>  <span th:text="${pthdt}"></span> %</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.row -->
                 <!-- Main row -->
@@ -121,7 +289,164 @@
 
 </div>
 <nav th:replace="~{/layoutadmin/script.html}"></nav>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+<script>
+    // setup
+    const data = {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        datasets: [{
+            label: ['Sản phẩm'],
+            data: [18, 12, 6, 9, 12, 3, 9],
+            backgroundColor: [
+                'rgba(255, 152, 0)',
+            ],
+            // borderColor: [
+            //     'rgba(0, 0, 0, 1)'
+            // ],
+            borderWidth: 1
+        }, {
+            label: ['Hóa đơn'],
+            data: [10, 70, 1, 5, 7, 4, 15],
+            backgroundColor: [
+                'rgba(44, 120, 101)',
+            ],
+            // borderColor: [
+            //     'rgba(0, 0, 0, 1)'
+            // ],
+            borderWidth: 1
+        }]
+    };
+    const verticalPeformanceArrows = {
+        id: 'verticalPeformanceArrows',
+        afterDatasetsDraw(chart, args, plugins) {
+            const {
+                ctx,
+                data,
+                chartArea: {
+                    top
+                },
+                scales: {
+                    x,
+                    y
+                }
+            } = chart;
+            ctx.save();
+            ctx.beginPath();
+            ctx.fillStyle = 'red';
+            ctx.moveTo(x.getPixelForValue(0), top + 15);
+            ctx.lineTo(x.getPixelForValue(0) - 7.5, top);
+            ctx.closePath();
+            ctx.fill();
+        }
+    };
+    const yScaleTopLeble = {
+        id: 'yScaleTopLeble',
+        afterDatasetsDraw(chart, args, plugins) {
+            const {
+                ctx,
+                scales: {
+                    y
+                }
+            } = chart;
+            const yCenter = (y.right - 8) / 2;
+            ctx.save();
+            ctx.font = 'bold 20px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseLine = 'bottom';
+            ctx.fillText('S', yCenter, y.top - 10);
+        }
+    };
 
+    // config
+    const config = {
+        type: 'bar',
+        data,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grace: 5, // Khoảng trống giữa giá trị lớn nhất và đỉnh trục y
+                    grid: {
+                        display: false // ẩn dòng kẻ trên trục y
+                    },
+                    title: {
+                        display: true, // hiển thị tiêu đề trục y
+
+                        text: 'số lượng', // tiêu đề trục y
+                        font: {
+                            size: 20, // kích thước chữ
+                            family: 'sans-serif', // kiểu chữ
+                        }
+                    },
+                    ticks: {
+                        stepSize: 20 // Khoảng cách giữa các đơn vị trên trục y
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false // ẩn dòng kẻ trên trục x
+                    }
+                }
+            },
+            plugins: [verticalPeformanceArrows, yScaleTopLeble]
+        }
+    };
+
+    // render init block
+    const myChart = new Chart(
+        document.getElementById('myChart'),
+        config
+    );
+
+    // Instantly assign Chart.js version
+    const chartVersion = document.getElementById('chartVersion');
+    // chartVersion.innerText = Chart.version;
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://unpkg.com/chart.js-plugin-labels-dv/dist/chartjs-plugin-labels.min.js"></script>
+<script>
+    var chartData = /*[[${bdTron}]]*/ [];
+    var labels = chartData.map(function(item) {
+        return item.label;
+    });
+    var values = chartData.map(function(item) {
+        return item.value;
+    });
+    const data1 = {
+        labels: labels,
+        datasets: [{
+            // label: 'Weekly Sales',
+            data: values,
+            backgroundColor: [
+                'rgba(255, 26, 104, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(248, 199, 148)',
+            ],
+            borderWidth: 1
+        }]
+    };
+    const configs = {
+        type: 'pie',
+        data: data1,
+        options: {
+            plugins: {
+                labels: {
+                    render: 'percentage',
+                    fontStyle: 'bolder'
+                }
+            }
+        },
+    };
+    const myChart1 = new Chart(
+        document.getElementById('myChart1'),
+        configs
+    );
+</script>
 </body>
 
 </html>
