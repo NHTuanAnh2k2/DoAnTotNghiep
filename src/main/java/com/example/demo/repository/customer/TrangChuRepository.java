@@ -25,17 +25,21 @@ public interface TrangChuRepository extends JpaRepository<SanPham, Integer> {
 
 
 
-    @Query(value ="SELECT sct.MaSanPhamChiTiet, sp.TenSanPham + ' [' + kc.Ten + ' - ' + ms.Ten + ']', sct.GiaTien , COALESCE(SUM(ct.SoLuong), 0)\n" +
-            "FROM  HoaDonChiTiet ct \n" +
-            "join HoaDon hd on ct.IdHoaDon = hd.Id \n" +
-            "JOIN SanPhamChiTiet sct on ct.IdSanPhamChiTiet = sct.Id\n" +
-            "Join SanPham sp on sct.IdSanPham = sp.Id\n" +
-            "Join KichCo kc on sct.IdKichCo = kc.Id\n" +
-            "Join MauSac ms on sct.IdMauSac = ms.Id\n" +
-            "WHERE MONTH (hd.lancapnhatcuoi) = MONTH(GETDATE()) AND YEAR(hd.lancapnhatcuoi) = YEAR(GETDATE()) AND hd.trangthai = 5 \n" +
-            "GROUP BY sct.MaSanPhamChiTiet, sp.TenSanPham + ' [' + kc.Ten + ' - ' + ms.Ten + ']', sct.GiaTien\n" +
-            "ORDER BY COALESCE(SUM(ct.SoLuong), 0) DESC",nativeQuery = true)
+    @Query(value = """
+            SELECT TOP 8 sct.MaSanPhamChiTiet, sp.TenSanPham + ' [' + kc.Ten + ' - ' + ms.Ten + ']', sct.GiaTien , COALESCE(SUM(ct.SoLuong), 0), anh.tenanh
+            FROM HoaDonChiTiet ct
+            JOIN HoaDon hd ON ct.IdHoaDon = hd.Id
+            JOIN SanPhamChiTiet sct ON ct.IdSanPhamChiTiet = sct.Id
+            JOIN SanPham sp ON sct.IdSanPham = sp.Id
+            JOIN KichCo kc ON sct.IdKichCo = kc.Id
+            JOIN MauSac ms ON sct.IdMauSac = ms.Id
+            JOIN Anh anh ON sp.id = anh.Id
+            WHERE MONTH (hd.lancapnhatcuoi) = MONTH(GETDATE()) AND YEAR(hd.lancapnhatcuoi) = YEAR(GETDATE()) AND hd.trangthai = 5
+            GROUP BY sct.MaSanPhamChiTiet, sp.TenSanPham + ' [' + kc.Ten + ' - ' + ms.Ten + ']', sct.GiaTien, anh.tenanh
+            ORDER BY COALESCE(SUM(ct.SoLuong), 0) DESC
+            """, nativeQuery = true)
     List<Object[]> topspbanchaynhat();
+
 
 
     // top sp mới nhất của detail
