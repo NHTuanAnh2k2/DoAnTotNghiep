@@ -162,7 +162,8 @@
                                                     <p></p>
                                                     <button class="btn btn-danger" th:if="${trangThaiHienTai<3}"
                                                         data-bs-toggle="modal" data-bs-target="#huy">Hủy</button>
-                                                    <button class="btn btn-warning" th:if="${trangThaiHienTai > 0 and trangThaiHienTai < 5}"
+                                                    <button class="btn btn-warning"
+                                                        th:if="${trangThaiHienTai > 0 and trangThaiHienTai < 5}"
                                                         data-bs-toggle="modal" data-bs-target="#quaylai">Quay
                                                         lại</button>
                                                     <button th:if="${trangThaiHienTai==0}" class="btn btn-primary"
@@ -274,7 +275,8 @@
 
                                                                         <div class="d-flex flex-row-reverse">
                                                                             <button type="submit" id="xacnhanbtn"
-                                                                                disabled class="btn btn-primary">Xác
+                                                                                onclick="xacnhanngaygiao()" disabled
+                                                                                class="btn btn-primary">Xác
                                                                                 nhận</button>
                                                                             <button type="button"
                                                                                 class="btn btn-secondary ms-1"
@@ -846,7 +848,7 @@
                                             </div>
                                             <hr class="border border-danger border-2 opacity-50">
                                             <div class="row g-3">
-                                                <div class="col-lg-6 col-md-6">
+                                                <div class="col-lg-7 col-md-7">
                                                     <div class="d-flex justify-content-start">
                                                         <h6 style="font-family: 'Times New Roman'; font-weight: bold">
                                                             Trạng thái:</h6>
@@ -904,7 +906,7 @@
                                                         </p>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-6 col-md-6">
+                                                <div class="col-lg-5 col-md-5">
                                                     <div class="d-flex justify-content-start">
                                                         <h6 style="font-family: 'Times New Roman'; font-weight: bold">
                                                             Loại giao dịch:</h6>
@@ -936,7 +938,7 @@
                                                     <div class="d-flex justify-content-start">
                                                         <h6 style="font-family: 'Times New Roman'; font-weight: bold">
                                                             Ngày giao dự kiến:</h6>
-                                                        <p
+                                                        <p class="ms-1" th:text="${hoaDonDT.ngaygiaodukien==null?' -------':#dates.format(hoaDonDT.ngaygiaodukien, 'dd-MM-yyyy')}"
                                                             style="margin-left: 48px; font-family: 'Times New Roman'; font-size: 15px;">
                                                             25/12/2024</p>
                                                     </div>
@@ -2384,8 +2386,8 @@
 
             if (inputValue === "") {
                 errorMessage = "Chuỗi không được để trống";
-            } else if (inputValue.length < 30) {
-                errorMessage = "Chuỗi phải có ít nhất 30 kí tự";
+            } else if (inputValue.length < 14) {
+                errorMessage = "Chuỗi phải có ít nhất 14 kí tự";
             }
 
             if (errorMessage !== "") {
@@ -2529,13 +2531,9 @@
                                             // Số nguyên đại diện cho một thời điểm trong JavaScript (ví dụ: số giây kể từ Epoch)
                                             var timestamp = d.data.leadtime;
 
-                                            // Tạo một đối tượng ngày từ số nguyên
-                                            var date = new Date(timestamp * 1000); // *1000 để chuyển đổi từ giây sang mili giây
-
-                                            // Định dạng ngày tháng thành chuỗi "dd-mm-yyyy"
-                                            var formattedDate = date.toLocaleDateString('en-GB'); // 'en-GB' là mã quốc gia/phiên bản ngôn ngữ
-
-                                            console.log(formattedDate); // In ra ngày tháng định dạng "dd-mm-yyyy"
+                                            // http://localhost:8080/hoa-don/set-ngay-giao-du-kien/{date}
+                                            var urlsetdate = `http://localhost:8080/hoa-don/set-ngay-giao-du-kien/${timestamp}`;
+                                            callController(urlsetdate);
                                         })
                                 })
 
@@ -2545,7 +2543,22 @@
 
         }
         //test thử
-        callIdCity('thành phố Hà Nội', 'Quận Nam Từ liêm', 'Phường Phương Canh');
+        function xacnhanngaygiao() {
+            //http://localhost:8080/hoa-don/set-ngay-giao-du-kien/{date}
+            var urlAPI = `http://localhost:8080/hoa-don/call-api-ngay-giao`;
+            fetch(urlAPI)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    callIdCity(b[0], b[1], b[2]);
+                })
+        }
+
+        function callController(url) {
+            fetch(url)
+            console.log("đã chạy")
+        }
 
     </script>
 

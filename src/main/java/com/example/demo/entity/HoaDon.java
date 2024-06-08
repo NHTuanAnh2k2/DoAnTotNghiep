@@ -32,6 +32,7 @@ public class HoaDon {
     Timestamp ngayvanchuyen;
     Timestamp ngaynhanhang;
     Timestamp ngayhoanthanh;
+    Timestamp ngaygiaodukien;
     Boolean loaihoadon;
     BigDecimal phivanchuyen;
     Timestamp ngaytao;
