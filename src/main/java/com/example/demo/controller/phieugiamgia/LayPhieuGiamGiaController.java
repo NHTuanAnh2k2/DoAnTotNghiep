@@ -49,7 +49,7 @@ public class LayPhieuGiamGiaController {
     }
 @GetMapping(value = "/discounts-stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 public Flux<ServerSentEvent<PhieuGiamGia>> streamDiscounts() {
-    return Flux.interval(Duration.ofSeconds(30))
+    return Flux.interval(Duration.ofSeconds(10))
             .flatMap(sequence -> Flux.fromIterable(getUpdatedDiscounts())
                     .map(phieu -> ServerSentEvent.<PhieuGiamGia>builder()
                             .id(String.valueOf(sequence))
