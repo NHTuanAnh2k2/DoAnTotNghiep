@@ -28,6 +28,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Controller
@@ -535,6 +536,28 @@ public class hoaDonController {
         List<HoaDon> lstSaveHD = dao.timTheoID(idhdshowdetail);
         HoaDon hdTT = lstSaveHD.get(0);
         Integer trangthaiset = hdTT.getTrangthai() + 1;
+        //set ngày xác nhận
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        if(trangthaiset==1){
+            hdTT.setNgayxacnhan(Timestamp.valueOf(currentDateTime));
+        }else {
+            if(trangthaiset==3){
+                hdTT.setNgayvanchuyen(Timestamp.valueOf(currentDateTime));
+            }else {
+                if(trangthaiset==4){
+                    hdTT.setNgaynhanhang(Timestamp.valueOf(currentDateTime));
+                }else {
+                    if(trangthaiset==5){
+                        hdTT.setNgayhoanthanh(Timestamp.valueOf(currentDateTime));
+                    }else {
+
+                    }
+                }
+            }
+        }
+        //set người cập nhật theo id đã login
+
+        //
         hdTT.setTrangthai(trangthaiset);
         dao.capNhatHD(hdTT);
         lshd.setTrangthai(trangthaiset);
@@ -578,6 +601,11 @@ public class hoaDonController {
         List<HoaDon> lstSaveHD = dao.timTheoID(idhdshowdetail);
         HoaDon hdTT = lstSaveHD.get(0);
         Integer trangthaiset = hdTT.getTrangthai() - 1;
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        hdTT.setLancapnhatcuoi(Timestamp.valueOf(currentDateTime));
+        //set người cập nhật theo id đã login
+
+        //
         hdTT.setTrangthai(trangthaiset);
         dao.capNhatHD(hdTT);
         lshd.setTrangthai(trangthaiset);
@@ -603,6 +631,11 @@ public class hoaDonController {
         List<HoaDon> lstSaveHD = dao.timTheoID(idhdshowdetail);
         HoaDon hdTT = lstSaveHD.get(0);
         hdTT.setTrangthai(6);
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        hdTT.setLancapnhatcuoi(Timestamp.valueOf(currentDateTime));
+        //set người cập nhật theo id đã login
+
+        //
         dao.capNhatHD(hdTT);
         lshd.setTrangthai(6);
         daoLS.add(lshd);
