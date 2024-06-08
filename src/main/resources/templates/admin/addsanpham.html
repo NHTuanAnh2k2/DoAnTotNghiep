@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <nav th:replace="~{/layoutadmin/head.html}"></nav>
+<!--highlight hàng trong table-->
+<style>
+    .selected-row {
+        opacity: 1 !important;
+        background-color: rgba(249, 72, 42, 0.1); /* Optional: Adding a slight background color for better visibility */
+    }
+
+    tr {
+    }
+</style>
+
 <style>
     .checkbox-red:checked {
         background-color: red;
@@ -12,8 +23,8 @@
     }
 
     /* CSS cho cột Upload Ảnh */
-    #example2 th:nth-child(6),
-    #example2 td:nth-child(6) {
+    #example2 th:nth-child(7),
+    #example2 td:nth-child(7) {
         width: 367px; /* Đặt kích thước của cột "Upload Ảnh" tại đây */
     }
 
@@ -121,12 +132,12 @@
                     <div class="col-sm-6">
 
                     </div>
-<!--                    <div class="col-sm-6">-->
-<!--                        <ol class="breadcrumb float-sm-right">-->
-<!--                            <li class="breadcrumb-item"><a href="#">Home</a></li>-->
-<!--                            <li class="breadcrumb-item active">Thêm sản phẩm</li>-->
-<!--                        </ol>-->
-<!--                    </div>-->
+                    <!--                    <div class="col-sm-6">-->
+                    <!--                        <ol class="breadcrumb float-sm-right">-->
+                    <!--                            <li class="breadcrumb-item"><a href="#">Home</a></li>-->
+                    <!--                            <li class="breadcrumb-item active">Thêm sản phẩm</li>-->
+                    <!--                        </ol>-->
+                    <!--                    </div>-->
                 </div>
             </div><!-- /.container-fluid -->
         </section>
@@ -153,7 +164,8 @@
                                                 onchange="clearErrorMessageTenSP()">
                                             <option></option>
                                             <option th:each="sp : ${sp}" th:value="${sp.tensanpham}"
-                                                    th:text="${sp.tensanpham}"></option>
+                                                    th:text="${sp.tensanpham}"
+                                                    th:selected="${sp.tensanpham} == ${selectedTensp}"></option>
                                         </select>
                                         <span id="tenspError" style="color: red; font-style: italic"></span>
                                     </h5>
@@ -171,17 +183,12 @@
                                     </h5>
                                     <h5 style="font-weight: bold">
                                         <span style="color: red">* </span>Mô tả:
-                                        <!--                                        <textarea  rows="4" cols="164" class="form-control" name="mota" th:value="${motas}"-->
-                                        <!--                                                  oninput="clearErrorMessageMoTa()"></textarea>-->
-                                        <input type="text" name="mota" class="form-control text-muted font-italic"
-                                               th:value="${motas}">
+                                        <textarea rows="4" cols="164" class="form-control" name="mota"
+                                                  th:text="${motas}"
+                                                  oninput="clearErrorMessageMoTa()"></textarea>
                                         <span id="motaError" style="color: red; font-style: italic"></span>
                                     </h5>
-
-
                                 </div>
-
-
                             </div>
 
                             <div class="d-flex">
@@ -195,7 +202,8 @@
                                                         th:text="${th.ten}"></option>
                                             </select>
                                         </p>
-                                        <input type="button" class="btn" style="margin:3%;background-color:rgb(249,72,42);color: white" value="+"
+                                        <input type="button" class="btn"
+                                               style="margin:3%;background-color:rgb(249,72,42);color: white" value="+"
                                                data-bs-toggle="modal" data-bs-target="#themthuonghieu">
                                     </div>
                                     <!--end-->
@@ -211,7 +219,8 @@
                                                         th:text="${cl.ten}"></option>
                                             </select>
                                         </p>
-                                        <input type="button" class="btn" style="margin:3%;background-color:rgb(249,72,42);color: white" value="+"
+                                        <input type="button" class="btn"
+                                               style="margin:3%;background-color:rgb(249,72,42);color: white" value="+"
                                                data-bs-toggle="modal" data-bs-target="#themchatlieu">
                                     </div>
 
@@ -224,7 +233,8 @@
                                                         th:text="${dg.ten}"></option>
                                             </select>
                                         </p>
-                                        <input type="button" class="btn" style="margin:3%;background-color:rgb(249,72,42);color: white" value="+"
+                                        <input type="button" class="btn"
+                                               style="margin:3%;background-color:rgb(249,72,42);color: white" value="+"
                                                data-bs-toggle="modal" data-bs-target="#themdegiay">
                                     </div>
                                     <!--end-->
@@ -245,7 +255,8 @@
                                         </p>
                                         <p>
                                         </p>
-                                        <input type="button" class="btn" style="margin:3%;background-color:rgb(249,72,42);color: white" value="+"
+                                        <input type="button" class="btn"
+                                               style="margin:3%;background-color:rgb(249,72,42);color: white" value="+"
                                                data-bs-toggle="modal" data-bs-target="#themmausac">
                                     </div>
                                     <!--end-->
@@ -258,7 +269,8 @@
                                             <h6 id="displayValue"></h6>
                                         </div>
                                         <div style="margin-right: 2%;margin-left: 5px">
-                                            <input type="button" class="btn" style="background-color:rgb(249,72,42);color: white" value="+"
+                                            <input type="button" class="btn"
+                                                   style="background-color:rgb(249,72,42);color: white" value="+"
                                                    data-bs-toggle="modal"
                                                    data-bs-target="#themkichco2">
                                         </div>
@@ -332,7 +344,8 @@
                                                       style="color: red;font-style: italic"></span>
                                                 <!-- Thông báo lỗi -->
                                             </p>
-                                            <button type="submit" class="btn" style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
+                                            <button type="submit" class="btn"
+                                                    style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
                                                 Thêm
                                             </button>
                                         </form>
@@ -360,7 +373,8 @@
                                                       style="color: red;font-style: italic"></span>
                                                 <!-- Thông báo lỗi -->
                                             </p>
-                                            <button type="submit" class="btn" style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
+                                            <button type="submit" class="btn"
+                                                    style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
                                                 Thêm
                                             </button>
                                         </form>
@@ -379,7 +393,8 @@
                                                 aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form method="post" th:action="@{/addDeGiayModal}" th:object="${degiay}"  onsubmit="return validateDeGiay()">
+                                        <form method="post" th:action="@{/addDeGiayModal}" th:object="${degiay}"
+                                              onsubmit="return validateDeGiay()">
                                             <p>
                                                 Tên đế giày:
                                                 <input id="tenDeGiay" class="form-control" th:field="*{ten}"/>
@@ -387,7 +402,8 @@
                                                       style="color: red;font-style: italic"></span>
                                                 <!-- Thông báo lỗi -->
                                             </p>
-                                            <button type="submit" class="btn" style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
+                                            <button type="submit" class="btn"
+                                                    style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
                                                 Thêm
                                             </button>
                                         </form>
@@ -435,14 +451,16 @@
                                                 aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form method="post" th:action="@{/addMauSacModal}" th:object="${mausac}" onsubmit="return validateMauSac()">
+                                        <form method="post" th:action="@{/addMauSacModal}" th:object="${mausac}"
+                                              onsubmit="return validateMauSac()">
                                             <p>
                                                 Tên màu sắc:
-                                                <input id="tenMauSac"class="form-control" th:field="*{ten}"/>
+                                                <input id="tenMauSac" class="form-control" th:field="*{ten}"/>
                                                 <span id="tenMauSacError"
                                                       style="color: red;font-style: italic"></span>
                                             </p>
-                                            <button type="submit" class="btn" style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
+                                            <button type="submit" class="btn"
+                                                    style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
                                                 Thêm
                                             </button>
                                         </form>
@@ -464,7 +482,8 @@
         <h3 class="text-bold text-center" style="padding-left: 15px">CHI TIẾT SẢN PHẨM</h3>
         <form id="submitid" th:action="@{/addImage}" name="addImage" method="post" enctype="multipart/form-data"
               onsubmit="return validateForm2()">
-            <a id="editButton" class="btn disabled" style="margin-left: 900px;margin-bottom: 15px;background-color:rgb(249,72,42);color: white"
+            <a id="editButton" class="btn disabled"
+               style="margin-left: 900px;margin-bottom: 15px;background-color:rgb(249,72,42);color: white"
                data-bs-toggle="modal" data-bs-target="#chinhsuasoluongvagia">Chỉnh sửa số lượng và giá chung</a>
 
 
@@ -494,7 +513,6 @@
                     </div>
                 </div>
             </div>
-
             <button class="btn-sm btn-dark" style="margin-left: 10px; margin-bottom: 15px"
                     type="submit"
                     id="submitButton">Hoàn tất
@@ -509,6 +527,11 @@
                                            class="table-bordered table-hover text-center">
                                         <thead style="background-color:rgb(249,72,42);height: 50px;color: white">
                                         <tr>
+                                            <th style="padding-left: 30px">
+                                                <input type="checkbox" name="chontatcactsp" id="chontatcactsp"
+                                                       onchange="selectAll(this)"
+                                                       class="form-check-input checkbox checkbox-red">
+                                            </th>
                                             <th>STT</th>
                                             <th>Tên sản phẩm</th>
                                             <th>Số lượng</th>
@@ -521,11 +544,13 @@
                                         <tr th:each="spctt,stt:${sanphamchitiet}" class="product-row">
                                             <td>
                                                 <input type="checkbox" class="form-check-input checkbox checkbox-red"
-                                                       th:value="${spctt.id}" onchange="luuGiaTri(this)">
+                                                       th:value="${spctt.id}" onchange="toggleRowHighlight(this)"
+                                                       name="chonspct">
+                                            </td>
+                                            <td>
                                                 <span style="margin-left: 7px" th:text="${stt.index+1}"></span>
                                             </td>
                                             <td th:text="${spctt.sanpham.tensanpham} +' '+ '[' + ${spctt.kichco.ten} + '-' + ${spctt.mausac.ten} + ']'"></td>
-
                                             <td>
                                                 <input type="number" style="width: 70px; height: 30px"
                                                        class="form-control" th:value="${spctt.soluong}">
@@ -536,10 +561,9 @@
                                                        class="form-control"
                                                        th:value="${#numbers.formatDecimal(spctt.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}">
                                             </td>
-
                                             <td>
                                                 <a th:href="@{/deleteCTSP/{id}(id=${spctt.id})}"
-                                                  style="color: rgb(249,72,42)" onclick="return xoa(event)">
+                                                   style="color: rgb(249,72,42)" onclick="return xoa(event)">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
                                                          fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                                                         <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
@@ -1032,6 +1056,7 @@
                 giaTriTuCheckbox.splice(index, 1);
             }
         }
+        console.log(giaTriTuCheckbox);
     }
 
     function layGiaTri() {
@@ -1061,6 +1086,31 @@
             icon: "success",
             title: "Cập nhật thành công"
         });
+    }
+
+    function toggleRowHighlight(checkbox) {
+        const row = checkbox.closest('tr');
+        if (checkbox.checked) {
+            row.classList.add('selected-row');
+            if (giaTriTuCheckbox.indexOf(checkbox.value) === -1) {
+                giaTriTuCheckbox.push(checkbox.value);
+            }
+        } else {
+            row.classList.remove('selected-row');
+            var index = giaTriTuCheckbox.indexOf(checkbox.value);
+            if (index !== -1) {
+                giaTriTuCheckbox.splice(index, 1);
+            }
+        }
+        console.log(giaTriTuCheckbox);
+    }
+
+    function selectAll(source) {
+        var checkboxes = document.getElementsByName('chonspct');
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = source.checked;
+            toggleRowHighlight(checkboxes[i]); // Call toggleRowHighlight for each checkbox
+        }
     }
 </script>
 <!--dùng ẩn hiện modal khi click vào checkBox-->
@@ -1171,6 +1221,7 @@
             return true; // Cho phép form được gửi đi
         }
     }
+
     function validateDeGiay() {
         var tenDeGiay = document.getElementById("tenDeGiay").value;
         var tenDeGiayError = document.getElementById("tenDeGiayError");
@@ -1184,6 +1235,7 @@
             return true; // Cho phép form được gửi đi
         }
     }
+
     function validateMauSac() {
         var tenMauSac = document.getElementById("tenMauSac").value;
         var tenMauSacError = document.getElementById("tenMauSacError");
@@ -1197,4 +1249,8 @@
             return true; // Cho phép form được gửi đi
         }
     }
+</script>
+
+<script>
+    var giaTriTuCheckbox = []; // Mảng lưu trữ giá trị từ checkbox
 </script>

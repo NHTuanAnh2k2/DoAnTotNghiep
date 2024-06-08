@@ -189,7 +189,7 @@ public interface SanPhamCustomerRepository extends JpaRepository<SanPham, Intege
 //               """)
 //    Page<Object[]> searchByGender0(List<Integer> idthuonghieu, List<Integer> idkichco,Pageable pageable);
 
-//    @Query(value = """
+    //    @Query(value = """
 //            SELECT sp.id, sp.tensanpham, sp.ngaytao, SUM(spct.soluong) AS tongSoLuong, sp.trangthai, MAX(spct.giatien) AS maxGiaTien, MAX(anh.tenanh) AS maxTenAnh, spct.gioitinh
 //            FROM SanPham sp
 //            JOIN sp.spct spct
@@ -208,7 +208,7 @@ public interface SanPhamCustomerRepository extends JpaRepository<SanPham, Intege
 //            @Param("minPrice") BigDecimal minPrice,
 //            @Param("maxPrice") BigDecimal maxPrice
 //    );
-        @Query(value = """
+    @Query(value = """
             SELECT sp.id, sp.tensanpham, sp.ngaytao, SUM(spct.soluong) AS tongSoLuong, sp.trangthai, MAX(spct.giatien) AS maxGiaTien, MAX(anh.tenanh) AS maxTenAnh, spct.gioitinh
             FROM SanPham sp
             JOIN sp.spct spct
