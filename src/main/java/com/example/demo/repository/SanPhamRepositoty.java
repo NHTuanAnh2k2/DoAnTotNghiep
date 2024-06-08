@@ -91,4 +91,3 @@ public interface SanPhamRepositoty extends JpaRepository<SanPham, Integer> {
             "AND spct.degiay.id = :idDeGiay")
     List<SanPham> findSanPhamByAttributes(@Param("tenSanPham") String tenSanPham, @Param("idKichCo") Long idKichCo, @Param("idThuongHieu") Long idThuongHieu, @Param("idMauSac") Long idMauSac, @Param("idChatLieu") Long idChatLieu, @Param("idDeGiay") Long idDeGiay);
 }
-
