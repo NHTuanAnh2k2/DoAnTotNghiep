@@ -3,6 +3,7 @@ package com.example.demo.controller.customer;
 import com.example.demo.entity.Anh;
 import com.example.demo.entity.SanPham;
 import com.example.demo.entity.SanPhamChiTiet;
+import com.example.demo.entity.ThuongHieu;
 import com.example.demo.repository.AnhRepository;
 import com.example.demo.repository.KichCoRepository;
 import com.example.demo.repository.SanPhamChiTietRepository;
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class TrangChuCustomerController {
@@ -66,7 +69,7 @@ public class TrangChuCustomerController {
     @GetMapping("/customer/trangchu")
     public String hienthiTrangChu(Model model) {
         List<Object[]> topspmoinhattrangchu = trangChuRepository.topspmoinhattrangchu();
-        model.addAttribute("page", topspmoinhattrangchu);
+        model.addAttribute("topspmoinhattrangchu", topspmoinhattrangchu);
         List<Object[]> topspbanchaynhattrangchu = trangChuRepository.topspbanchaynhat();
         model.addAttribute("topspbanchaynhattrangchu", topspbanchaynhattrangchu);
         return "customer/trangchu";
@@ -77,6 +80,8 @@ public class TrangChuCustomerController {
         SanPham sanPham = trangChuRepository.findById(id).orElse(null);
         model.addAttribute("sanpham", sanPham);
         model.addAttribute("sanphamchitiet", sanPham.getSpct());
+
+
         List<String> danhSachAnh = new ArrayList<>();
         for (SanPhamChiTiet spct : sanPham.getSpct()) {
             for (Anh anh : spct.getAnh()) {
@@ -87,6 +92,8 @@ public class TrangChuCustomerController {
         // Khởi tạo danh sách sizes và colors
         List<String> sizes = new ArrayList<>();
         List<String> colors = new ArrayList<>();
+        Set<String> thuongHieuSet = new HashSet<>();
+        Set<String> chatlieuset = new HashSet<>();
         for (SanPhamChiTiet spct : sanPham.getSpct()) {
             // Kiểm tra và thêm kích cỡ vào danh sách sizes
             if (!sizes.contains(spct.getKichco().getTen())) {
@@ -96,10 +103,18 @@ public class TrangChuCustomerController {
             if (!colors.contains(spct.getMausac().getTen())) {
                 colors.add(spct.getMausac().getTen());
             }
+            if (spct.getThuonghieu() != null) {
+                thuongHieuSet.add(spct.getThuonghieu().getTen());
+            }
+            if (spct.getChatlieu() != null) {
+                chatlieuset.add(spct.getChatlieu().getTen());
+            }
         }
         // Thêm danh sách sizes và colors vào model
         model.addAttribute("sizes", sizes);
         model.addAttribute("colors", colors);
+        model.addAttribute("thuonghieu", String.join(", ", thuongHieuSet));
+        model.addAttribute("chatlieu", String.join(", ", chatlieuset));
         // Lấy danh sách sản phẩm theo điều kiện
         List<Object[]> page = trangChuRepository.topspmoinhatdetail();
         model.addAttribute("page", page);
