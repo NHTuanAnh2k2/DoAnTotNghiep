@@ -6,7 +6,9 @@ import com.example.demo.repository.AnhRepository;
 import com.example.demo.repository.KichCoRepository;
 import com.example.demo.repository.SanPhamChiTietRepository;
 import com.example.demo.repository.SanPhamRepositoty;
-import com.example.demo.repository.customer.SanPhamCustomerRepository;
+import com.example.demo.repository.customer.SanPhamNamRepository;
+import com.example.demo.repository.customer.SanPhamNuRepository;
+import com.example.demo.repository.customer.TrangChuRepository;
 import com.example.demo.service.impl.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +28,20 @@ import java.util.List;
 @Controller
 public class SanPhamCustomerController {
     @Autowired
-    SanPhamCustomerRepository sanPhamCustomerRepository;
+    TrangChuRepository trangChuRepository;
+
+    @Autowired
+    SanPhamNamRepository sanPhamNamRepository;
+
+    @Autowired
+    SanPhamNuRepository sanPhamNuRepository;
+
     @Autowired
     KichCoRepository kichCoRepository;
+
     @Autowired
     SanPhamChiTietRepository sanPhamChiTietRepository;
+
     @Autowired
     SanPhamRepositoty sanPhamRepositoty;
 
@@ -82,15 +93,15 @@ public class SanPhamCustomerController {
         model.addAttribute("spct", listSanPhamChiTiet);
         Page<Object[]> page = null;
         if (info.getKey() == null) {
-            page = sanPhamCustomerRepository.findProductsGioiTinh1(pageable);
+            page = sanPhamNamRepository.findProductsGioiTinh1(pageable);
         } else {
-            page = sanPhamCustomerRepository.searchByMaAnhTenSP("%" + info.getKey() + "%", "%" + info.getKey() + "%", pageable);
+            page = sanPhamNamRepository.searchByMaAnhTenSP("%" + info.getKey() + "%", "%" + info.getKey() + "%", pageable);
         }
         model.addAttribute("listnam", page);
         model.addAttribute("fillSearch", info.getKey());
-        List<Object[]> page1 = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc4();
+        List<Object[]> page1 = trangChuRepository.topspnoibatdetail();
         model.addAttribute("page", page1);
-        List<Object[]> page2 = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc3();
+        List<Object[]> page2 = trangChuRepository.topspmoinhatdetail();
         model.addAttribute("page2", page2);
         int soLuongThuongHieu = sanPhamChiTietRepository.countByThuongHieuTenIsNikeNam();
         model.addAttribute("soLuongThuongHieu", soLuongThuongHieu);
@@ -134,27 +145,19 @@ public class SanPhamCustomerController {
             }
         }
         if (allUnchecked) {
-            page = sanPhamCustomerRepository.findProductsGioiTinh1(pageable);
+            page = sanPhamNamRepository.findProductsGioiTinh1(pageable);
         } else {
-            page = sanPhamCustomerRepository.searchByGender1(info.getIdThuongHieu(), info.getIdKichCo2(), pageable);
+            page = sanPhamNamRepository.searchByGender1(info.getIdThuongHieu(), info.getIdKichCo2(), pageable);
         }
         model.addAttribute("listnam", page);
-        List<Object[]> page1 = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc4();
+        List<Object[]> page1 = trangChuRepository.topspnoibatdetail();
         model.addAttribute("page", page1);
-        List<Object[]> page2 = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc3();
+        List<Object[]> page2 = trangChuRepository.topspmoinhatdetail();
         model.addAttribute("page2", page2);
         int soLuongThuongHieu = sanPhamChiTietRepository.countByThuongHieuTenIsNikeNam();
         model.addAttribute("soLuongThuongHieu", soLuongThuongHieu);
         return "customer/sanphamnam";
     }
-
-//    @GetMapping("/customer/sanphamnam/sap-xep-tangdan")
-//    public String tangdan(Model model){
-//        Sort sort = Sort.by(Sort.Order.desc("spct.giatien"));
-//        List<Object[]> list=sanPhamCustomerRepository.loctangdan(sort);
-//        model.addAttribute("listnam", list);
-//        return "customer/sanphamnam";
-//    }
 
     @GetMapping("/customer/sanphamnam/sap-xep-tangdan")
     public String tangdannam(Model model, @ModelAttribute("search2") SanPhamCustomerInfo info, @RequestParam(defaultValue = "0") int p) {
@@ -193,14 +196,14 @@ public class SanPhamCustomerController {
             }
         }
         if (allUnchecked) {
-            page = sanPhamCustomerRepository.loctangdan(pageable);
+            page = sanPhamNamRepository.loctangdan(pageable);
         } else {
-            page = sanPhamCustomerRepository.searchByGender1(info.getIdThuongHieu(), info.getIdKichCo2(), pageable);
+            page = sanPhamNamRepository.searchByGender1(info.getIdThuongHieu(), info.getIdKichCo2(), pageable);
         }
         model.addAttribute("listnam", page);
-        List<Object[]> page1 = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc4();
+        List<Object[]> page1 = trangChuRepository.topspnoibatdetail();
         model.addAttribute("page", page1);
-        List<Object[]> page2 = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc3();
+        List<Object[]> page2 = trangChuRepository.topspmoinhatdetail();
         model.addAttribute("page2", page2);
         int soLuongThuongHieu = sanPhamChiTietRepository.countByThuongHieuTenIsNikeNam();
         model.addAttribute("soLuongThuongHieu", soLuongThuongHieu);
@@ -244,14 +247,14 @@ public class SanPhamCustomerController {
             }
         }
         if (allUnchecked) {
-            page = sanPhamCustomerRepository.locgiamdan(pageable);
+            page = sanPhamNamRepository.locgiamdan(pageable);
         } else {
-            page = sanPhamCustomerRepository.searchByGender1(info.getIdThuongHieu(), info.getIdKichCo2(), pageable);
+            page = sanPhamNamRepository.searchByGender1(info.getIdThuongHieu(), info.getIdKichCo2(), pageable);
         }
         model.addAttribute("listnam", page);
-        List<Object[]> page1 = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc4();
+        List<Object[]> page1 = trangChuRepository.topspnoibatdetail();
         model.addAttribute("page", page1);
-        List<Object[]> page2 = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc3();
+        List<Object[]> page2 = trangChuRepository.topspmoinhatdetail();
         model.addAttribute("page2", page2);
         int soLuongThuongHieu = sanPhamChiTietRepository.countByThuongHieuTenIsNikeNam();
         model.addAttribute("soLuongThuongHieu", soLuongThuongHieu);
@@ -295,14 +298,14 @@ public class SanPhamCustomerController {
             }
         }
         if (allUnchecked) {
-            page = sanPhamCustomerRepository.findProductsGioiTinh0(pageable);
+            page = sanPhamNuRepository.findProductsGioiTinh0(pageable);
         } else {
-            page = sanPhamCustomerRepository.searchByGender0(info.getIdThuongHieu(), info.getIdKichCo2(), pageable);
+            page = sanPhamNuRepository.searchByGender0(info.getIdThuongHieu(), info.getIdKichCo2(), pageable);
         }
         model.addAttribute("listnu", page);
-        List<Object[]> page1 = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc4();
+        List<Object[]> page1 = trangChuRepository.topspnoibatdetail();
         model.addAttribute("page", page1);
-        List<Object[]> page2 = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc3();
+        List<Object[]> page2 = trangChuRepository.topspmoinhatdetail();
         model.addAttribute("page2", page2);
         int soLuongThuongHieu = sanPhamChiTietRepository.countByThuongHieuTenIsNikeNu();
         model.addAttribute("soLuongThuongHieu", soLuongThuongHieu);
@@ -347,14 +350,14 @@ public class SanPhamCustomerController {
             }
         }
         if (allUnchecked) {
-            page = sanPhamCustomerRepository.loctangdannu(pageable);
+            page = sanPhamNuRepository.loctangdannu(pageable);
         } else {
-            page = sanPhamCustomerRepository.searchByGender0(info.getIdThuongHieu(), info.getIdKichCo2(), pageable);
+            page = sanPhamNuRepository.searchByGender0(info.getIdThuongHieu(), info.getIdKichCo2(), pageable);
         }
         model.addAttribute("listnu", page);
-        List<Object[]> page1 = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc4();
+        List<Object[]> page1 = trangChuRepository.topspnoibatdetail();
         model.addAttribute("page", page1);
-        List<Object[]> page2 = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc3();
+        List<Object[]> page2 = trangChuRepository.topspmoinhatdetail();
         model.addAttribute("page2", page2);
         int soLuongThuongHieu = sanPhamChiTietRepository.countByThuongHieuTenIsNikeNu();
         model.addAttribute("soLuongThuongHieu", soLuongThuongHieu);
@@ -399,14 +402,14 @@ public class SanPhamCustomerController {
             }
         }
         if (allUnchecked) {
-            page = sanPhamCustomerRepository.locgiamdannu(pageable);
+            page = sanPhamNuRepository.locgiamdannu(pageable);
         } else {
-            page = sanPhamCustomerRepository.searchByGender0(info.getIdThuongHieu(), info.getIdKichCo2(), pageable);
+            page = sanPhamNuRepository.searchByGender0(info.getIdThuongHieu(), info.getIdKichCo2(), pageable);
         }
         model.addAttribute("listnu", page);
-        List<Object[]> page1 = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc4();
+        List<Object[]> page1 = trangChuRepository.topspnoibatdetail();
         model.addAttribute("page", page1);
-        List<Object[]> page2 = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc3();
+        List<Object[]> page2 = trangChuRepository.topspmoinhatdetail();
         model.addAttribute("page2", page2);
         int soLuongThuongHieu = sanPhamChiTietRepository.countByThuongHieuTenIsNikeNu();
         model.addAttribute("soLuongThuongHieu", soLuongThuongHieu);
@@ -414,7 +417,7 @@ public class SanPhamCustomerController {
     }
 
     @GetMapping("/customer/searchMaAnhTen/spnu")
-    public String searchspnu(Model model,@ModelAttribute("searchspnu") SanPhamCustomerInfo info, @ModelAttribute("search2") SanPhamCustomerInfo info2, @RequestParam(defaultValue = "0") int p) {
+    public String searchspnu(Model model, @ModelAttribute("searchspnu") SanPhamCustomerInfo info, @ModelAttribute("search2") SanPhamCustomerInfo info2, @RequestParam(defaultValue = "0") int p) {
         Pageable pageable = PageRequest.of(p, 10);
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
@@ -431,16 +434,16 @@ public class SanPhamCustomerController {
         model.addAttribute("cl", listChatLieu);
         model.addAttribute("spct", listSanPhamChiTiet);
         Page<Object[]> page = null;
-        if(info.getKey()==null){
-            page=sanPhamCustomerRepository.findProductsGioiTinh0(pageable);
-        }else{
-            page=sanPhamCustomerRepository.searchByMaAnhTenSPNu("%" + info.getKey() + "%", "%" + info.getKey() + "%", pageable);
+        if (info.getKey() == null) {
+            page = sanPhamNuRepository.findProductsGioiTinh0(pageable);
+        } else {
+            page = sanPhamNuRepository.searchByMaAnhTenSPNu("%" + info.getKey() + "%", "%" + info.getKey() + "%", pageable);
         }
         model.addAttribute("listnu", page);
         model.addAttribute("fillSearch", info.getKey());
-        List<Object[]> page1 = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc4();
+        List<Object[]> page1 = trangChuRepository.topspnoibatdetail();
         model.addAttribute("page", page1);
-        List<Object[]> page2 = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc3();
+        List<Object[]> page2 = trangChuRepository.topspmoinhatdetail();
         model.addAttribute("page2", page2);
         int soLuongThuongHieu = sanPhamChiTietRepository.countByThuongHieuTenIsNikeNam();
         model.addAttribute("soLuongThuongHieu", soLuongThuongHieu);
