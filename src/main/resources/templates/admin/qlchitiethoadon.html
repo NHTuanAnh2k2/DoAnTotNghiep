@@ -594,7 +594,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-12">
-                                <div class="card" style="height: 350px;">
+                                <div class="card" >
                                     <div class="card-header">
                                         <hr class="border border-danger border-2 opacity-50">
                                         <!--smkds-->
@@ -1237,7 +1237,7 @@
                                                 <tr th:each="a:${pageSPHD}">
                                                     <td th:text="${aStat.index+1}" style="vertical-align: middle;"></td>
                                                     <td style="vertical-align: middle;">
-                                                        <img src="a.sanphamchitiet.anh.get(0).getTenanh()" alt=""
+                                                        <img  alt=""  th:src="@{${a.sanphamchitiet.anh[0].tenanh}}" 
                                                             style="height: 100px; width: 100px;">
                                                     </td>
                                                     <td style="vertical-align: middle; text-align: center;">
@@ -1902,28 +1902,28 @@
                     for (const hd of b) {
                         STT++;
                         htmlSP += `<tr>
-                               <td>${STT}</td>
-                               <td> 
-                                <img src="${hd.anh.tenanh}" alt=""
-                                                            style="height: 100px; width: 100px;">
-                                
-                                </td>
-                               <td>${hd.sanpham.tensanpham}</td>
-                               <td>${hd.soluong}</td>
-                               <td>${hd.kichco.ten}</td>
-                               <td>${hd.mausac.ten}</td>
-                               <td>
-                                <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
-                                    ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
-                                    </p>
-                                </td>
-                               <td>
-                                <a href="ChoseSP/${hd.id}"><button
+                                   <td style="vertical-align: middle;">${STT}</td>
+                                   <td> 
+                                    <img src="${hd.anh[0].tenanh}" alt=""
+                                                                style="height: 100px; width: 100px;">
+                                    
+                                    </td>
+                                   <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
+                                   <td style="vertical-align: middle;">${hd.soluong}</td>
+                                   <td style="vertical-align: middle;">${hd.kichco.ten}</td>
+                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
+                                    <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                        ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                        </p>
+                                    </td>
+                                   <td style="vertical-align: middle;">
+                                    <a href="ChoseSP/${hd.id}"><button
                                 class="btn btn-warning">
                                 chọn
                                  </button></a>
-                                 </td>
-                            </tr>`;
+                                     </td>
+                                </tr>`;
                     }
                     document.getElementById("tbl_sp_them").innerHTML = htmlSP;
                     document.getElementById('navAddSPHDCT').style.display = 'none';
@@ -1958,28 +1958,28 @@
                     for (const hd of b) {
                         STT++;
                         htmlSP += `<tr>
-                               <td>${STT}</td>
-                               <td> 
-                                <img src="${hd.anh.tenanh}" alt=""
-                                                            style="height: 100px; width: 100px;">
-                                
-                                </td>
-                               <td>${hd.sanpham.tensanpham}</td>
-                               <td>${hd.soluong}</td>
-                               <td>${hd.kichco.ten}</td>
-                               <td>${hd.mausac.ten}</td>
-                               <td>
-                                <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
-                                    ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
-                                    </p>
-                                </td>
-                               <td>
-                                <a href="ChoseSP/${hd.id}"><button
+                                   <td style="vertical-align: middle;">${STT}</td>
+                                   <td> 
+                                    <img src="${hd.anh[0].tenanh}" alt=""
+                                                                style="height: 100px; width: 100px;">
+                                    
+                                    </td>
+                                   <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
+                                   <td style="vertical-align: middle;">${hd.soluong}</td>
+                                   <td style="vertical-align: middle;">${hd.kichco.ten}</td>
+                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
+                                    <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                        ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                        </p>
+                                    </td>
+                                   <td style="vertical-align: middle;">
+                                    <a href="ChoseSP/${hd.id}"><button
                                 class="btn btn-warning">
                                 chọn
                                  </button></a>
-                                 </td>
-                            </tr>`;
+                                     </td>
+                                </tr>`;
                     }
                     document.getElementById("tbl_sp_them").innerHTML = htmlSP;
                     document.getElementById('navAddSPHDCT').style.display = 'none';
@@ -2008,28 +2008,28 @@
                     for (const hd of b.content) {
                         STT++;
                         htmlSP += `<tr>
-                               <td>${STT}</td>
-                               <td> 
-                                <img src="${hd.anh.tenanh}" alt=""
-                                                            style="height: 100px; width: 100px;">
-                                
-                                </td>
-                               <td>${hd.sanpham.tensanpham}</td>
-                               <td>${hd.soluong}</td>
-                               <td>${hd.kichco.ten}</td>
-                               <td>${hd.mausac.ten}</td>
-                               <td>
-                                <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
-                                    ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
-                                    </p>
-                                </td>
-                               <td>
-                                <a href="ChoseSP/${hd.id}"><button
+                                   <td style="vertical-align: middle;">${STT}</td>
+                                   <td> 
+                                    <img src="${hd.anh[0].tenanh}" alt=""
+                                                                style="height: 100px; width: 100px;">
+                                    
+                                    </td>
+                                   <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
+                                   <td style="vertical-align: middle;">${hd.soluong}</td>
+                                   <td style="vertical-align: middle;">${hd.kichco.ten}</td>
+                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
+                                    <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                        ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                        </p>
+                                    </td>
+                                   <td style="vertical-align: middle;">
+                                    <a href="ChoseSP/${hd.id}"><button
                                 class="btn btn-warning">
                                 chọn
                                  </button></a>
-                                 </td>
-                            </tr>`;
+                                     </td>
+                                </tr>`;
                     }
 
                     if (thisNumberSPPage < 1) {
@@ -2073,28 +2073,28 @@
                     for (const hd of b.content) {
                         STT++;
                         htmlSP += `<tr>
-                               <td>${STT}</td>
-                               <td> 
-                                <img src="${hd.anh.tenanh}" alt=""
-                                                            style="height: 100px; width: 100px;">
-                                
-                                </td>
-                               <td>${hd.sanpham.tensanpham}</td>
-                               <td>${hd.soluong}</td>
-                               <td>${hd.kichco.ten}</td>
-                               <td>${hd.mausac.ten}</td>
-                               <td>
-                                <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
-                                    ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
-                                    </p>
-                                </td>
-                               <td>
-                                <a href="ChoseSP/${hd.id}"><button
+                                   <td style="vertical-align: middle;">${STT}</td>
+                                   <td> 
+                                    <img src="${hd.anh[0].tenanh}" alt=""
+                                                                style="height: 100px; width: 100px;">
+                                    
+                                    </td>
+                                   <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
+                                   <td style="vertical-align: middle;">${hd.soluong}</td>
+                                   <td style="vertical-align: middle;">${hd.kichco.ten}</td>
+                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
+                                    <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                        ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                        </p>
+                                    </td>
+                                   <td style="vertical-align: middle;">
+                                    <a href="ChoseSP/${hd.id}"><button
                                 class="btn btn-warning">
                                 chọn
                                  </button></a>
-                                 </td>
-                            </tr>`;
+                                     </td>
+                                </tr>`;
                     }
 
                     if (thisNumberSPPage < 1) {
@@ -2135,28 +2135,28 @@
                     for (const hd of b.content) {
                         STT++;
                         htmlSP += `<tr>
-                               <td>${STT}</td>
-                               <td> 
-                                <img src="${hd.anh.tenanh}" alt=""
-                                                            style="height: 100px; width: 100px;">
-                                
-                                </td>
-                               <td>${hd.sanpham.tensanpham}</td>
-                               <td>${hd.soluong}</td>
-                               <td>${hd.kichco.ten}</td>
-                               <td>${hd.mausac.ten}</td>
-                               <td>
-                                <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
-                                    ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
-                                    </p>
-                                </td>
-                               <td>
-                                <a href="ChoseSP/${hd.id}"><button
+                                   <td style="vertical-align: middle;">${STT}</td>
+                                   <td> 
+                                    <img src="${hd.anh[0].tenanh}" alt=""
+                                                                style="height: 100px; width: 100px;">
+                                    
+                                    </td>
+                                   <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
+                                   <td style="vertical-align: middle;">${hd.soluong}</td>
+                                   <td style="vertical-align: middle;">${hd.kichco.ten}</td>
+                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
+                                    <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                        ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                        </p>
+                                    </td>
+                                   <td style="vertical-align: middle;">
+                                    <a href="ChoseSP/${hd.id}"><button
                                 class="btn btn-warning">
                                 chọn
                                  </button></a>
-                                 </td>
-                            </tr>`;
+                                     </td>
+                                </tr>`;
                     }
 
                     if (thisNumberSPPage < 1) {
@@ -2199,28 +2199,28 @@
                     for (const hd of b.content) {
                         STT++;
                         htmlSP += `<tr>
-                               <td>${STT}</td>
-                               <td> 
-                                <img src="${hd.anh.tenanh}" alt=""
-                                                            style="height: 100px; width: 100px;">
-                                
-                                </td>
-                               <td>${hd.sanpham.tensanpham}</td>
-                               <td>${hd.soluong}</td>
-                               <td>${hd.kichco.ten}</td>
-                               <td>${hd.mausac.ten}</td>
-                               <td>
-                                <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
-                                    ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
-                                    </p>
-                                </td>
-                               <td>
-                                <a href="ChoseSP/${hd.id}"><button
+                                   <td style="vertical-align: middle;">${STT}</td>
+                                   <td> 
+                                    <img src="${hd.anh[0].tenanh}" alt=""
+                                                                style="height: 100px; width: 100px;">
+                                    
+                                    </td>
+                                   <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
+                                   <td style="vertical-align: middle;">${hd.soluong}</td>
+                                   <td style="vertical-align: middle;">${hd.kichco.ten}</td>
+                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
+                                    <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                        ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                        </p>
+                                    </td>
+                                   <td style="vertical-align: middle;">
+                                    <a href="ChoseSP/${hd.id}"><button
                                 class="btn btn-warning">
                                 chọn
                                  </button></a>
-                                 </td>
-                            </tr>`;
+                                     </td>
+                                </tr>`;
                     }
 
                     if (thisNumberSPPage < 1) {
@@ -2265,28 +2265,28 @@
                     for (const hd of b.content) {
                         STT++;
                         htmlSP += `<tr>
-                               <td>${STT}</td>
-                               <td> 
-                                <img src="${hd.anh.tenanh}" alt=""
-                                                            style="height: 100px; width: 100px;">
-                                
-                                </td>
-                               <td>${hd.sanpham.tensanpham}</td>
-                               <td>${hd.soluong}</td>
-                               <td>${hd.kichco.ten}</td>
-                               <td>${hd.mausac.ten}</td>
-                               <td>
-                                <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
-                                    ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
-                                    </p>
-                                </td>
-                               <td>
-                                <a href="ChoseSP/${hd.id}"><button
+                                   <td style="vertical-align: middle;">${STT}</td>
+                                   <td> 
+                                    <img src="${hd.anh[0].tenanh}" alt=""
+                                                                style="height: 100px; width: 100px;">
+                                    
+                                    </td>
+                                   <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
+                                   <td style="vertical-align: middle;">${hd.soluong}</td>
+                                   <td style="vertical-align: middle;">${hd.kichco.ten}</td>
+                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
+                                    <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
+                                        ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+                                        </p>
+                                    </td>
+                                   <td style="vertical-align: middle;">
+                                    <a href="ChoseSP/${hd.id}"><button
                                 class="btn btn-warning">
                                 chọn
                                  </button></a>
-                                 </td>
-                            </tr>`;
+                                     </td>
+                                </tr>`;
                     }
 
                     if (thisNumberSPPage < 1) {

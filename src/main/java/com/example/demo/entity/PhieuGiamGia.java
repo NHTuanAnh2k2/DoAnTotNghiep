@@ -23,7 +23,7 @@ public class PhieuGiamGia {
     String macode;
     String tenphieu;
     BigDecimal giatrigiamtoida;//tiền giảm tối đa
-    Integer giatrigiam;// phần trăm giảm
+    Integer giatrigiam;// phần trăm giảm_hoặc tiền mặt
     BigDecimal dontoithieu;
     Integer soluong;
     Boolean loaiphieu;

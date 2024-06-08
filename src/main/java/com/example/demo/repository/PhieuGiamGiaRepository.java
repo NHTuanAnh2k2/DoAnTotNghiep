@@ -30,4 +30,6 @@ public interface PhieuGiamGiaRepository extends JpaRepository<PhieuGiamGia,Integ
                                                  Pageable pageable);
     @Query("SELECT p FROM PhieuGiamGia p WHERE p.id=?1")
     PhieuGiamGia findPhieuGiamGiaById(Integer Id);
+    @Query("SELECT p FROM PhieuGiamGia p where p.kieuphieu=?1 and p.trangthai=?2")
+    List<PhieuGiamGia> findAllByKieuphieuaAndTrangthais(Boolean kieuphieu,Integer trangthai);
 }

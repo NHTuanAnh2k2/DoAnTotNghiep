@@ -21,7 +21,7 @@
             <div class="col-md-6">
                 <div class="row">
                     <div class="single-check">
-                        <form action="my-account.html">
+                        <form th:method="post" th:action="@{/quenmatkhau}">
                             <div class="single-input p-bottom50 clearfix">
                                 <div class="col-12">
                                     <div class="check-title">
@@ -32,11 +32,15 @@
                                     <label>Email:</label>
                                     <div class="input-text">
                                         <input type="text" name="email" class="form-control"/>
+                                        <p style="color: red" th:text="${message}"></p>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="submit-text">
-                                        <button class="text-dark"> <a th:href="@{/trangchu}">TIẾP THEO</a></button>
+                                        <button class="text-dark">TIẾP THEO</button>
+                                    </div>
+                                    <div class="submit-text" th:if="${dangnhap}">
+                                        <a class="text-dark btn" th:href="@{/same/login}">Đăng nhập</a>
                                     </div>
                                 </div>
                             </div>
