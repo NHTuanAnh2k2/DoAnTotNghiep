@@ -207,78 +207,31 @@
                                                               th:text="${'('+soLuongThuongHieu+')'}"></span>
                                                     </div>
                                                 </div>
+                                                <div class="sidebar-title">
+                                                    <br>
+                                                    <h3>KHOẢNG GIÁ</h3>
+                                                        <input type="checkbox" th:field="*{range1}" id="range1" value="true" onchange="locgia()" class="form-check-input checkbox checkbox-red"/>
+                                                        <label for="range1" style="margin-left: 25px;">0Đ ~ 1.000.000Đ</label><br/>
+
+                                                        <input type="checkbox" th:field="*{range2}" id="range2" value="true" onchange="locgia()" class="form-check-input checkbox checkbox-red"/>
+                                                        <label for="range2" style="margin-left: 25px;">1.000.000Đ ~ 2.000.000Đ</label><br/>
+
+                                                        <input type="checkbox" th:field="*{range3}" id="range3" value="true" onchange="locgia()" class="form-check-input checkbox checkbox-red"/>
+                                                        <label for="range3" style="margin-left: 25px;">2.000.000Đ ~ 3.000.000Đ</label><br/>
+
+                                                        <input type="checkbox" th:field="*{range4}" id="range4" value="true" onchange="locgia()" class="form-check-input checkbox checkbox-red"/>
+                                                        <label for="range4" style="margin-left: 25px;">3.000.000Đ ~ 5.000.000Đ</label><br/>
+
+                                                        <input type="checkbox" th:field="*{range5}" id="range5" value="true" onchange="locgia()" class="form-check-input checkbox checkbox-red"/>
+                                                        <label for="range5" style="margin-left: 25px;">Trên 5.000.000Đ</label><br/>
+                                                </div>
                                             </form>
-                                            <div class="sidebar-title">
-                                                <br>
-                                                <h3>KHOẢNG GIÁ</h3>
-                                            <form id="filterGia" th:action="@{/api/sanpham/search}" th:object="${loctheogia}" method="get">
-                                                <input type="checkbox" th:field="*{range1}" id="range1" value="true" onchange="locgia()"/>
-                                                <label for="range1">0Đ ~ 1.000.000Đ</label><br/>
-
-                                                <input type="checkbox" th:field="*{range2}" id="range2" value="true" onchange="locgia()"/>
-                                                <label for="range2">1.000.000Đ ~ 2.000.000Đ</label><br/>
-
-                                                <input type="checkbox" th:field="*{range3}" id="range3" value="true" onchange="locgia()"/>
-                                                <label for="range3">2.000.000Đ ~ 3.000.000Đ</label><br/>
-
-                                                <input type="checkbox" th:field="*{range4}" id="range4" value="true" onchange="locgia()"/>
-                                                <label for="range4">3.000.000Đ ~ 5.000.000Đ</label><br/>
-
-                                                <input type="checkbox" th:field="*{range5}" id="range5" value="true" onchange="locgia()"/>
-                                                <label for="range5">Trên 5.000.000Đ</label><br/>
-                                            </form>
-                                            </div>
                                         </a>
                                     </li>
                                 </ul>
                             </li>
                         </ul>
                     </nav>
-
-
-                    <!--loc du phong-->
-                    <div class="category single-side">
-                        <!--                        <form id="filterForm" th:method="get" th:object="${search2}">-->
-                        <!--                            <div class="sidebar-title">-->
-                        <!--                                <h3>SIZE</h3>-->
-                        <!--                                <div th:each="kichco : ${kc}" class="d-flex align-items-center justify-content-between">-->
-                        <!--                                    <p class="custom-control custom-switch">-->
-                        <!--                                        <input type="checkbox" th:field="*{idKichCo2}" th:value="${kichco.id}"-->
-                        <!--                                               style="color: rgb(249, 72, 42); font-weight: bold;"-->
-                        <!--                                               class="custom-control-input" th:id="'customSwitch-' + ${kichco.id}"-->
-                        <!--                                               onchange="filterProducts2()"/>-->
-                        <!--                                        <label th:text="${kichco.ten}" style="margin-right: 10px;"-->
-                        <!--                                               class="custom-control-label"-->
-                        <!--                                               th:for="'customSwitch-' + ${kichco.id}"></label>-->
-                        <!--                                    </p>-->
-                        <!--                                    <span class="ml-3">(5)</span>-->
-                        <!--                                </div>-->
-                        <!--                            </div>-->
-                        <!--                            <p></p>-->
-                        <!--                            <div class="sidebar-title">-->
-                        <!--                                <h3>THƯƠNG HIỆU</h3>-->
-                        <!--                                <div th:each="thuonghieu : ${th}"-->
-                        <!--                                     class="d-flex align-items-center justify-content-between">-->
-                        <!--                                    <p>-->
-                        <!--                                        <input type="checkbox" th:field="*{idThuongHieu}" th:value="${thuonghieu.id}"-->
-                        <!--                                               style="color: rgb(249, 72, 42); font-weight: bold;"-->
-                        <!--                                               class="form-check-input checkbox checkbox-red"-->
-                        <!--                                               onchange="filterProducts()">-->
-                        <!--                                        <label th:text="${thuonghieu.ten}" style="margin-left: 25px;"></label>-->
-                        <!--                                    </p>-->
-                        <!--                                    <span class="ml-3" th:text="${'('+soLuongThuongHieu+')'}"></span>-->
-                        <!--                                </div>-->
-
-                        <!--                            </div>-->
-                        <!--                        </form>-->
-                        <!--                        <div class="sidebar-title">-->
-                        <!--                            <h3>Giá tiền</h3>-->
-                        <!--                            <div class="slidecontainer" style="width: 300px;">-->
-                        <!--                                <input type="range" min="1" max="100" value="50" style="width: 70%;">-->
-                        <!--                            </div>-->
-                        <!--                        </div>-->
-
-                    </div>
                     <!--ảnh hover-->
                     <div class="sidebar-banner banner-hover">
                         <a href="#"><img src="../../dist/img/sale.jpg" width="263" height="406" alt="Banner"/></a>
@@ -588,7 +541,7 @@
 
 
     function locgia() {
-        var form = document.getElementById('filterGia');
+        var form = document.getElementById('filterForm');
         form.submit();
     }
     /*]]>*/

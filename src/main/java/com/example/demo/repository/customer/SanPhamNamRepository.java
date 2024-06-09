@@ -64,30 +64,19 @@ public interface SanPhamNamRepository extends JpaRepository<SanPham, Integer> {
             JOIN sp.spct spct
             JOIN spct.anh anh
             WHERE spct.gioitinh = true 
-                AND ((?1 IS NULL OR spct.thuonghieu.id IN (?1))
-                OR (?2 IS NULL OR spct.kichco.id IN (?2)))
-            GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai, spct.gioitinh
-            ORDER BY sp.ngaytao DESC, tongSoLuong DESC
-                  """)
-    Page<Object[]> loctheothkc(List<Integer> idthuonghieu, List<Integer> idkichco, Pageable pageable);
-
-    @Query(value = """
-            SELECT sp.id, sp.tensanpham, sp.ngaytao, SUM(spct.soluong) AS tongSoLuong, sp.trangthai, MAX(spct.giatien) AS maxGiaTien, MAX(anh.tenanh) AS maxTenAnh, spct.gioitinh
-            FROM SanPham sp
-            JOIN sp.spct spct
-            JOIN spct.anh anh
-            WHERE spct.gioitinh = true 
-                AND (
+               AND (
                     (?1 = true AND spct.giatien BETWEEN 0 AND 1000000)
                     OR (?2 = true AND spct.giatien BETWEEN 1000000 AND 2000000)
                     OR (?3 = true AND spct.giatien BETWEEN 2000000 AND 3000000)
                     OR (?4 = true AND spct.giatien BETWEEN 3000000 AND 5000000)
                     OR (?5 = true AND spct.giatien > 5000000)
                 )
-            GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai, spct.gioitinh
-            ORDER BY sp.ngaytao DESC, tongSoLuong DESC
-            """)
-    Page<Object[]> loctheogia(Boolean range1, Boolean range2, Boolean range3, Boolean range4, Boolean range5, Pageable pageable);
+                OR ((?6 IS NULL OR spct.thuonghieu.id IN (?6))
+                OR (?7 IS NULL OR spct.kichco.id IN (?7)))
+                GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai, spct.gioitinh
+                ORDER BY sp.ngaytao DESC, tongSoLuong DESC
+                  """)
+    Page<Object[]> loctheothkc(Boolean range1, Boolean range2, Boolean range3, Boolean range4, Boolean range5, List<Integer> idthuonghieu, List<Integer> idkichco, Pageable pageable);
 
     // tìm kiếm theo mã và tên sản phẩm nam
     @Query(value = """
