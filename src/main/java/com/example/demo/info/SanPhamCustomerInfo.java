@@ -16,6 +16,7 @@ public class SanPhamCustomerInfo {
     List<Integer> idThuongHieu;
     Integer idDeGiay;
     List<Integer> idKichCo2;
+    List<Integer> idMauSac2;
     Integer idMauSac;
     Integer idChatLieu;
     Boolean gioitinh;
