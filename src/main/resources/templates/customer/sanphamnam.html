@@ -232,8 +232,6 @@
                                 </a>
                                 <!-- Lọc sản phẩm -->
                                 <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link">
                                             <form id="filterForm" method="get" th:object="${loctheothkc}"
                                                   th:action="@{/customer/sanphamnam}">
                                                 <div class="sidebar-title">
@@ -307,36 +305,36 @@
                                                     <input type="checkbox" th:field="*{range1}" id="range1" value="true"
                                                            onchange="locgia()"
                                                            class="form-check-input rounded-circle checkbox checkbox-red"/>
-                                                    <label for="range1" style="margin-left: 25px;">0Đ ~
-                                                        1.000.000Đ</label><br/>
+                                                    <label for="range1" style="margin-left: 25px;">0 VNĐ ~
+                                                        1.000.000 VNĐ</label><br/>
 
                                                     <input type="checkbox" th:field="*{range2}" id="range2" value="true"
                                                            onchange="locgia()"
                                                            class="form-check-input rounded-circle checkbox checkbox-red"/>
-                                                    <label for="range2" style="margin-left: 25px;">1.000.000Đ ~
-                                                        2.000.000Đ</label><br/>
+                                                    <label for="range2" style="margin-left: 25px;">1.000.000 VNĐ ~
+                                                        2.000.000 VNĐ</label><br/>
 
                                                     <input type="checkbox" th:field="*{range3}" id="range3" value="true"
                                                            onchange="locgia()"
                                                            class="form-check-input checkbox rounded-circle checkbox-red"/>
-                                                    <label for="range3" style="margin-left: 25px;">2.000.000Đ ~
-                                                        3.000.000Đ</label><br/>
+                                                    <label for="range3" style="margin-left: 25px;">2.000.000 VNĐ ~
+                                                        3.000.000 VNĐ</label><br/>
 
                                                     <input type="checkbox" th:field="*{range4}" id="range4" value="true"
                                                            onchange="locgia()"
                                                            class="form-check-input checkbox rounded-circle checkbox-red"/>
-                                                    <label for="range4" style="margin-left: 25px;">3.000.000Đ ~
-                                                        5.000.000Đ</label><br/>
+                                                    <label for="range4" style="margin-left: 25px;">3.000.000 VNĐ ~
+                                                        5.000.000 VNĐ</label><br/>
 
                                                     <input type="checkbox" th:field="*{range5}" id="range5" value="true"
                                                            onchange="locgia()"
                                                            class="form-check-input checkbox rounded-circle checkbox-red"/>
                                                     <label for="range5" style="margin-left: 25px;">Trên
-                                                        5.000.000Đ</label><br/>
+                                                        5.000.000 VNĐ</label><br/>
                                                 </div>
                                             </form>
-                                        </a>
-                                    </li>
+
+
                                 </ul>
                             </li>
                         </ul>
