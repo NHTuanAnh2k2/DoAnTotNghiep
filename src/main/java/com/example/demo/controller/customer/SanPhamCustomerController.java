@@ -139,6 +139,14 @@ public class SanPhamCustomerController {
                 }
             }
         }
+        if (info != null && info.getIdMauSac2() != null) {
+            for (Integer idMauSac2 : info.getIdMauSac2()) {
+                if (idMauSac2 != null) {
+                    allUnchecked = false;
+                    break;
+                }
+            }
+        }
         if (info != null) {
             if (isAnyRangeChecked(info.getRange1()) ||
                     isAnyRangeChecked(info.getRange2()) ||
@@ -159,6 +167,7 @@ public class SanPhamCustomerController {
                     info.getRange5(),
                     info.getIdThuongHieu(),
                     info.getIdKichCo2(),
+                    info.getIdMauSac2(),
                     pageable);
         }
         model.addAttribute("listnam", page);

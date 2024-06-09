@@ -72,11 +72,12 @@ public interface SanPhamNamRepository extends JpaRepository<SanPham, Integer> {
                     OR (?5 = true AND spct.giatien > 5000000)
                 )
                 OR ((?6 IS NULL OR spct.thuonghieu.id IN (?6))
-                OR (?7 IS NULL OR spct.kichco.id IN (?7)))
+                OR (?7 IS NULL OR spct.kichco.id IN (?7))
+                OR (?8 IS NULL OR spct.mausac.id IN (?8)))
                 GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai, spct.gioitinh
                 ORDER BY sp.ngaytao DESC, tongSoLuong DESC
                   """)
-    Page<Object[]> loctheothkc(Boolean range1, Boolean range2, Boolean range3, Boolean range4, Boolean range5, List<Integer> idthuonghieu, List<Integer> idkichco, Pageable pageable);
+    Page<Object[]> loctheothkc(Boolean range1, Boolean range2, Boolean range3, Boolean range4, Boolean range5, List<Integer> idthuonghieu, List<Integer> idkichco,List<Integer> idmausac, Pageable pageable);
 
     // tìm kiếm theo mã và tên sản phẩm nam
     @Query(value = """
