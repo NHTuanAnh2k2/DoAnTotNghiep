@@ -66,7 +66,7 @@ public class BanHangController {
     @ResponseBody
     public ResponseEntity<?> getLstCho() {
         List<HoaDon> lst = daoHD.timTheoTrangThaiVaLoai(0, false);
-        if(lst.size()>0){
+        if (lst.size() > 0) {
             hdHienTai = lst.get(0);
         }
         return ResponseEntity.ok(lst);
@@ -244,6 +244,52 @@ public class BanHangController {
         return "redirect:/hoa-don/ban-hang";
     }
 
+    //áp dụng phiếu giảm được chọn
+    @GetMapping("ap-dung-voucher/{id}")
+    @ResponseBody
+    public ResponseEntity<?> addvoucherselect(@PathVariable("id") String id) {
+        PhieuGiamGia phieutim = daoPGG.findPhieuGiamGiaById(Integer.valueOf(id));
+        phieugiamsaoluu = phieutim;
+        System.out.println("aaaaaaaaaaaa");
+        System.out.println(phieugiamsaoluu.getMacode());
+        return ResponseEntity.ok(phieutim);
+    }
+//hiển thị all phiếu giảm
+
+    @GetMapping("show-all-voucher")
+    @ResponseBody
+    public ResponseEntity<?> showAllMa() {
+        KhachHang kh = hdHienTai.getKhachhang();
+        List<KhachHangPhieuGiam> lst = new ArrayList<>();
+        if (kh != null) {
+            lst = daoKHPG.findAllByKhachhang(kh);
+        }
+        List<HoaDonChiTiet> lsthdct = daoHDCT.getListSPHD(hdHienTai);
+
+        //lst phiếu giảm cá nhân đang kích hoạt trạng thái là 1
+        List<PhieuGiamGia> lstPhieuGiamCaNhan = new ArrayList<>();
+        if (lst.size() > 0) {
+            for (KhachHangPhieuGiam a : lst
+            ) {
+                if (a.getPhieugiamgia().getTrangthai() == 1) {
+                    lstPhieuGiamCaNhan.add(a.getPhieugiamgia());
+                }
+            }
+        }
+        List<PhieuGiamGia> lstphieuPublic = daoPGG.findAllByKieuphieuaAndTrangthais(false, 1);
+        // add phiếu cá nhân và phiếu công khai về cùng 1 lst cá nhân
+        for (PhieuGiamGia a : lstphieuPublic
+        ) {
+            lstPhieuGiamCaNhan.add(a);
+        }
+
+        List<PhieuGiamGia> lstThoaMan = lstPhieuGiamCaNhan;
+
+
+        return ResponseEntity.ok(lstThoaMan);
+    }
+
+
     @GetMapping("fillMaGiam")
     @ResponseBody
     public ResponseEntity<?> fillMaGiam() {
@@ -354,17 +400,17 @@ public class BanHangController {
             }
 
         } else {
-            if (phantram.getId() == null && tienmat.getId()==null) {
+            if (phantram.getId() == null && tienmat.getId() == null) {
                 return ResponseEntity.ok(result);
             }
 
-            if (phantram.getId() == null && tienmat.getId()!=null) {
+            if (phantram.getId() == null && tienmat.getId() != null) {
                 result.setPhieugiamgia(tienmat);
                 BigDecimal tiengiam = BigDecimal.valueOf(Double.valueOf("" + tienmat.getGiatrigiam()));
                 sotiengiam = tiengiam;
 
             }
-            if (tienmat.getId() == null && phantram.getId()!=null) {
+            if (tienmat.getId() == null && phantram.getId() != null) {
                 BigDecimal phantramgiam = (tongTienSP.divide(new BigDecimal("100"), 4, RoundingMode.HALF_UP)).multiply(BigDecimal.valueOf(Double.valueOf("" + phantram.getGiatrigiam())));
                 BigDecimal maxphantram = phantramgiam.compareTo(phantram.getGiatrigiamtoida()) > 0 ? phantram.getGiatrigiamtoida() : phantramgiam;
                 result.setPhieugiamgia(phantram);
