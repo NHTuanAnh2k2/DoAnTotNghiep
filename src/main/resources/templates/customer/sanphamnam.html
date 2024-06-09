@@ -168,7 +168,7 @@
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
                                         <a href="#" class="nav-link">
-                                            <form id="filterForm" th:method="get" th:object="${search2}"
+                                            <form id="filterForm" method="get" th:object="${loctheothkc}"
                                                   th:action="@{/customer/sanphamnam}">
                                                 <div class="sidebar-title">
                                                     <h3>SIZE</h3>
@@ -180,7 +180,7 @@
                                                                    style="color: rgb(249, 72, 42); font-weight: bold;"
                                                                    class="custom-control-input"
                                                                    th:id="'customSwitch-' + ${kichco.id}"
-                                                                   onchange="filterProducts2()"/>
+                                                                   onchange="locsize()"/>
                                                             <label th:text="${kichco.ten}" style="margin-right: 10px;"
                                                                    class="custom-control-label"
                                                                    th:for="'customSwitch-' + ${kichco.id}"></label>
@@ -199,7 +199,7 @@
                                                                    th:value="${thuonghieu.id}"
                                                                    style="color: rgb(249, 72, 42); font-weight: bold;"
                                                                    class="form-check-input checkbox checkbox-red"
-                                                                   onchange="filterProducts()">
+                                                                   onchange="locthuonghieu()">
                                                             <label th:text="${thuonghieu.ten}"
                                                                    style="margin-left: 25px;"></label>
                                                         </p>
@@ -208,6 +208,26 @@
                                                     </div>
                                                 </div>
                                             </form>
+                                            <div class="sidebar-title">
+                                                <br>
+                                                <h3>KHOẢNG GIÁ</h3>
+                                            <form id="filterGia" th:action="@{/api/sanpham/search}" th:object="${loctheogia}" method="get">
+                                                <input type="checkbox" th:field="*{range1}" id="range1" value="true" onchange="locgia()"/>
+                                                <label for="range1">0Đ ~ 1.000.000Đ</label><br/>
+
+                                                <input type="checkbox" th:field="*{range2}" id="range2" value="true" onchange="locgia()"/>
+                                                <label for="range2">1.000.000Đ ~ 2.000.000Đ</label><br/>
+
+                                                <input type="checkbox" th:field="*{range3}" id="range3" value="true" onchange="locgia()"/>
+                                                <label for="range3">2.000.000Đ ~ 3.000.000Đ</label><br/>
+
+                                                <input type="checkbox" th:field="*{range4}" id="range4" value="true" onchange="locgia()"/>
+                                                <label for="range4">3.000.000Đ ~ 5.000.000Đ</label><br/>
+
+                                                <input type="checkbox" th:field="*{range5}" id="range5" value="true" onchange="locgia()"/>
+                                                <label for="range5">Trên 5.000.000Đ</label><br/>
+                                            </form>
+                                            </div>
                                         </a>
                                     </li>
                                 </ul>
@@ -557,16 +577,20 @@
 
 <script th:inline="javascript">
     /*<![CDATA[*/
-    function filterProducts() {
+    function locsize() {
+        var form = document.getElementById('filterForm');
+        form.submit();
+    }
+    function locthuonghieu() {
         var form = document.getElementById('filterForm');
         form.submit();
     }
 
-    function filterProducts2() {
-        var form = document.getElementById('filterForm');
+
+    function locgia() {
+        var form = document.getElementById('filterGia');
         form.submit();
     }
-
     /*]]>*/
 </script>
 

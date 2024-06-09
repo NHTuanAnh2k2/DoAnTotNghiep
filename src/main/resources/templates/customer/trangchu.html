@@ -42,7 +42,7 @@
             <!--nội dung-->
             <div class="tab-pane fade text-center active show" id="gird">
                 <div class="single-products row" >
-                    <div class="col-md-3" th:each="sp, stt : ${page}">
+                    <div class="col-md-3" th:each="sp, stt : ${topspmoinhattrangchu}">
                         <div class="product-item margin40">
                             <div class="pro-img">
                                 <a th:href="@{/detailsanphamCustomer/{id}(id=${sp[0]})}">
@@ -97,12 +97,12 @@
             <!--nội dung-->
             <div class="tab-pane fade text-center active show" id="gird">
                 <div class="single-products row" >
-                    <div class="col-md-3" th:each="sp, stt : ${page2}">
+                    <div class="col-md-3" th:each="sp, stt : ${topspbanchaynhattrangchu}">
                         <div class="product-item margin40">
                             <div class="pro-img">
                                 <a th:href="@{/detailsanphamCustomer/{id}(id=${sp[0]})}">
                                     <img th:if="${sp[3] != null}"
-                                         th:src="@{'/upload/' + ${sp[6].substring(sp[3].lastIndexOf('upload') + 3)}}"
+                                         th:src="@{'/upload/' + ${sp[3].substring(sp[3].lastIndexOf('upload') + 3)}}"
                                          class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
                                 </a>
                                 <div class="tag-n-s">
@@ -124,7 +124,7 @@
                                 </div>
                             </div>
                             <div class="product-title">
-                                <a href="#"><h3 class="title" th:text="${sp[0]}"></h3></a>
+                                <a href="#"><h3 class="title" th:text="${sp[1]}"></h3></a>
                                 <div class="ratting">
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
@@ -133,7 +133,7 @@
                                     <i class="fa fa-star gray-star"></i>
                                 </div>
                                 <p>
-                                    <span style="color: red;font-weight: bold"  th:text="${#numbers.formatDecimal(sp[1], 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
+                                    <span style="color: red;font-weight: bold"  th:text="${#numbers.formatDecimal(sp[2], 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
                                     <!--                                    <del >$170.00</del>-->
                                 </p>
                             </div>

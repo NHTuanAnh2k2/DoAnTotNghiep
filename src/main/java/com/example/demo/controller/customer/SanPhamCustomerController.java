@@ -15,14 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.Arrays;
+import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
@@ -109,7 +104,7 @@ public class SanPhamCustomerController {
     }
 
     @GetMapping("/customer/sanphamnam")
-    public String sanphamnam(Model model, @ModelAttribute("search2") SanPhamCustomerInfo info, @RequestParam(defaultValue = "0") int p) {
+    public String sanphamnam(Model model, @ModelAttribute("loctheothkc") SanPhamCustomerInfo info, @ModelAttribute("loctheogia") SanPhamCustomerInfo info2, @RequestParam(defaultValue = "0") int p) {
         Pageable pageable = PageRequest.of(p, 8);
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
@@ -147,7 +142,7 @@ public class SanPhamCustomerController {
         if (allUnchecked) {
             page = sanPhamNamRepository.findProductsGioiTinh1(pageable);
         } else {
-            page = sanPhamNamRepository.searchByGender1(info.getIdThuongHieu(), info.getIdKichCo2(), pageable);
+            page = sanPhamNamRepository.loctheothkc(info.getIdThuongHieu(), info.getIdKichCo2(), pageable);
         }
         model.addAttribute("listnam", page);
         List<Object[]> page1 = trangChuRepository.topspnoibatdetail();
@@ -159,9 +154,9 @@ public class SanPhamCustomerController {
         return "customer/sanphamnam";
     }
 
-    @GetMapping("/customer/sanphamnam/sap-xep-tangdan")
-    public String tangdannam(Model model, @ModelAttribute("search2") SanPhamCustomerInfo info, @RequestParam(defaultValue = "0") int p) {
-        Pageable pageable = PageRequest.of(p, 10);
+    @GetMapping("/api/sanpham/search")
+    public String searchResults(@ModelAttribute("loctheogia") SanPhamCustomerInfo info, Model model, @RequestParam(defaultValue = "0") int p, @ModelAttribute("loctheothkc") SanPhamCustomerInfo loctheothkc) {
+        Pageable pageable = PageRequest.of(p, 8);
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
         List<MauSac> listMauSac = mauSacImp.findAll();
@@ -176,29 +171,22 @@ public class SanPhamCustomerController {
         model.addAttribute("dg", listDeGiay);
         model.addAttribute("cl", listChatLieu);
         model.addAttribute("spct", listSanPhamChiTiet);
+
         Page<Object[]> page = null;
-        boolean filterByGender = (info != null && info.getIdThuongHieu() == null && info.getIdKichCo2() == null);
         boolean allUnchecked = true;
-        if (info != null && info.getIdThuongHieu() != null) {
-            for (Integer idThuongHieu : info.getIdThuongHieu()) {
-                if (idThuongHieu != null) {
-                    allUnchecked = false;
-                    break;
-                }
-            }
-        }
-        if (info != null && info.getIdKichCo2() != null) {
-            for (Integer idKichCo2 : info.getIdKichCo2()) {
-                if (idKichCo2 != null) {
-                    allUnchecked = false;
-                    break;
-                }
+        if (info != null) {
+            if (isAnyRangeChecked(info.getRange1()) ||
+                    isAnyRangeChecked(info.getRange2()) ||
+                    isAnyRangeChecked(info.getRange3()) ||
+                    isAnyRangeChecked(info.getRange4()) ||
+                    isAnyRangeChecked(info.getRange5())) {
+                allUnchecked = false;
             }
         }
         if (allUnchecked) {
-            page = sanPhamNamRepository.loctangdan(pageable);
+            page = sanPhamNamRepository.findProductsGioiTinh1(pageable);
         } else {
-            page = sanPhamNamRepository.searchByGender1(info.getIdThuongHieu(), info.getIdKichCo2(), pageable);
+            page = sanPhamNamRepository.loctheogia(info.getRange1(), info.getRange2(), info.getRange3(), info.getRange4(), info.getRange5(), pageable);
         }
         model.addAttribute("listnam", page);
         List<Object[]> page1 = trangChuRepository.topspnoibatdetail();
@@ -210,59 +198,116 @@ public class SanPhamCustomerController {
         return "customer/sanphamnam";
     }
 
-    @GetMapping("/customer/sanphamnam/sap-xep-giamdan")
-    public String giamdannam(Model model, @ModelAttribute("search2") SanPhamCustomerInfo info, @RequestParam(defaultValue = "0") int p) {
-        Pageable pageable = PageRequest.of(p, 10);
-        List<SanPham> listSanPham = sanPhamImp.findAll();
-        List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
-        List<MauSac> listMauSac = mauSacImp.findAll();
-        List<KichCo> listKichCo = kichCoImp.findAll();
-        List<DeGiay> listDeGiay = deGiayImp.findAll();
-        List<ChatLieu> listChatLieu = chatLieuImp.findAll();
-        List<SanPhamChiTiet> listSanPhamChiTiet = sanPhamChiTietRepository.findAll();
-        model.addAttribute("sp", listSanPham);
-        model.addAttribute("th", listThuongHieu);
-        model.addAttribute("ms", listMauSac);
-        model.addAttribute("kc", listKichCo);
-        model.addAttribute("dg", listDeGiay);
-        model.addAttribute("cl", listChatLieu);
-        model.addAttribute("spct", listSanPhamChiTiet);
-        Page<Object[]> page = null;
-        boolean filterByGender = (info != null && info.getIdThuongHieu() == null && info.getIdKichCo2() == null);
-        boolean allUnchecked = true;
-        if (info != null && info.getIdThuongHieu() != null) {
-            for (Integer idThuongHieu : info.getIdThuongHieu()) {
-                if (idThuongHieu != null) {
-                    allUnchecked = false;
-                    break;
-                }
-            }
-        }
-        if (info != null && info.getIdKichCo2() != null) {
-            for (Integer idKichCo2 : info.getIdKichCo2()) {
-                if (idKichCo2 != null) {
-                    allUnchecked = false;
-                    break;
-                }
-            }
-        }
-        if (allUnchecked) {
-            page = sanPhamNamRepository.locgiamdan(pageable);
-        } else {
-            page = sanPhamNamRepository.searchByGender1(info.getIdThuongHieu(), info.getIdKichCo2(), pageable);
-        }
-        model.addAttribute("listnam", page);
-        List<Object[]> page1 = trangChuRepository.topspnoibatdetail();
-        model.addAttribute("page", page1);
-        List<Object[]> page2 = trangChuRepository.topspmoinhatdetail();
-        model.addAttribute("page2", page2);
-        int soLuongThuongHieu = sanPhamChiTietRepository.countByThuongHieuTenIsNikeNam();
-        model.addAttribute("soLuongThuongHieu", soLuongThuongHieu);
-        return "customer/sanphamnam";
+    // Hàm phụ để kiểm tra các giá trị Boolean
+    private boolean isAnyRangeChecked(Boolean range) {
+        return range != null && range;
     }
+
+//    @GetMapping("/customer/sanphamnam/sap-xep-tangdan")
+//    public String tangdannam(Model model, @ModelAttribute("search2") SanPhamCustomerInfo info, @RequestParam(defaultValue = "0") int p) {
+//        Pageable pageable = PageRequest.of(p, 10);
+//        List<SanPham> listSanPham = sanPhamImp.findAll();
+//        List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
+//        List<MauSac> listMauSac = mauSacImp.findAll();
+//        List<KichCo> listKichCo = kichCoImp.findAll();
+//        List<DeGiay> listDeGiay = deGiayImp.findAll();
+//        List<ChatLieu> listChatLieu = chatLieuImp.findAll();
+//        List<SanPhamChiTiet> listSanPhamChiTiet = sanPhamChiTietRepository.findAll();
+//        model.addAttribute("sp", listSanPham);
+//        model.addAttribute("th", listThuongHieu);
+//        model.addAttribute("ms", listMauSac);
+//        model.addAttribute("kc", listKichCo);
+//        model.addAttribute("dg", listDeGiay);
+//        model.addAttribute("cl", listChatLieu);
+//        model.addAttribute("spct", listSanPhamChiTiet);
+//        Page<Object[]> page = null;
+//        boolean filterByGender = (info != null && info.getIdThuongHieu() == null && info.getIdKichCo2() == null);
+//        boolean allUnchecked = true;
+//        if (info != null && info.getIdThuongHieu() != null) {
+//            for (Integer idThuongHieu : info.getIdThuongHieu()) {
+//                if (idThuongHieu != null) {
+//                    allUnchecked = false;
+//                    break;
+//                }
+//            }
+//        }
+//        if (info != null && info.getIdKichCo2() != null) {
+//            for (Integer idKichCo2 : info.getIdKichCo2()) {
+//                if (idKichCo2 != null) {
+//                    allUnchecked = false;
+//                    break;
+//                }
+//            }
+//        }
+//        if (allUnchecked) {
+//            page = sanPhamNamRepository.loctangdan(pageable);
+//        } else {
+//            page = sanPhamNamRepository.searchByGender1(info.getIdThuongHieu(), info.getIdKichCo2(), pageable);
+//        }
+//        model.addAttribute("listnam", page);
+//        List<Object[]> page1 = trangChuRepository.topspnoibatdetail();
+//        model.addAttribute("page", page1);
+//        List<Object[]> page2 = trangChuRepository.topspmoinhatdetail();
+//        model.addAttribute("page2", page2);
+//        int soLuongThuongHieu = sanPhamChiTietRepository.countByThuongHieuTenIsNikeNam();
+//        model.addAttribute("soLuongThuongHieu", soLuongThuongHieu);
+//        return "customer/sanphamnam";
+//    }
+//
+//    @GetMapping("/customer/sanphamnam/sap-xep-giamdan")
+//    public String giamdannam(Model model, @ModelAttribute("search2") SanPhamCustomerInfo info, @RequestParam(defaultValue = "0") int p) {
+//        Pageable pageable = PageRequest.of(p, 10);
+//        List<SanPham> listSanPham = sanPhamImp.findAll();
+//        List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
+//        List<MauSac> listMauSac = mauSacImp.findAll();
+//        List<KichCo> listKichCo = kichCoImp.findAll();
+//        List<DeGiay> listDeGiay = deGiayImp.findAll();
+//        List<ChatLieu> listChatLieu = chatLieuImp.findAll();
+//        List<SanPhamChiTiet> listSanPhamChiTiet = sanPhamChiTietRepository.findAll();
+//        model.addAttribute("sp", listSanPham);
+//        model.addAttribute("th", listThuongHieu);
+//        model.addAttribute("ms", listMauSac);
+//        model.addAttribute("kc", listKichCo);
+//        model.addAttribute("dg", listDeGiay);
+//        model.addAttribute("cl", listChatLieu);
+//        model.addAttribute("spct", listSanPhamChiTiet);
+//        Page<Object[]> page = null;
+//        boolean filterByGender = (info != null && info.getIdThuongHieu() == null && info.getIdKichCo2() == null);
+//        boolean allUnchecked = true;
+//        if (info != null && info.getIdThuongHieu() != null) {
+//            for (Integer idThuongHieu : info.getIdThuongHieu()) {
+//                if (idThuongHieu != null) {
+//                    allUnchecked = false;
+//                    break;
+//                }
+//            }
+//        }
+//        if (info != null && info.getIdKichCo2() != null) {
+//            for (Integer idKichCo2 : info.getIdKichCo2()) {
+//                if (idKichCo2 != null) {
+//                    allUnchecked = false;
+//                    break;
+//                }
+//            }
+//        }
+//        if (allUnchecked) {
+//            page = sanPhamNamRepository.locgiamdan(pageable);
+//        } else {
+//            page = sanPhamNamRepository.searchByGender1(info.getIdThuongHieu(), info.getIdKichCo2(), pageable);
+//        }
+//        model.addAttribute("listnam", page);
+//        List<Object[]> page1 = trangChuRepository.topspnoibatdetail();
+//        model.addAttribute("page", page1);
+//        List<Object[]> page2 = trangChuRepository.topspmoinhatdetail();
+//        model.addAttribute("page2", page2);
+//        int soLuongThuongHieu = sanPhamChiTietRepository.countByThuongHieuTenIsNikeNam();
+//        model.addAttribute("soLuongThuongHieu", soLuongThuongHieu);
+//        return "customer/sanphamnam";
+//    }
 
     @GetMapping("/customer/sanphamnu")
-    public String sanphamnu(Model model, @ModelAttribute("search2") SanPhamCustomerInfo info, @RequestParam(defaultValue = "0") int p) {
+    public String sanphamnu(Model model, @ModelAttribute("search2") SanPhamCustomerInfo info,
+                            @RequestParam(defaultValue = "0") int p) {
         Pageable pageable = PageRequest.of(p, 10);
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
@@ -314,7 +359,8 @@ public class SanPhamCustomerController {
 
     // loc tang dan nu theo gia tien
     @GetMapping("/customer/sanphamnu/sap-xep-tangdan")
-    public String tangdannu(Model model, @ModelAttribute("search2") SanPhamCustomerInfo info, @RequestParam(defaultValue = "0") int p) {
+    public String tangdannu(Model model, @ModelAttribute("search2") SanPhamCustomerInfo info,
+                            @RequestParam(defaultValue = "0") int p) {
         Pageable pageable = PageRequest.of(p, 10);
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
@@ -366,7 +412,8 @@ public class SanPhamCustomerController {
 
     // loc giam dan nu theo gia tien
     @GetMapping("/customer/sanphamnu/sap-xep-giamdan")
-    public String giamdannu(Model model, @ModelAttribute("search2") SanPhamCustomerInfo info, @RequestParam(defaultValue = "0") int p) {
+    public String giamdannu(Model model, @ModelAttribute("search2") SanPhamCustomerInfo info,
+                            @RequestParam(defaultValue = "0") int p) {
         Pageable pageable = PageRequest.of(p, 10);
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
@@ -417,7 +464,8 @@ public class SanPhamCustomerController {
     }
 
     @GetMapping("/customer/searchMaAnhTen/spnu")
-    public String searchspnu(Model model, @ModelAttribute("searchspnu") SanPhamCustomerInfo info, @ModelAttribute("search2") SanPhamCustomerInfo info2, @RequestParam(defaultValue = "0") int p) {
+    public String searchspnu(Model model, @ModelAttribute("searchspnu") SanPhamCustomerInfo
+            info, @ModelAttribute("search2") SanPhamCustomerInfo info2, @RequestParam(defaultValue = "0") int p) {
         Pageable pageable = PageRequest.of(p, 10);
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
