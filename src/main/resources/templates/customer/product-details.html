@@ -202,22 +202,19 @@
                     <div th:each="image, index : ${danhSachAnh}" class="mySlides">
                         <div class="numbertext" th:text="${index.index + 1} + ' / ' + ${danhSachAnh.size()}"></div>
                         <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                        <img th:src="@{'/upload/' + ${image.substring(image.lastIndexOf('upload') + 6)}}" style="width:100%" alt="Ảnh">
+                        <img th:src="@{'/upload' + ${image.substring(image.lastIndexOf('upload') + 6)}}" style="width:100%" alt="Ảnh">
                         <a class="next" onclick="plusSlides(1)">&#10095;</a>
                     </div>
-                    <!-- Next and previous buttons -->
                     <!-- Image text -->
                     <div class="caption-container">
                         <p id="caption"></p>
                     </div>
                     <!-- Thumbnail images -->
-                    <p>
                     <div class="row">
                         <div th:each="image, index : ${danhSachAnh}" class="column">
-                            <img class="demo cursor" th:src="@{'/upload/' + ${image.substring(image.lastIndexOf('upload') + 6)}}" style="width:100%" onclick="currentSlide(${index.index + 1})" alt="Ảnh">
+                            <img class="demo cursor" th:src="@{'/upload' + ${image.substring(image.lastIndexOf('upload') + 6)}}" style="width:100%" onclick="currentSlide(${index.index + 1})" alt="Ảnh">
                         </div>
                     </div>
-                    </p>
                 </div>
             </div>
 
@@ -229,17 +226,14 @@
                         <h6 th:text="${chatlieu}"></h6>
                         <h6>Tình trạng: Không có hàng</h6>
                         <div th:id="'product-details-' + ${sanpham.id}" th:data-color="${defaultColor}">
-                            <!-- Các phần tử khác -->
                             <div class="d-flex">
                                 <div th:each="color : ${colors}">
                                     <div style="margin-right: 10px">
-                                        <a class="btn btn-outline-dark" th:text="${color}" th:onclick="'updateImagesAndPrice(this, \'' + ${defaultColor} + '\')'"></a>
+                                        <a class="btn btn-outline-dark" th:text="${color}" th:data-color="${color}" th:onclick="'updateImagesAndPrice(this, \'' + ${sanpham.id} + '\')'"></a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-
                         <div class="d-flex">
                             <div th:each="size : ${sizes}">
                                 <div style="margin-right: 10px">
@@ -247,14 +241,12 @@
                                 </div>
                             </div>
                         </div>
-
                         <br>
                         <button class="btn btn" style="background-color: rgb(249,72,42);color: white;width: 370px">Thêm vào giỏ hàng</button>
                         <br>
                         <br>
                         <button class="btn btn-dark" style="width: 370px">Mua ngay</button>
                     </div>
-
                 </div>
             </div>
             <h3 style="margin-top: 30px; color: rgb(249, 72, 42); font-family: 'Lucida Sans Typewriter'"
@@ -276,7 +268,7 @@
                                 <div class="pro-img">
                                     <a th:href="@{/detailsanphamCustomer/{id}(id=${sp[0]})}">
                                         <img th:if="${sp[6] != null}"
-                                             th:src="@{'/upload/' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
+                                             th:src="@{'/upload' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
                                              class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
                                     </a>
                                     <div class="tag-n-s">
@@ -347,7 +339,7 @@
                                 <div class="pro-img">
                                     <a th:href="@{/detailsanphamCustomer/{id}(id=${sp[0]})}">
                                         <img th:if="${sp[6] != null}"
-                                             th:src="@{'/upload/' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
+                                             th:src="@{'/upload' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
                                              class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
                                     </a>
                                     <div class="tag-n-s">
@@ -515,40 +507,20 @@
 
 </script>
 
-
 <script>
-    function updateImagesAndPrice(element, defaultColor) {
-        const sanPhamId = element.closest('[th\\:id^="product-details-"]').getAttribute('id');
-        const color = element.textContent.trim();
-        const encodedColor = encodeURIComponent(color);
-
-        fetch(`/api/sanpham/${sanPhamId}/details?color=${encodedColor}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data) {
-                    // Cập nhật ảnh
-                    const imageContainer = document.querySelector('.left .row');
-                    imageContainer.innerHTML = '';
-                    data.anh.forEach((image, index) => {
-                        imageContainer.innerHTML += `
-                        <div class="column">
-                            <img class="demo cursor" src="/upload/${image}" style="width:100%" onclick="currentSlide(${index + 1})" alt="Ảnh">
-                        </div>`;
-                    });
-
-                    // Cập nhật giá
-                    document.querySelector('.right .price').innerText = `Giá: ${data.gia} VND`;
-
-                    // Thay đổi màu của nút màu sắc được nhấn
-                    const buttons = document.querySelectorAll('.btn.btn-outline-dark');
-                    buttons.forEach(btn => {
-                        btn.style.borderColor = '';
-                        btn.style.color = '';
-                    });
-                    element.style.borderColor = color;
-                    element.style.color = color;
-                }
-            })
-            .catch(error => console.error('Error fetching product details:', error));
+    function updateImagesAndPrice(element, productId) {
+        const color = element.getAttribute('data-color');
+        const url = new URL(window.location);
+        url.searchParams.set('color', color);
+        fetch(url)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const newDocument = parser.parseFromString(html, 'text/html');
+                const newImages = newDocument.querySelector('.left .mySlides').innerHTML; // Get the new large image content
+                document.querySelector('.left .mySlides').innerHTML = newImages; // Update the large image
+            });
     }
 </script>
+
+
