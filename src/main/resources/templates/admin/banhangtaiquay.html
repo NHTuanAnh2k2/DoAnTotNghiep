@@ -219,7 +219,7 @@
                     <img src="../dist/img/no_product.png" width="500px" height="300px">
                     <h3 class="text text-danger"><i>Chưa có hóa đơn nào được tạo!! <i class="bi bi-emoji-tear"></i>!</i>
                     </h3>
-                </div>`;
+                </div>
             </div>
             <!-- các modal -->
 
@@ -530,6 +530,22 @@
                 </div>
             </div>
             <!--Kết thúc Modal thêm sản phẩm vào hóa đơn-->
+
+            <!-- modal bill  -->
+            <div class="modal fade" id="orderSuccessModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div id="hienthibill" class="ps-4">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+                            <button type="button" class="btn btn-primary" id="saveInvoiceBtn">Lưu hóa đơn</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- thêm khách hàng -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
@@ -808,6 +824,7 @@
                 }
 
             })
+
         // JavaScript để mở tab lúc load
         function openInvoice1(evt, invoiceName) {
 
@@ -2683,15 +2700,23 @@ tabindex="0">
             var checkgiaohang = document.getElementById('checktrasau');
             var actionGiao = document.getElementById('thongtingiaohangform');
             if (checkgiaohang.checked) {
-                //giao hàng submit
-                actionGiao.action = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/2';
-                actionGiao.submit();
                 thongbao('Đặt đơn thành công', 'success');
+                //giao hàng submit
+                setTimeout(function () {
+                    actionGiao.action = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/2';
+                    actionGiao.submit();
+                }, 1300);
+
             } else {
                 //giao hàng submit
-                actionGiao.action = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/1';
-                actionGiao.submit();
                 thongbao('Đặt đơn thành công', 'success');
+                setTimeout(function () {
+                    actionGiao.action = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/1';
+                    actionGiao.submit();
+
+                }, 1300);
+
+
             }
             // thongbao('Chưa xác nhận thông tin thanh toán!!!', 'warning');
 
@@ -2764,6 +2789,24 @@ tabindex="0">
         }
         function formatCurrency(amount) {
             return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+        }
+        function formatDate(date) {
+            // Chuyển đổi tham số date thành đối tượng Date (nếu cần)
+            const d = new Date(date);
+
+            // Lấy ngày, tháng và năm
+            const day = d.getDate();
+            const month = d.getMonth() + 1; // Tháng trong JavaScript bắt đầu từ 0
+            const year = d.getFullYear();
+
+            // Định dạng thành dd/mm/yyyy
+            const formattedDate = [
+                day.toString().padStart(2, '0'), // Đảm bảo ngày có hai chữ số
+                month.toString().padStart(2, '0'), // Đảm bảo tháng có hai chữ số
+                year
+            ].join('/');
+
+            return formattedDate;
         }
         //http://localhost:8080/ban-hang-tai-quay/show-all-voucher
         function showmagiam() {
@@ -2842,6 +2885,118 @@ tabindex="0">
 
                 })
         }
+    </script>
+    <!-- hienthibill -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var orderSuccess = /*[[${orderSuccess}]]*/ false;
+        /*]]>*/
+        if (orderSuccess == true) {
+            var urlgetbill = `http://localhost:8080/ban-hang-tai-quay/show-bill`;
+            fetch(urlgetbill)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    console.log(b)
+                    var htmlbill1 = '';
+                    var htmlbill2 = '';
+                    var htmlbill3 = '';
+                    if (b.tennguoinhan == null) {
+                        htmlbill3 = `<h5 >Họ và tên: khách lẻ</h5>
+                    <h5 >Số điện thoại: khách lẻ </h5>`;
+                    } else {
+                        htmlbill3 = `<h5 >${'Họ và tên: ' + b.tennguoinhan}</h5>
+                    <h5 >${'Số điện thoại: ' + b.sdtnhan}</h5>`;
+
+                    }
+
+                    var stt = 0;
+                    for (const hd of b.lst) {
+                        stt++;
+                        htmlbill1 += `
+                                    <tr>
+                                        <td >${stt}</td>
+                                        <td >${hd.tensanpham}</td>
+                                        <td >${'SL: ' + hd.soluong}</td>
+                                    </tr>
+
+                                   `;
+                    }
+                    htmlbill2 = `
+                    <div class="d-flex justify-content-center">
+                            <div class="ms-5">
+                                <h1 style="font-size: 80px;" class="mt-5" >FSPORT SHOP</h1>
+
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <h5>Chương trình phổ thông cao đẳng FPT Polytechnic, Phương Canh Nam Từ
+                                Liêm,
+                                Hà Nội</h5>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <p>SDT: 0379036606</p>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <h5>${'Mã hóa đơn: ' + b.ma}</h5>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="row">
+
+                            <div class="col">
+                                <h3>Khách hàng:</h3>
+                                `+
+                        htmlbill3
+                        + `
+                            </div>
+                        </div>
+                        <hr class="my-4">
+                        <div class="row">
+                            <div class="col">
+                                <h3>Nội dung đơn hàng(Tổng số lượng sản phẩm: 2)</h3>
+                                <table class="table">
+
+
+                    `+ htmlbill1 + `
+                       </table>
+                            </div>
+                            <div class="col text-center mt-3">
+                                <h1>QR</h1>
+                            </div>
+                        </div>
+                        <hr class="my-4">
+                        <div class="row">
+                            <div class="col">
+                                <h3>Tổng đơn</h3>
+                                <h2>
+                             ${ formatCurrency(b.tongtien)}
+                                </h2>
+                            </div>
+                            <div class="col text-end me-5">
+                                <div style="border: 1px dotted black; padding: 5px; margin-left: 120px;">
+                                    <p class="me-4" >${'Hà Nội, Ngày ' + formatDate(b.date)}</p>
+                                    <h3 class="text-center mb-4">Người lập phiếu</h3>
+                                    <p class="text-center">A</p>
+                                    <p class="text-center">Nguyễn Văn A</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    `;
+
+
+                    document.getElementById('hienthibill').innerHTML = htmlbill2;
+                    var myModal = new bootstrap.Modal(document.getElementById('orderSuccessModal'), {});
+                    myModal.show();
+                    orderSuccess = null;
+                })
+
+
+        }
+
     </script>
 </body>
 
