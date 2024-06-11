@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 import java.util.ArrayList;
@@ -76,30 +77,30 @@ public class TrangChuCustomerController {
     }
 
     @GetMapping("/detailsanphamCustomer/{id}")
-    public String detailsanphamCustomer(@PathVariable Integer id, Model model) {
+    public String detailsanphamCustomer(@PathVariable Integer id, @RequestParam(required = false) String color, Model model) {
         SanPham sanPham = trangChuRepository.findById(id).orElse(null);
         model.addAttribute("sanpham", sanPham);
         model.addAttribute("sanphamchitiet", sanPham.getSpct());
 
-
         List<String> danhSachAnh = new ArrayList<>();
         for (SanPhamChiTiet spct : sanPham.getSpct()) {
             for (Anh anh : spct.getAnh()) {
-                danhSachAnh.add(anh.getTenanh());
+                if (color == null || color.equals(spct.getMausac().getTen())) {
+                    danhSachAnh.add(anh.getTenanh());
+                }
             }
         }
         model.addAttribute("danhSachAnh", danhSachAnh);
+
         // Khởi tạo danh sách sizes và colors
         List<String> sizes = new ArrayList<>();
         List<String> colors = new ArrayList<>();
         Set<String> thuongHieuSet = new HashSet<>();
         Set<String> chatlieuset = new HashSet<>();
         for (SanPhamChiTiet spct : sanPham.getSpct()) {
-            // Kiểm tra và thêm kích cỡ vào danh sách sizes
             if (!sizes.contains(spct.getKichco().getTen())) {
                 sizes.add(spct.getKichco().getTen());
             }
-            // Kiểm tra và thêm màu sắc vào danh sách colors
             if (!colors.contains(spct.getMausac().getTen())) {
                 colors.add(spct.getMausac().getTen());
             }
@@ -110,17 +111,19 @@ public class TrangChuCustomerController {
                 chatlieuset.add(spct.getChatlieu().getTen());
             }
         }
-        // Thêm danh sách sizes và colors vào model
         model.addAttribute("sizes", sizes);
         model.addAttribute("colors", colors);
         model.addAttribute("thuonghieu", String.join(", ", thuongHieuSet));
         model.addAttribute("chatlieu", String.join(", ", chatlieuset));
-        // Lấy danh sách sản phẩm theo điều kiện
+
         List<Object[]> page = trangChuRepository.topspmoinhatdetail();
         model.addAttribute("page", page);
         List<Object[]> page2 = trangChuRepository.topspnoibatdetail();
         model.addAttribute("page2", page2);
+
         return "customer/product-details";
+
     }
+
 
 }
