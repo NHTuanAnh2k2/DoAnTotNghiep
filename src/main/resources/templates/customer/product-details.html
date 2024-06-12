@@ -220,35 +220,38 @@
 
             <div class="col-md-6">
                 <div class="right">
-                    <div class="singl-pro-title">
+                    <div class="singl-pro-title" th:data-product-id="${sanpham.id}">
                         <h3 th:text="${sanpham.tensanpham}"></h3>
                         <h6 th:text="${thuonghieu}"></h6>
                         <h6 th:text="${chatlieu}"></h6>
-                        <h6>Tình trạng: Không có hàng</h6>
+                        <h6>Số lượng sản phẩm trong kho</h6>
+                        Giá: <h6 id="product-price" th:text="${selectedPrice} + ' VND'"></h6>
                         <div th:id="'product-details-' + ${sanpham.id}" th:data-color="${defaultColor}">
                             <div class="d-flex">
-                                <div th:each="color : ${colors}">
+                                <div th:each="color, iterStat : ${colors}">
                                     <div style="margin-right: 10px">
-                                        <a class="btn btn-outline-dark" th:text="${color}" th:data-color="${color}" th:onclick="'updateImagesAndPrice(this, \'' + ${sanpham.id} + '\')'"></a>
+                                        <a class="btn" th:classappend="${iterStat.index == 0} ? 'btn-dark' : 'btn-outline-dark'" th:text="${color}" th:data-color="${color}" th:onclick="'changeButtonBackground(this)'"></a>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="d-flex">
-                            <div th:each="size : ${sizes}">
-                                <div style="margin-right: 10px">
-                                    <a class="btn btn-outline-dark" th:text="${size}" onclick="updatePrice('${size}')"></a>
+                            <div class="d-flex">
+                                <div th:each="size, iterStat : ${sizes}">
+                                    <div style="margin-right: 10px">
+                                        <a class="btn" th:classappend="${iterStat.index == 0} ? 'btn-dark' : 'btn-outline-dark'" th:text="${size}" th:data-size="${size}" th:onclick="'changeButtonBackground(this)'"></a>
+                                    </div>
                                 </div>
                             </div>
+
+                            <br>
+                            <button class="btn btn" style="background-color: rgb(249,72,42);color: white;width: 370px">Thêm vào giỏ hàng</button>
+                            <br>
+                            <br>
+                            <button class="btn btn-dark" style="width: 370px">Mua ngay</button>
                         </div>
-                        <br>
-                        <button class="btn btn" style="background-color: rgb(249,72,42);color: white;width: 370px">Thêm vào giỏ hàng</button>
-                        <br>
-                        <br>
-                        <button class="btn btn-dark" style="width: 370px">Mua ngay</button>
                     </div>
                 </div>
             </div>
+
             <h3 style="margin-top: 30px; color: rgb(249, 72, 42); font-family: 'Lucida Sans Typewriter'"
                 class="text-center">CÁC SẢN PHẨM LIÊN QUAN</h3>
             <hr class="border border-danger border opacity-50">
@@ -507,20 +510,112 @@
 
 </script>
 
+
+
+
 <script>
-    function updateImagesAndPrice(element, productId) {
-        const color = element.getAttribute('data-color');
+    document.addEventListener('DOMContentLoaded', function() {
+        const defaultColorElement = document.querySelector('.btn-dark[data-color]');
+        const defaultSizeElement = document.querySelector('.btn-dark[data-size]');
+        if (defaultColorElement) {
+            updateImagesAndPrice();
+        }
+        if (defaultSizeElement) {
+            updatePrice();
+        }
+    });
+
+    function updateImagesAndPrice() {
+        const color = document.querySelector('.btn-dark[data-color]') ? document.querySelector('.btn-dark[data-color]').getAttribute('data-color') : null;
+        const size = document.querySelector('.btn-dark[data-size]') ? document.querySelector('.btn-dark[data-size]').getAttribute('data-size') : null;
         const url = new URL(window.location);
-        url.searchParams.set('color', color);
+
+        if (color) {
+            url.searchParams.set('color', color);
+        }
+        if (size) {
+            url.searchParams.set('size', size);
+        }
+
         fetch(url)
             .then(response => response.text())
             .then(html => {
                 const parser = new DOMParser();
                 const newDocument = parser.parseFromString(html, 'text/html');
-                const newImages = newDocument.querySelector('.left .mySlides').innerHTML; // Get the new large image content
-                document.querySelector('.left .mySlides').innerHTML = newImages; // Update the large image
+                const newImages = newDocument.querySelectorAll('.left .mySlides');
+                const newThumbnails = newDocument.querySelectorAll('.left .column img');
+
+                document.querySelectorAll('.left .mySlides').forEach((slide, index) => {
+                    slide.innerHTML = newImages[index].innerHTML;
+                });
+                document.querySelectorAll('.left .column img').forEach((thumbnail, index) => {
+                    thumbnail.src = newThumbnails[index].src;
+                });
+            });
+
+        updatePrice(); // Ensure price is updated whenever images are updated
+    }
+
+    function updatePrice() {
+        const color = document.querySelector('.btn-dark[data-color]') ? document.querySelector('.btn-dark[data-color]').getAttribute('data-color') : null;
+        const size = document.querySelector('.btn-dark[data-size]') ? document.querySelector('.btn-dark[data-size]').getAttribute('data-size') : null;
+        const url = new URL(window.location);
+
+        if (color) {
+            url.searchParams.set('color', color);
+        }
+        if (size) {
+            url.searchParams.set('size', size);
+        }
+
+        fetch(url)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const newDocument = parser.parseFromString(html, 'text/html');
+                const newPrice = newDocument.querySelector('#product-price').innerText;
+
+                if (newPrice) {
+                    document.querySelector('#product-price').innerText = newPrice;
+                } else {
+                    document.querySelector('#product-price').innerText = 'Không có giá';
+                }
             });
     }
+
+    function changeButtonBackground(element) {
+        const isColorButton = element.hasAttribute('data-color');
+        const isSizeButton = element.hasAttribute('data-size');
+
+        if (isColorButton) {
+            const colorButtons = document.querySelectorAll('.btn[data-color]');
+            const isSelected = element.classList.contains('btn-dark');
+
+            if (!isSelected) {
+                colorButtons.forEach(button => {
+                    button.classList.remove('btn-dark');
+                    button.classList.add('btn-outline-dark');
+                });
+                element.classList.remove('btn-outline-dark');
+                element.classList.add('btn-dark');
+            }
+        } else if (isSizeButton) {
+            const sizeButtons = document.querySelectorAll('.btn[data-size]');
+            const isSelected = element.classList.contains('btn-dark');
+
+            if (!isSelected) {
+                sizeButtons.forEach(button => {
+                    button.classList.remove('btn-dark');
+                    button.classList.add('btn-outline-dark');
+                });
+                element.classList.remove('btn-outline-dark');
+                element.classList.add('btn-dark');
+            }
+        }
+
+        updateImagesAndPrice();
+    }
 </script>
+
 
 
