@@ -3,7 +3,6 @@ package com.example.demo.controller.customer;
 import com.example.demo.entity.Anh;
 import com.example.demo.entity.SanPham;
 import com.example.demo.entity.SanPhamChiTiet;
-import com.example.demo.entity.ThuongHieu;
 import com.example.demo.repository.AnhRepository;
 import com.example.demo.repository.KichCoRepository;
 import com.example.demo.repository.SanPhamChiTietRepository;
@@ -19,10 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.math.BigDecimal;
+import java.util.*;
 
 @Controller
 public class TrangChuCustomerController {
@@ -77,11 +74,10 @@ public class TrangChuCustomerController {
     }
 
     @GetMapping("/detailsanphamCustomer/{id}")
-    public String detailsanphamCustomer(@PathVariable Integer id, @RequestParam(required = false) String color, Model model) {
+    public String detailsanphamCustomer(@PathVariable Integer id, @RequestParam(required = false) String color, @RequestParam(required = false) String size, Model model) {
         SanPham sanPham = trangChuRepository.findById(id).orElse(null);
         model.addAttribute("sanpham", sanPham);
         model.addAttribute("sanphamchitiet", sanPham.getSpct());
-
         List<String> danhSachAnh = new ArrayList<>();
         for (SanPhamChiTiet spct : sanPham.getSpct()) {
             for (Anh anh : spct.getAnh()) {
@@ -91,12 +87,16 @@ public class TrangChuCustomerController {
             }
         }
         model.addAttribute("danhSachAnh", danhSachAnh);
-
-        // Khởi tạo danh sách sizes và colors
         List<String> sizes = new ArrayList<>();
         List<String> colors = new ArrayList<>();
         Set<String> thuongHieuSet = new HashSet<>();
         Set<String> chatlieuset = new HashSet<>();
+        Map<String, BigDecimal> giaSanPhamMap = new HashMap<>();
+        Map<String, Integer> soLuongSanPhamMap = new HashMap<>();
+        BigDecimal selectedPrice = null;
+        Integer selectedQuantity = null;
+        String defaultColor = null;
+        String defaultSize = null;
         for (SanPhamChiTiet spct : sanPham.getSpct()) {
             if (!sizes.contains(spct.getKichco().getTen())) {
                 sizes.add(spct.getKichco().getTen());
@@ -110,20 +110,34 @@ public class TrangChuCustomerController {
             if (spct.getChatlieu() != null) {
                 chatlieuset.add(spct.getChatlieu().getTen());
             }
+            giaSanPhamMap.put(spct.getId().toString(), spct.getGiatien());
+            soLuongSanPhamMap.put(spct.getId().toString(), spct.getSoluong());
+
+            if ((color == null || color.equals(spct.getMausac().getTen())) && (size == null || size.equals(spct.getKichco().getTen()))) {
+                selectedPrice = spct.getGiatien();
+                selectedQuantity = spct.getSoluong();
+            }
+        }
+        if (colors.size() > 0) {
+            defaultColor = colors.get(0);
+        }
+        if (sizes.size() > 0) {
+            defaultSize = sizes.get(0);
         }
         model.addAttribute("sizes", sizes);
         model.addAttribute("colors", colors);
         model.addAttribute("thuonghieu", String.join(", ", thuongHieuSet));
         model.addAttribute("chatlieu", String.join(", ", chatlieuset));
-
+        model.addAttribute("giaSanPhamMap", giaSanPhamMap);
+        model.addAttribute("soLuongSanPhamMap", soLuongSanPhamMap);
+        model.addAttribute("selectedPrice", selectedPrice);
+        model.addAttribute("selectedQuantity", selectedQuantity);
+        model.addAttribute("defaultColor", defaultColor);
+        model.addAttribute("defaultSize", defaultSize);
         List<Object[]> page = trangChuRepository.topspmoinhatdetail();
         model.addAttribute("page", page);
         List<Object[]> page2 = trangChuRepository.topspnoibatdetail();
         model.addAttribute("page2", page2);
-
         return "customer/product-details";
-
     }
-
-
 }
