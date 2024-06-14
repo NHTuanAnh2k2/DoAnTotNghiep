@@ -9,4 +9,5 @@ public interface SanPhamDotGiamService {
     SanPhamDotGiam AddSanPhamDotGiam(SanPhamDotGiam sanPhamDotGiam);
     List<SanPhamDotGiam> findSanPhamDotGiamByIdDotgiamgia(Integer IdDot);
     void delete(SanPhamDotGiam sanPhamDotGiam);
+    List<SanPhamDotGiam> findAll();
 }

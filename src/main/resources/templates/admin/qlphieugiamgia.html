@@ -34,6 +34,9 @@
         font-size: 12px;
         background: white;
     }
+    .theachuyentt {
+        cursor: pointer;
+    }
 </style>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -212,7 +215,7 @@
                                                     <p th:text="${#numbers.formatDecimal(pgg.giatrigiam, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></p>
                                                 </div>
                                             </td>
-                                            <td th:text="${pgg.soluong}"></td>
+                                            <td class="soluong-cell" th:text="${pgg.soluong}"></td>
                                             <td th:text="${#numbers.formatDecimal(pgg.dontoithieu, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></td>
                                             <td>
                                                 <div th:if="${pgg.giatrigiamtoida== null or pgg.giatrigiamtoida <= 0}">
@@ -313,6 +316,9 @@
             Toast.fire({
                 icon: "success",
                 title: "Thêm thành công!"
+            }).then(async () => {
+                // Xóa session sau khi hiển thị thông báo
+                await fetch('/clear-session', { method: 'POST' });
             });
         }
     }
@@ -338,6 +344,9 @@
             Toast.fire({
                 icon: "success",
                 title: "Cập nhật thành công!"
+            }).then(async () => {
+                // Xóa session sau khi hiển thị thông báo
+                await fetch('/clear-session', { method: 'POST' });
             });
         }
     }
@@ -462,37 +471,51 @@
     function updateStatusColumn(discount) {
         const rowId = discount.id;
         const status = discount.trangthai;
-         // const ngayketthuc= discount.ngayKetThuc;
+        const soluong= discount.soluong;
+        const ngayketthuc= new Date(discount.ngayketthuc);
         const row = document.querySelector('[data-id="' + rowId + '"]');
         if (row) {
             const statusCell = row.querySelector('.status-cell');
+            const soluongCell= row.querySelector('.soluong-cell');
             if (statusCell) {
-                statusCell.innerHTML = getStatusHtml(status);
+                statusCell.innerHTML = getStatusHtml(rowId,status,soluong,ngayketthuc);
+            }
+            if (soluongCell){
+                soluongCell.innerHTML= soluong;
             }
         }
     }
 
-    function getStatusHtml(status) {
+    function getStatusHtml(id,status,soluong,ngayketthuc) {
+        const baseUrl = '/admin/cap-nhat-trang-thai-phieu-giam-gia';
+        const url = `${baseUrl}/${id}`;
         if (status === 0) {
-            return '<a th:href="@{/admin/cap-nhat-trang-thai-phieu-giam-gia/{Id}(Id=${pgg.id})}" style="text-decoration: none;" onclick="return hoiTrangThai(event, this)">\n' +
-                '                                                    <div>\n' +
-                '                                                        <p style=" font-family: \'Times New Roman\'; font-size: 12px; border-radius: 14px; background-color: orange; padding: 2px 5px 2px 5px; color: white;">Chưa kích hoạt</p>\n' +
-                '                                                    </div>\n' +
-                '                                                </a>';
+            return `<a href="${url}" style="text-decoration: none;" onclick="return hoiTrangThai(event, this)">\n` +
+                '    <div>\n' +
+                '        <p style="font-family: \'Times New Roman\'; font-size: 12px; border-radius: 14px; background-color: orange; padding: 2px 5px 2px 5px; color: white;">Chưa kích hoạt</p>\n' +
+                '    </div>\n' +
+                '</a>';
         } else if (status === 1) {
-            return '<a th:href="@{/admin/cap-nhat-trang-thai-phieu-giam-gia/{Id}(Id=${pgg.id})}" style="text-decoration: none;" onclick="return hoiTrangThai(event, this)">\n' +
-                '                                                    <div>\n' +
-                '                                                        <p style=" font-family: \'Times New Roman\'; font-size: 12px; border-radius: 14px; background-color: #00bb00; padding: 2px 5px 2px 5px; color: white;">Đang kích hoạt</p>\n' +
-                '                                                    </div>\n' +
-                '                                                </a>';
+            return `<a href="${url}" style="text-decoration: none;" onclick="return hoiTrangThai(event, this)">\n` +
+                '    <div>\n' +
+                '        <p style="font-family: \'Times New Roman\'; font-size: 12px; border-radius: 14px; background-color: #00bb00; padding: 2px 5px 2px 5px; color: white;">Đang kích hoạt</p>\n' +
+                '    </div>\n' +
+                '</a>';
         } else if (status === 2) {
-            return '<div if="${ pgg.trangthai == 2}">\n' +
-                '                                                    <p style=" font-family: \'Times New Roman\'; font-size: 12px; border-radius: 14px; background-color: crimson; padding: 2px 5px 2px 5px; color: white;">Đã ngừng</p>\n' +
-                '                                                </div>'
-
-
-
+            var dateNow = new Date();
+            if(soluong > 0 && dateNow.getTime() < ngayketthuc.getTime()){
+                return `<a href="${url}" style="text-decoration: none;" onclick="return hoiTrangThai2(event, this)">\n` +
+                    '    <div>\n' +
+                    '        <p style="font-family: \'Times New Roman\'; font-size: 12px; border-radius: 14px; background-color: crimson; padding: 2px 5px 2px 5px; color: white;">Đã ngừng</p>\n' +
+                    '    </div>\n' +
+                    '</a>';
+            } else {
+                return '<div>\n' +
+                    '    <p style="font-family: \'Times New Roman\'; font-size: 12px; border-radius: 14px; background-color: crimson; padding: 2px 5px 2px 5px; color: white;">Đã ngừng</p>\n' +
+                    '</div>';
+            }
         }
+
     }
 </script>
 <!--script-->

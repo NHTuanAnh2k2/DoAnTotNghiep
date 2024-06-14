@@ -305,10 +305,12 @@
     function GanValue1() {
         var inputValue = "true";
         document.getElementById("loaiphieu").value = inputValue;
+        document.getElementById("inputToiDa").disabled = false;
     }
     function GanValue2() {
         var inputValue = "false";
         document.getElementById("loaiphieu").value = inputValue;
+        document.getElementById("inputToiDa").disabled = true;
     }
     document.addEventListener('DOMContentLoaded',async function() {
         const phieu = await getPhieuGiamGia();

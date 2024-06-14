@@ -262,10 +262,12 @@
     function GanValue1() {
         var inputValue = "true";
         document.getElementById("loaiphieu").value = inputValue;
+        document.getElementById("inputToiDa").disabled = false;
     }
     function GanValue2() {
         var inputValue = "false";
         document.getElementById("loaiphieu").value = inputValue;
+        document.getElementById("inputToiDa").disabled = true;
     }
 
     var giaTriTuCheckbox = []; // Mảng lưu trữ giá trị từ checkbox
@@ -432,9 +434,9 @@
         var errorToiThieu=document.getElementById("errorToiThieu");
         var isToiThieuValid = true;
         if (inputToiThieu !== "") {
-            if(inputToiThieu < 0){
+            if(inputToiThieu < 1){
                 document.getElementById("inputToiThieu").style.border="1.2px solid red";
-                errorToiThieu.innerText = "Hóa đơn tối thiểu phải lớn hơn hoặc bằng 0!";
+                errorToiThieu.innerText = "Hóa đơn tối thiểu phải lớn hơn 0!";
                 isGiaTriValid = false;
             }else{
                 document.getElementById("inputToiThieu").style.border="";
@@ -448,7 +450,7 @@
         var errorToiDa=document.getElementById("errorToiDa");
         var isToiDaValid = true;
         if (inputToiDa !== "") {
-            if(inputToiDa < 0){
+            if(inputToiDa < 1){
                 document.getElementById("inputToiDa").style.border="1.2px solid red";
                 errorToiDa.innerText = "Giá trị giảm tối đa phải lớn hơn 0!";
                 isToiDaValid = false;
@@ -469,9 +471,9 @@
             isSoLuongValid = false;
         }
         if (inputSoLuong !== "") {
-            if(inputSoLuong < 0){
+            if(inputSoLuong < 1){
                 document.getElementById("inputSoLuong").style.border="1.2px solid red";
-                errorSoLuong.innerText = "Số lượng phải lớn hơn hoặc bằng 0!";
+                errorSoLuong.innerText = "Số lượng phải lớn hơn 0!";
                 isSoLuongValid = false;
             }else{
                 document.getElementById("inputSoLuong").style.border="";

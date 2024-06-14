@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <nav th:replace="~{/layoutadmin/head.html}"></nav>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <style>
     .form123{
@@ -49,6 +50,35 @@
     .sticky-thead th {
         position: sticky;
         top: 0;
+        z-index: 1;
+    }
+    .checkbox{
+        width: 18px;
+        height: 18px;
+        background-color: #eee;
+        border-radius: 5px;
+        border: 1px solid #dcdcdc;
+        cursor: pointer;
+        -webkit-appearance: none; /* Tắt kiểu mặc định của trình duyệt cho checkbox */
+        appearance: none;
+        position: relative;
+    }
+
+    /* Styling the checkbox when it's checked */
+    .checkbox:checked {
+        background-color: rgb(249,72,42);
+        border: 1px solid rgb(249,72,42);
+    }
+    .checkbox:checked::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 6px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
     }
 </style>
 <body class="hold-transition sidebar-mini">
@@ -129,14 +159,15 @@
                                                 <path d="M220.6 130.3l-67.2 28.2V43.2L98.7 233.5l54.7-24.2v130.3l67.2-209.3zm-83.2-96.7l-1.3 4.7-15.2 52.9C80.6 106.7 52 145.8 52 191.5c0 52.3 34.3 95.9 83.4 105.5v53.6C57.5 340.1 0 272.4 0 191.6c0-80.5 59.8-147.2 137.4-158zm311.4 447.2c-11.2 11.2-23.1 12.3-28.6 10.5-5.4-1.8-27.1-19.9-60.4-44.4-33.3-24.6-33.6-35.7-43-56.7-9.4-20.9-30.4-42.6-57.5-52.4l-9.7-14.7c-24.7 16.9-53 26.9-81.3 28.7l2.1-6.6 15.9-49.5c46.5-11.9 80.9-54 80.9-104.2 0-54.5-38.4-102.1-96-107.1V32.3C254.4 37.4 320 106.8 320 191.6c0 33.6-11.2 64.7-29 90.4l14.6 9.6c9.8 27.1 31.5 48 52.4 57.4s32.2 9.7 56.8 43c24.6 33.2 42.7 54.9 44.5 60.3s.7 17.3-10.5 28.5zm-9.9-17.9c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8z"/>
                                             </svg>
                                         </span>
-                                        <input type="search" class="form-control" placeholder="Nhập mã hoặc tên sản phẩm" aria-label="Username" aria-describedby="basic-addon1">
+                                        <input type="search" id="searchInput" class="form-control" placeholder="Nhập mã hoặc tên sản phẩm" onkeyup="filterTable()">
                                     </div>
                                 </form>
                                 <div class="table-responsive" style="margin-top: 10px; padding-bottom: 15px; max-height: 400px;">
-                                    <table id="productTable" class="table table-bordered table-hover">
-                                        <thead class="table table-danger align-middle text-center sticky-thead">
+                                    <table id="productTable" class="table table-bordered align-middle text-center table-hover">
+                                        <thead class="table table-danger sticky-thead">
                                         <th></th>
                                         <th>STT</th>
+                                        <th>Mã sản phẩm</th>
                                         <th>Tên sản phẩm</th>
                                         </thead>
                                         <tbody>
@@ -222,6 +253,7 @@
             const row = productTableBody.insertRow();
             const checkboxCell = row.insertCell();
             const checkbox = document.createElement("input");
+            checkbox.className="checkbox";
             checkbox.type = "checkbox";
             checkbox.name="chonsanpham";
             checkbox.value = product.id;
@@ -238,6 +270,8 @@
             checkboxCell.appendChild(checkbox);
             const numberCell = row.insertCell();
             numberCell.textContent = ++index; // T
+            const maCell= row.insertCell();
+            maCell.textContent=product.masanpham;
             const nameCell = row.insertCell();
             nameCell.textContent = product.tensanpham;
         });
@@ -312,6 +346,23 @@
 
     // Gọi hàm để hiển thị danh sách sản phẩm khi trang được tải
     displayProducts();
+    function filterTable() {
+        const input = document.getElementById('searchInput');
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById('productTable');
+        const trs = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < trs.length; i++) {
+            const tds = trs[i].getElementsByTagName('td');
+            const name = tds[2].textContent.toLowerCase();
+            const phone = tds[3].textContent.toLowerCase();
+            if (name.includes(filter) || phone.includes(filter)) {
+                trs[i].style.display = '';
+            } else {
+                trs[i].style.display = 'none';
+            }
+        }
+    }
     function selectAll(source) {
         var checkboxes = document.getElementsByName('chonchitietsp');
         for(var i = 0; i < checkboxes.length; i++) {
@@ -393,15 +444,18 @@
         var isTenValid = true;
         if(inputTen.trim() === ""){
             errorTen.innerText = "Tên phiếu không được để trống!";
+            document.getElementById("inputTen").style.border = "1.2px solid red";
             isTenValid = false;
         }
         if(inputTen.trim().length > 0){
             if(checkNhieuKhoangTrang(inputTen)){
                 errorTen.innerText = "Giữa các từ không được nhiều hơn 1 khoảng trắng!";
+                document.getElementById("inputTen").style.border = "1.2px solid red";
                 isTenValid = false;
             }
         }
         if(isTenValid){
+            document.getElementById("inputTen").style.border = "";
             errorTen.innerText = "";
         }
         var inputGiaTri=document.getElementById("inputGiaTri").value;
@@ -409,13 +463,16 @@
         var isGiaTriValid = true;
         if (inputGiaTri === "") {
             errorGiaTri.innerText = "Giá trị giảm không được để trống!";
+            document.getElementById("inputGiaTri").style.border = "1.2px solid red";
             isGiaTriValid = false;
         }
         if(inputGiaTri < 1 || inputGiaTri > 100){
-            errorGiaTri.innerText = "Phần trăm giảm phải từ 1 -> 100!";
+            errorGiaTri.innerText = "Phần trăm giảm phải từ 1% đến 100%!";
+            document.getElementById("inputGiaTri").style.border = "1.2px solid red";
             isGiaTriValid = false;
         }
         if(isGiaTriValid){
+            document.getElementById("inputGiaTri").style.border = "";
             errorGiaTri.innerText = "";
         }
         var inputTuNgay=document.getElementById("inputTuNgay").value;
@@ -427,17 +484,20 @@
         var dateNow = new Date();
         if(!inputTuNgay){
             errorTuNgay.innerText="Ngày bắt đầu không được bỏ trống!";
+            document.getElementById("inputTuNgay").style.border = "1.2px solid red";
             isTuNgayValid= false;
         }
         if(inputTuNgay){
             var date1 = new Date(inputTuNgay);
             if(date1.getDate()< dateNow.getDate()){
-                errorTuNgay.innerText="Ngày bắt đầu phải >= ngày hiện tại!";
+                errorTuNgay.innerText="Ngày giờ bắt đầu phải lớn hơn ngày giờ hiện tại!";
+                document.getElementById("inputTuNgay").style.border = "1.2px solid red";
                 isTuNgayValid= false;
             }
         }
         if(!inputDenNgay){
             errorDenNgay.innerText="Ngày kết thúc không được bỏ trống!";
+            document.getElementById("inputDenNgay").style.border = "1.2px solid red";
             isDenNgayValid= false;
         }
         if(inputTuNgay && inputDenNgay){
@@ -445,25 +505,91 @@
             var date2 = new Date(inputDenNgay);
             if(date1.getTime() >= date2.getTime()){
                 errorDenNgay.innerText="Ngày kết thúc phải lớn hơn ngày bắt đầu!";
+                document.getElementById("inputDenNgay").style.border = "1.2px solid red";
                 isDenNgayValid= false;
             }
         }
         if(isTuNgayValid){
+            document.getElementById("inputTuNgay").style.border = "";
             errorTuNgay.innerText="";
         }
         if(isDenNgayValid){
+            document.getElementById("inputDenNgay").style.border = "";
             errorDenNgay.innerText="";
         }
         if(isTenValid && isGiaTriValid && isTuNgayValid && isDenNgayValid){
             if(kiemTraCheckboxDuocChon("chonsanpham")===false){
-                alert("Vui lòng chọn san pham áp dụng!");
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "error",
+                    title: "Vui lòng chọn sản phẩm áp dụng!"
+                });
                 return false;
             }else{
                 if(kiemTraCheckboxDuocChon("chonchitietsp")===false){
-                    alert("Vui lòng chọn chi tiet san pham áp dụng!");
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+
+                    Toast.fire({
+                        icon: "error",
+                        title: "Vui lòng chọn chi tiết sản phẩm áp dụng!"
+                    });
+                    return false;
+                }else{
+                    Swal.fire({
+                        title: 'Bạn có chắc chắn muốn thêm đợt giảm giá mới không?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Có',
+                        cancelButtonText: 'Không'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.onmouseenter = Swal.stopTimer;
+                                    toast.onmouseleave = Swal.resumeTimer;
+                                }
+                            });
+
+                            // Toast.fire({
+                            //     icon: "success",
+                            //     title: "Thêm thành công!"
+                            // });
+
+                            setTimeout(function () {
+                                document.getElementById("formThemDot").submit();
+                            }, 500);
+                        }
+                    });
+                    // Ngăn form được gửi đi ngay lập tức
                     return false;
                 }
-                return true;
             }
         }else{
             return false;

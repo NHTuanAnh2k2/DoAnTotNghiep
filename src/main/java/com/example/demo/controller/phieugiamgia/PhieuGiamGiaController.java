@@ -87,7 +87,17 @@ public class PhieuGiamGiaController {
             tt=null;
         }
         List<PhieuGiamGia> lstPhieu= phieuGiamGiaImp.findAll();
-
+        Timestamp ngayHT = new Timestamp(System.currentTimeMillis());
+        for (PhieuGiamGia phieu : lstPhieu) {
+            if (phieu.getTrangthai() == 1 && (phieu.getNgayketthuc().getTime() < ngayHT.getTime() || phieu.getSoluong() == 0)) {
+                phieu.setTrangthai(2);
+                phieuGiamGiaImp.AddPhieuGiamGia(phieu);
+            }
+            if (phieu.getTrangthai() == 0 && phieu.getNgaybatdau().getTime() <= ngayHT.getTime()) {
+                phieu.setTrangthai(1);
+                phieuGiamGiaImp.AddPhieuGiamGia(phieu);
+            }
+        }
         Integer size= lstPhieu.size();
 
         Pageable pageable = PageRequest.of(p, size);
