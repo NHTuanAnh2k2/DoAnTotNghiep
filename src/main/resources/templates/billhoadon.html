@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS v5.3.2 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+
+</head>
+
+<body class="d-flex flex-column pt-3" style="font-family: 'Bahnschrift'">
+    <div class="d-flex justify-content-center">
+        <div class="ms-5">
+            <h1 style="font-size: 80px;" class="mt-5" th:text="${user.name}">FSPORT SHOP</h1>
+
+        </div>
+    </div>
+    <div class="d-flex justify-content-center">
+        <h5 th:text="${user.tu}">Chương trình phổ thông cao đẳng FPT Polytechnic, Phương Canh Nam Từ Liêm,
+            Hà Nội</h5>
+    </div>
+    <div class="d-flex justify-content-center">
+        <p th:text="${user.sdtshop}">SDT: 0379036606</p>
+    </div>
+    <div class="d-flex justify-content-center">
+        <h5 th:text="'Mã hóa đơn: '+${user.ma}">Mã hóa đơn: HDHGD03843784</h5>
+    </div>
+
+    <hr class="my-4">
+
+    <div class="row">
+
+        <div class="col">
+            <h3>Khách hàng:</h3>
+            <h5 th:text="${user.tennguoinhan}">Dương Thanh Tùng</h5>
+            <p th:text="${user.den}">Chương trình phổ thông cao đẳng FPT Polytechnic, Phương Canh Nam Từ
+                Liêm, Hà Nội</p>
+            <p th:text="${user.sdtnhan}">0379036606</p>
+        </div>
+    </div>
+    <hr class="my-4">
+    <div class="row">
+        <div class="col">
+            <h3>Nội dung đơn hàng(Tổng số lượng sản phẩm: 2)</h3>
+            <table class="table">
+                <tr th:each="a:${user.lst}">
+                    <td th:text="${aStat.index+1}"></td>
+                    <td th:text="${a.tensanpham}"></td>
+                    <td th:text="'SL: '+${a.soluong}"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="col text-center mt-3">
+            <h1>QR</h1>
+        </div>
+    </div>
+    <hr class="my-4">
+    <div class="row">
+        <div class="col">
+            <h3>Tổng đơn</h3>
+            <h2 th:text="${#numbers.formatDecimal(user.tongtien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}">
+                50.000 đ
+            </h2>
+        </div>
+        <div class="col text-end me-5">
+            <div style="border: 1px dotted black; padding: 5px; margin-left: 120px;">
+                <p class="me-4" th:text="'Ngày đặt đơn: '+${user.date}">Hà Nội, ngày 20/12/2020</p>
+                <h3 class="text-center mb-4">Người lập phiếu</h3>
+                <p class="text-center">A</p>
+                <p class="text-center">Nguyễn Văn A</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

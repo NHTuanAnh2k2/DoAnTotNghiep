@@ -255,7 +255,7 @@
                                                 <p></p>
 
                                                 <div class="sidebar-title">
-                                                    <hr class="border border-danger border opacity-50">
+                                                  <hr>
                                                     <h3>THƯƠNG HIỆU</h3>
                                                     <div th:each="thuonghieu : ${th}"
                                                          class="d-flex align-items-center justify-content-between">
@@ -272,7 +272,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="sidebar-title">
-                                                    <hr class="border border-danger border opacity-50">
+                                                    <hr>
                                                     <h3>MÀU SẮC</h3>
                                                     <div class="row">
                                                         <div th:each="mausac, iterStat : ${ms}" class="col-lg-6">
@@ -300,7 +300,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="sidebar-title">
-                                                    <hr class="border border-danger border opacity-50">
+                                                    <hr>
                                                     <h3>KHOẢNG GIÁ</h3>
                                                     <input type="checkbox" th:field="*{range1}" id="range1" value="true"
                                                            onchange="locgia()"
@@ -393,7 +393,7 @@
                                     <div class="pro-img">
                                         <a th:href="@{/detailsanphamCustomer/{id}(id=${sp[0]})}">
                                             <img th:if="${sp[6] != null}"
-                                                 th:src="@{'/upload/' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
+                                                 th:src="@{'/upload' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
                                                  class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
                                         </a>
                                         <div class="tag-n-s">
@@ -499,7 +499,7 @@
                             <div class="pro-img">
                                 <a th:href="@{/detailsanphamCustomer/{id}(id=${sp[0]})}">
                                     <img th:if="${sp[6] != null}"
-                                         th:src="@{'/upload/' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
+                                         th:src="@{'/upload' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
                                          class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
                                 </a>
                                 <div class="tag-n-s">
@@ -571,7 +571,7 @@
                             <div class="pro-img">
                                 <a th:href="@{/detailsanphamCustomer/{id}(id=${sp[0]})}">
                                     <img th:if="${sp[6] != null}"
-                                         th:src="@{'/upload/' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
+                                         th:src="@{'/upload' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
                                          class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
                                 </a>
                                 <div class="tag-n-s">

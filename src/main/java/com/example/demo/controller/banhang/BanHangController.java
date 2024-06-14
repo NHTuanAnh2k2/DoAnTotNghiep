@@ -1,10 +1,7 @@
 package com.example.demo.controller.banhang;
 
 import com.example.demo.entity.*;
-import com.example.demo.info.AddKHNhanhFormBanHang;
-import com.example.demo.info.DiaChiGiaoCaseBanHangOff;
-import com.example.demo.info.NguoiDungKHInfo;
-import com.example.demo.info.ThayDoiTTHoaDon_KHInfo;
+import com.example.demo.info.*;
 import com.example.demo.repository.DiaChiRepository;
 import com.example.demo.repository.KhachHangPhieuGiamRepository;
 import com.example.demo.repository.NguoiDungRepository;
@@ -20,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.thymeleaf.context.Context;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -473,9 +472,32 @@ public class BanHangController {
         return ResponseEntity.ok(lstPTTT);
     }
 
+    //hiển thị bill lên modal
+    @GetMapping("show-bill")
+    @ResponseBody
+    public ResponseEntity<?> showbill() {
+        List<sanPhamIn> lstin = new ArrayList<>();
+        List<HoaDonChiTiet> lsthdct = daoHDCT.getListSPHD(hdHienTai);
+        BigDecimal tongTienSP = new BigDecimal("0");
+        for (HoaDonChiTiet a : lsthdct
+        ) {
+            tongTienSP = tongTienSP.add(a.getGiasanpham().multiply(new BigDecimal(a.getSoluong())));
+            lstin.add(new sanPhamIn(a.getSanphamchitiet().getSanpham().getTensanpham(), a.getSoluong()));
+
+        }
+        String ten=null;
+                if(hdHienTai.getKhachhang()!=null){
+                    ten=hdHienTai.getKhachhang().getNguoidung().getHovaten();
+                }
+
+        MauHoaDon u = new MauHoaDon("FSPORT SHOP", hdHienTai.getMahoadon(), hdHienTai.getNgaytao(), "Lô H023, Nhà số 39, Ngõ 148, Xuân Phương, Phương Canh,Nam Từ Liêm, Hà Nội",
+                hdHienTai.getDiachi(), "0379036607", hdHienTai.getSdt(), ten, lstin, tongTienSP);
+        return ResponseEntity.ok(u);
+    }
+
     // xác nhận thanh toán lưu vào db
     @PostMapping("xacnhanthanhtoan/{magiao}")
-    public String xacnhanPTTT(@PathVariable("magiao") Integer magiao, @ModelAttribute("thongtingiaohang") DiaChiGiaoCaseBanHangOff thongTin) {
+    public String xacnhanPTTT(@PathVariable("magiao") Integer magiao, @ModelAttribute("thongtingiaohang") DiaChiGiaoCaseBanHangOff thongTin, RedirectAttributes redirectAttributes) {
 
         PhieuGiamGiaChiTiet phieugiamgiachtietset = new PhieuGiamGiaChiTiet();
         //thanh toán đơn không giao hàng
@@ -500,7 +522,9 @@ public class BanHangController {
             LocalDateTime currentDateTime = LocalDateTime.now();
             phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
             daoPGGCT.save(phieugiamgiachtietset);
+            hdHienTai = hdset;
             lstPTTT = new ArrayList<>();
+            redirectAttributes.addFlashAttribute("orderSuccess", true);
             return "redirect:/hoa-don/ban-hang";
         }
         // thanh toán đơn có giao hàng
@@ -554,9 +578,11 @@ public class BanHangController {
             phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
             daoPGGCT.save(phieugiamgiachtietset);
             lstPTTT = new ArrayList<>();
+            redirectAttributes.addFlashAttribute("orderSuccess", true);
             return "redirect:/hoa-don/ban-hang";
 
         }
+        redirectAttributes.addFlashAttribute("orderSuccess", true);
         return "redirect:/hoa-don/ban-hang";
     }
 
@@ -587,4 +613,11 @@ public class BanHangController {
         return ResponseEntity.ok(diachiRT);
     }
 
+    //in đơn
+//    MauHoaDon u = new MauHoaDon("FSPORT", hdTT.getMahoadon(), hdTT.getNgaytao(), "Lô H023, Nhà số 39, Ngõ 148, Xuân Phương, Phương Canh,Nam Từ Liêm, Hà Nội",
+//            hdTT.getDiachi(), "0379036607", hdTT.getSdt(), hdTT.getTennguoinhan(), lstin, tongTT);
+//    String finalhtml = null;
+//    Context data = dao.setData(u);
+//    finalhtml = dao1.process("index", data);
+//        dao.htmlToPdfTaiQuay(finalhtml, hdTT.getMahoadon());
 }
