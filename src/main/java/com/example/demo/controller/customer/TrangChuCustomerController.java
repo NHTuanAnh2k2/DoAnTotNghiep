@@ -1,6 +1,7 @@
 package com.example.demo.controller.customer;
 
 import com.example.demo.entity.Anh;
+import com.example.demo.entity.GioHangChiTiet;
 import com.example.demo.entity.SanPham;
 import com.example.demo.entity.SanPhamChiTiet;
 import com.example.demo.repository.AnhRepository;
@@ -8,6 +9,7 @@ import com.example.demo.repository.KichCoRepository;
 import com.example.demo.repository.SanPhamChiTietRepository;
 import com.example.demo.repository.SanPhamRepositoty;
 import com.example.demo.repository.customer.TrangChuRepository;
+import com.example.demo.repository.giohang.GioHangChiTietRepository;
 import com.example.demo.service.impl.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ import java.util.*;
 
 @Controller
 public class TrangChuCustomerController {
+    @Autowired
+    private GioHangChiTietRepository gioHangChiTietRepository;
+
     @Autowired
     TrangChuRepository trangChuRepository;
 
@@ -66,6 +71,11 @@ public class TrangChuCustomerController {
 
     @GetMapping("/customer/trangchu")
     public String hienthiTrangChu(Model model) {
+        List<GioHangChiTiet> cartItems = gioHangChiTietRepository.findAll(); // Giả sử bạn có phương thức này để lấy các mục trong giỏ hàng
+        int totalQuantity = cartItems.size(); // Đếm số lượng các mục trong giỏ hàng
+
+        // Đưa tổng số lượng vào model để hiển thị trên giao diện
+        model.addAttribute("totalQuantity", totalQuantity);
         List<Object[]> topspmoinhattrangchu = trangChuRepository.topspmoinhattrangchu();
         model.addAttribute("topspmoinhattrangchu", topspmoinhattrangchu);
         List<Object[]> topspbanchaynhattrangchu = trangChuRepository.topspbanchaynhat();
@@ -75,9 +85,13 @@ public class TrangChuCustomerController {
 
     @GetMapping("/detailsanphamCustomer/{id}")
     public String detailsanphamCustomer(@PathVariable Integer id, @RequestParam(required = false) String color, @RequestParam(required = false) String size, Model model) {
+        List<GioHangChiTiet> cartItems = gioHangChiTietRepository.findAll(); // Giả sử bạn có phương thức này để lấy các mục trong giỏ hàng
+        int totalQuantity = cartItems.size(); // Đếm số lượng các mục trong giỏ hàng
+        model.addAttribute("totalQuantity", totalQuantity);
         SanPham sanPham = trangChuRepository.findById(id).orElse(null);
         model.addAttribute("sanpham", sanPham);
-        model.addAttribute("sanphamchitiet", sanPham.getSpct());
+        SanPhamChiTiet sanPhamChiTiet=sanPhamChiTietRepository.findById(id).orElse(null);
+        model.addAttribute("sanphamchitiet", sanPhamChiTiet);
         List<String> danhSachAnh = new ArrayList<>();
         for (SanPhamChiTiet spct : sanPham.getSpct()) {
             for (Anh anh : spct.getAnh()) {

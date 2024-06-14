@@ -227,7 +227,8 @@
                     <div th:each="image, index : ${danhSachAnh}" class="mySlides">
                         <div class="numbertext" th:text="${index.index + 1} + ' / ' + ${danhSachAnh.size()}"></div>
                         <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                        <img th:src="@{'/upload' + ${image.substring(image.lastIndexOf('upload') + 6)}}" style="width:100%" alt="Ảnh">
+                        <img th:src="@{'/upload' + ${image.substring(image.lastIndexOf('upload') + 6)}}"
+                             style="width:100%" alt="Ảnh">
                         <a class="next" onclick="plusSlides(1)">&#10095;</a>
                     </div>
                     <!-- Image text -->
@@ -237,7 +238,9 @@
                     <!-- Thumbnail images -->
                     <div class="row">
                         <div th:each="image, index : ${danhSachAnh}" class="column">
-                            <img class="demo cursor" th:src="@{'/upload' + ${image.substring(image.lastIndexOf('upload') + 6)}}" style="width:100%" onclick="currentSlide(${index.index + 1})" alt="Ảnh">
+                            <img class="demo cursor"
+                                 th:src="@{'/upload' + ${image.substring(image.lastIndexOf('upload') + 6)}}"
+                                 style="width:100%" onclick="currentSlide(${index.index + 1})" alt="Ảnh">
                         </div>
                     </div>
                 </div>
@@ -247,46 +250,60 @@
                 <div class="right">
                     <div class="singl-pro-title" th:data-product-id="${sanpham.id}">
                         <h3 th:text="${sanpham.tensanpham}"></h3>
-                         <h6 >Giá:
-                        <span id="product-price" th:text="${#numbers.formatDecimal(selectedPrice, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}" style="color: red;font-weight: bold"></span>
-
-                    </h6>
+                        <h6>Giá:
+                            <span id="product-price"
+                                  th:text="${#numbers.formatDecimal(selectedPrice, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"
+                                  style="color: red; font-weight: bold"></span>
+                        </h6>
                         <h6>
                             Số lượng có sẵn:
                             <span id="product-quantity" th:text="${selectedQuantity}"></span>
                         </h6>
 
-
-
-                        <div th:id="'product-details-' + ${sanpham.id}" th:data-color="${defaultColor}">
-                            <div class="d-flex">
-                                <div th:each="color, iterStat : ${colors}">
-                                    <div style="margin-right: 10px">
-                                        <a class="btn" th:classappend="${iterStat.index == 0} ? 'btn-dark' : 'btn-outline-dark'" th:text="${color}" th:data-color="${color}" th:onclick="'changeButtonBackground(this)'"></a>
+                        <form id="addToCartForm" action="/add-to-cart" method="post">
+                            <input type="hidden" name="id" th:value="${sanphamchitiet.id}">
+                            <div th:id="'product-details-' + ${sanpham.id}" th:data-color="${defaultColor}">
+                                <div class="d-flex">
+                                    <div th:each="color, iterStat : ${colors}">
+                                        <div style="margin-right: 10px">
+                                            <a class="btn"
+                                               th:classappend="${iterStat.index == 0} ? 'btn-dark' : 'btn-outline-dark'"
+                                               th:text="${color}" th:data-color="${color}"
+                                               th:onclick="'changeButtonBackground(this)'"></a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                           <p>
-                            <div class="d-flex">
-                                <div th:each="size, iterStat : ${sizes}">
-                                    <div style="margin-right: 10px">
-                                        <a class="btn" th:classappend="${iterStat.index == 0} ? 'btn-dark' : 'btn-outline-dark'" th:text="${size}" th:data-size="${size}" th:onclick="'changeButtonBackground(this)'"></a>
+                                <p></p>
+                                <div class="d-flex">
+                                    <div th:each="size, iterStat : ${sizes}">
+                                        <div style="margin-right: 10px">
+                                            <a class="btn"
+                                               th:classappend="${iterStat.index == 0} ? 'btn-dark' : 'btn-outline-dark'"
+                                               th:text="${size}" th:data-size="${size}"
+                                               th:onclick="'changeButtonBackground(this)'"></a>
+                                        </div>
                                     </div>
                                 </div>
+                                <p></p>
+                                <div>
+                                    Số lượng:
+                                    <input type="number" size="4" name="quantity" id="quantityInput" data-price="55900000" value="1"
+                                           min="1" class="tc line-item-qty item-quantity bg-white">
+                                </div>
+                                <br>
+                                <br>
+                                <button type="submit"
+                                        class="btn btn"
+                                        style="background-color: rgb(249,72,42); color: white; width: 370px"
+                                        th:disabled="${selectedQuantity == 0}">
+                                    Thêm vào giỏ hàng
+                                </button>
                             </div>
-                            <p>
-                            <div class="quantity">
-                                <input type="button" value="-" class="minus">
-                                <input type="text" size="4" name="updates[]" min="1" id="updates_1124514490" data-price="55900000" value="1" readonly class="tc line-item-qty item-quantity bg-white">
-                                <input type="button" value="+" class="plus">
-                            </div>
-                            <br>
-                            <br>
-                            <button id="add-to-cart-btn" class="btn btn" style="background-color: rgb(249,72,42);color: white;width: 370px" th:disabled="${selectedQuantity} == 0">Thêm vào giỏ hàng</button>
-                            <br>
-                            <br>
-                            <button class="btn btn-dark" style="width: 370px">Mua ngay</button>
-                        </div>
+                        </form>
+
+                        <br>
+                        <br>
+                        <button class="btn btn-dark" style="width: 370px">Mua ngay</button>
                     </div>
                 </div>
             </div>
@@ -550,10 +567,8 @@
 </script>
 
 
-
-
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const defaultColorElement = document.querySelector('.btn-dark[data-color]');
         const defaultSizeElement = document.querySelector('.btn-dark[data-size]');
         if (defaultColorElement) {
@@ -672,27 +687,35 @@
 </script>
 
 
-
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const minusButtons = document.querySelectorAll('.minus');
-        const plusButtons = document.querySelectorAll('.plus');
+    function updateQuantity(change) {
+        var quantityInput = document.getElementById("quantity");
+        var currentQuantity = parseInt(quantityInput.value);
+        var newQuantity = currentQuantity + change;
+        if (newQuantity > 0) {
+            quantityInput.value = newQuantity;
+        }
+    }
+</script>
+<script type="text/javascript">
+    // JavaScript function to update quantity
+    function updateQuantity(change) {
+        var quantityInput = document.getElementById('quantityInput');
+        var displayQuantityInput = document.getElementById('displayQuantity');
 
-        minusButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                const input = this.nextElementSibling;
-                let value = parseInt(input.value);
-                if (value > 1) {
-                    input.value = value - 1;
-                }
-            });
-        });
+        // Parse the current quantity value
+        var currentQuantity = parseInt(quantityInput.value);
 
-        plusButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                const input = this.previousElementSibling;
-                input.value = parseInt(input.value) + 1;
-            });
-        });
-    });
+        // Update the quantity based on the change (1 for +, -1 for -)
+        var newQuantity = currentQuantity + change;
+
+        // Ensure the new quantity is at least 1
+        if (newQuantity < 1) {
+            newQuantity = 1;
+        }
+
+        // Update the quantity input fields
+        quantityInput.value = newQuantity;
+        displayQuantityInput.value = newQuantity; // Synchronize the displayed quantity
+    }
 </script>

@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,5 +28,6 @@ public class GioHang {
     @OneToOne
     @JoinColumn(name = "idkhachhang")
     KhachHang khachhang;
-
+    @OneToMany(mappedBy = "giohang", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<GioHangChiTiet> gioHangChiTietList;
 }

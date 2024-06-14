@@ -69,10 +69,11 @@
                 </div>
             </li>
             <li style="padding-left: 20px;color: #0a0e14">
-                <a th:href="@{/cart}" style="color: #0a0e14">
-                    <img alt="" style="width:40px"
-                         src="../dist/img/cart.png"/>
+                <a th:href="@{/cart2}" style="color: #0a0e14; text-decoration: none;">
+                    <img alt="" style="width:40px" src="../dist/img/cart.png"/>
+                    <span th:text="${totalQuantity}" style="color: red;font-weight: bold"></span>
                 </a>
+
             </li>
             <!--end-->
             <!--account-->

@@ -259,4 +259,16 @@ public class SanPhamChiTietController {
         }
         return "redirect:/detailsanpham/" + firstProductId;
     }
+
+//    @PostMapping("/update-cart/{id}")
+//    public String updateCart(@PathVariable Integer id,  Integer quantity) {
+//        try {
+//            sanPhamChiTietRepository.updateSoLuongById(quantity, id);
+//            return "redirect:/cart2"; // Chuyển hướng đến trang giỏ hàng sau khi cập nhật
+//        } catch (Exception e) {
+//            // Xử lý ngoại lệ nếu cần thiết
+//            return "redirect:/error"; // Chuyển hướng đến trang lỗi nếu có lỗi xảy ra
+//        }
+//    }
+
 }

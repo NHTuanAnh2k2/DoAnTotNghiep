@@ -51,4 +51,8 @@ public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, 
     @Query("SELECT spct FROM SanPhamChiTiet spct WHERE spct.sanpham.id = :sanPhamId AND spct.mausac.ten = :color")
     Optional<SanPhamChiTiet> findBySanPhamIdAndColor(@Param("sanPhamId") Integer sanPhamId, @Param("color") String color);
 
+    @Transactional
+    @Modifying
+    @Query("UPDATE SanPhamChiTiet spct SET spct.soluong = :soLuong WHERE spct.id = :id")
+    void updateSoLuongById(Integer soLuong, Integer id);
 }
