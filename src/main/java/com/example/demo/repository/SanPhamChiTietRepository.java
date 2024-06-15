@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, Integer> {
@@ -45,4 +46,9 @@ public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, 
     //nu
     @Query(nativeQuery = true, value = "SELECT COUNT(th.ten) FROM SanPhamChiTiet AS spct JOIN ThuongHieu AS th ON spct.IdThuongHieu = th.Id WHERE th.ten = 'Nike' AND spct.gioitinh=0")
     int countByThuongHieuTenIsNikeNu();
+
+    // dùng cho detail sp
+    @Query("SELECT spct FROM SanPhamChiTiet spct WHERE spct.sanpham.id = :sanPhamId AND spct.mausac.ten = :color")
+    Optional<SanPhamChiTiet> findBySanPhamIdAndColor(@Param("sanPhamId") Integer sanPhamId, @Param("color") String color);
+
 }

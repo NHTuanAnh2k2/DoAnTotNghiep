@@ -60,7 +60,7 @@
     /* css cho modal mã giảm giá */
 
 
-    .ma_giam_gia{
+    .ma_giam_gia {
         width: 100%;
         margin-bottom: 15px;
         padding: 5px 10px;
@@ -68,6 +68,7 @@
         display: flex;
         border-radius: 15px;
     }
+
     .ma-item-left {
         width: 30%;
         padding-right: 10px;
@@ -75,34 +76,49 @@
         align-items: center;
         border-right: 1px dashed #ccc;
     }
+
     .anh_ma {
         width: auto;
         height: auto;
         max-width: 100%;
     }
+
     .ma-item-right {
         padding-left: 10px;
         position: relative;
         width: 70%;
     }
+
     .ma-item-des {
         display: flex;
         justify-content: space-between;
         align-items: self-end;
         font-size: 10px;
     }
-    
+
     .right_magiam {
         font-weight: 700;
         padding: 5px 7px;
-        background: rgb(249,72,42);
+        background: rgb(249, 72, 42);
         color: white;
         border-radius: 15px;
         cursor: pointer;
         margin-bottom: 26px;
     }
-   
-   
+
+    .right_magiam:hover {
+        font-weight: 700;
+        padding: 5px 7px;
+        background: rgb(249, 72, 42);
+        color: white;
+        border-radius: 15px;
+        cursor: pointer;
+        margin-bottom: 26px;
+        border: 0.5px solid rgb(77, 70, 70);
+        /* Hiển thị viền khi hover */
+        transform: scale(1.01);
+        /* Tăng kích thước một chút khi hover */
+    }
 </style>
 <script src="../sweetalert2/dist/sweetalert2.min.js/"></script>
 <link rel="stylesheet" type="text/css" href="../sweetalert2/dist/sweetalert2.min.css">
@@ -203,7 +219,7 @@
                     <img src="../dist/img/no_product.png" width="500px" height="300px">
                     <h3 class="text text-danger"><i>Chưa có hóa đơn nào được tạo!! <i class="bi bi-emoji-tear"></i>!</i>
                     </h3>
-                </div>`;
+                </div>
             </div>
             <!-- các modal -->
 
@@ -514,6 +530,22 @@
                 </div>
             </div>
             <!--Kết thúc Modal thêm sản phẩm vào hóa đơn-->
+
+            <!-- modal bill  -->
+            <div class="modal fade" id="orderSuccessModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div id="hienthibill" class="ps-4">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+                            <button type="button" class="btn btn-primary" id="saveInvoiceBtn">Lưu hóa đơn</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- thêm khách hàng -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
@@ -587,70 +619,9 @@
                             <h1 class="modal-title fs-5" id="staticBackdropLabel">Danh sách phiếu khuyến mãi:</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body" style="background-color: #e6f2f4;">
-                            <div class="ma_giam_gia">
-                                <div class="ma-item-left">
-                                    <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
-                                </div>
-                                <div class="ma-item-right">
-                                    <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;">Giảm 120.000đ
-                                    </h4>
-                                    <p style="font-size: 14px; margin: 0; padding: 0; color: black">Đơn hàng từ 890.000đ
-                                        trở lên</p>
-                                    <div class="ma-item-des">
-                                        <div class="left_magiam">
-                                            <p style="margin: 0; white-space: nowrap;">Mã: <b
-                                                    class="code">14FRMGR24MNFNS</b></p>
-                                            <p>HSD: 31/05/2024</p>
-                                        </div>
-                                        <div class="right_magiam">
-                                            Áp dụng
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ma_giam_gia">
-                                <div class="ma-item-left">
-                                    <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
-                                </div>
-                                <div class="ma-item-right">
-                                    <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;">Giảm 120.000đ
-                                    </h4>
-                                    <p style="font-size: 14px; margin: 0; padding: 0; color: black">Đơn hàng từ 890.000đ
-                                        trở lên</p>
-                                    <div class="ma-item-des">
-                                        <div class="left_magiam">
-                                            <p style="margin: 0; white-space: nowrap;">Mã: <b
-                                                    class="code">14FRMGR24MNFNS</b></p>
-                                            <p>HSD: 31/05/2024</p>
-                                        </div>
-                                        <div class="right_magiam">
-                                            Áp dụng
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ma_giam_gia">
-                                <div class="ma-item-left">
-                                    <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
-                                </div>
-                                <div class="ma-item-right">
-                                    <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;">Giảm 120.000đ
-                                    </h4>
-                                    <p style="font-size: 14px; margin: 0; padding: 0; color: black">Đơn hàng từ 890.000đ
-                                        trở lên</p>
-                                    <div class="ma-item-des">
-                                        <div class="left_magiam">
-                                            <p style="margin: 0; white-space: nowrap;">Mã: <b
-                                                    class="code">14FRMGR24MNFNS</b></p>
-                                            <p>HSD: 31/05/2024</p>
-                                        </div>
-                                        <div class="right_magiam">
-                                            Áp dụng
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="modal-body" style="background-color: #e6f2f4;" id="showvoucher">
+
+
                         </div>
                     </div>
                 </div>
@@ -747,7 +718,12 @@
                                             th:field="*{trasau}" onchange="handleCheckboxChange(event)">
                                     </p>
                                 </div>
-
+                                <div class="d-flex justify-content-between ms-1">
+                                    <p>Ngày giao dự kiến:</p>
+                                    <p id="ngaygiaodukiens">
+                                        đang tính toán...
+                                    </p>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -780,9 +756,8 @@
                             <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white; padding-top: 10px;"
                                 id="maGiamFill">Chưa có mã giảm phù hợp!</p>
 
-                            <button class="btn btn-light" style="margin-bottom: 20px;"
-                            data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                            >
+                            <button class="btn btn-light" style="margin-bottom: 20px;" data-bs-toggle="modal"
+                                data-bs-target="#staticBackdrop" onclick="showmagiam()">
                                 Chọn mã giảm</button>
                         </div>
                         <div class="d-flex justify-content-between">
@@ -827,7 +802,9 @@
 
     <script>
         //tạo biến toàn cũng để sử dụng
-        var tienkhachthanhtoan;
+        var tongTienDon;//tổng cả đơn chưa có mã
+        var TienGiamDon;//tổng tiền giảm
+        var tienkhachthanhtoan;//tổng đã có mã
         var hdHienTai;
         // JavaScript để tạo tab mới
         const urlPage = `/ban-hang-tai-quay/hoa-don-cho`;
@@ -852,6 +829,7 @@
                 }
 
             })
+
         // JavaScript để mở tab lúc load
         function openInvoice1(evt, invoiceName) {
 
@@ -1020,12 +998,16 @@ tabindex="0">
                                     tienGiamT = b2.phieugiamgia.giatrigiam;
                                 }
                                 tongThanhT = tongTien - tienGiamT;
+                                TienGiamDon = tienGiamT;
                                 document.getElementById('maGiamFill').innerHTML = b.phieugiamgia.macode;
                             } else {
                                 document.getElementById('maGiamFill').innerHTML = 'chưa có mã nào phù hợp!';
                                 tongThanhT = tongTien;
+
                             }
+                            tongTienDon = tongTien;
                             tienkhachthanhtoan = tongThanhT;
+                            TienGiamDon = tienGiamT;
                             hdHienTai = maHD;
 
 
@@ -1109,7 +1091,7 @@ tabindex="0">
 
         // JavaScript để mở tab
         function openInvoice(evt, invoiceName) {
-
+            document.getElementById('ngaygiaodukiens').innerHTML = "đang tính toán...";
             document.getElementById('changeNV').disabled = false;
             document.getElementById('changeSP').disabled = false;
             document.getElementById('tienmat').disabled = false;
@@ -1283,7 +1265,9 @@ tabindex="0">
                                 document.getElementById('maGiamFill').innerHTML = 'chưa có mã nào phù hợp!';
                                 tongThanhT = tongTien;
                             }
+                            tongTienDon = tongTien;
                             tienkhachthanhtoan = tongThanhT;
+                            TienGiamDon = tienGiamT;
                             hdHienTai = maHD;
 
 
@@ -2155,12 +2139,14 @@ tabindex="0">
                 })
         }
         //hiển thị nút trả sau trước
+
         function giaohang(event) {
             var isChecked = event.target.checked;
             if (isChecked) {
                 // hiển thị div 
                 document.getElementById('diachidiv').style.display = 'block';
                 showdiachimacdinh();
+
             } else {
                 // ẩn div
                 document.getElementById('diachidiv').style.display = 'none';
@@ -2721,15 +2707,23 @@ tabindex="0">
             var checkgiaohang = document.getElementById('checktrasau');
             var actionGiao = document.getElementById('thongtingiaohangform');
             if (checkgiaohang.checked) {
-                //giao hàng submit
-                actionGiao.action = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/2';
-                actionGiao.submit();
                 thongbao('Đặt đơn thành công', 'success');
+                //giao hàng submit
+                setTimeout(function () {
+                    actionGiao.action = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/2';
+                    actionGiao.submit();
+                }, 1300);
+
             } else {
                 //giao hàng submit
-                actionGiao.action = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/1';
-                actionGiao.submit();
                 thongbao('Đặt đơn thành công', 'success');
+                setTimeout(function () {
+                    actionGiao.action = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/1';
+                    actionGiao.submit();
+
+                }, 1300);
+
+
             }
             // thongbao('Chưa xác nhận thông tin thanh toán!!!', 'warning');
 
@@ -2761,6 +2755,10 @@ tabindex="0">
                     return a.json();
                 })
                 .then(function (b) {
+
+                    tentinhtam = b.tinh;
+                    tenhuyentam = b.huyen;
+                    tenxatam = b.xa;
                     document.getElementById('thongtingiao_ten').value = b.ten;
                     document.getElementById('thongtingiao_sdt').value = b.sdt;
                     document.getElementById('thongtingiao_email').value = b.email;
@@ -2798,8 +2796,417 @@ tabindex="0">
                     if (b.tinh == null) {
                         document.getElementById('tinhthanh').value = 'chọn tỉnh';
                     }
+                     callIdCity(b.tinh, b.huyen,b.xa)
                 })
         }
+
+        function formatCurrency(amount) {
+            return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+        }
+        function formatDate(date) {
+            // Chuyển đổi tham số date thành đối tượng Date (nếu cần)
+            const d = new Date(date);
+
+            // Lấy ngày, tháng và năm
+            const day = d.getDate();
+            const month = d.getMonth() + 1; // Tháng trong JavaScript bắt đầu từ 0
+            const year = d.getFullYear();
+
+            // Định dạng thành dd/mm/yyyy
+            const formattedDate = [
+                day.toString().padStart(2, '0'), // Đảm bảo ngày có hai chữ số
+                month.toString().padStart(2, '0'), // Đảm bảo tháng có hai chữ số
+                year
+            ].join('/');
+
+            return formattedDate;
+        }
+        //http://localhost:8080/ban-hang-tai-quay/show-all-voucher
+        function showmagiam() {
+            const urlVoucher = `http://localhost:8080/ban-hang-tai-quay/show-all-voucher`;
+            fetch(urlVoucher)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var htmlvoucher = '';
+                    for (const hd of b) {
+                        htmlvoucher += `
+                        <div class="ma_giam_gia">
+                                <div class="ma-item-left">
+                                    <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
+                                </div>
+                                <div class="ma-item-right">
+                                    <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;" >${hd.loaiphieu == true ? 'Giảm ' + hd.giatrigiam + ' %' + ', tối đa ' + formatCurrency(hd.giatrigiamtoida) : 'Giảm ' + formatCurrency(hd.giatrigiam)}
+                                    </h4>
+                                    
+                                    <p style="font-size: 14px; margin: 0; padding: 0; color: black">${'Đơn hàng từ ' + formatCurrency(hd.dontoithieu) + ' trở lên'}
+                                        </p>
+                                    <div class="ma-item-des">
+                                        <div class="left_magiam">
+                                            <p style="margin: 0; white-space: nowrap;">Mã: <b
+                                                    class="code">${hd.macode}</b></p>
+                                            <p>${'HSD: ' + hd.ngayketthuc}</p>
+                                        </div>
+                                        <div class="right_magiam">
+                                        <a onclick="apdungvoucher('http://localhost:8080/ban-hang-tai-quay/ap-dung-voucher/${hd.id}')" data-bs-dismiss="modal" >
+                                            Áp dụng
+                                                          </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        `;
+                    }
+                    document.getElementById('showvoucher').innerHTML = htmlvoucher;
+                    // 
+                })
+        }
+        //sự kiện áp dụng mã giảm 
+        function apdungvoucher(inputs) {
+            fetch(inputs)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+
+                    if (b.id != null) {
+                        if (b.loaiphieu == true) {
+                            // phiếu %
+                            if (b.giatrigiam * (tongTienDon / 100) > b.giatrigiamtoida) {
+                                TienGiamDon = b.giatrigiamtoida;
+                            } else {
+                                TienGiamDon = b.giatrigiam * (tongTienDon / 100);
+                            }
+
+                        } else {
+                            // phiếu vnđ
+                            TienGiamDon = b.giatrigiam;
+                        }
+                        tienkhachthanhtoan = tongTienDon - TienGiamDon;
+                    } else {
+                        tienkhachthanhtoan = tongTienDon;
+                    }
+                    // console.log("tiền tệ")
+                    // console.log('tiền ban đầu:' + tongTienDon)
+                    // console.log('tiền giảm :' + TienGiamDon)
+                    // console.log('tiền tổng thanh toán:' + tienkhachthanhtoan)
+                    document.getElementById('maGiamFill').innerHTML = b.macode;
+                    document.getElementById('giamgia').innerHTML = TienGiamDon.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                    document.getElementById('tongThanhToan').innerHTML = tienkhachthanhtoan.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+
+                })
+        }
+    </script>
+    <!-- hienthibill -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var orderSuccess = /*[[${orderSuccess}]]*/ false;
+        /*]]>*/
+        if (orderSuccess == true) {
+            var urlgetbill = `http://localhost:8080/ban-hang-tai-quay/show-bill`;
+            fetch(urlgetbill)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    console.log(b)
+                    var htmlbill1 = '';
+                    var htmlbill2 = '';
+                    var htmlbill3 = '';
+                    if (b.tennguoinhan == null) {
+                        htmlbill3 = `<h5 >Họ và tên: khách lẻ</h5>
+                    <h5 >Số điện thoại: khách lẻ </h5>`;
+                    } else {
+                        htmlbill3 = `<h5 >${'Họ và tên: ' + b.tennguoinhan}</h5>
+                    <h5 >${'Số điện thoại: ' + b.sdtnhan}</h5>`;
+
+                    }
+
+                    var stt = 0;
+                    for (const hd of b.lst) {
+                        stt++;
+                        htmlbill1 += `
+                                    <tr>
+                                        <td >${stt}</td>
+                                        <td >${hd.tensanpham}</td>
+                                        <td >${'SL: ' + hd.soluong}</td>
+                                    </tr>
+
+                                   `;
+                    }
+                    htmlbill2 = `
+                    <div class="d-flex justify-content-center">
+                            <div class="ms-5">
+                                <h1 style="font-size: 80px;" class="mt-5" >FSPORT SHOP</h1>
+
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <h5>Chương trình phổ thông cao đẳng FPT Polytechnic, Phương Canh Nam Từ
+                                Liêm,
+                                Hà Nội</h5>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <p>SDT: 0379036606</p>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <h5>${'Mã hóa đơn: ' + b.ma}</h5>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="row">
+
+                            <div class="col">
+                                <h3>Khách hàng:</h3>
+                                `+
+                        htmlbill3
+                        + `
+                            </div>
+                        </div>
+                        <hr class="my-4">
+                        <div class="row">
+                            <div class="col">
+                                <h3>Nội dung đơn hàng(Tổng số lượng sản phẩm: 2)</h3>
+                                <table class="table">
+
+
+                    `+ htmlbill1 + `
+                       </table>
+                            </div>
+                            <div class="col text-center mt-3">
+                                <h1>QR</h1>
+                            </div>
+                        </div>
+                        <hr class="my-4">
+                        <div class="row">
+                            <div class="col">
+                                <h3>Tổng đơn</h3>
+                                <h2>
+                             ${formatCurrency(b.tongtien)}
+                                </h2>
+                            </div>
+                            <div class="col text-end me-5">
+                                <div style="border: 1px dotted black; padding: 5px; margin-left: 120px;">
+                                    <p class="me-4" >${'Hà Nội, Ngày ' + formatDate(b.date)}</p>
+                                    <h3 class="text-center mb-4">Người lập phiếu</h3>
+                                    <p class="text-center">A</p>
+                                    <p class="text-center">Nguyễn Văn A</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    `;
+
+
+                    document.getElementById('hienthibill').innerHTML = htmlbill2;
+                    var myModal = new bootstrap.Modal(document.getElementById('orderSuccessModal'), {});
+                    myModal.show();
+                    orderSuccess = null;
+                })
+
+
+        }
+        //chuyển tên city để so sánh
+        function extractLocation(input) {
+            // Chuyển chuỗi về dạng chữ thường để so sánh
+            const lowerCaseInput = input.toLowerCase();
+
+            // Kiểm tra và tách từ "tỉnh" hoặc "thành phố"
+            if (lowerCaseInput.startsWith("tỉnh ")) {
+                // Tách từ "tỉnh" và lấy phần còn lại
+                const province = input.slice(5).trim();
+                return { type: "tỉnh", name: province };
+            } else if (lowerCaseInput.startsWith("thành phố ")) {
+                // Tách từ "thành phố" và lấy phần còn lại
+                const city = input.slice(10).trim();
+                return { type: "thành phố", name: city };
+            } else {
+                return { type: "unknown", name: input.trim() };
+            }
+        }
+        // <!-- //call api ngày giao dự kiến -->
+
+        function callIdCity(thanhpho, huyen, xa) {
+            var tencity = extractLocation(thanhpho);
+            var tenhuyen = huyen;
+            var tenxa = xa;
+
+            var idCityreturn;
+            var idHuyenreturn;
+            var idXareturn;
+
+            var Parameter = {
+                url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/province",
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Token": "59db4e6a-23e7-11ef-8c74-4ad7faca6bdc"
+                }
+            };
+            axios(Parameter)
+                .then(function (a) {
+                    return a.data;
+                })
+                .then(function (b) {
+                    // tách id thành phố
+                    for (const id of b.data) {
+                        if (id.ProvinceName.toLowerCase() === tencity.name.toLowerCase()) {
+                            idCityreturn = id.ProvinceID;
+                        }
+                    }
+
+                    var requestDataHuyen = {
+                        province_id: idCityreturn
+                    };
+
+                    // Cấu hình yêu cầu với axios, bao gồm Token và dữ liệu gửi đi
+                    var ParameterHuyen = {
+                        url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/district",
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Token": "59db4e6a-23e7-11ef-8c74-4ad7faca6bdc"
+                        },
+                        data: JSON.stringify(requestDataHuyen)
+                    };
+
+                    // Gửi yêu cầu và xử lý phản hồi
+                    axios(ParameterHuyen)
+                        .then(function (response) {
+                            return response.data;
+                        })
+                        .then(function (d) {
+                            //tách id huyện
+                            for (const id of d.data) {
+                                if (id.DistrictName.toLowerCase() === tenhuyen.toLowerCase()) {
+                                    idHuyenreturn = id.DistrictID;
+                                }
+                            }
+                            //tách id xã 
+                            var requestData = {
+                                district_id: idHuyenreturn
+                            };
+
+                            // Cấu hình yêu cầu với axios, bao gồm Token và dữ liệu gửi đi
+                            var Parameter = {
+                                url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id",
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "Token": "59db4e6a-23e7-11ef-8c74-4ad7faca6bdc"
+                                },
+                                data: JSON.stringify(requestData)
+                            };
+
+                            // Gửi yêu cầu và xử lý phản hồi
+                            axios(Parameter)
+                                .then(function (response) {
+                                    return response.data;
+                                })
+                                .then(function (d) {
+                                    //tách id xã
+                                    for (const id of d.data) {
+                                        if (id.WardName.toLowerCase() === tenxa.toLowerCase()) {
+                                            idXareturn = id.WardCode;
+                                        }
+                                    }
+                                    var requestDataDate = {
+                                        from_district_id: 3440,//địa chỉ mặc địch của shop
+                                        from_ward_code: "13007",//địa chỉ mặc địch của shop
+                                        to_district_id: idHuyenreturn,
+                                        to_ward_code: idXareturn.toString(),
+                                        service_id: 53320
+                                    };
+                                    // Cấu hình yêu cầu với axios, bao gồm Token và dữ liệu gửi đi
+                                    var ParameterDate = {
+                                        url: "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/leadtime",
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                            "Token": "59db4e6a-23e7-11ef-8c74-4ad7faca6bdc",
+                                            "ShopId": "5115739"
+                                        },
+                                        data: JSON.stringify(requestDataDate)
+                                    };
+                                    // Gửi yêu cầu và xử lý phản hồi
+                                    axios(ParameterDate)
+                                        .then(function (response) {
+                                            return response.data; // In dữ liệu ra console
+                                        })
+                                        .then(function (d) {
+                                            // Số nguyên đại diện cho một thời điểm trong JavaScript (ví dụ: số giây kể từ Epoch)
+                                            var timestamp = d.data.leadtime;
+                                            var date = new Date(timestamp * 1000);
+
+                                            // Lấy ngày, tháng, năm từ đối tượng Date
+                                            var day = date.getDate();
+                                            var month = date.getMonth() + 1; // Tháng bắt đầu từ 0
+                                            var year = date.getFullYear();
+
+                                            // Đảm bảo định dạng dd và mm luôn có hai chữ số
+                                            if (day < 10) {
+                                                day = '0' + day;
+                                            }
+                                            if (month < 10) {
+                                                month = '0' + month;
+                                            }
+
+                                            // Trả về chuỗi định dạng dd/mm/yyyy
+                                            var days = day + '/' + month + '/' + year;
+
+                                            document.getElementById('ngaygiaodukiens').innerHTML = days;
+                                            // feship(idHuyenreturn, idXareturn);
+
+
+                                        })
+                                })
+
+
+                        })
+                })
+
+        }
+
+        function feship(idhuyen, idxa) {
+            var requestData =
+            {
+                service_id: 53321,
+                insurance_value: 500000,
+                coupon: null,
+                from_district_id: 3440,
+                to_district_id: idhuyen,
+                to_ward_code: idxa.toString(),
+                height: 15,
+                length: 15,
+                weight: 1000,
+                width: 15
+            };
+            // Cấu hình yêu cầu với axios, bao gồm Token và dữ liệu gửi đi
+            var Parameter = {
+                url: "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee",
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Token": "59db4e6a-23e7-11ef-8c74-4ad7faca6bdc",
+                    "ShopId": "5115739"
+                },
+                data: JSON.stringify(requestData)
+            };
+
+            // Gửi yêu cầu và xử lý phản hồi
+            axios(Parameter)
+                .then(function (response) {
+                    return response.data // In dữ liệu ra console
+                })
+                .then(function (d) {
+                    console.log(d)
+                })
+
+        }
+
 
     </script>
 </body>

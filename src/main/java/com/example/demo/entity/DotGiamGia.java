@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Entity
 @Table(name = "dotgiamgia")
-public class DotGiamGia {
+public class DotGiamGia{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;

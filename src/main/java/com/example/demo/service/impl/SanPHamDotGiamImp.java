@@ -26,4 +26,9 @@ public class SanPHamDotGiamImp implements SanPhamDotGiamService {
     public void delete(SanPhamDotGiam sanPhamDotGiam) {
          sanPhamDotGiamRepository.delete(sanPhamDotGiam);
     }
+
+    @Override
+    public List<SanPhamDotGiam> findAll() {
+        return sanPhamDotGiamRepository.findAll();
+    }
 }

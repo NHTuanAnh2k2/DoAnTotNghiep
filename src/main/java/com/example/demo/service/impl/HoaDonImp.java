@@ -87,7 +87,7 @@ public class HoaDonImp implements HoaDonService {
     }
 
     @Override
-    public String htmlToPdf(String fileHtmlName,String pdfname) {
+    public String htmlToPdf(String fileHtmlName, String pdfname) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try {
             PdfWriter pdfWriter = new PdfWriter(byteArrayOutputStream);
@@ -95,7 +95,7 @@ public class HoaDonImp implements HoaDonService {
             ConverterProperties converterProperties = new ConverterProperties();
             converterProperties.setFontProvider(defaultFontProvider);
             HtmlConverter.convertToPdf(fileHtmlName, pdfWriter, converterProperties);
-            FileOutputStream fout = new FileOutputStream("C:/Users/ADMIN/Desktop/"+pdfname+".pdf");
+            FileOutputStream fout = new FileOutputStream("C:/Users/ADMIN/Desktop/" + pdfname + ".pdf");
             byteArrayOutputStream.writeTo(fout);
             byteArrayOutputStream.close();
             byteArrayOutputStream.flush();
@@ -119,7 +119,7 @@ public class HoaDonImp implements HoaDonService {
 
     @Override
     public List<HoaDon> timTheoTrangThaiVaLoai(Integer id, Boolean loaihd) {
-        return dao.findAllByTrangthaiAndLoaihoadon(id,loaihd);
+        return dao.findAllByTrangthaiAndLoaihoadon(id, loaihd);
     }
 
     @Override
@@ -130,6 +130,28 @@ public class HoaDonImp implements HoaDonService {
     @Override
     public HoaDon timHDTheoMaHD(String mahd) {
         return dao.timHDTheoMaHD(mahd);
+    }
+
+    @Override
+    public String htmlToPdfTaiQuay(String fileHtmlName, String pdfname) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try {
+            PdfWriter pdfWriter = new PdfWriter(byteArrayOutputStream);
+            DefaultFontProvider defaultFontProvider = new DefaultFontProvider(false, true, false);
+            ConverterProperties converterProperties = new ConverterProperties();
+            converterProperties.setFontProvider(defaultFontProvider);
+            HtmlConverter.convertToPdf(fileHtmlName, pdfWriter, converterProperties);
+            FileOutputStream fout = new FileOutputStream("C:/Users/ADMIN/Desktop/" + pdfname + "off.pdf");
+            byteArrayOutputStream.writeTo(fout);
+            byteArrayOutputStream.close();
+            byteArrayOutputStream.flush();
+            fout.close();
+            return null;
+        } catch (Exception e) {
+            //exception out
+
+        }
+        return null;
     }
 
 

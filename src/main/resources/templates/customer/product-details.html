@@ -187,6 +187,31 @@
 
 </style>
 <!--end-->
+
+<style>
+    .quantity {
+        border: 1px solid #ccc; /* Màu viền */
+        background-color: #f9f9f9; /* Màu nền */
+        border-radius: 4px; /* Đường viền cong */
+        width: fit-content; /* Độ rộng tự động theo nội dung bên trong */
+        display: inline-flex; /* Hiển thị theo chiều ngang */
+    }
+
+    .quantity input[type="text"] {
+        border: none; /* Loại bỏ viền cho input */
+        background-color: transparent; /* Đặt nền input là trong suốt */
+        text-align: center; /* Canh giữa nội dung */
+        width: 50px; /* Chiều rộng cố định */
+    }
+
+    .quantity input[type="button"] {
+        background-color: transparent; /* Đặt nút là trong suốt */
+        border: none; /* Loại bỏ viền cho nút */
+        cursor: pointer; /* Biến con trỏ thành hình bàn tay khi di chuột qua */
+    }
+
+
+</style>
 <body>
 <!-- header section start -->
 <nav th:replace="~{/layout/header.html}"></nav>
@@ -197,107 +222,77 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-<!--                <div class="left">-->
-<!--                                        <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">-->
-<!--                                            <div class="carousel-inner">-->
-<!--                                                <div th:each="tenanh, index : ${danhSachAnh}" th:classappend="${index.index == 0} ? 'carousel-item active' : 'carousel-item'">-->
-<!--                                                    <img th:src="@{'/upload/' + ${tenanh.substring(tenanh.lastIndexOf('upload') + 6)}}" class="d-block w-100 carousel-img rounded-3" alt="Ảnh">-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">-->
-<!--                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>-->
-<!--                                                <span class="visually-hidden">Previous</span>-->
-<!--                                            </button>-->
-<!--                                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">-->
-<!--                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>-->
-<!--                                                <span class="visually-hidden">Next</span>-->
-<!--                                            </button>-->
-<!--                                            &lt;!&ndash; Indicators &ndash;&gt;-->
-<!--                                            <br>-->
-<!--                                            <br>-->
-<!--                                            <div class="carousel-indicators">-->
-<!--                                                <div th:each="tenanh, index : ${danhSachAnh}" th:attr="data-bs-target='#carouselExample'" th:attrappend="data-bs-slide-to=${index.index}" th:classappend="${index.index == 0} ? 'active' : ''">-->
-<!--                                                    <img th:src="@{'/upload/' + ${tenanh.substring(tenanh.lastIndexOf('upload') + 6)}}" class="d-block rounded-3 carousel-thumbnail" alt="Ảnh" width="500px">-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                </div>-->
                 <div class="left">
                     <!-- Full-width images with number text -->
                     <div th:each="image, index : ${danhSachAnh}" class="mySlides">
                         <div class="numbertext" th:text="${index.index + 1} + ' / ' + ${danhSachAnh.size()}"></div>
                         <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                        <img th:src="@{'/upload/' + ${image.substring(image.lastIndexOf('upload') + 6)}}" style="width:100%" alt="Ảnh">
+                        <img th:src="@{'/upload' + ${image.substring(image.lastIndexOf('upload') + 6)}}" style="width:100%" alt="Ảnh">
                         <a class="next" onclick="plusSlides(1)">&#10095;</a>
                     </div>
-                    <!-- Next and previous buttons -->
                     <!-- Image text -->
                     <div class="caption-container">
                         <p id="caption"></p>
                     </div>
                     <!-- Thumbnail images -->
-                    <p>
                     <div class="row">
                         <div th:each="image, index : ${danhSachAnh}" class="column">
-                            <img class="demo cursor" th:src="@{'/upload/' + ${image.substring(image.lastIndexOf('upload') + 6)}}" style="width:100%" onclick="currentSlide(${index.index + 1})" alt="Ảnh">
+                            <img class="demo cursor" th:src="@{'/upload' + ${image.substring(image.lastIndexOf('upload') + 6)}}" style="width:100%" onclick="currentSlide(${index.index + 1})" alt="Ảnh">
                         </div>
                     </div>
-                    </p>
                 </div>
             </div>
 
             <div class="col-md-6">
                 <div class="right">
-                    <div class="singl-pro-title">
+                    <div class="singl-pro-title" th:data-product-id="${sanpham.id}">
                         <h3 th:text="${sanpham.tensanpham}"></h3>
-                        <h6 style="color: red">52573 lượt xem| 1803 lượt mua online</h6>
-                        <div class="d-flex">
-                            <h6 style="margin-top: 5px;margin-left: 5px">18 đánh giá</h6>
-                        </div>
-                        <h6>Tình trạng: Không có hàng</h6>
-                        <h6>Màu sắc:</h6>
-                        <div class="row">
-                            <div th:each="image, index : ${danhSachAnh}" class="column">
-                                <img class="demo cursor" th:src="@{'/upload/' + ${image.substring(image.lastIndexOf('upload') + 6)}}" style="width:100%" onclick="currentSlide2(${index.index + 1})" alt="Ảnh">
-                            </div>
-                        </div>
-                        <p></p>
-                        <div class="d-flex">
-                            <div th:each="color : ${colors}">
-                                <div style="margin-right: 10px">
-                                    <a class="btn btn-outline-dark" th:text="${color}"></a>
+                         <h6 >Giá:
+                        <span id="product-price" th:text="${#numbers.formatDecimal(selectedPrice, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}" style="color: red;font-weight: bold"></span>
+
+                    </h6>
+                        <h6>
+                            Số lượng có sẵn:
+                            <span id="product-quantity" th:text="${selectedQuantity}"></span>
+                        </h6>
+
+
+
+                        <div th:id="'product-details-' + ${sanpham.id}" th:data-color="${defaultColor}">
+                            <div class="d-flex">
+                                <div th:each="color, iterStat : ${colors}">
+                                    <div style="margin-right: 10px">
+                                        <a class="btn" th:classappend="${iterStat.index == 0} ? 'btn-dark' : 'btn-outline-dark'" th:text="${color}" th:data-color="${color}" th:onclick="'changeButtonBackground(this)'"></a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <p></p>
-                        <h6>Kích cỡ: <a href="">(Cách chọn size)</a></h6>
-                        <div class="d-flex">
-                            <div th:each="size : ${sizes}">
-                                <div style="margin-right: 10px">
-                                    <a class="btn btn-outline-dark" th:text="${size}"></a>
+                           <p>
+                            <div class="d-flex">
+                                <div th:each="size, iterStat : ${sizes}">
+                                    <div style="margin-right: 10px">
+                                        <a class="btn" th:classappend="${iterStat.index == 0} ? 'btn-dark' : 'btn-outline-dark'" th:text="${size}" th:data-size="${size}" th:onclick="'changeButtonBackground(this)'"></a>
+                                    </div>
                                 </div>
                             </div>
+                            <p>
+                            <div class="quantity">
+                                <input type="button" value="-" class="minus">
+                                <input type="text" size="4" name="updates[]" min="1" id="updates_1124514490" data-price="55900000" value="1" readonly class="tc line-item-qty item-quantity bg-white">
+                                <input type="button" value="+" class="plus">
+                            </div>
+                            <br>
+                            <br>
+                            <button id="add-to-cart-btn" class="btn btn" style="background-color: rgb(249,72,42);color: white;width: 370px" th:disabled="${selectedQuantity} == 0">Thêm vào giỏ hàng</button>
+                            <br>
+                            <br>
+                            <button class="btn btn-dark" style="width: 370px">Mua ngay</button>
                         </div>
-                        <br>
-                        <button class="btn btn" style="background-color: rgb(249,72,42);color: white;width: 370px">Thêm vào giỏ hàng</button>
-                        <br>
-                        <br>
-                        <button class="btn btn-dark" style="width: 370px">Mua ngay</button><br><br>
-                        <h6>Miễn phí vẫn chuyển toàn quốc cho đơn hàng trên 1 triệu</h6>
-                        <h6>Giao nhanh 2h trong nội thành HN</h6>
-                        <h6>Thồi gian vận chuyển trung bình 3-4 ngày</h6>
                     </div>
                 </div>
             </div>
 
-            <!--                        <h1 style="color: red;font-weight: bold"  th:text="${#numbers.formatDecimal(spct.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></h1>-->
-            <!--                        <p>-->
-            <!--                            <input type="number" th:value="${spct.soluong}">-->
-            <!--                        </p>-->
-
-
             <h3 style="margin-top: 30px; color: rgb(249, 72, 42); font-family: 'Lucida Sans Typewriter'"
-                class="text-center">CÁC SẢN PHẨM NỔI BẬT</h3>
+                class="text-center">CÁC SẢN PHẨM LIÊN QUAN</h3>
             <hr class="border border-danger border opacity-50">
             <div class="tab-content">
                 <!--nội dung-->
@@ -315,7 +310,7 @@
                                 <div class="pro-img">
                                     <a th:href="@{/detailsanphamCustomer/{id}(id=${sp[0]})}">
                                         <img th:if="${sp[6] != null}"
-                                             th:src="@{'/upload/' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
+                                             th:src="@{'/upload' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
                                              class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
                                     </a>
                                     <div class="tag-n-s">
@@ -386,7 +381,7 @@
                                 <div class="pro-img">
                                     <a th:href="@{/detailsanphamCustomer/{id}(id=${sp[0]})}">
                                         <img th:if="${sp[6] != null}"
-                                             th:src="@{'/upload/' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
+                                             th:src="@{'/upload' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
                                              class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
                                     </a>
                                     <div class="tag-n-s">
@@ -451,6 +446,8 @@
 
 </body>
 </html>
+
+<!--scroll-->
 <script>
     let slideIndex = 1;
     showSlides(slideIndex);
@@ -464,6 +461,7 @@
     function currentSlide(n) {
         showSlides(slideIndex = n);
     }
+
     function currentSlide2(n) {
         showSlides(slideIndex = n);
     }
@@ -473,27 +471,32 @@
         let slides = document.getElementsByClassName("mySlides");
         let dots = document.getElementsByClassName("demo");
         let captionText = document.getElementById("caption");
-        if (n > slides.length) {slideIndex = 1}
-        if (n < 1) {slideIndex = slides.length}
+        if (n > slides.length) {
+            slideIndex = 1
+        }
+        if (n < 1) {
+            slideIndex = slides.length
+        }
         for (i = 0; i < slides.length; i++) {
             slides[i].style.display = "none";
         }
         for (i = 0; i < dots.length; i++) {
             dots[i].className = dots[i].className.replace(" active", "");
         }
-        slides[slideIndex-1].style.display = "block";
-        dots[slideIndex-1].className += " active";
-        captionText.innerHTML = dots[slideIndex-1].alt;
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " active";
+        captionText.innerHTML = dots[slideIndex - 1].alt;
     }
 
     // Add event listeners to thumbnail images
     let thumbnails = document.getElementsByClassName("demo");
     for (let i = 0; i < thumbnails.length; i++) {
-        thumbnails[i].addEventListener("click", function() {
+        thumbnails[i].addEventListener("click", function () {
             currentSlide(i + 1);
         });
     }
 </script>
+
 <!-- các sản phẩm nổi bật-->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -544,4 +547,152 @@
         });
     });
 
+</script>
+
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const defaultColorElement = document.querySelector('.btn-dark[data-color]');
+        const defaultSizeElement = document.querySelector('.btn-dark[data-size]');
+        if (defaultColorElement) {
+            updateImagesAndPrice();
+        }
+        if (defaultSizeElement) {
+            updatePriceAndQuantity();
+        }
+    });
+
+    function updateImagesAndPrice() {
+        const color = document.querySelector('.btn-dark[data-color]') ? document.querySelector('.btn-dark[data-color]').getAttribute('data-color') : null;
+        const size = document.querySelector('.btn-dark[data-size]') ? document.querySelector('.btn-dark[data-size]').getAttribute('data-size') : null;
+        const url = new URL(window.location);
+
+        if (color) {
+            url.searchParams.set('color', color);
+        }
+        if (size) {
+            url.searchParams.set('size', size);
+        }
+
+        fetch(url)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const newDocument = parser.parseFromString(html, 'text/html');
+                const newImages = newDocument.querySelectorAll('.left .mySlides');
+                const newThumbnails = newDocument.querySelectorAll('.left .column img');
+
+                document.querySelectorAll('.left .mySlides').forEach((slide, index) => {
+                    slide.innerHTML = newImages[index].innerHTML;
+                });
+                document.querySelectorAll('.left .column img').forEach((thumbnail, index) => {
+                    thumbnail.src = newThumbnails[index].src;
+                });
+            });
+
+        updatePriceAndQuantity(); // Ensure price and quantity are updated whenever images are updated
+    }
+
+    function updatePriceAndQuantity() {
+        const color = document.querySelector('.btn-dark[data-color]') ? document.querySelector('.btn-dark[data-color]').getAttribute('data-color') : null;
+        const size = document.querySelector('.btn-dark[data-size]') ? document.querySelector('.btn-dark[data-size]').getAttribute('data-size') : null;
+        const url = new URL(window.location);
+
+        if (color) {
+            url.searchParams.set('color', color);
+        }
+        if (size) {
+            url.searchParams.set('size', size);
+        }
+
+        fetch(url)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const newDocument = parser.parseFromString(html, 'text/html');
+                const newPrice = newDocument.querySelector('#product-price').innerText;
+                const newQuantity = newDocument.querySelector('#product-quantity').innerText;
+
+                if (newPrice) {
+                    document.querySelector('#product-price').innerText = newPrice;
+                } else {
+                    document.querySelector('#product-price').innerText = 'Không có giá';
+                }
+
+                if (newQuantity) {
+                    document.querySelector('#product-quantity').innerText = newQuantity;
+                } else {
+                    document.querySelector('#product-quantity').innerText = 'Không có số lượng';
+                }
+
+                const addToCartButton = document.querySelector('#add-to-cart-btn');
+                if (parseInt(newQuantity) === 0) {
+                    addToCartButton.disabled = true;
+                } else {
+                    addToCartButton.disabled = false;
+                }
+            });
+    }
+
+    function changeButtonBackground(element) {
+        const isColorButton = element.hasAttribute('data-color');
+        const isSizeButton = element.hasAttribute('data-size');
+
+        if (isColorButton) {
+            const colorButtons = document.querySelectorAll('.btn[data-color]');
+            const isSelected = element.classList.contains('btn-dark');
+
+            if (!isSelected) {
+                colorButtons.forEach(button => {
+                    button.classList.remove('btn-dark');
+                    button.classList.add('btn-outline-dark');
+                });
+                element.classList.remove('btn-outline-dark');
+                element.classList.add('btn-dark');
+            }
+        } else if (isSizeButton) {
+            const sizeButtons = document.querySelectorAll('.btn[data-size]');
+            const isSelected = element.classList.contains('btn-dark');
+
+            if (!isSelected) {
+                sizeButtons.forEach(button => {
+                    button.classList.remove('btn-dark');
+                    button.classList.add('btn-outline-dark');
+                });
+                element.classList.remove('btn-outline-dark');
+                element.classList.add('btn-dark');
+            }
+        }
+
+        updateImagesAndPrice();
+    }
+
+</script>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const minusButtons = document.querySelectorAll('.minus');
+        const plusButtons = document.querySelectorAll('.plus');
+
+        minusButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                const input = this.nextElementSibling;
+                let value = parseInt(input.value);
+                if (value > 1) {
+                    input.value = value - 1;
+                }
+            });
+        });
+
+        plusButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                const input = this.previousElementSibling;
+                input.value = parseInt(input.value) + 1;
+            });
+        });
+    });
 </script>

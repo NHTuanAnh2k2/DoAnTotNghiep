@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
@@ -49,7 +50,7 @@ public class LayPhieuGiamGiaController {
     }
 @GetMapping(value = "/discounts-stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 public Flux<ServerSentEvent<PhieuGiamGia>> streamDiscounts() {
-    return Flux.interval(Duration.ofSeconds(30))
+    return Flux.interval(Duration.ofSeconds(10))
             .flatMap(sequence -> Flux.fromIterable(getUpdatedDiscounts())
                     .map(phieu -> ServerSentEvent.<PhieuGiamGia>builder()
                             .id(String.valueOf(sequence))
@@ -84,6 +85,12 @@ public Flux<ServerSentEvent<PhieuGiamGia>> streamDiscounts() {
     public Integer capnhatthanhcong(HttpSession session){
         Integer dacapnhat = (Integer) session.getAttribute("capnhatthanhcong");
         return dacapnhat;
+    }
+    @PostMapping("/clear-session")
+    public void clearSession(HttpSession session) {
+//        session.invalidate();
+        session.removeAttribute("themthanhcong");
+        session.removeAttribute("capnhatthanhcong");
     }
 
 }

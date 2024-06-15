@@ -162,7 +162,8 @@
                                                     <p></p>
                                                     <button class="btn btn-danger" th:if="${trangThaiHienTai<3}"
                                                         data-bs-toggle="modal" data-bs-target="#huy">Hủy</button>
-                                                    <button class="btn btn-warning" th:if="${trangThaiHienTai>0}"
+                                                    <button class="btn btn-warning"
+                                                        th:if="${trangThaiHienTai > 0 and trangThaiHienTai < 5}"
                                                         data-bs-toggle="modal" data-bs-target="#quaylai">Quay
                                                         lại</button>
                                                     <button th:if="${trangThaiHienTai==0}" class="btn btn-primary"
@@ -274,7 +275,8 @@
 
                                                                         <div class="d-flex flex-row-reverse">
                                                                             <button type="submit" id="xacnhanbtn"
-                                                                                disabled class="btn btn-primary">Xác
+                                                                                onclick="xacnhanngaygiao()" disabled
+                                                                                class="btn btn-primary">Xác
                                                                                 nhận</button>
                                                                             <button type="button"
                                                                                 class="btn btn-secondary ms-1"
@@ -594,7 +596,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-12">
-                                <div class="card" >
+                                <div class="card">
                                     <div class="card-header">
                                         <hr class="border border-danger border-2 opacity-50">
                                         <!--smkds-->
@@ -662,9 +664,8 @@
                                             <div class="d-flex justify-content-between align-content-center">
                                                 <h4 th:text="${'Thông tin đơn hàng: '+hoaDonDT.mahoadon}">
                                                 </h4>
-                                                <div >
-                                                    <button 
-                                                        type="button" class="btn btn-outline-secondary"
+                                                <div>
+                                                    <button type="button" class="btn btn-outline-secondary"
                                                         data-bs-toggle="modal" data-bs-target="#modalThayDoiHoaDon"
                                                         th:classappend="${trangThaiHienTai!=0?'disabled':''}">Thay
                                                         đổi</button>
@@ -847,7 +848,7 @@
                                             </div>
                                             <hr class="border border-danger border-2 opacity-50">
                                             <div class="row g-3">
-                                                <div class="col-lg-6 col-md-6">
+                                                <div class="col-lg-7 col-md-7">
                                                     <div class="d-flex justify-content-start">
                                                         <h6 style="font-family: 'Times New Roman'; font-weight: bold">
                                                             Trạng thái:</h6>
@@ -905,7 +906,7 @@
                                                         </p>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-6 col-md-6">
+                                                <div class="col-lg-5 col-md-5">
                                                     <div class="d-flex justify-content-start">
                                                         <h6 style="font-family: 'Times New Roman'; font-weight: bold">
                                                             Loại giao dịch:</h6>
@@ -936,8 +937,8 @@
                                                     </div>
                                                     <div class="d-flex justify-content-start">
                                                         <h6 style="font-family: 'Times New Roman'; font-weight: bold">
-                                                            Ngày dự kiến nhận:</h6>
-                                                        <p
+                                                            Ngày giao dự kiến:</h6>
+                                                        <p th:text="${hoaDonDT.ngaygiaodukien==null?' -------':#dates.format(hoaDonDT.ngaygiaodukien, 'dd-MM-yyyy')}"
                                                             style="margin-left: 48px; font-family: 'Times New Roman'; font-size: 15px;">
                                                             25/12/2024</p>
                                                     </div>
@@ -983,7 +984,7 @@
                                                 <h6 style="font-family: 'Times New Roman'; font-weight: bold">Phiếu giảm
                                                     giá
                                                     :</h6>
-                                                <p th:text="${#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiamtoida, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                <p th:text="${phieuGiamCT.phieugiamgia.giatrigiamtoida!=null?#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiamtoida, 0, 'COMMA', 0, 'POINT')+'&#x20ab;':'0'}"
                                                     style="font-family: 'Times New Roman'; font-size: 16px;">
                                                 </p>
                                             </div>
@@ -1237,7 +1238,7 @@
                                                 <tr th:each="a:${pageSPHD}">
                                                     <td th:text="${aStat.index+1}" style="vertical-align: middle;"></td>
                                                     <td style="vertical-align: middle;">
-                                                        <img  alt=""  th:src="@{${a.sanphamchitiet.anh[0].tenanh}}" 
+                                                        <img alt="" th:src="@{${a.sanphamchitiet.anh[0].tenanh}}"
                                                             style="height: 100px; width: 100px;">
                                                     </td>
                                                     <td style="vertical-align: middle; text-align: center;">
@@ -2385,8 +2386,8 @@
 
             if (inputValue === "") {
                 errorMessage = "Chuỗi không được để trống";
-            } else if (inputValue.length < 30) {
-                errorMessage = "Chuỗi phải có ít nhất 30 kí tự";
+            } else if (inputValue.length < 14) {
+                errorMessage = "Chuỗi phải có ít nhất 14 kí tự";
             }
 
             if (errorMessage !== "") {
@@ -2398,7 +2399,169 @@
                 button.disabled = false; // Cho phép nhấn button
             }
         }
+
+        //chuyển tên city để so sánh
+        function extractLocation(input) {
+            // Chuyển chuỗi về dạng chữ thường để so sánh
+            const lowerCaseInput = input.toLowerCase();
+
+            // Kiểm tra và tách từ "tỉnh" hoặc "thành phố"
+            if (lowerCaseInput.startsWith("tỉnh ")) {
+                // Tách từ "tỉnh" và lấy phần còn lại
+                const province = input.slice(5).trim();
+                return { type: "tỉnh", name: province };
+            } else if (lowerCaseInput.startsWith("thành phố ")) {
+                // Tách từ "thành phố" và lấy phần còn lại
+                const city = input.slice(10).trim();
+                return { type: "thành phố", name: city };
+            } else {
+                return { type: "unknown", name: input.trim() };
+            }
+        }
+        // <!-- //call api ngày giao dự kiến -->
+
+        function callIdCity(thanhpho, huyen, xa) {
+            var tencity = extractLocation(thanhpho);
+            var tenhuyen = huyen;
+            var tenxa = xa;
+
+            var idCityreturn;
+            var idHuyenreturn;
+            var idXareturn;
+
+            var Parameter = {
+                url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/province",
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Token": "59db4e6a-23e7-11ef-8c74-4ad7faca6bdc"
+                }
+            };
+            axios(Parameter)
+                .then(function (a) {
+                    return a.data;
+                })
+                .then(function (b) {
+                    // tách id thành phố
+                    for (const id of b.data) {
+                        if (id.ProvinceName.toLowerCase() === tencity.name.toLowerCase()) {
+                            idCityreturn = id.ProvinceID;
+                        }
+                    }
+
+                    var requestDataHuyen = {
+                        province_id: idCityreturn
+                    };
+
+                    // Cấu hình yêu cầu với axios, bao gồm Token và dữ liệu gửi đi
+                    var ParameterHuyen = {
+                        url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/district",
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Token": "59db4e6a-23e7-11ef-8c74-4ad7faca6bdc"
+                        },
+                        data: JSON.stringify(requestDataHuyen)
+                    };
+
+                    // Gửi yêu cầu và xử lý phản hồi
+                    axios(ParameterHuyen)
+                        .then(function (response) {
+                            return response.data;
+                        })
+                        .then(function (d) {
+                            //tách id huyện
+                            for (const id of d.data) {
+                                if (id.DistrictName.toLowerCase() === tenhuyen.toLowerCase()) {
+                                    idHuyenreturn = id.DistrictID;
+                                }
+                            }
+                            //tách id xã 
+                            var requestData = {
+                                district_id: idHuyenreturn
+                            };
+
+                            // Cấu hình yêu cầu với axios, bao gồm Token và dữ liệu gửi đi
+                            var Parameter = {
+                                url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id",
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "Token": "59db4e6a-23e7-11ef-8c74-4ad7faca6bdc"
+                                },
+                                data: JSON.stringify(requestData)
+                            };
+
+                            // Gửi yêu cầu và xử lý phản hồi
+                            axios(Parameter)
+                                .then(function (response) {
+                                    return response.data;
+                                })
+                                .then(function (d) {
+                                    //tách id xã
+                                    for (const id of d.data) {
+                                        if (id.WardName.toLowerCase() === tenxa.toLowerCase()) {
+                                            idXareturn = id.WardCode;
+                                        }
+                                    }
+                                    var requestDataDate = {
+                                        from_district_id: 3440,//địa chỉ mặc địch của shop
+                                        from_ward_code: "13007",//địa chỉ mặc địch của shop
+                                        to_district_id: idHuyenreturn,
+                                        to_ward_code: idXareturn.toString(),
+                                        service_id: 53320
+                                    };
+                                    // Cấu hình yêu cầu với axios, bao gồm Token và dữ liệu gửi đi
+                                    var ParameterDate = {
+                                        url: "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/leadtime",
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                            "Token": "59db4e6a-23e7-11ef-8c74-4ad7faca6bdc",
+                                            "ShopId": "5115739"
+                                        },
+                                        data: JSON.stringify(requestDataDate)
+                                    };
+                                    // Gửi yêu cầu và xử lý phản hồi
+                                    axios(ParameterDate)
+                                        .then(function (response) {
+                                            return response.data; // In dữ liệu ra console
+                                        })
+                                        .then(function (d) {
+                                            // Số nguyên đại diện cho một thời điểm trong JavaScript (ví dụ: số giây kể từ Epoch)
+                                            var timestamp = d.data.leadtime;
+
+                                            // http://localhost:8080/hoa-don/set-ngay-giao-du-kien/{date}
+                                            var urlsetdate = `http://localhost:8080/hoa-don/set-ngay-giao-du-kien/${timestamp}`;
+                                            callController(urlsetdate);
+                                        })
+                                })
+
+
+                        })
+                })
+
+        }
+        //test thử
+        function xacnhanngaygiao() {
+            //http://localhost:8080/hoa-don/set-ngay-giao-du-kien/{date}
+            var urlAPI = `http://localhost:8080/hoa-don/call-api-ngay-giao`;
+            fetch(urlAPI)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    callIdCity(b[0], b[1], b[2]);
+                })
+        }
+
+        function callController(url) {
+            fetch(url)
+        }
+
     </script>
+
+
 </body>
 
 </html>

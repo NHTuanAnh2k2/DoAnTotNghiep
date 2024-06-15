@@ -3,6 +3,8 @@
 <nav th:replace="~{/layoutadmin/head.html}"></nav>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
     .form123{
         position: relative;
@@ -165,24 +167,36 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="pgg,stt:${pageDGG.content}">
+                                    <tr th:each="pgg,stt:${pageDGG.content}" th:attr="data-id=${pgg.id}">
                                         <td th:text="${stt.index+1}"></td>
                                         <td th:text="${pgg.tendot}"></td>
                                         <td th:text="${pgg.giatrigiam}+' %'" style="text-align: center;"></td>
                                         <td th:utext="${#dates.format(pgg.ngaybatdau, 'dd-MM-yyyy HH:mm') + '<br/>' + #dates.format(pgg.ngayketthuc, 'dd-MM-yyyy HH:mm')}"></td>
-                                        <td>
-                                            <a th:href="@{/admin/cap-nhat-trang-thai-dot-giam-gia/{Id}(Id=${pgg.id})}" style="text-decoration: none;">
-                                                <div th:if="${pgg.trangthai == 0}" onclick="return hoiTrangThai()">
+                                        <td class="status-cell">
+                                            <a th:href="@{/admin/cap-nhat-trang-thai-dot-giam-gia/{Id}(Id=${pgg.id})}" style="text-decoration: none;" onclick="return hoiTrangThai(event, this)">
+                                                <div th:if="${pgg.trangthai == 0}">
                                                     <p style=" font-family: 'Times New Roman'; font-size: 12px; border-radius: 14px; background-color: orange; padding: 2px 5px 2px 5px; color: white;">Chưa kích hoạt</p>
                                                 </div>
                                             </a>
-                                            <a th:href="@{/admin/cap-nhat-trang-thai-dot-giam-gia/{Id}(Id=${pgg.id})}" style="text-decoration: none;">
-                                                <div th:if="${pgg.trangthai == 1}" onclick="return hoiTrangThai()">
+                                            <a th:href="@{/admin/cap-nhat-trang-thai-dot-giam-gia/{Id}(Id=${pgg.id})}" style="text-decoration: none;" onclick="return hoiTrangThai(event, this)">
+                                                <div th:if="${pgg.trangthai == 1}">
                                                     <p style=" font-family: 'Times New Roman'; font-size: 12px; border-radius: 14px; background-color: #00bb00; padding: 2px 5px 2px 5px; color: white;">Đang kích hoạt</p>
                                                 </div>
                                             </a>
                                             <div th:if="${ pgg.trangthai == 2}">
-                                                <p style=" font-family: 'Times New Roman'; font-size: 12px; border-radius: 14px; background-color: crimson; padding: 2px 5px 2px 5px; color: white;">Đã ngừng</p>
+                                                <div th:if="${pgg.ngayketthuc.before(#dates.createNow().getTime())}">
+                                                    <!-- Nội dung bạn muốn hiển thị khi pgg.ngayketthuc là thời gian trong quá khứ -->
+                                                    <p style=" font-family: 'Times New Roman'; font-size: 12px; border-radius: 14px; background-color: crimson; padding: 2px 5px 2px 5px; color: white;">Đã ngừng</p>
+                                                </div>
+                                                <div th:if="${pgg.ngayketthuc.after(#dates.createNow().getTime())}">
+                                                    <!-- Nội dung bạn muốn hiển thị khi pgg.ngayketthuc là thời gian trong tương lai -->
+                                                    <a th:href="@{/admin/cap-nhat-trang-thai-dot-giam-gia/{Id}(Id=${pgg.id})}" style="text-decoration: none;" onclick="return hoiTrangThai2(event, this)">
+                                                        <div>
+                                                            <p style=" font-family: 'Times New Roman'; font-size: 12px; border-radius: 14px; background-color: crimson; padding: 2px 5px 2px 5px; color: white;">Đã ngừng</p>
+                                                        </div>
+                                                    </a>
+                                                </div>
+<!--                                                <p style=" font-family: 'Times New Roman'; font-size: 12px; border-radius: 14px; background-color: crimson; padding: 2px 5px 2px 5px; color: white;">Đã ngừng</p>-->
                                             </div>
 
                                         </td>
@@ -258,6 +272,170 @@
         } else {
             return false;
         }
+    }
+    async function themthanhcong() {
+        const response = await fetch('/them-dot-thanh-cong');
+        const data = await response.json();
+        console.log(data);
+        if (data === 1) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: "success",
+                title: "Thêm thành công!"
+            }).then(async () => {
+                // Xóa session sau khi hiển thị thông báo
+                await fetch('/dot-clear-session', { method: 'POST' });
+            });
+        }
+    }
+    themthanhcong();
+    async function capnhatthanhcong() {
+        const response = await fetch('/cap-nhat-dot-thanh-cong');
+        const data = await response.json();
+        console.log(data);
+        if (data === 1) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: "success",
+                title: "Cập nhật thành công!"
+            }).then(async () => {
+                // Xóa session sau khi hiển thị thông báo
+                await fetch('/dot-clear-session', { method: 'POST' });
+            });
+        }
+    }
+    capnhatthanhcong();
+    function hoiTrangThai(event, element) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Bạn có chắc chắn muốn ngừng kích hoạt đợt giảm giá này không?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.setItem('capnhattrangthaidot', '1');
+                console.log("Navigating to: " + element.href);
+                window.location.href = element.href; // Điều hướng đến URL khi người dùng xác nhận
+            }
+        });
+        return false;
+    }
+    function hoiTrangThai2(event, element) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Bạn có chắc chắn muốn tái kích hoạt đợt giảm giá này không?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.setItem('capnhattrangthaidot', '1');
+                console.log("Navigating to: " + element.href);
+                window.location.href = element.href; // Điều hướng đến URL khi người dùng xác nhận
+            }
+        });
+        return false;
+    }
+    function capnhattrangthaithanhcong() {
+        if (localStorage.getItem('capnhattrangthaidot') === '1') {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: "success",
+                title: "Cập nhật thành công!"
+            });
+
+            // Reset trạng thái
+            localStorage.setItem('capnhattrangthaidot', '0');
+        }
+    }
+</script>
+<script>
+    const eventSource = new EventSource('/dot-discounts-stream');
+
+    eventSource.addEventListener('dot-discount-update', function(event) {
+        const data = JSON.parse(event.data);
+        updateStatusColumn(data);
+    });
+
+    function updateStatusColumn(discount) {
+        const rowId = discount.id;
+        const status = discount.trangthai;
+        const ngayketthuc= new Date(discount.ngayketthuc);
+        const row = document.querySelector('[data-id="' + rowId + '"]');
+        if (row) {
+            const statusCell = row.querySelector('.status-cell');
+            if (statusCell) {
+                statusCell.innerHTML = getStatusHtml(rowId,status,ngayketthuc);
+            }
+        }
+    }
+
+    function getStatusHtml(id,status,ngayketthuc) {
+        const baseUrl = '/admin/cap-nhat-trang-thai-dot-giam-gia';
+        const url = `${baseUrl}/${id}`;
+        if (status === 0) {
+            return `<a href="${url}" style="text-decoration: none;" onclick="return hoiTrangThai(event, this)">\n` +
+                '    <div>\n' +
+                '        <p style="font-family: \'Times New Roman\'; font-size: 12px; border-radius: 14px; background-color: orange; padding: 2px 5px 2px 5px; color: white;">Chưa kích hoạt</p>\n' +
+                '    </div>\n' +
+                '</a>';
+        } else if (status === 1) {
+            return `<a href="${url}" style="text-decoration: none;" onclick="return hoiTrangThai(event, this)">\n` +
+                '    <div>\n' +
+                '        <p style="font-family: \'Times New Roman\'; font-size: 12px; border-radius: 14px; background-color: #00bb00; padding: 2px 5px 2px 5px; color: white;">Đang kích hoạt</p>\n' +
+                '    </div>\n' +
+                '</a>';
+        } else if (status === 2) {
+            var dateNow = new Date();
+            if(dateNow.getTime() < ngayketthuc.getTime()){
+                return `<a href="${url}" style="text-decoration: none;" onclick="return hoiTrangThai2(event, this)">\n` +
+                    '    <div>\n' +
+                    '        <p style="font-family: \'Times New Roman\'; font-size: 12px; border-radius: 14px; background-color: crimson; padding: 2px 5px 2px 5px; color: white;">Đã ngừng</p>\n' +
+                    '    </div>\n' +
+                    '</a>';
+            } else {
+                return '<div>\n' +
+                    '    <p style="font-family: \'Times New Roman\'; font-size: 12px; border-radius: 14px; background-color: crimson; padding: 2px 5px 2px 5px; color: white;">Đã ngừng</p>\n' +
+                    '</div>';
+            }
+        }
+
     }
 </script>
 <!--script-->
