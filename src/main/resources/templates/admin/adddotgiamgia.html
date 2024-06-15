@@ -57,7 +57,7 @@
         height: 18px;
         background-color: #eee;
         border-radius: 5px;
-        border: 1px solid #dcdcdc;
+        border: 1px solid black;
         cursor: pointer;
         -webkit-appearance: none; /* Tắt kiểu mặc định của trình duyệt cho checkbox */
         appearance: none;
@@ -201,9 +201,9 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="table-responsive" style="margin-top: 10px; padding-bottom: 15px; max-height: 400px;">
-                                    <table id="detailTable" class="table table-bordered table-hover">
-                                        <thead class="table table-danger align-middle text-center sticky-thead">
-                                        <th><input type="checkbox" name="chontatcactsp" id="chontatcactsp" onchange="selectAll(this)"></th>
+                                    <table id="detailTable" class="table table-bordered table-hover align-middle text-center">
+                                        <thead class="table table-danger sticky-thead">
+                                        <th><input type="checkbox" class="checkbox" name="chontatcactsp" id="chontatcactsp" onchange="selectAll(this)"></th>
                                         <th>STT</th>
                                         <th>Ảnh</th>
                                         <th>Tên sản phẩm</th>
@@ -211,7 +211,7 @@
                                         <th>Màu sắc</th>
 <!--                                        <th>Gioi tính</th>-->
                                         </thead>
-                                        <tbody class="table align-middle">
+                                        <tbody>
                                         </tbody>
                                     </table>
                                 </div>
@@ -285,6 +285,7 @@
             row.setAttribute("data-product-id", detail.sanpham.id); // Lưu productId vào data attribute
             const checkboxCell = row.insertCell();
             const checkbox = document.createElement("input");
+            checkbox.className="checkbox";
             checkbox.type = "checkbox";
             checkbox.name="chonchitietsp";
             checkbox.value = detail.id;
@@ -301,7 +302,7 @@
             // Kiểm tra xem detail có danh sách ảnh không
             if (detail.anh.length > 0) {
                 const image = document.createElement("img");
-                image.src = '/upload/' + detail.anh[0].tenanh.substring(detail.anh[0].tenanh.lastIndexOf('upload') + 6);
+                image.src = '/upload' + detail.anh[0].tenanh.substring(detail.anh[0].tenanh.lastIndexOf('upload') + 6);
                 image.alt = "Ảnh"; // Thiết lập thuộc tính alt của ảnh
                 image.width = 110; // Đặt chiều rộng của ảnh (đơn vị là pixels)
                 image.height = 75;
@@ -437,6 +438,11 @@
         // Sử dụng biểu thức chính quy để tìm các mẫu có ít nhất hai khoảng trắng liên tiếp giữa các từ
         return /\s{2,}/.test(str.trim());
     }
+    function validateTenPhieuGiamBTCQ(inputString) {
+        // Biểu thức chính quy cho phép các ký tự Latinh, số từ 0-9 và có độ dài từ 5 đến 15 ký tự
+        const regex = /^[a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯăâêôơưÁÉÍÓÚáéíóúýÝĂÂÊÔĂÂÊÔĂÂÊÔăâêôơưÁÉÍÓÚáéíóúýÝ ]{1,30}$/;
+        return regex.test(inputString);
+    }
     function validateForm(){
 
         var inputTen=document.getElementById("inputTen").value;
@@ -450,6 +456,13 @@
         if(inputTen.trim().length > 0){
             if(checkNhieuKhoangTrang(inputTen)){
                 errorTen.innerText = "Giữa các từ không được nhiều hơn 1 khoảng trắng!";
+                document.getElementById("inputTen").style.border = "1.2px solid red";
+                isTenValid = false;
+            }
+        }
+        if(inputTen.trim().length > 0){
+            if(validateTenPhieuGiamBTCQ(inputTen)===false){
+                errorTen.innerText = "Tên phiếu chỉ được chứa ký tự, số và tối đa 30 ký tự!";
                 document.getElementById("inputTen").style.border = "1.2px solid red";
                 isTenValid = false;
             }

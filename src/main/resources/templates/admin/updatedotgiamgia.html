@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <nav th:replace="~{/layoutadmin/head.html}"></nav>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <style>
     .form123{
@@ -49,6 +50,35 @@
     .sticky-thead th {
         position: sticky;
         top: 0;
+        z-index: 1;
+    }
+    .checkbox{
+        width: 18px;
+        height: 18px;
+        background-color: #eee;
+        border-radius: 5px;
+        border: 1px solid black;
+        cursor: pointer;
+        -webkit-appearance: none; /* Tắt kiểu mặc định của trình duyệt cho checkbox */
+        appearance: none;
+        position: relative;
+    }
+
+    /* Styling the checkbox when it's checked */
+    .checkbox:checked {
+        background-color: rgb(249,72,42);
+        border: 1px solid rgb(249,72,42);
+    }
+    .checkbox:checked::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 6px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
     }
 </style>
 <body class="hold-transition sidebar-mini">
@@ -135,6 +165,21 @@
                                         <label>Ngày kết thúc</label>
                                         <div style="color: red; font-weight: initial;" id="errorDenNgay"></div>
                                     </div>
+                                    <div class="d-flex justify-content-start mt-1">
+                                        <p style="font-size: 14px; font-weight: bold; min-width: 140px;">Trạng thái: </p>
+                                        <div style="margin-left: 15px;" class="form-check">
+                                            <input class="form-check-input" type="radio" name="trangthaicn" th:value="false" th:checked="*{trangthai==0 || trangthai==1}" >
+                                            <label class="form-check-label">
+                                                Kích hoạt
+                                            </label>
+                                        </div>
+                                        <div style="margin-left: 15px;" class="form-check">
+                                            <input class="form-check-input" type="radio" name="trangthaicn" th:value="true" th:checked="*{trangthai==2}">
+                                            <label class="form-check-label">
+                                                Ngừng kích hoạt
+                                            </label>
+                                        </div>
+                                    </div>
                                     <div class="d-flex justify-content-evenly align-items-center" style="margin-top: 15px;">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
                                         <button onclick="layGiaTri()" type="submit" class="btn btn-primary" style="margin-left: 20px;">Cập nhật</button>
@@ -157,6 +202,7 @@
                                         <thead class="table table-danger align-middle text-center sticky-thead">
                                         <th></th>
                                         <th>STT</th>
+                                        <th>Mã sản phẩm</th>
                                         <th>Tên sản phẩm</th>
                                         </thead>
                                         <tbody>
@@ -190,9 +236,9 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="table-responsive" style="margin-top: 10px; padding-bottom: 15px; max-height: 400px;">
-                                    <table id="detailTable" class="table table-bordered table-hover">
-                                        <thead class="table table-danger align-middle text-center sticky-thead">
-                                        <th><input type="checkbox" name="chontatcactsp" id="chontatcactsp" onchange="selectAll(this)"></th>
+                                    <table id="detailTable" class="table table-bordered table-hover align-middle text-center">
+                                        <thead class="table table-danger sticky-thead">
+                                        <th><input type="checkbox" class="checkbox" name="chontatcactsp" id="chontatcactsp" onchange="selectAll(this)"></th>
                                         <th>STT</th>
                                         <th>Ảnh</th>
                                         <th>Tên sản phẩm</th>
@@ -255,6 +301,7 @@
             const row = productTableBody.insertRow();
             const checkboxCell = row.insertCell();
             const checkbox = document.createElement("input");
+            checkbox.className="checkbox";
             checkbox.type = "checkbox";
             checkbox.name="chonsanpham";
             checkbox.value = product.id;
@@ -283,7 +330,9 @@
             });
             checkboxCell.appendChild(checkbox);
             const numberCell = row.insertCell();
-            numberCell.textContent = ++index; // T
+            numberCell.textContent = ++index;
+            const maCell= row.insertCell();
+            maCell.textContent=product.masanpham;
             const nameCell = row.insertCell();
             nameCell.textContent = product.tensanpham;
         });
@@ -298,6 +347,7 @@
             row.setAttribute("data-product-id", detail.sanpham.id); // Lưu productId vào data attribute
             const checkboxCell = row.insertCell();
             const checkbox = document.createElement("input");
+            checkbox.className="checkbox";
             checkbox.type = "checkbox";
             checkbox.name="chonchitietsp";
             checkbox.value = detail.id;
@@ -318,7 +368,7 @@
             // Kiểm tra xem detail có danh sách ảnh không
             if (detail.anh.length > 0) {
                 const image = document.createElement("img");
-                image.src = '/upload/' + detail.anh[0].tenanh.substring(detail.anh[0].tenanh.lastIndexOf('upload') + 6);
+                image.src = '/upload' + detail.anh[0].tenanh.substring(detail.anh[0].tenanh.lastIndexOf('upload') + 6);
                 image.alt = "Ảnh"; // Thiết lập thuộc tính alt của ảnh
                 image.width = 110; // Đặt chiều rộng của ảnh (đơn vị là pixels)
                 image.height = 75;
@@ -438,6 +488,11 @@
         // Sử dụng biểu thức chính quy để tìm các mẫu có ít nhất hai khoảng trắng liên tiếp giữa các từ
         return /\s{2,}/.test(str.trim());
     }
+    function validateTenPhieuGiamBTCQ(inputString) {
+        // Biểu thức chính quy cho phép các ký tự Latinh, số từ 0-9 và có độ dài từ 5 đến 15 ký tự
+        const regex = /^[a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯăâêôơưÁÉÍÓÚáéíóúýÝĂÂÊÔĂÂÊÔĂÂÊÔăâêôơưÁÉÍÓÚáéíóúýÝ ]{1,30}$/;
+        return regex.test(inputString);
+    }
     function validateForm(){
 
         var inputTen=document.getElementById("inputTen").value;
@@ -445,15 +500,25 @@
         var isTenValid = true;
         if(inputTen.trim() === ""){
             errorTen.innerText = "Tên phiếu không được để trống!";
+            document.getElementById("inputTen").style.border = "1.2px solid red";
             isTenValid = false;
         }
         if(inputTen.trim().length > 0){
             if(checkNhieuKhoangTrang(inputTen)){
                 errorTen.innerText = "Giữa các từ không được nhiều hơn 1 khoảng trắng!";
+                document.getElementById("inputTen").style.border = "1.2px solid red";
+                isTenValid = false;
+            }
+        }
+        if(inputTen.trim().length > 0){
+            if(validateTenPhieuGiamBTCQ(inputTen)===false){
+                errorTen.innerText = "Tên phiếu chỉ được chứa ký tự, số và tối đa 30 ký tự!";
+                document.getElementById("inputTen").style.border = "1.2px solid red";
                 isTenValid = false;
             }
         }
         if(isTenValid){
+            document.getElementById("inputTen").style.border = "";
             errorTen.innerText = "";
         }
         var inputGiaTri=document.getElementById("inputGiaTri").value;
@@ -461,13 +526,16 @@
         var isGiaTriValid = true;
         if (inputGiaTri === "") {
             errorGiaTri.innerText = "Giá trị giảm không được để trống!";
+            document.getElementById("inputGiaTri").style.border = "1.2px solid red";
             isGiaTriValid = false;
         }
         if(inputGiaTri < 1 || inputGiaTri > 100){
-            errorGiaTri.innerText = "Phần trăm giảm phải từ 1 -> 100!";
+            errorGiaTri.innerText = "Phần trăm giảm phải từ 1% đến 100%!";
+            document.getElementById("inputGiaTri").style.border = "1.2px solid red";
             isGiaTriValid = false;
         }
         if(isGiaTriValid){
+            document.getElementById("inputGiaTri").style.border = "";
             errorGiaTri.innerText = "";
         }
         var inputTuNgay=document.getElementById("inputTuNgay").value;
@@ -479,44 +547,168 @@
         var dateNow = new Date();
         if(!inputTuNgay){
             errorTuNgay.innerText="Ngày bắt đầu không được bỏ trống!";
+            document.getElementById("inputTuNgay").style.border = "1.2px solid red";
             isTuNgayValid= false;
         }
-        if(inputTuNgay){
-            var date1 = new Date(inputTuNgay);
-            if(date1.getDate()< dateNow.getDate()){
-                errorTuNgay.innerText="Ngày bắt đầu phải >= ngày hiện tại!";
-                isTuNgayValid= false;
-            }
-        }
+        // if(inputTuNgay){
+        //     var date1 = new Date(inputTuNgay);
+        //     if(date1.getDate()< dateNow.getDate()){
+        //         errorTuNgay.innerText="Ngày giờ bắt đầu phải lớn hơn ngày giờ hiện tại!";
+        //         document.getElementById("inputTuNgay").style.border = "1.2px solid red";
+        //         isTuNgayValid= false;
+        //     }
+        // }
         if(!inputDenNgay){
             errorDenNgay.innerText="Ngày kết thúc không được bỏ trống!";
+            document.getElementById("inputDenNgay").style.border = "1.2px solid red";
             isDenNgayValid= false;
+        }
+        // Lấy tất cả các input radio có name là 'trangthaicn'
+        var radios = document.querySelectorAll('input[name="trangthaicn"]');
+        var trangthaiValue=true;
+        // Duyệt qua từng input radio và kiểm tra xem nó có được chọn không
+        radios.forEach(function(radio) {
+            if (radio.checked) {
+                // Nếu được chọn, lấy giá trị của nó và so sánh với giá trị trong JavaScript
+                trangthaiValue = (radio.value === 'true');
+            }
+        });
+        if(inputDenNgay && trangthaiValue === false){
+            var date1 = new Date(inputDenNgay);
+            if(dateNow.getTime()>=date1.getTime()){
+                document.getElementById("inputDenNgay").style.border="1.2px solid red";
+                errorDenNgay.innerText="Ngày giờ kết thúc phải lớn hơn ngày giờ hiện tại!";
+                isDenNgayValid= false;
+            }
         }
         if(inputTuNgay && inputDenNgay){
             var date1 = new Date(inputTuNgay);
             var date2 = new Date(inputDenNgay);
             if(date1.getTime() >= date2.getTime()){
                 errorDenNgay.innerText="Ngày kết thúc phải lớn hơn ngày bắt đầu!";
+                document.getElementById("inputDenNgay").style.border = "1.2px solid red";
                 isDenNgayValid= false;
             }
         }
         if(isTuNgayValid){
+            document.getElementById("inputTuNgay").style.border = "";
             errorTuNgay.innerText="";
         }
         if(isDenNgayValid){
+            document.getElementById("inputDenNgay").style.border = "";
             errorDenNgay.innerText="";
         }
         if(isTenValid && isGiaTriValid && isTuNgayValid && isDenNgayValid){
-            if(kiemTraCheckboxDuocChon("chonsanpham")===false){
-                alert("Vui lòng chọn san pham áp dụng!");
-                return false;
-            }else{
-                if(kiemTraCheckboxDuocChon("chonchitietsp")===false){
-                    alert("Vui lòng chọn chi tiet san pham áp dụng!");
+            if(trangthaiValue === false){
+                if(kiemTraCheckboxDuocChon("chonsanpham")===false){
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+
+                    Toast.fire({
+                        icon: "error",
+                        title: "Vui lòng chọn sản phẩm áp dụng!"
+                    });
                     return false;
+                }else{
+                    if(kiemTraCheckboxDuocChon("chonchitietsp")===false){
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            }
+                        });
+
+                        Toast.fire({
+                            icon: "error",
+                            title: "Vui lòng chọn chi tiết sản phẩm áp dụng!"
+                        });
+                        return false;
+                    }else{
+                        Swal.fire({
+                            title: 'Bạn có chắc chắn muốn cập nhật đợt giảm giá này không?',
+                            icon: 'question',
+                            showCancelButton: true,
+                            confirmButtonText: 'Có',
+                            cancelButtonText: 'Không'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: "top-end",
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.onmouseenter = Swal.stopTimer;
+                                        toast.onmouseleave = Swal.resumeTimer;
+                                    }
+                                });
+
+                                // Toast.fire({
+                                //     icon: "success",
+                                //     title: "Thêm thành công!"
+                                // });
+
+                                setTimeout(function () {
+                                    document.getElementById("formThemDot").submit();
+                                }, 500);
+                            }
+                        });
+                        // Ngăn form được gửi đi ngay lập tức
+                        return false;
+                    }
                 }
-                return true;
+            }else{
+                Swal.fire({
+                    title: 'Bạn có chắc chắn muốn cập nhật đợt giảm giá này không?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Có',
+                    cancelButtonText: 'Không'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            }
+                        });
+
+                        // Toast.fire({
+                        //     icon: "success",
+                        //     title: "Thêm thành công!"
+                        // });
+
+                        setTimeout(function () {
+                            document.getElementById("formThemDot").submit();
+                        }, 500);
+                    }
+                });
+                // Ngăn form được gửi đi ngay lập tức
+                return false;
             }
+
         }else{
             return false;
         }
