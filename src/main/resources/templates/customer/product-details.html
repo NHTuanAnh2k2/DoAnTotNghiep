@@ -214,9 +214,13 @@
 </style>
 <!--dùng co modal ảnh spct-->
 <style>
-    body { font-family: Arial, Helvetica, sans-serif; }
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+    }
 
-    #myImg:hover { opacity: 0.7; }
+    #myImg:hover {
+        opacity: 0.7;
+    }
 
     /* The Modal (background) */
     .modal {
@@ -229,8 +233,8 @@
         width: 100%; /* Full width */
         height: 100%; /* Full height */
         overflow: auto; /* Enable scroll if needed */
-        background-color: rgb(0,0,0); /* Fallback color */
-        background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+        background-color: rgb(0, 0, 0); /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.9); /* Black w/ opacity */
     }
 
     /* Modal Content (image) */
@@ -250,8 +254,12 @@
     }
 
     @keyframes zoom {
-        from { transform: scale(0); }
-        to { transform: scale(1); }
+        from {
+            transform: scale(0);
+        }
+        to {
+            transform: scale(1);
+        }
     }
 
     /* The Close Button */
@@ -274,7 +282,6 @@
 </style>
 
 
-
 <body>
 <!-- header section start -->
 <nav th:replace="~{/layout/header.html}"></nav>
@@ -291,7 +298,8 @@
                     <div th:each="image, index : ${danhSachAnh}" class="mySlides">
                         <div class="numbertext" th:text="${index.index + 1} + ' / ' + ${danhSachAnh.size()}"></div>
                         <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                        <img th:src="@{'/upload' + ${image.substring(image.lastIndexOf('upload') + 6)}}" style="width:100%" alt="Ảnh" onclick="openModal(this)">
+                        <img th:src="@{'/upload' + ${image.substring(image.lastIndexOf('upload') + 6)}}"
+                             style="width:100%" alt="Ảnh" onclick="openModal(this)">
                         <a class="next" onclick="plusSlides(1)">&#10095;</a>
                     </div>
 
@@ -319,7 +327,21 @@
             <div class="col-md-6">
                 <div class="right">
                     <div class="singl-pro-title" th:data-product-id="${sanpham.id}">
-                        <h3 th:text="${sanpham.tensanpham}"></h3>
+                        <h3>
+                            <span th:text="${sanpham.tensanpham}"></span>
+                            <span id="product-maspct" th:text="${'['+selectedMaSPCT}+']'"></span>
+                        </h3>
+                       <div class="d-flex">
+                           <h6>Thương hiệu:
+                               <span id="product-thuonghieu" th:text="${selectedThuongHieu}" style="color: red"></span>
+                           </h6>
+                           <h6 style="margin-left: 30px">Chất liệu:
+                               <span id="product-chatlieu" th:text="${selectedChatLieu}" style="color: red"></span>
+                           </h6>
+                           <h6 style="margin-left: 30px">Đế giày:
+                               <span id="product-degiay" th:text="${selectedDeGiay}" style="color: red"></span>
+                           </h6>
+                       </div>
                         <h6>Giá tiền:
                             <span id="product-price"
                                   th:text="${#numbers.formatDecimal(selectedPrice, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"
@@ -365,14 +387,16 @@
                                     <span style="margin-right: 10px;">Số lượng:</span>
                                     <div>
                                         <input type="number" size="4" name="quantity" id="quantityInput" value="1"
-                                               min="1" class="tc line-item-qty item-quantity bg-white form-control" style="width:100px">
+                                               min="1" class="tc line-item-qty item-quantity bg-white form-control"
+                                               style="width:100px">
                                     </div>
                                 </div>
                                 <p></p>
                                 <span style="margin-right: 10px;">Mô tả:</span>
                                 <div class="d-flex align-items-center">
 
-                                    <textarea class="form-control" rows="3" id="motaTextarea" name="mota" th:text="${sanphamchitiet.mota}" readonly></textarea>
+                                    <textarea class="form-control" rows="3" id="motaTextarea" name="mota"
+                                              th:text="${sanphamchitiet.mota}" readonly></textarea>
                                 </div>
                                 <hr>
                                 <button type="submit"
@@ -726,6 +750,10 @@
                 const newDocument = parser.parseFromString(html, 'text/html');
                 const newPrice = newDocument.querySelector('#product-price').innerText;
                 const newQuantity = newDocument.querySelector('#product-quantity').innerText;
+                const newThuongHieu = newDocument.querySelector('#product-thuonghieu').innerText;
+                const newChatLieu = newDocument.querySelector('#product-chatlieu').innerText;
+                const newDeGiay = newDocument.querySelector('#product-degiay').innerText;
+                const newMaSPCT = newDocument.querySelector('#product-maspct').innerText;
 
                 if (newPrice) {
                     document.querySelector('#product-price').innerText = newPrice;
@@ -738,6 +766,27 @@
                 } else {
                     document.querySelector('#product-quantity').innerText = 'Không có số lượng';
                 }
+                if (newThuongHieu) {
+                    document.querySelector('#product-thuonghieu').innerText = newThuongHieu;
+                } else {
+                    document.querySelector('#product-thuonghieu').innerText = 'Không có thương hiệu';
+                }
+                if (newChatLieu) {
+                    document.querySelector('#product-chatlieu').innerText = newChatLieu;
+                } else {
+                    document.querySelector('#product-chatlieu').innerText = 'Không có chất liệu';
+                }
+                if (newDeGiay) {
+                    document.querySelector('#product-degiay').innerText = newDeGiay;
+                } else {
+                    document.querySelector('#product-degiay').innerText = 'Không có đế giày';
+                }
+                if (newMaSPCT) {
+                    document.querySelector('#product-maspct').innerText = newMaSPCT;
+                } else {
+                    document.querySelector('#product-maspct').innerText = 'Không có mã spct';
+                }
+
 
                 const addToCartButton = document.querySelector('#add-to-cart-btn');
                 if (parseInt(newQuantity) === 0) {
@@ -780,7 +829,6 @@
 
         updateImagesAndPrice();
     }
-
 </script>
 
 
@@ -830,7 +878,7 @@
 
 <script th:inline="javascript">
     /*<![CDATA[*/
-    document.getElementById('addToCartForm').addEventListener('submit', function(event) {
+    document.getElementById('addToCartForm').addEventListener('submit', function (event) {
         var selectedQuantity = parseInt(document.getElementById('quantityInput').value);
         var availableQuantity = parseInt(document.getElementById('product-quantity').innerText); // Lấy số lượng có sẵn từ thẻ span
 
