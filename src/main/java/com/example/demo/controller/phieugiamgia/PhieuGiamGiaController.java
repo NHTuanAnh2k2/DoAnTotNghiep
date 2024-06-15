@@ -86,6 +86,9 @@ public class PhieuGiamGiaController {
         }else{
             tt=null;
         }
+        if(keySearch!=null){
+            keySearch=keySearch.trim();
+        }
         List<PhieuGiamGia> lstPhieu= phieuGiamGiaImp.findAll();
         Timestamp ngayHT = new Timestamp(System.currentTimeMillis());
         for (PhieuGiamGia phieu : lstPhieu) {

@@ -58,7 +58,7 @@
         height: 18px;
         background-color: #eee;
         border-radius: 5px;
-        border: 1px solid #dcdcdc;
+        border: 1px solid black;
         cursor: pointer;
         -webkit-appearance: none; /* Tắt kiểu mặc định của trình duyệt cho checkbox */
         appearance: none;
@@ -361,6 +361,16 @@
         // Sử dụng biểu thức chính quy để tìm các mẫu có ít nhất hai khoảng trắng liên tiếp giữa các từ
         return /\s{2,}/.test(str.trim());
     }
+    function validateMaGiamBTCQ(inputString) {
+        // Biểu thức chính quy cho phép các ký tự Latinh, số từ 0-9 và có độ dài từ 5 đến 15 ký tự
+        const regex = /^[a-zA-Z0-9 ]{6,15}$/;
+        return regex.test(inputString);
+    }
+    function validateTenPhieuGiamBTCQ(inputString) {
+        // Biểu thức chính quy cho phép các ký tự Latinh, số từ 0-9 và có độ dài từ 5 đến 15 ký tự
+        const regex = /^[a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯăâêôơưÁÉÍÓÚáéíóúýÝĂÂÊÔĂÂÊÔĂÂÊÔăâêôơưÁÉÍÓÚáéíóúýÝ ]{1,30}$/;
+        return regex.test(inputString);
+    }
     function validateForm(event){
         event.preventDefault();
         var inputMa=document.getElementById("inputMa").value;
@@ -382,6 +392,13 @@
                 isMaValid = false;
             }
         }
+        if(inputMa.trim().length > 0){
+            if(validateMaGiamBTCQ(inputMa)===false){
+                errorMa.innerText = "Mã phiếu chỉ được chứa ký tự Latinh, số và từ 5-15 ký tự!";
+                document.getElementById("inputMa").style.border = "1.2px solid red";
+                isMaValid = false;
+            }
+        }
         if (isMaValid) {
             document.getElementById("inputMa").style.border = "";
             errorMa.innerText = "";
@@ -397,6 +414,13 @@
         if(inputTen.trim().length > 0){
             if(checkNhieuKhoangTrang(inputTen)){
                 errorTen.innerText = "Giữa các từ không được nhiều hơn 1 khoảng trắng!";
+                document.getElementById("inputTen").style.border="1.2px solid red";
+                isTenValid = false;
+            }
+        }
+        if(inputTen.trim().length > 0){
+            if(validateTenPhieuGiamBTCQ(inputTen)===false){
+                errorTen.innerText = "Tên phiếu chỉ chứa ký tự, số và tối đa 30 ký tự!";
                 document.getElementById("inputTen").style.border="1.2px solid red";
                 isTenValid = false;
             }
