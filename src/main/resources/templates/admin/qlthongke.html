@@ -128,10 +128,10 @@
                     <div class="col-lg-6 col-6">
                         <button type="button" class="btn active  btn-lg">Xuất Excel</button>
                         <button type="button" class="btn active btn-lg">Bộ lọc</button>
-                        <button type="button" class="btn active btn-lg">7 ngày trước</button>
-                        <button type="button" class="btn active btn-lg">Tháng</button>
-                        <button type="button" class="btn active btn-lg">Năm</button>
-                        <button type="button" class="btn active btn-lg">Tùy chỉnh</button>
+                        <button type="button" class="btn active btn-lg" id="7day">7 ngày trước</button>
+                        <button type="button" class="btn active btn-lg" id="thang">Tháng</button>
+                        <button type="button" class="btn active btn-lg" id="nam">Năm</button>
+                        <button type="button" class="btn active btn-lg" id="khoangngay">Tùy chỉnh</button>
                     </div>
                 </div>
                 <div class="row"></div>
@@ -291,28 +291,29 @@
 <nav th:replace="~{/layoutadmin/script.html}"></nav>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
 <script>
+    // const dayData = /*[[${dayData}]]*/ {labels: [], datasets: []};
+    // const thangData = /*[[${thangData}]]*/ {labels: [], datasets: []};
+    // const namData = /*[[${namData}]]*/ {labels: [], datasets: []};
+    // const khoangngayData = /*[[${khoangngayData}]]*/ {labels: [], datasets: []};
     // setup
     const data = {
+        // labels: dayData.labels,
         labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
         datasets: [{
             label: ['Sản phẩm'],
+            // data: dayData.datasets[0],
             data: [18, 12, 6, 9, 12, 3, 9],
             backgroundColor: [
                 'rgba(255, 152, 0)',
             ],
-            // borderColor: [
-            //     'rgba(0, 0, 0, 1)'
-            // ],
             borderWidth: 1
         }, {
             label: ['Hóa đơn'],
+            // data: dayData.datasets[1],
             data: [10, 70, 1, 5, 7, 4, 15],
             backgroundColor: [
                 'rgba(44, 120, 101)',
             ],
-            // borderColor: [
-            //     'rgba(0, 0, 0, 1)'
-            // ],
             borderWidth: 1
         }]
     };
@@ -397,10 +398,81 @@
         document.getElementById('myChart'),
         config
     );
+    function updateChart(newData, newLabels) {
+        myChart.data.datasets[0].data = newData.datasets[0].data;
+        myChart.data.datasets[1].data = newData.datasets[1].data;
+        myChart.data.labels = newLabels;
+        myChart.update();
+    }
 
-    // Instantly assign Chart.js version
-    const chartVersion = document.getElementById('chartVersion');
-    // chartVersion.innerText = Chart.version;
+    // Event listeners for buttons
+    document.getElementById('7day').addEventListener('click', () => {
+        const newData = {
+            datasets: [
+                { data: [18, 12, 6, 9, 12, 3, 9] },
+                { data: [10, 70, 1, 5, 7, 4, 15] }
+            ]
+        };
+        const newLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        updateChart(newData, newLabels);
+    });
+
+    document.getElementById('thang').addEventListener('click', () => {
+        const newData = {
+            datasets: [
+                { data: [10, 15, 8, 5, 20, 30, 25, 18, 14, 22, 26, 30] },
+                { data: [15, 25, 12, 8, 22, 35, 30, 20, 17, 24, 28, 33] }
+            ]
+        };
+        const newLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        updateChart(newData, newLabels);
+    });
+
+    document.getElementById('nam').addEventListener('click', () => {
+        const newData = {
+            datasets: [
+                { data: [200, 180, 220, 250] },
+                { data: [180, 160, 210, 240] }
+            ]
+        };
+        const newLabels = ['2020', '2021', '2022', '2023'];
+        updateChart(newData, newLabels);
+    });
+
+    document.getElementById('khoangngay').addEventListener('click', () => {
+        const newData = {
+            datasets: [
+                { data: [5, 10, 15] },
+                { data: [7, 14, 21] }
+            ]
+        };
+        const newLabels = ['Custom 1', 'Custom 2', 'Custom 3'];
+        updateChart(newData, newLabels);
+    });
+
+    // function updateChart(newData) {
+    //     myChart.data.datasets[0].data = newData.datasets[0];
+    //     myChart.data.datasets[1].data = newData.datasets[1];
+    //     myChart.data.labels = newData.labels;
+    //     myChart.update();
+    // }
+
+    // Event listeners for buttons
+    // document.getElementById('7day').addEventListener('click', () => {
+    //     updateChart(dayData);
+    // });
+    //
+    // document.getElementById('thang').addEventListener('click', () => {
+    //     updateChart(thangData);
+    // });
+    //
+    // document.getElementById('nam').addEventListener('click', () => {
+    //     updateChart(namData);
+    // });
+    //
+    // document.getElementById('khoangngay').addEventListener('click', () => {
+    //     updateChart(khoangngayData);
+    // });
 </script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

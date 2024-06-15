@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 @Repository
 public interface ThongKeRepository extends JpaRepository<HoaDon, Integer> {
@@ -184,4 +185,9 @@ public interface ThongKeRepository extends JpaRepository<HoaDon, Integer> {
             "WHERE ct.sanphamchitiet.soluong <= 10 \n" +
             "ORDER BY ct.sanphamchitiet.soluong ASC")
     List<Object[]> soLuongTon();
+    @Query("SELECT COALESCE(SUM(e.soluong), 0) FROM HoaDonChiTiet e WHERE e.hoadon.lancapnhatcuoi BETWEEN :startDate AND :endDate GROUP BY e.hoadon.lancapnhatcuoi")
+    List<Integer> getProductDataForLast7Days(LocalDate startDate, LocalDate endDate);
+
+    @Query("SELECT COUNT(*) FROM HoaDon e WHERE e.lancapnhatcuoi BETWEEN :startDate AND :endDate GROUP BY e.lancapnhatcuoi")
+    List<Integer> getInvoiceDataForLast7Days(LocalDate startDate, LocalDate endDate);
 }

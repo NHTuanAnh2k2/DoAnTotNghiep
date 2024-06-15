@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Controller
@@ -42,6 +43,10 @@ public class ThongKeController {
         int ptspt = thongKe.ptspt();
         int pthdn = thongKe.pthdn();
         int pthdt = thongKe.pthdt();
+        Map<String, Object> dayData = thongKe.dayData();
+        Map<String, Object> thangData = thongKe.thangData();
+        Map<String, Object> namData = thongKe.namData();
+        Map<String, Object> khoangngayData = thongKe.khoangngayData();
 
         model.addAttribute("slhdtt", slhdtt);
         model.addAttribute("ttt", ttt);
@@ -63,6 +68,10 @@ public class ThongKeController {
         model.addAttribute("ptspt", ptspt);
         model.addAttribute("pthdn", pthdn);
         model.addAttribute("pthdt", pthdt);
+        model.addAttribute("dayData", dayData);
+        model.addAttribute("thangData", thangData);
+        model.addAttribute("namData", namData);
+        model.addAttribute("khoangngayData", khoangngayData);
         return "admin/qlthongke";
     }
 }
