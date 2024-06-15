@@ -212,6 +212,69 @@
 
 
 </style>
+<!--dùng co modal ảnh spct-->
+<style>
+    body { font-family: Arial, Helvetica, sans-serif; }
+
+    #myImg:hover { opacity: 0.7; }
+
+    /* The Modal (background) */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 50px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+    }
+
+    /* Modal Content (image) */
+    .modal-content {
+        margin: auto;
+        display: block;
+        width: 60%; /* Adjust width as needed */
+        max-width: 600px; /* Set maximum width */
+    }
+
+    /* Add Animation */
+    .modal-content, #caption {
+        -webkit-animation-name: zoom;
+        -webkit-animation-duration: 0.6s;
+        animation-name: zoom;
+        animation-duration: 0.6s;
+    }
+
+    @keyframes zoom {
+        from { transform: scale(0); }
+        to { transform: scale(1); }
+    }
+
+    /* The Close Button */
+    .close {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>
+
+
+
 <body>
 <!-- header section start -->
 <nav th:replace="~{/layout/header.html}"></nav>
@@ -224,12 +287,19 @@
             <div class="col-md-6">
                 <div class="left">
                     <!-- Full-width images with number text -->
+                    <!-- Loop through danhSachAnh and display images -->
                     <div th:each="image, index : ${danhSachAnh}" class="mySlides">
                         <div class="numbertext" th:text="${index.index + 1} + ' / ' + ${danhSachAnh.size()}"></div>
                         <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                        <img th:src="@{'/upload' + ${image.substring(image.lastIndexOf('upload') + 6)}}"
-                             style="width:100%" alt="Ảnh">
+                        <img th:src="@{'/upload' + ${image.substring(image.lastIndexOf('upload') + 6)}}" style="width:100%" alt="Ảnh" onclick="openModal(this)">
                         <a class="next" onclick="plusSlides(1)">&#10095;</a>
+                    </div>
+
+                    <!-- The Modal -->
+                    <div id="myModal" class="modal">
+                        <span class="close" onclick="closeModal()">&times;</span>
+                        <img class="modal-content" id="img01">
+                        <div id="caption2"></div>
                     </div>
                     <!-- Image text -->
                     <div class="caption-container">
@@ -250,11 +320,12 @@
                 <div class="right">
                     <div class="singl-pro-title" th:data-product-id="${sanpham.id}">
                         <h3 th:text="${sanpham.tensanpham}"></h3>
-                        <h6>Giá:
+                        <h6>Giá tiền:
                             <span id="product-price"
                                   th:text="${#numbers.formatDecimal(selectedPrice, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"
                                   style="color: red; font-weight: bold"></span>
                         </h6>
+                        <hr>
                         <h6>
                             Số lượng có sẵn:
                             <span id="product-quantity" th:text="${selectedQuantity}"></span>
@@ -262,36 +333,48 @@
 
                         <form id="addToCartForm" action="/add-to-cart" method="post">
                             <input type="hidden" name="id" th:value="${sanphamchitiet.id}">
+                            <input type="hidden" name="selectedColor" id="selectedColor" th:value="${defaultColor}">
+                            <input type="hidden" name="selectedSize" id="selectedSize" th:value="${defaultSize}">
                             <div th:id="'product-details-' + ${sanpham.id}" th:data-color="${defaultColor}">
-                                <div class="d-flex">
+                                <div class="d-flex align-items-center">
+                                    <span style="margin-right: 10px;">Màu sắc:</span>
                                     <div th:each="color, iterStat : ${colors}">
                                         <div style="margin-right: 10px">
                                             <a class="btn"
                                                th:classappend="${iterStat.index == 0} ? 'btn-dark' : 'btn-outline-dark'"
                                                th:text="${color}" th:data-color="${color}"
-                                               th:onclick="'changeButtonBackground(this)'"></a>
+                                               th:onclick="'changeButtonBackground(this); selectColor(this)'"></a>
                                         </div>
                                     </div>
                                 </div>
                                 <p></p>
-                                <div class="d-flex">
+                                <div class="d-flex align-items-center">
+                                    <span style="margin-right: 10px;">Kích cỡ:</span>
                                     <div th:each="size, iterStat : ${sizes}">
                                         <div style="margin-right: 10px">
                                             <a class="btn"
                                                th:classappend="${iterStat.index == 0} ? 'btn-dark' : 'btn-outline-dark'"
                                                th:text="${size}" th:data-size="${size}"
-                                               th:onclick="'changeButtonBackground(this)'"></a>
+                                               th:onclick="'changeButtonBackground(this); selectSize(this)'"></a>
                                         </div>
+                                    </div>
+                                    <a th:href="@{#}">Cách chọn size</a>
+                                </div>
+                                <p></p>
+                                <div class="d-flex align-items-center">
+                                    <span style="margin-right: 10px;">Số lượng:</span>
+                                    <div>
+                                        <input type="number" size="4" name="quantity" id="quantityInput" value="1"
+                                               min="1" class="tc line-item-qty item-quantity bg-white form-control" style="width:100px">
                                     </div>
                                 </div>
                                 <p></p>
-                                <div>
-                                    Số lượng:
-                                    <input type="number" size="4" name="quantity" id="quantityInput" data-price="55900000" value="1"
-                                           min="1" class="tc line-item-qty item-quantity bg-white">
+                                <span style="margin-right: 10px;">Mô tả:</span>
+                                <div class="d-flex align-items-center">
+
+                                    <textarea class="form-control" rows="3" id="motaTextarea" name="mota" th:text="${sanphamchitiet.mota}" readonly></textarea>
                                 </div>
-                                <br>
-                                <br>
+                                <hr>
                                 <button type="submit"
                                         class="btn btn"
                                         style="background-color: rgb(249,72,42); color: white; width: 370px"
@@ -300,8 +383,6 @@
                                 </button>
                             </div>
                         </form>
-
-                        <br>
                         <br>
                         <button class="btn btn-dark" style="width: 370px">Mua ngay</button>
                     </div>
@@ -466,6 +547,22 @@
 
 <!--scroll-->
 <script>
+    var modal = document.getElementById("myModal");
+    var modalImg = document.getElementById("img01");
+    var captionText = document.getElementById("caption2");
+
+    // Function to open modal and display selected image
+    function openModal(imgElement) {
+        modal.style.display = "block";
+        modalImg.src = imgElement.src;
+        captionText.innerHTML = imgElement.alt;
+    }
+
+    // Function to close modal
+    function closeModal() {
+        modal.style.display = "none";
+    }
+
     let slideIndex = 1;
     showSlides(slideIndex);
 
@@ -687,35 +784,60 @@
 </script>
 
 
+<!--<script>-->
+<!--    function updateQuantity(change) {-->
+<!--        var quantityInput = document.getElementById("quantity");-->
+<!--        var currentQuantity = parseInt(quantityInput.value);-->
+<!--        var newQuantity = currentQuantity + change;-->
+<!--        if (newQuantity > 0) {-->
+<!--            quantityInput.value = newQuantity;-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
+
+<!--<script type="text/javascript">-->
+<!--    // JavaScript function to update quantity-->
+<!--    function updateQuantity(change) {-->
+<!--        var quantityInput = document.getElementById('quantityInput');-->
+<!--        var displayQuantityInput = document.getElementById('displayQuantity');-->
+
+<!--        // Parse the current quantity value-->
+<!--        var currentQuantity = parseInt(quantityInput.value);-->
+
+<!--        // Update the quantity based on the change (1 for +, -1 for -)-->
+<!--        var newQuantity = currentQuantity + change;-->
+
+<!--        // Ensure the new quantity is at least 1-->
+<!--        if (newQuantity < 1) {-->
+<!--            newQuantity = 1;-->
+<!--        }-->
+
+<!--        // Update the quantity input fields-->
+<!--        quantityInput.value = newQuantity;-->
+<!--        displayQuantityInput.value = newQuantity; // Synchronize the displayed quantity-->
+<!--    }-->
+<!--</script>-->
+
 <script>
-    function updateQuantity(change) {
-        var quantityInput = document.getElementById("quantity");
-        var currentQuantity = parseInt(quantityInput.value);
-        var newQuantity = currentQuantity + change;
-        if (newQuantity > 0) {
-            quantityInput.value = newQuantity;
-        }
+    function selectColor(element) {
+        document.getElementById("selectedColor").value = element.getAttribute("data-color");
+    }
+
+    function selectSize(element) {
+        document.getElementById("selectedSize").value = element.getAttribute("data-size");
     }
 </script>
-<script type="text/javascript">
-    // JavaScript function to update quantity
-    function updateQuantity(change) {
-        var quantityInput = document.getElementById('quantityInput');
-        var displayQuantityInput = document.getElementById('displayQuantity');
 
-        // Parse the current quantity value
-        var currentQuantity = parseInt(quantityInput.value);
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    document.getElementById('addToCartForm').addEventListener('submit', function(event) {
+        var selectedQuantity = parseInt(document.getElementById('quantityInput').value);
+        var availableQuantity = parseInt(document.getElementById('product-quantity').innerText); // Lấy số lượng có sẵn từ thẻ span
 
-        // Update the quantity based on the change (1 for +, -1 for -)
-        var newQuantity = currentQuantity + change;
-
-        // Ensure the new quantity is at least 1
-        if (newQuantity < 1) {
-            newQuantity = 1;
+        if (selectedQuantity > availableQuantity) {
+            alert('Số lượng nhập vào vượt quá số lượng có sẵn trong kho (' + availableQuantity + ')');
+            event.preventDefault(); // Ngăn không gửi form nếu số lượng vượt quá
         }
-
-        // Update the quantity input fields
-        quantityInput.value = newQuantity;
-        displayQuantityInput.value = newQuantity; // Synchronize the displayed quantity
-    }
+    });
+    /*]]>*/
 </script>

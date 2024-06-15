@@ -73,7 +73,6 @@ public class TrangChuCustomerController {
     public String hienthiTrangChu(Model model) {
         List<GioHangChiTiet> cartItems = gioHangChiTietRepository.findAll(); // Giả sử bạn có phương thức này để lấy các mục trong giỏ hàng
         int totalQuantity = cartItems.size(); // Đếm số lượng các mục trong giỏ hàng
-
         // Đưa tổng số lượng vào model để hiển thị trên giao diện
         model.addAttribute("totalQuantity", totalQuantity);
         List<Object[]> topspmoinhattrangchu = trangChuRepository.topspmoinhattrangchu();

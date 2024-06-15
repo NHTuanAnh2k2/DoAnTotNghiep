@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -259,16 +258,4 @@ public class SanPhamChiTietController {
         }
         return "redirect:/detailsanpham/" + firstProductId;
     }
-
-//    @PostMapping("/update-cart/{id}")
-//    public String updateCart(@PathVariable Integer id,  Integer quantity) {
-//        try {
-//            sanPhamChiTietRepository.updateSoLuongById(quantity, id);
-//            return "redirect:/cart2"; // Chuyển hướng đến trang giỏ hàng sau khi cập nhật
-//        } catch (Exception e) {
-//            // Xử lý ngoại lệ nếu cần thiết
-//            return "redirect:/error"; // Chuyển hướng đến trang lỗi nếu có lỗi xảy ra
-//        }
-//    }
-
 }

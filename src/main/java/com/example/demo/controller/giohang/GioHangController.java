@@ -1,26 +1,22 @@
 package com.example.demo.controller.giohang;
 
-
 import com.example.demo.entity.GioHang;
 import com.example.demo.entity.GioHangChiTiet;
 import com.example.demo.entity.SanPhamChiTiet;
 import com.example.demo.repository.SanPhamChiTietRepository;
 import com.example.demo.repository.giohang.GioHangChiTietRepository;
 import com.example.demo.repository.giohang.GioHangRepository;
-import com.example.demo.service.giohang.GioHangService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
 
 @Controller
 public class GioHangController {
-    @Autowired
-    private GioHangService gioHangService;
 
     @Autowired
     private GioHangRepository gioHangRepository;
@@ -42,6 +38,16 @@ public class GioHangController {
     public String cart2(Model model) {
         List<GioHangChiTiet> cartItems = gioHangChiTietRepository.findAll(); // Giả sử bạn có phương thức này để lấy các mục trong giỏ hàng
         int totalQuantity = cartItems.size(); // Đếm số lượng các mục trong giỏ hàng
+        // Tính tổng tiền
+        BigDecimal totalAmount = BigDecimal.ZERO;
+        for (GioHangChiTiet item : cartItems) {
+            // Lấy giá của sản phẩm từ bảng sản phẩm chi tiết
+            BigDecimal giatien = sanPhamChiTietRepository.findPriceByProductId(item.getSanphamchitiet().getId());
+            totalAmount = totalAmount.add(giatien.multiply(BigDecimal.valueOf(item.getSoluong())));
+        }
+
+
+        model.addAttribute("totalAmount", totalAmount);
         // Đưa tổng số lượng vào model để hiển thị trên giao diện
         model.addAttribute("totalQuantity", totalQuantity);
         model.addAttribute("cartItems", cartItems);
@@ -49,10 +55,11 @@ public class GioHangController {
     }
 
     @PostMapping("/add-to-cart")
-    public String addToCart(@RequestParam Integer id, @RequestParam Integer quantity, Model model) {
-        SanPhamChiTiet sanPhamChiTiet = sanPhamChiTietRepository.findById(id).orElse(null);
+    public String addToCart(@RequestParam Integer id, @RequestParam String selectedColor, @RequestParam String selectedSize, @RequestParam Integer quantity, Model model) {
+        // Tìm sản phẩm chi tiết dựa trên màu sắc và kích cỡ
+        SanPhamChiTiet sanPhamChiTiet = sanPhamChiTietRepository.findBySanPhamIdAndColorAndSize(id, selectedColor, selectedSize);
 
-        if (sanPhamChiTiet != null) {
+        if (sanPhamChiTiet != null && quantity > 0 && quantity <= sanPhamChiTiet.getSoluong()) {
             // Tìm giỏ hàng chi tiết của sản phẩm trong toàn bộ cơ sở dữ liệu
             List<GioHangChiTiet> gioHangChiTiets = gioHangChiTietRepository.findBySanphamchitiet(sanPhamChiTiet);
             boolean foundInCart = false;
@@ -84,8 +91,9 @@ public class GioHangController {
             }
         }
         Integer firstProductId = sanPhamChiTiet.getSanpham().getId();
-        return "redirect:/detailsanphamCustomer/" + firstProductId; // Chuyển hướng đến trang giỏ hàng sau khi thêm
+        return "redirect:/detailsanphamCustomer/" + firstProductId; // Chuyển hướng đến trang sản phẩm chi tiết sau khi thêm
     }
+
 
     @GetMapping("/delete/cart/{id}")
     public String deleteCart(@PathVariable Integer id) {

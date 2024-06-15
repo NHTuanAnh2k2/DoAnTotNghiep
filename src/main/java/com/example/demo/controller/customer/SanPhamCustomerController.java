@@ -306,6 +306,9 @@ public class SanPhamCustomerController {
     @GetMapping("/customer/sanphamnu")
     public String sanphamnu(Model model, @ModelAttribute("search2") SanPhamCustomerInfo info,
                             @RequestParam(defaultValue = "0") int p) {
+        List<GioHangChiTiet> cartItems = gioHangChiTietRepository.findAll(); // Giả sử bạn có phương thức này để lấy các mục trong giỏ hàng
+        int totalQuantity = cartItems.size(); // Đếm số lượng các mục trong giỏ hàng
+        model.addAttribute("totalQuantity", totalQuantity);
         Pageable pageable = PageRequest.of(p, 10);
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
