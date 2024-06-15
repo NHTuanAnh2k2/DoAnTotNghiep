@@ -51,4 +51,10 @@ public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, 
     @Query("SELECT spct FROM SanPhamChiTiet spct WHERE spct.sanpham.id = :sanPhamId AND spct.mausac.ten = :color")
     Optional<SanPhamChiTiet> findBySanPhamIdAndColor(@Param("sanPhamId") Integer sanPhamId, @Param("color") String color);
 
+    // dùng để lấy giá tiền của spct
+    @Query("SELECT spct.giatien FROM SanPhamChiTiet spct WHERE spct.id = :productId")
+    BigDecimal findPriceByProductId(@Param("productId") Integer id);
+
+    @Query("SELECT spct FROM SanPhamChiTiet spct WHERE spct.sanpham.id = :sanphamId AND spct.mausac.ten = :color AND spct.kichco.ten = :size")
+    SanPhamChiTiet findBySanPhamIdAndColorAndSize(@Param("sanphamId") Integer sanphamId, @Param("color") String color, @Param("size") String size);
 }

@@ -13,18 +13,19 @@ import java.util.List;
 public interface SanPhamNamRepository extends JpaRepository<SanPham, Integer> {
     // sản phẩm nam
     @Query(nativeQuery = true, value = """
-            SELECT sp.id, sp.tensanpham, sp.ngaytao, tongSoLuong, sp.trangthai, spct.giatien, anh.tenanh, spct.GioiTinh
-            FROM SanPham sp
-            JOIN (
-                SELECT IdSanPham, SUM(soluong) AS tongSoLuong, giatien, GioiTinh
-                FROM SanPhamChiTiet
-                GROUP BY IdSanPham, giatien, GioiTinh
-            ) spct ON sp.id = spct.IdSanPham
-            JOIN Anh anh ON sp.id = anh.Id
-            WHERE spct.GioiTinh = 1
-            ORDER BY sp.ngaytao DESC, tongSoLuong DESC
-                  """)
+    SELECT sp.id, sp.tensanpham, sp.ngaytao, spct.tongSoLuong, sp.trangthai, spct.giatien, anh.tenanh, spct.GioiTinh
+    FROM SanPham sp
+    JOIN (
+        SELECT IdSanPham, SUM(soluong) AS tongSoLuong, MIN(giatien) AS giatien, GioiTinh
+        FROM SanPhamChiTiet
+        GROUP BY IdSanPham, GioiTinh
+    ) spct ON sp.id = spct.IdSanPham
+    JOIN Anh anh ON sp.id = anh.Id
+    WHERE spct.GioiTinh = 1
+    ORDER BY sp.ngaytao DESC, spct.tongSoLuong DESC
+""")
     Page<Object[]> findProductsGioiTinh1(Pageable pageable);
+
 
 
     // sắp xếp tăng dần theo giá của sp nam
