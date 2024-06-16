@@ -11,15 +11,22 @@ import java.util.List;
 public interface TrangChuRepository extends JpaRepository<SanPham, Integer> {
     // top sp mới nhất của trang chủ
     @Query(nativeQuery = true, value = """
-    SELECT TOP 8 sp.id, sp.tensanpham, sp.ngaytao, spct.tongSoLuong, sp.trangthai, spct.giatien, anh.tenanh
-    FROM SanPham sp
-    JOIN (
-        SELECT IdSanPham, SUM(soluong) AS tongSoLuong, MIN(giatien) AS giatien -- Chỉ lấy MIN(giatien) để đại diện cho sản phẩm
+    WITH AnhDaiDien AS (
+        SELECT spct.IdSanPham, anh.tenanh,
+               ROW_NUMBER() OVER (PARTITION BY spct.IdSanPham ORDER BY anh.tenanh DESC ) AS row_num
+        FROM Anh anh
+        JOIN SanPhamChiTiet spct ON anh.IdSanPhamChiTiet = spct.id
+    ),
+    SanPhamChiTietGrouped AS (
+        SELECT IdSanPham, SUM(soluong) AS tongSoLuong, MIN(giatien) AS giatien
         FROM SanPhamChiTiet
         GROUP BY IdSanPham
-    ) spct ON sp.id = spct.IdSanPham
-    JOIN Anh anh ON sp.id = anh.Id
-    ORDER BY sp.ngaytao DESC, spct.tongSoLuong DESC
+    )
+    SELECT TOP 8 sp.id, sp.tensanpham, sp.ngaytao, spctg.tongSoLuong, sp.trangthai, spctg.giatien, anhdd.tenanh
+    FROM SanPham sp
+    JOIN SanPhamChiTietGrouped spctg ON sp.id = spctg.IdSanPham
+    JOIN AnhDaiDien anhdd ON sp.id = anhdd.IdSanPham AND anhdd.row_num = 1
+    ORDER BY sp.ngaytao DESC, spctg.tongSoLuong DESC
 """)
     List<Object[]> topspmoinhattrangchu();
 
@@ -42,30 +49,44 @@ public interface TrangChuRepository extends JpaRepository<SanPham, Integer> {
 
     // top sp mới nhất của detail
     @Query(nativeQuery = true, value = """
-    SELECT TOP 8 sp.id, sp.tensanpham, sp.ngaytao, spct.tongSoLuong, sp.trangthai, spct.giatien, anh.tenanh
-    FROM SanPham sp
-    JOIN (
+    WITH AnhDaiDien AS (
+        SELECT spct.IdSanPham, anh.tenanh,
+               ROW_NUMBER() OVER (PARTITION BY spct.IdSanPham ORDER BY anh.tenanh DESC ) AS row_num
+        FROM Anh anh
+        JOIN SanPhamChiTiet spct ON anh.IdSanPhamChiTiet = spct.id
+    ),
+    SanPhamChiTietGrouped AS (
         SELECT IdSanPham, SUM(soluong) AS tongSoLuong, MIN(giatien) AS giatien
         FROM SanPhamChiTiet
         GROUP BY IdSanPham
-    ) spct ON sp.id = spct.IdSanPham
-    JOIN Anh anh ON sp.id = anh.Id
-    ORDER BY sp.ngaytao DESC, spct.tongSoLuong DESC
+    )
+    SELECT TOP 8 sp.id, sp.tensanpham, sp.ngaytao, spctg.tongSoLuong, sp.trangthai, spctg.giatien, anhdd.tenanh
+    FROM SanPham sp
+    JOIN SanPhamChiTietGrouped spctg ON sp.id = spctg.IdSanPham
+    JOIN AnhDaiDien anhdd ON sp.id = anhdd.IdSanPham AND anhdd.row_num = 1
+    ORDER BY sp.ngaytao DESC, spctg.tongSoLuong DESC
 """)
     List<Object[]> topspmoinhatdetail();
 
 
     // top sp nổi bật của detail
     @Query(nativeQuery = true, value = """
-    SELECT TOP 8 sp.id, sp.tensanpham, sp.ngaytao, spct.tongSoLuong, sp.trangthai, spct.giatien, anh.tenanh
-    FROM SanPham sp
-    JOIN (
+    WITH AnhDaiDien AS (
+        SELECT spct.IdSanPham, anh.tenanh,
+               ROW_NUMBER() OVER (PARTITION BY spct.IdSanPham ORDER BY anh.tenanh DESC ) AS row_num
+        FROM Anh anh
+        JOIN SanPhamChiTiet spct ON anh.IdSanPhamChiTiet = spct.id
+    ),
+    SanPhamChiTietGrouped AS (
         SELECT IdSanPham, SUM(soluong) AS tongSoLuong, MIN(giatien) AS giatien
         FROM SanPhamChiTiet
         GROUP BY IdSanPham
-    ) spct ON sp.id = spct.IdSanPham
-    JOIN Anh anh ON sp.id = anh.Id
-    ORDER BY sp.ngaytao ASC , spct.tongSoLuong ASC
+    )
+    SELECT TOP 8 sp.id, sp.tensanpham, sp.ngaytao, spctg.tongSoLuong, sp.trangthai, spctg.giatien, anhdd.tenanh
+    FROM SanPham sp
+    JOIN SanPhamChiTietGrouped spctg ON sp.id = spctg.IdSanPham
+    JOIN AnhDaiDien anhdd ON sp.id = anhdd.IdSanPham AND anhdd.row_num = 1
+    ORDER BY sp.ngaytao ASC , spctg.tongSoLuong ASC
 """)
     List<Object[]> topspnoibatdetail();
 }
