@@ -176,7 +176,7 @@
                         <hr class="border border-danger border-2 opacity-50">
                         <p>Bạn đang có <strong th:text="${totalQuantity}+' sản phẩm'"></strong> trong giỏ hàng</p>
                         <div th:if="${cartItems == null or cartItems.isEmpty()}">
-                            <p>Không có sản phẩm trong giỏ hàng.</p>
+<!--                            <p>Không có sản phẩm trong giỏ hàng.</p>-->
                             <a th:href="@{/customer/sanphamnam}">Tiếp tục mua hàng.</a>
                         </div>
                         <div th:if="${cartItems != null and not cartItems.isEmpty()}">
@@ -232,8 +232,10 @@
                         </div>
                     </div>
                 </div>
+                </div>
             </section>
         </div>
+
         <div class="col-lg-4">
             <section class="content">
                 <div class="card">
@@ -252,7 +254,11 @@
                             <li>Phí vận chuyển được tính ở trang thanh toán</li>
                             <li>Bạn có thể nhập mã giảm giá ở trang thanh toán</li>
                         </ul>
-                        <a th:href="@{/view-thanh-toan}" style="display: inline-block; background-color: rgb(249, 72, 42); color: white; padding: 10px 20px; width: 100%; height: auto; border-radius: 10px; margin-top: 15px; text-decoration: none; text-align: center; border: 1px solid rgb(249, 72, 42); cursor: pointer;">ĐẶT HÀNG NGAY</a>
+                        <a th:href="@{/view-thanh-toan}"
+                           th:attr="style='display: inline-block; background-color: rgb(249, 72, 42); color: white; padding: 10px 20px; width: 100%; height: auto; border-radius: 10px; margin-top: 15px; text-decoration: none; text-align: center; border: 1px solid rgb(249, 72, 42); cursor: pointer;' + (${cartItems == null or #lists.isEmpty(cartItems)} ? ' opacity: 0.5; pointer-events: none;' : '')">
+                            ĐẶT HÀNG NGAY
+                        </a>
+
 
                     </div>
                 </div>

@@ -25,7 +25,10 @@ public class ThanhToanController {
     @RequestMapping("/view-thanh-toan")
     public String viewthanhtoan(Model model){
         List<GioHangChiTiet> cartItems = gioHangChiTietRepository.findAll();
-        int totalQuantity = cartItems.size();
+        int totalQuantity = 0;
+        for (GioHangChiTiet item : cartItems) {
+            totalQuantity += item.getSoluong();
+        }
         BigDecimal totalAmount = BigDecimal.ZERO;
         for (GioHangChiTiet item : cartItems) {
             BigDecimal giatien = sanPhamChiTietRepository.findPriceByProductId(item.getSanphamchitiet().getId());

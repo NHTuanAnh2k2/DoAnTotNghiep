@@ -37,8 +37,11 @@ public class GioHangController {
     @GetMapping("/cart")
     public String cart2(Model model) {
         List<GioHangChiTiet> cartItems = gioHangChiTietRepository.findAll(); // Giả sử bạn có phương thức này để lấy các mục trong giỏ hàng
-        int totalQuantity = cartItems.size(); // Đếm số lượng các mục trong giỏ hàng
-        // Tính tổng tiền
+        int totalQuantity = 0;
+        // Tính tổng số lượng sản phẩm trong giỏ hàng
+        for (GioHangChiTiet item : cartItems) {
+            totalQuantity += item.getSoluong();
+        }
         BigDecimal totalAmount = BigDecimal.ZERO;
         for (GioHangChiTiet item : cartItems) {
             // Lấy giá của sản phẩm từ bảng sản phẩm chi tiết
@@ -98,9 +101,8 @@ public class GioHangController {
             }
         }
         Integer firstProductId = sanPhamChiTiet.getSanpham().getId();
-        return "redirect:/detailsanphamCustomer/" + firstProductId; // Chuyển hướng đến trang sản phẩm chi tiết sau khi thêm
+        return "redirect:/detailsanphamCustomer/" + firstProductId;
     }
-
 
     @GetMapping("/delete/cart/{id}")
     public String deleteCart(@PathVariable Integer id) {
@@ -112,11 +114,9 @@ public class GioHangController {
     public String updateCart(@PathVariable Integer id,  Integer quantity) {
         try {
             gioHangChiTietRepository.updateSoLuongById(quantity, id);
-            return "redirect:/cart"; // Chuyển hướng đến trang giỏ hàng sau khi cập nhật
+            return "redirect:/cart";
         } catch (Exception e) {
-            // Xử lý ngoại lệ nếu cần thiết
-            return "redirect:/error"; // Chuyển hướng đến trang lỗi nếu có lỗi xảy ra
+            return "redirect:/error";
         }
     }
-
 }

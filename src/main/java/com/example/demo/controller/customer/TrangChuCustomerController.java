@@ -72,8 +72,11 @@ public class TrangChuCustomerController {
     @GetMapping("/customer/trangchu")
     public String hienthiTrangChu(Model model) {
         List<GioHangChiTiet> cartItems = gioHangChiTietRepository.findAll(); // Giả sử bạn có phương thức này để lấy các mục trong giỏ hàng
-        int totalQuantity = cartItems.size(); // Đếm số lượng các mục trong giỏ hàng
-        // Đưa tổng số lượng vào model để hiển thị trên giao diện
+        int totalQuantity = 0;
+        // Tính tổng số lượng sản phẩm trong giỏ hàng
+        for (GioHangChiTiet item : cartItems) {
+            totalQuantity += item.getSoluong();
+        }
         model.addAttribute("totalQuantity", totalQuantity);
         List<Object[]> topspmoinhattrangchu = trangChuRepository.topspmoinhattrangchu();
         model.addAttribute("topspmoinhattrangchu", topspmoinhattrangchu);
@@ -85,7 +88,12 @@ public class TrangChuCustomerController {
     @GetMapping("/detailsanphamCustomer/{id}")
     public String detailsanphamCustomer(@PathVariable Integer id, @RequestParam(required = false) String color, @RequestParam(required = false) String size, Model model) {
         List<GioHangChiTiet> cartItems = gioHangChiTietRepository.findAll(); // Giả sử bạn có phương thức này để lấy các mục trong giỏ hàng
-        int totalQuantity = cartItems.size(); // Đếm số lượng các mục trong giỏ hàng
+//        int totalQuantity = cartItems.size(); // Đếm số lượng các mục trong giỏ hàng
+        int totalQuantity = 0;
+        // Tính tổng số lượng sản phẩm trong giỏ hàng
+        for (GioHangChiTiet item : cartItems) {
+            totalQuantity += item.getSoluong();
+        }
         model.addAttribute("totalQuantity", totalQuantity);
         SanPham sanPham = trangChuRepository.findById(id).orElse(null);
         model.addAttribute("sanpham", sanPham);
