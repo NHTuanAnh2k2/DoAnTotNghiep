@@ -71,6 +71,7 @@
     }
 
 </style>
+
 <style>
     /* Dùng thanh cuộn ngang */
     .tab-pane.horizontal-scrollable .single-products.row {
@@ -219,7 +220,6 @@
         <div class="row">
             <div class="col-lg-3 order-2 order-lg-1 pt-5 pt-lg-0">
                 <div class="sidebar left-sidebar">
-
                     <nav class="mt-2">
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                             data-accordion="false">
@@ -232,6 +232,8 @@
                                 </a>
                                 <!-- Lọc sản phẩm -->
                                 <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
                                     <form id="filterForm" method="get" th:object="${loctheothkc}"
                                           th:action="@{/customer/sanphamnam}">
                                         <div class="sidebar-title">
@@ -255,7 +257,6 @@
                                         <p></p>
 
                                         <div class="sidebar-title">
-                                            <hr>
                                             <h3>THƯƠNG HIỆU</h3>
                                             <div th:each="thuonghieu : ${th}"
                                                  class="d-flex align-items-center justify-content-between">
@@ -272,7 +273,6 @@
                                             </div>
                                         </div>
                                         <div class="sidebar-title">
-                                            <hr>
                                             <h3>MÀU SẮC</h3>
                                             <div class="row">
                                                 <div th:each="mausac, iterStat : ${ms}" class="col-lg-6">
@@ -300,41 +300,40 @@
                                             </div>
                                         </div>
                                         <div class="sidebar-title">
-                                            <hr>
                                             <h3>KHOẢNG GIÁ</h3>
                                             <input type="checkbox" th:field="*{range1}" id="range1" value="true"
                                                    onchange="locgia()"
                                                    class="form-check-input rounded-circle checkbox checkbox-red"/>
-                                            <label for="range1" style="margin-left: 25px;">0 VNĐ ~
-                                                1.000.000 VNĐ</label><br/>
+                                            <label for="range1" style="margin-left: 25px;">0Đ ~
+                                                1.000.000Đ</label><br/>
 
                                             <input type="checkbox" th:field="*{range2}" id="range2" value="true"
                                                    onchange="locgia()"
                                                    class="form-check-input rounded-circle checkbox checkbox-red"/>
-                                            <label for="range2" style="margin-left: 25px;">1.000.000 VNĐ ~
-                                                2.000.000 VNĐ</label><br/>
+                                            <label for="range2" style="margin-left: 25px;">1.000.000Đ ~
+                                                2.000.000Đ</label><br/>
 
                                             <input type="checkbox" th:field="*{range3}" id="range3" value="true"
                                                    onchange="locgia()"
                                                    class="form-check-input checkbox rounded-circle checkbox-red"/>
-                                            <label for="range3" style="margin-left: 25px;">2.000.000 VNĐ ~
-                                                3.000.000 VNĐ</label><br/>
+                                            <label for="range3" style="margin-left: 25px;">2.000.000Đ ~
+                                                3.000.000Đ</label><br/>
 
                                             <input type="checkbox" th:field="*{range4}" id="range4" value="true"
                                                    onchange="locgia()"
                                                    class="form-check-input checkbox rounded-circle checkbox-red"/>
-                                            <label for="range4" style="margin-left: 25px;">3.000.000 VNĐ ~
-                                                5.000.000 VNĐ</label><br/>
+                                            <label for="range4" style="margin-left: 25px;">3.000.000Đ ~
+                                                5.000.000Đ</label><br/>
 
                                             <input type="checkbox" th:field="*{range5}" id="range5" value="true"
                                                    onchange="locgia()"
                                                    class="form-check-input checkbox rounded-circle checkbox-red"/>
                                             <label for="range5" style="margin-left: 25px;">Trên
-                                                5.000.000 VNĐ</label><br/>
+                                                5.000.000Đ</label><br/>
                                         </div>
                                     </form>
-
-
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>
@@ -480,8 +479,7 @@
         </div>
 
         <!--các snar phẩm nổi bật-->
-        <h3 style="margin-top: 30px; color: rgb(249, 72, 42); font-family: 'Lucida Sans Typewriter'"
-            class="text-center">CÁC SẢN PHẨM NỔI BẬT</h3>
+        <h3 style="margin-top: 30px; color: rgb(249, 72, 42); font-family: 'Lucida Sans Typewriter'" class="text-center">CÁC SẢN PHẨM NỔI BẬT</h3>
         <hr class="border border-danger border opacity-50">
         <div class="tab-content">
             <!--nội dung-->

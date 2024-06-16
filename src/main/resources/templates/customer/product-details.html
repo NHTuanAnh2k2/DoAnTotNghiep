@@ -310,17 +310,18 @@
 <style>
     #coupon-noti {
         position: fixed;
-        top: 60px; /* Vị trí top cố định tính bằng px hoặc % */
-        right: 20px; /* Vị trí right cố định tính bằng px hoặc % */
+        top: 500px; /* Vị trí top cố định tính bằng px hoặc % */
+        right: 1300px; /* Vị trí right cố định tính bằng px hoặc % */
         z-index: 1000; /* Đảm bảo coupon-noti hiển thị phía trên các phần tử khác */
-        background-color: #ff0000; /* Màu nền */
+        background-color:rgb(27,78,160); /* Màu nền */
         color: #ffffff; /* Màu chữ */
         padding: 10px; /* Đệm bên trong */
         cursor: pointer; /* Con trỏ chuột là pointer khi hover */
         border-radius: 20px; /* Để làm hình tròn (tuỳ chọn) */
     }
-
 </style>
+<script src="../sweetalert2/dist/sweetalert2.min.js/"></script>
+<link rel="stylesheet" type="text/css" href="../sweetalert2/dist/sweetalert2.min.css">
 <body>
 <!-- header section start -->
 <nav th:replace="~{/layout/header.html}"></nav>
