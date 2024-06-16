@@ -260,53 +260,19 @@
             <section class="content">
                 <div class="card">
                     <div class="card-body" style="background-color: #DDDDDD">
-                        <div class="ma_giam_gia">
+                        <div th:each="p,stt:${lstPGG}" class="ma_giam_gia">
                             <div class="ma-item-left">
                                 <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
                             </div>
                             <div class="ma-item-right">
-                                <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;">Giảm 120.000đ</h4>
-                                <p style="font-size: 14px; margin: 0; padding: 0; color: black">Đơn hàng từ 890.000đ trở lên</p>
+                                <h4 th:if="${p.loaiphieu}" th:text="'Giảm '+${p.giatrigiam}+' %'" style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;"></h4>
+                                <h4 th:if="${!p.loaiphieu}" th:text="'Giảm '+${p.giatrigiam}+' ₫'" style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;"></h4>
+                                <p th:if="${p.dontoithieu == null}" th:text="'Áp dụng cho mọi hóa đơn'" style="font-size: 14px; margin: 0; padding: 0; color: black"></p>
+                                <p th:if="${p.dontoithieu!=null}" th:text="'Áp dụng cho hóa đơn từ '+${p.dontoithieu}+' ₫'" style="font-size: 14px; margin: 0; padding: 0; color: black"></p>
                                 <div class="ma-item-des">
                                     <div class="left">
-                                        <p style="margin: 0; white-space: nowrap;">Mã: <b class="code">14FRMGR24MNFNS</b></p>
-                                        <p>HSD: 31/05/2024</p>
-                                    </div>
-                                    <div class="right">
-                                        Sao chép mã
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ma_giam_gia">
-                            <div class="ma-item-left">
-                                <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
-                            </div>
-                            <div class="ma-item-right">
-                                <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;">Giảm 120.000đ</h4>
-                                <p style="font-size: 14px; margin: 0; padding: 0; color: black">Đơn hàng từ 890.000đ trở lên</p>
-                                <div class="ma-item-des">
-                                    <div class="left">
-                                        <p style="margin: 0; white-space: nowrap;">Mã: <b class="code">14FRMGR24MNFNS</b></p>
-                                        <p>HSD: 31/05/2024</p>
-                                    </div>
-                                    <div class="right">
-                                        Sao chép mã
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ma_giam_gia">
-                            <div class="ma-item-left">
-                                <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
-                            </div>
-                            <div class="ma-item-right">
-                                <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;">Giảm 120.000đ</h4>
-                                <p style="font-size: 14px; margin: 0; padding: 0; color: black">Đơn hàng từ 890.000đ trở lên</p>
-                                <div class="ma-item-des">
-                                    <div class="left">
-                                        <p style="margin: 0; white-space: nowrap;">Mã: <b class="code">14FRMGR24MNFNS</b></p>
-                                        <p>HSD: 31/05/2024</p>
+                                        <p style="margin: 0; white-space: nowrap;">Mã: <b class="code" th:text="${p.macode}"></b></p>
+                                        <p th:text="'HSD: '+${p.ngayketthuc}"></p>
                                     </div>
                                     <div class="right">
                                         Sao chép mã

@@ -2,15 +2,18 @@ package com.example.demo.controller.giohang;
 
 import com.example.demo.entity.GioHang;
 import com.example.demo.entity.GioHangChiTiet;
+import com.example.demo.entity.PhieuGiamGia;
 import com.example.demo.entity.SanPhamChiTiet;
 import com.example.demo.repository.SanPhamChiTietRepository;
 import com.example.demo.repository.giohang.GioHangChiTietRepository;
 import com.example.demo.repository.giohang.GioHangRepository;
+import com.example.demo.service.impl.PhieuGiamGiaImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,7 +30,8 @@ public class GioHangController {
     @Autowired
     private GioHangChiTietRepository gioHangChiTietRepository;
 
-
+    @Autowired
+    private PhieuGiamGiaImp phieuGiamGiaImp;
 
 
     @GetMapping("/cart")
@@ -41,8 +45,15 @@ public class GioHangController {
             BigDecimal giatien = sanPhamChiTietRepository.findPriceByProductId(item.getSanphamchitiet().getId());
             totalAmount = totalAmount.add(giatien.multiply(BigDecimal.valueOf(item.getSoluong())));
         }
-
-
+        //dùng cho phiếu giảm giá
+        List<PhieuGiamGia> lst= phieuGiamGiaImp.findAll();
+        List<PhieuGiamGia> lstPGG= new ArrayList<>();
+        for(PhieuGiamGia p : lst){
+            if(p.getTrangthai()==1 && p.getKieuphieu()==false){
+                lstPGG.add(p);
+            }
+        }
+        model.addAttribute("lstPGG",lstPGG);
         model.addAttribute("totalAmount", totalAmount);
         // Đưa tổng số lượng vào model để hiển thị trên giao diện
         model.addAttribute("totalQuantity", totalQuantity);
