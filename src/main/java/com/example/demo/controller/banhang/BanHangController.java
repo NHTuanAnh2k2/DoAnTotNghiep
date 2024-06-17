@@ -485,10 +485,10 @@ public class BanHangController {
             lstin.add(new sanPhamIn(a.getSanphamchitiet().getSanpham().getTensanpham(), a.getSoluong()));
 
         }
-        String ten=null;
-                if(hdHienTai.getKhachhang()!=null){
-                    ten=hdHienTai.getKhachhang().getNguoidung().getHovaten();
-                }
+        String ten = null;
+        if (hdHienTai.getKhachhang() != null) {
+            ten = hdHienTai.getKhachhang().getNguoidung().getHovaten();
+        }
 
         MauHoaDon u = new MauHoaDon("FSPORT SHOP", hdHienTai.getMahoadon(), hdHienTai.getNgaytao(), "Lô H023, Nhà số 39, Ngõ 148, Xuân Phương, Phương Canh,Nam Từ Liêm, Hà Nội",
                 hdHienTai.getDiachi(), "0379036607", hdHienTai.getSdt(), ten, lstin, tongTienSP);
@@ -525,6 +525,14 @@ public class BanHangController {
             hdHienTai = hdset;
             lstPTTT = new ArrayList<>();
             redirectAttributes.addFlashAttribute("orderSuccess", true);
+            List<HoaDon> lstcheck7 = daoHD.timTheoTrangThaiVaLoai(7, false);
+            if (lstcheck7.size() > 0) {
+                HoaDon TT7 = lstcheck7.get(0);
+                TT7.setTrangthai(0);
+                daoHD.capNhatHD(TT7);
+                redirectAttributes.addFlashAttribute("checkHangCho", true);
+            }
+
             return "redirect:/hoa-don/ban-hang";
         }
         // thanh toán đơn có giao hàng
@@ -551,6 +559,13 @@ public class BanHangController {
             phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
             daoPGGCT.save(phieugiamgiachtietset);
             lstPTTT = new ArrayList<>();
+            List<HoaDon> lstcheck7 = daoHD.timTheoTrangThaiVaLoai(7, false);
+            if (lstcheck7.size() > 0) {
+                HoaDon TT7 = lstcheck7.get(0);
+                TT7.setTrangthai(0);
+                daoHD.capNhatHD(TT7);
+                redirectAttributes.addFlashAttribute("checkHangCho", true);
+            }
         } else {
             //trả trước
             hdset1.setTrangthai(5);
@@ -578,6 +593,13 @@ public class BanHangController {
             phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
             daoPGGCT.save(phieugiamgiachtietset);
             lstPTTT = new ArrayList<>();
+            List<HoaDon> lstcheck7 = daoHD.timTheoTrangThaiVaLoai(7, false);
+            if (lstcheck7.size() > 0) {
+                HoaDon TT7 = lstcheck7.get(0);
+                TT7.setTrangthai(0);
+                daoHD.capNhatHD(TT7);
+                redirectAttributes.addFlashAttribute("checkHangCho", true);
+            }
             redirectAttributes.addFlashAttribute("orderSuccess", true);
             return "redirect:/hoa-don/ban-hang";
 
@@ -613,6 +635,23 @@ public class BanHangController {
         return ResponseEntity.ok(diachiRT);
     }
 
+    //xử lý hóa đơn mới thứ 6
+    @GetMapping("chuyen-hang-cho")
+    @ResponseBody
+    public ResponseEntity<?> chuyenHDVeHangCho() {
+        List<HoaDon> lst1 = daoHD.timTheoTrangThaiVaLoai(7, false);
+        if (lst1.size() > 0) {
+            //check hóa đơn tràn hàng chờ đã tồn tại chưa, nếu tồn tại return false
+            return ResponseEntity.ok(false);
+        } else {
+            //chưa tồn tại hóa đơn tràn hàng chờ
+            List<HoaDon> lst = daoHD.timTheoTrangThaiVaLoai(0, false);
+            HoaDon hdChuyenVeHangCho = lst.get(4);
+            hdChuyenVeHangCho.setTrangthai(7);
+            daoHD.capNhatHD(hdChuyenVeHangCho);
+        }
+        return ResponseEntity.ok(true);
+    }
     //in đơn
 //    MauHoaDon u = new MauHoaDon("FSPORT", hdTT.getMahoadon(), hdTT.getNgaytao(), "Lô H023, Nhà số 39, Ngõ 148, Xuân Phương, Phương Canh,Nam Từ Liêm, Hà Nội",
 //            hdTT.getDiachi(), "0379036607", hdTT.getSdt(), hdTT.getTennguoinhan(), lstin, tongTT);

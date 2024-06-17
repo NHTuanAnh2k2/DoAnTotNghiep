@@ -1065,7 +1065,39 @@ tabindex="0">
                 })
                 .then(function (b) {
                     if (b.length == 5) {
-                        showToast();
+                        var rslt = confirm("Nếu tạo hóa đơn mới bạn sẽ xác nhận chuyển hóa đơn gần nhất về hàng chờ?");
+                        if (rslt) {
+                            //check hóa đơn hàng chờ
+                            var urlChuyenCho = `/ban-hang-tai-quay/chuyen-hang-cho`;
+                            fetch(urlChuyenCho)
+                                .then(function (a) {
+                                    return a.json();
+                                })
+                                .then(function (b) {
+
+                                    if (b == true) {
+                                        var urlTaos = `/ban-hang-tai-quay/tao-don-cho`;
+                                        fetch(urlTaos)
+                                            .then(function (a) {
+                                                return a.json();
+                                            })
+                                            .then(function (b) {
+
+                                                document.getElementById("tabContainer").innerHTML = '';
+                                                for (const hd of b) {
+                                                    loadTab(hd.mahoadon);
+
+                                                }
+                                                thongbao('01 đơn hàng đã chuyển về hàng tràn chờ', 'success')
+                                            })
+
+                                    } else {
+                                        showToast();
+                                    }
+
+                                })
+
+                        }
                     } else {
                         var urlTao = `/ban-hang-tai-quay/tao-don-cho`;
                         fetch(urlTao)
@@ -1076,7 +1108,6 @@ tabindex="0">
 
                                 document.getElementById("tabContainer").innerHTML = '';
                                 for (const hd of b) {
-
                                     loadTab(hd.mahoadon);
 
                                 }
@@ -1321,7 +1352,7 @@ tabindex="0">
 
             Toast.fire({
                 icon: "error",
-                title: "Bạn đã tạo tối đa 5 hóa đơn!"
+                title: "Tồn tại 01 hóa đơn hàng chờ chưa được xử lý, hãy xử lý đơn này trước khi tạo 1 đơn hàng chờ khác!"
             });
         }
 
@@ -1503,7 +1534,7 @@ tabindex="0">
                     let htmlNumberPageSP = '';
                     for (const hd of b.content) {
                         STT++;
-                            htmlSP += `<tr>
+                        htmlSP += `<tr>
                                    <td style="vertical-align: middle;">${STT}</td>
                                    <td> 
                                     <img src="${hd.anh[0].tenanh}" alt=""
@@ -1526,7 +1557,7 @@ tabindex="0">
                                      </button></a>
                                      </td>
                                 </tr>`;
-                        
+
                     }
 
                     if (thisNumberSPPage < 1) {
@@ -2905,7 +2936,11 @@ tabindex="0">
     <script th:inline="javascript">
         /*<![CDATA[*/
         var orderSuccess = /*[[${orderSuccess}]]*/ false;
+        var checkHangCho = /*[[${checkHangCho}]]*/ false;
         /*]]>*/
+        if(checkHangCho==true){
+            thongbao('Có 01 đơn hàng tràn chờ đã được hiển thị','info')
+        }
         if (orderSuccess == true) {
             var urlgetbill = `http://localhost:8080/ban-hang-tai-quay/show-bill`;
             fetch(urlgetbill)
