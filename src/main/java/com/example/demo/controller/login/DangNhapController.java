@@ -3,6 +3,7 @@ package com.example.demo.controller.login;
 import com.example.demo.entity.NguoiDung;
 import com.example.demo.info.DangNhapNDInfo;
 import com.example.demo.security.CustomerUserDetailService;
+import com.example.demo.security.JWTGenerator;
 import com.example.demo.service.KhachHangService;
 import com.example.demo.service.NguoiDungService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,6 +37,8 @@ public class DangNhapController {
     AuthenticationManager authenticationManager;
     @Autowired
     private CustomerUserDetailService customerUserDetailService;
+    @Autowired
+    private JWTGenerator jwtGenerator;
 
     @PostMapping("/dangnhap")
     public String dangnhap(Model model,
@@ -58,6 +61,7 @@ public class DangNhapController {
                         userDetails, null, userDetails.getAuthorities()
                 );
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+                String token = jwtGenerator.generateToken(authentication);
                 session.setAttribute("userDangnhap", nd.getTaikhoan());
                 return "redirect:/customer/trangchu";
             } else {
