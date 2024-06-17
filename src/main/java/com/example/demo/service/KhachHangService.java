@@ -5,6 +5,7 @@ import com.example.demo.entity.KhachHang;
 import com.example.demo.entity.NguoiDung;
 import com.example.demo.info.KhachHangInfo;
 import com.example.demo.info.NguoiDungKHInfo;
+import com.example.demo.info.hosokhachhang.DoiMatKhauNguoiDung;
 import com.example.demo.restcontroller.khachhang.Province;
 import com.google.zxing.NotFoundException;
 
@@ -34,26 +35,18 @@ public interface KhachHangService {
     KhachHang findKhachHangById(int id);
     DiaChi findDiaChiById(int id);
     NguoiDung findNguoiDungById(int id);
-
     List<Province> getCities();
-
     String generateRandomPassword(int length);
     void sendEmail(String recipient, String username, String password, String name);
-
     List<KhachHangInfo> displayKhachHang();
     KhachHang findKhachHangByIdNguoiDung(Integer id);
-
     //Tìm kiếm
     List<KhachHangInfo> findByTenSdtMa(String tenSdtMa);
-
     NguoiDung findByEmail(String email);
-
     void sendEmailQuenMatKhau(String recipient, String name, String maDoiMatKhau);
-
     NguoiDung findNguoiDungByTaikhoan(String taikhoan);
-
     DiaChi findDiaChiByIdNguoidung(Integer idNd);
-
+    NguoiDung doimatkhau(DoiMatKhauNguoiDung nguoidung, int id);
     void scanQr() throws NotFoundException;
     String readQRCode(File qrCodeImage) throws IOException;
 }
