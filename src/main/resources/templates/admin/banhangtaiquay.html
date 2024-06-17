@@ -1503,7 +1503,7 @@ tabindex="0">
                     let htmlNumberPageSP = '';
                     for (const hd of b.content) {
                         STT++;
-                        htmlSP += `<tr>
+                            htmlSP += `<tr>
                                    <td style="vertical-align: middle;">${STT}</td>
                                    <td> 
                                     <img src="${hd.anh[0].tenanh}" alt=""
@@ -1526,6 +1526,7 @@ tabindex="0">
                                      </button></a>
                                      </td>
                                 </tr>`;
+                        
                     }
 
                     if (thisNumberSPPage < 1) {
@@ -3161,7 +3162,7 @@ tabindex="0">
                                             document.getElementById('ngaygiaodukiens').innerHTML = days;
                                             // phigiaohang
                                             feship(idHuyenreturn, idXareturn);
-                                          
+
 
 
                                         })
@@ -3222,7 +3223,7 @@ tabindex="0">
             var huyenfeanddate = document.getElementById('quanhuyen').value;
             var xafeanddate = document.getElementById('xaphuong').value;
             callIdCity(tinhfeanddate, huyenfeanddate, xafeanddate);
-            thongbao('thông tin vận chuyển đã có sự thay đổi','info')
+            thongbao('thông tin vận chuyển đã có sự thay đổi', 'info')
         }
 
     </script>

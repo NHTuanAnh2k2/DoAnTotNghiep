@@ -465,7 +465,7 @@ public class hoaDonController {
     @ResponseBody
     public ResponseEntity<?> getlistSP(@RequestParam("pageSPChanges") Optional<Integer> pageParam) {
         Pageable p = PageRequest.of(pageParam.orElse(0), 5);
-        Page<SanPhamChiTiet> pageSP = daoSPCT.finAllPage(p);
+        Page<SanPhamChiTiet> pageSP = daoSPCT.finAllPage(0,p);
         return ResponseEntity.ok(pageSP);
     }
 
