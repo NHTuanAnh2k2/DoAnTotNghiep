@@ -652,6 +652,18 @@ public class BanHangController {
         }
         return ResponseEntity.ok(true);
     }
+
+    //show chuyển all đơn tt0 và tt7
+    @GetMapping("show-hang-cho")
+    @ResponseBody
+    public ResponseEntity<?> showTT0TT7() {
+        List<HoaDon> lst1 = daoHD.timTheoTrangThaiVaLoai(7, false);
+        List<HoaDon> lst = daoHD.timTheoTrangThaiVaLoai(0, false);
+        List<List> lstrt = new ArrayList<>();
+        lstrt.add(lst1);
+        lstrt.add(lst);
+        return ResponseEntity.ok(lstrt);
+    }
     //in đơn
 //    MauHoaDon u = new MauHoaDon("FSPORT", hdTT.getMahoadon(), hdTT.getNgaytao(), "Lô H023, Nhà số 39, Ngõ 148, Xuân Phương, Phương Canh,Nam Từ Liêm, Hà Nội",
 //            hdTT.getDiachi(), "0379036607", hdTT.getSdt(), hdTT.getTennguoinhan(), lstin, tongTT);

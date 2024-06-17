@@ -140,6 +140,8 @@
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
             <!-- Content Header (Page header) -->
+
+
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
@@ -164,16 +166,19 @@
                 </div><!-- /.container-fluid -->
             </section>
             <!-- Nút để tạo hóa đơn -->
-
-            <button class="btn" style="margin-left: 1100px;background-color: rgb(249,72,42);color: white"
-                onclick="taoNewHD()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus"
-                    viewBox="0 0 16 16">
-                    <path
-                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                </svg>
-                Tạo hóa đơn
-            </button>
+            <div class="d-flex justify-content-end pe-2">
+                <button class="btn" style="background-color: rgb(249,72,42);color: white" onclick="taoNewHD()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                        class="bi bi-plus" viewBox="0 0 16 16">
+                        <path
+                            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                    </svg>
+                    Tạo hóa đơn
+                </button>
+                <button onclick="showHDtrangcho()" type="button" class="btn btn-outline-dark" style="margin-left: 10px;"
+                    data-bs-toggle="modal" data-bs-target="#trancho">Hóa đơn hàng chờ <i
+                        class="bi bi-hourglass-split"></i></button>
+            </div>
             <p></p>
             <!-- Container cho các tab -->
             <div class="tab" id="tabContainer">
@@ -222,7 +227,45 @@
                 </div>
             </div>
             <!-- các modal -->
+            <!-- modal tràn chờ -->
+            <div class="modal fade" id="trancho" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Thông tin hàng chờ</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="d-flex justify-content-between">
+                                <div style="border-right: 1px solid #ccc;" class="col-6">
+                                    <div class="d-flex justify-content-center"
+                                        style="border-bottom: 1px solid #ccc; margin-bottom: 4px;">
+                                        <h5>Đơn trong hàng chờ</h5>
+                                    </div>
+                                    <div id="name-checkbox-l">
 
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex justify-content-center"
+                                        style="border-bottom: 1px solid #ccc; margin-bottom: 4px;">
+                                        <h5>Đơn đang xử lý</h5>
+                                    </div>
+                                    <div id="name-checkbox-r">
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+                            <button type="button" class="btn btn-primary" id="btnChuyen">Chuyển đổi</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!--         
     thay đổi thông tin hóa đơn -->
             <div class="modal fade" id="modalThayDoiHoaDon5" tabindex="-1" aria-labelledby="exampleModalThayDoiHoaDon5"
@@ -2938,8 +2981,8 @@ tabindex="0">
         var orderSuccess = /*[[${orderSuccess}]]*/ false;
         var checkHangCho = /*[[${checkHangCho}]]*/ false;
         /*]]>*/
-        if(checkHangCho==true){
-            thongbao('Có 01 đơn hàng tràn chờ đã được hiển thị','info')
+        if (checkHangCho == true) {
+            thongbao('Có 01 đơn hàng tràn chờ đã được hiển thị', 'info')
         }
         if (orderSuccess == true) {
             var urlgetbill = `http://localhost:8080/ban-hang-tai-quay/show-bill`;
@@ -3259,6 +3302,58 @@ tabindex="0">
             var xafeanddate = document.getElementById('xaphuong').value;
             callIdCity(tinhfeanddate, huyenfeanddate, xafeanddate);
             thongbao('thông tin vận chuyển đã có sự thay đổi', 'info')
+        }
+
+        function showHDtrangcho() {
+            var urlShowTran = `http://localhost:8080/ban-hang-tai-quay/show-hang-cho`;
+            fetch(urlShowTran)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var htmlHDHangChor = '';
+                    var htmlHDHangChol = '';
+                    for (const hd of b[1]) {
+                        htmlHDHangChor += `
+                        <div>
+                                        <label for="name1">${'Hóa đơn: ' + hd.mahoadon}</label>
+                                        <input type="radio"  name="rightbox" id="${hd.mahoadon}" onclick="checkclickright(event)">
+                                    </div>
+                        `;
+                    }
+                    for (const md of b[0]) {
+                        htmlHDHangChol += `
+                        <div>
+                                        <label for="name1">${'Hóa đơn: ' + md.mahoadon}</label>
+                                        <input type="radio"  name="leftbox" id="${md.mahoadon}" onclick="checkclickleft(event)">
+                                    </div>
+                        `;
+                    }
+
+                    document.getElementById('name-checkbox-l').innerHTML = htmlHDHangChol;
+
+                    document.getElementById('name-checkbox-r').innerHTML = htmlHDHangChor;
+
+                    document.getElementById('btnChuyen').disabled = true;
+                })
+
+        }
+        var checkchuyenleft = false;
+        var checkchuyenright = false;
+        function checkclickleft(event) {
+            if(event.checked==true){
+                checkchuyenleft==true;
+            }
+            alert(checkchuyenleft);
+            alert(checkchuyenright);
+            
+        }
+        function checkclickright(event) {
+            if(event.checked==true){
+                checkchuyenright==true;
+            }
+           alert(checkchuyenleft);
+           alert(checkchuyenright);
         }
 
     </script>
