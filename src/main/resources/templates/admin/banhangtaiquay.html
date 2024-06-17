@@ -698,7 +698,8 @@
                                     <select class="form-select form-select-sm mb-3" id="quanhuyen" th:field="*{huyen}">
                                         <option value="" th:text="*{huyen}" selected>Chọn quận huyện</option>
                                     </select>
-                                    <select class="form-select form-select-sm mb-3" id="xaphuong" th:field="*{xa}">
+                                    <select class="form-select form-select-sm mb-3" id="xaphuong" th:field="*{xa}"
+                                        onchange="feanddate()">
                                         <option value="" th:text="*{xa}" selected>
                                             Chọn phường xã</option>
                                     </select>
@@ -2796,7 +2797,7 @@ tabindex="0">
                     if (b.tinh == null) {
                         document.getElementById('tinhthanh').value = 'chọn tỉnh';
                     }
-                     callIdCity(b.tinh, b.huyen,b.xa)
+                    callIdCity(b.tinh, b.huyen, b.xa)
                 })
         }
 
@@ -3158,7 +3159,9 @@ tabindex="0">
                                             var days = day + '/' + month + '/' + year;
 
                                             document.getElementById('ngaygiaodukiens').innerHTML = days;
-                                            // feship(idHuyenreturn, idXareturn);
+                                            // phigiaohang
+                                            feship(idHuyenreturn, idXareturn);
+                                          
 
 
                                         })
@@ -3202,11 +3205,25 @@ tabindex="0">
                     return response.data // In dữ liệu ra console
                 })
                 .then(function (d) {
-                    console.log(d)
+                    var shipfe = convertCashInput(d.data.total);
+                    document.getElementById('phigiaohang').value = shipfe;
                 })
 
         }
+        function convertCashInput(amount) {
+            // Chuyển số thành chuỗi và thêm dấu phân cách hàng nghìn
+            let formattedAmount = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            // Thêm ký hiệu tiền tệ ₫ vào cuối chuỗi
+            return formattedAmount + " ₫";
+        }
 
+        function feanddate() {
+            var tinhfeanddate = document.getElementById('tinhthanh').value;
+            var huyenfeanddate = document.getElementById('quanhuyen').value;
+            var xafeanddate = document.getElementById('xaphuong').value;
+            callIdCity(tinhfeanddate, huyenfeanddate, xafeanddate);
+            thongbao('thông tin vận chuyển đã có sự thay đổi','info')
+        }
 
     </script>
 </body>
