@@ -12,6 +12,7 @@ import com.example.demo.restcontroller.khachhang.Province;
 import com.example.demo.security.JWTGenerator;
 import com.example.demo.service.KhachHangService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,9 +56,9 @@ public class CustomerController {
     public String quenmatkhauview(@ModelAttribute("nguoidung") NguoiDungKHInfo nguoidung,
                                   Model model) {
 
-    public String quenmatkhau(@ModelAttribute("nguoidung") NguoiDungKHInfo nguoidung, Model model) {
         return "same/quenmatkhau";
     }
+
 //    @PostMapping("/quenmatkhau")
 //    public String quenmatkhau (@RequestParam("email") String email,
 //                               @RequestParam("maxacnhan") String maxacnhan,
