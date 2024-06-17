@@ -1,33 +1,42 @@
 package com.example.demo.controller.customer;
 
 import com.example.demo.entity.Anh;
+import com.example.demo.entity.GioHangChiTiet;
 import com.example.demo.entity.SanPham;
 import com.example.demo.entity.SanPhamChiTiet;
 import com.example.demo.repository.AnhRepository;
 import com.example.demo.repository.KichCoRepository;
 import com.example.demo.repository.SanPhamChiTietRepository;
 import com.example.demo.repository.SanPhamRepositoty;
+import com.example.demo.repository.customer.TrangChuRepository;
+import com.example.demo.repository.giohang.GioHangChiTietRepository;
 import com.example.demo.service.impl.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.List;
+
+import java.math.BigDecimal;
+import java.util.*;
 
 @Controller
 public class TrangChuCustomerController {
     @Autowired
+    private GioHangChiTietRepository gioHangChiTietRepository;
+
+    @Autowired
+    TrangChuRepository trangChuRepository;
+
+    @Autowired
     KichCoRepository kichCoRepository;
+
     @Autowired
     SanPhamChiTietRepository sanPhamChiTietRepository;
+
     @Autowired
     SanPhamRepositoty sanPhamRepositoty;
 
@@ -62,60 +71,89 @@ public class TrangChuCustomerController {
 
     @GetMapping("/customer/trangchu")
     public String hienthiTrangChu(Model model) {
-        List<Object[]> page = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc2();
-        model.addAttribute("page", page);
+        List<GioHangChiTiet> cartItems = gioHangChiTietRepository.findAll(); // Giả sử bạn có phương thức này để lấy các mục trong giỏ hàng
+        int totalQuantity = 0;
+        // Tính tổng số lượng sản phẩm trong giỏ hàng
+        for (GioHangChiTiet item : cartItems) {
+            totalQuantity += item.getSoluong();
+        }
+        model.addAttribute("totalQuantity", totalQuantity);
+        List<Object[]> topspmoinhattrangchu = trangChuRepository.topspmoinhattrangchu();
+        model.addAttribute("topspmoinhattrangchu", topspmoinhattrangchu);
+        List<Object[]> topspbanchaynhattrangchu = trangChuRepository.topspbanchaynhat();
+        model.addAttribute("topspbanchaynhattrangchu", topspbanchaynhattrangchu);
         return "customer/trangchu";
     }
 
     @GetMapping("/detailsanphamCustomer/{id}")
-    public String detailsanphamCustomer(@PathVariable Integer id, Model model) {
-        SanPham sanPham = sanPhamRepositoty.findById(id).orElse(null);
+    public String detailsanphamCustomer(@PathVariable Integer id, @RequestParam(required = false) String color, @RequestParam(required = false) String size, Model model) {
+        List<GioHangChiTiet> cartItems = gioHangChiTietRepository.findAll(); // Giả sử bạn có phương thức này để lấy các mục trong giỏ hàng
+//        int totalQuantity = cartItems.size(); // Đếm số lượng các mục trong giỏ hàng
+        int totalQuantity = 0;
+        // Tính tổng số lượng sản phẩm trong giỏ hàng
+        for (GioHangChiTiet item : cartItems) {
+            totalQuantity += item.getSoluong();
+        }
+        model.addAttribute("totalQuantity", totalQuantity);
+        SanPham sanPham = trangChuRepository.findById(id).orElse(null);
         model.addAttribute("sanpham", sanPham);
-        model.addAttribute("sanphamchitiet", sanPham.getSpct());
+        SanPhamChiTiet sanPhamChiTiet=sanPhamChiTietRepository.findById(id).orElse(null);
+        model.addAttribute("sanphamchitiet", sanPhamChiTiet);
         List<String> danhSachAnh = new ArrayList<>();
         for (SanPhamChiTiet spct : sanPham.getSpct()) {
             for (Anh anh : spct.getAnh()) {
-                danhSachAnh.add(anh.getTenanh());
+                if (color == null || color.equals(spct.getMausac().getTen())) {
+                    danhSachAnh.add(anh.getTenanh());
+                }
             }
         }
         model.addAttribute("danhSachAnh", danhSachAnh);
-        // Khởi tạo danh sách sizes và colors
         List<String> sizes = new ArrayList<>();
         List<String> colors = new ArrayList<>();
+        BigDecimal selectedPrice = null;
+        Integer selectedQuantity = null;
+        String selectedThuongHieu=null;
+        String selectedChatLieu=null;
+        String selectedDeGiay=null;
+        String selectedMaSPCT=null;
+        String defaultColor = null;
+        String defaultSize = null;
         for (SanPhamChiTiet spct : sanPham.getSpct()) {
-            // Kiểm tra và thêm kích cỡ vào danh sách sizes
             if (!sizes.contains(spct.getKichco().getTen())) {
                 sizes.add(spct.getKichco().getTen());
             }
-            // Kiểm tra và thêm màu sắc vào danh sách colors
             if (!colors.contains(spct.getMausac().getTen())) {
                 colors.add(spct.getMausac().getTen());
             }
+            if ((color == null || color.equals(spct.getMausac().getTen())) && (size == null || size.equals(spct.getKichco().getTen()))) {
+                selectedPrice = spct.getGiatien();
+                selectedQuantity = spct.getSoluong();
+                selectedThuongHieu=spct.getThuonghieu().getTen();
+                selectedChatLieu=spct.getChatlieu().getTen();
+                selectedDeGiay=spct.getDegiay().getTen();
+                selectedMaSPCT=spct.getMasanphamchitiet();
+            }
         }
-        // Thêm danh sách sizes và colors vào model
+        if (colors.size() > 0) {
+            defaultColor = colors.get(0);
+        }
+        if (sizes.size() > 0) {
+            defaultSize = sizes.get(0);
+        }
         model.addAttribute("sizes", sizes);
         model.addAttribute("colors", colors);
-        // Lấy danh sách sản phẩm theo điều kiện
-        List<Object[]> page = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc3();
+        model.addAttribute("selectedPrice", selectedPrice);
+        model.addAttribute("selectedQuantity", selectedQuantity);
+        model.addAttribute("selectedThuongHieu", selectedThuongHieu);
+        model.addAttribute("selectedChatLieu", selectedChatLieu);
+        model.addAttribute("selectedDeGiay", selectedDeGiay);
+        model.addAttribute("selectedMaSPCT", selectedMaSPCT);
+        model.addAttribute("defaultColor", defaultColor);
+        model.addAttribute("defaultSize", defaultSize);
+        List<Object[]> page = trangChuRepository.topspmoinhatdetail();
         model.addAttribute("page", page);
-        List<Object[]> page2 = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc4();
+        List<Object[]> page2 = trangChuRepository.topspnoibatdetail();
         model.addAttribute("page2", page2);
         return "customer/product-details";
     }
-
-
-//    @GetMapping("/detailsanphamCustomer/{id}")
-//    public String detailsanphamCustomer(@PathVariable Integer id, Model model) {
-//        // Truy vấn sản phẩm chính
-//        SanPham sanPham = sanPhamRepositoty.findById(id).orElse(null);
-//
-//        // Truy vấn danh sách chi tiết sản phẩm
-//        List<SanPhamChiTiet> sanPhamChiTietList = sanPhamChiTietRepository.findBySanPham(sanPham);
-//
-//        model.addAttribute("sanpham", sanPham);
-//        model.addAttribute("sanphamchitiet", sanPhamChiTietList);
-//
-//        return "customer/product-details";
-//    }
-
 }

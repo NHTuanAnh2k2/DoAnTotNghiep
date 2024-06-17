@@ -55,6 +55,70 @@
         border-bottom: 2px solid red;
         /* Đường viền dưới màu đỏ cho tab khi được chọn */
     }
+
+
+    /* css cho modal mã giảm giá */
+
+
+    .ma_giam_gia {
+        width: 100%;
+        margin-bottom: 15px;
+        padding: 5px 10px;
+        background: #fff;
+        display: flex;
+        border-radius: 15px;
+    }
+
+    .ma-item-left {
+        width: 30%;
+        padding-right: 10px;
+        display: flex;
+        align-items: center;
+        border-right: 1px dashed #ccc;
+    }
+
+    .anh_ma {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+    }
+
+    .ma-item-right {
+        padding-left: 10px;
+        position: relative;
+        width: 70%;
+    }
+
+    .ma-item-des {
+        display: flex;
+        justify-content: space-between;
+        align-items: self-end;
+        font-size: 10px;
+    }
+
+    .right_magiam {
+        font-weight: 700;
+        padding: 5px 7px;
+        background: rgb(249, 72, 42);
+        color: white;
+        border-radius: 15px;
+        cursor: pointer;
+        margin-bottom: 26px;
+    }
+
+    .right_magiam:hover {
+        font-weight: 700;
+        padding: 5px 7px;
+        background: rgb(249, 72, 42);
+        color: white;
+        border-radius: 15px;
+        cursor: pointer;
+        margin-bottom: 26px;
+        border: 0.5px solid rgb(77, 70, 70);
+        /* Hiển thị viền khi hover */
+        transform: scale(1.01);
+        /* Tăng kích thước một chút khi hover */
+    }
 </style>
 <script src="../sweetalert2/dist/sweetalert2.min.js/"></script>
 <link rel="stylesheet" type="text/css" href="../sweetalert2/dist/sweetalert2.min.css">
@@ -76,6 +140,8 @@
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
             <!-- Content Header (Page header) -->
+
+
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
@@ -100,15 +166,19 @@
                 </div><!-- /.container-fluid -->
             </section>
             <!-- Nút để tạo hóa đơn -->
-            <button class="btn" style="margin-left: 1100px;background-color: rgb(249,72,42);color: white"
-                onclick="taoNewHD()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus"
-                    viewBox="0 0 16 16">
-                    <path
-                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                </svg>
-                Tạo hóa đơn
-            </button>
+            <div class="d-flex justify-content-end pe-2">
+                <button class="btn" style="background-color: rgb(249,72,42);color: white" onclick="taoNewHD()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                        class="bi bi-plus" viewBox="0 0 16 16">
+                        <path
+                            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                    </svg>
+                    Tạo hóa đơn
+                </button>
+                <button onclick="showHDtrangcho()" type="button" class="btn btn-outline-dark" style="margin-left: 10px;"
+                    data-bs-toggle="modal" data-bs-target="#trancho">Hóa đơn hàng chờ <i
+                        class="bi bi-hourglass-split"></i></button>
+            </div>
             <p></p>
             <!-- Container cho các tab -->
             <div class="tab" id="tabContainer">
@@ -136,7 +206,7 @@
                     </svg>
                     Quét QR Sản phẩm
                 </a>
-                <a class="btn" style="margin-left: 20px;background-color: rgb(249,72,42);color: white"
+                <button class="btn" style="margin-left: 20px;background-color: rgb(249,72,42);color: white"
                     data-bs-toggle="modal" data-bs-target="#modalThemSanPhamHD" id="changeSP">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                         class="bi bi-plus" viewBox="0 0 16 16">
@@ -144,14 +214,58 @@
                             d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                     </svg>
                     Thêm sản phẩm
-                </a>
+                </button>
             </div>
             <hr <!-- Nội dung của các tab -->
             <div id="GhiDeTab">
-
+                <div class="tab-pane fade show active text-center fw-bold" id="tatCaHoaDon-tab-pane" role="tabpanel"
+                    aria-labelledby="tatCaHoaDon-tab" tabindex="0">
+                    <br>
+                    <img src="../dist/img/no_product.png" width="500px" height="300px">
+                    <h3 class="text text-danger"><i>Chưa có hóa đơn nào được tạo!! <i class="bi bi-emoji-tear"></i>!</i>
+                    </h3>
+                </div>
             </div>
             <!-- các modal -->
+            <!-- modal tràn chờ -->
+            <div class="modal fade" id="trancho" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Thông tin hàng chờ</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="d-flex justify-content-between">
+                                <div style="border-right: 1px solid #ccc;" class="col-6">
+                                    <div class="d-flex justify-content-center"
+                                        style="border-bottom: 1px solid #ccc; margin-bottom: 4px;">
+                                        <h5>Đơn trong hàng chờ</h5>
+                                    </div>
+                                    <div id="name-checkbox-l">
 
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex justify-content-center"
+                                        style="border-bottom: 1px solid #ccc; margin-bottom: 4px;">
+                                        <h5>Đơn đang xử lý</h5>
+                                    </div>
+                                    <div id="name-checkbox-r">
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+                            <button type="button" class="btn btn-primary" id="btnChuyen">Chuyển đổi</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!--         
     thay đổi thông tin hóa đơn -->
             <div class="modal fade" id="modalThayDoiHoaDon5" tabindex="-1" aria-labelledby="exampleModalThayDoiHoaDon5"
@@ -459,6 +573,22 @@
                 </div>
             </div>
             <!--Kết thúc Modal thêm sản phẩm vào hóa đơn-->
+
+            <!-- modal bill  -->
+            <div class="modal fade" id="orderSuccessModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div id="hienthibill" class="ps-4">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+                            <button type="button" class="btn btn-primary" id="saveInvoiceBtn">Lưu hóa đơn</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- thêm khách hàng -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
@@ -524,12 +654,27 @@
                 </div>
             </div>
             <!--</div>-->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" style="width: 430px;">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color: #EEEEEE;">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Danh sách phiếu khuyến mãi:</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" style="background-color: #e6f2f4;" id="showvoucher">
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!--end-->
             <div>
                 <hr>
                 <div class="d-flex">
                     <h5 style="margin-left: 820px">Tổng tiền:</h5>
-                    <h5 style="margin-left: 25px;color: red" id="tongTien"></h5>
+                    <h5 style="margin-left: 25px;color: red" id="tongTien">0 đ</h5>
                 </div>
                 <br>
                 <div class="d-flex pe-1 ps-1">
@@ -541,15 +686,15 @@
                         </svg>
                         Tài khoản
                     </h5>
-                    <a class="btn ms-auto" style="background-color: rgb(249,72,42);color: white" data-bs-toggle="modal"
-                        data-bs-target="#modalChuyenNhanVien" id="changeNV">
+                    <button class="btn ms-auto" style="background-color: rgb(249,72,42);color: white"
+                        data-bs-toggle="modal" data-bs-target="#modalChuyenNhanVien" id="changeNV">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-plus" viewBox="0 0 16 16">
                             <path
                                 d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                         </svg>
                         Chọn tài khoản
-                    </a>
+                    </button>
                 </div>
                 <hr>
                 <div id="thongTinTaiKhoan">
@@ -571,8 +716,7 @@
                 <div class="row ps-2 pe-2">
                     <div class="col-7">
                         <div style="display: none;" id="diachidiv">
-                            <form id="thongtingiaohangform" th:object="${thongtingiaohang}" method="post"
-                                action="">
+                            <form id="thongtingiaohangform" th:object="${thongtingiaohang}" method="post" action="">
                                 <p>
                                     <input type="text" class="form-control" placeholder="Nhập họ và tên"
                                         id="thongtingiao_ten" th:field="*{ten}">
@@ -597,7 +741,8 @@
                                     <select class="form-select form-select-sm mb-3" id="quanhuyen" th:field="*{huyen}">
                                         <option value="" th:text="*{huyen}" selected>Chọn quận huyện</option>
                                     </select>
-                                    <select class="form-select form-select-sm mb-3" id="xaphuong" th:field="*{xa}">
+                                    <select class="form-select form-select-sm mb-3" id="xaphuong" th:field="*{xa}"
+                                        onchange="feanddate()">
                                         <option value="" th:text="*{xa}" selected>
                                             Chọn phường xã</option>
                                     </select>
@@ -617,7 +762,12 @@
                                             th:field="*{trasau}" onchange="handleCheckboxChange(event)">
                                     </p>
                                 </div>
-
+                                <div class="d-flex justify-content-between ms-1">
+                                    <p>Ngày giao dự kiến:</p>
+                                    <p id="ngaygiaodukiens">
+                                        đang tính toán...
+                                    </p>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -632,8 +782,8 @@
                         </h5>
                         <div class="d-flex justify-content-between">
                             <p style="font-weight: bold">Khách thanh toán:
-                                <a class="btn" data-bs-toggle="modal" data-bs-target="#modalThayDoiHoaDon5"
-                                    onclick="thanhtoan()">
+                                <button class="btn" data-bs-toggle="modal" data-bs-target="#modalThayDoiHoaDon5"
+                                    id="chantrasau" onclick="thanhtoan()">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                                         class="bi bi-credit-card" viewBox="0 0 16 16">
                                         <path
@@ -641,16 +791,18 @@
                                         <path
                                             d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
                                     </svg>
-                                </a>
+                                </button>
                             </p>
                             <p></p>
                         </div>
                         <div class="d-flex justify-content-between mb-1">
                             <p style="font-weight: bold; margin-top: 10px;"> Mã giảm giá:</p>
                             <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white; padding-top: 10px;"
-                                id="maGiamFill">HFGGD07234-TUNGDT</p>
+                                id="maGiamFill">Chưa có mã giảm phù hợp!</p>
 
-                            <button class="btn btn-light" style="margin-bottom: 20px;">Chọn mã giảm</button>
+                            <button class="btn btn-light" style="margin-bottom: 20px;" data-bs-toggle="modal"
+                                data-bs-target="#staticBackdrop" onclick="showmagiam()">
+                                Chọn mã giảm</button>
                         </div>
                         <div class="d-flex justify-content-between">
                             <p style="font-weight: bold">Giao hàng:</p>
@@ -665,13 +817,14 @@
                         </div>
                         <div class="d-flex justify-content-between">
                             <p style="font-weight: bold">Giảm giá:</p>
-                            <p style="font-weight: bold" id="giamgia">300,000đ</p>
+                            <p style="font-weight: bold" id="giamgia">0 đ</p>
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between">
                             <p style="font-weight: bold">Tổng thanh toán:</p>
-                            <p style="color: red;font-weight: bold" id="tongThanhToan">2,200,000đ</p>
+                            <p style="color: red;font-weight: bold" id="tongThanhToan">0 đ</p>
                         </div>
+
                         <p>
                             <button style="margin-left: 332px" class="btn btn-dark" disabled id="xacnhanthanhtoanhoadon"
                                 onclick="handleLinkClick()">Xác nhận thanh toán</button>
@@ -693,7 +846,9 @@
 
     <script>
         //tạo biến toàn cũng để sử dụng
-        var tienkhachthanhtoan;
+        var tongTienDon;//tổng cả đơn chưa có mã
+        var TienGiamDon;//tổng tiền giảm
+        var tienkhachthanhtoan;//tổng đã có mã
         var hdHienTai;
         // JavaScript để tạo tab mới
         const urlPage = `/ban-hang-tai-quay/hoa-don-cho`;
@@ -702,22 +857,224 @@
                 return a.json();
             })
             .then(function (b) {
-                var htmlDiv = '';
-                for (const hd of b) {
-                    loadTab(hd.mahoadon);
-                    htmlDiv += `
+                if (b.length > 0) {
+                    var htmlDiv = '';
+                    for (const hd of b) {
+                        loadTab(hd.mahoadon);
+                        htmlDiv += `
                         <div id="${hd.mahoadon}" class="tabcontent">
 
                         </div>`;
+                    }
+                    document.getElementById('GhiDeTab').innerHTML = htmlDiv;
+                    openInvoice1(event, b[0].mahoadon);
+                } else {
+
                 }
-                document.getElementById('GhiDeTab').innerHTML = htmlDiv;
-                openInvoice(event, b[0].mahoadon);
-
-
 
             })
 
+        // JavaScript để mở tab lúc load
+        function openInvoice1(evt, invoiceName) {
 
+            document.getElementById('changeNV').disabled = false;
+            document.getElementById('changeSP').disabled = false;
+            document.getElementById('tienmat').disabled = false;
+            document.getElementById('chuyenkhoan').disabled = false;
+            document.getElementById('diachidiv').style.display = 'none';
+            document.getElementById("checktrasau").checked = false;
+            var i, tabcontent, tablinks;
+
+            // Ẩn tất cả các tabcontent trước khi hiển thị tab được chọn
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Loại bỏ class "active" từ tất cả các tablinks
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active"); // Loại bỏ lớp "active" từ tất cả các tab
+            }
+            //tạo mã html cho hóa đơn được gọi
+            const maHD = invoiceName;
+            const urlGetListSP = `/ban-hang-tai-quay/tim-coutSP-theoHD?maHD=${maHD}`;
+            fetch(urlGetListSP)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var tongTien = 0;
+                    var tongThanhT = 0;
+                    var tienGiamT = 0;
+                    var html = '';
+                    var htmlTR = '';
+                    var htmlMaGiam = '';
+
+                    var urltimHD = `/ban-hang-tai-quay/tim-HD-TheoMaHD?maHD=${invoiceName}`;
+                    fetch(urltimHD)
+                        .then(function (a) {
+                            return a.json();
+                        })
+                        .then(function (b) {
+                            var htmlTTTK = '';
+                            if (b.khachhang == null) {
+                                htmlTTTK = `
+                <div class="d-flex">
+            <p style="margin-left: 20px">Tên khách hàng:</p>
+            <p style="margin-left: 20px">Khách lẻ</p>
+        </div>
+                `;
+                            } else {
+
+                                htmlTTTK = `
+                    <div class="d-flex">
+            <p style="margin-left: 20px">Tên khách hàng:</p>
+            <p style="margin-left: 20px">${b.khachhang.nguoidung.hovaten}</p>
+        </div>
+        <div class="d-flex">
+            <p style="margin-left: 20px">Số điện thoại:</p>
+            <p style="margin-left: 20px">${b.khachhang.nguoidung.sodienthoai}</p>
+        </div>
+        <div class="d-flex">
+            <p style="margin-left: 20px">Email:</p>
+            <p style="margin-left: 20px">${b.khachhang.nguoidung.email}</p>
+        </div>
+                    `;
+                            }
+
+                            document.getElementById("thongTinTaiKhoan").innerHTML = htmlTTTK;
+                        })
+
+
+                    if (b.length < 1) {
+                        html = `
+<div class="tab-pane fade show active text-center fw-bold"
+                                id="tatCaHoaDon-tab-pane" role="tabpanel" aria-labelledby="tatCaHoaDon-tab"
+                                tabindex="0">
+                                <br>
+                                <img src="../dist/img/no_product.png" width="500px" height="300px">
+                                <h3 class="text text-danger"><i>Danh sách sản phẩm hiện đang trống!! <i
+                                            class="bi bi-emoji-tear"></i>!</i></h3>
+                            </div>`;
+                    }
+                    if (b.length > 0) {
+
+                        var stt = 0;
+                        for (const hd of b) {
+                            tongTien += hd.soluong * hd.giasanpham;
+                            stt++;
+                            htmlTR += `
+                <tr>
+<td class="text-center" style="vertical-align: middle;">
+    <span style="margin-left: 7px">${stt}</span>
+</td>
+<td style="vertical-align: middle;">
+    <img src="${hd.sanphamchitiet.anh[0].tenanh}" width="100px" height="100px" />
+</td>
+<td style="vertical-align: middle;">
+    <p style="font-weight: bold">${hd.sanphamchitiet.sanpham.tensanpham}</p>
+    <p style="color: red;font-weight: bold">${hd.giasanpham.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+    <p> Size: ${hd.sanphamchitiet.kichco.ten}</p>
+</td>
+<td style="vertical-align: middle;">
+    <input class="form-control" style="width: 120px;height: 30px; margin-left: 20%;" type="text" id="${hd.id}" value="${hd.soluong}" oninput="changeQuantity(event)">
+</td>
+<td style="color: red;font-weight: bold;vertical-align: middle;">${(hd.soluong * hd.giasanpham).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+<td style="vertical-align: middle;">
+                                               <a href="http://localhost:8080/ban-hang-tai-quay/delete/${hd.id}"
+                                                >
+                                                <button class="btn btn-outline-danger"
+                                                    onclick="return confirm('Bạn có muốn xóa sản phẩm này không?')"
+                                                    type="button"><i class="bi bi-trash3"></i></button></a>
+
+
+                                                    <a href="http://localhost:8080/ban-hang-tai-quay/update/${hd.id}/${hd.soluong}" id="${hd.id + 'fsport'}"
+                                                >
+                                                <button class="btn btn-outline-warning"
+                                                    onclick="return confirm('Bạn có muốn cập nhật lại sản phẩm này không?')"
+                                                    type="button"><i
+                                                        class="bi bi-arrow-clockwise bi-warning"></i></button></a>
+</td>
+</tr>
+                `;
+                        }
+
+                        html = `
+<div class="tab-pane fade show active text-center fw-bold"
+id="tatCaHoaDon-tab-pane" role="tabpanel" aria-labelledby="tatCaHoaDon-tab"
+tabindex="0">
+<table style="width: 100%" class="table">
+<thead style="height: 50px">
+<tr>
+<th>STT</th>
+<th>Ảnh</th>
+<th>Sản phẩm</th>
+<th>Số lượng</th>
+<th>Tổng tiền</th>
+<th>Thao tác</th>
+</tr>
+</thead>
+<tbody>`+ htmlTR + `
+
+</tbody>
+</table>
+</div>`;
+                    }
+
+                    fetch(`http://localhost:8080/ban-hang-tai-quay/fillMaGiam`)
+                        .then(function (a) {
+                            return a.json();
+                        })
+                        .then(function (b) {
+                            var b2 = b;
+                            if (b.phieugiamgia.id != null) {
+                                if (b2.phieugiamgia.loaiphieu == true) {
+                                    // phiếu %
+                                    if (b2.phieugiamgia.giatrigiam * (tongTien / 100) > b2.phieugiamgia.giatrigiamtoida) {
+                                        tienGiamT = b2.phieugiamgia.giatrigiamtoida;
+                                    } else {
+                                        tienGiamT = b2.phieugiamgia.giatrigiam * (tongTien / 100);
+                                    }
+
+                                } else {
+                                    // phiếu vnđ
+                                    tienGiamT = b2.phieugiamgia.giatrigiam;
+                                }
+                                tongThanhT = tongTien - tienGiamT;
+                                TienGiamDon = tienGiamT;
+                                document.getElementById('maGiamFill').innerHTML = b.phieugiamgia.macode;
+                            } else {
+                                document.getElementById('maGiamFill').innerHTML = 'chưa có mã nào phù hợp!';
+                                tongThanhT = tongTien;
+
+                            }
+                            tongTienDon = tongTien;
+                            tienkhachthanhtoan = tongThanhT;
+                            TienGiamDon = tienGiamT;
+                            hdHienTai = maHD;
+
+
+                            document.getElementById('giamgia').innerHTML = tienGiamT.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                            document.getElementById('tongThanhToan').innerHTML = tongThanhT.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+
+                        })
+                    document.getElementById('GhiDeTab').innerHTML = html;
+
+                    //document.getElementById(invoiceName).innerHTML = html;
+                    document.getElementById("tongTien").innerHTML = tongTien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                    document.getElementById("tongTienTTTT").innerHTML = tongTien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+
+                })
+
+
+            // Hiển thị nội dung của tab được chọn và thêm class "active" cho tab đó
+
+            document.getElementById(invoiceName).style.display = "block";
+
+        }
+
+        //load tab
         function loadTab(inputs) {
 
             var tabContainer = document.getElementById("tabContainer");
@@ -751,7 +1108,39 @@
                 })
                 .then(function (b) {
                     if (b.length == 5) {
-                        showToast();
+                        var rslt = confirm("Nếu tạo hóa đơn mới bạn sẽ xác nhận chuyển hóa đơn gần nhất về hàng chờ?");
+                        if (rslt) {
+                            //check hóa đơn hàng chờ
+                            var urlChuyenCho = `/ban-hang-tai-quay/chuyen-hang-cho`;
+                            fetch(urlChuyenCho)
+                                .then(function (a) {
+                                    return a.json();
+                                })
+                                .then(function (b) {
+
+                                    if (b == true) {
+                                        var urlTaos = `/ban-hang-tai-quay/tao-don-cho`;
+                                        fetch(urlTaos)
+                                            .then(function (a) {
+                                                return a.json();
+                                            })
+                                            .then(function (b) {
+
+                                                document.getElementById("tabContainer").innerHTML = '';
+                                                for (const hd of b) {
+                                                    loadTab(hd.mahoadon);
+
+                                                }
+                                                thongbao('01 đơn hàng đã chuyển về hàng tràn chờ', 'success')
+                                            })
+
+                                    } else {
+                                        showToast();
+                                    }
+
+                                })
+
+                        }
                     } else {
                         var urlTao = `/ban-hang-tai-quay/tao-don-cho`;
                         fetch(urlTao)
@@ -762,7 +1151,6 @@
 
                                 document.getElementById("tabContainer").innerHTML = '';
                                 for (const hd of b) {
-
                                     loadTab(hd.mahoadon);
 
                                 }
@@ -778,6 +1166,11 @@
 
         // JavaScript để mở tab
         function openInvoice(evt, invoiceName) {
+            document.getElementById('ngaygiaodukiens').innerHTML = "đang tính toán...";
+            document.getElementById('changeNV').disabled = false;
+            document.getElementById('changeSP').disabled = false;
+            document.getElementById('tienmat').disabled = false;
+            document.getElementById('chuyenkhoan').disabled = false;
             document.getElementById('diachidiv').style.display = 'none';
             document.getElementById("checktrasau").checked = false;
             var i, tabcontent, tablinks;
@@ -793,9 +1186,10 @@
             for (i = 0; i < tablinks.length; i++) {
                 tablinks[i].classList.remove("active"); // Loại bỏ lớp "active" từ tất cả các tab
             }
+            evt.currentTarget.classList.add("active"); // Thêm lớp "active" cho tab được chọn
+
+
             //tạo mã html cho hóa đơn được gọi
-
-
             const maHD = invoiceName;
             const urlGetListSP = `/ban-hang-tai-quay/tim-coutSP-theoHD?maHD=${maHD}`;
             fetch(urlGetListSP)
@@ -816,9 +1210,6 @@
                             return a.json();
                         })
                         .then(function (b) {
-
-
-
                             var htmlTTTK = '';
                             if (b.khachhang == null) {
                                 htmlTTTK = `
@@ -861,6 +1252,7 @@
                                         </div>`;
                     }
                     if (b.length > 0) {
+
                         var stt = 0;
                         for (const hd of b) {
                             tongTien += hd.soluong * hd.giasanpham;
@@ -871,7 +1263,7 @@
                 <span style="margin-left: 7px">${stt}</span>
             </td>
             <td style="vertical-align: middle;">
-                <img src="${hd.sanphamchitiet.anh}" width="100px" height="100px" />
+                <img src="${hd.sanphamchitiet.anh[0].tenanh}" width="100px" height="100px" />
             </td>
             <td style="vertical-align: middle;">
                 <p style="font-weight: bold">${hd.sanphamchitiet.sanpham.tensanpham}</p>
@@ -901,8 +1293,6 @@
                             `;
                         }
 
-
-
                         html = `
 <div class="tab-pane fade show active text-center fw-bold"
 id="tatCaHoaDon-tab-pane" role="tabpanel" aria-labelledby="tatCaHoaDon-tab"
@@ -931,7 +1321,7 @@ tabindex="0">
                         })
                         .then(function (b) {
                             var b2 = b;
-                            if (b.id != null) {
+                            if (b.phieugiamgia.id != null) {
                                 if (b2.phieugiamgia.loaiphieu == true) {
                                     // phiếu %
                                     if (b2.phieugiamgia.giatrigiam * (tongTien / 100) > b2.phieugiamgia.giatrigiamtoida) {
@@ -950,7 +1340,9 @@ tabindex="0">
                                 document.getElementById('maGiamFill').innerHTML = 'chưa có mã nào phù hợp!';
                                 tongThanhT = tongTien;
                             }
+                            tongTienDon = tongTien;
                             tienkhachthanhtoan = tongThanhT;
+                            TienGiamDon = tienGiamT;
                             hdHienTai = maHD;
 
 
@@ -958,16 +1350,19 @@ tabindex="0">
                             document.getElementById('tongThanhToan').innerHTML = tongThanhT.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 
                         })
-                    document.getElementById(invoiceName).innerHTML = html;
+                    document.getElementById('GhiDeTab').innerHTML = html;
+
+                    //document.getElementById(invoiceName).innerHTML = html;
                     document.getElementById("tongTien").innerHTML = tongTien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                     document.getElementById("tongTienTTTT").innerHTML = tongTien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+
                 })
 
 
             // Hiển thị nội dung của tab được chọn và thêm class "active" cho tab đó
 
             document.getElementById(invoiceName).style.display = "block";
-            evt.currentTarget.classList.add("active"); // Thêm lớp "active" cho tab được chọn
+
         }
 
         // JavaScript để đóng tab
@@ -1000,7 +1395,7 @@ tabindex="0">
 
             Toast.fire({
                 icon: "error",
-                title: "Bạn đã tạo tối đa 5 hóa đơn!"
+                title: "Tồn tại 01 hóa đơn hàng chờ chưa được xử lý, hãy xử lý đơn này trước khi tạo 1 đơn hàng chờ khác!"
             });
         }
 
@@ -1077,22 +1472,22 @@ tabindex="0">
                     for (const hd of b) {
                         STT++;
                         htmlSP += `<tr>
-                                   <td>${STT}</td>
+                                   <td style="vertical-align: middle;">${STT}</td>
                                    <td> 
-                                    <img src="${hd.anh.tenanh}" alt=""
+                                    <img src="${hd.anh[0].tenanh}" alt=""
                                                                 style="height: 100px; width: 100px;">
                                     
                                     </td>
-                                   <td>${hd.sanpham.tensanpham}</td>
-                                   <td>${hd.soluong}</td>
-                                   <td>${hd.kichco.ten}</td>
-                                   <td>${hd.mausac.ten}</td>
-                                   <td>
+                                   <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
+                                   <td style="vertical-align: middle;">${hd.soluong}</td>
+                                   <td style="vertical-align: middle;">${hd.kichco.ten}</td>
+                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
                                         </p>
                                     </td>
-                                   <td>
+                                   <td style="vertical-align: middle;">
                                     <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
                                     class="btn btn-warning">
                                     chọn
@@ -1133,22 +1528,22 @@ tabindex="0">
                     for (const hd of b) {
                         STT++;
                         htmlSP += `<tr>
-                                   <td>${STT}</td>
+                                   <td style="vertical-align: middle;">${STT}</td>
                                    <td> 
-                                    <img src="${hd.anh.tenanh}" alt=""
+                                    <img src="${hd.anh[0].tenanh}" alt=""
                                                                 style="height: 100px; width: 100px;">
                                     
                                     </td>
-                                   <td>${hd.sanpham.tensanpham}</td>
-                                   <td>${hd.soluong}</td>
-                                   <td>${hd.kichco.ten}</td>
-                                   <td>${hd.mausac.ten}</td>
-                                   <td>
+                                   <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
+                                   <td style="vertical-align: middle;">${hd.soluong}</td>
+                                   <td style="vertical-align: middle;">${hd.kichco.ten}</td>
+                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
                                         </p>
                                     </td>
-                                   <td>
+                                   <td style="vertical-align: middle;">
                                     <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
                                     class="btn btn-warning">
                                     chọn
@@ -1183,28 +1578,29 @@ tabindex="0">
                     for (const hd of b.content) {
                         STT++;
                         htmlSP += `<tr>
-                                   <td>${STT}</td>
+                                   <td style="vertical-align: middle;">${STT}</td>
                                    <td> 
-                                    <img src="${hd.anh.tenanh}" alt=""
+                                    <img src="${hd.anh[0].tenanh}" alt=""
                                                                 style="height: 100px; width: 100px;">
                                     
                                     </td>
-                                   <td>${hd.sanpham.tensanpham}</td>
-                                   <td>${hd.soluong}</td>
-                                   <td>${hd.kichco.ten}</td>
-                                   <td>${hd.mausac.ten}</td>
-                                   <td>
+                                   <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
+                                   <td style="vertical-align: middle;">${hd.soluong}</td>
+                                   <td style="vertical-align: middle;">${hd.kichco.ten}</td>
+                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
                                         </p>
                                     </td>
-                                   <td>
+                                   <td style="vertical-align: middle;">
                                     <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
                                     class="btn btn-warning">
                                     chọn
                                      </button></a>
                                      </td>
                                 </tr>`;
+
                     }
 
                     if (thisNumberSPPage < 1) {
@@ -1247,22 +1643,22 @@ tabindex="0">
                     for (const hd of b.content) {
                         STT++;
                         htmlSP += `<tr>
-                                   <td>${STT}</td>
+                                   <td style="vertical-align: middle;">${STT}</td>
                                    <td> 
-                                    <img src="${hd.anh.tenanh}" alt=""
+                                    <img src="${hd.anh[0].tenanh}" alt=""
                                                                 style="height: 100px; width: 100px;">
                                     
                                     </td>
-                                   <td>${hd.sanpham.tensanpham}</td>
-                                   <td>${hd.soluong}</td>
-                                   <td>${hd.kichco.ten}</td>
-                                   <td>${hd.mausac.ten}</td>
-                                   <td>
+                                   <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
+                                   <td style="vertical-align: middle;">${hd.soluong}</td>
+                                   <td style="vertical-align: middle;">${hd.kichco.ten}</td>
+                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
                                         </p>
                                     </td>
-                                   <td>
+                                   <td style="vertical-align: middle;">
                                     <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
                                     class="btn btn-warning">
                                     chọn
@@ -1309,22 +1705,22 @@ tabindex="0">
                     for (const hd of b.content) {
                         STT++;
                         htmlSP += `<tr>
-                                   <td>${STT}</td>
+                                   <td style="vertical-align: middle;">${STT}</td>
                                    <td> 
-                                    <img src="${hd.anh.tenanh}" alt=""
+                                    <img src="${hd.anh[0].tenanh}" alt=""
                                                                 style="height: 100px; width: 100px;">
                                     
                                     </td>
-                                   <td>${hd.sanpham.tensanpham}</td>
-                                   <td>${hd.soluong}</td>
-                                   <td>${hd.kichco.ten}</td>
-                                   <td>${hd.mausac.ten}</td>
-                                   <td>
+                                   <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
+                                   <td style="vertical-align: middle;">${hd.soluong}</td>
+                                   <td style="vertical-align: middle;">${hd.kichco.ten}</td>
+                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
                                         </p>
                                     </td>
-                                   <td>
+                                   <td style="vertical-align: middle;">
                                     <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
                                     class="btn btn-warning">
                                     chọn
@@ -1373,22 +1769,22 @@ tabindex="0">
                     for (const hd of b.content) {
                         STT++;
                         htmlSP += `<tr>
-                                   <td>${STT}</td>
+                                   <td style="vertical-align: middle;">${STT}</td>
                                    <td> 
-                                    <img src="${hd.anh.tenanh}" alt=""
+                                    <img src="${hd.anh[0].tenanh}" alt=""
                                                                 style="height: 100px; width: 100px;">
                                     
                                     </td>
-                                   <td>${hd.sanpham.tensanpham}</td>
-                                   <td>${hd.soluong}</td>
-                                   <td>${hd.kichco.ten}</td>
-                                   <td>${hd.mausac.ten}</td>
-                                   <td>
+                                   <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
+                                   <td style="vertical-align: middle;">${hd.soluong}</td>
+                                   <td style="vertical-align: middle;">${hd.kichco.ten}</td>
+                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
                                         </p>
                                     </td>
-                                   <td>
+                                   <td style="vertical-align: middle;">
                                     <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
                                     class="btn btn-warning">
                                     chọn
@@ -1439,22 +1835,22 @@ tabindex="0">
                     for (const hd of b.content) {
                         STT++;
                         htmlSP += `<tr>
-                                   <td>${STT}</td>
+                                   <td style="vertical-align: middle;">${STT}</td>
                                    <td> 
-                                    <img src="${hd.anh.tenanh}" alt=""
+                                    <img src="${hd.anh[0].tenanh}" alt=""
                                                                 style="height: 100px; width: 100px;">
                                     
                                     </td>
-                                   <td>${hd.sanpham.tensanpham}</td>
-                                   <td>${hd.soluong}</td>
-                                   <td>${hd.kichco.ten}</td>
-                                   <td>${hd.mausac.ten}</td>
-                                   <td>
+                                   <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
+                                   <td style="vertical-align: middle;">${hd.soluong}</td>
+                                   <td style="vertical-align: middle;">${hd.kichco.ten}</td>
+                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
                                         </p>
                                     </td>
-                                   <td>
+                                   <td style="vertical-align: middle;">
                                     <a href="http://localhost:8080/ban-hang-tai-quay/ChoseSP/${hd.id}"><button
                                     class="btn btn-warning">
                                     chọn
@@ -1819,12 +2215,14 @@ tabindex="0">
                 })
         }
         //hiển thị nút trả sau trước
+
         function giaohang(event) {
             var isChecked = event.target.checked;
             if (isChecked) {
                 // hiển thị div 
                 document.getElementById('diachidiv').style.display = 'block';
                 showdiachimacdinh();
+
             } else {
                 // ẩn div
                 document.getElementById('diachidiv').style.display = 'none';
@@ -2089,6 +2487,7 @@ tabindex="0">
                 })
                 .then(function (b) {
                     var htmlpt = '';
+                    console.log(b)
                     if (b.length > 0) {
                         var stt = 0;
                         var tiendathanhtoan = 0;
@@ -2140,6 +2539,7 @@ tabindex="0">
                     } else {
 
                         var showTien = document.getElementById('sotienhienthi');
+                        document.getElementById('showpt').innerHTML = htmlpt;
                         showTien.value = tienkhachthanhtoan.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                         document.getElementById('tienthieu').innerHTML = tienkhachthanhtoan.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                         document.getElementById('hdThanhToanShow').innerHTML = hdHienTai;
@@ -2264,8 +2664,9 @@ tabindex="0">
         //xác nhận phương thức thanh toán
         function xacnhanPTTT() {
             document.getElementById('xacnhanthanhtoanhoadon').disabled = false;
+            document.getElementById('changeNV').disabled = true;
+            document.getElementById('changeSP').disabled = true;
             xacnhanthanhcongcf();
-
             // disabled hết các nút sau khi xác nhận
 
         }
@@ -2376,16 +2777,29 @@ tabindex="0">
         }
         //chặn đường dẫn thẻ a
         function handleLinkClick() {
+
+            document.getElementById('changeNV').disabled = false;
+            document.getElementById('changeSP').disabled = false;
             var checkgiaohang = document.getElementById('checktrasau');
             var actionGiao = document.getElementById('thongtingiaohangform');
             if (checkgiaohang.checked) {
+                thongbao('Đặt đơn thành công', 'success');
                 //giao hàng submit
-                actionGiao.action = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/2';
-                actionGiao.submit();
+                setTimeout(function () {
+                    actionGiao.action = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/2';
+                    actionGiao.submit();
+                }, 1300);
+
             } else {
                 //giao hàng submit
-                actionGiao.action = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/1';
-                actionGiao.submit();
+                thongbao('Đặt đơn thành công', 'success');
+                setTimeout(function () {
+                    actionGiao.action = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/1';
+                    actionGiao.submit();
+
+                }, 1300);
+
+
             }
             // thongbao('Chưa xác nhận thông tin thanh toán!!!', 'warning');
 
@@ -2393,16 +2807,19 @@ tabindex="0">
         //xác định nghiệp vụ trả sau trả trước
         function handleCheckboxChange(event) {
             // Lấy phần tử checkbox từ sự kiện
+
             var checkbox = event.target;
 
             // Kiểm tra trạng thái của checkbox
             if (checkbox.checked) {
                 //hóa đơn lựa chọn trả sau_mở nút xác nhận thanh toán và không cần thanh toán trước
                 document.getElementById('xacnhanthanhtoanhoadon').disabled = false;
+                document.getElementById('chantrasau').disabled = true;
 
             } else {
                 //hóa đơn lựa chọn trả trước đóng nút xác nhận thanh toán và yêu cầu thanh toán trước
                 document.getElementById('xacnhanthanhtoanhoadon').disabled = true;
+                document.getElementById('chantrasau').disabled = false;
             }
         }
 
@@ -2414,6 +2831,10 @@ tabindex="0">
                     return a.json();
                 })
                 .then(function (b) {
+
+                    tentinhtam = b.tinh;
+                    tenhuyentam = b.huyen;
+                    tenxatam = b.xa;
                     document.getElementById('thongtingiao_ten').value = b.ten;
                     document.getElementById('thongtingiao_sdt').value = b.sdt;
                     document.getElementById('thongtingiao_email').value = b.email;
@@ -2451,7 +2872,488 @@ tabindex="0">
                     if (b.tinh == null) {
                         document.getElementById('tinhthanh').value = 'chọn tỉnh';
                     }
+                    callIdCity(b.tinh, b.huyen, b.xa)
                 })
+        }
+
+        function formatCurrency(amount) {
+            return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+        }
+        function formatDate(date) {
+            // Chuyển đổi tham số date thành đối tượng Date (nếu cần)
+            const d = new Date(date);
+
+            // Lấy ngày, tháng và năm
+            const day = d.getDate();
+            const month = d.getMonth() + 1; // Tháng trong JavaScript bắt đầu từ 0
+            const year = d.getFullYear();
+
+            // Định dạng thành dd/mm/yyyy
+            const formattedDate = [
+                day.toString().padStart(2, '0'), // Đảm bảo ngày có hai chữ số
+                month.toString().padStart(2, '0'), // Đảm bảo tháng có hai chữ số
+                year
+            ].join('/');
+
+            return formattedDate;
+        }
+        //http://localhost:8080/ban-hang-tai-quay/show-all-voucher
+        function showmagiam() {
+            const urlVoucher = `http://localhost:8080/ban-hang-tai-quay/show-all-voucher`;
+            fetch(urlVoucher)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var htmlvoucher = '';
+                    for (const hd of b) {
+                        htmlvoucher += `
+                        <div class="ma_giam_gia">
+                                <div class="ma-item-left">
+                                    <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
+                                </div>
+                                <div class="ma-item-right">
+                                    <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;" >${hd.loaiphieu == true ? 'Giảm ' + hd.giatrigiam + ' %' + ', tối đa ' + formatCurrency(hd.giatrigiamtoida) : 'Giảm ' + formatCurrency(hd.giatrigiam)}
+                                    </h4>
+                                    
+                                    <p style="font-size: 14px; margin: 0; padding: 0; color: black">${'Đơn hàng từ ' + formatCurrency(hd.dontoithieu) + ' trở lên'}
+                                        </p>
+                                    <div class="ma-item-des">
+                                        <div class="left_magiam">
+                                            <p style="margin: 0; white-space: nowrap;">Mã: <b
+                                                    class="code">${hd.macode}</b></p>
+                                            <p>${'HSD: ' + hd.ngayketthuc}</p>
+                                        </div>
+                                        <div class="right_magiam">
+                                        <a onclick="apdungvoucher('http://localhost:8080/ban-hang-tai-quay/ap-dung-voucher/${hd.id}')" data-bs-dismiss="modal" >
+                                            Áp dụng
+                                                          </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        `;
+                    }
+                    document.getElementById('showvoucher').innerHTML = htmlvoucher;
+                    // 
+                })
+        }
+        //sự kiện áp dụng mã giảm 
+        function apdungvoucher(inputs) {
+            fetch(inputs)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+
+                    if (b.id != null) {
+                        if (b.loaiphieu == true) {
+                            // phiếu %
+                            if (b.giatrigiam * (tongTienDon / 100) > b.giatrigiamtoida) {
+                                TienGiamDon = b.giatrigiamtoida;
+                            } else {
+                                TienGiamDon = b.giatrigiam * (tongTienDon / 100);
+                            }
+
+                        } else {
+                            // phiếu vnđ
+                            TienGiamDon = b.giatrigiam;
+                        }
+                        tienkhachthanhtoan = tongTienDon - TienGiamDon;
+                    } else {
+                        tienkhachthanhtoan = tongTienDon;
+                    }
+                    // console.log("tiền tệ")
+                    // console.log('tiền ban đầu:' + tongTienDon)
+                    // console.log('tiền giảm :' + TienGiamDon)
+                    // console.log('tiền tổng thanh toán:' + tienkhachthanhtoan)
+                    document.getElementById('maGiamFill').innerHTML = b.macode;
+                    document.getElementById('giamgia').innerHTML = TienGiamDon.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                    document.getElementById('tongThanhToan').innerHTML = tienkhachthanhtoan.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+
+                })
+        }
+    </script>
+    <!-- hienthibill -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var orderSuccess = /*[[${orderSuccess}]]*/ false;
+        var checkHangCho = /*[[${checkHangCho}]]*/ false;
+        /*]]>*/
+        if (checkHangCho == true) {
+            thongbao('Có 01 đơn hàng tràn chờ đã được hiển thị', 'info')
+        }
+        if (orderSuccess == true) {
+            var urlgetbill = `http://localhost:8080/ban-hang-tai-quay/show-bill`;
+            fetch(urlgetbill)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    console.log(b)
+                    var htmlbill1 = '';
+                    var htmlbill2 = '';
+                    var htmlbill3 = '';
+                    if (b.tennguoinhan == null) {
+                        htmlbill3 = `<h5 >Họ và tên: khách lẻ</h5>
+                    <h5 >Số điện thoại: khách lẻ </h5>`;
+                    } else {
+                        htmlbill3 = `<h5 >${'Họ và tên: ' + b.tennguoinhan}</h5>
+                    <h5 >${'Số điện thoại: ' + b.sdtnhan}</h5>`;
+
+                    }
+
+                    var stt = 0;
+                    for (const hd of b.lst) {
+                        stt++;
+                        htmlbill1 += `
+                                    <tr>
+                                        <td >${stt}</td>
+                                        <td >${hd.tensanpham}</td>
+                                        <td >${'SL: ' + hd.soluong}</td>
+                                    </tr>
+
+                                   `;
+                    }
+                    htmlbill2 = `
+                    <div class="d-flex justify-content-center">
+                            <div class="ms-5">
+                                <h1 style="font-size: 80px;" class="mt-5" >FSPORT SHOP</h1>
+
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <h5>Chương trình phổ thông cao đẳng FPT Polytechnic, Phương Canh Nam Từ
+                                Liêm,
+                                Hà Nội</h5>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <p>SDT: 0379036606</p>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <h5>${'Mã hóa đơn: ' + b.ma}</h5>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="row">
+
+                            <div class="col">
+                                <h3>Khách hàng:</h3>
+                                `+
+                        htmlbill3
+                        + `
+                            </div>
+                        </div>
+                        <hr class="my-4">
+                        <div class="row">
+                            <div class="col">
+                                <h3>Nội dung đơn hàng(Tổng số lượng sản phẩm: 2)</h3>
+                                <table class="table">
+
+
+                    `+ htmlbill1 + `
+                       </table>
+                            </div>
+                            <div class="col text-center mt-3">
+                                <h1>QR</h1>
+                            </div>
+                        </div>
+                        <hr class="my-4">
+                        <div class="row">
+                            <div class="col">
+                                <h3>Tổng đơn</h3>
+                                <h2>
+                             ${formatCurrency(b.tongtien)}
+                                </h2>
+                            </div>
+                            <div class="col text-end me-5">
+                                <div style="border: 1px dotted black; padding: 5px; margin-left: 120px;">
+                                    <p class="me-4" >${'Hà Nội, Ngày ' + formatDate(b.date)}</p>
+                                    <h3 class="text-center mb-4">Người lập phiếu</h3>
+                                    <p class="text-center">A</p>
+                                    <p class="text-center">Nguyễn Văn A</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    `;
+
+
+                    document.getElementById('hienthibill').innerHTML = htmlbill2;
+                    var myModal = new bootstrap.Modal(document.getElementById('orderSuccessModal'), {});
+                    myModal.show();
+                    orderSuccess = null;
+                })
+
+
+        }
+        //chuyển tên city để so sánh
+        function extractLocation(input) {
+            // Chuyển chuỗi về dạng chữ thường để so sánh
+            const lowerCaseInput = input.toLowerCase();
+
+            // Kiểm tra và tách từ "tỉnh" hoặc "thành phố"
+            if (lowerCaseInput.startsWith("tỉnh ")) {
+                // Tách từ "tỉnh" và lấy phần còn lại
+                const province = input.slice(5).trim();
+                return { type: "tỉnh", name: province };
+            } else if (lowerCaseInput.startsWith("thành phố ")) {
+                // Tách từ "thành phố" và lấy phần còn lại
+                const city = input.slice(10).trim();
+                return { type: "thành phố", name: city };
+            } else {
+                return { type: "unknown", name: input.trim() };
+            }
+        }
+        // <!-- //call api ngày giao dự kiến -->
+
+        function callIdCity(thanhpho, huyen, xa) {
+            var tencity = extractLocation(thanhpho);
+            var tenhuyen = huyen;
+            var tenxa = xa;
+
+            var idCityreturn;
+            var idHuyenreturn;
+            var idXareturn;
+
+            var Parameter = {
+                url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/province",
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Token": "59db4e6a-23e7-11ef-8c74-4ad7faca6bdc"
+                }
+            };
+            axios(Parameter)
+                .then(function (a) {
+                    return a.data;
+                })
+                .then(function (b) {
+                    // tách id thành phố
+                    for (const id of b.data) {
+                        if (id.ProvinceName.toLowerCase() === tencity.name.toLowerCase()) {
+                            idCityreturn = id.ProvinceID;
+                        }
+                    }
+
+                    var requestDataHuyen = {
+                        province_id: idCityreturn
+                    };
+
+                    // Cấu hình yêu cầu với axios, bao gồm Token và dữ liệu gửi đi
+                    var ParameterHuyen = {
+                        url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/district",
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Token": "59db4e6a-23e7-11ef-8c74-4ad7faca6bdc"
+                        },
+                        data: JSON.stringify(requestDataHuyen)
+                    };
+
+                    // Gửi yêu cầu và xử lý phản hồi
+                    axios(ParameterHuyen)
+                        .then(function (response) {
+                            return response.data;
+                        })
+                        .then(function (d) {
+                            //tách id huyện
+                            for (const id of d.data) {
+                                if (id.DistrictName.toLowerCase() === tenhuyen.toLowerCase()) {
+                                    idHuyenreturn = id.DistrictID;
+                                }
+                            }
+                            //tách id xã 
+                            var requestData = {
+                                district_id: idHuyenreturn
+                            };
+
+                            // Cấu hình yêu cầu với axios, bao gồm Token và dữ liệu gửi đi
+                            var Parameter = {
+                                url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id",
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "Token": "59db4e6a-23e7-11ef-8c74-4ad7faca6bdc"
+                                },
+                                data: JSON.stringify(requestData)
+                            };
+
+                            // Gửi yêu cầu và xử lý phản hồi
+                            axios(Parameter)
+                                .then(function (response) {
+                                    return response.data;
+                                })
+                                .then(function (d) {
+                                    //tách id xã
+                                    for (const id of d.data) {
+                                        if (id.WardName.toLowerCase() === tenxa.toLowerCase()) {
+                                            idXareturn = id.WardCode;
+                                        }
+                                    }
+                                    var requestDataDate = {
+                                        from_district_id: 3440,//địa chỉ mặc địch của shop
+                                        from_ward_code: "13007",//địa chỉ mặc địch của shop
+                                        to_district_id: idHuyenreturn,
+                                        to_ward_code: idXareturn.toString(),
+                                        service_id: 53320
+                                    };
+                                    // Cấu hình yêu cầu với axios, bao gồm Token và dữ liệu gửi đi
+                                    var ParameterDate = {
+                                        url: "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/leadtime",
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                            "Token": "59db4e6a-23e7-11ef-8c74-4ad7faca6bdc",
+                                            "ShopId": "5115739"
+                                        },
+                                        data: JSON.stringify(requestDataDate)
+                                    };
+                                    // Gửi yêu cầu và xử lý phản hồi
+                                    axios(ParameterDate)
+                                        .then(function (response) {
+                                            return response.data; // In dữ liệu ra console
+                                        })
+                                        .then(function (d) {
+                                            // Số nguyên đại diện cho một thời điểm trong JavaScript (ví dụ: số giây kể từ Epoch)
+                                            var timestamp = d.data.leadtime;
+                                            var date = new Date(timestamp * 1000);
+
+                                            // Lấy ngày, tháng, năm từ đối tượng Date
+                                            var day = date.getDate();
+                                            var month = date.getMonth() + 1; // Tháng bắt đầu từ 0
+                                            var year = date.getFullYear();
+
+                                            // Đảm bảo định dạng dd và mm luôn có hai chữ số
+                                            if (day < 10) {
+                                                day = '0' + day;
+                                            }
+                                            if (month < 10) {
+                                                month = '0' + month;
+                                            }
+
+                                            // Trả về chuỗi định dạng dd/mm/yyyy
+                                            var days = day + '/' + month + '/' + year;
+
+                                            document.getElementById('ngaygiaodukiens').innerHTML = days;
+                                            // phigiaohang
+                                            feship(idHuyenreturn, idXareturn);
+
+
+
+                                        })
+                                })
+
+
+                        })
+                })
+
+        }
+
+        function feship(idhuyen, idxa) {
+            var requestData =
+            {
+                service_id: 53321,
+                insurance_value: 500000,
+                coupon: null,
+                from_district_id: 3440,
+                to_district_id: idhuyen,
+                to_ward_code: idxa.toString(),
+                height: 15,
+                length: 15,
+                weight: 1000,
+                width: 15
+            };
+            // Cấu hình yêu cầu với axios, bao gồm Token và dữ liệu gửi đi
+            var Parameter = {
+                url: "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee",
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Token": "59db4e6a-23e7-11ef-8c74-4ad7faca6bdc",
+                    "ShopId": "5115739"
+                },
+                data: JSON.stringify(requestData)
+            };
+
+            // Gửi yêu cầu và xử lý phản hồi
+            axios(Parameter)
+                .then(function (response) {
+                    return response.data // In dữ liệu ra console
+                })
+                .then(function (d) {
+                    var shipfe = convertCashInput(d.data.total);
+                    document.getElementById('phigiaohang').value = shipfe;
+                })
+
+        }
+        function convertCashInput(amount) {
+            // Chuyển số thành chuỗi và thêm dấu phân cách hàng nghìn
+            let formattedAmount = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            // Thêm ký hiệu tiền tệ ₫ vào cuối chuỗi
+            return formattedAmount + " ₫";
+        }
+
+        function feanddate() {
+            var tinhfeanddate = document.getElementById('tinhthanh').value;
+            var huyenfeanddate = document.getElementById('quanhuyen').value;
+            var xafeanddate = document.getElementById('xaphuong').value;
+            callIdCity(tinhfeanddate, huyenfeanddate, xafeanddate);
+            thongbao('thông tin vận chuyển đã có sự thay đổi', 'info')
+        }
+
+        function showHDtrangcho() {
+            var urlShowTran = `http://localhost:8080/ban-hang-tai-quay/show-hang-cho`;
+            fetch(urlShowTran)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var htmlHDHangChor = '';
+                    var htmlHDHangChol = '';
+                    for (const hd of b[1]) {
+                        htmlHDHangChor += `
+                        <div>
+                                        <label for="name1">${'Hóa đơn: ' + hd.mahoadon}</label>
+                                        <input type="radio"  name="rightbox" id="${hd.mahoadon}" onclick="checkclickright(event)">
+                                    </div>
+                        `;
+                    }
+                    for (const md of b[0]) {
+                        htmlHDHangChol += `
+                        <div>
+                                        <label for="name1">${'Hóa đơn: ' + md.mahoadon}</label>
+                                        <input type="radio"  name="leftbox" id="${md.mahoadon}" onclick="checkclickleft(event)">
+                                    </div>
+                        `;
+                    }
+
+                    document.getElementById('name-checkbox-l').innerHTML = htmlHDHangChol;
+
+                    document.getElementById('name-checkbox-r').innerHTML = htmlHDHangChor;
+
+                    document.getElementById('btnChuyen').disabled = true;
+                })
+
+        }
+        var checkchuyenleft = false;
+        var checkchuyenright = false;
+        function checkclickleft(event) {
+            if(event.checked==true){
+                checkchuyenleft==true;
+            }
+            alert(checkchuyenleft);
+            alert(checkchuyenright);
+            
+        }
+        function checkclickright(event) {
+            if(event.checked==true){
+                checkchuyenright==true;
+            }
+           alert(checkchuyenleft);
+           alert(checkchuyenright);
         }
 
     </script>

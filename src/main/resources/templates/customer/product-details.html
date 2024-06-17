@@ -187,6 +187,141 @@
 
 </style>
 <!--end-->
+
+<style>
+    .quantity {
+        border: 1px solid #ccc; /* Màu viền */
+        background-color: #f9f9f9; /* Màu nền */
+        border-radius: 4px; /* Đường viền cong */
+        width: fit-content; /* Độ rộng tự động theo nội dung bên trong */
+        display: inline-flex; /* Hiển thị theo chiều ngang */
+    }
+
+    .quantity input[type="text"] {
+        border: none; /* Loại bỏ viền cho input */
+        background-color: transparent; /* Đặt nền input là trong suốt */
+        text-align: center; /* Canh giữa nội dung */
+        width: 50px; /* Chiều rộng cố định */
+    }
+
+    .quantity input[type="button"] {
+        background-color: transparent; /* Đặt nút là trong suốt */
+        border: none; /* Loại bỏ viền cho nút */
+        cursor: pointer; /* Biến con trỏ thành hình bàn tay khi di chuột qua */
+    }
+
+
+</style>
+
+<!--dùng co modal ảnh spct-->
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    #myImg:hover {
+        opacity: 0.7;
+    }
+
+    /* The Modal (background) */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 50px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0, 0, 0); /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.9); /* Black w/ opacity */
+    }
+
+    /* Modal Content (image) */
+    .modal-content {
+        margin: auto;
+        display: block;
+        width: 60%; /* Adjust width as needed */
+        max-width: 600px; /* Set maximum width */
+    }
+
+    /* Add Animation */
+    .modal-content, #caption {
+        -webkit-animation-name: zoom;
+        -webkit-animation-duration: 0.6s;
+        animation-name: zoom;
+        animation-duration: 0.6s;
+    }
+
+    @keyframes zoom {
+        from {
+            transform: scale(0);
+        }
+        to {
+            transform: scale(1);
+        }
+    }
+
+    /* The Close Button */
+    .close {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>
+
+<!--dùng cho ribbon-->
+<style>
+    .ribbon {
+        position: absolute;
+        background-color: red; /* Màu nền của ribbon */
+        color: white; /* Màu chữ trên ribbon */
+        padding: 5px 10px; /* Điều chỉnh khoảng cách padding bên trong ribbon */
+        font-size: 12px; /* Điều chỉnh kích cỡ font chữ */
+        z-index: 1; /* Đảm bảo ribbon hiển thị phía trên ảnh */
+    }
+
+    .top-left {
+        top: 10px; /* Vị trí top theo yêu cầu */
+        left: 10px; /* Vị trí left theo yêu cầu */
+        border-radius: 7px;
+    }
+
+    .top-right {
+        top: 10px; /* Vị trí top theo yêu cầu */
+        right: 10px; /* Vị trí right theo yêu cầu */
+    }
+
+</style>
+
+<!--dùng cho mã coupon cố định-->
+<style>
+    #coupon-noti {
+        position: fixed;
+        top: 500px; /* Vị trí top cố định tính bằng px hoặc % */
+        right: 1300px; /* Vị trí right cố định tính bằng px hoặc % */
+        z-index: 1000; /* Đảm bảo coupon-noti hiển thị phía trên các phần tử khác */
+        background-color:rgb(27,78,160); /* Màu nền */
+        color: #ffffff; /* Màu chữ */
+        padding: 10px; /* Đệm bên trong */
+        cursor: pointer; /* Con trỏ chuột là pointer khi hover */
+        border-radius: 20px; /* Để làm hình tròn (tuỳ chọn) */
+    }
+</style>
+<script src="../sweetalert2/dist/sweetalert2.min.js/"></script>
+<link rel="stylesheet" type="text/css" href="../sweetalert2/dist/sweetalert2.min.css">
 <body>
 <!-- header section start -->
 <nav th:replace="~{/layout/header.html}"></nav>
@@ -197,107 +332,139 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-<!--                <div class="left">-->
-<!--                                        <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">-->
-<!--                                            <div class="carousel-inner">-->
-<!--                                                <div th:each="tenanh, index : ${danhSachAnh}" th:classappend="${index.index == 0} ? 'carousel-item active' : 'carousel-item'">-->
-<!--                                                    <img th:src="@{'/upload/' + ${tenanh.substring(tenanh.lastIndexOf('upload') + 6)}}" class="d-block w-100 carousel-img rounded-3" alt="Ảnh">-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">-->
-<!--                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>-->
-<!--                                                <span class="visually-hidden">Previous</span>-->
-<!--                                            </button>-->
-<!--                                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">-->
-<!--                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>-->
-<!--                                                <span class="visually-hidden">Next</span>-->
-<!--                                            </button>-->
-<!--                                            &lt;!&ndash; Indicators &ndash;&gt;-->
-<!--                                            <br>-->
-<!--                                            <br>-->
-<!--                                            <div class="carousel-indicators">-->
-<!--                                                <div th:each="tenanh, index : ${danhSachAnh}" th:attr="data-bs-target='#carouselExample'" th:attrappend="data-bs-slide-to=${index.index}" th:classappend="${index.index == 0} ? 'active' : ''">-->
-<!--                                                    <img th:src="@{'/upload/' + ${tenanh.substring(tenanh.lastIndexOf('upload') + 6)}}" class="d-block rounded-3 carousel-thumbnail" alt="Ảnh" width="500px">-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                </div>-->
                 <div class="left">
                     <!-- Full-width images with number text -->
+                    <!-- Loop through danhSachAnh and display images -->
                     <div th:each="image, index : ${danhSachAnh}" class="mySlides">
                         <div class="numbertext" th:text="${index.index + 1} + ' / ' + ${danhSachAnh.size()}"></div>
                         <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                        <img th:src="@{'/upload/' + ${image.substring(image.lastIndexOf('upload') + 6)}}" style="width:100%" alt="Ảnh">
+                        <div class="image-container">
+                            <span class="ribbon top-left">Hàng mới</span> <!-- Ribbon hàng mới ở góc trên bên trái -->
+                            <span class="ribbon top-right">-10%</span> <!-- Ribbon % giảm giá ở góc trên bên phải -->
+                            <img th:src="@{'/upload' + ${image.substring(image.lastIndexOf('upload') + 6)}}" style="width:100%" alt="Ảnh" onclick="openModal(this)">
+                        </div>
                         <a class="next" onclick="plusSlides(1)">&#10095;</a>
                     </div>
-                    <!-- Next and previous buttons -->
+                    <!-- The Modal -->
+                    <div id="myModal" class="modal">
+                        <span class="close" onclick="closeModal()">&times;</span>
+                        <img class="modal-content" id="img01">
+                        <div id="caption2"></div>
+                    </div>
                     <!-- Image text -->
                     <div class="caption-container">
                         <p id="caption"></p>
                     </div>
                     <!-- Thumbnail images -->
-                    <p>
                     <div class="row">
                         <div th:each="image, index : ${danhSachAnh}" class="column">
-                            <img class="demo cursor" th:src="@{'/upload/' + ${image.substring(image.lastIndexOf('upload') + 6)}}" style="width:100%" onclick="currentSlide(${index.index + 1})" alt="Ảnh">
+                            <img class="demo cursor"
+                                 th:src="@{'/upload' + ${image.substring(image.lastIndexOf('upload') + 6)}}"
+                                 style="width:100%" onclick="currentSlide(${index.index + 1})" alt="Ảnh">
                         </div>
                     </div>
-                    </p>
                 </div>
             </div>
-
             <div class="col-md-6">
                 <div class="right">
-                    <div class="singl-pro-title">
-                        <h3 th:text="${sanpham.tensanpham}"></h3>
-                        <h6 style="color: red">52573 lượt xem| 1803 lượt mua online</h6>
-                        <div class="d-flex">
-                            <h6 style="margin-top: 5px;margin-left: 5px">18 đánh giá</h6>
-                        </div>
-                        <h6>Tình trạng: Không có hàng</h6>
-                        <h6>Màu sắc:</h6>
-                        <div class="row">
-                            <div th:each="image, index : ${danhSachAnh}" class="column">
-                                <img class="demo cursor" th:src="@{'/upload/' + ${image.substring(image.lastIndexOf('upload') + 6)}}" style="width:100%" onclick="currentSlide2(${index.index + 1})" alt="Ảnh">
-                            </div>
-                        </div>
-                        <p></p>
-                        <div class="d-flex">
-                            <div th:each="color : ${colors}">
-                                <div style="margin-right: 10px">
-                                    <a class="btn btn-outline-dark" th:text="${color}"></a>
+                    <div class="singl-pro-title" th:data-product-id="${sanpham.id}">
+                        <h3>
+                            <span th:text="${sanpham.tensanpham}"></span>
+                            <span id="product-maspct" th:text="${'['+selectedMaSPCT}+']'"></span>
+                        </h3>
+                       <div class="d-flex">
+                           <h6>Thương hiệu:
+                               <span id="product-thuonghieu" th:text="${selectedThuongHieu}" style="color: red"></span>
+                           </h6>
+                           <h6 style="margin-left: 30px">Chất liệu:
+                               <span id="product-chatlieu" th:text="${selectedChatLieu}" style="color: red"></span>
+                           </h6>
+                           <h6 style="margin-left: 30px">Đế giày:
+                               <span id="product-degiay" th:text="${selectedDeGiay}" style="color: red"></span>
+                           </h6>
+                       </div>
+                        <h6>Giá tiền:
+                            <span id="product-price"
+                                  th:text="${#numbers.formatDecimal(selectedPrice, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"
+                                  style="color: red; font-weight: bold"></span>
+                        </h6>
+                        <hr>
+                        <h6>
+                            Số lượng có sẵn:
+                            <span id="product-quantity" th:text="${selectedQuantity}"></span>
+                        </h6>
+
+                        <form id="addToCartForm" action="/add-to-cart" method="post">
+                            <input type="hidden" name="id" th:value="${sanphamchitiet.id}">
+                            <input type="hidden" name="selectedColor" id="selectedColor" th:value="${defaultColor}">
+                            <input type="hidden" name="selectedSize" id="selectedSize" th:value="${defaultSize}">
+                            <div th:id="'product-details-' + ${sanpham.id}" th:data-color="${defaultColor}">
+                                <div class="d-flex align-items-center">
+                                    <span style="margin-right: 10px;">Màu sắc:</span>
+                                    <div th:each="color, iterStat : ${colors}">
+                                        <div style="margin-right: 10px">
+                                            <a class="btn"
+                                               th:classappend="${iterStat.index == 0} ? 'btn-dark' : 'btn-outline-dark'"
+                                               th:text="${color}" th:data-color="${color}"
+                                               th:onclick="'changeButtonBackground(this); selectColor(this)'"></a>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <p></p>
-                        <h6>Kích cỡ: <a href="">(Cách chọn size)</a></h6>
-                        <div class="d-flex">
-                            <div th:each="size : ${sizes}">
-                                <div style="margin-right: 10px">
-                                    <a class="btn btn-outline-dark" th:text="${size}"></a>
+                                <p></p>
+                                <div class="d-flex align-items-center">
+                                    <span style="margin-right: 10px;">Kích cỡ:</span>
+                                    <div th:each="size, iterStat : ${sizes}">
+                                        <div style="margin-right: 10px">
+                                            <a class="btn"
+                                               th:classappend="${iterStat.index == 0} ? 'btn-dark' : 'btn-outline-dark'"
+                                               th:text="${size}" th:data-size="${size}"
+                                               th:onclick="'changeButtonBackground(this); selectSize(this)'"></a>
+                                        </div>
+                                    </div>
+                                    <a th:href="@{#}">Cách chọn size</a>
                                 </div>
+                                <p></p>
+                                <div class="d-flex align-items-center">
+                                    <span style="margin-right: 10px;">Số lượng:</span>
+                                    <div>
+                                        <input type="number" size="4" name="quantity" id="quantityInput" value="1"
+                                               min="1" class="tc line-item-qty item-quantity bg-white form-control"
+                                               style="width:100px">
+                                    </div>
+                                </div>
+                                <p></p>
+                                <span style="margin-right: 10px;">Mô tả:</span>
+                                <div class="d-flex align-items-center">
+
+                                    <textarea class="form-control" rows="3" id="motaTextarea" name="mota"
+                                              th:text="${sanphamchitiet.mota}" readonly></textarea>
+                                </div>
+                                <hr>
+                               <div class="d-flex">
+                                   <a class="btn btn-dark" style="width: 200px;height: 50px;line-height: 40px">Mua ngay</a>
+                                   <button type="submit"
+                                           class="btn btn"
+                                           style="background-color: rgb(249,72,42); color: white; width: 200px;height: 50px;line-height: 40px;margin-left: 20px"
+                                           th:disabled="${selectedQuantity == 0}">
+                                       THÊM VÀO GIỎ HÀNG
+                                   </button>
+                               </div>
                             </div>
-                        </div>
-                        <br>
-                        <button class="btn btn" style="background-color: rgb(249,72,42);color: white;width: 370px">Thêm vào giỏ hàng</button>
+                        </form>
                         <br>
                         <br>
-                        <button class="btn btn-dark" style="width: 370px">Mua ngay</button><br><br>
-                        <h6>Miễn phí vẫn chuyển toàn quốc cho đơn hàng trên 1 triệu</h6>
-                        <h6>Giao nhanh 2h trong nội thành HN</h6>
-                        <h6>Thồi gian vận chuyển trung bình 3-4 ngày</h6>
+                        <ul style="list-style-type: disc;">
+                            <li style="font-style: italic; color: red;">Miễn phí vận chuyển toàn quốc cho đơn hàng trên 1 triệu</li>
+                            <li style="font-style: italic; color: red;">Giao hàng nhanh trong 2 giờ trong nội thành Hà Nội</li>
+                            <li style="font-style: italic; color: red;">Thời gian vận chuyển trung bình từ 3 đến 4 ngày</li>
+                        </ul>
+
                     </div>
                 </div>
             </div>
 
-            <!--                        <h1 style="color: red;font-weight: bold"  th:text="${#numbers.formatDecimal(spct.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></h1>-->
-            <!--                        <p>-->
-            <!--                            <input type="number" th:value="${spct.soluong}">-->
-            <!--                        </p>-->
-
-
             <h3 style="margin-top: 30px; color: rgb(249, 72, 42); font-family: 'Lucida Sans Typewriter'"
-                class="text-center">CÁC SẢN PHẨM NỔI BẬT</h3>
+                class="text-center">CÁC SẢN PHẨM LIÊN QUAN</h3>
             <hr class="border border-danger border opacity-50">
             <div class="tab-content">
                 <!--nội dung-->
@@ -315,7 +482,7 @@
                                 <div class="pro-img">
                                     <a th:href="@{/detailsanphamCustomer/{id}(id=${sp[0]})}">
                                         <img th:if="${sp[6] != null}"
-                                             th:src="@{'/upload/' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
+                                             th:src="@{'/upload' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
                                              class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
                                     </a>
                                     <div class="tag-n-s">
@@ -386,7 +553,7 @@
                                 <div class="pro-img">
                                     <a th:href="@{/detailsanphamCustomer/{id}(id=${sp[0]})}">
                                         <img th:if="${sp[6] != null}"
-                                             th:src="@{'/upload/' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
+                                             th:src="@{'/upload' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
                                              class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
                                     </a>
                                     <div class="tag-n-s">
@@ -440,10 +607,10 @@
         </div>
     </div>
 </section>
-<!-- product details area end -->
-
-<!-- related product section start -->
-<!-- related product section end -->
+<div id="coupon-noti" data-toggle="modal" data-target="#modalCoupons" class="noti-icon has-item">
+    <!-- Nội dung của coupon-noti -->
+    <span class=""><i class="fa fa-gift fa-lg"></i> Danh sách mã Coupon</span>
+</div>
 
 <!-- footer section start -->
 <nav th:replace="~{/layout/footer.html}"></nav>
@@ -451,7 +618,25 @@
 
 </body>
 </html>
+
+<!--scroll-->
 <script>
+    var modal = document.getElementById("myModal");
+    var modalImg = document.getElementById("img01");
+    var captionText = document.getElementById("caption2");
+
+    // Function to open modal and display selected image
+    function openModal(imgElement) {
+        modal.style.display = "block";
+        modalImg.src = imgElement.src;
+        captionText.innerHTML = imgElement.alt;
+    }
+
+    // Function to close modal
+    function closeModal() {
+        modal.style.display = "none";
+    }
+
     let slideIndex = 1;
     showSlides(slideIndex);
 
@@ -464,6 +649,7 @@
     function currentSlide(n) {
         showSlides(slideIndex = n);
     }
+
     function currentSlide2(n) {
         showSlides(slideIndex = n);
     }
@@ -473,27 +659,32 @@
         let slides = document.getElementsByClassName("mySlides");
         let dots = document.getElementsByClassName("demo");
         let captionText = document.getElementById("caption");
-        if (n > slides.length) {slideIndex = 1}
-        if (n < 1) {slideIndex = slides.length}
+        if (n > slides.length) {
+            slideIndex = 1
+        }
+        if (n < 1) {
+            slideIndex = slides.length
+        }
         for (i = 0; i < slides.length; i++) {
             slides[i].style.display = "none";
         }
         for (i = 0; i < dots.length; i++) {
             dots[i].className = dots[i].className.replace(" active", "");
         }
-        slides[slideIndex-1].style.display = "block";
-        dots[slideIndex-1].className += " active";
-        captionText.innerHTML = dots[slideIndex-1].alt;
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " active";
+        captionText.innerHTML = dots[slideIndex - 1].alt;
     }
 
     // Add event listeners to thumbnail images
     let thumbnails = document.getElementsByClassName("demo");
     for (let i = 0; i < thumbnails.length; i++) {
-        thumbnails[i].addEventListener("click", function() {
+        thumbnails[i].addEventListener("click", function () {
             currentSlide(i + 1);
         });
     }
 </script>
+
 <!-- các sản phẩm nổi bật-->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -544,4 +735,186 @@
         });
     });
 
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const defaultColorElement = document.querySelector('.btn-dark[data-color]');
+        const defaultSizeElement = document.querySelector('.btn-dark[data-size]');
+        if (defaultColorElement) {
+            updateImagesAndPrice();
+        }
+        if (defaultSizeElement) {
+            updatePriceAndQuantity();
+        }
+    });
+
+    function updateImagesAndPrice() {
+        const color = document.querySelector('.btn-dark[data-color]') ? document.querySelector('.btn-dark[data-color]').getAttribute('data-color') : null;
+        const size = document.querySelector('.btn-dark[data-size]') ? document.querySelector('.btn-dark[data-size]').getAttribute('data-size') : null;
+        const url = new URL(window.location);
+
+        if (color) {
+            url.searchParams.set('color', color);
+        }
+        if (size) {
+            url.searchParams.set('size', size);
+        }
+
+        fetch(url)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const newDocument = parser.parseFromString(html, 'text/html');
+                const newImages = newDocument.querySelectorAll('.left .mySlides');
+                const newThumbnails = newDocument.querySelectorAll('.left .column img');
+
+                document.querySelectorAll('.left .mySlides').forEach((slide, index) => {
+                    slide.innerHTML = newImages[index].innerHTML;
+                });
+                document.querySelectorAll('.left .column img').forEach((thumbnail, index) => {
+                    thumbnail.src = newThumbnails[index].src;
+                });
+            });
+
+        updatePriceAndQuantity(); // Ensure price and quantity are updated whenever images are updated
+    }
+
+    function updatePriceAndQuantity() {
+        const color = document.querySelector('.btn-dark[data-color]') ? document.querySelector('.btn-dark[data-color]').getAttribute('data-color') : null;
+        const size = document.querySelector('.btn-dark[data-size]') ? document.querySelector('.btn-dark[data-size]').getAttribute('data-size') : null;
+        const url = new URL(window.location);
+
+        if (color) {
+            url.searchParams.set('color', color);
+        }
+        if (size) {
+            url.searchParams.set('size', size);
+        }
+
+        fetch(url)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const newDocument = parser.parseFromString(html, 'text/html');
+                const newPrice = newDocument.querySelector('#product-price').innerText;
+                const newQuantity = newDocument.querySelector('#product-quantity').innerText;
+                const newThuongHieu = newDocument.querySelector('#product-thuonghieu').innerText;
+                const newChatLieu = newDocument.querySelector('#product-chatlieu').innerText;
+                const newDeGiay = newDocument.querySelector('#product-degiay').innerText;
+                const newMaSPCT = newDocument.querySelector('#product-maspct').innerText;
+
+                if (newPrice) {
+                    document.querySelector('#product-price').innerText = newPrice;
+                } else {
+                    document.querySelector('#product-price').innerText = 'Không có giá';
+                }
+
+                if (newQuantity) {
+                    document.querySelector('#product-quantity').innerText = newQuantity;
+                } else {
+                    document.querySelector('#product-quantity').innerText = 'Không có số lượng';
+                }
+                if (newThuongHieu) {
+                    document.querySelector('#product-thuonghieu').innerText = newThuongHieu;
+                } else {
+                    document.querySelector('#product-thuonghieu').innerText = 'Không có thương hiệu';
+                }
+                if (newChatLieu) {
+                    document.querySelector('#product-chatlieu').innerText = newChatLieu;
+                } else {
+                    document.querySelector('#product-chatlieu').innerText = 'Không có chất liệu';
+                }
+                if (newDeGiay) {
+                    document.querySelector('#product-degiay').innerText = newDeGiay;
+                } else {
+                    document.querySelector('#product-degiay').innerText = 'Không có đế giày';
+                }
+                if (newMaSPCT) {
+                    document.querySelector('#product-maspct').innerText = newMaSPCT;
+                } else {
+                    document.querySelector('#product-maspct').innerText = 'Không có mã spct';
+                }
+
+
+                const addToCartButton = document.querySelector('#add-to-cart-btn');
+                if (parseInt(newQuantity) === 0) {
+                    addToCartButton.disabled = true;
+                } else {
+                    addToCartButton.disabled = false;
+                }
+            });
+    }
+
+    function changeButtonBackground(element) {
+        const isColorButton = element.hasAttribute('data-color');
+        const isSizeButton = element.hasAttribute('data-size');
+
+        if (isColorButton) {
+            const colorButtons = document.querySelectorAll('.btn[data-color]');
+            const isSelected = element.classList.contains('btn-dark');
+
+            if (!isSelected) {
+                colorButtons.forEach(button => {
+                    button.classList.remove('btn-dark');
+                    button.classList.add('btn-outline-dark');
+                });
+                element.classList.remove('btn-outline-dark');
+                element.classList.add('btn-dark');
+            }
+        } else if (isSizeButton) {
+            const sizeButtons = document.querySelectorAll('.btn[data-size]');
+            const isSelected = element.classList.contains('btn-dark');
+
+            if (!isSelected) {
+                sizeButtons.forEach(button => {
+                    button.classList.remove('btn-dark');
+                    button.classList.add('btn-outline-dark');
+                });
+                element.classList.remove('btn-outline-dark');
+                element.classList.add('btn-dark');
+            }
+        }
+
+        updateImagesAndPrice();
+    }
+</script>
+
+<!--giá trị mặc định của màu sắc và kích cỡ-->
+<script>
+    function selectColor(element) {
+        document.getElementById("selectedColor").value = element.getAttribute("data-color");
+    }
+
+    function selectSize(element) {
+        document.getElementById("selectedSize").value = element.getAttribute("data-size");
+    }
+</script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    document.getElementById('addToCartForm').addEventListener('submit', function (event) {
+        var selectedQuantity = parseInt(document.getElementById('quantityInput').value);
+        var availableQuantity = parseInt(document.getElementById('product-quantity').innerText); // Lấy số lượng có sẵn từ thẻ span
+
+        if (selectedQuantity > availableQuantity) {
+            alert('Số lượng nhập vào vượt quá số lượng có sẵn trong kho (' + availableQuantity + ')');
+            event.preventDefault(); // Ngăn không gửi form nếu số lượng vượt quá
+        }
+    });
+    /*]]>*/
+</script>
+<!--dùng cho mã coupont coupon cố định-->
+<script>
+    // JavaScript để giữ coupon-noti ở vị trí cố định khi scroll
+    window.addEventListener('scroll', function() {
+        var couponNoti = document.getElementById('coupon-noti');
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (scrollTop > 100) { // Thay 100 bằng khoảng cách mà bạn muốn
+            couponNoti.style.display = 'block';
+        } else {
+            couponNoti.style.display = 'none';
+        }
+    });
 </script>

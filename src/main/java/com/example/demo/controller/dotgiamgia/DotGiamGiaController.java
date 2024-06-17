@@ -61,24 +61,20 @@ public class DotGiamGiaController {
             tt=null;
         }
         List<DotGiamGia> lstDot= dotGiamGiaImp.findAll();
-//        Timestamp ngayHT= new Timestamp(System.currentTimeMillis());
-//        for(PhieuGiamGia phieu :lstPhieu){
-//            if(phieu.getSoluong()==0){
-//                phieu.setTrangthai(2);
-//                phieu.setId(phieu.getId());
-//                phieuGiamGiaImp.AddPhieuGiamGia(phieu);
-//            }
-//            if(phieu.getTrangthai()==0 && phieu.getNgaybatdau().getTime()<=ngayHT.getTime()){
-//                phieu.setTrangthai(1);
-//                phieu.setId(phieu.getId());
-//                phieuGiamGiaImp.AddPhieuGiamGia(phieu);
-//            }
-//            if(phieu.getTrangthai()==1 && phieu.getNgayketthuc().getTime()<ngayHT.getTime()){
-//                phieu.setTrangthai(2);
-//                phieu.setId(phieu.getId());
-//                phieuGiamGiaImp.AddPhieuGiamGia(phieu);
-//            }
-//        }
+        Timestamp ngayHT = new Timestamp(System.currentTimeMillis());
+        for (DotGiamGia dot : lstDot) {
+            if (dot.getTrangthai() == 1 && dot.getNgayketthuc().getTime() < ngayHT.getTime()) {
+                dot.setTrangthai(2);
+                dotGiamGiaImp.AddDotGiamGia(dot);
+            }
+            if (dot.getTrangthai() == 0 && dot.getNgaybatdau().getTime() <= ngayHT.getTime()) {
+                dot.setTrangthai(1);
+                dotGiamGiaImp.AddDotGiamGia(dot);
+            }
+        }
+        if(keySearch!=null){
+            keySearch=keySearch.trim();
+        }
         Integer size= lstDot.size();
         Pageable pageable = PageRequest.of(p, size);
         Page<DotGiamGia> pageDGG = dotGiamGiaImp.findAllOrderByNgayTaoDESC(keySearch,tungay,denngay,tt,pageable);
@@ -92,10 +88,26 @@ public class DotGiamGiaController {
     @RequestMapping("/admin/cap-nhat-trang-thai-dot-giam-gia/{Id}")
     public String CapNhatTrangThaiDotGiamGia(@PathVariable("Id") Integer Id){
         DotGiamGia dotGiamGia= dotGiamGiaImp.findDotGiamGiaById(Id);
-        dotGiamGia.setId(Id);
-        dotGiamGia.setTrangthai(2);
-        dotGiamGiaImp.AddDotGiamGia(dotGiamGia);
-        return "redirect:/admin/hien-thi-dot-giam-gia";
+        if(dotGiamGia.getTrangthai()==0 ||dotGiamGia.getTrangthai()==1){
+            dotGiamGia.setId(Id);
+            dotGiamGia.setTrangthai(2);
+            dotGiamGiaImp.AddDotGiamGia(dotGiamGia);
+            return "redirect:/admin/hien-thi-dot-giam-gia";
+        }else {
+            Timestamp ngayHT = new Timestamp(System.currentTimeMillis());
+            if (dotGiamGia.getNgaybatdau().getTime() <= ngayHT.getTime()) {
+                dotGiamGia.setId(Id);
+                dotGiamGia.setTrangthai(1);
+                dotGiamGiaImp.AddDotGiamGia(dotGiamGia);
+            }
+            if (dotGiamGia.getNgaybatdau().getTime() > ngayHT.getTime()) {
+                dotGiamGia.setId(Id);
+                dotGiamGia.setTrangthai(0);
+                dotGiamGiaImp.AddDotGiamGia(dotGiamGia);
+            }
+            return "redirect:/admin/hien-thi-dot-giam-gia";
+        }
+
     }
     @GetMapping("/admin/xem-them-dot-giam-gia")
     public String qlxemthemphieugiamgia(@ModelAttribute("dotGiamGia") DotGiamGia dotGiamGia, Model model){
@@ -107,8 +119,9 @@ public class DotGiamGiaController {
     public String AddDotGiamGia(@ModelAttribute("dotGiamGia") DotGiamGia dotGiamGia,
                                   @RequestParam("ngayBatDau") String ngayBatDau,
                                   @RequestParam("ngayKetThuc") String ngayKetThuc,
-                                  @RequestParam("choncheckbox") String[] choncheckbox){
-
+                                  @RequestParam("choncheckbox") String[] choncheckbox,
+                                HttpSession session){
+            Integer checkthem=1;
             dotGiamGia.setTendot(dotGiamGia.getTendot().trim());
             dotGiamGia.setNguoitao("Tuan Anh");
             Timestamp ngayBatDauTimestamp = Timestamp.valueOf(ngayBatDau.replace("T", " ") + ":00");
@@ -127,6 +140,7 @@ public class DotGiamGiaController {
 
             dotGiamGia.setNgaytao(new Timestamp(System.currentTimeMillis()));
             dotGiamGiaImp.AddDotGiamGia(dotGiamGia);
+            checkthem=1;
             List<String> listString = Arrays.asList(choncheckbox);
             List<Integer> listInt= new ArrayList<>();
             for(String s : listString){
@@ -135,18 +149,36 @@ public class DotGiamGiaController {
                 listInt.add(i);
             }
             listInt.remove(Integer.valueOf(-1));
-
+            List<SanPhamDotGiam> lstDotSP= sanPHamDotGiamImp.findAll();
             for(Integer chon :listInt){
                 DotGiamGia dot = dotGiamGiaImp.findFirstByOrderByNgaytaoDesc();
                 SanPhamChiTiet spct= sanPhamChiTietImp.findById(chon);
-                SanPhamDotGiam sanPhamDotGiam= new SanPhamDotGiam();
-                sanPhamDotGiam.setSanphamchitiet(spct);
-                sanPhamDotGiam.setDotgiamgia(dot);
+                for(SanPhamDotGiam d : lstDotSP){
+                    if(spct.getId()==d.getSanphamchitiet().getId()){
+                        if(dot.getNgaybatdau().getTime()<= d.getDotgiamgia().getNgayketthuc().getTime()){
+                            sanPHamDotGiamImp.delete(d);
+                            SanPhamDotGiam sanPhamDotGiam= new SanPhamDotGiam();
+                            sanPhamDotGiam.setSanphamchitiet(spct);
+                            sanPhamDotGiam.setDotgiamgia(dot);
 
-                sanPHamDotGiamImp.AddSanPhamDotGiam(sanPhamDotGiam);
+                            sanPHamDotGiamImp.AddSanPhamDotGiam(sanPhamDotGiam);
+                        }else{
+                            SanPhamDotGiam sanPhamDotGiam= new SanPhamDotGiam();
+                            sanPhamDotGiam.setSanphamchitiet(spct);
+                            sanPhamDotGiam.setDotgiamgia(dot);
+
+                            sanPHamDotGiamImp.AddSanPhamDotGiam(sanPhamDotGiam);
+                        }
+                    }
+                }
+//                SanPhamDotGiam sanPhamDotGiam= new SanPhamDotGiam();
+//                sanPhamDotGiam.setSanphamchitiet(spct);
+//                sanPhamDotGiam.setDotgiamgia(dot);
+//
+//                sanPHamDotGiamImp.AddSanPhamDotGiam(sanPhamDotGiam);
 
             }
-
+            session.setAttribute("themdotthanhcong",checkthem);
             return "redirect:/admin/hien-thi-dot-giam-gia";
 
     }
@@ -161,7 +193,10 @@ public class DotGiamGiaController {
                                       @ModelAttribute("dotGiamGia") DotGiamGia dotGiamGia,
                                       @RequestParam("ngayBatDau") String ngayBatDau,
                                       @RequestParam("ngayKetThuc") String ngayKetThuc,
-                                      @RequestParam("choncheckbox") String[] choncheckbox){
+                                      @RequestParam("choncheckbox") String[] choncheckbox,
+                                      @RequestParam("trangthaicn") Boolean trangthaicn,
+                                      HttpSession session){
+        Integer checkcapnhat=1;
         DotGiamGia dot= dotGiamGiaImp.findDotGiamGiaById(Id);
         dotGiamGia.setId(Id);
 
@@ -175,18 +210,29 @@ public class DotGiamGiaController {
         dotGiamGia.setNguoicapnhat("Tuan Anh");
         dotGiamGia.setNguoitao(dot.getNguoitao());
         dotGiamGia.setNgaytao(dot.getNgaytao());
-        if (dot.getTrangthai() == 2) {
-            dotGiamGia.setTrangthai(2);
-        } else {
+        if(trangthaicn==false){
             if (ngayBatDauTimestamp.getTime() > ngayHT.getTime()) {
                 dotGiamGia.setTrangthai(0);
             } else {
                 dotGiamGia.setTrangthai(1);
             }
         }
+        if(trangthaicn==true){
+            dotGiamGia.setTrangthai(2);
+        }
+//        if (dot.getTrangthai() == 2) {
+//            dotGiamGia.setTrangthai(2);
+//        } else {
+//            if (ngayBatDauTimestamp.getTime() > ngayHT.getTime()) {
+//                dotGiamGia.setTrangthai(0);
+//            } else {
+//                dotGiamGia.setTrangthai(1);
+//            }
+//        }
 
 
         dotGiamGiaImp.AddDotGiamGia(dotGiamGia);
+        checkcapnhat=1;
         List<String> listString = Arrays.asList(choncheckbox);
         List<Integer> listInt= new ArrayList<>();
         for(String s : listString){
@@ -210,7 +256,7 @@ public class DotGiamGiaController {
             sanPHamDotGiamImp.AddSanPhamDotGiam(sanPhamDotGiam);
 
         }
-
+        session.setAttribute("capnhatdotthanhcong",checkcapnhat);
         return "redirect:/admin/hien-thi-dot-giam-gia";
     }
 //    @GetMapping("/products")

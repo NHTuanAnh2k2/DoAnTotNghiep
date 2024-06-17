@@ -12,7 +12,6 @@ import com.example.demo.restcontroller.khachhang.Province;
 import com.example.demo.security.JWTGenerator;
 import com.example.demo.service.KhachHangService;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +27,7 @@ import java.util.Random;
 public class CustomerController {
     @Autowired
     KhachHangService khachHangService;
+
     @Autowired
     NguoiDungRepository nguoiDungRepository;
 
@@ -40,14 +40,6 @@ public class CustomerController {
     @GetMapping("/modal")
     public String modal() {
         return "customer/modal";
-    }
-    @GetMapping("/product/detail")
-    public String productdetail() {
-        return "customer/product-details";
-    }
-    @GetMapping("/cart")
-    public String cart() {
-        return "customer/cart";
     }
 
     @GetMapping("/header")
@@ -63,6 +55,7 @@ public class CustomerController {
     public String quenmatkhauview(@ModelAttribute("nguoidung") NguoiDungKHInfo nguoidung,
                                   Model model) {
 
+    public String quenmatkhau(@ModelAttribute("nguoidung") NguoiDungKHInfo nguoidung, Model model) {
         return "same/quenmatkhau";
     }
 //    @PostMapping("/quenmatkhau")
@@ -141,12 +134,9 @@ public class CustomerController {
             model.addAttribute("error", "Xác nhận mật khẩu mới không khớp.");
             return "customer/hosokhachhang";
         }
-
         khachHangService.doimatkhau(nguoidung, id);
 
         model.addAttribute("success", "Đổi mật khẩu thành công.");
         return "customer/hosokhachhang";
     }
-
-
 }

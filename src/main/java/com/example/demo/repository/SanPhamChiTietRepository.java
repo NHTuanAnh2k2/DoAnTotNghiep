@@ -2,6 +2,8 @@ package com.example.demo.repository;
 
 import com.example.demo.entity.*;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,10 +12,11 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, Integer> {
-    @Query("SELECT c FROM SanPhamChiTiet c WHERE c.sanpham.tensanpham like %?1% and c.chatlieu.ten like %?2% and c.thuonghieu.ten like %?3% and c.degiay.ten like %?4% and c.kichco.ten like %?5% and c.mausac.ten like %?6% and c.gioitinh = ?7 and c.giatien <= ?8")
+    @Query("SELECT c FROM SanPhamChiTiet c WHERE c.sanpham.tensanpham like %?1% and c.chatlieu.ten like %?2% and c.thuonghieu.ten like %?3% and c.degiay.ten like %?4% and c.kichco.ten like %?5% and c.mausac.ten like %?6% and c.gioitinh = ?7 and c.giatien <= ?8 and c.soluong >0")
     List<SanPhamChiTiet> searchSPCT(String tenSp, String chatlieu,
                                     String ThuongHieu, String De,
                                     String KichCo, String MauSac,
@@ -45,4 +48,16 @@ public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, 
     //nu
     @Query(nativeQuery = true, value = "SELECT COUNT(th.ten) FROM SanPhamChiTiet AS spct JOIN ThuongHieu AS th ON spct.IdThuongHieu = th.Id WHERE th.ten = 'Nike' AND spct.gioitinh=0")
     int countByThuongHieuTenIsNikeNu();
+
+    // dùng cho detail sp
+    @Query("SELECT spct FROM SanPhamChiTiet spct WHERE spct.sanpham.id = :sanPhamId AND spct.mausac.ten = :color")
+    Optional<SanPhamChiTiet> findBySanPhamIdAndColor(@Param("sanPhamId") Integer sanPhamId, @Param("color") String color);
+
+    // dùng để lấy giá tiền của spct
+    @Query("SELECT spct.giatien FROM SanPhamChiTiet spct WHERE spct.id = :productId")
+    BigDecimal findPriceByProductId(@Param("productId") Integer id);
+
+    @Query("SELECT spct FROM SanPhamChiTiet spct WHERE spct.sanpham.id = :sanphamId AND spct.mausac.ten = :color AND spct.kichco.ten = :size")
+    SanPhamChiTiet findBySanPhamIdAndColorAndSize(@Param("sanphamId") Integer sanphamId, @Param("color") String color, @Param("size") String size);
+    Page<SanPhamChiTiet> findAllBySoluongGreaterThan(Integer soluong, Pageable p);
 }

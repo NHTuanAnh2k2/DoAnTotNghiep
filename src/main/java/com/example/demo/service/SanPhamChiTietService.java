@@ -15,7 +15,7 @@ public interface SanPhamChiTietService {
                                      Boolean gioitinh, BigDecimal gia);
     List<SanPhamChiTiet> findAll();
 
-    Page<SanPhamChiTiet> finAllPage(Pageable pageable);
+    Page<SanPhamChiTiet> finAllPage(Integer sl,Pageable pageable);
 
     SanPhamChiTiet addSPCT(SanPhamChiTiet sanPhamChiTiet);
 

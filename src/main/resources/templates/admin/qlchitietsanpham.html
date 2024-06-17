@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <nav th:replace="~{/layoutadmin/head.html}"></nav>
+<!--highlight hàng trong table-->
+<style>
+    .selected-row {
+        opacity: 1 !important;
+        background-color: rgba(249, 72, 42, 0.1); /* Optional: Adding a slight background color for better visibility */
+    }
+    tr {
+    }
+</style>
 <style>
     #editButton.disabled {
         pointer-events: none;
@@ -229,6 +238,9 @@
                                 <table id="example2" style="width: 100%" class="table-bordered table-hover text-center">
                                     <thead style="background-color:rgb(249,72,42);height: 50px;color: white">
                                     <tr>
+                                        <th style="padding-left: 30px">
+                                            <input type="checkbox" name="chontatcactsp" id="chontatcactsp" onchange="selectAll(this)" class="form-check-input checkbox checkbox-red">
+                                        </th>
                                         <th>STT</th>
                                         <th>Mã</th>
                                         <th>Ảnh</th>
@@ -246,7 +258,9 @@
                                     <tr th:each="spct, stt : ${sanphamchitiet}">
                                         <td>
                                             <input type="checkbox" class="form-check-input checkbox checkbox-red"
-                                                   th:value="${spct.id}" onchange="luuGiaTri2(this)">
+                                                   th:value="${spct.id}" onchange="toggleRowHighlight(this)" name="chonspct">
+                                        </td>
+                                        <td>
                                             <span style="margin-left: 7px" th:text="${stt.index+1}"></span>
                                         </td>
                                         <th th:text="${spct.masanphamchitiet}"></th>
@@ -295,8 +309,8 @@
                                         </td>
                                     </tr>
                                     </tbody>
-                                    </tfoot>
                                 </table>
+
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -332,6 +346,7 @@
                 giaTriTuCheckbox.splice(index, 1);
             }
         }
+        console.log(giaTriTuCheckbox);
     }
 
     function layGiaTri2() {
@@ -343,6 +358,32 @@
                 input.value = giaTriTuCheckbox[i];
                 document.getElementById("submitid").appendChild(input);
             }
+        }
+    }
+
+
+    function toggleRowHighlight(checkbox) {
+        const row = checkbox.closest('tr');
+        if (checkbox.checked) {
+            row.classList.add('selected-row');
+            if (giaTriTuCheckbox.indexOf(checkbox.value) === -1) {
+                giaTriTuCheckbox.push(checkbox.value);
+            }
+        } else {
+            row.classList.remove('selected-row');
+            var index = giaTriTuCheckbox.indexOf(checkbox.value);
+            if (index !== -1) {
+                giaTriTuCheckbox.splice(index, 1);
+            }
+        }
+        console.log(giaTriTuCheckbox);
+    }
+
+    function selectAll(source) {
+        var checkboxes = document.getElementsByName('chonspct');
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = source.checked;
+            toggleRowHighlight(checkboxes[i]); // Call toggleRowHighlight for each checkbox
         }
     }
 </script>
@@ -438,4 +479,8 @@
             $('#editButton').addClass('disabled');
         }
     });
+</script>
+
+<script>
+    var giaTriTuCheckbox = []; // Mảng lưu trữ giá trị từ checkbox
 </script>

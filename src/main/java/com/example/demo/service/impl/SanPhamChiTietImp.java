@@ -30,8 +30,8 @@ public class SanPhamChiTietImp implements SanPhamChiTietService {
     }
 
     @Override
-    public Page<SanPhamChiTiet> finAllPage(Pageable pageable) {
-        return sanPhamChiTietRepository.findAll(pageable);
+    public Page<SanPhamChiTiet> finAllPage(Integer soluong,Pageable pageable) {
+        return sanPhamChiTietRepository.findAllBySoluongGreaterThan(soluong,pageable);
     }
 
     @Override

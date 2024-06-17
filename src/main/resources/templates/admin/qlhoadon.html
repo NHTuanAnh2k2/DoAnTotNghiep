@@ -335,8 +335,8 @@
                                                             <td th:text="${aStat.index+1}"></td>
                                                             <td th:text="${a.mahoadon}"></td>
                                                             <td th:text="${a.nhanvien.manhanvien}"></td>
-                                                            <td th:text="${a.khachhang==null?'Khách lẻ':a.khachhang.nguoidung.hovaten}"></td>
-                                                            <td th:text="${a.sdt}"></td>
+                                                            <td th:text="${a.khachhang==null?'khách lẻ':a.khachhang.nguoidung.hovaten}"></td>
+                                                            <td th:text="${a.sdt==null?'khách lẻ':a.sdt}"></td>
                                                             <td th:text="${a.loaihoadon==true?'online':'tại quầy'}">
                                                             </td>
                                                             <td
@@ -352,6 +352,7 @@
                                                             <td th:if="${a.trangthai==4}">đã thanh toán</td>
                                                             <td th:if="${a.trangthai==5}">đã hoàn thành</td>
                                                             <td th:if="${a.trangthai==6}">đã hủy</td>
+                                                            <td th:if="${a.trangthai==7}">tràn hàng chờ</td>
                                                             <td>
                                                                 <button type="button" class="btn btn-warning">
                                                                     <a th:href="@{chi-tiet/{id}(id=${a.id})}"><i

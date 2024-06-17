@@ -35,4 +35,5 @@ public interface HoaDonService {
     List<HoaDon> timTheoTrangThaiVaLoai(Integer id,Boolean loaihd);
     HoaDon timBanGhiDuocTaoGanNhat();
     HoaDon timHDTheoMaHD(String mahd);
+    public  String htmlToPdfTaiQuay(String htmlfile,String pdfname);
 }

@@ -28,6 +28,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Controller
@@ -63,6 +64,7 @@ public class hoaDonController {
     HoaDonService dao;
     Integer idhdshowdetail = null;
     HoaDonCustom hdSaveInfoSeachr = new HoaDonCustom();
+    List<String> lstdiachigiao = new ArrayList<>();
 
     @GetMapping("hien-thi")
     public String hienThi(Model model, @RequestParam("page") Optional<Integer> pageParam,
@@ -463,7 +465,7 @@ public class hoaDonController {
     @ResponseBody
     public ResponseEntity<?> getlistSP(@RequestParam("pageSPChanges") Optional<Integer> pageParam) {
         Pageable p = PageRequest.of(pageParam.orElse(0), 5);
-        Page<SanPhamChiTiet> pageSP = daoSPCT.finAllPage(p);
+        Page<SanPhamChiTiet> pageSP = daoSPCT.finAllPage(0,p);
         return ResponseEntity.ok(pageSP);
     }
 
@@ -484,9 +486,17 @@ public class hoaDonController {
         hoaDonXem = hoaDonTim.get(0);
         List<PhuongThucThanhToan> lstPhuongThuc = daoPT.timTheoHoaDon(hoaDonXem);
         List<LichSuHoaDon> lstLichSuHoaDon = daoLS.timLichSuTheoIDHoaDon(hoaDonXem);
-        phuongThuc = lstPhuongThuc.get(0);
+        if (lstPhuongThuc.size() > 0) {
+            phuongThuc = lstPhuongThuc.get(0);
+        } else {
+            phuongThuc = new PhuongThucThanhToan();
+        }
+
         List<PhieuGiamGiaChiTiet> lstPGGCT = daoPGGCT.timListPhieuTheoHD(hoaDonXem);
-        PhieuGiamGiaChiTiet phieuGiamCT = lstPGGCT.get(0);
+        PhieuGiamGiaChiTiet phieuGiamCT = new PhieuGiamGiaChiTiet();
+        if (lstPGGCT.size() > 0) {
+            phieuGiamCT = lstPGGCT.get(0);
+        }
         BigDecimal tongTienSP = new BigDecimal("0");
         List<HoaDonChiTiet> lstHDCT = daoHDCT.getListSPHD(hoaDonXem);
         for (HoaDonChiTiet b : lstHDCT
@@ -503,6 +513,11 @@ public class hoaDonController {
                 hoaDonXem.getTennguoinhan(), hoaDonXem.getSdt(),
                 tinh, huyen, xa, diachiCT, hoaDonXem.getPhivanchuyen(), hoaDonXem.getGhichu()
         );
+        //gửi địa chỉ giao
+        lstdiachigiao = new ArrayList<>();
+        lstdiachigiao.add(tinh);
+        lstdiachigiao.add(huyen);
+        lstdiachigiao.add(xa);
         model.addAttribute("tongTienSP", tongTienSP);
         model.addAttribute("thayDoiTT", formChangesTTKH);
         model.addAttribute("tongTT", tongTT);
@@ -515,6 +530,29 @@ public class hoaDonController {
         model.addAttribute("trangThaiHienTai", lstLichSuHoaDon.get(lstLichSuHoaDon.size() - 1).getTrangthai());
         model.addAttribute("pageSPHD", daoHDCT.getDSSPHD(hoaDonXem, p));
         return "admin/qlchitiethoadon";
+    }
+
+    @GetMapping("call-api-ngay-giao")
+    @ResponseBody
+    public ResponseEntity<?> callapi() {
+
+        return ResponseEntity.ok(lstdiachigiao);
+    }
+
+    @GetMapping("set-ngay-giao-du-kien/{date}")
+    @ResponseBody
+    public void setdate(@PathVariable("date") String date) {
+        Long unixTimestamp = Long.valueOf(date);
+        Long milliseconds = unixTimestamp * 1000;
+        Timestamp timestamp = new Timestamp(milliseconds);
+        HoaDon hoaDonXem = new HoaDon();
+        List<HoaDon> hoaDonTim = dao.timTheoID(idhdshowdetail);
+        hoaDonXem = hoaDonTim.get(0);
+        hoaDonXem.setNgaygiaodukien(timestamp);
+        dao.capNhatHD(hoaDonXem);
+        System.out.println("aaaaaaaaaaaaaa");
+        System.out.println(timestamp);
+        System.out.println(hoaDonXem.getMahoadon());
     }
 
     //xác nhận đơn
@@ -535,6 +573,30 @@ public class hoaDonController {
         List<HoaDon> lstSaveHD = dao.timTheoID(idhdshowdetail);
         HoaDon hdTT = lstSaveHD.get(0);
         Integer trangthaiset = hdTT.getTrangthai() + 1;
+        //set ngày xác nhận
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        if (trangthaiset == 1) {
+            hdTT.setNgayxacnhan(Timestamp.valueOf(currentDateTime));
+        } else {
+            if (trangthaiset == 3) {
+                hdTT.setNgayvanchuyen(Timestamp.valueOf(currentDateTime));
+            } else {
+                if (trangthaiset == 4) {
+                    hdTT.setNgaynhanhang(Timestamp.valueOf(currentDateTime));
+                } else {
+                    if (trangthaiset == 5) {
+                        hdTT.setNgayhoanthanh(Timestamp.valueOf(currentDateTime));
+                    } else {
+
+                    }
+                }
+            }
+        }
+        //set lần cập nhât cuối
+        hdTT.setLancapnhatcuoi(Timestamp.valueOf(currentDateTime));
+        //set người cập nhật theo id đã login
+
+        //
         hdTT.setTrangthai(trangthaiset);
         dao.capNhatHD(hdTT);
         lshd.setTrangthai(trangthaiset);
@@ -578,6 +640,11 @@ public class hoaDonController {
         List<HoaDon> lstSaveHD = dao.timTheoID(idhdshowdetail);
         HoaDon hdTT = lstSaveHD.get(0);
         Integer trangthaiset = hdTT.getTrangthai() - 1;
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        hdTT.setLancapnhatcuoi(Timestamp.valueOf(currentDateTime));
+        //set người cập nhật theo id đã login
+
+        //
         hdTT.setTrangthai(trangthaiset);
         dao.capNhatHD(hdTT);
         lshd.setTrangthai(trangthaiset);
@@ -603,6 +670,11 @@ public class hoaDonController {
         List<HoaDon> lstSaveHD = dao.timTheoID(idhdshowdetail);
         HoaDon hdTT = lstSaveHD.get(0);
         hdTT.setTrangthai(6);
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        hdTT.setLancapnhatcuoi(Timestamp.valueOf(currentDateTime));
+        //set người cập nhật theo id đã login
+
+        //
         dao.capNhatHD(hdTT);
         lshd.setTrangthai(6);
         daoLS.add(lshd);
@@ -771,7 +843,7 @@ public class hoaDonController {
 
     @ModelAttribute("thongtingiaohang")
     public DiaChiGiaoCaseBanHangOff diachigiaohangtaiquay() {
-        return new DiaChiGiaoCaseBanHangOff(null, null, null, "chọn tỉnh", "chọn huyện", "chọn xã", null, null,null,null);
+        return new DiaChiGiaoCaseBanHangOff(null, null, null, "chọn tỉnh", "chọn huyện", "chọn xã", null, null, null, null);
     }
 
 }
