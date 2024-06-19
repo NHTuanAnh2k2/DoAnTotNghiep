@@ -261,7 +261,8 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
-                            <button type="button" class="btn btn-primary" id="btnChuyen">Chuyển đổi</button>
+                            <button type="button" class="btn btn-primary" id="btnChuyen"
+                                onclick="chuyendoiTranCho()">Chuyển đổi</button>
                         </div>
                     </div>
                 </div>
@@ -3317,7 +3318,7 @@ tabindex="0">
                         htmlHDHangChor += `
                         <div>
                                         <label for="name1">${'Hóa đơn: ' + hd.mahoadon}</label>
-                                        <input type="radio"  name="rightbox" id="${hd.mahoadon}" onclick="checkclickright(event)">
+                                        <input type="radio"  name="rightbox" id="${hd.mahoadon}" onclick="checkRadioStatus()">
                                     </div>
                         `;
                     }
@@ -3325,7 +3326,7 @@ tabindex="0">
                         htmlHDHangChol += `
                         <div>
                                         <label for="name1">${'Hóa đơn: ' + md.mahoadon}</label>
-                                        <input type="radio"  name="leftbox" id="${md.mahoadon}" onclick="checkclickleft(event)">
+                                        <input type="radio"  name="leftbox" id="${md.mahoadon}" onclick="checkRadioStatus()">
                                     </div>
                         `;
                     }
@@ -3338,24 +3339,65 @@ tabindex="0">
                 })
 
         }
-        var checkchuyenleft = false;
-        var checkchuyenright = false;
-        function checkclickleft(event) {
-            if(event.checked==true){
-                checkchuyenleft==true;
+        function checkRadioStatus() {
+            // Lấy tất cả radio button trong các div
+            var leftRadios = document.querySelectorAll('#name-checkbox-l input[type="radio"]');
+            var rightRadios = document.querySelectorAll('#name-checkbox-r input[type="radio"]');
+
+            // Kiểm tra xem có bao nhiêu radio button được chọn
+            var leftChecked = Array.from(leftRadios).filter(radio => radio.checked).length;
+            var rightChecked = Array.from(rightRadios).filter(radio => radio.checked).length;
+
+            // Hiển thị hoặc ẩn button dựa trên số lượng radio button được chọn
+
+            if (leftChecked >= 1 && rightChecked >= 1) {
+                document.getElementById('btnChuyen').disabled = false;
+            } else {
+                document.getElementById('btnChuyen').disabled = true;
             }
-            alert(checkchuyenleft);
-            alert(checkchuyenright);
-            
-        }
-        function checkclickright(event) {
-            if(event.checked==true){
-                checkchuyenright==true;
-            }
-           alert(checkchuyenleft);
-           alert(checkchuyenright);
         }
 
+        function chuyendoiTranCho() {
+            // Lấy tất cả radio button trong các div
+            var leftRadios = document.querySelectorAll('#name-checkbox-l input[type="radio"]');
+            var rightRadios = document.querySelectorAll('#name-checkbox-r input[type="radio"]');
+
+            // Lấy ID của các radio button được chọn
+            var selectedIds = [];
+            leftRadios.forEach(radio => {
+                if (radio.checked) {
+                    selectedIds.push(radio.id);
+                }
+            });
+            rightRadios.forEach(radio => {
+                if (radio.checked) {
+                    selectedIds.push(radio.id);
+                }
+            });
+            var urlChuyendoi = `http://localhost:8080/ban-hang-tai-quay/chuyen-doi-don?lstData=${selectedIds}`;
+            fetch(urlChuyendoi)
+                .then(function (c) {
+                    return c.json();
+                })
+                .then(function (b) {
+                    if (b == true) {
+                        localStorage.setItem('thongbao', 'true');
+                        window.location.href = 'http://localhost:8080/hoa-don/ban-hang';
+                    } else {
+                        thongbao('Lỗi không xác định', 'warning')
+                    }
+                })
+
+        }
+        var message = localStorage.getItem('thongbao');
+        if (message === 'true') {
+            thongbao('Chuyển đổi thành công', 'success');
+            // Xóa trạng thái thông báo sau khi hiển thị
+            localStorage.removeItem('thongbao');
+
+
+
+        }
     </script>
 </body>
 
