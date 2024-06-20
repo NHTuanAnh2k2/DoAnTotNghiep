@@ -165,24 +165,28 @@
                 <p>Bạn đã có tài khoản?</p>
                 <a href="#" style="color: rgb(249,72,42); padding-left: 5px; text-decoration: none; text-transform: none;">Đăng nhập</a>
             </div>
-            <form>
+            <form id="formDiaChiKhachLe" th:action="@{/customer/thanh-toan-khach-le}" th:object="${diachikotaikhoan}" method="post" onsubmit="return validateFormDiaChiKhachLe(event)">
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="hovaten" placeholder="Họ và tên">
                     <label for="hovaten">Họ và tên</label>
+                    <div style="color: red; font-weight: initial;" id="errorTen"></div>
                 </div>
                 <div class="d-flex justify-content-between mb-3">
-                    <div class="form-floating" style="width: 70%; padding-right: 20px;">
-                        <input type="email" class="form-control" id="email" placeholder="name@example.com">
+                    <div class="form-floating" style="width: 60%; padding-right: 20px;">
+                        <input type="text" class="form-control" id="email" placeholder="name@example.com">
                         <label for="email">Email</label>
+                        <div style="color: red; font-weight: initial;" id="errorEmail"></div>
                     </div>
-                    <div class="form-floating" style="width: 30%;">
+                    <div class="form-floating" style="width: 40%;">
                         <input type="text" class="form-control" id="sdt" placeholder="Số điện thoại">
                         <label for="sdt">Số điện thoại</label>
+                        <div style="color: red; font-weight: initial;" id="errorSDT"></div>
                     </div>
                 </div>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="diachi" placeholder="Địa chỉ">
                     <label for="diachi">Địa chỉ</label>
+                    <div style="color: red; font-weight: initial;" id="errorDiaChi"></div>
                 </div>
                 <div class="d-flex justify-content-between mb-4">
                     <div class="form-floating" style="padding-right: 10px; width: 250px;">
@@ -190,18 +194,21 @@
                             <option selected>Tỉnh/Thành phố</option>
                         </select>
                         <label for="tinh">Tỉnh/thành phố</label>
+                        <div style="color: red; font-weight: initial;" id="errorTinh"></div>
                     </div>
                     <div class="form-floating" style="padding-right: 10px; width: 250px;">
                         <select class="form-select" id="huyen" aria-label="Floating label select example">
                             <option selected>Quận/Huyện</option>
                         </select>
                         <label for="huyen">Quận/huyện</label>
+                        <div style="color: red; font-weight: initial;" id="errorHuyen"></div>
                     </div>
                     <div class="form-floating" style="width: 250px;">
                         <select class="form-select" id="xa" aria-label="Floating label select example">
                             <option selected>Phường/Xã</option>
                         </select>
                         <label for="xa">Phường/xã</label>
+                        <div style="color: red; font-weight: initial;" id="errorXa"></div>
                     </div>
                 </div>
                 <div class="d-flex justify-content-end mb-4">
@@ -475,12 +482,6 @@
 <script>
     document.getElementById("left2").style.display = "none";
     document.getElementById("left3").style.display = "none";
-    document.getElementById("button_left1").addEventListener("click", function(event) {
-        event.preventDefault();
-        document.getElementById("left1").style.display = "none";
-        document.getElementById("left2").style.display = "none";
-        document.getElementById("left3").style.display = "block";
-    });
     document.getElementById("button_left2").addEventListener("click", function(event) {
         event.preventDefault();
         document.getElementById("left1").style.display = "none";
@@ -540,6 +541,183 @@
                 }
             }
         };
+    }
+    function checkCoKhoangTrang(str) {
+        // Sử dụng biểu thức chính quy để kiểm tra có khoảng trắng giữa hai từ không
+        return /\s/.test(str.trim());
+    }
+    function checkNhieuKhoangTrang(str) {
+        // Sử dụng biểu thức chính quy để tìm các mẫu có ít nhất hai khoảng trắng liên tiếp giữa các từ
+        return /\s{2,}/.test(str.trim());
+    }
+    function validateTen(inputString) {
+        // Biểu thức chính quy cho phép các ký tự Latinh, số từ 0-9 và có độ dài từ 5 đến 15 ký tự
+        const regex = /^[a-zA-ZàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆìÌỉỈĩĨíÍịỊòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰýÝđĐ ]{1,30}$/;
+        return regex.test(inputString);
+    }
+    function validateEmail(email) {
+        const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return re.test(email);
+    }
+    function validatePhoneNumber(phoneNumber) {
+        const regex = /^(0[1-9])+([0-9]{8})\b$/;
+        return regex.test(phoneNumber);
+    }
+    function validateFormDiaChiKhachLe(event){
+        event.preventDefault();
+        var inputTen=document.getElementById("hovaten").value;
+        var errorTen=document.getElementById("errorTen");
+        var isTenValid = true;
+        if(inputTen.trim() === ""){
+            errorTen.innerText = "Vui lòng nhập họ tên!";
+            document.getElementById("hovaten").style.border="2px solid red";
+            isTenValid = false;
+        }
+        if(inputTen.trim().length > 0){
+            if(checkNhieuKhoangTrang(inputTen)){
+                errorTen.innerText = "Giữa các từ không được nhiều hơn 1 khoảng trắng!";
+                document.getElementById("hovaten").style.border="2px solid red";
+                isTenValid = false;
+            }
+        }
+        if(inputTen.trim().length > 0){
+            if(validateTen(inputTen.trim())===false){
+                errorTen.innerText = "Họ tên chỉ chứa ký tự và tối đa 30 ký tự!";
+                document.getElementById("hovaten").style.border="2px solid red";
+                isTenValid = false;
+            }
+        }
+        if(isTenValid){
+            document.getElementById("hovaten").style.border="";
+            errorTen.innerText = "";
+        }
+        var inputEmail=document.getElementById("email").value;
+        var errorEmail=document.getElementById("errorEmail");
+        var isEmailValid = true;
+        if(inputEmail.trim() === ""){
+            errorEmail.innerText = "Địa chỉ email không được trống!";
+            document.getElementById("email").style.border="2px solid red";
+            isEmailValid = false;
+        }
+        // if(inputEmail.trim().length > 0){
+        //     if(checkCoKhoangTrang(inputEmail)){
+        //         errorEmail.innerText = "Giữa các từ không được nhiều hơn 1 khoảng trắng!";
+        //         document.getElementById("email").style.border="2px solid red";
+        //         isEmailValid = false;
+        //     }
+        // }
+        if(inputEmail.trim().length > 0){
+            if(validateEmail(inputEmail.trim())===false){
+                errorEmail.innerText = "Địa chỉ email sai định dạng!";
+                document.getElementById("email").style.border="2px solid red";
+                isEmailValid = false;
+            }
+        }
+        if(isEmailValid){
+            document.getElementById("email").style.border="";
+            errorEmail.innerText = "";
+        }
+        var inputSDT=document.getElementById("sdt").value;
+        var errorSDT=document.getElementById("errorSDT");
+        var isSDTValid = true;
+
+        if(inputSDT.trim() === ""){
+            errorSDT.innerText = "Số điện thoại không được trống!";
+            document.getElementById("sdt").style.border="2px solid red";
+            isSDTValid = false;
+        }
+
+        if(inputSDT.trim().length > 0){
+            if(validatePhoneNumber(inputSDT.trim())===false){
+                errorSDT.innerText = "Số điện thoại sai định dạng!";
+                document.getElementById("sdt").style.border="2px solid red";
+                isSDTValid = false;
+            }
+        }
+        if(isSDTValid){
+            document.getElementById("sdt").style.border="";
+            errorSDT.innerText = "";
+        }
+
+        var inputDiaChi=document.getElementById("diachi").value;
+        var errorDiaChi=document.getElementById("errorDiaChi");
+        var isDiaChiValid = true;
+
+        if(inputDiaChi.trim() === ""){
+            errorDiaChi.innerText = "Địa chỉ không được trống!";
+            document.getElementById("diachi").style.border="2px solid red";
+            isDiaChiValid = false;
+        }
+
+        if(inputDiaChi.trim().length > 0){
+            if(checkNhieuKhoangTrang(inputDiaChi)){
+                errorDiaChi.innerText = "Giữa các từ không được nhiều hơn 1 khoảng trắng!";
+                document.getElementById("diachi").style.border="2px solid red";
+                isDiaChiValid = false;
+            }
+        }
+        if(inputDiaChi.trim().length > 0){
+            if(inputDiaChi.trim().length > 50){
+                errorDiaChi.innerText = "Địa chỉ tối ta 50 ký tự!";
+                document.getElementById("diachi").style.border="2px solid red";
+                isDiaChiValid = false;
+            }
+        }
+        if(isDiaChiValid){
+            document.getElementById("diachi").style.border="";
+            errorDiaChi.innerText = "";
+        }
+
+        var inputTinh=document.getElementById("tinh");
+        var errorTinh=document.getElementById("errorTinh");
+        var isTinhValid = true;
+
+        if(inputTinh.options[0].selected){
+            errorTinh.innerText = "Vui lòng chọn tỉnh thành!";
+            document.getElementById("tinh").style.border="2px solid red";
+            isTinhValid = false;
+        }
+        if(isTinhValid){
+            document.getElementById("tinh").style.border="";
+            errorTinh.innerText = "";
+        }
+
+        var inputHuyen=document.getElementById("huyen");
+        var errorHuyen=document.getElementById("errorHuyen");
+        var isHuyenValid = true;
+
+        if(inputHuyen.options[0].selected){
+            errorHuyen.innerText = "Vui lòng chọn quận huyện!";
+            document.getElementById("huyen").style.border="2px solid red";
+            isHuyenValid = false;
+        }
+        if(isHuyenValid){
+            document.getElementById("huyen").style.border="";
+            errorHuyen.innerText = "";
+        }
+
+        var inputXa=document.getElementById("xa");
+        var errorXa=document.getElementById("errorXa");
+        var isXaValid = true;
+
+        if(inputXa.options[0].selected){
+            errorXa.innerText = "Vui lòng chọn phường xã!";
+            document.getElementById("xa").style.border="2px solid red";
+            isXaValid = false;
+        }
+        if(isXaValid){
+            document.getElementById("xa").style.border="";
+            errorXa.innerText = "";
+        }
+
+        if(isTenValid && isEmailValid && isSDTValid && isDiaChiValid && isTinhValid && isHuyenValid && isXaValid){
+            document.getElementById("left1").style.display = "none";
+            document.getElementById("left2").style.display = "none";
+            document.getElementById("left3").style.display = "block";
+            return true;
+        }else{
+            return false;
+        }
     }
 </script>
 </body>
