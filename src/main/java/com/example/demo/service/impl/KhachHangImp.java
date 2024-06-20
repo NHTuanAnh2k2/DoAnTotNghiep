@@ -4,6 +4,7 @@ import com.example.demo.entity.DiaChi;
 import com.example.demo.info.KhachHangInfo;
 import com.example.demo.info.NguoiDungKHInfo;
 import com.example.demo.info.NguoiDungNVInfo;
+import com.example.demo.info.hosokhachhang.DoiMatKhauNguoiDung;
 import com.example.demo.repository.DiaChiRepository;
 import com.example.demo.restcontroller.khachhang.District;
 import com.example.demo.entity.KhachHang;
@@ -437,5 +438,15 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
         DiaChi dc = diaChiRepository.findDiaChiByIdNguoidung(idNd);
         return dc;
     }
+
+    @Override
+    public NguoiDung doimatkhau(DoiMatKhauNguoiDung nguoidung, int id) {
+        NguoiDung nd = this.findNguoiDungById(id);
+        nd.setMatkhau(nguoidung.getMatkhau());
+        nd.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
+        nguoiDungRepository.save(nd);
+        return nd;
+    }
+
 
 }

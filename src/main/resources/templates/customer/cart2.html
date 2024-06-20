@@ -1,0 +1,303 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<!--thư viện-->
+<nav th:replace="~{/layout/head.html}"></nav>
+<!--end-->
+<!--<style>-->
+<!--    .quantity-container {-->
+<!--        display: flex;-->
+<!--        align-items: center;-->
+<!--        position: absolute;-->
+<!--        right: 150px;-->
+<!--        bottom: 34px;-->
+<!--    }-->
+
+<!--    .quantity-button {-->
+<!--        background-color: rgba(255, 255, 255, 0.4);-->
+<!--        color: black;-->
+<!--        border: 1px solid rgba(0, 0, 0, 0.1);-->
+<!--        width: 30px;-->
+<!--        height: 30px;-->
+<!--        display: flex;-->
+<!--        align-items: center;-->
+<!--        justify-content: center;-->
+<!--        font-size: 20px;-->
+<!--        cursor: pointer;-->
+<!--        border-radius: 10px;-->
+<!--    }-->
+
+<!--    .quantity-input {-->
+<!--        width: 40px;-->
+<!--        text-align: center;-->
+<!--        font-size: 16px;-->
+<!--        border: 1px solid rgba(255, 255, 255, 0.4);-->
+<!--        border-radius: 10px;-->
+<!--    }-->
+<!--    .giohang {-->
+<!--        display: flex;-->
+<!--        justify-content: start;-->
+<!--        position: relative;-->
+<!--        border-bottom: 1px solid #DDDDDD;-->
+<!--        margin: 10px 10px 0px 15px;-->
+<!--        padding-bottom: 20px;-->
+
+<!--    }-->
+<!--    .ten_sp {-->
+<!--        display: flex;-->
+<!--        margin-left: 10px;-->
+<!--        justify-content: start;-->
+<!--    }-->
+<!--    .ten_sp p {-->
+<!--        font-size: 18px;-->
+<!--        padding-top: 10px;-->
+<!--    }-->
+
+<!--    .ten_sp button {-->
+<!--        position: absolute;-->
+<!--        right: 0;-->
+<!--        top: 0;-->
+<!--    }-->
+<!--    .thong_tin_sp {-->
+<!--        display: flex;-->
+<!--        justify-content: start;-->
+<!--        margin-left: 10px;-->
+<!--    }-->
+<!--    .mausac {-->
+<!--        font-size: 15px;-->
+<!--        position: absolute;-->
+<!--        left: 220px;-->
+<!--    }-->
+<!--    .size {-->
+<!--        font-size: 15px;-->
+<!--        position: absolute;-->
+<!--        left: 430px;-->
+<!--    }-->
+<!--    .giaban {-->
+<!--        position: absolute;-->
+<!--        right: 0px;-->
+<!--    }-->
+<!--    input[type="number"]::-webkit-outer-spin-button,-->
+<!--    input[type="number"]::-webkit-inner-spin-button {-->
+<!--        -webkit-appearance: none;-->
+<!--        margin: 0;-->
+<!--    }-->
+
+<!--    input[type="number"] {-->
+<!--        /* Hiển thị biểu tượng bước lên/xuống mặc định */-->
+<!--        -moz-appearance: textfield;-->
+<!--    }-->
+<!--    .ghichu {-->
+<!--        background-color: #EEEEEE;-->
+<!--        margin-top: 20px;-->
+<!--    }-->
+<!--    label {-->
+<!--        font-size: 16px;-->
+<!--        font-weight: bold;-->
+<!--        padding-top: 15px;-->
+<!--        margin-bottom: 10px;-->
+<!--        display: block;-->
+<!--    }-->
+<!--    .text_ghichu {-->
+<!--        width: 100%;-->
+<!--        min-height: 45px;-->
+<!--        max-height: 300px;-->
+<!--        margin-bottom: 10px;-->
+<!--        font-size: 16px;-->
+<!--        padding: 15px;-->
+<!--        border: 1px solid #DDDDDD;-->
+<!--        outline: none;-->
+<!--        resize: none;-->
+<!--        transition: border-color 0.3s, box-shadow 0.3s;-->
+<!--    }-->
+
+<!--    .text_ghichu:focus {-->
+<!--        border-color: #007BFF;-->
+<!--        box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);-->
+<!--    }-->
+<!--    .ma_giam_gia{-->
+<!--        width: 100%;-->
+<!--        margin-bottom: 15px;-->
+<!--        padding: 5px 10px;-->
+<!--        background: #fff;-->
+<!--        display: flex;-->
+<!--        border-radius: 15px;-->
+<!--    }-->
+<!--    .ma-item-left {-->
+<!--        width: 30%;-->
+<!--        padding-right: 10px;-->
+<!--        display: flex;-->
+<!--        align-items: center;-->
+<!--        border-right: 1px dashed #ccc;-->
+<!--    }-->
+<!--    .anh_ma {-->
+<!--        width: auto;-->
+<!--        height: auto;-->
+<!--        max-width: 100%;-->
+<!--    }-->
+<!--    .ma-item-right {-->
+<!--        padding-left: 10px;-->
+<!--        position: relative;-->
+<!--        width: 70%;-->
+<!--    }-->
+<!--    .ma-item-des {-->
+<!--        display: flex;-->
+<!--        justify-content: space-between;-->
+<!--        align-items: self-end;-->
+<!--        font-size: 10px;-->
+<!--    }-->
+<!--    .code {-->
+<!--        background: yellow;-->
+<!--        color: red;-->
+<!--        font-weight: bolder;-->
+<!--    }-->
+<!--    .right {-->
+<!--        font-weight: 700;-->
+<!--        padding: 5px 7px;-->
+<!--        background: rgb(249,72,42);-->
+<!--        color: white;-->
+<!--        border-radius: 15px;-->
+<!--        cursor: pointer;-->
+<!--        margin-bottom: 26px;-->
+<!--    }-->
+<!--</style>-->
+<body>
+
+<!-- header section start -->
+<nav th:replace="~{/layout/header.html}"></nav>
+<!-- header section end -->
+<!--<nav th:replace="~{/layout/banner.html}"></nav>-->
+<div class="container mt-5">
+    <div class="row">
+        <div class="container mt-5">
+            <h2>Giỏ hàng</h2>
+            <div th:if="${cartItems == null or cartItems.isEmpty()}">
+                <p>Không có sản phẩm trong giỏ hàng.</p>
+                <a th:href="@{/customer/sanphamnam}">Tiếp tục mua hàng.</a>
+            </div>
+            <div th:if="${cartItems != null and not cartItems.isEmpty()}">
+
+                <table class="table table-bordered text-center">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Ảnh</th>
+                        <th scope="col">Tên sản phẩm</th>
+                        <th scope="col">Kích cỡ</th>
+                        <th scope="col">Màu sắc</th>
+                        <th scope="col">Giá</th>
+                        <th scope="col">Số lượng</th>
+                        <th scope="col">Thành tiền</th>
+                        <th scope="col">Thao tác</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item, iterStat : ${cartItems}">
+                        <form th:action="@{/update-cart/{id}(id=${item.id})}" method="post">
+                            <input type="hidden" name="id" th:value="${item.id}">
+                        <td th:text="${iterStat.index + 1}"></td>
+                        <td>
+                            <div th:id="'carouselExample' + ${item.id}" class="carousel">
+                                <div class="carousel-inner">
+                                    <th:block th:each="anhs, index : ${item.sanphamchitiet.anh}">
+                                        <div th:classappend="${index.index == 0} ? 'carousel-item active' : 'carousel-item'">
+                                            <img th:if="${anhs.tenanh != null}"
+                                                 th:src="@{'/upload' + ${anhs.tenanh.substring(anhs.tenanh.lastIndexOf('upload') + 6)}}"
+                                                 class="d-block w-100 carousel-img rounded-3"
+                                                 style="max-width: 100px;margin-left: 25px; max-height: 70px;" alt="Ảnh">
+                                        </div>
+                                    </th:block>
+                                </div>
+                                <button class="carousel-control-prev" type="button"
+                                        th:data-bs-target="'#carouselExample' + ${item.id}"
+                                        data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button"
+                                        th:data-bs-target="'#carouselExample' + ${item.id}"
+                                        data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                        </td>
+                        <td th:text="${item.sanphamchitiet.sanpham.tensanpham}"></td>
+                        <td th:text="${item.sanphamchitiet.kichco.ten}"></td>
+                        <td th:text="${item.sanphamchitiet.mausac.ten}"></td>
+                        <td th:text="${#numbers.formatDecimal(item.sanphamchitiet.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></td>
+                        <td>
+                            <input type="number" class="form-control"
+                                   min="1"
+                                   name="quantity"
+                                   th:value="${item.soluong}"
+                                   onchange="this.form.submit()"
+                                   style="width:100px;padding-left: 30px;margin-left: 30px">
+                        </td>
+                        <td th:text="${#numbers.formatDecimal(item.sanphamchitiet.giatien * item.soluong, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></td>
+                   <td>
+                       <a th:href="@{/delete/cart/{id}(id=${item.id})}"
+                          style="color: rgb(249,72,42)" >
+                           <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                                fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                               <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                           </svg>
+                       </a>
+                   </td>
+                        </form>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="my-2">
+                    Tổng số tiền:
+                    <span th:text="${#numbers.formatDecimal(totalAmount, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
+                </div>
+                <div class="text-right mt-4">
+                    <a href="/checkout" class="btn btn-success">Thanh toán</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- cart page content section end -->
+<br>
+<br>
+<!-- footer section start -->
+<nav th:replace="~{/layout/footer.html}"></nav>
+<!-- footer section end -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Handle increment buttons
+        const incrementButtons = document.querySelectorAll('.quantity-button.increment');
+        incrementButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const input = this.previousElementSibling;
+                input.value = parseInt(input.value) + 1;
+            });
+        });
+
+        // Handle decrement buttons
+        const decrementButtons = document.querySelectorAll('.quantity-button.decrement');
+        decrementButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const input = this.nextElementSibling;
+                if (parseInt(input.value) > 1) {  // Prevent decrementing below 1
+                    input.value = parseInt(input.value) - 1;
+                }
+            });
+        });
+    });
+    const textarea = document.getElementById('text_ghichu');
+
+    textarea.addEventListener('input', function () {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+    });
+
+    // Optional: Adjust the height on page load
+    textarea.style.height = 'auto';
+    textarea.style.height = (textarea.scrollHeight) + 'px';
+
+</script>
+</body>
+</html>
+

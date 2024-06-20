@@ -175,7 +175,7 @@ public class SanPhamController {
                                     spct.setMasanphamchitiet(chuoiNgauNhien2.toString());
                                     spct.setSanpham(sanPham);
                                     spct.setSoluong(1);
-                                    spct.setGiatien(BigDecimal.valueOf(100.000));
+                                    spct.setGiatien(BigDecimal.valueOf(100000.000));
                                     spct.setMota(mota);
                                     spct.setThuonghieu(idThuongHieu);
                                     spct.setChatlieu(idChatLieu);
@@ -230,7 +230,7 @@ public class SanPhamController {
                                         spct.setSanpham(sanPham);
                                         spct.setMasanphamchitiet(chuoiNgauNhien2.toString());
                                         spct.setSoluong(1);
-                                        spct.setGiatien(BigDecimal.valueOf(100.000));
+                                        spct.setGiatien(BigDecimal.valueOf(100000.000));
                                         spct.setMota(mota);
                                         spct.setThuonghieu(idThuongHieu);
                                         spct.setChatlieu(idChatLieu);

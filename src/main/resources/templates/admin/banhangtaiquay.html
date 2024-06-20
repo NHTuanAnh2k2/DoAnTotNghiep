@@ -140,6 +140,8 @@
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
             <!-- Content Header (Page header) -->
+
+
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
@@ -164,16 +166,19 @@
                 </div><!-- /.container-fluid -->
             </section>
             <!-- Nút để tạo hóa đơn -->
-
-            <button class="btn" style="margin-left: 1100px;background-color: rgb(249,72,42);color: white"
-                onclick="taoNewHD()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus"
-                    viewBox="0 0 16 16">
-                    <path
-                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                </svg>
-                Tạo hóa đơn
-            </button>
+            <div class="d-flex justify-content-end pe-2">
+                <button class="btn" style="background-color: rgb(249,72,42);color: white" onclick="taoNewHD()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                        class="bi bi-plus" viewBox="0 0 16 16">
+                        <path
+                            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                    </svg>
+                    Tạo hóa đơn
+                </button>
+                <button onclick="showHDtrangcho()" type="button" class="btn btn-outline-dark" style="margin-left: 10px;"
+                    data-bs-toggle="modal" data-bs-target="#trancho">Hóa đơn hàng chờ <i
+                        class="bi bi-hourglass-split"></i></button>
+            </div>
             <p></p>
             <!-- Container cho các tab -->
             <div class="tab" id="tabContainer">
@@ -222,7 +227,46 @@
                 </div>
             </div>
             <!-- các modal -->
+            <!-- modal tràn chờ -->
+            <div class="modal fade" id="trancho" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Thông tin hàng chờ</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="d-flex justify-content-between">
+                                <div style="border-right: 1px solid #ccc;" class="col-6">
+                                    <div class="d-flex justify-content-center"
+                                        style="border-bottom: 1px solid #ccc; margin-bottom: 4px;">
+                                        <h5>Đơn trong hàng chờ</h5>
+                                    </div>
+                                    <div id="name-checkbox-l">
 
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex justify-content-center"
+                                        style="border-bottom: 1px solid #ccc; margin-bottom: 4px;">
+                                        <h5>Đơn đang xử lý</h5>
+                                    </div>
+                                    <div id="name-checkbox-r">
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+                            <button type="button" class="btn btn-primary" id="btnChuyen"
+                                onclick="chuyendoiTranCho()">Chuyển đổi</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!--         
     thay đổi thông tin hóa đơn -->
             <div class="modal fade" id="modalThayDoiHoaDon5" tabindex="-1" aria-labelledby="exampleModalThayDoiHoaDon5"
@@ -698,7 +742,8 @@
                                     <select class="form-select form-select-sm mb-3" id="quanhuyen" th:field="*{huyen}">
                                         <option value="" th:text="*{huyen}" selected>Chọn quận huyện</option>
                                     </select>
-                                    <select class="form-select form-select-sm mb-3" id="xaphuong" th:field="*{xa}">
+                                    <select class="form-select form-select-sm mb-3" id="xaphuong" th:field="*{xa}"
+                                        onchange="feanddate()">
                                         <option value="" th:text="*{xa}" selected>
                                             Chọn phường xã</option>
                                     </select>
@@ -1064,7 +1109,39 @@ tabindex="0">
                 })
                 .then(function (b) {
                     if (b.length == 5) {
-                        showToast();
+                        var rslt = confirm("Nếu tạo hóa đơn mới bạn sẽ xác nhận chuyển hóa đơn gần nhất về hàng chờ?");
+                        if (rslt) {
+                            //check hóa đơn hàng chờ
+                            var urlChuyenCho = `/ban-hang-tai-quay/chuyen-hang-cho`;
+                            fetch(urlChuyenCho)
+                                .then(function (a) {
+                                    return a.json();
+                                })
+                                .then(function (b) {
+
+                                    if (b == true) {
+                                        var urlTaos = `/ban-hang-tai-quay/tao-don-cho`;
+                                        fetch(urlTaos)
+                                            .then(function (a) {
+                                                return a.json();
+                                            })
+                                            .then(function (b) {
+
+                                                document.getElementById("tabContainer").innerHTML = '';
+                                                for (const hd of b) {
+                                                    loadTab(hd.mahoadon);
+
+                                                }
+                                                thongbao('01 đơn hàng đã chuyển về hàng tràn chờ', 'success')
+                                            })
+
+                                    } else {
+                                        showToast();
+                                    }
+
+                                })
+
+                        }
                     } else {
                         var urlTao = `/ban-hang-tai-quay/tao-don-cho`;
                         fetch(urlTao)
@@ -1075,7 +1152,6 @@ tabindex="0">
 
                                 document.getElementById("tabContainer").innerHTML = '';
                                 for (const hd of b) {
-
                                     loadTab(hd.mahoadon);
 
                                 }
@@ -1320,7 +1396,7 @@ tabindex="0">
 
             Toast.fire({
                 icon: "error",
-                title: "Bạn đã tạo tối đa 5 hóa đơn!"
+                title: "Tồn tại 01 hóa đơn hàng chờ chưa được xử lý, hãy xử lý đơn này trước khi tạo 1 đơn hàng chờ khác!"
             });
         }
 
@@ -1525,6 +1601,7 @@ tabindex="0">
                                      </button></a>
                                      </td>
                                 </tr>`;
+
                     }
 
                     if (thisNumberSPPage < 1) {
@@ -2796,7 +2873,7 @@ tabindex="0">
                     if (b.tinh == null) {
                         document.getElementById('tinhthanh').value = 'chọn tỉnh';
                     }
-                     callIdCity(b.tinh, b.huyen,b.xa)
+                    callIdCity(b.tinh, b.huyen, b.xa)
                 })
         }
 
@@ -2903,7 +2980,11 @@ tabindex="0">
     <script th:inline="javascript">
         /*<![CDATA[*/
         var orderSuccess = /*[[${orderSuccess}]]*/ false;
+        var checkHangCho = /*[[${checkHangCho}]]*/ false;
         /*]]>*/
+        if (checkHangCho == true) {
+            thongbao('Có 01 đơn hàng tràn chờ đã được hiển thị', 'info')
+        }
         if (orderSuccess == true) {
             var urlgetbill = `http://localhost:8080/ban-hang-tai-quay/show-bill`;
             fetch(urlgetbill)
@@ -3158,7 +3239,9 @@ tabindex="0">
                                             var days = day + '/' + month + '/' + year;
 
                                             document.getElementById('ngaygiaodukiens').innerHTML = days;
-                                            // feship(idHuyenreturn, idXareturn);
+                                            // phigiaohang
+                                            feship(idHuyenreturn, idXareturn);
+
 
 
                                         })
@@ -3202,12 +3285,119 @@ tabindex="0">
                     return response.data // In dữ liệu ra console
                 })
                 .then(function (d) {
-                    console.log(d)
+                    var shipfe = convertCashInput(d.data.total);
+                    document.getElementById('phigiaohang').value = shipfe;
                 })
 
         }
+        function convertCashInput(amount) {
+            // Chuyển số thành chuỗi và thêm dấu phân cách hàng nghìn
+            let formattedAmount = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            // Thêm ký hiệu tiền tệ ₫ vào cuối chuỗi
+            return formattedAmount + " ₫";
+        }
+
+        function feanddate() {
+            var tinhfeanddate = document.getElementById('tinhthanh').value;
+            var huyenfeanddate = document.getElementById('quanhuyen').value;
+            var xafeanddate = document.getElementById('xaphuong').value;
+            callIdCity(tinhfeanddate, huyenfeanddate, xafeanddate);
+            thongbao('thông tin vận chuyển đã có sự thay đổi', 'info')
+        }
+
+        function showHDtrangcho() {
+            var urlShowTran = `http://localhost:8080/ban-hang-tai-quay/show-hang-cho`;
+            fetch(urlShowTran)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    var htmlHDHangChor = '';
+                    var htmlHDHangChol = '';
+                    for (const hd of b[1]) {
+                        htmlHDHangChor += `
+                        <div>
+                                        <label for="name1">${'Hóa đơn: ' + hd.mahoadon}</label>
+                                        <input type="radio"  name="rightbox" id="${hd.mahoadon}" onclick="checkRadioStatus()">
+                                    </div>
+                        `;
+                    }
+                    for (const md of b[0]) {
+                        htmlHDHangChol += `
+                        <div>
+                                        <label for="name1">${'Hóa đơn: ' + md.mahoadon}</label>
+                                        <input type="radio"  name="leftbox" id="${md.mahoadon}" onclick="checkRadioStatus()">
+                                    </div>
+                        `;
+                    }
+
+                    document.getElementById('name-checkbox-l').innerHTML = htmlHDHangChol;
+
+                    document.getElementById('name-checkbox-r').innerHTML = htmlHDHangChor;
+
+                    document.getElementById('btnChuyen').disabled = true;
+                })
+
+        }
+        function checkRadioStatus() {
+            // Lấy tất cả radio button trong các div
+            var leftRadios = document.querySelectorAll('#name-checkbox-l input[type="radio"]');
+            var rightRadios = document.querySelectorAll('#name-checkbox-r input[type="radio"]');
+
+            // Kiểm tra xem có bao nhiêu radio button được chọn
+            var leftChecked = Array.from(leftRadios).filter(radio => radio.checked).length;
+            var rightChecked = Array.from(rightRadios).filter(radio => radio.checked).length;
+
+            // Hiển thị hoặc ẩn button dựa trên số lượng radio button được chọn
+
+            if (leftChecked >= 1 && rightChecked >= 1) {
+                document.getElementById('btnChuyen').disabled = false;
+            } else {
+                document.getElementById('btnChuyen').disabled = true;
+            }
+        }
+
+        function chuyendoiTranCho() {
+            // Lấy tất cả radio button trong các div
+            var leftRadios = document.querySelectorAll('#name-checkbox-l input[type="radio"]');
+            var rightRadios = document.querySelectorAll('#name-checkbox-r input[type="radio"]');
+
+            // Lấy ID của các radio button được chọn
+            var selectedIds = [];
+            leftRadios.forEach(radio => {
+                if (radio.checked) {
+                    selectedIds.push(radio.id);
+                }
+            });
+            rightRadios.forEach(radio => {
+                if (radio.checked) {
+                    selectedIds.push(radio.id);
+                }
+            });
+            var urlChuyendoi = `http://localhost:8080/ban-hang-tai-quay/chuyen-doi-don?lstData=${selectedIds}`;
+            fetch(urlChuyendoi)
+                .then(function (c) {
+                    return c.json();
+                })
+                .then(function (b) {
+                    if (b == true) {
+                        localStorage.setItem('thongbao', 'true');
+                        window.location.href = 'http://localhost:8080/hoa-don/ban-hang';
+                    } else {
+                        thongbao('Lỗi không xác định', 'warning')
+                    }
+                })
+
+        }
+        var message = localStorage.getItem('thongbao');
+        if (message === 'true') {
+            thongbao('Chuyển đổi thành công', 'success');
+            // Xóa trạng thái thông báo sau khi hiển thị
+            localStorage.removeItem('thongbao');
 
 
+
+        }
     </script>
 </body>
 

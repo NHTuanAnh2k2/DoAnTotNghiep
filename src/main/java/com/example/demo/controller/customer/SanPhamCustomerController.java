@@ -9,6 +9,7 @@ import com.example.demo.repository.SanPhamRepositoty;
 import com.example.demo.repository.customer.SanPhamNamRepository;
 import com.example.demo.repository.customer.SanPhamNuRepository;
 import com.example.demo.repository.customer.TrangChuRepository;
+import com.example.demo.repository.giohang.GioHangChiTietRepository;
 import com.example.demo.service.impl.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ import java.util.List;
 
 @Controller
 public class SanPhamCustomerController {
+    @Autowired
+    private GioHangChiTietRepository gioHangChiTietRepository;
+
     @Autowired
     TrangChuRepository trangChuRepository;
 
@@ -72,6 +76,16 @@ public class SanPhamCustomerController {
 
     @GetMapping("/customer/searchMaAnhTen/spnam")
     public String searchspnam(Model model, @ModelAttribute("searchspnam") SanPhamCustomerInfo info, @ModelAttribute("search2") SanPhamCustomerInfo info2, @RequestParam(defaultValue = "0") int p) {
+        List<GioHangChiTiet> cartItems = gioHangChiTietRepository.findAll(); // Giả sử bạn có phương thức này để lấy các mục trong giỏ hàng
+        int totalQuantity = 0;
+
+        // Tính tổng số lượng sản phẩm trong giỏ hàng
+        for (GioHangChiTiet item : cartItems) {
+            totalQuantity += item.getSoluong();
+        }
+
+        // Đưa tổng số lượng vào model để hiển thị trên giao diện
+        model.addAttribute("totalQuantity", totalQuantity);
         Pageable pageable = PageRequest.of(p, 10);
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
@@ -106,6 +120,13 @@ public class SanPhamCustomerController {
 
     @GetMapping("/customer/sanphamnam")
     public String sanphamnam(Model model, @ModelAttribute("loctheothkc") SanPhamCustomerInfo info, @RequestParam(defaultValue = "0") int p) {
+        List<GioHangChiTiet> cartItems = gioHangChiTietRepository.findAll(); // Giả sử bạn có phương thức này để lấy các mục trong giỏ hàng
+        int totalQuantity = 0;
+        // Tính tổng số lượng sản phẩm trong giỏ hàng
+        for (GioHangChiTiet item : cartItems) {
+            totalQuantity += item.getSoluong();
+        }
+        model.addAttribute("totalQuantity", totalQuantity);
         Pageable pageable = PageRequest.of(p, 8);
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
@@ -289,6 +310,13 @@ public class SanPhamCustomerController {
     @GetMapping("/customer/sanphamnu")
     public String sanphamnu(Model model, @ModelAttribute("search2") SanPhamCustomerInfo info,
                             @RequestParam(defaultValue = "0") int p) {
+        List<GioHangChiTiet> cartItems = gioHangChiTietRepository.findAll(); // Giả sử bạn có phương thức này để lấy các mục trong giỏ hàng
+        int totalQuantity = 0;
+        // Tính tổng số lượng sản phẩm trong giỏ hàng
+        for (GioHangChiTiet item : cartItems) {
+            totalQuantity += item.getSoluong();
+        }
+        model.addAttribute("totalQuantity", totalQuantity);
         Pageable pageable = PageRequest.of(p, 10);
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();

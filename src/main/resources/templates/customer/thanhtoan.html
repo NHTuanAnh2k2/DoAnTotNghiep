@@ -329,39 +329,45 @@
         <table>
             <tbody>
             <div>
-                <tr>
-                    <td class="anhsp" style="width: 15%;">
-                        <img src="../dist/img/bong2.jpg" width="100%" height="40px"/>
-                        <span class="position-absolute top-1 start-85 translate-middle badge rounded-pill bg-danger">3</span>
+                <tr th:each="item, iterStat : ${cartItems}">
+                    <td class="anhsp" style="width: 15%; position: relative;">
+                        <div th:id="'carouselExample' + ${item.id}" class="carousel">
+                            <div class="carousel-inner">
+                                <th:block th:each="anh, index : ${item.sanphamchitiet.anh}">
+                                    <div th:classappend="${index.index == 0} ? 'carousel-item active' : 'carousel-item'">
+                                        <img th:if="${anh.tenanh != null}"
+                                             th:src="@{'/upload' + ${anh.tenanh.substring(anh.tenanh.lastIndexOf('upload') + 6)}}"
+                                             class="d-block w-100" style="width: 100%; height: 70px;" alt="Ảnh">
+                                    </div>
+                                </th:block>
+                            </div>
+                            <button class="carousel-control-prev" type="button" th:data-bs-target="'#carouselExample' + ${item.id}" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" th:data-bs-target="'#carouselExample' + ${item.id}" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                        <span class="position-absolute badge rounded-pill bg-danger" style="top: 0; left: 90%; transform: translate(-50%, -50%); width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 50%;" th:text="${item.soluong}"></span>
                     </td>
+
                     <td style="width: 60%; padding-left: 15px;">
-                        <h8 style="margin: 0;padding-top: 0;">Giày Thể Thao Nữ Biti's Hunter x DC Batman DSWH09099</h8>
-                        <p style="margin: 0;padding-top: 0;">Đen / 36</p>
+                        <h8 style="margin: 0;padding-top: 0;" th:text="${item.sanphamchitiet.sanpham.tensanpham}"></h8>
+                        <p style="margin: 0; padding-top: 0;">
+                            <span th:text="${item.sanphamchitiet.mausac.ten}"></span> /
+                            <span th:text="${item.sanphamchitiet.kichco.ten}"></span>
+                        </p>
                     </td>
                     <td style="width: 25%; text-align: right;">
                         <div class="d-flex justify-content-end align-items-center">
-                            <b>720.000</b>
-                            <b style="font-size: 10px;">đ</b>
+                            <b th:text="${#numbers.formatDecimal(item.sanphamchitiet.giatien * item.soluong, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></b>
                         </div>
                     </td>
                 </tr>
                 <tr class="spacer-row"><td colspan="3"></td></tr>
-                <tr>
-                    <td class="anhsp" style="width: 15%;">
-                        <img src="../dist/img/bong2.jpg" width="100%" height="40px"/>
-                        <span class="position-absolute top-1 start-85 translate-middle badge rounded-pill bg-danger">3</span>
-                    </td>
-                    <td style="width: 60%; padding-left: 15px;">
-                        <h8 style="margin: 0;padding-top: 0;">Giày Thể Thao Nữ Biti's Hunter x DC Batman DSWH09099</h8>
-                        <p style="margin: 0;padding-top: 0;">Đen / 36</p>
-                    </td>
-                    <td style="width: 25%; text-align: right;">
-                        <div class="d-flex justify-content-end align-items-center">
-                            <b>720.000</b>
-                            <b style="font-size: 10px;">đ</b>
-                        </div>
-                    </td>
-                </tr>
+
             </div>
             </tbody>
         </table>
@@ -422,8 +428,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <p style="color: #AAAAAA; font-size: 18px;">Tạm tính</p>
             <div style="display: flex; align-items: center;">
-                <h5>720.000</h5>
-                <b style="font-size: 14px;">đ</b>
+                <h5 th:text="${#numbers.formatDecimal(totalAmount, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></h5>
             </div>
         </div>
         <div class="d-flex justify-content-between align-items-center">
