@@ -576,20 +576,22 @@
             <!--Kết thúc Modal thêm sản phẩm vào hóa đơn-->
 
             <!-- modal bill  -->
-            <div class="modal fade" id="orderSuccessModal" data-bs-backdrop="static" data-bs-keyboard="false"
-                tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal fade" id="orderSuccessModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div id="hienthibill" class="ps-4">
+                  <div class="modal-content">
 
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
-                            <button type="button" class="btn btn-primary" id="saveInvoiceBtn">Lưu hóa đơn</button>
-                        </div>
+                    <div class="modal-body">
+                      <div id="hienthibill">
+
+                      </div>
                     </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="inbill()">In hóa đơn</button>
+                    </div>
+                  </div>
                 </div>
-            </div>
+              </div>
             <!-- thêm khách hàng -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
@@ -2976,6 +2978,11 @@ tabindex="0">
                 })
         }
     </script>
+     <!-- chạy lại cdn bootstrap -->
+     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+ 
     <!-- hienthibill -->
     <script th:inline="javascript">
         /*<![CDATA[*/
@@ -3020,12 +3027,11 @@ tabindex="0">
                     htmlbill2 = `
                     <div class="d-flex justify-content-center">
                             <div class="ms-5">
-                                <h1 style="font-size: 80px;" class="mt-5" >FSPORT SHOP</h1>
-
+                                <h1 style="font-size: 40px;" class="mt-5" >FSPORT SHOP</h1>
                             </div>
                         </div>
                         <div class="d-flex justify-content-center">
-                            <h5>Chương trình phổ thông cao đẳng FPT Polytechnic, Phương Canh Nam Từ
+                            <h5 >103 Trịnh Văn Bô,Phương Canh, Nam Từ
                                 Liêm,
                                 Hà Nội</h5>
                         </div>
@@ -3081,7 +3087,6 @@ tabindex="0">
                         </div>
                     `;
 
-
                     document.getElementById('hienthibill').innerHTML = htmlbill2;
                     var myModal = new bootstrap.Modal(document.getElementById('orderSuccessModal'), {});
                     myModal.show();
@@ -3090,6 +3095,10 @@ tabindex="0">
 
 
         }
+
+    </script>
+
+    <script>
         //chuyển tên city để so sánh
         function extractLocation(input) {
             // Chuyển chuỗi về dạng chữ thường để so sánh
@@ -3394,11 +3403,27 @@ tabindex="0">
             thongbao('Chuyển đổi thành công', 'success');
             // Xóa trạng thái thông báo sau khi hiển thị
             localStorage.removeItem('thongbao');
-
-
-
         }
+       
+//in hd tại quầy
+function inbill() {
+    var urlindon = `http://localhost:8080/ban-hang-tai-quay/in-don-tai-quay`;
+            fetch(urlindon)
+                .then(function (c) {
+                    return c.json();
+                })
+                .then(function (b) {
+                    if (b == true) {
+                        thongbao('In hóa đơn thành công', 'success')
+                    } else {
+                        thongbao('Lỗi không xác định', 'warning')
+                    }
+                })
+}
+
     </script>
+
+
 </body>
 
 </html>

@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -30,6 +31,8 @@ import java.util.*;
 @Controller
 @RequestMapping("ban-hang-tai-quay")
 public class BanHangController {
+    @Autowired
+    SpringTemplateEngine dao1;
     @Autowired
     PhieuGiamChiTietRepository daoPGGCT;
     @Autowired
@@ -60,6 +63,7 @@ public class BanHangController {
     //chứa tổng tiền của đơn hiện tại
     BigDecimal tongtienhoadonhientai = new BigDecimal("0");
     BigDecimal sotiengiam = new BigDecimal("0");
+    MauHoaDon billTam = new MauHoaDon();
 
     @GetMapping("hoa-don-cho")
     @ResponseBody
@@ -481,17 +485,19 @@ public class BanHangController {
         BigDecimal tongTienSP = new BigDecimal("0");
         for (HoaDonChiTiet a : lsthdct
         ) {
-            tongTienSP = tongTienSP.add(a.getGiasanpham().multiply(new BigDecimal(a.getSoluong())));
             lstin.add(new sanPhamIn(a.getSanphamchitiet().getSanpham().getTensanpham(), a.getSoluong()));
 
         }
+        tongTienSP = hdHienTai.getTongtien();
         String ten = null;
         if (hdHienTai.getKhachhang() != null) {
             ten = hdHienTai.getKhachhang().getNguoidung().getHovaten();
         }
 
-        MauHoaDon u = new MauHoaDon("FSPORT SHOP", hdHienTai.getMahoadon(), hdHienTai.getNgaytao(), "Lô H023, Nhà số 39, Ngõ 148, Xuân Phương, Phương Canh,Nam Từ Liêm, Hà Nội",
+        MauHoaDon u = new MauHoaDon("FSPORT SHOP", hdHienTai.getMahoadon(), hdHienTai.getNgaytao(), "Lô H023, Ngõ 148, Xuân Phương, Phương Canh,Nam Từ Liêm, Hà Nội",
                 hdHienTai.getDiachi(), "0379036607", hdHienTai.getSdt(), ten, lstin, tongTienSP);
+        billTam = u;
+
         return ResponseEntity.ok(u);
     }
 
@@ -681,12 +687,14 @@ public class BanHangController {
         return ResponseEntity.ok(false);
     }
 
+    @GetMapping("in-don-tai-quay")
+    public ResponseEntity<?> inBill(
+    ) {
+        String finalhtml = null;
+        Context data = daoHD.setData(billTam);
+        finalhtml = dao1.process("billhoadon", data);
+        daoHD.htmlToPdfTaiQuay(finalhtml, hdHienTai.getMahoadon());
+        return ResponseEntity.ok(true);
+    }
 
-    //in đơn
-//    MauHoaDon u = new MauHoaDon("FSPORT", hdTT.getMahoadon(), hdTT.getNgaytao(), "Lô H023, Nhà số 39, Ngõ 148, Xuân Phương, Phương Canh,Nam Từ Liêm, Hà Nội",
-//            hdTT.getDiachi(), "0379036607", hdTT.getSdt(), hdTT.getTennguoinhan(), lstin, tongTT);
-//    String finalhtml = null;
-//    Context data = dao.setData(u);
-//    finalhtml = dao1.process("index", data);
-//        dao.htmlToPdfTaiQuay(finalhtml, hdTT.getMahoadon());
 }
