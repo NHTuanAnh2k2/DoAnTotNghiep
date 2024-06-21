@@ -22,15 +22,19 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Date;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class HoaDonImp implements HoaDonService {
+
+
     @Autowired
     HoaDonRepository dao;
 
@@ -144,31 +148,6 @@ public class HoaDonImp implements HoaDonService {
     public String htmlToPdfTaiQuay(String fileHtmlName, String pdfname) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try {
-            //start tạo qr
-            //tạo qr
-            String qrCodeText = "địt mẹ mày bất ngờ chưa"; // Chuỗi để tạo QR
-            int size = 250; // Kích thước của mã QR
-
-            // Tạo tham số cho mã QR
-            Map<EncodeHintType, Object> hintMap = new HashMap<>();
-            hintMap.put(EncodeHintType.CHARACTER_SET, "UTF-8");
-
-            // Tạo đối tượng QRCodeWriter
-            QRCodeWriter qrCodeWriter = new QRCodeWriter();
-            BitMatrix bitMatrix = null;
-
-            try {
-                // Tạo mã QR dưới dạng BitMatrix từ chuỗi và kích thước đã chỉ định
-                bitMatrix = qrCodeWriter.encode(qrCodeText, BarcodeFormat.QR_CODE, size, size, hintMap);
-
-                // Lưu BitMatrix thành ảnh PNG
-                MatrixToImageWriter.writeToPath(bitMatrix, "PNG", new File("src/main/resources/static/MyQRCode.png").toPath());
-                System.out.println("QR Code đã được tạo thành công!");
-
-            } catch (WriterException | IOException e) {
-                System.out.println("Lỗi tạo QR Code: " + e.getMessage());
-            }
-            //end tạo qr
             PdfWriter pdfWriter = new PdfWriter(byteArrayOutputStream);
             DefaultFontProvider defaultFontProvider = new DefaultFontProvider(false, true, false);
             ConverterProperties converterProperties = new ConverterProperties();
