@@ -9,6 +9,12 @@ import com.example.demo.repository.PhieuGiamGiaChiTiet.PhieuGiamChiTietRepositor
 import com.example.demo.repository.PhieuGiamGiaRepository;
 import com.example.demo.repository.khachhang.KhachHangRepostory;
 import com.example.demo.service.*;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +27,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Date;
@@ -494,7 +502,7 @@ public class BanHangController {
             ten = hdHienTai.getKhachhang().getNguoidung().getHovaten();
         }
 
-        MauHoaDon u = new MauHoaDon("FSPORT SHOP", hdHienTai.getMahoadon(), hdHienTai.getNgaytao(), "Lô H023, Ngõ 148, Xuân Phương, Phương Canh,Nam Từ Liêm, Hà Nội",
+        MauHoaDon u = new MauHoaDon("FSPORT SHOP", hdHienTai.getMahoadon(), hdHienTai.getNgaytao(), "103 Trịnh Văn Bô,Phương Canh, Nam Từ Liêm, Hà Nội",
                 hdHienTai.getDiachi(), "0379036607", hdHienTai.getSdt(), ten, lstin, tongTienSP);
         billTam = u;
 
