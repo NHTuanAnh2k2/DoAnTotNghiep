@@ -7,6 +7,7 @@ import com.example.demo.info.hosokhachhang.DoiMatKhauNguoiDung;
 import com.example.demo.info.hosokhachhang.UpdateDiaChi;
 import com.example.demo.info.hosokhachhang.UpdateKhachHang;
 import com.example.demo.info.hosokhachhang.UpdateNguoiDung;
+import com.example.demo.info.token.UserManager;
 import com.example.demo.repository.NguoiDungRepository;
 import com.example.demo.restcontroller.khachhang.Province;
 import com.example.demo.security.JWTGenerator;
@@ -26,11 +27,13 @@ import java.util.Random;
 
 @Controller
 public class CustomerController {
-    @Autowired
-    KhachHangService khachHangService;
 
     @Autowired
+    KhachHangService khachHangService;
+    @Autowired
     NguoiDungRepository nguoiDungRepository;
+    @Autowired
+    UserManager userManager;
 
 
     @GetMapping("/trangchu")
@@ -89,6 +92,7 @@ public class CustomerController {
             model.addAttribute("userDangnhap", userDangnhap);
             model.addAttribute("nguoidungDoiMk", new DoiMatKhauNguoiDung());
             model.addAttribute("cities", cities);
+            System.out.println("Danh sách người dùng đang đăng nhập: " + userManager.getLoggedInUsers());
             return "customer/hosokhachhang";
         } else {
             return "redirect:/dangky";
