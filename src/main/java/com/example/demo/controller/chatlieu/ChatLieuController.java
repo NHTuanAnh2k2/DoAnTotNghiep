@@ -27,6 +27,8 @@ public class ChatLieuController {
         } else {
             list = chatLieuRepository.findAllByOrderByNgaytaoDesc();
         }
+        model.addAttribute("fillSearch", info.getKey());
+        model.addAttribute("fillTrangThai", info.getTrangthai());
         model.addAttribute("lstChatLieu", list);
         return "admin/qlchatlieu";
     }
