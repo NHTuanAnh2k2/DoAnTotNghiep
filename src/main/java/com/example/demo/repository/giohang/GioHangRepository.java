@@ -14,4 +14,6 @@ public interface GioHangRepository extends JpaRepository<GioHang,Integer> {
     @Query("SELECT gh FROM GioHang gh WHERE gh.khachhang = :khachhang AND gh.trangthai = true")
     GioHang findCurrentGioHang(@Param("khachhang") KhachHang khachhang);
 
+    GioHang findByKhachhang(KhachHang khachHang);
+
 }
