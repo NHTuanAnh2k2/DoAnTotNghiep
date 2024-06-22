@@ -1,5 +1,6 @@
 package com.example.demo.repository.giohang;
 
+import com.example.demo.entity.GioHang;
 import com.example.demo.entity.GioHangChiTiet;
 import com.example.demo.entity.SanPhamChiTiet;
 import jakarta.transaction.Transactional;
@@ -15,8 +16,12 @@ import java.util.List;
 public interface GioHangChiTietRepository extends JpaRepository<GioHangChiTiet, Integer> {
     List<GioHangChiTiet> findBySanphamchitiet(SanPhamChiTiet sanPhamChiTiet);
 
+    List<GioHangChiTiet> findBySanphamchitietAndGiohang(SanPhamChiTiet sanPhamChiTiet, GioHang gioHang);
+
     @Transactional
     @Modifying
     @Query("UPDATE GioHangChiTiet ghct SET ghct.soluong = :soLuong WHERE ghct.id = :id")
     void updateSoLuongById(Integer soLuong, Integer id);
+
+
 }
