@@ -41,6 +41,8 @@ import java.util.*;
 @RequestMapping("ban-hang-tai-quay")
 public class BanHangController {
     @Autowired
+    LichSuHoaDonService  daoLSHD;
+    @Autowired
     SpringTemplateEngine dao1;
     @Autowired
     PhieuGiamChiTietRepository daoPGGCT;
@@ -561,7 +563,7 @@ public class BanHangController {
         HoaDon hdset1 = hdHienTai;
         if (thongTin.getTrasau() == true) {
             //trả sau_đợi call api giao hàng nhanh
-            hdset1.setTrangthai(1);
+            hdset1.setTrangthai(0);
             BigDecimal tienTong = new BigDecimal("0.00");
             hdset1.setTongtien(tienTong);
             //set phí vận chuyển tạm tính 30k sau đó call từ giao hàng nhanh
@@ -579,6 +581,18 @@ public class BanHangController {
             phieugiamgiachtietset.setTiengiam(sotiengiam);
             LocalDateTime currentDateTime = LocalDateTime.now();
             phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
+            //trả sau thì cần  fake luôn lịch sử đã xác nhận
+            LichSuHoaDon lichSuHoaDon=new LichSuHoaDon();
+            //fake nhân viên
+            NhanVien nvfake=new NhanVien();
+            nvfake.setId(5);
+            //fake lịch sử chờ
+            lichSuHoaDon.setNhanvien(nvfake);
+            lichSuHoaDon.setGhichu("khách hàng đã xác nhận đơn hàng");
+            lichSuHoaDon.setHoadon(hdset1);
+            lichSuHoaDon.setNgaytao(Timestamp.valueOf(currentDateTime));
+            lichSuHoaDon.setTrangthai(0);
+            daoLSHD.add(lichSuHoaDon);
             daoPGGCT.save(phieugiamgiachtietset);
             lstPTTT = new ArrayList<>();
             List<HoaDon> lstcheck7 = daoHD.timTheoTrangThaiVaLoai(7, false);
@@ -626,7 +640,7 @@ public class BanHangController {
             return "redirect:/hoa-don/ban-hang";
 
         }
-        redirectAttributes.addFlashAttribute("orderSuccess", true);
+        redirectAttributes.addFlashAttribute("orderSuccess", false);
         return "redirect:/hoa-don/ban-hang";
     }
 

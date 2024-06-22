@@ -7,6 +7,12 @@ import com.example.demo.repository.hoadon.HoaDonRepository;
 import com.example.demo.restcontroller.khachhang.Province;
 import com.example.demo.service.*;
 import com.example.demo.service.impl.NguoiDungImpl1;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,6 +29,9 @@ import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -65,6 +74,13 @@ public class hoaDonController {
     Integer idhdshowdetail = null;
     HoaDonCustom hdSaveInfoSeachr = new HoaDonCustom();
     List<String> lstdiachigiao = new ArrayList<>();
+
+    private static String encodeFileToBase64Binary(File file) throws IOException {
+        FileInputStream fileInputStreamReader = new FileInputStream(file);
+        byte[] bytes = new byte[(int) file.length()];
+        fileInputStreamReader.read(bytes);
+        return Base64.getEncoder().encodeToString(bytes);
+    }
 
     @GetMapping("hien-thi")
     public String hienThi(Model model, @RequestParam("page") Optional<Integer> pageParam,
@@ -616,6 +632,48 @@ public class hoaDonController {
         MauHoaDon u = new MauHoaDon("FSPORT", hdTT.getMahoadon(), hdTT.getNgaytao(), "Lô H023, Nhà số 39, Ngõ 148, Xuân Phương, Phương Canh,Nam Từ Liêm, Hà Nội",
                 hdTT.getDiachi(), "0379036607", hdTT.getSdt(), hdTT.getTennguoinhan(), lstin, tongTT,"");
         String finalhtml = null;
+        //tạo qr
+        String qrCodeText =hdTT.getMahoadon(); // Chuỗi để tạo QR
+        int size = 250; // Kích thước của mã QR
+
+        // Tạo tham số cho mã QR
+        Map<EncodeHintType, Object> hintMap = new HashMap<>();
+        hintMap.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+
+        // Tạo đối tượng QRCodeWriter
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = null;
+
+        try {
+            // Tạo mã QR dưới dạng BitMatrix từ chuỗi và kích thước đã chỉ định
+            bitMatrix = qrCodeWriter.encode(qrCodeText, BarcodeFormat.QR_CODE, size, size, hintMap);
+
+            // Lưu BitMatrix thành ảnh PNG
+            MatrixToImageWriter.writeToPath(bitMatrix, "PNG", new File("src/main/resources/static/" + hdTT.getMahoadon() + ".png").toPath());
+            // Thay đổi đường dẫn của thư mục chứa ảnh PNG của bạn ở đây
+            // Đường dẫn tới file PNG của bạn
+            String filePath = "src/main/resources/static/" + hdTT.getMahoadon() + ".png";
+
+            File file = new File(filePath);
+
+            if (file.isFile() && file.getName().toLowerCase().endsWith(".png")) {
+                try {
+                    String base64String = encodeFileToBase64Binary(file);
+                    System.out.println("File: " + file.getName());
+                    u.setQr(base64String);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Đường dẫn không phải là một file PNG hợp lệ.");
+            }
+
+        } catch (WriterException | IOException e) {
+            System.out.println("Lỗi tạo QR Code: " + e.getMessage());
+        }
+
+        //end tạo qr
+
         Context data = dao.setData(u);
         finalhtml = dao1.process("index", data);
         dao.htmlToPdf(finalhtml, hdTT.getMahoadon());

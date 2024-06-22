@@ -153,6 +153,7 @@
                                         d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6 6a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z" />
                                 </svg>
                                 BÁN HÀNG TẠI QUẦY
+
                             </h1>
                             <div id="dataContainer" th:data-my-attribute="${check}" style="display:none;"></div>
                         </div>
@@ -576,22 +577,24 @@
             <!--Kết thúc Modal thêm sản phẩm vào hóa đơn-->
 
             <!-- modal bill  -->
-            <div class="modal fade" id="orderSuccessModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal fade" id="orderSuccessModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
-                  <div class="modal-content">
+                    <div class="modal-content">
 
-                    <div class="modal-body">
-                      <div id="hienthibill">
+                        <div class="modal-body">
+                            <div id="hienthibill">
 
-                      </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="inbill()">In
+                                hóa đơn</button>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
-                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="inbill()">In hóa đơn</button>
-                    </div>
-                  </div>
                 </div>
-              </div>
+            </div>
             <!-- thêm khách hàng -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
@@ -2978,15 +2981,19 @@ tabindex="0">
                 })
         }
     </script>
-     <!-- chạy lại cdn bootstrap -->
-     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <!-- chạy lại cdn bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
 
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
- 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+
     <!-- hienthibill -->
     <script th:inline="javascript">
         /*<![CDATA[*/
-        var orderSuccess = /*[[${orderSuccess}]]*/ false;
+        var orderSuccess = /*[[${orderSuccess}]]*/ 2;
         var checkHangCho = /*[[${checkHangCho}]]*/ false;
         /*]]>*/
         if (checkHangCho == true) {
@@ -3064,8 +3071,8 @@ tabindex="0">
                        </table>
                             </div>
                             <div class="col text-center mt-3">
-                                <h1>QR</h1>
-                            </div>
+                                <img src="/upload/fake.png" alt="" style="width: 100px; height: 100px;">
+                                 </div>
                         </div>
                         <hr class="my-4">
                         <div class="row">
@@ -3094,6 +3101,10 @@ tabindex="0">
                 })
 
 
+        } else {
+            if (orderSuccess == false) {
+                thongbao('Có 01 đơn hàng giao mới', 'info')
+            }
         }
 
     </script>
@@ -3404,10 +3415,10 @@ tabindex="0">
             // Xóa trạng thái thông báo sau khi hiển thị
             localStorage.removeItem('thongbao');
         }
-       
-//in hd tại quầy
-function inbill() {
-    var urlindon = `http://localhost:8080/ban-hang-tai-quay/in-don-tai-quay`;
+
+        //in hd tại quầy
+        function inbill() {
+            var urlindon = `http://localhost:8080/ban-hang-tai-quay/in-don-tai-quay`;
             fetch(urlindon)
                 .then(function (c) {
                     return c.json();
@@ -3419,7 +3430,7 @@ function inbill() {
                         thongbao('Lỗi không xác định', 'warning')
                     }
                 })
-}
+        }
 
     </script>
 
