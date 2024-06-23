@@ -25,4 +25,5 @@ public class MauHoaDon {
     String tennguoinhan;
     List<sanPhamIn> lst;
     BigDecimal tongtien;
+    String qr;
 }

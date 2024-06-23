@@ -9,6 +9,12 @@ import com.example.demo.repository.PhieuGiamGiaChiTiet.PhieuGiamChiTietRepositor
 import com.example.demo.repository.PhieuGiamGiaRepository;
 import com.example.demo.repository.khachhang.KhachHangRepostory;
 import com.example.demo.service.*;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +25,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Date;
@@ -30,6 +40,10 @@ import java.util.*;
 @Controller
 @RequestMapping("ban-hang-tai-quay")
 public class BanHangController {
+    @Autowired
+    LichSuHoaDonService  daoLSHD;
+    @Autowired
+    SpringTemplateEngine dao1;
     @Autowired
     PhieuGiamChiTietRepository daoPGGCT;
     @Autowired
@@ -60,6 +74,14 @@ public class BanHangController {
     //chứa tổng tiền của đơn hiện tại
     BigDecimal tongtienhoadonhientai = new BigDecimal("0");
     BigDecimal sotiengiam = new BigDecimal("0");
+    MauHoaDon billTam = new MauHoaDon();
+
+    private static String encodeFileToBase64Binary(File file) throws IOException {
+        FileInputStream fileInputStreamReader = new FileInputStream(file);
+        byte[] bytes = new byte[(int) file.length()];
+        fileInputStreamReader.read(bytes);
+        return Base64.getEncoder().encodeToString(bytes);
+    }
 
     @GetMapping("hoa-don-cho")
     @ResponseBody
@@ -481,17 +503,19 @@ public class BanHangController {
         BigDecimal tongTienSP = new BigDecimal("0");
         for (HoaDonChiTiet a : lsthdct
         ) {
-            tongTienSP = tongTienSP.add(a.getGiasanpham().multiply(new BigDecimal(a.getSoluong())));
             lstin.add(new sanPhamIn(a.getSanphamchitiet().getSanpham().getTensanpham(), a.getSoluong()));
 
         }
+        tongTienSP = hdHienTai.getTongtien();
         String ten = null;
         if (hdHienTai.getKhachhang() != null) {
             ten = hdHienTai.getKhachhang().getNguoidung().getHovaten();
         }
 
-        MauHoaDon u = new MauHoaDon("FSPORT SHOP", hdHienTai.getMahoadon(), hdHienTai.getNgaytao(), "Lô H023, Nhà số 39, Ngõ 148, Xuân Phương, Phương Canh,Nam Từ Liêm, Hà Nội",
-                hdHienTai.getDiachi(), "0379036607", hdHienTai.getSdt(), ten, lstin, tongTienSP);
+        MauHoaDon u = new MauHoaDon("FSPORT SHOP", hdHienTai.getMahoadon(), hdHienTai.getNgaytao(), "103 Trịnh Văn Bô,Phương Canh, Nam Từ Liêm, Hà Nội",
+                hdHienTai.getDiachi(), "0379036607", hdHienTai.getSdt(), ten, lstin, tongTienSP, "");
+        billTam = u;
+
         return ResponseEntity.ok(u);
     }
 
@@ -539,7 +563,7 @@ public class BanHangController {
         HoaDon hdset1 = hdHienTai;
         if (thongTin.getTrasau() == true) {
             //trả sau_đợi call api giao hàng nhanh
-            hdset1.setTrangthai(1);
+            hdset1.setTrangthai(0);
             BigDecimal tienTong = new BigDecimal("0.00");
             hdset1.setTongtien(tienTong);
             //set phí vận chuyển tạm tính 30k sau đó call từ giao hàng nhanh
@@ -557,6 +581,18 @@ public class BanHangController {
             phieugiamgiachtietset.setTiengiam(sotiengiam);
             LocalDateTime currentDateTime = LocalDateTime.now();
             phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
+            //trả sau thì cần  fake luôn lịch sử đã xác nhận
+            LichSuHoaDon lichSuHoaDon=new LichSuHoaDon();
+            //fake nhân viên
+            NhanVien nvfake=new NhanVien();
+            nvfake.setId(5);
+            //fake lịch sử chờ
+            lichSuHoaDon.setNhanvien(nvfake);
+            lichSuHoaDon.setGhichu("khách hàng đã xác nhận đơn hàng");
+            lichSuHoaDon.setHoadon(hdset1);
+            lichSuHoaDon.setNgaytao(Timestamp.valueOf(currentDateTime));
+            lichSuHoaDon.setTrangthai(0);
+            daoLSHD.add(lichSuHoaDon);
             daoPGGCT.save(phieugiamgiachtietset);
             lstPTTT = new ArrayList<>();
             List<HoaDon> lstcheck7 = daoHD.timTheoTrangThaiVaLoai(7, false);
@@ -604,7 +640,7 @@ public class BanHangController {
             return "redirect:/hoa-don/ban-hang";
 
         }
-        redirectAttributes.addFlashAttribute("orderSuccess", true);
+        redirectAttributes.addFlashAttribute("orderSuccess", false);
         return "redirect:/hoa-don/ban-hang";
     }
 
@@ -681,12 +717,55 @@ public class BanHangController {
         return ResponseEntity.ok(false);
     }
 
+    @GetMapping("in-don-tai-quay")
+    public ResponseEntity<?> inBill(
+    ) {
+        String finalhtml = null;
+        //start tạo qr
+        //tạo qr
+        String qrCodeText =hdHienTai.getMahoadon(); // Chuỗi để tạo QR
+        int size = 250; // Kích thước của mã QR
 
-    //in đơn
-//    MauHoaDon u = new MauHoaDon("FSPORT", hdTT.getMahoadon(), hdTT.getNgaytao(), "Lô H023, Nhà số 39, Ngõ 148, Xuân Phương, Phương Canh,Nam Từ Liêm, Hà Nội",
-//            hdTT.getDiachi(), "0379036607", hdTT.getSdt(), hdTT.getTennguoinhan(), lstin, tongTT);
-//    String finalhtml = null;
-//    Context data = dao.setData(u);
-//    finalhtml = dao1.process("index", data);
-//        dao.htmlToPdfTaiQuay(finalhtml, hdTT.getMahoadon());
+        // Tạo tham số cho mã QR
+        Map<EncodeHintType, Object> hintMap = new HashMap<>();
+        hintMap.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+
+        // Tạo đối tượng QRCodeWriter
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = null;
+
+        try {
+            // Tạo mã QR dưới dạng BitMatrix từ chuỗi và kích thước đã chỉ định
+            bitMatrix = qrCodeWriter.encode(qrCodeText, BarcodeFormat.QR_CODE, size, size, hintMap);
+
+            // Lưu BitMatrix thành ảnh PNG
+            MatrixToImageWriter.writeToPath(bitMatrix, "PNG", new File("src/main/resources/static/" + hdHienTai.getMahoadon() + ".png").toPath());
+            // Thay đổi đường dẫn của thư mục chứa ảnh PNG của bạn ở đây
+            // Đường dẫn tới file PNG của bạn
+            String filePath = "src/main/resources/static/" + hdHienTai.getMahoadon() + ".png";
+
+            File file = new File(filePath);
+
+            if (file.isFile() && file.getName().toLowerCase().endsWith(".png")) {
+                try {
+                    String base64String = encodeFileToBase64Binary(file);
+                    System.out.println("File: " + file.getName());
+                    billTam.setQr(base64String);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Đường dẫn không phải là một file PNG hợp lệ.");
+            }
+
+        } catch (WriterException | IOException e) {
+            System.out.println("Lỗi tạo QR Code: " + e.getMessage());
+        }
+        //end tạo qr
+        Context data = daoHD.setData(billTam);
+        finalhtml = dao1.process("billhoadon", data);
+        daoHD.htmlToPdfTaiQuay(finalhtml, hdHienTai.getMahoadon());
+        return ResponseEntity.ok(true);
+    }
+
 }

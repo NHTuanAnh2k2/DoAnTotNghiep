@@ -2,6 +2,7 @@ package com.example.demo.controller.login;
 
 import com.example.demo.entity.NguoiDung;
 import com.example.demo.info.DangNhapNDInfo;
+import com.example.demo.info.token.UserManager;
 import com.example.demo.security.CustomerUserDetailService;
 import com.example.demo.security.JWTGenerator;
 import com.example.demo.service.KhachHangService;
@@ -20,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,6 +41,8 @@ public class DangNhapController {
     private CustomerUserDetailService customerUserDetailService;
     @Autowired
     private JWTGenerator jwtGenerator;
+    @Autowired
+    public UserManager userManager;
 
     @PostMapping("/dangnhap")
     public String dangnhap(Model model,
@@ -62,7 +66,10 @@ public class DangNhapController {
                 );
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 String token = jwtGenerator.generateToken(authentication);
+                Integer userId = nd.getId();
                 session.setAttribute("userDangnhap", nd.getTaikhoan());
+                userManager.addUser(userId, token);
+                System.out.println("Danh sách người dùng đang đăng nhập: " + userManager.getLoggedInUsers());
                 return "redirect:/customer/trangchu";
             } else {
                 redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
@@ -78,6 +85,22 @@ public class DangNhapController {
             redirectAttributes.addFlashAttribute("error", "Đã có lỗi xảy ra, vui lòng thử lại");
             return "redirect:/dangky";
         }
+    }
+
+    @GetMapping("/dangxuat")
+    public String logout(HttpServletRequest request) {
+        // Xóa session của người dùng để đăng xuất
+        HttpSession session = request.getSession(false);
+        String userName = (String) session.getAttribute("userDangnhap");
+        NguoiDung nguoiDung = khachHangService.findNguoiDungByTaikhoan(userName);
+        Integer userId = nguoiDung.getId();
+        String token = userManager.getToken(userId);
+        if (session != null) {
+            session.invalidate();
+            userManager.logoutUser(userId, token);
+            System.out.println("Danh sách người dùng đang đăng nhập: " + userManager.getLoggedInUsers());
+        }
+        return "redirect:/trangchu";
     }
 
 }

@@ -82,6 +82,7 @@ public class TrangChuCustomerController {
         model.addAttribute("topspmoinhattrangchu", topspmoinhattrangchu);
         List<Object[]> topspbanchaynhattrangchu = trangChuRepository.topspbanchaynhat();
         model.addAttribute("topspbanchaynhattrangchu", topspbanchaynhattrangchu);
+        System.out.println();
         return "customer/trangchu";
     }
 
