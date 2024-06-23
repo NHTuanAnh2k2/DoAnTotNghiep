@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
@@ -91,6 +92,11 @@ public Flux<ServerSentEvent<PhieuGiamGia>> streamDiscounts() {
 //        session.invalidate();
         session.removeAttribute("themthanhcong");
         session.removeAttribute("capnhatthanhcong");
+    }
+    @GetMapping("/lay-phieu-giam-theo-id/{Id}")
+    public PhieuGiamGia layPhieuGiamTheoId(@PathVariable("Id") int Id){
+        PhieuGiamGia p= phieuGiamGiaImp.findPhieuGiamGiaById(Id);
+        return p;
     }
 
 }
