@@ -551,7 +551,6 @@ public class hoaDonController {
     @GetMapping("call-api-ngay-giao")
     @ResponseBody
     public ResponseEntity<?> callapi() {
-
         return ResponseEntity.ok(lstdiachigiao);
     }
 
@@ -566,9 +565,7 @@ public class hoaDonController {
         hoaDonXem = hoaDonTim.get(0);
         hoaDonXem.setNgaygiaodukien(timestamp);
         dao.capNhatHD(hoaDonXem);
-        System.out.println("aaaaaaaaaaaaaa");
-        System.out.println(timestamp);
-        System.out.println(hoaDonXem.getMahoadon());
+
     }
 
     //xác nhận đơn

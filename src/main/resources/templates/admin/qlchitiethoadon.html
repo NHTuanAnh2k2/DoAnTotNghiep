@@ -275,8 +275,7 @@
 
                                                                         <div class="d-flex flex-row-reverse">
                                                                             <button type="submit" id="xacnhanbtn"
-                                                                                onclick="xacnhanngaygiao()" disabled
-                                                                                class="btn btn-primary">Xác
+                                                                                disabled class="btn btn-primary">Xác
                                                                                 nhận</button>
                                                                             <button type="button"
                                                                                 class="btn btn-secondary ms-1"
@@ -428,7 +427,8 @@
 
                                                                         <div class="d-flex flex-row-reverse">
                                                                             <button type="submit" id="chogiaobtn"
-                                                                                disabled class="btn btn-primary">Xác
+                                                                                onclick="xacnhanngaygiao()" disabled
+                                                                                class="btn btn-primary">Xác
                                                                                 nhận</button>
                                                                             <button type="button"
                                                                                 class="btn btn-secondary ms-1"
@@ -2504,6 +2504,8 @@
                                             idXareturn = id.WardCode;
                                         }
                                     }
+
+
                                     var requestDataDate = {
                                         from_district_id: 3440,//địa chỉ mặc địch của shop
                                         from_ward_code: "13007",//địa chỉ mặc địch của shop
@@ -2511,6 +2513,7 @@
                                         to_ward_code: idXareturn.toString(),
                                         service_id: 53320
                                     };
+
                                     // Cấu hình yêu cầu với axios, bao gồm Token và dữ liệu gửi đi
                                     var ParameterDate = {
                                         url: "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/leadtime",
@@ -2530,8 +2533,6 @@
                                         .then(function (d) {
                                             // Số nguyên đại diện cho một thời điểm trong JavaScript (ví dụ: số giây kể từ Epoch)
                                             var timestamp = d.data.leadtime;
-
-                                            // http://localhost:8080/hoa-don/set-ngay-giao-du-kien/{date}
                                             var urlsetdate = `http://localhost:8080/hoa-don/set-ngay-giao-du-kien/${timestamp}`;
                                             callController(urlsetdate);
                                         })
@@ -2544,6 +2545,7 @@
         }
         //test thử
         function xacnhanngaygiao() {
+
             //http://localhost:8080/hoa-don/set-ngay-giao-du-kien/{date}
             var urlAPI = `http://localhost:8080/hoa-don/call-api-ngay-giao`;
             fetch(urlAPI)
