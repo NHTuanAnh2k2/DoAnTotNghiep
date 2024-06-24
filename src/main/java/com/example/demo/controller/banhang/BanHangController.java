@@ -41,7 +41,7 @@ import java.util.*;
 @RequestMapping("ban-hang-tai-quay")
 public class BanHangController {
     @Autowired
-    LichSuHoaDonService  daoLSHD;
+    LichSuHoaDonService daoLSHD;
     @Autowired
     SpringTemplateEngine dao1;
     @Autowired
@@ -563,11 +563,18 @@ public class BanHangController {
         HoaDon hdset1 = hdHienTai;
         if (thongTin.getTrasau() == true) {
             //trả sau_đợi call api giao hàng nhanh
-            hdset1.setTrangthai(0);
+            hdset1.setTrangthai(1);// khách hàng đã xác nhận
             BigDecimal tienTong = new BigDecimal("0.00");
-            hdset1.setTongtien(tienTong);
-            //set phí vận chuyển tạm tính 30k sau đó call từ giao hàng nhanh
+            List<HoaDonChiTiet> lsthdctTien=daoHDCT.getListSPHD(hdset1);
+            for (HoaDonChiTiet a:lsthdctTien
+                 ) {
+                tienTong = tienTong.add(a.getGiasanpham().multiply(new BigDecimal(a.getSoluong())));
+            }
+
+
+            //set phí vận chuyển
             hdset1.setPhivanchuyen(new BigDecimal(convertCurrency(thongTin.getPhivanchuyen())));
+            hdset1.setTongtien((tienTong.add(hdset1.getPhivanchuyen())).subtract(sotiengiam));
             //set địa chỉ
             hdset1.setDiachi(thongTin.getDiachi() + ", " + thongTin.getXa() + ", " + thongTin.getHuyen() + ", " + thongTin.getTinh());
             hdset1.setTennguoinhan(thongTin.getTen());
@@ -582,17 +589,37 @@ public class BanHangController {
             LocalDateTime currentDateTime = LocalDateTime.now();
             phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
             //trả sau thì cần  fake luôn lịch sử đã xác nhận
-            LichSuHoaDon lichSuHoaDon=new LichSuHoaDon();
+            LichSuHoaDon lichSuHoaDon = new LichSuHoaDon();
             //fake nhân viên
-            NhanVien nvfake=new NhanVien();
+            NhanVien nvfake = new NhanVien();
             nvfake.setId(5);
-            //fake lịch sử chờ
+            //fake lịch sử chờ 0
             lichSuHoaDon.setNhanvien(nvfake);
-            lichSuHoaDon.setGhichu("khách hàng đã xác nhận đơn hàng");
+            lichSuHoaDon.setGhichu("khách hàng đã xác đặt đơn đơn hàng");
             lichSuHoaDon.setHoadon(hdset1);
             lichSuHoaDon.setNgaytao(Timestamp.valueOf(currentDateTime));
             lichSuHoaDon.setTrangthai(0);
             daoLSHD.add(lichSuHoaDon);
+            //fake lịch sử hóa đơn 1
+            LichSuHoaDon lichSuHoaDon1 = new LichSuHoaDon();
+            lichSuHoaDon1.setNhanvien(nvfake);
+            lichSuHoaDon1.setGhichu("khách hàng đã xác nhận đơn hàng");
+            lichSuHoaDon1.setHoadon(hdset1);
+            lichSuHoaDon1.setNgaytao(Timestamp.valueOf(currentDateTime));
+            lichSuHoaDon1.setTrangthai(1);
+            daoLSHD.add(lichSuHoaDon1);
+            ////tạo bill thanh toán chưa thành công
+            PhuongThucThanhToan phuongthuc = new PhuongThucThanhToan();
+            phuongthuc.setTenphuongthuc("Trả sau");
+            phuongthuc.setMota("Tiền mặt");
+            phuongthuc.setHoadon(hdset1);
+            phuongthuc.setNgaytao(Timestamp.valueOf(currentDateTime));
+            //fake người tạo
+            phuongthuc.setNguoitao("admin");
+            phuongthuc.setTrangthai(false);
+            phuongthuc.setTongtien(new BigDecimal("0.00"));
+            daoPTTT.add_update(phuongthuc);
+            /////////////
             daoPGGCT.save(phieugiamgiachtietset);
             lstPTTT = new ArrayList<>();
             List<HoaDon> lstcheck7 = daoHD.timTheoTrangThaiVaLoai(7, false);
@@ -723,7 +750,7 @@ public class BanHangController {
         String finalhtml = null;
         //start tạo qr
         //tạo qr
-        String qrCodeText =hdHienTai.getMahoadon(); // Chuỗi để tạo QR
+        String qrCodeText = hdHienTai.getMahoadon(); // Chuỗi để tạo QR
         int size = 250; // Kích thước của mã QR
 
         // Tạo tham số cho mã QR

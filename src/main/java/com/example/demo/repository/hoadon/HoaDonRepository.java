@@ -21,8 +21,10 @@ import java.util.Optional;
 public interface HoaDonRepository extends JpaRepository<HoaDon, Integer> {
     Page<HoaDon> findAllByTrangthaiAndLoaihoadonAndNgaytaoGreaterThanEqualAndNgaytaoLessThanEqual(Integer trangThai, Boolean loaihd, Date tu, Date den, Pageable p);
 
-    Page<HoaDon> findAll(Pageable p);
+    @Query("SELECT h FROM HoaDon h ORDER BY h.ngaytao DESC")
+    Page<HoaDon> findAlls(Pageable p);
 
+    @Query("SELECT h FROM HoaDon h where h.trangthai=?1 ORDER BY h.ngaytao DESC ")
     Page<HoaDon> findAllByTrangthai(Integer trangThai, Pageable p);
 
     Long countAllByTrangthai(Integer trangThai);

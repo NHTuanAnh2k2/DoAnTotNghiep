@@ -40,7 +40,7 @@ public class HoaDonImp implements HoaDonService {
 
     @Override
     public Page<HoaDon> findAll(Pageable p) {
-        return dao.findAll(p);
+        return dao.findAlls(p);
     }
 
     @Override

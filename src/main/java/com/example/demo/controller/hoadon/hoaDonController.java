@@ -676,7 +676,9 @@ public class hoaDonController {
 
         Context data = dao.setData(u);
         finalhtml = dao1.process("index", data);
-        dao.htmlToPdf(finalhtml, hdTT.getMahoadon());
+        if(hdTT.getTrangthai()==2){
+            dao.htmlToPdf(finalhtml, hdTT.getMahoadon());
+        }
         return "redirect:/hoa-don/showDetail";
     }
 

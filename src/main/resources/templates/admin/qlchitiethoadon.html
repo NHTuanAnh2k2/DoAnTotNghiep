@@ -924,7 +924,7 @@
                                                     <div class="d-flex justify-content-start">
                                                         <h6 style="font-family: 'Times New Roman'; font-weight: bold">
                                                             Tên khách hàng:</h6>
-                                                        <p th:text="${hoaDonDT.khachhang.nguoidung.hovaten}"
+                                                        <p th:text="${hoaDonDT.tennguoinhan}"
                                                             style="margin-left: 70px; font-family: 'Times New Roman'; font-size: 15px;">
                                                         </p>
                                                     </div>
@@ -984,7 +984,7 @@
                                                 <h6 style="font-family: 'Times New Roman'; font-weight: bold">Phiếu giảm
                                                     giá
                                                     :</h6>
-                                                <p th:text="${phieuGiamCT.phieugiamgia.giatrigiamtoida!=null?#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiamtoida, 0, 'COMMA', 0, 'POINT')+'&#x20ab;':'0'}"
+                                                <p th:text="${phieuGiamCT.phieugiamgia.loaiphieu==false?#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiam, 0, 'COMMA', 0, 'POINT')+'&#x20ab;':phieuGiamCT.phieugiamgia.giatrigiam+' %, tối đa '+#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiamtoida, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
                                                     style="font-family: 'Times New Roman'; font-size: 16px;">
                                                 </p>
                                             </div>
