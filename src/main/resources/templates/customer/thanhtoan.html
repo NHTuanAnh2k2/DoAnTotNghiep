@@ -489,16 +489,14 @@
         <div class="d-flex justify-content-between align-items-center">
             <p style="color: #AAAAAA; font-size: 18px;">Phí vận chuyển</p>
             <div style="display: flex; align-items: center;">
-                <h5>20.000</h5>
-                <b style="font-size: 14px;">đ</b>
+                <h5 id="phivanchuyen">0 ₫</h5>
             </div>
         </div>
         <hr>
         <div class="d-flex justify-content-between align-items-center">
             <p style="color: #000; font-size: 20px;">Tổng cộng</p>
             <div style="display: flex; align-items: center;">
-                <h4 style="color: #000;">20.000</h4>
-                <b style="font-size: 14px;">đ</b>
+                <h4 style="color: #000;" id="tongtien"></h4>
             </div>
         </div>
         <div style="position: relative; padding: 10px 0; color: #666;">
@@ -612,6 +610,218 @@
     function validatePhoneNumber(phoneNumber) {
         const regex = /^(0[1-9])+([0-9]{8})\b$/;
         return regex.test(phoneNumber);
+    }
+    //chuyển tên city để so sánh
+    function extractLocation(input) {
+        // Chuyển chuỗi về dạng chữ thường để so sánh
+        const lowerCaseInput = input.toLowerCase();
+
+        // Kiểm tra và tách từ "tỉnh" hoặc "thành phố"
+        if (lowerCaseInput.startsWith("tỉnh ")) {
+            // Tách từ "tỉnh" và lấy phần còn lại
+            const province = input.slice(5).trim();
+            return { type: "tỉnh", name: province };
+        } else if (lowerCaseInput.startsWith("thành phố ")) {
+            // Tách từ "thành phố" và lấy phần còn lại
+            const city = input.slice(10).trim();
+            return { type: "thành phố", name: city };
+        } else {
+            return { type: "unknown", name: input.trim() };
+        }
+    }
+    function callIdCity(thanhpho, huyen, xa) {
+        var tencity = extractLocation(thanhpho);
+        var tenhuyen = huyen;
+        var tenxa = xa;
+
+        var idCityreturn;
+        var idHuyenreturn;
+        var idXareturn;
+
+        var Parameter = {
+            url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/province",
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Token": "59db4e6a-23e7-11ef-8c74-4ad7faca6bdc"
+            }
+        };
+        axios(Parameter)
+            .then(function (a) {
+                return a.data;
+            })
+            .then(function (b) {
+                // tách id thành phố
+                for (const id of b.data) {
+                    if (id.ProvinceName.toLowerCase() === tencity.name.toLowerCase()) {
+                        idCityreturn = id.ProvinceID;
+                    }
+                }
+
+                var requestDataHuyen = {
+                    province_id: idCityreturn
+                };
+
+                // Cấu hình yêu cầu với axios, bao gồm Token và dữ liệu gửi đi
+                var ParameterHuyen = {
+                    url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/district",
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Token": "59db4e6a-23e7-11ef-8c74-4ad7faca6bdc"
+                    },
+                    data: JSON.stringify(requestDataHuyen)
+                };
+
+                // Gửi yêu cầu và xử lý phản hồi
+                axios(ParameterHuyen)
+                    .then(function (response) {
+                        return response.data;
+                    })
+                    .then(function (d) {
+                        //tách id huyện
+                        for (const id of d.data) {
+                            if (id.DistrictName.toLowerCase() === tenhuyen.toLowerCase()) {
+                                idHuyenreturn = id.DistrictID;
+                            }
+                        }
+                        //tách id xã
+                        var requestData = {
+                            district_id: idHuyenreturn
+                        };
+
+                        // Cấu hình yêu cầu với axios, bao gồm Token và dữ liệu gửi đi
+                        var Parameter = {
+                            url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id",
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Token": "59db4e6a-23e7-11ef-8c74-4ad7faca6bdc"
+                            },
+                            data: JSON.stringify(requestData)
+                        };
+
+                        // Gửi yêu cầu và xử lý phản hồi
+                        axios(Parameter)
+                            .then(function (response) {
+                                return response.data;
+                            })
+                            .then(function (d) {
+                                //tách id xã
+                                for (const id of d.data) {
+                                    if (id.WardName.toLowerCase() === tenxa.toLowerCase()) {
+                                        idXareturn = id.WardCode;
+                                    }
+                                }
+                                var requestDataDate = {
+                                    from_district_id: 3440,//địa chỉ mặc địch của shop
+                                    from_ward_code: "13007",//địa chỉ mặc địch của shop
+                                    to_district_id: idHuyenreturn,
+                                    to_ward_code: idXareturn.toString(),
+                                    service_id: 53320
+                                };
+                                // Cấu hình yêu cầu với axios, bao gồm Token và dữ liệu gửi đi
+                                var ParameterDate = {
+                                    url: "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/leadtime",
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        "Token": "59db4e6a-23e7-11ef-8c74-4ad7faca6bdc",
+                                        "ShopId": "5115739"
+                                    },
+                                    data: JSON.stringify(requestDataDate)
+                                };
+                                // Gửi yêu cầu và xử lý phản hồi
+                                axios(ParameterDate)
+                                    .then(function (response) {
+                                        return response.data; // In dữ liệu ra console
+                                    })
+                                    .then(function (d) {
+                                        // Số nguyên đại diện cho một thời điểm trong JavaScript (ví dụ: số giây kể từ Epoch)
+                                        var timestamp = d.data.leadtime;
+                                        var date = new Date(timestamp * 1000);
+
+                                        // Lấy ngày, tháng, năm từ đối tượng Date
+                                        var day = date.getDate();
+                                        var month = date.getMonth() + 1; // Tháng bắt đầu từ 0
+                                        var year = date.getFullYear();
+
+                                        // Đảm bảo định dạng dd và mm luôn có hai chữ số
+                                        if (day < 10) {
+                                            day = '0' + day;
+                                        }
+                                        if (month < 10) {
+                                            month = '0' + month;
+                                        }
+
+                                        // Trả về chuỗi định dạng dd/mm/yyyy
+                                        var days = day + '/' + month + '/' + year;
+
+                                        // document.getElementById('ngaygiaodukiens').innerHTML = days;
+                                        // phigiaohang
+                                        feship(idHuyenreturn, idXareturn);
+
+
+
+                                    })
+                            })
+
+
+                    })
+            })
+
+    }
+    function convertCashInput(amount) {
+        // Chuyển số thành chuỗi và thêm dấu phân cách hàng nghìn
+        let formattedAmount = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        // Thêm ký hiệu tiền tệ ₫ vào cuối chuỗi
+        return formattedAmount + " ₫";
+    }
+    function feship(idhuyen, idxa) {
+        var requestData =
+            {
+                service_id: 53321,
+                insurance_value: 500000,
+                coupon: null,
+                from_district_id: 3440,
+                to_district_id: idhuyen,
+                to_ward_code: idxa.toString(),
+                height: 15,
+                length: 15,
+                weight: 1000,
+                width: 15
+            };
+        // Cấu hình yêu cầu với axios, bao gồm Token và dữ liệu gửi đi
+        var Parameter = {
+            url: "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee",
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Token": "59db4e6a-23e7-11ef-8c74-4ad7faca6bdc",
+                "ShopId": "5115739"
+            },
+            data: JSON.stringify(requestData)
+        };
+
+        // Gửi yêu cầu và xử lý phản hồi
+        axios(Parameter)
+            .then(function (response) {
+                return response.data // In dữ liệu ra console
+            })
+            .then(function (d) {
+                var shipfe = convertCashInput(d.data.total);
+                document.getElementById('phivanchuyen').innerText = shipfe;
+                tinhtongtien();
+            })
+
+    }
+    function tinhtongtien() {
+        const tamtinh = chuyendoitien(document.getElementById("tamTinh"));
+        const soTienGiam = chuyendoitien(document.getElementById("soTienGiam"));
+        console.log("Tien giam: " + soTienGiam)
+        const phivanchuyen = chuyendoitien(document.getElementById("phivanchuyen"));
+        const tongTien = tamtinh - soTienGiam + phivanchuyen;
+        document.getElementById("tongtien").innerText = tongTien;
     }
     function validateFormDiaChiKhachLe(event){
         event.preventDefault();
@@ -764,6 +974,13 @@
             document.getElementById("left1").style.display = "none";
             document.getElementById("left2").style.display = "none";
             document.getElementById("left3").style.display = "block";
+            var tinh = document.getElementById("tinh").value;
+            console.log(tinh);
+            var huyen = document.getElementById("huyen").value;
+            console.log(huyen);
+            var xa= document.getElementById("xa").value;
+            console.log(xa);
+            callIdCity(tinh,huyen,xa);
             return true;
         }else{
             return false;
@@ -822,6 +1039,7 @@
             document.getElementById("fillMaGiam").style.display = "block";
             document.getElementById("maCodeGiam").innerText= max.code;
             document.getElementById("soTienGiam").innerText ="- "+max.value+" ₫";
+            tinhtongtien();
         }
     }
     fillPhieuGiamKhongTaiKhoan();
@@ -831,6 +1049,7 @@
         document.getElementById("fillMaGiam").style.display = "none";
         document.getElementById("maCodeGiam").innerText= "khong";
         document.getElementById("soTienGiam").innerText =0;
+        tinhtongtien();
     });
     // });
     document.getElementById("suDungPhieuGiam").addEventListener("click", async function(event) {
@@ -886,6 +1105,7 @@
             document.getElementById("fillMaGiam").style.display = "block";
             document.getElementById("maCodeGiam").innerText= max.code;
             document.getElementById("soTienGiam").innerText ="- "+max.value+" ₫";
+            tinhtongtien();
         }
         if(MangTienGiam.length <= 0){
             errorMaGiam.innerText = "Mã khuyến mại không khả dụng!";
@@ -948,6 +1168,7 @@
                 document.getElementById("fillMaGiam").style.display = "block";
                 document.getElementById("maCodeGiam").innerText= max.code;
                 document.getElementById("soTienGiam").innerText ="- "+max.value+" ₫";
+                tinhtongtien();
             }
             if(MangTienGiam.length <= 0){
                 document.getElementById("magiamgia").value= p.macode;
@@ -956,7 +1177,15 @@
             }
         });
     });
-
+    function chuyendoitien(tien){
+        const inputTamTinh = tien;
+        // Lấy nội dung văn bản của phần tử
+        const  inputTamTinhValue= inputTamTinh.innerText || inputTamTinh.textContent;
+        // Sử dụng regex để loại bỏ ký tự không phải là số và dấu phẩy
+        const numberString = inputTamTinhValue.replace(/[^\d]/g, '');
+        // Chuyển chuỗi đã làm sạch thành số nguyên
+        return parseInt(numberString, 10);
+    }
 </script>
 </body>
 </html>
