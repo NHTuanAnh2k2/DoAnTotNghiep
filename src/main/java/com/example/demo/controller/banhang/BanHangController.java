@@ -75,6 +75,8 @@ public class BanHangController {
     BigDecimal tongtienhoadonhientai = new BigDecimal("0");
     BigDecimal sotiengiam = new BigDecimal("0");
     MauHoaDon billTam = new MauHoaDon();
+    //hóa đơn lưu tạm tính bill
+     HoaDon hoaDonCheckBill;
 
     private static String encodeFileToBase64Binary(File file) throws IOException {
         FileInputStream fileInputStreamReader = new FileInputStream(file);
@@ -499,21 +501,21 @@ public class BanHangController {
     @ResponseBody
     public ResponseEntity<?> showbill() {
         List<sanPhamIn> lstin = new ArrayList<>();
-        List<HoaDonChiTiet> lsthdct = daoHDCT.getListSPHD(hdHienTai);
+        List<HoaDonChiTiet> lsthdct = daoHDCT.getListSPHD(hoaDonCheckBill);
         BigDecimal tongTienSP = new BigDecimal("0");
         for (HoaDonChiTiet a : lsthdct
         ) {
             lstin.add(new sanPhamIn(a.getSanphamchitiet().getSanpham().getTensanpham(), a.getSoluong()));
 
         }
-        tongTienSP = hdHienTai.getTongtien();
+        tongTienSP = hoaDonCheckBill.getTongtien();
         String ten = null;
-        if (hdHienTai.getKhachhang() != null) {
-            ten = hdHienTai.getKhachhang().getNguoidung().getHovaten();
+        if (hoaDonCheckBill.getKhachhang() != null) {
+            ten = hoaDonCheckBill.getKhachhang().getNguoidung().getHovaten();
         }
 
-        MauHoaDon u = new MauHoaDon("FSPORT SHOP", hdHienTai.getMahoadon(), hdHienTai.getNgaytao(), "103 Trịnh Văn Bô,Phương Canh, Nam Từ Liêm, Hà Nội",
-                hdHienTai.getDiachi(), "0379036607", hdHienTai.getSdt(), ten, lstin, tongTienSP, "");
+        MauHoaDon u = new MauHoaDon("FSPORT SHOP", hoaDonCheckBill.getMahoadon(), hoaDonCheckBill.getNgaytao(), "103 Trịnh Văn Bô,Phương Canh, Nam Từ Liêm, Hà Nội",
+                hoaDonCheckBill.getDiachi(), "0379036607", hoaDonCheckBill.getSdt(), ten, lstin, tongTienSP, "");
         billTam = u;
 
         return ResponseEntity.ok(u);
@@ -556,7 +558,7 @@ public class BanHangController {
                 daoHD.capNhatHD(TT7);
                 redirectAttributes.addFlashAttribute("checkHangCho", true);
             }
-
+hoaDonCheckBill=hdset;
             return "redirect:/hoa-don/ban-hang";
         }
         // thanh toán đơn có giao hàng
@@ -580,6 +582,7 @@ public class BanHangController {
             hdset1.setTennguoinhan(thongTin.getTen());
             hdset1.setSdt(thongTin.getSdt());
             hdset1.setEmail(thongTin.getEmail());
+            hoaDonCheckBill=hdset1;
             daoHD.capNhatHD(hdset1);
             phieugiamgiachtietset.setHoadon(hdset1);
             phieugiamgiachtietset.setPhieugiamgia(phieugiamsaoluu);
@@ -664,6 +667,7 @@ public class BanHangController {
                 redirectAttributes.addFlashAttribute("checkHangCho", true);
             }
             redirectAttributes.addFlashAttribute("orderSuccess", true);
+            hoaDonCheckBill=hdset1;
             return "redirect:/hoa-don/ban-hang";
 
         }

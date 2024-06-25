@@ -575,7 +575,6 @@
                 </div>
             </div>
             <!--Kết thúc Modal thêm sản phẩm vào hóa đơn-->
-
             <!-- modal bill  -->
             <div class="modal fade" id="orderSuccessModal" data-bs-backdrop="static" data-bs-keyboard="false"
                 tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -2993,20 +2992,16 @@ tabindex="0">
     <!-- hienthibill -->
     <script th:inline="javascript">
         /*<![CDATA[*/
-        var orderSuccess = /*[[${orderSuccess}]]*/ 2;
-        var checkHangCho = /*[[${checkHangCho}]]*/ false;
+        var orderSuccess = /*[[${orderSuccess}]]*/ false;
         /*]]>*/
-        if (checkHangCho == true) {
-            thongbao('Có 01 đơn hàng tràn chờ đã được hiển thị', 'info')
-        }
-        if (orderSuccess == true) {
+        if (orderSuccess === true) {
             var urlgetbill = `http://localhost:8080/ban-hang-tai-quay/show-bill`;
             fetch(urlgetbill)
                 .then(function (a) {
                     return a.json();
                 })
                 .then(function (b) {
-                    console.log(b)
+                console.log(b)
                     var htmlbill1 = '';
                     var htmlbill2 = '';
                     var htmlbill3 = '';
@@ -3031,6 +3026,7 @@ tabindex="0">
 
                                    `;
                     }
+
                     htmlbill2 = `
                     <div class="d-flex justify-content-center">
                             <div class="ms-5">
@@ -3063,7 +3059,7 @@ tabindex="0">
                         <hr class="my-4">
                         <div class="row">
                             <div class="col">
-                                <h3>Nội dung đơn hàng(Tổng số lượng sản phẩm: 2)</h3>
+                                <h3>Nội dung đơn hàng(Tổng số lượng sản phẩm: ${b.lst.length})</h3>
                                 <table class="table">
 
 
@@ -3071,7 +3067,7 @@ tabindex="0">
                        </table>
                             </div>
                             <div class="col text-center mt-3">
-                                <img src="/upload/fake.png" alt="" style="width: 100px; height: 100px;">
+                                
                                  </div>
                         </div>
                         <hr class="my-4">
@@ -3093,7 +3089,6 @@ tabindex="0">
 
                         </div>
                     `;
-
                     document.getElementById('hienthibill').innerHTML = htmlbill2;
                     var myModal = new bootstrap.Modal(document.getElementById('orderSuccessModal'), {});
                     myModal.show();
@@ -3102,7 +3097,7 @@ tabindex="0">
 
 
         } else {
-            if (orderSuccess == false) {
+            if (orderSuccess === false) {
                 thongbao('Có 01 đơn hàng giao mới', 'info')
             }
         }
