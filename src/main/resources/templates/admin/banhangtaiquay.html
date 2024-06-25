@@ -2993,7 +2993,12 @@ tabindex="0">
     <script th:inline="javascript">
         /*<![CDATA[*/
         var orderSuccess = /*[[${orderSuccess}]]*/ false;
+        var checkHangCho = /*[[${checkHangCho}]]*/ false;
         /*]]>*/
+
+        if(checkHangCho==true){
+            thongbao('Có 02 đơn hàng hàng chờ đã hiển thị','info')
+        }
         if (orderSuccess === true) {
             var urlgetbill = `http://localhost:8080/ban-hang-tai-quay/show-bill`;
             fetch(urlgetbill)
@@ -3067,7 +3072,7 @@ tabindex="0">
                        </table>
                             </div>
                             <div class="col text-center mt-3">
-                                
+                                <img src="data:image/png;base64,${b.qr}" alt="" style="height: 200px; width: 200px;"/>
                                  </div>
                         </div>
                         <hr class="my-4">

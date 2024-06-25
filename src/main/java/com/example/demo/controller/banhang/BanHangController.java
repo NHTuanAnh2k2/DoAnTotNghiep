@@ -503,6 +503,7 @@ public class BanHangController {
         List<sanPhamIn> lstin = new ArrayList<>();
         List<HoaDonChiTiet> lsthdct = daoHDCT.getListSPHD(hoaDonCheckBill);
         BigDecimal tongTienSP = new BigDecimal("0");
+        String qrcode="";
         for (HoaDonChiTiet a : lsthdct
         ) {
             lstin.add(new sanPhamIn(a.getSanphamchitiet().getSanpham().getTensanpham(), a.getSoluong()));
@@ -513,9 +514,49 @@ public class BanHangController {
         if (hoaDonCheckBill.getKhachhang() != null) {
             ten = hoaDonCheckBill.getKhachhang().getNguoidung().getHovaten();
         }
+        //start tạo qr
+        String qrCodeText = hoaDonCheckBill.getMahoadon(); // Chuỗi để tạo QR
+        int size = 250; // Kích thước của mã QR
+
+        // Tạo tham số cho mã QR
+        Map<EncodeHintType, Object> hintMap = new HashMap<>();
+        hintMap.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+
+        // Tạo đối tượng QRCodeWriter
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = null;
+
+        try {
+            // Tạo mã QR dưới dạng BitMatrix từ chuỗi và kích thước đã chỉ định
+            bitMatrix = qrCodeWriter.encode(qrCodeText, BarcodeFormat.QR_CODE, size, size, hintMap);
+
+            // Lưu BitMatrix thành ảnh PNG
+            MatrixToImageWriter.writeToPath(bitMatrix, "PNG", new File("src/main/resources/static/QRshowBill" + hdHienTai.getMahoadon() + ".png").toPath());
+            // Thay đổi đường dẫn của thư mục chứa ảnh PNG của bạn ở đây
+            // Đường dẫn tới file PNG của bạn
+            String filePath = "src/main/resources/static/QRshowBill" + hdHienTai.getMahoadon() + ".png";
+
+            File file = new File(filePath);
+
+            if (file.isFile() && file.getName().toLowerCase().endsWith(".png")) {
+                try {
+                    String base64String = encodeFileToBase64Binary(file);
+                    qrcode=base64String;
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Đường dẫn không phải là một file PNG hợp lệ.");
+            }
+
+        } catch (WriterException | IOException e) {
+            System.out.println("Lỗi tạo QR Code: " + e.getMessage());
+        }
+        //end tạo qr
 
         MauHoaDon u = new MauHoaDon("FSPORT SHOP", hoaDonCheckBill.getMahoadon(), hoaDonCheckBill.getNgaytao(), "103 Trịnh Văn Bô,Phương Canh, Nam Từ Liêm, Hà Nội",
-                hoaDonCheckBill.getDiachi(), "0379036607", hoaDonCheckBill.getSdt(), ten, lstin, tongTienSP, "");
+                hoaDonCheckBill.getDiachi(), "0379036607", hoaDonCheckBill.getSdt(), ten, lstin, tongTienSP, qrcode);
         billTam = u;
 
         return ResponseEntity.ok(u);
@@ -754,7 +795,7 @@ hoaDonCheckBill=hdset;
         String finalhtml = null;
         //start tạo qr
         //tạo qr
-        String qrCodeText = hdHienTai.getMahoadon(); // Chuỗi để tạo QR
+        String qrCodeText = hoaDonCheckBill.getMahoadon(); // Chuỗi để tạo QR
         int size = 250; // Kích thước của mã QR
 
         // Tạo tham số cho mã QR
@@ -770,10 +811,10 @@ hoaDonCheckBill=hdset;
             bitMatrix = qrCodeWriter.encode(qrCodeText, BarcodeFormat.QR_CODE, size, size, hintMap);
 
             // Lưu BitMatrix thành ảnh PNG
-            MatrixToImageWriter.writeToPath(bitMatrix, "PNG", new File("src/main/resources/static/" + hdHienTai.getMahoadon() + ".png").toPath());
+            MatrixToImageWriter.writeToPath(bitMatrix, "PNG", new File("src/main/resources/static/" + hoaDonCheckBill.getMahoadon() + ".png").toPath());
             // Thay đổi đường dẫn của thư mục chứa ảnh PNG của bạn ở đây
             // Đường dẫn tới file PNG của bạn
-            String filePath = "src/main/resources/static/" + hdHienTai.getMahoadon() + ".png";
+            String filePath = "src/main/resources/static/" + hoaDonCheckBill.getMahoadon() + ".png";
 
             File file = new File(filePath);
 
@@ -795,7 +836,7 @@ hoaDonCheckBill=hdset;
         //end tạo qr
         Context data = daoHD.setData(billTam);
         finalhtml = dao1.process("billhoadon", data);
-        daoHD.htmlToPdfTaiQuay(finalhtml, hdHienTai.getMahoadon());
+        daoHD.htmlToPdfTaiQuay(finalhtml, hoaDonCheckBill.getMahoadon());
         return ResponseEntity.ok(true);
     }
 
