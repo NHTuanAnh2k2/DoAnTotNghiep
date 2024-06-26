@@ -744,8 +744,7 @@
                                 </p>
                                 <div class="d-flex">
                                     <div class="col-md-4">
-                                        <select class="form-select" id="tinhthanh"
-                                            th:field="*{tinh}">
+                                        <select class="form-select" id="tinhthanh" th:field="*{tinh}">
                                             <option value="chọn tỉnh" th:text="*{tinh}" selected>
                                                 Chọn tỉnh thành</option>
                                         </select>
@@ -753,9 +752,9 @@
 
                                     </div>
                                     <div class="col-md-4">
-                                        <select class="form-select" id="quanhuyen"
-                                            th:field="*{huyen}">
-                                            <option value="chọn huyện" th:text="*{huyen}" selected>Chọn quận huyện</option>
+                                        <select class="form-select" id="quanhuyen" th:field="*{huyen}">
+                                            <option value="chọn huyện" th:text="*{huyen}" selected>Chọn quận huyện
+                                            </option>
                                         </select>
                                         <i style="color: red;" id="regexhuyen" class="col-4"></i>
 
@@ -2806,32 +2805,38 @@ tabindex="0">
             document.getElementById('changeSP').disabled = false;
             var checkgiaohang = document.getElementById('checktrasau');
             var actionGiao = document.getElementById('thongtingiaohangform');
-            if (checkgiaohang.checked) {
-                thongbao('Đặt đơn thành công', 'success');
-                //giao hàng submit
-                setTimeout(function () {
-                    actionGiao.action = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/2';
-                    actionGiao.submit();
-                }, 1300);
+            var checksubmit = validateForm();
+            if (checksubmit === true) {
+                if (checkgiaohang.checked) {
+                    thongbao('Đặt đơn thành công', 'success');
+                    //giao hàng submit
+                    setTimeout(function () {
+                        actionGiao.action = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/2';
+                        actionGiao.submit();
+                    }, 1300);
 
+                } else {
+                    //giao hàng submit
+                    thongbao('Đặt đơn thành công', 'success');
+                    setTimeout(function () {
+                        actionGiao.action = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/1';
+                        actionGiao.submit();
+
+                    }, 1300);
+
+
+                }
             } else {
-                //giao hàng submit
-                thongbao('Đặt đơn thành công', 'success');
-                setTimeout(function () {
-                    actionGiao.action = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/1';
-                    actionGiao.submit();
-
-                }, 1300);
-
-
+                thongbao('Thông tin giao hàng còn thiếu hoặc có lỗi!', 'warning');
             }
+
             // thongbao('Chưa xác nhận thông tin thanh toán!!!', 'warning');
 
         }
         //xác định nghiệp vụ trả sau trả trước
         function handleCheckboxChange(event) {
             // Lấy phần tử checkbox từ sự kiện
-            validateForm();
+            // validateForm();
             var checkbox = event.target;
             // Kiểm tra trạng thái của checkbox
             if (checkbox.checked) {
@@ -3461,6 +3466,7 @@ tabindex="0">
             var huyen = document.getElementById("quanhuyen").value;
             var xa = document.getElementById("xaphuong").value;
             var tienShip = document.getElementById("phigiaohang").value.trim();
+            alert(huyen.length)
 
             // Biến để kiểm tra nếu có lỗi
             var error = false;
@@ -3469,7 +3475,7 @@ tabindex="0">
             if (hoVaTen === "") {
                 document.getElementById('regexTen').innerHTML = 'Họ tên không được trống!';
                 error = true;
-            }else{
+            } else {
                 document.getElementById('regexTen').innerHTML = '';
             }
 
@@ -3486,7 +3492,7 @@ tabindex="0">
                     // alert("Email không hợp lệ");
                     document.getElementById('regexsdt').innerHTML = 'Số điện thoại phải bắt đầu bằng 0, độ dài 10 số!';
                     error = true;
-                }else{
+                } else {
                     document.getElementById('regexsdt').innerHTML = '';
                 }
             }
@@ -3503,7 +3509,7 @@ tabindex="0">
                     // alert("Email không hợp lệ");
                     document.getElementById('regexemail').innerHTML = 'Email sai định dạng!';
                     error = true;
-                }else{
+                } else {
                     document.getElementById('regexemail').innerHTML = '';
                 }
             }
@@ -3513,35 +3519,35 @@ tabindex="0">
                 // alert("Địa chỉ không được để trống");
                 document.getElementById('regexdiachi').innerHTML = 'Địa chỉ không được trống!';
                 error = true;
-            }else{
+            } else {
                 document.getElementById('regexdiachi').innerHTML = '';
             }
 
             // Kiểm tra chọn tỉnh
-            if (tinh === "chọn tỉnh") {
+            if (tinh === "chọn tỉnh"||tinh.length === 0) {
                 // alert("Bạn phải chọn tỉnh");
                 document.getElementById('regextinh').innerHTML = 'Chưa chọn tỉnh!';
 
                 error = true;
-            }else{
+            } else {
                 document.getElementById('regextinh').innerHTML = '';
             }
 
             // Kiểm tra chọn huyện
-            if (huyen === "chọn huyện") {
+            if (huyen === "chọn huyện"||huyen.length === 0) {
                 // alert("Bạn phải chọn huyện");
                 document.getElementById('regexhuyen').innerHTML = 'Chưa chọn huyện!';
                 error = true;
-            }else{
+            } else {
                 document.getElementById('regexhuyen').innerHTML = '';
             }
 
             // Kiểm tra chọn xã
-            if (xa === "chọn xã") {
+            if (xa === "chọn xã"||xa.length ===  0) {
                 // alert("Bạn phải chọn xã");
                 document.getElementById('regexxa').innerHTML = 'Chưa chọn xã!';
                 error = true;
-            }else{
+            } else {
                 document.getElementById('regexxa').innerHTML = '';
             }
 
@@ -3550,7 +3556,7 @@ tabindex="0">
                 // alert("Tiền ship không được để trống");
                 document.getElementById('regexship').innerHTML = 'Chưa có tiền ship';
                 error = true;
-            }else{
+            } else {
                 document.getElementById('regexship').innerHTML = '';
             }
 
