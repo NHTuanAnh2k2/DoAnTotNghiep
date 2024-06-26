@@ -76,7 +76,7 @@ public class BanHangController {
     BigDecimal sotiengiam = new BigDecimal("0");
     MauHoaDon billTam = new MauHoaDon();
     //hóa đơn lưu tạm tính bill
-     HoaDon hoaDonCheckBill;
+    HoaDon hoaDonCheckBill;
 
     private static String encodeFileToBase64Binary(File file) throws IOException {
         FileInputStream fileInputStreamReader = new FileInputStream(file);
@@ -503,7 +503,7 @@ public class BanHangController {
         List<sanPhamIn> lstin = new ArrayList<>();
         List<HoaDonChiTiet> lsthdct = daoHDCT.getListSPHD(hoaDonCheckBill);
         BigDecimal tongTienSP = new BigDecimal("0");
-        String qrcode="";
+        String qrcode = "";
         for (HoaDonChiTiet a : lsthdct
         ) {
             lstin.add(new sanPhamIn(a.getSanphamchitiet().getSanpham().getTensanpham(), a.getSoluong()));
@@ -541,7 +541,7 @@ public class BanHangController {
             if (file.isFile() && file.getName().toLowerCase().endsWith(".png")) {
                 try {
                     String base64String = encodeFileToBase64Binary(file);
-                    qrcode=base64String;
+                    qrcode = base64String;
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -599,7 +599,7 @@ public class BanHangController {
                 daoHD.capNhatHD(TT7);
                 redirectAttributes.addFlashAttribute("checkHangCho", true);
             }
-hoaDonCheckBill=hdset;
+            hoaDonCheckBill = hdset;
             return "redirect:/hoa-don/ban-hang";
         }
         // thanh toán đơn có giao hàng
@@ -608,9 +608,9 @@ hoaDonCheckBill=hdset;
             //trả sau_đợi call api giao hàng nhanh
             hdset1.setTrangthai(1);// khách hàng đã xác nhận
             BigDecimal tienTong = new BigDecimal("0.00");
-            List<HoaDonChiTiet> lsthdctTien=daoHDCT.getListSPHD(hdset1);
-            for (HoaDonChiTiet a:lsthdctTien
-                 ) {
+            List<HoaDonChiTiet> lsthdctTien = daoHDCT.getListSPHD(hdset1);
+            for (HoaDonChiTiet a : lsthdctTien
+            ) {
                 tienTong = tienTong.add(a.getGiasanpham().multiply(new BigDecimal(a.getSoluong())));
             }
 
@@ -623,7 +623,7 @@ hoaDonCheckBill=hdset;
             hdset1.setTennguoinhan(thongTin.getTen());
             hdset1.setSdt(thongTin.getSdt());
             hdset1.setEmail(thongTin.getEmail());
-            hoaDonCheckBill=hdset1;
+            hoaDonCheckBill = hdset1;
             daoHD.capNhatHD(hdset1);
             phieugiamgiachtietset.setHoadon(hdset1);
             phieugiamgiachtietset.setPhieugiamgia(phieugiamsaoluu);
@@ -708,7 +708,7 @@ hoaDonCheckBill=hdset;
                 redirectAttributes.addFlashAttribute("checkHangCho", true);
             }
             redirectAttributes.addFlashAttribute("orderSuccess", true);
-            hoaDonCheckBill=hdset1;
+            hoaDonCheckBill = hdset1;
             return "redirect:/hoa-don/ban-hang";
 
         }

@@ -3466,10 +3466,10 @@ tabindex="0">
             var huyen = document.getElementById("quanhuyen").value;
             var xa = document.getElementById("xaphuong").value;
             var tienShip = document.getElementById("phigiaohang").value.trim();
-            alert(huyen.length)
-
             // Biến để kiểm tra nếu có lỗi
             var error = false;
+
+  
 
             // Kiểm tra họ và tên
             if (hoVaTen === "") {
@@ -3524,7 +3524,7 @@ tabindex="0">
             }
 
             // Kiểm tra chọn tỉnh
-            if (tinh === "chọn tỉnh"||tinh.length === 0) {
+            if (tinh === "chọn tỉnh") {
                 // alert("Bạn phải chọn tỉnh");
                 document.getElementById('regextinh').innerHTML = 'Chưa chọn tỉnh!';
 
@@ -3534,16 +3534,17 @@ tabindex="0">
             }
 
             // Kiểm tra chọn huyện
-            if (huyen === "chọn huyện"||huyen.length === 0) {
+            if (huyen === "chọn huyện"||huyen.length===4) {
                 // alert("Bạn phải chọn huyện");
                 document.getElementById('regexhuyen').innerHTML = 'Chưa chọn huyện!';
                 error = true;
             } else {
                 document.getElementById('regexhuyen').innerHTML = '';
             }
+            
 
             // Kiểm tra chọn xã
-            if (xa === "chọn xã"||xa.length ===  0) {
+            if (xa === "chọn xã" || xa.length===4) {
                 // alert("Bạn phải chọn xã");
                 document.getElementById('regexxa').innerHTML = 'Chưa chọn xã!';
                 error = true;
