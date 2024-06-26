@@ -725,36 +725,54 @@
                                 <p>
                                     <input type="text" class="form-control" placeholder="Nhập họ và tên"
                                         id="thongtingiao_ten" th:field="*{ten}">
+                                    <i style="color: red;" id="regexTen"></i>
                                 </p>
                                 <p>
                                     <input type="text" class="form-control" placeholder="Nhập số điện thoại"
                                         id="thongtingiao_sdt" th:field="*{sdt}">
+                                    <i style="color: red;" id="regexsdt"></i>
                                 </p>
                                 <p>
                                     <input type="text" class="form-control" placeholder="Nhập email"
                                         id="thongtingiao_email" th:field="*{email}">
+                                    <i style="color: red;" id="regexemail"></i>
                                 </p>
                                 <p>
                                     <input type="text" class="form-control" placeholder="Nhập địa chỉ"
                                         id="thongtingiao_diachi" th:field="*{diachi}">
+                                    <i style="color: red;" id="regexdiachi"></i>
                                 </p>
-                                <p class="d-flex">
-                                    <select class="form-select form-select-sm mb-3" id="tinhthanh" th:field="*{tinh}">
-                                        <option value="chọn tỉnh" th:text="*{tinh}" selected>
-                                            Chọn tỉnh thành</option>
-                                    </select>
-                                    <select class="form-select form-select-sm mb-3" id="quanhuyen" th:field="*{huyen}">
-                                        <option value="" th:text="*{huyen}" selected>Chọn quận huyện</option>
-                                    </select>
-                                    <select class="form-select form-select-sm mb-3" id="xaphuong" th:field="*{xa}"
-                                        onchange="feanddate()">
-                                        <option value="" th:text="*{xa}" selected>
-                                            Chọn phường xã</option>
-                                    </select>
-                                </p>
+                                <div class="d-flex">
+                                    <div class="col-md-4">
+                                        <select class="form-select" id="tinhthanh"
+                                            th:field="*{tinh}">
+                                            <option value="chọn tỉnh" th:text="*{tinh}" selected>
+                                                Chọn tỉnh thành</option>
+                                        </select>
+                                        <i style="color: red;" id="regextinh" class="col-4"></i>
+
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select class="form-select" id="quanhuyen"
+                                            th:field="*{huyen}">
+                                            <option value="chọn huyện" th:text="*{huyen}" selected>Chọn quận huyện</option>
+                                        </select>
+                                        <i style="color: red;" id="regexhuyen" class="col-4"></i>
+
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select class="form-select" id="xaphuong" th:field="*{xa}"
+                                            onchange="feanddate()">
+                                            <option value="chọn xã" th:text="*{xa}" selected>
+                                                Chọn phường xã</option>
+                                        </select>
+                                        <i style="color: red;" id="regexxa" class="col-4"></i>
+                                    </div>
+                                </div>
                                 <p>
                                     <input type="text" class="form-control" placeholder="Phí vận chuyển"
                                         oninput="showcasst('phigiaohang')" id="phigiaohang" th:field="*{phivanchuyen}">
+                                    <i style="color: red;" id="regexship"></i>
                                 </p>
                                 <p>
                                     <textarea class="form-control" placeholder="Ghi chú"
@@ -826,7 +844,8 @@
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between">
-                            <p style="font-weight: bold">Tổng thanh toán (<span style="color: red">chưa bao gồm phí vận chuyển</span>):</p>
+                            <p style="font-weight: bold">Tổng thanh toán (<span style="color: red">chưa bao gồm phí vận
+                                    chuyển</span>):</p>
                             <p style="color: red;font-weight: bold" id="tongThanhToan">0 đ</p>
                         </div>
 
@@ -1400,7 +1419,7 @@ tabindex="0">
 
             Toast.fire({
                 icon: "error",
-                title: "Tồn tại 01 hóa đơn hàng chờ chưa được xử lý, hãy xử lý đơn này trước khi tạo 1 đơn hàng chờ khác!"
+                title: "Tồn tại 03 hóa đơn hàng chờ chưa được xử lý, hãy xử lý đơn này trước khi tạo 1 đơn hàng chờ khác!"
             });
         }
 
@@ -2812,9 +2831,8 @@ tabindex="0">
         //xác định nghiệp vụ trả sau trả trước
         function handleCheckboxChange(event) {
             // Lấy phần tử checkbox từ sự kiện
-
+            validateForm();
             var checkbox = event.target;
-
             // Kiểm tra trạng thái của checkbox
             if (checkbox.checked) {
                 //hóa đơn lựa chọn trả sau_mở nút xác nhận thanh toán và không cần thanh toán trước
@@ -2996,8 +3014,8 @@ tabindex="0">
         var checkHangCho = /*[[${checkHangCho}]]*/ false;
         /*]]>*/
 
-        if(checkHangCho==true){
-            thongbao('Có 02 đơn hàng hàng chờ đã hiển thị','info')
+        if (checkHangCho == true) {
+            thongbao('Có 02 đơn hàng hàng chờ đã hiển thị', 'info')
         }
         if (orderSuccess === true) {
             var urlgetbill = `http://localhost:8080/ban-hang-tai-quay/show-bill`;
@@ -3006,7 +3024,7 @@ tabindex="0">
                     return a.json();
                 })
                 .then(function (b) {
-                console.log(b)
+                    console.log(b)
                     var htmlbill1 = '';
                     var htmlbill2 = '';
                     var htmlbill3 = '';
@@ -3430,6 +3448,119 @@ tabindex="0">
                         thongbao('Lỗi không xác định', 'warning')
                     }
                 })
+        }
+
+        //validate div địa chỉ giao
+        function validateForm() {
+            // Lấy các giá trị từ các input
+            var hoVaTen = document.getElementById("thongtingiao_ten").value.trim();
+            var soDienThoai = document.getElementById("thongtingiao_sdt").value.trim();
+            var email = document.getElementById("thongtingiao_email").value.trim();
+            var diaChi = document.getElementById("thongtingiao_diachi").value.trim();
+            var tinh = document.getElementById("tinhthanh").value;
+            var huyen = document.getElementById("quanhuyen").value;
+            var xa = document.getElementById("xaphuong").value;
+            var tienShip = document.getElementById("phigiaohang").value.trim();
+
+            // Biến để kiểm tra nếu có lỗi
+            var error = false;
+
+            // Kiểm tra họ và tên
+            if (hoVaTen === "") {
+                document.getElementById('regexTen').innerHTML = 'Họ tên không được trống!';
+                error = true;
+            }else{
+                document.getElementById('regexTen').innerHTML = '';
+            }
+
+            // Kiểm tra số điện thoại
+            if (soDienThoai === "") {
+                // alert("Số điện thoại không được để trống");
+                document.getElementById('regexsdt').innerHTML = 'Số điện thoại không được trống!';
+
+                error = true;
+            } else {
+                // Kiểm tra định dạng email
+                var sdtPattern = /^0\d{9}$/;
+                if (!sdtPattern.test(soDienThoai)) {
+                    // alert("Email không hợp lệ");
+                    document.getElementById('regexsdt').innerHTML = 'Số điện thoại phải bắt đầu bằng 0, độ dài 10 số!';
+                    error = true;
+                }else{
+                    document.getElementById('regexsdt').innerHTML = '';
+                }
+            }
+
+            // Kiểm tra email
+            if (email === "") {
+                // alert("Email không được để trống");
+                document.getElementById('regexemail').innerHTML = 'Email không được trống!';
+                error = true;
+            } else {
+                // Kiểm tra định dạng email
+                var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailPattern.test(email)) {
+                    // alert("Email không hợp lệ");
+                    document.getElementById('regexemail').innerHTML = 'Email sai định dạng!';
+                    error = true;
+                }else{
+                    document.getElementById('regexemail').innerHTML = '';
+                }
+            }
+
+            // Kiểm tra địa chỉ
+            if (diaChi === "") {
+                // alert("Địa chỉ không được để trống");
+                document.getElementById('regexdiachi').innerHTML = 'Địa chỉ không được trống!';
+                error = true;
+            }else{
+                document.getElementById('regexdiachi').innerHTML = '';
+            }
+
+            // Kiểm tra chọn tỉnh
+            if (tinh === "chọn tỉnh") {
+                // alert("Bạn phải chọn tỉnh");
+                document.getElementById('regextinh').innerHTML = 'Chưa chọn tỉnh!';
+
+                error = true;
+            }else{
+                document.getElementById('regextinh').innerHTML = '';
+            }
+
+            // Kiểm tra chọn huyện
+            if (huyen === "chọn huyện") {
+                // alert("Bạn phải chọn huyện");
+                document.getElementById('regexhuyen').innerHTML = 'Chưa chọn huyện!';
+                error = true;
+            }else{
+                document.getElementById('regexhuyen').innerHTML = '';
+            }
+
+            // Kiểm tra chọn xã
+            if (xa === "chọn xã") {
+                // alert("Bạn phải chọn xã");
+                document.getElementById('regexxa').innerHTML = 'Chưa chọn xã!';
+                error = true;
+            }else{
+                document.getElementById('regexxa').innerHTML = '';
+            }
+
+            // Kiểm tra tiền ship
+            if (tienShip === "") {
+                // alert("Tiền ship không được để trống");
+                document.getElementById('regexship').innerHTML = 'Chưa có tiền ship';
+                error = true;
+            }else{
+                document.getElementById('regexship').innerHTML = '';
+            }
+
+            // Nếu có lỗi, ngăn chặn form không submit
+            if (error) {
+                return false;
+            }
+
+            // Nếu không có lỗi, cho phép form submit
+            return true;
         }
 
     </script>

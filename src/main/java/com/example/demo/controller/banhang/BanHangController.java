@@ -748,7 +748,7 @@ hoaDonCheckBill=hdset;
     @ResponseBody
     public ResponseEntity<?> chuyenHDVeHangCho() {
         List<HoaDon> lst1 = daoHD.timTheoTrangThaiVaLoai(7, false);
-        if (lst1.size() > 0) {
+        if (lst1.size() > 2) {
             //check hóa đơn tràn hàng chờ đã tồn tại chưa, nếu tồn tại return false
             return ResponseEntity.ok(false);
         } else {
