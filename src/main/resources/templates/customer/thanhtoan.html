@@ -5,6 +5,7 @@
 <!--<nav th:replace="~{/layoutadmin/head.html}"></nav>-->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!--end-->
 <style>
     .tong{
@@ -153,7 +154,33 @@
         vertical-align: middle;
         line-height: 32px;
     }
-</style>
+    .icon-clear {
+        word-wrap: break-word;
+        word-break: break-word;
+        border-collapse: collapse;
+        border-spacing: 0;
+        color: inherit;
+        font: inherit;
+        margin: 0;
+        padding: 0;
+        -webkit-font-smoothing: inherit;
+        border: none;
+        background: transparent;
+        line-height: normal;
+        -webkit-appearance: button;
+        cursor: pointer;
+        background-position: center center;
+        background-repeat: no-repeat;
+        /*display: inline-block;*/
+        vertical-align: middle;
+        margin-left: 0.28571em;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMiAtNCAxNiAxNiIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAyIC00IDE2IDE2Ij48cGF0aCBvcGFjaXR5PSIuMiIgZD0iTTEwLTRjLTQuNCAwLTggMy42LTggOHMzLjYgOCA4IDggOC0zLjYgOC04LTMuNi04LTgtOHptMy43IDEwLjdsLTEgMS0yLjctMi42LTIuNyAyLjYtMS0xIDIuNi0yLjctMi42LTIuNyAxLTEgMi43IDIuNiAyLjctMi42IDEgMS0yLjYgMi43IDIuNiAyLjd6Ii8+PC9zdmc+'),none;
+
+    }
+    </style>
 <body class="container">
 <div class="tong">
     <div class="left">
@@ -165,24 +192,28 @@
                 <p>Bạn đã có tài khoản?</p>
                 <a href="#" style="color: rgb(249,72,42); padding-left: 5px; text-decoration: none; text-transform: none;">Đăng nhập</a>
             </div>
-            <form>
+            <form id="formDiaChiKhachLe" th:action="@{/customer/thanh-toan-khach-le}" th:object="${diachikotaikhoan}" method="post" onsubmit="return validateFormDiaChiKhachLe(event)">
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="hovaten" placeholder="Họ và tên">
                     <label for="hovaten">Họ và tên</label>
+                    <div style="color: red; font-weight: initial;" id="errorTen"></div>
                 </div>
                 <div class="d-flex justify-content-between mb-3">
-                    <div class="form-floating" style="width: 70%; padding-right: 20px;">
-                        <input type="email" class="form-control" id="email" placeholder="name@example.com">
+                    <div class="form-floating" style="width: 60%; padding-right: 20px;">
+                        <input type="text" class="form-control" id="email" placeholder="name@example.com">
                         <label for="email">Email</label>
+                        <div style="color: red; font-weight: initial;" id="errorEmail"></div>
                     </div>
-                    <div class="form-floating" style="width: 30%;">
+                    <div class="form-floating" style="width: 40%;">
                         <input type="text" class="form-control" id="sdt" placeholder="Số điện thoại">
                         <label for="sdt">Số điện thoại</label>
+                        <div style="color: red; font-weight: initial;" id="errorSDT"></div>
                     </div>
                 </div>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="diachi" placeholder="Địa chỉ">
                     <label for="diachi">Địa chỉ</label>
+                    <div style="color: red; font-weight: initial;" id="errorDiaChi"></div>
                 </div>
                 <div class="d-flex justify-content-between mb-4">
                     <div class="form-floating" style="padding-right: 10px; width: 250px;">
@@ -190,18 +221,21 @@
                             <option selected>Tỉnh/Thành phố</option>
                         </select>
                         <label for="tinh">Tỉnh/thành phố</label>
+                        <div style="color: red; font-weight: initial;" id="errorTinh"></div>
                     </div>
                     <div class="form-floating" style="padding-right: 10px; width: 250px;">
                         <select class="form-select" id="huyen" aria-label="Floating label select example">
                             <option selected>Quận/Huyện</option>
                         </select>
                         <label for="huyen">Quận/huyện</label>
+                        <div style="color: red; font-weight: initial;" id="errorHuyen"></div>
                     </div>
                     <div class="form-floating" style="width: 250px;">
                         <select class="form-select" id="xa" aria-label="Floating label select example">
                             <option selected>Phường/Xã</option>
                         </select>
                         <label for="xa">Phường/xã</label>
+                        <div style="color: red; font-weight: initial;" id="errorXa"></div>
                     </div>
                 </div>
                 <div class="d-flex justify-content-end mb-4">
@@ -329,49 +363,56 @@
         <table>
             <tbody>
             <div>
-                <tr>
-                    <td class="anhsp" style="width: 15%;">
-                        <img src="../dist/img/bong2.jpg" width="100%" height="40px"/>
-                        <span class="position-absolute top-1 start-85 translate-middle badge rounded-pill bg-danger">3</span>
+                <tr th:each="item, iterStat : ${cartItems}">
+                    <td class="anhsp" style="width: 15%; position: relative;">
+                        <div th:id="'carouselExample' + ${item.id}" class="carousel">
+                            <div class="carousel-inner">
+                                <th:block th:each="anh, index : ${item.sanphamchitiet.anh}">
+                                    <div th:classappend="${index.index == 0} ? 'carousel-item active' : 'carousel-item'">
+                                        <img th:if="${anh.tenanh != null}"
+                                             th:src="@{'/upload' + ${anh.tenanh.substring(anh.tenanh.lastIndexOf('upload') + 6)}}"
+                                             class="d-block w-100" style="width: 100%; height: 70px;" alt="Ảnh">
+                                    </div>
+                                </th:block>
+                            </div>
+                            <button class="carousel-control-prev" type="button" th:data-bs-target="'#carouselExample' + ${item.id}" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" th:data-bs-target="'#carouselExample' + ${item.id}" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                        <span class="position-absolute badge rounded-pill bg-danger" style="top: 0; left: 90%; transform: translate(-50%, -50%); width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 50%;" th:text="${item.soluong}"></span>
                     </td>
+
                     <td style="width: 60%; padding-left: 15px;">
-                        <h8 style="margin: 0;padding-top: 0;">Giày Thể Thao Nữ Biti's Hunter x DC Batman DSWH09099</h8>
-                        <p style="margin: 0;padding-top: 0;">Đen / 36</p>
+                        <h8 style="margin: 0;padding-top: 0;" th:text="${item.sanphamchitiet.sanpham.tensanpham}"></h8>
+                        <p style="margin: 0; padding-top: 0;">
+                            <span th:text="${item.sanphamchitiet.mausac.ten}"></span>
+                            <span th:text="${item.sanphamchitiet.kichco.ten}"></span>
+                        </p>
                     </td>
                     <td style="width: 25%; text-align: right;">
                         <div class="d-flex justify-content-end align-items-center">
-                            <b>720.000</b>
-                            <b style="font-size: 10px;">đ</b>
+                            <b th:text="${#numbers.formatDecimal(item.sanphamchitiet.giatien * item.soluong, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></b>
                         </div>
                     </td>
                 </tr>
                 <tr class="spacer-row"><td colspan="3"></td></tr>
-                <tr>
-                    <td class="anhsp" style="width: 15%;">
-                        <img src="../dist/img/bong2.jpg" width="100%" height="40px"/>
-                        <span class="position-absolute top-1 start-85 translate-middle badge rounded-pill bg-danger">3</span>
-                    </td>
-                    <td style="width: 60%; padding-left: 15px;">
-                        <h8 style="margin: 0;padding-top: 0;">Giày Thể Thao Nữ Biti's Hunter x DC Batman DSWH09099</h8>
-                        <p style="margin: 0;padding-top: 0;">Đen / 36</p>
-                    </td>
-                    <td style="width: 25%; text-align: right;">
-                        <div class="d-flex justify-content-end align-items-center">
-                            <b>720.000</b>
-                            <b style="font-size: 10px;">đ</b>
-                        </div>
-                    </td>
-                </tr>
+
             </div>
             </tbody>
         </table>
         <hr>
         <div class="d-flex justify-content-between mb-3">
             <div class="form-floating" style="width: 70%; padding-right: 20px;">
-                <input type="email" class="form-control" id="magiamgia" placeholder="Mã giảm giá">
+                <input type="text" class="form-control" id="magiamgia" placeholder="Mã giảm giá">
                 <label for="magiamgia">Mã giảm giá</label>
+                <div style="color: red; font-weight: initial;" id="errorMaGiam"></div>
             </div>
-            <button style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 30%; height: 55px; border-radius: 10px; border-color: rgb(249,72,42);">Sử dụng</button>
+            <button id="suDungPhieuGiam" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 30%; height: 55px; border-radius: 10px; border-color: rgb(249,72,42);">Sử dụng</button>
         </div>
         <div class="xemthem" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
             <svg width="15" height="10" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -382,7 +423,7 @@
         <div style="justify-content: center;">
             <span th:each="p,stt:${lstPGG}" class="qaz" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                 <span th:if="${p.loaiphieu}" th:text="'Giảm '+${p.giatrigiam}+' %'"></span>
-                <span th:if="${!p.loaiphieu}" th:text="'Giảm '+${p.giatrigiam}+' ₫'"></span>
+                <span th:if="${!p.loaiphieu}" th:text="'Giảm '+${#numbers.formatDecimal(p.giatrigiam, 0, 'COMMA', 0, 'POINT')}+' ₫'"></span>
             </span>
         </div>
         <!-- Modal -->
@@ -400,15 +441,16 @@
                             </div>
                             <div class="ma-item-right">
                                 <h4 th:if="${p.loaiphieu}" th:text="'Giảm '+${p.giatrigiam}+' %'" style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;"></h4>
-                                <h4 th:if="${!p.loaiphieu}" th:text="'Giảm '+${p.giatrigiam}+' ₫'" style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;"></h4>
+                                <h4 th:if="${!p.loaiphieu}" th:text="'Giảm '+${#numbers.formatDecimal(p.giatrigiam, 0, 'COMMA', 0, 'POINT')}+' ₫'" style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;"></h4>
                                 <p th:if="${p.dontoithieu == null}" th:text="'Áp dụng cho mọi hóa đơn'" style="font-size: 14px; margin: 0; padding: 0; color: black"></p>
-                                <p th:if="${p.dontoithieu!=null}" th:text="'Áp dụng cho hóa đơn từ '+${p.dontoithieu}+' ₫'" style="font-size: 14px; margin: 0; padding: 0; color: black"></p>
+                                <p th:if="${p.dontoithieu!=null}" th:text="'Áp dụng cho hóa đơn từ '+${#numbers.formatDecimal(p.dontoithieu, 0, 'COMMA', 0, 'POINT')}+' ₫'" style="font-size: 14px; margin: 0; padding: 0; color: black"></p>
+                                <p th:if="${p.giatrigiamtoida!=null}" th:text="'Giảm tối đa '+${#numbers.formatDecimal(p.giatrigiamtoida, 0, 'COMMA', 0, 'POINT')}+' ₫'" style="font-size: 14px; margin: 0; padding: 0; color: black"></p>
                                 <div class="ma-item-des">
                                     <div class="left_magiam">
                                         <p style="margin: 0; white-space: nowrap;">Mã: <b class="code" th:text="${p.macode}"></b></p>
                                         <p th:text="'HSD: '+${p.ngayketthuc}"></p>
                                     </div>
-                                    <div class="right_magiam">
+                                    <div class="right_magiam apDungMaGiam" id="apDungMaGiam" th:data-id="${p.id}" data-bs-dismiss="modal">
                                         Áp dụng
                                     </div>
                                 </div>
@@ -422,23 +464,39 @@
         <div class="d-flex justify-content-between align-items-center">
             <p style="color: #AAAAAA; font-size: 18px;">Tạm tính</p>
             <div style="display: flex; align-items: center;">
-                <h5>720.000</h5>
-                <b style="font-size: 14px;">đ</b>
+                <h5 id="tamTinh">900,000 ₫</h5>
+            </div>
+        </div>
+        <div id="fillMaGiam">
+            <div class="d-flex justify-content-between align-items-center mb-3" style="align-items: center;">
+                <div class="d-flex justify-content-start">
+                    <span style="color: #AAAAAA; font-size: 18px; padding-right: 10px;">Mã giảm giá</span>
+                    <span class="applied-reduction-code">
+                    <svg width="16" height="15" xmlns="http://www.w3.org/2000/svg" class="applied-reduction-code-icon" fill="#CE4549"><path d="M14.476 0H8.76c-.404 0-.792.15-1.078.42L.446 7.207c-.595.558-.595 1.463 0 2.022l5.703 5.35c.296.28.687.42 1.076.42.39 0 .78-.14 1.077-.418l7.25-6.79c.286-.268.447-.632.447-1.01V1.43C16 .64 15.318 0 14.476 0zm-2.62 5.77c-.944 0-1.713-.777-1.713-1.732 0-.954.77-1.73 1.714-1.73.945 0 1.714.776 1.714 1.73 0 .955-.768 1.73-1.713 1.73z"></path></svg>
+                    <span class="applied-reduction-code-information" id="maCodeGiam">khong</span>
+                </span>
+                    <div style="padding-left: 5px;" id="form_discount_remove" class="dp-inline-block">
+                        <button class="applied-reduction-code-clear-button icon icon-clear" id="xoaPhieuGiam">
+                            <span class="visually-hidden">Xóa</span>
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <h5 id="soTienGiam">0</h5>
+                </div>
             </div>
         </div>
         <div class="d-flex justify-content-between align-items-center">
             <p style="color: #AAAAAA; font-size: 18px;">Phí vận chuyển</p>
             <div style="display: flex; align-items: center;">
-                <h5>20.000</h5>
-                <b style="font-size: 14px;">đ</b>
+                <h5 id="phivanchuyen">0 ₫</h5>
             </div>
         </div>
         <hr>
         <div class="d-flex justify-content-between align-items-center">
             <p style="color: #000; font-size: 20px;">Tổng cộng</p>
             <div style="display: flex; align-items: center;">
-                <h4 style="color: #000;">20.000</h4>
-                <b style="font-size: 14px;">đ</b>
+                <h4 style="color: #000;" id="tongtien"></h4>
             </div>
         </div>
         <div style="position: relative; padding: 10px 0; color: #666;">
@@ -468,20 +526,16 @@
     </div>
 </div>
 <script>
+    document.getElementById("fillMaGiam").style.display = "none";
     document.getElementById("left2").style.display = "none";
     document.getElementById("left3").style.display = "none";
-    document.getElementById("button_left1").addEventListener("click", function(event) {
-        event.preventDefault();
-        document.getElementById("left1").style.display = "none";
-        document.getElementById("left2").style.display = "none";
-        document.getElementById("left3").style.display = "block";
-    });
     document.getElementById("button_left2").addEventListener("click", function(event) {
         event.preventDefault();
         document.getElementById("left1").style.display = "none";
         document.getElementById("left2").style.display = "none";
         document.getElementById("left3").style.display = "block";
     });
+
 </script>
 <script>
     var citis = document.getElementById("tinh");
@@ -535,6 +589,602 @@
                 }
             }
         };
+    }
+    function checkCoKhoangTrang(str) {
+        // Sử dụng biểu thức chính quy để kiểm tra có khoảng trắng giữa hai từ không
+        return /\s/.test(str.trim());
+    }
+    function checkNhieuKhoangTrang(str) {
+        // Sử dụng biểu thức chính quy để tìm các mẫu có ít nhất hai khoảng trắng liên tiếp giữa các từ
+        return /\s{2,}/.test(str.trim());
+    }
+    function validateTen(inputString) {
+        // Biểu thức chính quy cho phép các ký tự Latinh, số từ 0-9 và có độ dài từ 5 đến 15 ký tự
+        const regex = /^[a-zA-ZàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆìÌỉỈĩĨíÍịỊòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰýÝđĐ ]{1,30}$/;
+        return regex.test(inputString);
+    }
+    function validateEmail(email) {
+        const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return re.test(email);
+    }
+    function validatePhoneNumber(phoneNumber) {
+        const regex = /^(0[1-9])+([0-9]{8})\b$/;
+        return regex.test(phoneNumber);
+    }
+    //chuyển tên city để so sánh
+    function extractLocation(input) {
+        // Chuyển chuỗi về dạng chữ thường để so sánh
+        const lowerCaseInput = input.toLowerCase();
+
+        // Kiểm tra và tách từ "tỉnh" hoặc "thành phố"
+        if (lowerCaseInput.startsWith("tỉnh ")) {
+            // Tách từ "tỉnh" và lấy phần còn lại
+            const province = input.slice(5).trim();
+            return { type: "tỉnh", name: province };
+        } else if (lowerCaseInput.startsWith("thành phố ")) {
+            // Tách từ "thành phố" và lấy phần còn lại
+            const city = input.slice(10).trim();
+            return { type: "thành phố", name: city };
+        } else {
+            return { type: "unknown", name: input.trim() };
+        }
+    }
+    function callIdCity(thanhpho, huyen, xa) {
+        var tencity = extractLocation(thanhpho);
+        var tenhuyen = huyen;
+        var tenxa = xa;
+
+        var idCityreturn;
+        var idHuyenreturn;
+        var idXareturn;
+
+        var Parameter = {
+            url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/province",
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Token": "59db4e6a-23e7-11ef-8c74-4ad7faca6bdc"
+            }
+        };
+        axios(Parameter)
+            .then(function (a) {
+                return a.data;
+            })
+            .then(function (b) {
+                // tách id thành phố
+                for (const id of b.data) {
+                    if (id.ProvinceName.toLowerCase() === tencity.name.toLowerCase()) {
+                        idCityreturn = id.ProvinceID;
+                    }
+                }
+
+                var requestDataHuyen = {
+                    province_id: idCityreturn
+                };
+
+                // Cấu hình yêu cầu với axios, bao gồm Token và dữ liệu gửi đi
+                var ParameterHuyen = {
+                    url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/district",
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Token": "59db4e6a-23e7-11ef-8c74-4ad7faca6bdc"
+                    },
+                    data: JSON.stringify(requestDataHuyen)
+                };
+
+                // Gửi yêu cầu và xử lý phản hồi
+                axios(ParameterHuyen)
+                    .then(function (response) {
+                        return response.data;
+                    })
+                    .then(function (d) {
+                        //tách id huyện
+                        for (const id of d.data) {
+                            if (id.DistrictName.toLowerCase() === tenhuyen.toLowerCase()) {
+                                idHuyenreturn = id.DistrictID;
+                            }
+                        }
+                        //tách id xã
+                        var requestData = {
+                            district_id: idHuyenreturn
+                        };
+
+                        // Cấu hình yêu cầu với axios, bao gồm Token và dữ liệu gửi đi
+                        var Parameter = {
+                            url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id",
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Token": "59db4e6a-23e7-11ef-8c74-4ad7faca6bdc"
+                            },
+                            data: JSON.stringify(requestData)
+                        };
+
+                        // Gửi yêu cầu và xử lý phản hồi
+                        axios(Parameter)
+                            .then(function (response) {
+                                return response.data;
+                            })
+                            .then(function (d) {
+                                //tách id xã
+                                for (const id of d.data) {
+                                    if (id.WardName.toLowerCase() === tenxa.toLowerCase()) {
+                                        idXareturn = id.WardCode;
+                                    }
+                                }
+                                var requestDataDate = {
+                                    from_district_id: 3440,//địa chỉ mặc địch của shop
+                                    from_ward_code: "13007",//địa chỉ mặc địch của shop
+                                    to_district_id: idHuyenreturn,
+                                    to_ward_code: idXareturn.toString(),
+                                    service_id: 53320
+                                };
+                                // Cấu hình yêu cầu với axios, bao gồm Token và dữ liệu gửi đi
+                                var ParameterDate = {
+                                    url: "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/leadtime",
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        "Token": "59db4e6a-23e7-11ef-8c74-4ad7faca6bdc",
+                                        "ShopId": "5115739"
+                                    },
+                                    data: JSON.stringify(requestDataDate)
+                                };
+                                // Gửi yêu cầu và xử lý phản hồi
+                                axios(ParameterDate)
+                                    .then(function (response) {
+                                        return response.data; // In dữ liệu ra console
+                                    })
+                                    .then(function (d) {
+                                        // Số nguyên đại diện cho một thời điểm trong JavaScript (ví dụ: số giây kể từ Epoch)
+                                        var timestamp = d.data.leadtime;
+                                        var date = new Date(timestamp * 1000);
+
+                                        // Lấy ngày, tháng, năm từ đối tượng Date
+                                        var day = date.getDate();
+                                        var month = date.getMonth() + 1; // Tháng bắt đầu từ 0
+                                        var year = date.getFullYear();
+
+                                        // Đảm bảo định dạng dd và mm luôn có hai chữ số
+                                        if (day < 10) {
+                                            day = '0' + day;
+                                        }
+                                        if (month < 10) {
+                                            month = '0' + month;
+                                        }
+
+                                        // Trả về chuỗi định dạng dd/mm/yyyy
+                                        var days = day + '/' + month + '/' + year;
+
+                                        // document.getElementById('ngaygiaodukiens').innerHTML = days;
+                                        // phigiaohang
+                                        feship(idHuyenreturn, idXareturn);
+
+
+
+                                    })
+                            })
+
+
+                    })
+            })
+
+    }
+    function convertCashInput(amount) {
+        // Chuyển số thành chuỗi và thêm dấu phân cách hàng nghìn
+        let formattedAmount = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        // Thêm ký hiệu tiền tệ ₫ vào cuối chuỗi
+        return formattedAmount + " ₫";
+    }
+    function feship(idhuyen, idxa) {
+        var requestData =
+            {
+                service_id: 53321,
+                insurance_value: 500000,
+                coupon: null,
+                from_district_id: 3440,
+                to_district_id: idhuyen,
+                to_ward_code: idxa.toString(),
+                height: 15,
+                length: 15,
+                weight: 1000,
+                width: 15
+            };
+        // Cấu hình yêu cầu với axios, bao gồm Token và dữ liệu gửi đi
+        var Parameter = {
+            url: "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee",
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Token": "59db4e6a-23e7-11ef-8c74-4ad7faca6bdc",
+                "ShopId": "5115739"
+            },
+            data: JSON.stringify(requestData)
+        };
+
+        // Gửi yêu cầu và xử lý phản hồi
+        axios(Parameter)
+            .then(function (response) {
+                return response.data // In dữ liệu ra console
+            })
+            .then(function (d) {
+                var shipfe = convertCashInput(d.data.total);
+                document.getElementById('phivanchuyen').innerText = shipfe;
+                tinhtongtien();
+            })
+
+    }
+    function tinhtongtien() {
+        const tamtinh = chuyendoitien(document.getElementById("tamTinh"));
+        const soTienGiam = chuyendoitien(document.getElementById("soTienGiam"));
+        console.log("Tien giam: " + soTienGiam)
+        const phivanchuyen = chuyendoitien(document.getElementById("phivanchuyen"));
+        const tongTien = tamtinh - soTienGiam + phivanchuyen;
+        document.getElementById("tongtien").innerText = tongTien;
+    }
+    function validateFormDiaChiKhachLe(event){
+        event.preventDefault();
+        var inputTen=document.getElementById("hovaten").value;
+        var errorTen=document.getElementById("errorTen");
+        var isTenValid = true;
+        if(inputTen.trim() === ""){
+            errorTen.innerText = "Vui lòng nhập họ tên!";
+            document.getElementById("hovaten").style.border="2px solid red";
+            isTenValid = false;
+        }
+        if(inputTen.trim().length > 0){
+            if(checkNhieuKhoangTrang(inputTen)){
+                errorTen.innerText = "Giữa các từ không được nhiều hơn 1 khoảng trắng!";
+                document.getElementById("hovaten").style.border="2px solid red";
+                isTenValid = false;
+            }
+        }
+        if(inputTen.trim().length > 0){
+            if(validateTen(inputTen.trim())===false){
+                errorTen.innerText = "Họ tên chỉ chứa ký tự và tối đa 30 ký tự!";
+                document.getElementById("hovaten").style.border="2px solid red";
+                isTenValid = false;
+            }
+        }
+        if(isTenValid){
+            document.getElementById("hovaten").style.border="";
+            errorTen.innerText = "";
+        }
+        var inputEmail=document.getElementById("email").value;
+        var errorEmail=document.getElementById("errorEmail");
+        var isEmailValid = true;
+        if(inputEmail.trim() === ""){
+            errorEmail.innerText = "Địa chỉ email không được trống!";
+            document.getElementById("email").style.border="2px solid red";
+            isEmailValid = false;
+        }
+        // if(inputEmail.trim().length > 0){
+        //     if(checkCoKhoangTrang(inputEmail)){
+        //         errorEmail.innerText = "Giữa các từ không được nhiều hơn 1 khoảng trắng!";
+        //         document.getElementById("email").style.border="2px solid red";
+        //         isEmailValid = false;
+        //     }
+        // }
+        if(inputEmail.trim().length > 0){
+            if(validateEmail(inputEmail.trim())===false){
+                errorEmail.innerText = "Địa chỉ email sai định dạng!";
+                document.getElementById("email").style.border="2px solid red";
+                isEmailValid = false;
+            }
+        }
+        if(isEmailValid){
+            document.getElementById("email").style.border="";
+            errorEmail.innerText = "";
+        }
+        var inputSDT=document.getElementById("sdt").value;
+        var errorSDT=document.getElementById("errorSDT");
+        var isSDTValid = true;
+
+        if(inputSDT.trim() === ""){
+            errorSDT.innerText = "Số điện thoại không được trống!";
+            document.getElementById("sdt").style.border="2px solid red";
+            isSDTValid = false;
+        }
+
+        if(inputSDT.trim().length > 0){
+            if(validatePhoneNumber(inputSDT.trim())===false){
+                errorSDT.innerText = "Số điện thoại sai định dạng!";
+                document.getElementById("sdt").style.border="2px solid red";
+                isSDTValid = false;
+            }
+        }
+        if(isSDTValid){
+            document.getElementById("sdt").style.border="";
+            errorSDT.innerText = "";
+        }
+
+        var inputDiaChi=document.getElementById("diachi").value;
+        var errorDiaChi=document.getElementById("errorDiaChi");
+        var isDiaChiValid = true;
+
+        if(inputDiaChi.trim() === ""){
+            errorDiaChi.innerText = "Địa chỉ không được trống!";
+            document.getElementById("diachi").style.border="2px solid red";
+            isDiaChiValid = false;
+        }
+
+        if(inputDiaChi.trim().length > 0){
+            if(checkNhieuKhoangTrang(inputDiaChi)){
+                errorDiaChi.innerText = "Giữa các từ không được nhiều hơn 1 khoảng trắng!";
+                document.getElementById("diachi").style.border="2px solid red";
+                isDiaChiValid = false;
+            }
+        }
+        if(inputDiaChi.trim().length > 0){
+            if(inputDiaChi.trim().length > 50){
+                errorDiaChi.innerText = "Địa chỉ tối ta 50 ký tự!";
+                document.getElementById("diachi").style.border="2px solid red";
+                isDiaChiValid = false;
+            }
+        }
+        if(isDiaChiValid){
+            document.getElementById("diachi").style.border="";
+            errorDiaChi.innerText = "";
+        }
+
+        var inputTinh=document.getElementById("tinh");
+        var errorTinh=document.getElementById("errorTinh");
+        var isTinhValid = true;
+
+        if(inputTinh.options[0].selected){
+            errorTinh.innerText = "Vui lòng chọn tỉnh thành!";
+            document.getElementById("tinh").style.border="2px solid red";
+            isTinhValid = false;
+        }
+        if(isTinhValid){
+            document.getElementById("tinh").style.border="";
+            errorTinh.innerText = "";
+        }
+
+        var inputHuyen=document.getElementById("huyen");
+        var errorHuyen=document.getElementById("errorHuyen");
+        var isHuyenValid = true;
+
+        if(inputHuyen.options[0].selected){
+            errorHuyen.innerText = "Vui lòng chọn quận huyện!";
+            document.getElementById("huyen").style.border="2px solid red";
+            isHuyenValid = false;
+        }
+        if(isHuyenValid){
+            document.getElementById("huyen").style.border="";
+            errorHuyen.innerText = "";
+        }
+
+        var inputXa=document.getElementById("xa");
+        var errorXa=document.getElementById("errorXa");
+        var isXaValid = true;
+
+        if(inputXa.options[0].selected){
+            errorXa.innerText = "Vui lòng chọn phường xã!";
+            document.getElementById("xa").style.border="2px solid red";
+            isXaValid = false;
+        }
+        if(isXaValid){
+            document.getElementById("xa").style.border="";
+            errorXa.innerText = "";
+        }
+
+        if(isTenValid && isEmailValid && isSDTValid && isDiaChiValid && isTinhValid && isHuyenValid && isXaValid){
+            document.getElementById("left1").style.display = "none";
+            document.getElementById("left2").style.display = "none";
+            document.getElementById("left3").style.display = "block";
+            var tinh = document.getElementById("tinh").value;
+            console.log(tinh);
+            var huyen = document.getElementById("huyen").value;
+            console.log(huyen);
+            var xa= document.getElementById("xa").value;
+            console.log(xa);
+            callIdCity(tinh,huyen,xa);
+            return true;
+        }else{
+            return false;
+        }
+    }
+    async function getPhieuGiamKhongTaiKhoan() {
+        const response = await fetch('/thanh-toan-phieu-giam-khong-tai-khoan');
+        return await response.json();
+    }
+    async function fillPhieuGiamKhongTaiKhoan(){
+        const inputTamTinh = document.getElementById('tamTinh');
+        // Lấy nội dung văn bản của phần tử
+        const  inputTamTinhValue= inputTamTinh.innerText || inputTamTinh.textContent;
+        // Sử dụng regex để loại bỏ ký tự không phải là số và dấu phẩy
+        const numberString = inputTamTinhValue.replace(/[^\d]/g, '');
+        // Chuyển chuỗi đã làm sạch thành số nguyên
+        const inputTamTinhSoNguyen = parseInt(numberString, 10);
+        const lstPGG = await getPhieuGiamKhongTaiKhoan();
+        var MangTienGiam =[];
+        lstPGG.forEach(p =>{
+            if(p.dontoithieu === null || p.dontoithieu <= inputTamTinhSoNguyen){
+                if(p.loaiphieu !=null && p.loaiphieu===true){
+                    const sotiengiam=((p.giatrigiam/100)*inputTamTinhSoNguyen);
+                    if(p.giatrigiamtoida <= sotiengiam){
+                        var newObj = {
+                            code: p.macode,
+                            value: p.giatrigiamtoida
+                        };
+                        MangTienGiam.push(newObj);
+                    }else{
+                        var newObj = {
+                            code: p.macode,
+                            value: sotiengiam
+                        };
+                        MangTienGiam.push(newObj);
+                    }
+
+                }
+                if(p.loaiphieu != null && p.loaiphieu===false){
+                    var newObj = {
+                        code: p.macode,
+                        value: p.giatrigiam
+                    };
+                    MangTienGiam.push(newObj);
+
+                }
+            }
+        })
+        if(MangTienGiam.length>0){
+            var max = MangTienGiam[0];
+            for (var i = 1; i < MangTienGiam.length; i++) {
+                if (MangTienGiam[i].value > max.value) {
+                    max = MangTienGiam[i];
+                }
+            }
+            document.getElementById("fillMaGiam").style.display = "block";
+            document.getElementById("maCodeGiam").innerText= max.code;
+            document.getElementById("soTienGiam").innerText ="- "+max.value+" ₫";
+            tinhtongtien();
+        }
+    }
+    fillPhieuGiamKhongTaiKhoan();
+    // document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("xoaPhieuGiam").addEventListener("click", function(event) {
+        event.preventDefault();
+        document.getElementById("fillMaGiam").style.display = "none";
+        document.getElementById("maCodeGiam").innerText= "khong";
+        document.getElementById("soTienGiam").innerText =0;
+        tinhtongtien();
+    });
+    // });
+    document.getElementById("suDungPhieuGiam").addEventListener("click", async function(event) {
+        event.preventDefault();
+        const inputTamTinh = document.getElementById('tamTinh');
+        // Lấy nội dung văn bản của phần tử
+        const  inputTamTinhValue= inputTamTinh.innerText || inputTamTinh.textContent;
+        // Sử dụng regex để loại bỏ ký tự không phải là số và dấu phẩy
+        const numberString = inputTamTinhValue.replace(/[^\d]/g, '');
+        // Chuyển chuỗi đã làm sạch thành số nguyên
+        const inputTamTinhSoNguyen = parseInt(numberString, 10);
+
+        const lstPGG = await getPhieuGiamKhongTaiKhoan();
+
+        var maGiamGia=document.getElementById("magiamgia").value;
+        var errorMaGiam= document.getElementById("errorMaGiam");
+        var MangTienGiam =[];
+        lstPGG.forEach(p =>{
+            if(p.macode === maGiamGia.trim()){
+                if(p.dontoithieu === null || p.dontoithieu <= inputTamTinhSoNguyen){
+                    if(p.loaiphieu !=null && p.loaiphieu===true){
+                        const sotiengiam=((p.giatrigiam/100)*inputTamTinhSoNguyen);
+                        if(p.giatrigiamtoida <= sotiengiam){
+                            var newObj = {
+                                code: p.macode,
+                                value: p.giatrigiamtoida
+                            };
+                            MangTienGiam.push(newObj);
+                        }else{
+                            var newObj = {
+                                code: p.macode,
+                                value: sotiengiam
+                            };
+                            MangTienGiam.push(newObj);
+                        }
+
+                    }
+                    if(p.loaiphieu != null && p.loaiphieu===false){
+                        var newObj = {
+                            code: p.macode,
+                            value: p.giatrigiam
+                        };
+                        MangTienGiam.push(newObj);
+
+                    }
+                }
+            }
+        })
+        if(MangTienGiam.length>0){
+            var max = MangTienGiam[0];
+            document.getElementById("magiamgia").style.border="";
+            errorMaGiam.innerText = "";
+            document.getElementById("fillMaGiam").style.display = "block";
+            document.getElementById("maCodeGiam").innerText= max.code;
+            document.getElementById("soTienGiam").innerText ="- "+max.value+" ₫";
+            tinhtongtien();
+        }
+        if(MangTienGiam.length <= 0){
+            errorMaGiam.innerText = "Mã khuyến mại không khả dụng!";
+            document.getElementById("magiamgia").style.border="2px solid red";
+        }
+    });
+    async function getPhieu(Id) {
+        const response = await fetch(`/lay-phieu-giam-theo-id/${Id}`);
+        return await response.json();
+    }
+    $(document).ready(function() {
+        // Bắt sự kiện click trên nút "Áp dụng"
+        $(".apDungMaGiam").click(async function(event) {
+            event.preventDefault();
+            const inputTamTinh = document.getElementById('tamTinh');
+            // Lấy nội dung văn bản của phần tử
+            const  inputTamTinhValue= inputTamTinh.innerText || inputTamTinh.textContent;
+            // Sử dụng regex để loại bỏ ký tự không phải là số và dấu phẩy
+            const numberString = inputTamTinhValue.replace(/[^\d]/g, '');
+            // Chuyển chuỗi đã làm sạch thành số nguyên
+            const inputTamTinhSoNguyen = parseInt(numberString, 10);
+
+            var errorMaGiam= document.getElementById("errorMaGiam");
+            var MangTienGiam =[];
+            // Lấy ID của phiếu giảm giá từ thuộc tính data-id
+            var idPhieu = $(this).data("id");
+            const p= await getPhieu(idPhieu);
+            // document.getElementById("staticBackdrop").style.display="none";
+            if(p.dontoithieu === null || p.dontoithieu <= inputTamTinhSoNguyen){
+                if(p.loaiphieu !=null && p.loaiphieu===true){
+                    const sotiengiam=((p.giatrigiam/100)*inputTamTinhSoNguyen);
+                    if(p.giatrigiamtoida <= sotiengiam){
+                        var newObj = {
+                            code: p.macode,
+                            value: p.giatrigiamtoida
+                        };
+                        MangTienGiam.push(newObj);
+                    }else{
+                        var newObj = {
+                            code: p.macode,
+                            value: sotiengiam
+                        };
+                        MangTienGiam.push(newObj);
+                    }
+
+                }
+                if(p.loaiphieu != null && p.loaiphieu===false){
+                    var newObj = {
+                        code: p.macode,
+                        value: p.giatrigiam
+                    };
+                    MangTienGiam.push(newObj);
+                }
+            }
+            if(MangTienGiam.length>0){
+                var max = MangTienGiam[0];
+                document.getElementById("magiamgia").value= p.macode;
+                document.getElementById("magiamgia").style.border="";
+                errorMaGiam.innerText = "";
+                document.getElementById("fillMaGiam").style.display = "block";
+                document.getElementById("maCodeGiam").innerText= max.code;
+                document.getElementById("soTienGiam").innerText ="- "+max.value+" ₫";
+                tinhtongtien();
+            }
+            if(MangTienGiam.length <= 0){
+                document.getElementById("magiamgia").value= p.macode;
+                errorMaGiam.innerText = "Mã khuyến mại không khả dụng!";
+                document.getElementById("magiamgia").style.border="2px solid red";
+            }
+        });
+    });
+    function chuyendoitien(tien){
+        const inputTamTinh = tien;
+        // Lấy nội dung văn bản của phần tử
+        const  inputTamTinhValue= inputTamTinh.innerText || inputTamTinh.textContent;
+        // Sử dụng regex để loại bỏ ký tự không phải là số và dấu phẩy
+        const numberString = inputTamTinhValue.replace(/[^\d]/g, '');
+        // Chuyển chuỗi đã làm sạch thành số nguyên
+        return parseInt(numberString, 10);
     }
 </script>
 </body>

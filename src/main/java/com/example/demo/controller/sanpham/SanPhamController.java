@@ -2,10 +2,8 @@ package com.example.demo.controller.sanpham;
 
 import com.example.demo.entity.*;
 import com.example.demo.info.SanPhamInfo;
-import com.example.demo.repository.AnhRepository;
-import com.example.demo.repository.KichCoRepository;
-import com.example.demo.repository.SanPhamChiTietRepository;
-import com.example.demo.repository.SanPhamRepositoty;
+import com.example.demo.info.ThuocTinhInfo;
+import com.example.demo.repository.*;
 import com.example.demo.service.impl.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +24,14 @@ import java.util.*;
 
 @Controller
 public class SanPhamController {
+    @Autowired
+    MauSacRepository mauSacRepository;
+    @Autowired
+    ChatLieuRepository chatLieuRepository;
+    @Autowired
+    ThuongHieuRepository thuongHieuRepository;
+    @Autowired
+    DeGiayRepository deGiayRepository;
     @Autowired
     KichCoRepository kichCoRepository;
     @Autowired
@@ -84,8 +90,40 @@ public class SanPhamController {
                             @ModelAttribute("chatlieu") ChatLieu chatLieu,
                             @ModelAttribute("kichco") KichCo kichCo,
                             @ModelAttribute("degiay") DeGiay deGiay,
-                            @ModelAttribute("mausac") MauSac mauSac
+                            @ModelAttribute("mausac") MauSac mauSac,
+                            @ModelAttribute("tim") ThuocTinhInfo info
     ) {
+        List<DeGiay> listDG = null;
+        if (info.getKey() != null) {
+            listDG = deGiayImp.getDeGiayByTenOrTrangthai(info.getKey(), info.getTrangthai());
+        } else {
+            listDG = deGiayRepository.findAllByOrderByNgaytaoDesc();
+        }
+        model.addAttribute("listDG", listDG);
+        List<ThuongHieu> listTH = null;
+        if (info.getKey() != null) {
+            listTH = thuongHieuImp.getThuongHieuByTenOrTrangthai(info.getKey(), info.getTrangthai());
+        } else {
+            listTH = thuongHieuRepository.findAllByOrderByNgaytaoDesc();
+        }
+        model.addAttribute("listTH", listTH);
+
+        List<ChatLieu> listCL = null;
+        if (info.getKey() != null) {
+            listCL = chatLieuRepository.getChatLieuByTenOrTrangthai(info.getKey(), info.getTrangthai());
+        } else {
+            listCL = chatLieuRepository.findAllByOrderByNgaytaoDesc();
+        }
+        model.addAttribute("listCL", listCL);
+        List<MauSac> listMS = null;
+        if (info.getKey() != null) {
+            listMS = mauSacRepository.getDeGiayByTenOrTrangthai(info.getKey(), info.getTrangthai());
+        } else {
+            listMS = mauSacRepository.findAllByOrderByNgaytaoDesc();
+        }
+        model.addAttribute("listMS", listMS);
+
+
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<SanPhamChiTiet> listSPCT = sanPhamChiTietImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
@@ -152,100 +190,100 @@ public class SanPhamController {
             System.out.println("idsp:" + sp.getId());
             System.out.println("tensp:" + sp.getTensanpham());
         }
-                    if (sanPhamChiTietList == null || sanPhamChiTietList.isEmpty()) {
-                        for (MauSac colorId : idMauSac) {
-                            for (String sizeName : kichCoNames) {
-                                KichCo kichCo = kichCoRepository.findByTen(sizeName);
-                                if (kichCo != null) {
-                                    int doDaiChuoi2 = 10;
-                                    // Chuỗi chứa tất cả các ký tự có thể có trong chuỗi ngẫu nhiên
-                                    String kiTu2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-                                    // Tạo đối tượng Random
-                                    Random random2 = new Random();
-                                    // StringBuilder để xây dựng chuỗi ngẫu nhiên
-                                    StringBuilder chuoiNgauNhien2 = new StringBuilder(doDaiChuoi2);
-                                    // Lặp để thêm ký tự ngẫu nhiên vào chuỗi
-                                    for (int i = 0; i < doDaiChuoi2; i++) {
-                                        // Lấy một ký tự ngẫu nhiên từ chuỗi kiTu và thêm vào chuỗi ngẫu nhiên
-                                        chuoiNgauNhien2.append(kiTu2.charAt(random2.nextInt(kiTu2.length())));
-                                    }
-                                    nextId2++;
-                                    SanPhamChiTiet spct = new SanPhamChiTiet();
-                                    spct.setId(nextId2);
-                                    spct.setMasanphamchitiet(chuoiNgauNhien2.toString());
-                                    spct.setSanpham(sanPham);
-                                    spct.setSoluong(1);
-                                    spct.setGiatien(BigDecimal.valueOf(100.000));
-                                    spct.setMota(mota);
-                                    spct.setThuonghieu(idThuongHieu);
-                                    spct.setChatlieu(idChatLieu);
-                                    spct.setGioitinh(gioitinh);
-                                    spct.setTrangthai(true);
-                                    spct.setKichco(kichCo);
-                                    spct.setDegiay(idDeGiay);
-                                    spct.setMausac(colorId);
-                                    sanPhamChiTietList.add(spct);
-                                    for (SanPhamChiTiet spcts : sanPhamChiTietList) {
-                                        System.out.println("idspct:" + spcts.getId());
-                                        System.out.println("mausac:" + spcts.getKichco().getTen());
-                                        System.out.println("kichco:" + spcts.getMausac().getTen());
-                                    }
-                                }
-                            }
+        if (sanPhamChiTietList == null || sanPhamChiTietList.isEmpty()) {
+            for (MauSac colorId : idMauSac) {
+                for (String sizeName : kichCoNames) {
+                    KichCo kichCo = kichCoRepository.findByTen(sizeName);
+                    if (kichCo != null) {
+                        int doDaiChuoi2 = 10;
+                        // Chuỗi chứa tất cả các ký tự có thể có trong chuỗi ngẫu nhiên
+                        String kiTu2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                        // Tạo đối tượng Random
+                        Random random2 = new Random();
+                        // StringBuilder để xây dựng chuỗi ngẫu nhiên
+                        StringBuilder chuoiNgauNhien2 = new StringBuilder(doDaiChuoi2);
+                        // Lặp để thêm ký tự ngẫu nhiên vào chuỗi
+                        for (int i = 0; i < doDaiChuoi2; i++) {
+                            // Lấy một ký tự ngẫu nhiên từ chuỗi kiTu và thêm vào chuỗi ngẫu nhiên
+                            chuoiNgauNhien2.append(kiTu2.charAt(random2.nextInt(kiTu2.length())));
                         }
-                    } else {
-                        for (MauSac colorId : idMauSac) {
-                            for (String sizeName : kichCoNames) {
-                                KichCo kichCo = kichCoRepository.findByTen(sizeName);
-                                if (kichCo != null) {
-                                    boolean found = false;
-                                    if(sanPhamChiTietList!=null){
-                                        for (SanPhamChiTiet spct2 : sanPhamChiTietList) {
-                                            if (spct2.getMausac().getId() == colorId.getId() && spct2.getKichco().getTen().equals(sizeName)) {
-                                                spct2.setSoluong(spct2.getSoluong() + 1);
-                                                found = true;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    if(!found){
-                                        int doDaiChuoi2 = 10;
-                                        // Chuỗi chứa tất cả các ký tự có thể có trong chuỗi ngẫu nhiên
-                                        String kiTu2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-                                        // Tạo đối tượng Random
-                                        Random random2 = new Random();
-                                        // StringBuilder để xây dựng chuỗi ngẫu nhiên
-                                        StringBuilder chuoiNgauNhien2 = new StringBuilder(doDaiChuoi2);
-                                        // Lặp để thêm ký tự ngẫu nhiên vào chuỗi
-                                        for (int i = 0; i < doDaiChuoi2; i++) {
-                                            // Lấy một ký tự ngẫu nhiên từ chuỗi kiTu và thêm vào chuỗi ngẫu nhiên
-                                            chuoiNgauNhien2.append(kiTu2.charAt(random2.nextInt(kiTu2.length())));
-                                        }
-                                        int lastIndex = sanPhamChiTietList.size() - 1;
-                                        SanPhamChiTiet lastItem = sanPhamChiTietList.get(lastIndex);
-                                        int count = lastItem.getId();
-                                        count++;
-                                        SanPhamChiTiet spct = new SanPhamChiTiet();
-                                        spct.setId(count);
-                                        spct.setSanpham(sanPham);
-                                        spct.setMasanphamchitiet(chuoiNgauNhien2.toString());
-                                        spct.setSoluong(1);
-                                        spct.setGiatien(BigDecimal.valueOf(100.000));
-                                        spct.setMota(mota);
-                                        spct.setThuonghieu(idThuongHieu);
-                                        spct.setChatlieu(idChatLieu);
-                                        spct.setGioitinh(gioitinh);
-                                        spct.setTrangthai(true);
-                                        spct.setKichco(kichCo);
-                                        spct.setDegiay(idDeGiay);
-                                        spct.setMausac(colorId);
-                                        sanPhamChiTietList.add(spct);
-                                    }
-
-                                }
-                            }
+                        nextId2++;
+                        SanPhamChiTiet spct = new SanPhamChiTiet();
+                        spct.setId(nextId2);
+                        spct.setMasanphamchitiet(chuoiNgauNhien2.toString());
+                        spct.setSanpham(sanPham);
+                        spct.setSoluong(1);
+                        spct.setGiatien(BigDecimal.valueOf(100000.000));
+                        spct.setMota(mota);
+                        spct.setThuonghieu(idThuongHieu);
+                        spct.setChatlieu(idChatLieu);
+                        spct.setGioitinh(gioitinh);
+                        spct.setTrangthai(true);
+                        spct.setKichco(kichCo);
+                        spct.setDegiay(idDeGiay);
+                        spct.setMausac(colorId);
+                        sanPhamChiTietList.add(spct);
+                        for (SanPhamChiTiet spcts : sanPhamChiTietList) {
+                            System.out.println("idspct:" + spcts.getId());
+                            System.out.println("mausac:" + spcts.getKichco().getTen());
+                            System.out.println("kichco:" + spcts.getMausac().getTen());
                         }
                     }
+                }
+            }
+        } else {
+            for (MauSac colorId : idMauSac) {
+                for (String sizeName : kichCoNames) {
+                    KichCo kichCo = kichCoRepository.findByTen(sizeName);
+                    if (kichCo != null) {
+                        boolean found = false;
+                        if(sanPhamChiTietList!=null){
+                            for (SanPhamChiTiet spct2 : sanPhamChiTietList) {
+                                if (spct2.getMausac().getId() == colorId.getId() && spct2.getKichco().getTen().equals(sizeName)) {
+                                    spct2.setSoluong(spct2.getSoluong() + 1);
+                                    found = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if(!found){
+                            int doDaiChuoi2 = 10;
+                            // Chuỗi chứa tất cả các ký tự có thể có trong chuỗi ngẫu nhiên
+                            String kiTu2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                            // Tạo đối tượng Random
+                            Random random2 = new Random();
+                            // StringBuilder để xây dựng chuỗi ngẫu nhiên
+                            StringBuilder chuoiNgauNhien2 = new StringBuilder(doDaiChuoi2);
+                            // Lặp để thêm ký tự ngẫu nhiên vào chuỗi
+                            for (int i = 0; i < doDaiChuoi2; i++) {
+                                // Lấy một ký tự ngẫu nhiên từ chuỗi kiTu và thêm vào chuỗi ngẫu nhiên
+                                chuoiNgauNhien2.append(kiTu2.charAt(random2.nextInt(kiTu2.length())));
+                            }
+                            int lastIndex = sanPhamChiTietList.size() - 1;
+                            SanPhamChiTiet lastItem = sanPhamChiTietList.get(lastIndex);
+                            int count = lastItem.getId();
+                            count++;
+                            SanPhamChiTiet spct = new SanPhamChiTiet();
+                            spct.setId(count);
+                            spct.setSanpham(sanPham);
+                            spct.setMasanphamchitiet(chuoiNgauNhien2.toString());
+                            spct.setSoluong(1);
+                            spct.setGiatien(BigDecimal.valueOf(100000.000));
+                            spct.setMota(mota);
+                            spct.setThuonghieu(idThuongHieu);
+                            spct.setChatlieu(idChatLieu);
+                            spct.setGioitinh(gioitinh);
+                            spct.setTrangthai(true);
+                            spct.setKichco(kichCo);
+                            spct.setDegiay(idDeGiay);
+                            spct.setMausac(colorId);
+                            sanPhamChiTietList.add(spct);
+                        }
+
+                    }
+                }
+            }
+        }
         model.addAttribute("sanphamchitiet", sanPhamChiTietList);
         return "forward:/viewaddSPPOST";
     }

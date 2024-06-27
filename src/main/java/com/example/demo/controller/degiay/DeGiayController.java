@@ -30,6 +30,8 @@ public class DeGiayController {
             page = deGiayRepository.findAllByOrderByNgaytaoDesc();
         }
         model.addAttribute("list", page);
+        model.addAttribute("fillSearch", info.getKey());
+        model.addAttribute("fillTrangThai", info.getTrangthai());
         return "admin/qldegiay";
     }
 

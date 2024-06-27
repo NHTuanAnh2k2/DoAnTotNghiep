@@ -9,7 +9,7 @@
         align-items: center;
         position: absolute;
         right: 150px;
-        bottom: 34px;
+        bottom: 30px;
     }
 
     .quantity-button {
@@ -52,7 +52,7 @@
         padding-top: 10px;
     }
 
-    .ten_sp button {
+    .ten_sp .btn-close {
         position: absolute;
         right: 0;
         top: 0;
@@ -150,7 +150,7 @@
         color: red;
         font-weight: bolder;
     }
-    .right {
+    .right .copy-button {
         font-weight: 700;
         padding: 5px 7px;
         background: rgb(249,72,42);
@@ -174,59 +174,56 @@
                     <div class="card-body">
                         <h3>GIỎ HÀNG CỦA BẠN</h3>
                         <hr class="border border-danger border-2 opacity-50">
-                        <p>Bạn đang có <strong>2 sản phẩm</strong> trong giỏ hàng</p>
+                        <p>Bạn đang có <strong th:text="${totalQuantity}+' sản phẩm'"></strong> trong giỏ hàng</p>
+                        <div th:if="${cartItems == null or cartItems.isEmpty()}">
+<!--                            <p>Không có sản phẩm trong giỏ hàng.</p>-->
+                            <a th:href="@{/customer/sanphamnam}">Tiếp tục mua hàng.</a>
+                        </div>
+                        <div th:if="${cartItems != null and not cartItems.isEmpty()}">
                         <div style="border: 1px solid #DDDDDD; border-radius: 10px;" class="container-fluid">
-                            <div class="giohang">
-                                <img style="padding-top: 10px" src="../dist/img/bong2.jpg" width="80px" height="80px"/>
+                            <div class="giohang" th:each="item, iterStat : ${cartItems}">
+                                <div th:id="'carouselExample' + ${item.id}" class="carousel">
+                                    <div class="carousel-inner">
+                                        <th:block th:each="anh, index : ${item.sanphamchitiet.anh}">
+                                            <div th:classappend="${index.index == 0} ? 'carousel-item active' : 'carousel-item'">
+                                                <img th:if="${anh.tenanh != null}"
+                                                     th:src="@{'/upload' + ${anh.tenanh.substring(anh.tenanh.lastIndexOf('upload') + 6)}}"
+                                                     class="d-block w-100" style="width: 80px; height: 80px; padding-top: 10px;" alt="Ảnh">
+                                            </div>
+                                        </th:block>
+                                    </div>
+                                    <button class="carousel-control-prev" type="button" th:data-bs-target="'#carouselExample' + ${item.id}" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" th:data-bs-target="'#carouselExample' + ${item.id}" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                </div>
+                                <form th:action="@{/update-cart/{id}(id=${item.id})}" method="post">
                                 <div>
                                     <div class="ten_sp">
-                                        <p style="font-size: 18px;">Giày Thể Thao Nam Biti's Hunter Street Go For Love 2K24 HSM006500 hugyfrdr</p>
-                                        <button type="button" class="btn-close" aria-label="Close"></button>
+                                        <p style="font-size: 18px;" th:text="${item.sanphamchitiet.sanpham.tensanpham}"></p>
+                                        <a th:href="@{/delete/cart/{id}(id=${item.id})}" class="btn-close" aria-label="Close"></a>
                                     </div>
                                     <div class="thong_tin_sp">
                                         <div class="giatien d-flex justify-content-start align-items-center">
-                                            <h5>720.000</h5>
-                                            <strong>đ</strong>
+                                            <h5 th:text="${#numbers.formatDecimal(item.sanphamchitiet.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></h5>
                                         </div>
-                                        <p class="mausac">Màu sắc: Trắng</p>
-                                        <p class="size">Size: 39</p>
+                                        <p class="mausac">Màu sắc: <span th:text="${item.sanphamchitiet.mausac.ten}"></span></p>
+                                        <p class="size">Size: <span th:text="${item.sanphamchitiet.kichco.ten}"></span></p>
                                         <div class="quantity-container">
                                             <button class="quantity-button decrement">-</button>
-                                            <input type="number" class="quantity-input" value="1" min="1">
+                                            <input type="number" class="quantity-input" th:value="${item.soluong}" min="1" name="quantity">
                                             <button class="quantity-button increment">+</button>
                                         </div>
                                         <div class="giaban d-flex justify-content-start align-items-center">
-                                            <h5>720.000</h5>
-                                            <strong>đ</strong>
+                                            <h5 th:text="${#numbers.formatDecimal(item.sanphamchitiet.giatien * item.soluong, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}" style="color: red"></h5>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="giohang">
-                                <img style="padding-top: 10px" src="../dist/img/bong2.jpg" width="80px" height="80px"/>
-                                <div>
-                                    <div class="ten_sp">
-                                        <p style="font-size: 18px;">Giày Thể Thao Nam Biti's Hunter</p>
-                                        <button type="button" class="btn-close" aria-label="Close"></button>
-                                    </div>
-                                    <div class="thong_tin_sp">
-                                        <div class="giatien d-flex justify-content-start align-items-center">
-                                            <h5>720.000</h5>
-                                            <strong>đ</strong>
-                                        </div>
-                                        <p class="mausac">Màu sắc: Trắng</p>
-                                        <p class="size">Size: 39</p>
-                                        <div class="quantity-container">
-                                            <button class="quantity-button decrement">-</button>
-                                            <input type="number" class="quantity-input" value="1" min="1">
-                                            <button class="quantity-button increment">+</button>
-                                        </div>
-                                        <div class="giaban d-flex justify-content-start align-items-center">
-                                            <h5>720.000</h5>
-                                            <strong>đ</strong>
-                                        </div>
-                                    </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                         <div class="ghichu container-fluid">
@@ -235,8 +232,10 @@
                         </div>
                     </div>
                 </div>
+                </div>
             </section>
         </div>
+
         <div class="col-lg-4">
             <section class="content">
                 <div class="card">
@@ -246,8 +245,8 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <h6>Tổng tiền:</h6>
                             <div class="d-flex justify-content-start align-items-center">
-                                <h4 style="color: red">1,234,000</h4>
-                                <strong style="color: red">đ</strong>
+                                <h4 style="color: red" th:text="${#numbers.formatDecimal(totalAmount, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></h4>
+<!--                                <strong style="color: red">đ</strong>-->
                             </div>
                         </div>
                         <hr class="border border-danger border-2 opacity-50">
@@ -255,63 +254,38 @@
                             <li>Phí vận chuyển được tính ở trang thanh toán</li>
                             <li>Bạn có thể nhập mã giảm giá ở trang thanh toán</li>
                         </ul>
-                        <button style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100%; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); margin-top: 15px;">ĐẶT HÀNG NGAY</button>
+                        <a th:href="@{/view-thanh-toan}"
+                           th:attr="style='display: inline-block; background-color: rgb(249, 72, 42); color: white; padding: 10px 20px; width: 100%; height: auto; border-radius: 10px; margin-top: 15px; text-decoration: none; text-align: center; border: 1px solid rgb(249, 72, 42); cursor: pointer;' + (${cartItems == null or #lists.isEmpty(cartItems)} ? ' opacity: 0.5; pointer-events: none;' : '')">
+                            ĐẶT HÀNG NGAY
+                        </a>
                     </div>
                 </div>
             </section>
             <section class="content">
                 <div class="card">
                     <div class="card-body" style="background-color: #DDDDDD">
-                        <div class="ma_giam_gia">
+                        <div th:each="p,stt:${lstPGG}" class="ma_giam_gia">
                             <div class="ma-item-left">
                                 <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
                             </div>
                             <div class="ma-item-right">
-                                <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;">Giảm 120.000đ</h4>
-                                <p style="font-size: 14px; margin: 0; padding: 0; color: black">Đơn hàng từ 890.000đ trở lên</p>
+                                <h4 th:if="${p.loaiphieu}" th:text="'Giảm '+${p.giatrigiam}+' %'" style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;"></h4>
+                                <h4 th:if="${!p.loaiphieu}"
+                                    th:text="'Giảm ' + ${#numbers.formatDecimal(p.giatrigiam, 0, 'COMMA', 0, 'POINT')+ '&#x20ab;'}"
+                                    style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;">
+                                </h4>
+                                <p th:if="${p.dontoithieu == null}" th:text="'Áp dụng cho mọi hóa đơn'" style="font-size: 14px; margin: 0; padding: 0; color: black"></p>
+                                <p th:if="${p.dontoithieu!=null}"
+                                   th:text="'Áp dụng cho hóa đơn từ ' + ${#numbers.formatDecimal(p.dontoithieu, 0, 'COMMA', 0, 'POINT')+ '&#x20ab;'}"
+                                   style="font-size: 14px; margin: 0; padding: 0; color: black">
+                                </p>
                                 <div class="ma-item-des">
                                     <div class="left">
-                                        <p style="margin: 0; white-space: nowrap;">Mã: <b class="code">14FRMGR24MNFNS</b></p>
-                                        <p>HSD: 31/05/2024</p>
+                                        <p style="margin: 0; white-space: nowrap;">Mã: <b class="code" th:text="${p.macode}"></b></p>
+                                        <p th:text="'HSD: '+${p.ngayketthuc}"></p>
                                     </div>
                                     <div class="right">
-                                        Sao chép mã
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ma_giam_gia">
-                            <div class="ma-item-left">
-                                <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
-                            </div>
-                            <div class="ma-item-right">
-                                <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;">Giảm 120.000đ</h4>
-                                <p style="font-size: 14px; margin: 0; padding: 0; color: black">Đơn hàng từ 890.000đ trở lên</p>
-                                <div class="ma-item-des">
-                                    <div class="left">
-                                        <p style="margin: 0; white-space: nowrap;">Mã: <b class="code">14FRMGR24MNFNS</b></p>
-                                        <p>HSD: 31/05/2024</p>
-                                    </div>
-                                    <div class="right">
-                                        Sao chép mã
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ma_giam_gia">
-                            <div class="ma-item-left">
-                                <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
-                            </div>
-                            <div class="ma-item-right">
-                                <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;">Giảm 120.000đ</h4>
-                                <p style="font-size: 14px; margin: 0; padding: 0; color: black">Đơn hàng từ 890.000đ trở lên</p>
-                                <div class="ma-item-des">
-                                    <div class="left">
-                                        <p style="margin: 0; white-space: nowrap;">Mã: <b class="code">14FRMGR24MNFNS</b></p>
-                                        <p>HSD: 31/05/2024</p>
-                                    </div>
-                                    <div class="right">
-                                        Sao chép mã
+                                        <button class="copy-button" onclick="copyCode(this)">Sao chép mã</button>
                                     </div>
                                 </div>
                             </div>
@@ -333,6 +307,9 @@
 <!-- footer section start -->
 <nav th:replace="~{/layout/footer.html}"></nav>
 <!-- footer section end -->
+</body>
+</html>
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         // Handle increment buttons
@@ -367,6 +344,28 @@
     textarea.style.height = (textarea.scrollHeight) + 'px';
 
 </script>
-</body>
-</html>
 
+<script>
+    let lastCopiedButton = null;
+
+    function copyCode(button) {
+        // Lấy mã code từ phần tử trước đó
+        var code = button.closest('.ma-item-right').querySelector('.code').textContent;
+
+        // Sao chép mã vào clipboard
+        navigator.clipboard.writeText(code).then(function() {
+            // Nếu có nút trước đó đã sao chép, đặt lại văn bản của nó
+            if (lastCopiedButton) {
+                lastCopiedButton.textContent = 'Sao chép mã';
+            }
+
+            // Đổi văn bản của nút hiện tại thành "Đã sao chép"
+            button.textContent = 'Đã sao chép';
+
+            // Cập nhật nút cuối cùng đã sao chép
+            lastCopiedButton = button;
+        }, function(err) {
+            console.error('Không thể sao chép mã: ', err);
+        });
+    }
+</script>

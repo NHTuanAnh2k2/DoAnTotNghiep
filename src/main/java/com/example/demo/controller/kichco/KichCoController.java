@@ -33,6 +33,8 @@ public class KichCoController {
         } else {
             page = kichCoRepository.findAllByOrderByNgaytaoDesc();
         }
+        model.addAttribute("fillSearch", info.getKey());
+        model.addAttribute("fillTrangThai", info.getTrangthai());
         model.addAttribute("list", page);
         return "admin/qlkichco";
     }

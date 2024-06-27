@@ -204,11 +204,12 @@
                                         </div>
                                         <div class="modal-body">
                                             <p>Số lượng:
-                                                <input id="soluong" type="number" class="form-control" name="soluong">
+                                                <input id="soluong" type="number" class="form-control" name="soluong" min="1">
                                                 <span id="soluongError" style="color: red; font-style: italic"></span>
                                             </p>
                                             <p>Đơn giá:
-                                                <input id="giatien" class="form-control" name="giatien">
+                                                <input id="giatien" class="form-control" name="giatienDisplay" onkeyup="formatCurrency('giatien')">
+                                                <input type="hidden" name="giatien" id="giatienRawInput">
                                                 <span id="giatienError" style="color: red; font-style: italic"></span>
                                             </p>
                                         </div>
@@ -270,7 +271,7 @@
                                                     <th:block th:each="anhs, index : ${spct.anh}">
                                                         <div th:classappend="${index.index == 0} ? 'carousel-item active' : 'carousel-item'">
                                                             <img th:if="${anhs.tenanh != null}"
-                                                                 th:src="@{'/upload/' + ${anhs.tenanh.substring(anhs.tenanh.lastIndexOf('upload') + 6)}}"
+                                                                 th:src="@{'/upload' + ${anhs.tenanh.substring(anhs.tenanh.lastIndexOf('upload') + 6)}}"
                                                                  class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
                                                         </div>
                                                     </th:block>
@@ -410,10 +411,12 @@
         if (giatien.trim() === "") {
             giatienError.innerText = "Vui lòng nhập giá tiền";
             return false; // Ngăn form được gửi đi
-        } else if (!(/^\d+$/.test(giatien))) {
-            giatienError.innerText = "Giá tiền chỉ được chứa số";
-            return false; // Ngăn form được gửi đi
-        } else if (giatien < 0) {
+        }
+        // else if (!(/^\d+$/.test(giatien))) {
+        //     giatienError.innerText = "Giá tiền chỉ được chứa số";
+        //     return false; // Ngăn form được gửi đi
+        // }
+        else if (giatien < 0) {
             giatienError.innerText = "Giá tiền phải >= 0";
             return false; // Ngăn form được gửi đi
         } else {
@@ -483,4 +486,21 @@
 
 <script>
     var giaTriTuCheckbox = []; // Mảng lưu trữ giá trị từ checkbox
+</script>
+
+<script>
+    function formatCurrency(elementId) {
+        var input = document.getElementById(elementId);
+        var rawInput = document.getElementById('giatienRawInput');
+        var value = input.value.replace(/[^0-9]/g, ''); // Loại bỏ tất cả ký tự không phải số
+
+        if (value) {
+            rawInput.value = value; // Gán giá trị thô vào input ẩn
+            value = (parseInt(value, 10)).toLocaleString('vi-VN'); // Định dạng giá trị với phân cách hàng nghìn
+            input.value = value + ' ₫'; // Hiển thị giá trị với đơn vị tiền tệ
+        } else {
+            rawInput.value = ''; // Đảm bảo input ẩn được xóa nếu không có giá trị hợp lệ
+            input.value = '';
+        }
+    }
 </script>

@@ -3,8 +3,104 @@
 <!--thư viện-->
 <nav th:replace="~{/layout/head.html}"></nav>
 <!--end-->
-<body>
+<!--dùng cho mã coupon cố định-->
+<style>
+    #coupon-noti {
+        position: fixed;
+        top: 500px; /* Vị trí top cố định tính bằng px hoặc % */
+        right: 1300px; /* Vị trí right cố định tính bằng px hoặc % */
+        z-index: 1000; /* Đảm bảo coupon-noti hiển thị phía trên các phần tử khác */
+        background-color: rgb(27, 78, 160); /* Màu nền */
+        color: #ffffff; /* Màu chữ */
+        padding: 10px; /* Đệm bên trong */
+        cursor: pointer; /* Con trỏ chuột là pointer khi hover */
+        border-radius: 20px; /* Để làm hình tròn (tuỳ chọn) */
+    }
+</style>
+<!--dùng cho zalo cố định-->
+<style>
+    #coupon-notizalo {
+        position: fixed;
+        top: 600px; /* Vị trí top cố định tính bằng px hoặc % */
+        right: 20px; /* Vị trí right cố định tính bằng px hoặc % */
+        z-index: 1000; /* Đảm bảo coupon-noti hiển thị phía trên các phần tử khác */
+        padding: 10px; /* Đệm bên trong */
+        cursor: pointer; /* Con trỏ chuột là pointer khi hover */
+        border-radius: 20px; /* Để làm hình tròn (tuỳ chọn) */
+    }
 
+</style>
+<!--Các sản phẩm mới nhất-->
+<style>
+    /* Dùng thanh cuộn ngang cho sản phẩm mới nhất */
+    .tab-pane.horizontal-scrollable-new .single-products-new.row {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: hidden; /* Ẩn thanh cuộn ngang */
+        -webkit-overflow-scrolling: touch; /* Cho thanh cuộn ngang trên iOS */
+    }
+
+    .tab-pane.horizontal-scrollable-new .col-md-3 {
+        flex: 0 0 auto;
+        width: 25%; /* Hiển thị 4 cột trên mỗi hàng */
+    }
+
+    .tab-pane.horizontal-scrollable-new {
+        position: relative; /* Đặt vị trí tương đối để các nút cuộn được định vị dựa trên phần tử cha */
+    }
+
+    .scroll-prev-new, .scroll-next-new {
+        position: absolute; /* Đặt vị trí tuyệt đối để căn chỉnh chính xác */
+        top: 30%; /* Đặt vị trí theo chiều dọc giữa của phần tử cha */
+        transform: translateY(-50%); /* Dịch chuyển các nút lên hoặc xuống để căn chỉnh theo chiều dọc */
+        z-index: 10; /* Đảm bảo nút nằm trên các phần tử khác */
+    }
+
+    .scroll-prev-new {
+        left: 0; /* Đặt vị trí của nút cuộn về trước */
+    }
+
+    .scroll-next-new {
+        right: 0; /* Đặt vị trí của nút cuộn về sau */
+    }
+
+</style>
+
+<style>
+    /* Dùng thanh cuộn ngang cho sản phẩm bán chạy nhất */
+    .tab-pane.horizontal-scrollable-hot .single-products-hot.row {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: hidden; /* Ẩn thanh cuộn ngang */
+        -webkit-overflow-scrolling: touch; /* Cho thanh cuộn ngang trên iOS */
+    }
+
+    .tab-pane.horizontal-scrollable-hot .col-md-3 {
+        flex: 0 0 auto;
+        width: 25%; /* Hiển thị 4 cột trên mỗi hàng */
+    }
+
+    .tab-pane.horizontal-scrollable-hot {
+        position: relative; /* Đặt vị trí tương đối để các nút cuộn được định vị dựa trên phần tử cha */
+    }
+
+    .scroll-prev-hot, .scroll-next-hot {
+        position: absolute; /* Đặt vị trí tuyệt đối để căn chỉnh chính xác */
+        top: 30%; /* Đặt vị trí theo chiều dọc giữa của phần tử cha */
+        transform: translateY(-50%); /* Dịch chuyển các nút lên hoặc xuống để căn chỉnh theo chiều dọc */
+        z-index: 10; /* Đảm bảo nút nằm trên các phần tử khác */
+    }
+
+    .scroll-prev-hot {
+        left: 0; /* Đặt vị trí của nút cuộn về trước */
+    }
+
+    .scroll-next-hot {
+        right: 0; /* Đặt vị trí của nút cuộn về sau */
+    }
+</style>
+<body>
+<!--style="font-family: sans-serif"-->
 <!-- header -->
 <nav th:replace="~{/layout/header.html}"></nav>
 <!-- header end -->
@@ -36,12 +132,21 @@
                 </div>
             </div>
         </div>
-        <h3 style="margin-top: 30px" class="text-center">CÁC SẢN PHẨM MỚI NHẤT</h3>
+        <!--Các sản phẩm mới nhất-->
+        <h3 style="margin-top: 30px; color: rgb(249, 72, 42); font-family: 'Lucida Sans Typewriter'"
+            class="text-center">CÁC SẢN PHẨM MỚI NHẤT</h3>
         <hr class="border border-danger border opacity-50">
         <div class="tab-content">
             <!--nội dung-->
-            <div class="tab-pane fade text-center active show" id="gird">
-                <div class="single-products row" >
+            <div class="tab-pane fade text-center active show horizontal-scrollable-new" id="new-products">
+                <button class="scroll-prev-new btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                         class="bi bi-chevron-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                              d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+                    </svg>
+                </button> <!-- Nút cuộn về trước -->
+                <div class="single-products-new row">
                     <div class="col-md-3" th:each="sp, stt : ${topspmoinhattrangchu}">
                         <div class="product-item margin40">
                             <div class="pro-img">
@@ -69,7 +174,7 @@
                                 </div>
                             </div>
                             <div class="product-title">
-                                <a href="#"><h3 class="title" th:text="${sp[1]}"></h3></a>
+                                <a href="#"><h3 class="title" th:text="${sp[1]}" style="font-weight: bold"></h3></a>
                                 <div class="ratting">
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
@@ -78,25 +183,40 @@
                                     <i class="fa fa-star gray-star"></i>
                                 </div>
                                 <p>
-                                    <span style="color: red;font-weight: bold"  th:text="${#numbers.formatDecimal(sp[5], 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
-                                    <!--                                    <del >$170.00</del>-->
+                                    <span style="color: red; font-weight: bold"
+                                          th:text="${#numbers.formatDecimal(sp[5], 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
+                                    <!-- <del>$170.00</del> -->
                                 </p>
                             </div>
                         </div>
                     </div>
                     <!---end-->
                 </div>
+                <button class="scroll-next-new btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                         class="bi bi-chevron-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                              d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+                    </svg>
+                </button> <!-- Nút cuộn về sau -->
             </div>
             <!--end-->
         </div>
         <!--end-->
-
-        <h3 style="margin-top: 30px" class="text-center">CÁC SẢN PHẨM BÁN CHẠY NHẤT</h3>
+        <h3 style="margin-top: 30px; color: rgb(249, 72, 42); font-family: 'Lucida Sans Typewriter'"
+            class="text-center">CÁC SẢN PHẨM BÁN CHẠY NHẤT</h3>
         <hr class="border border-danger border opacity-50">
         <div class="tab-content">
             <!--nội dung-->
-            <div class="tab-pane fade text-center active show" id="gird">
-                <div class="single-products row" >
+            <div class="tab-pane fade text-center active show horizontal-scrollable-hot" id="hot-products">
+                <button class="scroll-prev-hot btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                         class="bi bi-chevron-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                              d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+                    </svg>
+                </button> <!-- Nút cuộn về trước -->
+                <div class="single-products-hot row">
                     <div class="col-md-3" th:each="sp, stt : ${topspbanchaynhattrangchu}">
                         <div class="product-item margin40">
                             <div class="pro-img">
@@ -106,7 +226,7 @@
                                          class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
                                 </a>
                                 <div class="tag-n-s">
-                                    <span>New</span>
+                                    <span>Hot</span>
                                 </div>
                                 <div class="actions-btn">
                                     <ul class="clearfix">
@@ -124,7 +244,7 @@
                                 </div>
                             </div>
                             <div class="product-title">
-                                <a href="#"><h3 class="title" th:text="${sp[1]}"></h3></a>
+                                <a href="#"><h3 class="title" th:text="${sp[1]}" style="font-weight: bold"></h3></a>
                                 <div class="ratting">
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
@@ -133,9 +253,61 @@
                                     <i class="fa fa-star gray-star"></i>
                                 </div>
                                 <p>
-                                    <span style="color: red;font-weight: bold"  th:text="${#numbers.formatDecimal(sp[2], 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
-                                    <!--                                    <del >$170.00</del>-->
+                            <span style="color: red;font-weight: bold"
+                                  th:text="${#numbers.formatDecimal(sp[2], 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
+                                    <!-- <del >$170.00</del> -->
                                 </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                </div>
+                <button class="scroll-next-hot btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                         class="bi bi-chevron-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                              d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+                    </svg>
+                </button> <!-- Nút cuộn về sau -->
+            </div>
+            <!--end-->
+        </div>
+
+        <h3 style="margin-top: 30px; color: rgb(249, 72, 42); font-family: 'Lucida Sans Typewriter'"
+            class="text-center">BẠN ĐANG TÌM</h3>
+        <hr class="border border-danger border opacity-50">
+        <div class="tab-content">
+            <!--nội dung-->
+            <div class="tab-pane fade text-center active show" id="gird">
+                <div class="single-products row" >
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <img src="/dist/img/cuahang.jpg">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <img src="/dist/img/cuahang.jpg">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <img src="/dist/img/cuahang.jpg">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <img src="/dist/img/cuahang.jpg">
                             </div>
                         </div>
                     </div>
@@ -147,9 +319,99 @@
     </div>
 </section>
 <!-- product content section end -->
+
+<div id="coupon-noti" data-toggle="modal" data-target="#modalCoupons" class="noti-icon has-item">
+    <!-- Nội dung của coupon-noti -->
+    <span class=""><i class="fa fa-gift fa-lg"></i> Danh sách mã Coupon</span>
+</div>
+<div id="coupon-notizalo" data-toggle="modal" data-target="#modalCoupons" class="noti-icon has-item">
+    <!-- Nội dung của coupon-noti -->
+    <a target="_blank">
+        <span class=""><img alt="Zalo" style="width:50px" src="../dist/img/zalo.png"/></span>
+    </a>
+</div>
 <!-- footer start -->
 <nav th:replace="~{/layout/footer.html}"></nav>
 <!-- footer end -->
 
 </body>
 </html>
+
+<!--dùng cho mã coupont coupon cố định-->
+<script>
+    // JavaScript để giữ coupon-noti ở vị trí cố định khi scroll
+    window.addEventListener('scroll', function () {
+        var couponNoti = document.getElementById('coupon-noti');
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (scrollTop > 100) { // Thay 100 bằng khoảng cách mà bạn muốn
+            couponNoti.style.display = 'block';
+        } else {
+            couponNoti.style.display = 'none';
+        }
+    });
+</script>
+
+<script>
+    // JavaScript để giữ coupon-noti ở vị trí cố định khi scroll
+    window.addEventListener('scroll', function () {
+        var couponNoti = document.getElementById('coupon-notizalo');
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (scrollTop > 100) { // Thay 100 bằng khoảng cách mà bạn muốn
+            couponNoti.style.display = 'block';
+        } else {
+            couponNoti.style.display = 'none';
+        }
+    });
+</script>
+
+<!-- các sản phẩm mới nhất-->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const scrollableContainerNew = document.querySelector(".tab-pane.horizontal-scrollable-new .single-products-new.row");
+        const scrollPrevBtnNew = document.querySelector(".scroll-prev-new");
+        const scrollNextBtnNew = document.querySelector(".scroll-next-new");
+
+        scrollPrevBtnNew.addEventListener("click", function () {
+            if (scrollableContainerNew.scrollLeft === 0) {
+                scrollableContainerNew.scrollLeft = scrollableContainerNew.scrollWidth - scrollableContainerNew.clientWidth;
+            } else {
+                scrollableContainerNew.scrollBy({left: -200, behavior: "smooth"});
+            }
+        });
+
+        scrollNextBtnNew.addEventListener("click", function () {
+            if (scrollableContainerNew.scrollLeft >= (scrollableContainerNew.scrollWidth - scrollableContainerNew.clientWidth)) {
+                scrollableContainerNew.scrollLeft = 0;
+            } else {
+                scrollableContainerNew.scrollBy({left: 200, behavior: "smooth"});
+            }
+        });
+    });
+
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const scrollableContainerHot = document.querySelector(".tab-pane.horizontal-scrollable-hot .single-products-hot.row");
+        const scrollPrevBtnHot = document.querySelector(".scroll-prev-hot");
+        const scrollNextBtnHot = document.querySelector(".scroll-next-hot");
+
+        scrollPrevBtnHot.addEventListener("click", function () {
+            if (scrollableContainerHot.scrollLeft === 0) {
+                scrollableContainerHot.scrollLeft = scrollableContainerHot.scrollWidth - scrollableContainerHot.clientWidth;
+            } else {
+                scrollableContainerHot.scrollBy({left: -200, behavior: "smooth"});
+            }
+        });
+
+        scrollNextBtnHot.addEventListener("click", function () {
+            if (scrollableContainerHot.scrollLeft >= (scrollableContainerHot.scrollWidth - scrollableContainerHot.clientWidth)) {
+                scrollableContainerHot.scrollLeft = 0;
+            } else {
+                scrollableContainerHot.scrollBy({left: 200, behavior: "smooth"});
+            }
+        });
+    });
+</script>

@@ -160,15 +160,15 @@ public class LoginController {
             return "same/login";
         }
     }
-    @GetMapping("/dangxuat")
-    public String logout(HttpServletRequest request) {
-        // Xóa session của người dùng để đăng xuất
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
-        return "redirect:/trangchu";
-    }
+//    @GetMapping("/dangxuat")
+//    public String logout(HttpServletRequest request) {
+//        // Xóa session của người dùng để đăng xuất
+//        HttpSession session = request.getSession(false);
+//        if (session != null) {
+//            session.invalidate();
+//        }
+//        return "redirect:/trangchu";
+//    }
 
 
 }

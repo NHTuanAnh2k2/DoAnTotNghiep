@@ -275,8 +275,7 @@
 
                                                                         <div class="d-flex flex-row-reverse">
                                                                             <button type="submit" id="xacnhanbtn"
-                                                                                onclick="xacnhanngaygiao()" disabled
-                                                                                class="btn btn-primary">Xác
+                                                                                disabled class="btn btn-primary">Xác
                                                                                 nhận</button>
                                                                             <button type="button"
                                                                                 class="btn btn-secondary ms-1"
@@ -428,7 +427,8 @@
 
                                                                         <div class="d-flex flex-row-reverse">
                                                                             <button type="submit" id="chogiaobtn"
-                                                                                disabled class="btn btn-primary">Xác
+                                                                                onclick="xacnhanngaygiao()" disabled
+                                                                                class="btn btn-primary">Xác
                                                                                 nhận</button>
                                                                             <button type="button"
                                                                                 class="btn btn-secondary ms-1"
@@ -924,7 +924,7 @@
                                                     <div class="d-flex justify-content-start">
                                                         <h6 style="font-family: 'Times New Roman'; font-weight: bold">
                                                             Tên khách hàng:</h6>
-                                                        <p th:text="${hoaDonDT.khachhang.nguoidung.hovaten}"
+                                                        <p th:text="${hoaDonDT.tennguoinhan}"
                                                             style="margin-left: 70px; font-family: 'Times New Roman'; font-size: 15px;">
                                                         </p>
                                                     </div>
@@ -984,7 +984,7 @@
                                                 <h6 style="font-family: 'Times New Roman'; font-weight: bold">Phiếu giảm
                                                     giá
                                                     :</h6>
-                                                <p th:text="${phieuGiamCT.phieugiamgia.giatrigiamtoida!=null?#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiamtoida, 0, 'COMMA', 0, 'POINT')+'&#x20ab;':'0'}"
+                                                <p th:text="${phieuGiamCT.phieugiamgia.loaiphieu==false?#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiam, 0, 'COMMA', 0, 'POINT')+'&#x20ab;':phieuGiamCT.phieugiamgia.giatrigiam+' %, tối đa '+#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiamtoida, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
                                                     style="font-family: 'Times New Roman'; font-size: 16px;">
                                                 </p>
                                             </div>
@@ -2504,6 +2504,8 @@
                                             idXareturn = id.WardCode;
                                         }
                                     }
+
+
                                     var requestDataDate = {
                                         from_district_id: 3440,//địa chỉ mặc địch của shop
                                         from_ward_code: "13007",//địa chỉ mặc địch của shop
@@ -2511,6 +2513,7 @@
                                         to_ward_code: idXareturn.toString(),
                                         service_id: 53320
                                     };
+
                                     // Cấu hình yêu cầu với axios, bao gồm Token và dữ liệu gửi đi
                                     var ParameterDate = {
                                         url: "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/leadtime",
@@ -2530,8 +2533,6 @@
                                         .then(function (d) {
                                             // Số nguyên đại diện cho một thời điểm trong JavaScript (ví dụ: số giây kể từ Epoch)
                                             var timestamp = d.data.leadtime;
-
-                                            // http://localhost:8080/hoa-don/set-ngay-giao-du-kien/{date}
                                             var urlsetdate = `http://localhost:8080/hoa-don/set-ngay-giao-du-kien/${timestamp}`;
                                             callController(urlsetdate);
                                         })
@@ -2544,6 +2545,7 @@
         }
         //test thử
         function xacnhanngaygiao() {
+
             //http://localhost:8080/hoa-don/set-ngay-giao-du-kien/{date}
             var urlAPI = `http://localhost:8080/hoa-don/call-api-ngay-giao`;
             fetch(urlAPI)

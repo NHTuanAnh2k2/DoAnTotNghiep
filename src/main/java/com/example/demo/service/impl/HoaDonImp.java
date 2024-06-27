@@ -4,6 +4,12 @@ import com.example.demo.entity.HoaDon;
 import com.example.demo.info.MauHoaDon;
 import com.example.demo.repository.hoadon.HoaDonRepository;
 import com.example.demo.service.HoaDonService;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
@@ -15,20 +21,26 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Date;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class HoaDonImp implements HoaDonService {
+
+
     @Autowired
     HoaDonRepository dao;
 
     @Override
     public Page<HoaDon> findAll(Pageable p) {
-        return dao.findAll(p);
+        return dao.findAlls(p);
     }
 
     @Override

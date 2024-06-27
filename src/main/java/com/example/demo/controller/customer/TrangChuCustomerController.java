@@ -1,6 +1,7 @@
 package com.example.demo.controller.customer;
 
 import com.example.demo.entity.Anh;
+import com.example.demo.entity.GioHangChiTiet;
 import com.example.demo.entity.SanPham;
 import com.example.demo.entity.SanPhamChiTiet;
 import com.example.demo.repository.AnhRepository;
@@ -8,6 +9,7 @@ import com.example.demo.repository.KichCoRepository;
 import com.example.demo.repository.SanPhamChiTietRepository;
 import com.example.demo.repository.SanPhamRepositoty;
 import com.example.demo.repository.customer.TrangChuRepository;
+import com.example.demo.repository.giohang.GioHangChiTietRepository;
 import com.example.demo.service.impl.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ import java.util.*;
 
 @Controller
 public class TrangChuCustomerController {
+    @Autowired
+    private GioHangChiTietRepository gioHangChiTietRepository;
+
     @Autowired
     TrangChuRepository trangChuRepository;
 
@@ -66,18 +71,35 @@ public class TrangChuCustomerController {
 
     @GetMapping("/customer/trangchu")
     public String hienthiTrangChu(Model model) {
+        List<GioHangChiTiet> cartItems = gioHangChiTietRepository.findAll(); // Giả sử bạn có phương thức này để lấy các mục trong giỏ hàng
+        int totalQuantity = 0;
+        // Tính tổng số lượng sản phẩm trong giỏ hàng
+        for (GioHangChiTiet item : cartItems) {
+            totalQuantity += item.getSoluong();
+        }
+        model.addAttribute("totalQuantity", totalQuantity);
         List<Object[]> topspmoinhattrangchu = trangChuRepository.topspmoinhattrangchu();
         model.addAttribute("topspmoinhattrangchu", topspmoinhattrangchu);
         List<Object[]> topspbanchaynhattrangchu = trangChuRepository.topspbanchaynhat();
         model.addAttribute("topspbanchaynhattrangchu", topspbanchaynhattrangchu);
+        System.out.println();
         return "customer/trangchu";
     }
 
     @GetMapping("/detailsanphamCustomer/{id}")
     public String detailsanphamCustomer(@PathVariable Integer id, @RequestParam(required = false) String color, @RequestParam(required = false) String size, Model model) {
+        List<GioHangChiTiet> cartItems = gioHangChiTietRepository.findAll(); // Giả sử bạn có phương thức này để lấy các mục trong giỏ hàng
+//        int totalQuantity = cartItems.size(); // Đếm số lượng các mục trong giỏ hàng
+        int totalQuantity = 0;
+        // Tính tổng số lượng sản phẩm trong giỏ hàng
+        for (GioHangChiTiet item : cartItems) {
+            totalQuantity += item.getSoluong();
+        }
+        model.addAttribute("totalQuantity", totalQuantity);
         SanPham sanPham = trangChuRepository.findById(id).orElse(null);
         model.addAttribute("sanpham", sanPham);
-        model.addAttribute("sanphamchitiet", sanPham.getSpct());
+        SanPhamChiTiet sanPhamChiTiet=sanPhamChiTietRepository.findById(id).orElse(null);
+        model.addAttribute("sanphamchitiet", sanPhamChiTiet);
         List<String> danhSachAnh = new ArrayList<>();
         for (SanPhamChiTiet spct : sanPham.getSpct()) {
             for (Anh anh : spct.getAnh()) {
@@ -89,12 +111,12 @@ public class TrangChuCustomerController {
         model.addAttribute("danhSachAnh", danhSachAnh);
         List<String> sizes = new ArrayList<>();
         List<String> colors = new ArrayList<>();
-        Set<String> thuongHieuSet = new HashSet<>();
-        Set<String> chatlieuset = new HashSet<>();
-        Map<String, BigDecimal> giaSanPhamMap = new HashMap<>();
-        Map<String, Integer> soLuongSanPhamMap = new HashMap<>();
         BigDecimal selectedPrice = null;
         Integer selectedQuantity = null;
+        String selectedThuongHieu=null;
+        String selectedChatLieu=null;
+        String selectedDeGiay=null;
+        String selectedMaSPCT=null;
         String defaultColor = null;
         String defaultSize = null;
         for (SanPhamChiTiet spct : sanPham.getSpct()) {
@@ -104,18 +126,13 @@ public class TrangChuCustomerController {
             if (!colors.contains(spct.getMausac().getTen())) {
                 colors.add(spct.getMausac().getTen());
             }
-            if (spct.getThuonghieu() != null) {
-                thuongHieuSet.add(spct.getThuonghieu().getTen());
-            }
-            if (spct.getChatlieu() != null) {
-                chatlieuset.add(spct.getChatlieu().getTen());
-            }
-            giaSanPhamMap.put(spct.getId().toString(), spct.getGiatien());
-            soLuongSanPhamMap.put(spct.getId().toString(), spct.getSoluong());
-
             if ((color == null || color.equals(spct.getMausac().getTen())) && (size == null || size.equals(spct.getKichco().getTen()))) {
                 selectedPrice = spct.getGiatien();
                 selectedQuantity = spct.getSoluong();
+                selectedThuongHieu=spct.getThuonghieu().getTen();
+                selectedChatLieu=spct.getChatlieu().getTen();
+                selectedDeGiay=spct.getDegiay().getTen();
+                selectedMaSPCT=spct.getMasanphamchitiet();
             }
         }
         if (colors.size() > 0) {
@@ -126,12 +143,12 @@ public class TrangChuCustomerController {
         }
         model.addAttribute("sizes", sizes);
         model.addAttribute("colors", colors);
-        model.addAttribute("thuonghieu", String.join(", ", thuongHieuSet));
-        model.addAttribute("chatlieu", String.join(", ", chatlieuset));
-        model.addAttribute("giaSanPhamMap", giaSanPhamMap);
-        model.addAttribute("soLuongSanPhamMap", soLuongSanPhamMap);
         model.addAttribute("selectedPrice", selectedPrice);
         model.addAttribute("selectedQuantity", selectedQuantity);
+        model.addAttribute("selectedThuongHieu", selectedThuongHieu);
+        model.addAttribute("selectedChatLieu", selectedChatLieu);
+        model.addAttribute("selectedDeGiay", selectedDeGiay);
+        model.addAttribute("selectedMaSPCT", selectedMaSPCT);
         model.addAttribute("defaultColor", defaultColor);
         model.addAttribute("defaultSize", defaultSize);
         List<Object[]> page = trangChuRepository.topspmoinhatdetail();

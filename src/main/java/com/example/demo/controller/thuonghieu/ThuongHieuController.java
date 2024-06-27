@@ -31,6 +31,8 @@ public class ThuongHieuController {
             list = thuongHieuRepository.findAllByOrderByNgaytaoDesc();
         }
         model.addAttribute("page", list);
+        model.addAttribute("fillSearch", info.getKey());
+        model.addAttribute("fillTrangThai", info.getTrangthai());
         return "admin/qlthuonghieu";
     }
 
