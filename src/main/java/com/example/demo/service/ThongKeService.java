@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -26,9 +27,10 @@ public interface ThongKeService {
     int soLuongsp();
     List<Object[]> soLuongDaBan();
     List<Object[]> soLuongTon();
-    public Map<String, Object> dayData();
-    public Map<String, Object> thangData();
-    public Map<String, Object> namData();
+    public List<Object[]> dayData();
+    public List<Object[]> thangData();
+    public List<Object[]> namData();
     public Map<String, Object> khoangngayData();
+    public List<Object[]> khoangngay(Date startDate, Date endDate);
 
 }
