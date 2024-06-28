@@ -387,7 +387,7 @@
                     <!--nội dung-->
                     <div class="tab-pane fade text-center active show" id="gird">
                         <div class="single-products row">
-                            <div class="col-md-3" th:each="sp, stt : ${listnam.content}">
+                            <div class="col-md-3" th:each="sp, stt : ${listnam}">
                                 <div class="product-item margin40">
                                     <div class="pro-img">
                                         <a th:href="@{/detailsanphamCustomer/{id}(id=${sp[0]})}">
@@ -441,38 +441,38 @@
                     </div>
                     <!--end-->
                     <!--phân trang-->
-                    <div class="d-flex justify-content-center align-items-center">
-                        <!-- Nút trang trước -->
-                        <a th:href="@{/customer/sanphamnam(p=${listnam.number-1})}" class="text-decoration-none mx-2"
-                           th:classappend="${listnam.number == 0} ? 'disabled' : ''" style="color: black;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                 class="bi bi-chevron-left" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd"
-                                      d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
-                            </svg>
-                        </a>
+<!--                    <div class="d-flex justify-content-center align-items-center">-->
+<!--                        &lt;!&ndash; Nút trang trước &ndash;&gt;-->
+<!--                        <a th:href="@{/customer/sanphamnam(p=${listnam.number-1})}" class="text-decoration-none mx-2"-->
+<!--                           th:classappend="${listnam.number == 0} ? 'disabled' : ''" style="color: black;">-->
+<!--                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"-->
+<!--                                 class="bi bi-chevron-left" viewBox="0 0 16 16">-->
+<!--                                <path fill-rule="evenodd"-->
+<!--                                      d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>-->
+<!--                            </svg>-->
+<!--                        </a>-->
 
-                        <!-- Các trang -->
-                        <div th:if="${listnam.totalPages > 0}" class="d-flex mx-2">
-                            <div th:each="i : ${#numbers.sequence(0, listnam.totalPages-1)}">
-                                <a th:href="@{/customer/sanphamnam(p=${i})}"
-                                   th:classappend="${i == listnam.number} ? 'active' : ''"
-                                   class="text-decoration-none btn custom-btn mx-1"
-                                   th:text="${i + 1}"></a>
-                            </div>
-                        </div>
+<!--                        &lt;!&ndash; Các trang &ndash;&gt;-->
+<!--&lt;!&ndash;                        <div th:if="${listnam.totalPages > 0}" class="d-flex mx-2">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <div th:each="i : ${#numbers.sequence(0, listnam.totalPages-1)}">&ndash;&gt;-->
+<!--&lt;!&ndash;                                <a th:href="@{/customer/sanphamnam(p=${i})}"&ndash;&gt;-->
+<!--&lt;!&ndash;                                   th:classappend="${i == listnam.number} ? 'active' : ''"&ndash;&gt;-->
+<!--&lt;!&ndash;                                   class="text-decoration-none btn custom-btn mx-1"&ndash;&gt;-->
+<!--&lt;!&ndash;                                   th:text="${i + 1}"></a>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
 
-                        <!-- Nút trang sau -->
-                        <a th:href="@{/customer/sanphamnam(p=${listnam.number+1})}" class="text-decoration-none mx-2"
-                           th:classappend="${listnam.number + 1 >= listnam.totalPages} ? 'disabled' : ''"
-                           style="color: black;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                 class="bi bi-chevron-right" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd"
-                                      d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
-                            </svg>
-                        </a>
-                    </div>
+<!--                        &lt;!&ndash; Nút trang sau &ndash;&gt;-->
+<!--&lt;!&ndash;                        <a th:href="@{/customer/sanphamnam(p=${listnam.number+1})}" class="text-decoration-none mx-2"&ndash;&gt;-->
+<!--&lt;!&ndash;                           th:classappend="${listnam.number + 1 >= listnam.totalPages} ? 'disabled' : ''"&ndash;&gt;-->
+<!--&lt;!&ndash;                           style="color: black;">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"&ndash;&gt;-->
+<!--&lt;!&ndash;                                 class="bi bi-chevron-right" viewBox="0 0 16 16">&ndash;&gt;-->
+<!--&lt;!&ndash;                                <path fill-rule="evenodd"&ndash;&gt;-->
+<!--&lt;!&ndash;                                      d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </svg>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </a>&ndash;&gt;-->
+<!--                    </div>-->
 
                 </div>
             </div>

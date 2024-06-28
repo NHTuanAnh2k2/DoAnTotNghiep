@@ -100,6 +100,9 @@
     }
 </style>
 <body>
+
+<input type="hidden" th:value="${token}" id="tokenDN">
+
 <!--style="font-family: sans-serif"-->
 <!-- header -->
 <nav th:replace="~{/layout/header.html}"></nav>
@@ -279,7 +282,7 @@
         <div class="tab-content">
             <!--nội dung-->
             <div class="tab-pane fade text-center active show" id="gird">
-                <div class="single-products row" >
+                <div class="single-products row">
                     <div class="col-md-3">
                         <div class="product-item margin40">
                             <div class="pro-img">
@@ -413,5 +416,12 @@
                 scrollableContainerHot.scrollBy({left: 200, behavior: "smooth"});
             }
         });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var token = document.getElementById("tokenDN").value;
+        console.log("hhhh"+token);
     });
 </script>

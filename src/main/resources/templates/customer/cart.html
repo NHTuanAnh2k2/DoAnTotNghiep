@@ -33,6 +33,7 @@
         border: 1px solid rgba(255, 255, 255, 0.4);
         border-radius: 10px;
     }
+
     .giohang {
         display: flex;
         justify-content: start;
@@ -42,11 +43,13 @@
         padding-bottom: 20px;
 
     }
+
     .ten_sp {
         display: flex;
         margin-left: 10px;
         justify-content: start;
     }
+
     .ten_sp p {
         font-size: 18px;
         padding-top: 10px;
@@ -57,25 +60,30 @@
         right: 0;
         top: 0;
     }
+
     .thong_tin_sp {
         display: flex;
         justify-content: start;
         margin-left: 10px;
     }
+
     .mausac {
         font-size: 15px;
         position: absolute;
         left: 220px;
     }
+
     .size {
         font-size: 15px;
         position: absolute;
         left: 430px;
     }
+
     .giaban {
         position: absolute;
         right: 0px;
     }
+
     input[type="number"]::-webkit-outer-spin-button,
     input[type="number"]::-webkit-inner-spin-button {
         -webkit-appearance: none;
@@ -86,10 +94,12 @@
         /* Hiển thị biểu tượng bước lên/xuống mặc định */
         -moz-appearance: textfield;
     }
+
     .ghichu {
         background-color: #EEEEEE;
         margin-top: 20px;
     }
+
     label {
         font-size: 16px;
         font-weight: bold;
@@ -97,6 +107,7 @@
         margin-bottom: 10px;
         display: block;
     }
+
     .text_ghichu {
         width: 100%;
         min-height: 45px;
@@ -114,7 +125,8 @@
         border-color: #007BFF;
         box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
     }
-    .ma_giam_gia{
+
+    .ma_giam_gia {
         width: 100%;
         margin-bottom: 15px;
         padding: 5px 10px;
@@ -122,6 +134,7 @@
         display: flex;
         border-radius: 15px;
     }
+
     .ma-item-left {
         width: 30%;
         padding-right: 10px;
@@ -129,31 +142,36 @@
         align-items: center;
         border-right: 1px dashed #ccc;
     }
+
     .anh_ma {
         width: auto;
         height: auto;
         max-width: 100%;
     }
+
     .ma-item-right {
         padding-left: 10px;
         position: relative;
         width: 70%;
     }
+
     .ma-item-des {
         display: flex;
         justify-content: space-between;
         align-items: self-end;
         font-size: 10px;
     }
+
     .code {
         background: yellow;
         color: red;
         font-weight: bolder;
     }
+
     .right .copy-button {
         font-weight: 700;
         padding: 5px 7px;
-        background: rgb(249,72,42);
+        background: rgb(249, 72, 42);
         color: white;
         border-radius: 15px;
         cursor: pointer;
@@ -176,62 +194,74 @@
                         <hr class="border border-danger border-2 opacity-50">
                         <p>Bạn đang có <strong th:text="${totalQuantity}+' sản phẩm'"></strong> trong giỏ hàng</p>
                         <div th:if="${cartItems == null or cartItems.isEmpty()}">
-<!--                            <p>Không có sản phẩm trong giỏ hàng.</p>-->
+                            <!--                            <p>Không có sản phẩm trong giỏ hàng.</p>-->
                             <a th:href="@{/customer/sanphamnam}">Tiếp tục mua hàng.</a>
                         </div>
                         <div th:if="${cartItems != null and not cartItems.isEmpty()}">
-                        <div style="border: 1px solid #DDDDDD; border-radius: 10px;" class="container-fluid">
-                            <div class="giohang" th:each="item, iterStat : ${cartItems}">
-                                <div th:id="'carouselExample' + ${item.id}" class="carousel">
-                                    <div class="carousel-inner">
-                                        <th:block th:each="anh, index : ${item.sanphamchitiet.anh}">
-                                            <div th:classappend="${index.index == 0} ? 'carousel-item active' : 'carousel-item'">
-                                                <img th:if="${anh.tenanh != null}"
-                                                     th:src="@{'/upload' + ${anh.tenanh.substring(anh.tenanh.lastIndexOf('upload') + 6)}}"
-                                                     class="d-block w-100" style="width: 80px; height: 80px; padding-top: 10px;" alt="Ảnh">
+                            <div style="border: 1px solid #DDDDDD; border-radius: 10px;" class="container-fluid">
+                                <div class="giohang" th:each="item, iterStat : ${cartItems}">
+                                    <div th:id="'carouselExample' + ${item.id}" class="carousel">
+                                        <div class="carousel-inner">
+                                            <th:block th:each="anh, index : ${item.sanphamchitiet.anh}">
+                                                <div th:classappend="${index.index == 0} ? 'carousel-item active' : 'carousel-item'">
+                                                    <img th:if="${anh.tenanh != null}"
+                                                         th:src="@{'/upload' + ${anh.tenanh.substring(anh.tenanh.lastIndexOf('upload') + 6)}}"
+                                                         class="d-block w-100"
+                                                         style="width: 80px; height: 80px; padding-top: 10px;"
+                                                         alt="Ảnh">
+                                                </div>
+                                            </th:block>
+                                        </div>
+                                        <button class="carousel-control-prev" type="button"
+                                                th:data-bs-target="'#carouselExample' + ${item.id}"
+                                                data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Previous</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button"
+                                                th:data-bs-target="'#carouselExample' + ${item.id}"
+                                                data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Next</span>
+                                        </button>
+                                    </div>
+                                    <form th:action="@{/update-cart/{id}(id=${item.id})}" method="post">
+                                        <div>
+                                            <div class="ten_sp">
+                                                <p style="font-size: 18px;"
+                                                   th:text="${item.sanphamchitiet.sanpham.tensanpham}"></p>
+                                                <a th:href="@{/delete/cart/{id}(id=${item.id})}" class="btn-close"
+                                                   aria-label="Close"></a>
                                             </div>
-                                        </th:block>
-                                    </div>
-                                    <button class="carousel-control-prev" type="button" th:data-bs-target="'#carouselExample' + ${item.id}" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Previous</span>
-                                    </button>
-                                    <button class="carousel-control-next" type="button" th:data-bs-target="'#carouselExample' + ${item.id}" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Next</span>
-                                    </button>
+                                            <div class="thong_tin_sp">
+                                                <div class="giatien d-flex justify-content-start align-items-center">
+                                                    <h5 th:text="${#numbers.formatDecimal(item.sanphamchitiet.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></h5>
+                                                </div>
+                                                <p class="mausac">Màu sắc: <span
+                                                        th:text="${item.sanphamchitiet.mausac.ten}"></span></p>
+                                                <p class="size">Size: <span
+                                                        th:text="${item.sanphamchitiet.kichco.ten}"></span></p>
+                                                <div class="quantity-container">
+                                                    <button class="quantity-button decrement">-</button>
+                                                    <input type="number" class="quantity-input"
+                                                           th:value="${item.soluong}" min="1" name="quantity">
+                                                    <button class="quantity-button increment">+</button>
+                                                </div>
+                                                <div class="giaban d-flex justify-content-start align-items-center">
+                                                    <h5 th:text="${#numbers.formatDecimal(item.sanphamchitiet.giatien * item.soluong, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"
+                                                        style="color: red"></h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
-                                <form th:action="@{/update-cart/{id}(id=${item.id})}" method="post">
-                                <div>
-                                    <div class="ten_sp">
-                                        <p style="font-size: 18px;" th:text="${item.sanphamchitiet.sanpham.tensanpham}"></p>
-                                        <a th:href="@{/delete/cart/{id}(id=${item.id})}" class="btn-close" aria-label="Close"></a>
-                                    </div>
-                                    <div class="thong_tin_sp">
-                                        <div class="giatien d-flex justify-content-start align-items-center">
-                                            <h5 th:text="${#numbers.formatDecimal(item.sanphamchitiet.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></h5>
-                                        </div>
-                                        <p class="mausac">Màu sắc: <span th:text="${item.sanphamchitiet.mausac.ten}"></span></p>
-                                        <p class="size">Size: <span th:text="${item.sanphamchitiet.kichco.ten}"></span></p>
-                                        <div class="quantity-container">
-                                            <button class="quantity-button decrement">-</button>
-                                            <input type="number" class="quantity-input" th:value="${item.soluong}" min="1" name="quantity">
-                                            <button class="quantity-button increment">+</button>
-                                        </div>
-                                        <div class="giaban d-flex justify-content-start align-items-center">
-                                            <h5 th:text="${#numbers.formatDecimal(item.sanphamchitiet.giatien * item.soluong, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}" style="color: red"></h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                </form>
+                            </div>
+                            <div class="ghichu container-fluid">
+                                <label class="lable_ghichu">Ghi chú đơn hàng</label>
+                                <textarea class="text_ghichu" id="text_ghichu"></textarea>
                             </div>
                         </div>
-                        <div class="ghichu container-fluid">
-                            <label class="lable_ghichu">Ghi chú đơn hàng</label>
-                            <textarea class="text_ghichu" id="text_ghichu" ></textarea>
-                        </div>
                     </div>
-                </div>
                 </div>
             </section>
         </div>
@@ -239,14 +269,15 @@
         <div class="col-lg-4">
             <section class="content">
                 <div class="card">
-                    <div class="card-body" >
+                    <div class="card-body">
                         <h3>THÔNG TIN ĐƠN HÀNG</h3>
                         <hr class="border border-danger border-2 opacity-50">
                         <div class="d-flex justify-content-between align-items-center">
                             <h6>Tổng tiền:</h6>
                             <div class="d-flex justify-content-start align-items-center">
-                                <h4 style="color: red" th:text="${#numbers.formatDecimal(totalAmount, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></h4>
-<!--                                <strong style="color: red">đ</strong>-->
+                                <h4 style="color: red"
+                                    th:text="${#numbers.formatDecimal(totalAmount, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></h4>
+                                <!--                                <strong style="color: red">đ</strong>-->
                             </div>
                         </div>
                         <hr class="border border-danger border-2 opacity-50">
@@ -269,19 +300,25 @@
                                 <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
                             </div>
                             <div class="ma-item-right">
-                                <h4 th:if="${p.loaiphieu}" th:text="'Giảm '+${p.giatrigiam}+' %'" style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;"></h4>
+                                <h4 th:if="${p.loaiphieu}" th:text="'Giảm '+${p.giatrigiam}+' %'"
+                                    style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;"></h4>
                                 <h4 th:if="${!p.loaiphieu}"
                                     th:text="'Giảm ' + ${#numbers.formatDecimal(p.giatrigiam, 0, 'COMMA', 0, 'POINT')+ '&#x20ab;'}"
                                     style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;">
                                 </h4>
-                                <p th:if="${p.dontoithieu == null}" th:text="'Áp dụng cho mọi hóa đơn'" style="font-size: 14px; margin: 0; padding: 0; color: black"></p>
+                                <p th:if="${p.dontoithieu == null}" th:text="'Áp dụng cho mọi hóa đơn'"
+                                   style="font-size: 14px; margin: 0; padding: 0; color: black"></p>
                                 <p th:if="${p.dontoithieu!=null}"
                                    th:text="'Áp dụng cho hóa đơn từ ' + ${#numbers.formatDecimal(p.dontoithieu, 0, 'COMMA', 0, 'POINT')+ '&#x20ab;'}"
                                    style="font-size: 14px; margin: 0; padding: 0; color: black">
                                 </p>
+                                <p th:if="${p.giatrigiamtoida!=null}"
+                                   th:text="'Giảm tối đa '+${#numbers.formatDecimal(p.giatrigiamtoida, 0, 'COMMA', 0, 'POINT')}+' ₫'"
+                                   style="font-size: 14px; margin: 0; padding: 0; color: black"></p>
                                 <div class="ma-item-des">
                                     <div class="left">
-                                        <p style="margin: 0; white-space: nowrap;">Mã: <b class="code" th:text="${p.macode}"></b></p>
+                                        <p style="margin: 0; white-space: nowrap;">Mã: <b class="code"
+                                                                                          th:text="${p.macode}"></b></p>
                                         <p th:text="'HSD: '+${p.ngayketthuc}"></p>
                                     </div>
                                     <div class="right">
@@ -290,7 +327,8 @@
                                 </div>
                             </div>
                         </div>
-                        <p style="color: black; margin-bottom: 0;">Để nhận tư vấn hoặc hỗ trợ khi phát sinh khó khăn trong lúc mua hàng, hãy liên hệ Biti's thông qua:</p>
+                        <p style="color: black; margin-bottom: 0;">Để nhận tư vấn hoặc hỗ trợ khi phát sinh khó khăn
+                            trong lúc mua hàng, hãy liên hệ Biti's thông qua:</p>
                         <ul style="list-style-type: disc;  margin: 0; padding-left: 15px; color: black; font-size: 15px;">
                             <li>Gọi 0966.158.666</li>
                             <li>Email tới địa chỉ chamsockhachhang@fsport.com.vn</li>
@@ -353,7 +391,7 @@
         var code = button.closest('.ma-item-right').querySelector('.code').textContent;
 
         // Sao chép mã vào clipboard
-        navigator.clipboard.writeText(code).then(function() {
+        navigator.clipboard.writeText(code).then(function () {
             // Nếu có nút trước đó đã sao chép, đặt lại văn bản của nó
             if (lastCopiedButton) {
                 lastCopiedButton.textContent = 'Sao chép mã';
@@ -364,7 +402,7 @@
 
             // Cập nhật nút cuối cùng đã sao chép
             lastCopiedButton = button;
-        }, function(err) {
+        }, function (err) {
             console.error('Không thể sao chép mã: ', err);
         });
     }
