@@ -585,10 +585,10 @@ public class BanHangController {
             hdset.setTongtien(tienTong);
             hdset.setPhivanchuyen(new BigDecimal("0.00"));
             hdset.setDiachi("ngõ 11, Phường Phương Canh, Quận Nam Từ Liêm, Thành phố Hà Nội");
-            if(hdset.getKhachhang()!=null){
+            if (hdset.getKhachhang() != null) {
                 hdset.setTennguoinhan(hdset.getKhachhang().getNguoidung().getHovaten());
                 hdset.setSdt(hdset.getKhachhang().getNguoidung().getSodienthoai());
-            }else {
+            } else {
                 hdset.setTennguoinhan("Khách lẻ");
                 hdset.setSdt("037xxxxxx6");
             }
@@ -858,6 +858,13 @@ public class BanHangController {
             return ResponseEntity.ok(true);
         }
         return ResponseEntity.ok(false);
+    }
+
+    @GetMapping("validate-SL")
+    public ResponseEntity<?> validateSL(@RequestParam("id") String id
+    ) {
+        HoaDonChiTiet hdct=daoHDCT.findByID(Integer.valueOf(id));
+        return ResponseEntity.ok(hdct);
     }
 
     @GetMapping("in-don-tai-quay")
