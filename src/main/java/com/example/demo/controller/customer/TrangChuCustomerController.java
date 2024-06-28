@@ -4,6 +4,7 @@ import com.example.demo.entity.Anh;
 import com.example.demo.entity.GioHangChiTiet;
 import com.example.demo.entity.SanPham;
 import com.example.demo.entity.SanPhamChiTiet;
+import com.example.demo.info.TaiKhoanTokenInfo;
 import com.example.demo.repository.AnhRepository;
 import com.example.demo.repository.KichCoRepository;
 import com.example.demo.repository.SanPhamChiTietRepository;
@@ -12,6 +13,7 @@ import com.example.demo.repository.customer.TrangChuRepository;
 import com.example.demo.repository.giohang.GioHangChiTietRepository;
 import com.example.demo.service.impl.*;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,7 +72,7 @@ public class TrangChuCustomerController {
     HttpServletRequest request;
 
     @GetMapping("/customer/trangchu")
-    public String hienthiTrangChu(Model model) {
+    public String hienthiTrangChu(Model model, HttpSession httpSession) {
         List<GioHangChiTiet> cartItems = gioHangChiTietRepository.findAll(); // Giả sử bạn có phương thức này để lấy các mục trong giỏ hàng
         int totalQuantity = 0;
         // Tính tổng số lượng sản phẩm trong giỏ hàng
@@ -82,12 +84,14 @@ public class TrangChuCustomerController {
         model.addAttribute("topspmoinhattrangchu", topspmoinhattrangchu);
         List<Object[]> topspbanchaynhattrangchu = trangChuRepository.topspbanchaynhat();
         model.addAttribute("topspbanchaynhattrangchu", topspbanchaynhattrangchu);
-        System.out.println();
+        List<TaiKhoanTokenInfo> list = (List<TaiKhoanTokenInfo>) httpSession.getAttribute("taiKhoanTokenInfos");
+        model.addAttribute("token", list);
         return "customer/trangchu";
     }
 
     @GetMapping("/detailsanphamCustomer/{id}")
-    public String detailsanphamCustomer(@PathVariable Integer id, @RequestParam(required = false) String color, @RequestParam(required = false) String size, Model model) {
+    public String detailsanphamCustomer(@PathVariable Integer id, @RequestParam(required = false) String color, @RequestParam(required = false)
+            String size, Model model,HttpSession session) {
         List<GioHangChiTiet> cartItems = gioHangChiTietRepository.findAll(); // Giả sử bạn có phương thức này để lấy các mục trong giỏ hàng
 //        int totalQuantity = cartItems.size(); // Đếm số lượng các mục trong giỏ hàng
         int totalQuantity = 0;
@@ -98,7 +102,7 @@ public class TrangChuCustomerController {
         model.addAttribute("totalQuantity", totalQuantity);
         SanPham sanPham = trangChuRepository.findById(id).orElse(null);
         model.addAttribute("sanpham", sanPham);
-        SanPhamChiTiet sanPhamChiTiet=sanPhamChiTietRepository.findById(id).orElse(null);
+        SanPhamChiTiet sanPhamChiTiet = sanPhamChiTietRepository.findById(id).orElse(null);
         model.addAttribute("sanphamchitiet", sanPhamChiTiet);
         List<String> danhSachAnh = new ArrayList<>();
         for (SanPhamChiTiet spct : sanPham.getSpct()) {
@@ -113,10 +117,10 @@ public class TrangChuCustomerController {
         List<String> colors = new ArrayList<>();
         BigDecimal selectedPrice = null;
         Integer selectedQuantity = null;
-        String selectedThuongHieu=null;
-        String selectedChatLieu=null;
-        String selectedDeGiay=null;
-        String selectedMaSPCT=null;
+        String selectedThuongHieu = null;
+        String selectedChatLieu = null;
+        String selectedDeGiay = null;
+        String selectedMaSPCT = null;
         String defaultColor = null;
         String defaultSize = null;
         for (SanPhamChiTiet spct : sanPham.getSpct()) {
@@ -129,10 +133,10 @@ public class TrangChuCustomerController {
             if ((color == null || color.equals(spct.getMausac().getTen())) && (size == null || size.equals(spct.getKichco().getTen()))) {
                 selectedPrice = spct.getGiatien();
                 selectedQuantity = spct.getSoluong();
-                selectedThuongHieu=spct.getThuonghieu().getTen();
-                selectedChatLieu=spct.getChatlieu().getTen();
-                selectedDeGiay=spct.getDegiay().getTen();
-                selectedMaSPCT=spct.getMasanphamchitiet();
+                selectedThuongHieu = spct.getThuonghieu().getTen();
+                selectedChatLieu = spct.getChatlieu().getTen();
+                selectedDeGiay = spct.getDegiay().getTen();
+                selectedMaSPCT = spct.getMasanphamchitiet();
             }
         }
         if (colors.size() > 0) {
@@ -155,6 +159,8 @@ public class TrangChuCustomerController {
         model.addAttribute("page", page);
         List<Object[]> page2 = trangChuRepository.topspnoibatdetail();
         model.addAttribute("page2", page2);
+        String token = (String) session.getAttribute("token");
+        model.addAttribute("token", token);
         return "customer/product-details";
     }
 }

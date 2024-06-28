@@ -4,22 +4,34 @@ import com.example.demo.entity.GioHang;
 import com.example.demo.entity.GioHangChiTiet;
 import com.example.demo.entity.PhieuGiamGia;
 import com.example.demo.entity.SanPhamChiTiet;
+import com.example.demo.info.TaiKhoanTokenInfo;
+import com.example.demo.info.token.UserManager;
 import com.example.demo.repository.SanPhamChiTietRepository;
 import com.example.demo.repository.giohang.GioHangChiTietRepository;
 import com.example.demo.repository.giohang.GioHangRepository;
+import com.example.demo.repository.giohang.KhachHangGioHangRepository;
+import com.example.demo.repository.giohang.NguoiDungGioHangRepository;
 import com.example.demo.service.impl.PhieuGiamGiaImp;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
 public class GioHangController {
+
+    @Autowired
+    KhachHangGioHangRepository khachHangGioHangRepository;
+    @Autowired
+    NguoiDungGioHangRepository nguoiDungGioHangRepository;
 
     @Autowired
     private GioHangRepository gioHangRepository;
@@ -32,10 +44,13 @@ public class GioHangController {
 
     @Autowired
     private PhieuGiamGiaImp phieuGiamGiaImp;
-
+//    @Autowired
+//    public UserManager userManager;
 
     @GetMapping("/cart")
-    public String cart2(Model model) {
+    public String cart2(Model model,
+    HttpSession session
+    ) {
         List<GioHangChiTiet> cartItems = gioHangChiTietRepository.findAll(); // Giả sử bạn có phương thức này để lấy các mục trong giỏ hàng
         int totalQuantity = 0;
         // Tính tổng số lượng sản phẩm trong giỏ hàng
@@ -49,14 +64,15 @@ public class GioHangController {
             totalAmount = totalAmount.add(giatien.multiply(BigDecimal.valueOf(item.getSoluong())));
         }
         //dùng cho phiếu giảm giá
-        List<PhieuGiamGia> lst= phieuGiamGiaImp.findAll();
-        List<PhieuGiamGia> lstPGG= new ArrayList<>();
-        for(PhieuGiamGia p : lst){
-            if(p.getTrangthai()==1 && p.getKieuphieu()==false){
+        List<PhieuGiamGia> lst = phieuGiamGiaImp.findAll();
+        List<PhieuGiamGia> lstPGG = new ArrayList<>();
+        for (PhieuGiamGia p : lst) {
+            if (p.getTrangthai() == 1 && p.getKieuphieu() == false) {
                 lstPGG.add(p);
             }
         }
-        model.addAttribute("lstPGG",lstPGG);
+        List<TaiKhoanTokenInfo> list= (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
+        model.addAttribute("lstPGG", lstPGG);
         model.addAttribute("totalAmount", totalAmount);
         // Đưa tổng số lượng vào model để hiển thị trên giao diện
         model.addAttribute("totalQuantity", totalQuantity);
@@ -65,7 +81,9 @@ public class GioHangController {
     }
 
     @PostMapping("/add-to-cart")
-    public String addToCart(@RequestParam Integer id, @RequestParam String selectedColor, @RequestParam String selectedSize, @RequestParam Integer quantity, Model model) {
+    public String addToCart(@RequestParam Integer id, @RequestParam String selectedColor, @RequestParam String selectedSize,
+                            @RequestParam Integer quantity, Model model) {
+//        Map<Integer, String> mapToken = UserManager.class.
         // Tìm sản phẩm chi tiết dựa trên màu sắc và kích cỡ
         SanPhamChiTiet sanPhamChiTiet = sanPhamChiTietRepository.findBySanPhamIdAndColorAndSize(id, selectedColor, selectedSize);
 
@@ -110,8 +128,9 @@ public class GioHangController {
         return "redirect:/cart";
 
     }
+
     @PostMapping("/update-cart/{id}")
-    public String updateCart(@PathVariable Integer id,  Integer quantity) {
+    public String updateCart(@PathVariable Integer id, Integer quantity) {
         try {
             gioHangChiTietRepository.updateSoLuongById(quantity, id);
             return "redirect:/cart";
