@@ -454,6 +454,7 @@ public class BanHangController {
         String mota = Integer.valueOf(lst.get(0)) == 1 ? "tiền mặt" : "chuyển khoản";
         PhuongThucThanhToan phuongThucInsert = new PhuongThucThanhToan();
         phuongThucInsert.setHoadon(hdHienTai);
+        phuongThucInsert.setMagiaodichvnpay("N/A");
         phuongThucInsert.setTenphuongthuc("trả trước");
         phuongThucInsert.setTongtien(BigDecimal.valueOf(Double.valueOf(convertCurrency(lst.get(1)))));
         phuongThucInsert.setMota(mota);
@@ -569,7 +570,11 @@ public class BanHangController {
         PhieuGiamGiaChiTiet phieugiamgiachtietset = new PhieuGiamGiaChiTiet();
         //thanh toán đơn không giao hàng
         if (magiao == 1) {
-            HoaDon hdset = hdHienTai;
+            //nhân viên fake
+            NhanVien nvfake = new NhanVien();
+            nvfake.setId(5);
+            //
+            HoaDon hdset = daoHD.timHDTheoMaHD(hdHienTai.getMahoadon());
             hdset.setTrangthai(5);
             BigDecimal tienTong = new BigDecimal("0.00");
             for (PhuongThucThanhToan a : lstPTTT
@@ -579,6 +584,15 @@ public class BanHangController {
             }
             hdset.setTongtien(tienTong);
             hdset.setPhivanchuyen(new BigDecimal("0.00"));
+            hdset.setDiachi("ngõ 11, Phường Phương Canh, Quận Nam Từ Liêm, Thành phố Hà Nội");
+            if(hdset.getKhachhang()!=null){
+                hdset.setTennguoinhan(hdset.getKhachhang().getNguoidung().getHovaten());
+                hdset.setSdt(hdset.getKhachhang().getNguoidung().getSodienthoai());
+            }else {
+                hdset.setTennguoinhan("Khách lẻ");
+                hdset.setSdt("037xxxxxx6");
+            }
+
             daoHD.capNhatHD(hdset);
             //tạo phiếu giảm giá chi tiết
             phieugiamgiachtietset.setHoadon(hdset);
@@ -589,6 +603,41 @@ public class BanHangController {
             LocalDateTime currentDateTime = LocalDateTime.now();
             phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
             daoPGGCT.save(phieugiamgiachtietset);
+            // lịch sử hóa đơn 0
+            LichSuHoaDon lichSuHoaDon1 = new LichSuHoaDon();
+            lichSuHoaDon1.setNhanvien(nvfake);
+            lichSuHoaDon1.setGhichu("khách hàng đã đặt đơn hàng");
+            lichSuHoaDon1.setHoadon(hdset);
+            lichSuHoaDon1.setNgaytao(Timestamp.valueOf(currentDateTime));
+            lichSuHoaDon1.setTrangthai(0);
+            daoLSHD.add(lichSuHoaDon1);
+            // lịch sử hóa đơn 1
+            LichSuHoaDon lichSuHoaDon2 = new LichSuHoaDon();
+            lichSuHoaDon2.setNhanvien(nvfake);
+            lichSuHoaDon2.setGhichu("khách hàng đã xác nhận đơn hàng");
+            lichSuHoaDon2.setHoadon(hdset);
+            lichSuHoaDon2.setNgaytao(Timestamp.valueOf(currentDateTime));
+            lichSuHoaDon2.setTrangthai(1);
+            daoLSHD.add(lichSuHoaDon2);
+            // lịch sử hóa đơn 4
+            LichSuHoaDon lichSuHoaDon3 = new LichSuHoaDon();
+            lichSuHoaDon3.setNhanvien(nvfake);
+            lichSuHoaDon3.setGhichu("khách hàng đã thanh toán đơn hàng");
+            lichSuHoaDon3.setHoadon(hdset);
+            lichSuHoaDon3.setNgaytao(Timestamp.valueOf(currentDateTime));
+            lichSuHoaDon3.setTrangthai(4);
+            daoLSHD.add(lichSuHoaDon3);
+            // lịch sử hóa đơn 5
+            LichSuHoaDon lichSuHoaDon4 = new LichSuHoaDon();
+            lichSuHoaDon4.setNhanvien(nvfake);
+            lichSuHoaDon4.setGhichu("Hoàn thành đơn hàng");
+            lichSuHoaDon4.setHoadon(hdset);
+            lichSuHoaDon4.setNgaytao(Timestamp.valueOf(currentDateTime));
+            lichSuHoaDon4.setTrangthai(5);
+            daoLSHD.add(lichSuHoaDon4);
+
+
+            //end lịch sử hóa đơn
             hdHienTai = hdset;
             lstPTTT = new ArrayList<>();
             redirectAttributes.addFlashAttribute("orderSuccess", true);
@@ -658,10 +707,11 @@ public class BanHangController {
             phuongthuc.setMota("Tiền mặt");
             phuongthuc.setHoadon(hdset1);
             phuongthuc.setNgaytao(Timestamp.valueOf(currentDateTime));
+            phuongthuc.setTongtien(hdset1.getTongtien());
+            phuongthuc.setMagiaodichvnpay("N/A");
             //fake người tạo
             phuongthuc.setNguoitao("admin");
             phuongthuc.setTrangthai(false);
-            phuongthuc.setTongtien(new BigDecimal("0.00"));
             daoPTTT.add_update(phuongthuc);
             /////////////
             daoPGGCT.save(phieugiamgiachtietset);
@@ -675,7 +725,7 @@ public class BanHangController {
             }
         } else {
             //trả trước
-            hdset1.setTrangthai(5);
+            hdset1.setTrangthai(1);
             BigDecimal tienTong = new BigDecimal("0.00");
             for (PhuongThucThanhToan a : lstPTTT
             ) {
@@ -699,6 +749,27 @@ public class BanHangController {
             LocalDateTime currentDateTime = LocalDateTime.now();
             phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
             daoPGGCT.save(phieugiamgiachtietset);
+            LichSuHoaDon lichSuHoaDon = new LichSuHoaDon();
+            //fake nhân viên
+            NhanVien nvfake = new NhanVien();
+            nvfake.setId(5);
+            //fake lịch sử chờ 0
+            lichSuHoaDon.setNhanvien(nvfake);
+            lichSuHoaDon.setGhichu("khách hàng đã xác đặt đơn đơn hàng");
+            lichSuHoaDon.setHoadon(hdset1);
+            lichSuHoaDon.setNgaytao(Timestamp.valueOf(currentDateTime));
+            lichSuHoaDon.setTrangthai(0);
+            daoLSHD.add(lichSuHoaDon);
+            //fake lịch sử hóa đơn 1
+            LichSuHoaDon lichSuHoaDon1 = new LichSuHoaDon();
+            lichSuHoaDon1.setNhanvien(nvfake);
+            lichSuHoaDon1.setGhichu("khách hàng đã xác nhận đơn hàng");
+            lichSuHoaDon1.setHoadon(hdset1);
+            lichSuHoaDon1.setNgaytao(Timestamp.valueOf(currentDateTime));
+            lichSuHoaDon1.setTrangthai(1);
+            daoLSHD.add(lichSuHoaDon1);
+
+
             lstPTTT = new ArrayList<>();
             List<HoaDon> lstcheck7 = daoHD.timTheoTrangThaiVaLoai(7, false);
             if (lstcheck7.size() > 0) {
@@ -707,7 +778,7 @@ public class BanHangController {
                 daoHD.capNhatHD(TT7);
                 redirectAttributes.addFlashAttribute("checkHangCho", true);
             }
-            redirectAttributes.addFlashAttribute("orderSuccess", true);
+            redirectAttributes.addFlashAttribute("orderSuccess", false);
             hoaDonCheckBill = hdset1;
             return "redirect:/hoa-don/ban-hang";
 

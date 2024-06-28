@@ -2805,9 +2805,11 @@ tabindex="0">
             document.getElementById('changeSP').disabled = false;
             var checkgiaohang = document.getElementById('checktrasau');
             var actionGiao = document.getElementById('thongtingiaohangform');
+
             var checksubmit = validateForm();
-            if (checksubmit === true) {
-                if (checkgiaohang.checked) {
+
+            if (checkgiaohang.checked) {
+                if (checksubmit === true) {
                     thongbao('Đặt đơn thành công', 'success');
                     //giao hàng submit
                     setTimeout(function () {
@@ -2815,20 +2817,22 @@ tabindex="0">
                         actionGiao.submit();
                     }, 1300);
 
+
                 } else {
-                    //giao hàng submit
-                    thongbao('Đặt đơn thành công', 'success');
-                    setTimeout(function () {
-                        actionGiao.action = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/1';
-                        actionGiao.submit();
-
-                    }, 1300);
-
-
+                    thongbao('Thông tin giao hàng còn thiếu hoặc có lỗi!', 'warning');
                 }
             } else {
-                thongbao('Thông tin giao hàng còn thiếu hoặc có lỗi!', 'warning');
+                //giao hàng submit
+                thongbao('Đặt đơn thành công', 'success');
+                setTimeout(function () {
+                    actionGiao.action = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/1';
+                    actionGiao.submit();
+
+                }, 1300);
+
+
             }
+
 
             // thongbao('Chưa xác nhận thông tin thanh toán!!!', 'warning');
 
@@ -3469,7 +3473,7 @@ tabindex="0">
             // Biến để kiểm tra nếu có lỗi
             var error = false;
 
-  
+
 
             // Kiểm tra họ và tên
             if (hoVaTen === "") {
@@ -3534,17 +3538,17 @@ tabindex="0">
             }
 
             // Kiểm tra chọn huyện
-            if (huyen === "chọn huyện"||huyen.length===4) {
+            if (huyen === "chọn huyện" || huyen.length === 4) {
                 // alert("Bạn phải chọn huyện");
                 document.getElementById('regexhuyen').innerHTML = 'Chưa chọn huyện!';
                 error = true;
             } else {
                 document.getElementById('regexhuyen').innerHTML = '';
             }
-            
+
 
             // Kiểm tra chọn xã
-            if (xa === "chọn xã" || xa.length===4) {
+            if (xa === "chọn xã" || xa.length === 4) {
                 // alert("Bạn phải chọn xã");
                 document.getElementById('regexxa').innerHTML = 'Chưa chọn xã!';
                 error = true;
