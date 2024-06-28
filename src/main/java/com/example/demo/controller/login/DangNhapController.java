@@ -2,6 +2,7 @@ package com.example.demo.controller.login;
 
 import com.example.demo.entity.NguoiDung;
 import com.example.demo.info.DangNhapNDInfo;
+import com.example.demo.info.TaiKhoanTokenInfo;
 import com.example.demo.info.token.UserManager;
 import com.example.demo.security.CustomerUserDetailService;
 import com.example.demo.security.JWTGenerator;
@@ -27,6 +28,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 public class DangNhapController {
     @Autowired
@@ -44,6 +48,8 @@ public class DangNhapController {
     @Autowired
     public UserManager userManager;
 
+    public List<TaiKhoanTokenInfo> taiKhoanTokenInfos= new ArrayList<>();
+
     @PostMapping("/dangnhap")
     public String dangnhap(Model model,
                            HttpSession session,
@@ -59,7 +65,8 @@ public class DangNhapController {
                 redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
                 return "redirect:/dangky";
             }
-
+            System.out.println("tkabc" + taikhoan);
+            System.out.println("matkhauabc" + matkhau);
             if (passwordEncoder.matches(matkhau, userDetails.getPassword())) {
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities()
@@ -67,8 +74,12 @@ public class DangNhapController {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 String token = jwtGenerator.generateToken(authentication);
                 Integer userId = nd.getId();
-                session.setAttribute("userDangnhap", nd.getTaikhoan());
+                TaiKhoanTokenInfo taiKhoanTokenInfo=new TaiKhoanTokenInfo(userId,token);
+                taiKhoanTokenInfos.add(taiKhoanTokenInfo);
+                session.setAttribute("taiKhoanTokenInfos",taiKhoanTokenInfos);
+                session.setAttribute("token",token);
                 userManager.addUser(userId, token);
+                session.setAttribute("userDangnhap", nd.getTaikhoan());
                 System.out.println("Danh sách người dùng đang đăng nhập: " + userManager.getLoggedInUsers());
                 return "redirect:/customer/trangchu";
             } else {
@@ -86,6 +97,69 @@ public class DangNhapController {
             return "redirect:/dangky";
         }
     }
+
+//    @PostMapping("/dangnhap")
+//    public String dangnhap(Model model,
+//                           HttpSession session,
+//                           @RequestParam("taikhoan") String taikhoan,
+//                           @RequestParam("matkhau") String matkhau,
+//                           @ModelAttribute("dangnhap") DangNhapNDInfo dangnhap,
+//                           HttpServletRequest request,
+//                           RedirectAttributes redirectAttributes) {
+//        try {
+//            NguoiDung nd = khachHangService.findNguoiDungByTaikhoan(taikhoan);
+//            Integer userId = nd.getId();
+//            UserDetails userDetails = customerUserDetailService.loadUserByUsername(taikhoan);
+//            if (userDetails == null) {
+//                redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
+//                return "redirect:/dangky";
+//            }
+//
+//            if (passwordEncoder.matches(matkhau, userDetails.getPassword())) {
+//                String userAgent = request.getHeader("User-Agent");
+//                userManager.storeUserAgent(userId, userAgent);
+//                if (userManager.isUserLoggedIn(userId, userAgent)) {
+//                    // Đăng xuất người dùng khỏi thiết bị A
+//                    userManager.remove(userId, userAgent);
+//                    userManager.logoutUser(userId, userManager.getToken(userId));
+//                    SecurityContextHolder.getContext().setAuthentication(null);
+//                    // Đăng nhập người dùng vào thiết bị B
+//                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+//                            userDetails, null, userDetails.getAuthorities()
+//                    );
+//                    SecurityContextHolder.getContext().setAuthentication(authentication);
+//                    String token = jwtGenerator.generateToken(authentication);
+//                    session.setAttribute("userDangnhap", nd.getTaikhoan());
+//                    userManager.addUser(userId, token);
+//                    System.out.println("Danh sách người dùng đang đăng nhập: " + userManager.getLoggedInUsers());
+//                    return "redirect:/customer/trangchu";
+//                } else {
+//                    // Người dùng chưa đăng nhập ở thiết bị nào
+//                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+//                            userDetails, null, userDetails.getAuthorities()
+//                    );
+//                    SecurityContextHolder.getContext().setAuthentication(authentication);
+//                    String token = jwtGenerator.generateToken(authentication);
+//                    session.setAttribute("userDangnhap", nd.getTaikhoan());
+//                    userManager.addUser(userId, token);
+//                    System.out.println("Danh sách người dùng đang đăng nhập: " + userManager.getLoggedInUsers());
+//                    return "redirect:/customer/trangchu";
+//                }
+//            } else {
+//                redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
+//                System.out.println("Mật khẩu không đúng");
+//                return "redirect:/dangky";
+//            }
+//        } catch (UsernameNotFoundException e) {
+//            redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
+//            System.out.println("Sai tài khoản hoặc mật khẩu");
+//            return "redirect:/dangky";
+//        } catch (Exception e) {
+//            System.out.println(e);
+//            redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
+//            return "redirect:/dangky";
+//        }
+//    }
 
     @GetMapping("/dangxuat")
     public String logout(HttpServletRequest request) {
