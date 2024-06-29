@@ -786,9 +786,11 @@
                                 </div>
                                 <div class="d-flex justify-content-between ms-1">
                                     <p>Ngày giao dự kiến:</p>
-                                    <p id="ngaygiaodukiens" th:field="*{ngaygiaodukien}">
+                                    <p id="ngaygiaodukiens">
                                         đang tính toán...
                                     </p>
+                                    <input type="text" class="form-control" 
+                                    id="thongtingiao_ngaygiao" th:field="*{ngaygiaodukien}" style="display: none;">
                                 </div>
                             </form>
                         </div>
@@ -3347,8 +3349,11 @@ tabindex="0">
                                             var days = day + '/' + month + '/' + year;
 
                                             document.getElementById('ngaygiaodukiens').innerHTML = days;
+                                            document.getElementById('thongtingiao_ngaygiao').value = timestamp;
+                                            
                                             // phigiaohang
                                             feship(idHuyenreturn, idXareturn);
+
 
                                         })
                                 })

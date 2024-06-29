@@ -672,7 +672,20 @@ public class BanHangController {
             hdset1.setEmail(thongTin.getEmail());
 //            hdset1.setNgaygiaodukien();
             System.out.println("abcabcabc");
-            System.out.println(thongTin.getNgaygiaodukien());
+
+            System.out.println("abcabcabc");
+            long unixTimestamp = Long.valueOf(thongTin.getNgaygiaodukien());
+            // Convert Unix timestamp to milliseconds
+            long milliseconds = unixTimestamp * 1000;
+
+            // Create java.util.Date object
+            java.util.Date utilDate = new java.util.Date(milliseconds);
+
+            // Convert java.util.Date to java.sql.Date
+            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+            Timestamp ngaygiaodukien = new Timestamp(sqlDate.getTime());
+            hdset1.setNgaygiaodukien(ngaygiaodukien);
+
             hoaDonCheckBill = hdset1;
             daoHD.capNhatHD(hdset1);
             phieugiamgiachtietset.setHoadon(hdset1);
@@ -742,8 +755,21 @@ public class BanHangController {
             hdset1.setSdt(thongTin.getSdt());
             hdset1.setEmail(thongTin.getEmail());
             //hdset1.setNgaygiaodukien();
+
+
             System.out.println("abcabcabc");
-            System.out.println(thongTin.getNgaygiaodukien());
+            long unixTimestamp = Long.valueOf(thongTin.getNgaygiaodukien());
+            // Convert Unix timestamp to milliseconds
+            long milliseconds = unixTimestamp * 1000;
+
+            // Create java.util.Date object
+            java.util.Date utilDate = new java.util.Date(milliseconds);
+
+            // Convert java.util.Date to java.sql.Date
+            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+            Timestamp ngaygiaodukien = new Timestamp(sqlDate.getTime());
+            hdset1.setNgaygiaodukien(ngaygiaodukien);
+
             daoHD.capNhatHD(hdset1);
             phieugiamgiachtietset.setHoadon(hdset1);
             phieugiamgiachtietset.setPhieugiamgia(phieugiamsaoluu);
