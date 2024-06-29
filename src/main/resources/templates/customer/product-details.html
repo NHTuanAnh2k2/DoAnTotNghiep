@@ -224,7 +224,7 @@
     }
 
     /* The Modal (background) */
-    .modal {
+    #myModal {
         display: none; /* Hidden by default */
         position: fixed; /* Stay in place */
         z-index: 1; /* Sit on top */
@@ -238,12 +238,11 @@
         background-color: rgba(0, 0, 0, 0.9); /* Black w/ opacity */
     }
 
-    /* Modal Content (image) */
     .modal-content {
         margin: auto;
         display: block;
-        width: 60%; /* Adjust width as needed */
-        max-width: 600px; /* Set maximum width */
+        width: 60%;
+        max-width: 600px;
     }
 
     /* Add Animation */
@@ -313,7 +312,7 @@
         top: 500px; /* Vị trí top cố định tính bằng px hoặc % */
         right: 1300px; /* Vị trí right cố định tính bằng px hoặc % */
         z-index: 1000; /* Đảm bảo coupon-noti hiển thị phía trên các phần tử khác */
-        background-color:rgb(27,78,160); /* Màu nền */
+        background-color: rgb(27, 78, 160); /* Màu nền */
         color: #ffffff; /* Màu chữ */
         padding: 10px; /* Đệm bên trong */
         cursor: pointer; /* Con trỏ chuột là pointer khi hover */
@@ -357,7 +356,8 @@
                         <div class="image-container">
                             <span class="ribbon top-left">Hàng mới</span> <!-- Ribbon hàng mới ở góc trên bên trái -->
                             <span class="ribbon top-right">-10%</span> <!-- Ribbon % giảm giá ở góc trên bên phải -->
-                            <img th:src="@{'/upload' + ${image.substring(image.lastIndexOf('upload') + 6)}}" style="width:100%" alt="Ảnh" onclick="openModal(this)">
+                            <img th:src="@{'/upload' + ${image.substring(image.lastIndexOf('upload') + 6)}}"
+                                 style="width:100%" alt="Ảnh" onclick="openModal(this)">
                         </div>
                         <a class="next" onclick="plusSlides(1)">&#10095;</a>
                     </div>
@@ -388,17 +388,17 @@
                             <span th:text="${sanpham.tensanpham}"></span>
                             <span id="product-maspct" th:text="${'['+selectedMaSPCT}+']'"></span>
                         </h3>
-                       <div class="d-flex">
-                           <h6>Thương hiệu:
-                               <span id="product-thuonghieu" th:text="${selectedThuongHieu}" style="color: red"></span>
-                           </h6>
-                           <h6 style="margin-left: 30px">Chất liệu:
-                               <span id="product-chatlieu" th:text="${selectedChatLieu}" style="color: red"></span>
-                           </h6>
-                           <h6 style="margin-left: 30px">Đế giày:
-                               <span id="product-degiay" th:text="${selectedDeGiay}" style="color: red"></span>
-                           </h6>
-                       </div>
+                        <div class="d-flex">
+                            <h6>Thương hiệu:
+                                <span id="product-thuonghieu" th:text="${selectedThuongHieu}" style="color: red"></span>
+                            </h6>
+                            <h6 style="margin-left: 30px">Chất liệu:
+                                <span id="product-chatlieu" th:text="${selectedChatLieu}" style="color: red"></span>
+                            </h6>
+                            <h6 style="margin-left: 30px">Đế giày:
+                                <span id="product-degiay" th:text="${selectedDeGiay}" style="color: red"></span>
+                            </h6>
+                        </div>
                         <h6>Giá tiền:
                             <span id="product-price"
                                   th:text="${#numbers.formatDecimal(selectedPrice, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"
@@ -437,8 +437,58 @@
                                                th:onclick="'changeButtonBackground(this); selectSize(this)'"></a>
                                         </div>
                                     </div>
-                                    <a th:href="@{#}" >Cách chọn size</a>
+                                    <a th:href="@{#}" data-bs-toggle="modal" data-bs-target="#cachchonsize">Cách chọn
+                                        size</a>
                                 </div>
+                                <!-- Modal -->
+                                <div class="modal fade" id="cachchonsize" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg"> <!-- Thêm lớp modal-lg để modal rộng hơn -->
+                                        <div class="modal-content" style="width: 90%; max-width: 1000px;">
+                                            <!-- Điều chỉnh chiều rộng của modal-content -->
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Hướng dẫn chọn size
+                                                    giày fsport</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <!-- Nội dung của modal -->
+                                                <img src="../../dist/img/chonsize.webp" style="width: 100%;"
+                                                     alt="Hướng dẫn chọn size giày fsport">
+                                                <p></p>
+                                                <h6 style="font-style: italic">LÀM THEO BẢNG HƯỚNG DẪN SAU BẠN SẼ CÓ
+                                                    NHỮNG SỐ ĐO CHÂN CỤ THỂ, DỰA VÀO ĐÓ CANH ĐO THEO BẢNG SIZE CHUẨN
+                                                    GIÀY CHÍNH HÃNG FSPORT</h6>
+                                                <p></p>
+                                                <h5 style="color: red">CÔNG THỨC ĐO SIZE GIÀY = CHIỀU DÀI CHÂN + 1CM (
+                                                    TRỪ HAO BỀ NGANG + VỚ )</h5>
+                                                <p></p>
+                                                <h6>SAU ĐÓ ĐỐI CHIẾU VỚI BẢNG SIZE GIÀY BÓNG ĐÁ CHÍNH HÃNG : </h6>
+                                                <img src="../../dist/img/chonsize2.webp" style="width: 100%;"
+                                                     alt="Hướng dẫn chọn size giày fsport">
+                                                <p></p>
+                                                <h6 style="font-style: italic">LƯU Ý : CHÚ Ý ĐẾN FORM CHÂN THON VÀ CHÂN
+                                                    BÈ</h6>
+                                                <p></p>
+                                                <h6>ĐỐI VỚI NHỮNG NGƯỜI CHÂN THON, GANG BÀN CHÂN NHỎ, VIỆC CHỌN MUA GIÀY
+                                                    BÓNG ĐÁ CHÍNH HÃNG KHÁ DỄ DÀNG VÌ CHỈ CẦN CĂN CỨ VÀO CHIỀU DÀI.
+                                                    NHƯNG VỚI NHỮNG NGƯỜI CHÂN BÈ, GANG BÀN CHÂN TO VÀ DẦY, CẦN CHÚ Ý
+                                                    ĐẾN FORM ĐÔI GIÀY MÌNH MUỐN MUA. VỀ THIẾT KẾ THÌ CÁC MẪU GIÀY ĐÁ
+                                                    BANH CỦA MIZUNO SẼ TƯƠNG ĐỐI THOẢI MÁI VÀ PHÙ HỢP HƠN VỚI NHỮNG BÀN
+                                                    CHÂN BÈ.</h6>
+                                                <img src="../../dist/img/chonsize3.jpg" style="width: 100%;"
+                                                     alt="Hướng dẫn chọn size giày fsport">
+                                                <p></p>
+                                                <h6 style="font-style: italic">CHỌN 1 ĐÔI GIÀY BÓNG ĐÁ PHÙ HỢP VỚI FORM CHÂN SẼ GIÚP BẠN CẢM THẤY THOẢI MÁI HƠN KHI KHI ĐẤU</h6>
+                                            <p></p>
+                                                <h6 style="color: rgb(217,185,28)">FSPORT VỚI ĐỘI NGŨ CSKH ONLINE RẤT CÓ KINH NGHIỆM VỀ TƯ VẤN SIZE GIÀY BÓNG ĐÁ CHÍNH HÃNG SẼ HỖ TRỢ KHÁCH HÀNG MỘT CÁCH NHANH CHÓNG VÀ CHÍNH XÁC NHẤT THÔNG QUA FACEBOOK, ZALO,HOTLINE 24/7</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
                                 <p></p>
                                 <div class="d-flex align-items-center">
                                     <span style="margin-right: 10px;">Số lượng:</span>
@@ -452,7 +502,8 @@
                                 <span style="margin-right: 10px;">Mô tả: <span th:text="${sanphamchitiet.mota}"></span></span>
                                 <hr>
                                 <div class="d-flex">
-                                    <a class="btn btn-dark" style="width: 200px;height: 50px;line-height: 40px">Mua ngay</a>
+                                    <a class="btn btn-dark" style="width: 200px;height: 50px;line-height: 40px">Mua
+                                        ngay</a>
                                     <button type="submit"
                                             class="btn btn"
                                             style="background-color: rgb(249,72,42); color: white; width: 200px;height: 50px;line-height: 40px;margin-left: 20px"
@@ -465,9 +516,15 @@
                         <br>
                         <br>
                         <ul style="list-style-type: disc;">
-                            <li style="font-style: italic; color: red;">Miễn phí vận chuyển toàn quốc cho đơn hàng trên 1 triệu</li>
-                            <li style="font-style: italic; color: red;">Giao hàng nhanh trong 2 giờ trong nội thành Hà Nội</li>
-                            <li style="font-style: italic; color: red;">Thời gian vận chuyển trung bình từ 3 đến 4 ngày</li>
+                            <li style="font-style: italic; color: red;">Miễn phí vận chuyển toàn quốc cho đơn hàng trên
+                                1 triệu
+                            </li>
+                            <li style="font-style: italic; color: red;">Giao hàng nhanh trong 2 giờ trong nội thành Hà
+                                Nội
+                            </li>
+                            <li style="font-style: italic; color: red;">Thời gian vận chuyển trung bình từ 3 đến 4
+                                ngày
+                            </li>
                         </ul>
 
                     </div>
@@ -907,7 +964,7 @@
         document.getElementById("selectedSize").value = element.getAttribute("data-size");
     }
 </script>
-
+<!--validate soluong-->
 <script th:inline="javascript">
     /*<![CDATA[*/
     document.getElementById('addToCartForm').addEventListener('submit', function (event) {
@@ -924,7 +981,7 @@
 <!--dùng cho mã coupont coupon cố định-->
 <script>
     // JavaScript để giữ coupon-noti ở vị trí cố định khi scroll
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
         var couponNoti = document.getElementById('coupon-noti');
         var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
@@ -949,10 +1006,10 @@
         }
     });
 </script>
-
+<!--token-->
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         var token = document.getElementById("tokenDN").value;
-        console.log("hhhh"+token);
+        console.log("hhhh" + token);
     });
 </script>

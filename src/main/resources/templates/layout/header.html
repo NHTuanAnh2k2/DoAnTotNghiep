@@ -1,10 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <style>
-    .text-dark:hover {
-        color: red;
+    .nav-item {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
     }
 
+    .nav-link {
+        text-decoration: none;
+        color: black;
+        font-weight: bold;
+        padding-left: 20px;
+    }
+
+    .nav-link:hover {
+        color: red;
+    }
 </style>
 <head>
     <meta charset="UTF-8">
@@ -13,7 +25,9 @@
 <body style="font-family: 'Bahnschrift'">
 <header style="height: 80px; line-height: 80px; background-color: white; color: black; display: flex; align-items: center;">
     <div style="margin-left: 50px">
-        <img src="../../dist/img/logo_bong2.jpg" width="70px" height="50px">
+        <a th:href="@{/customer/trangchu}">
+            <img src="../../dist/img/logo_bong2.jpg" width="70px" height="50px" alt="Logo">
+        </a>
     </div>
 
     <div style="margin-left: 10px">
@@ -25,39 +39,30 @@
         fsport.hau29@gmail.com
     </div>
     <div style="margin-left: 30px;">
-        <ul style="list-style-type: none; margin: 0; padding: 0;">
-            <li class="text-dark">
-                <a th:href="@{/customer/trangchu}" class="text-decoration-none text-dark" style="font-weight: bold;">TRANG
-                    CHỦ</a>
+        <ul class="nav-item">
+            <li>
+                <a th:href="@{/customer/trangchu}" class="nav-link">TRANG CHỦ</a>
             </li>
-            <li class="text-dark" style="padding-left: 20px;">
-                <a th:href="@{/customer/sanphamnam}" class="text-decoration-none text-dark" style="font-weight: bold;">NAM</a>
+            <li>
+                <a th:href="@{/customer/sanphamnam}" class="nav-link">NAM</a>
             </li>
-            <li class="text-dark" style="padding-left: 20px;">
-                <a th:href="@{/customer/sanphamnu}" class="text-decoration-none text-dark"
-                   style="font-weight: bold;">NỮ</a>
+            <li>
+                <a th:href="@{/customer/sanphamnu}" class="nav-link">NỮ</a>
             </li>
-            <li class="text-dark" style="padding-left: 20px;">
-                <a th:href="@{/customer/gioithieu}" class="text-decoration-none text-dark" style="font-weight: bold;">GIỚI
-                    THIỆU</a>
+            <li>
+                <a th:href="@{/customer/gioithieu}" class="nav-link">GIỚI THIỆU</a>
             </li>
-            <li class="text-dark" style="padding-left: 20px;">
-                <a th:href="@{/customer/vechungtoi}" class="text-decoration-none text-dark" style="font-weight: bold;">VỀ CHÚNG TÔI</a>
+            <li>
+                <a th:href="@{/customer/vechungtoi}" class="nav-link">VỀ CHÚNG TÔI</a>
             </li>
-            <li class="text-dark" style="padding-left: 20px;">
-                <a th:href="@{/customer/vechungtoi}" class="text-decoration-none text-dark" style="font-weight: bold;">TRA CỨU</a>
+            <li>
+                <a th:href="@{/customer/vechungtoi}" class="nav-link">TRA CỨU</a>
             </li>
-            <li class="text-dark" style="padding-left: 20px;">
-                <a th:href="@{/customer/lienhe}" class="text-decoration-none text-dark" style="font-weight: bold;">LIÊN
-                    HỆ</a>
+            <li>
+                <a th:href="@{/customer/lienhe}" class="nav-link">LIÊN HỆ</a>
             </li>
         </ul>
     </div>
-
-
-    <!--    <div style="margin-left: 20px">-->
-    <!--        <input class="form-control " type="search" placeholder="Nhập tên sản phẩm..." aria-label="Search" style="width: 200px;">-->
-    <!--    </div>-->
     <div style="margin-left: 40px">
         <ul>
             <!--cart-->
