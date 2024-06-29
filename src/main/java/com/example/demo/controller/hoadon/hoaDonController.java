@@ -854,6 +854,7 @@ public class hoaDonController {
         HoaDonChiTiet hdDelete = daoHDCT.findByID(id);
         SanPhamChiTiet spUpdateQuantity = hdDelete.getSanphamchitiet();
         if (hdDelete.getSoluong() == sl) {
+            System.out.println("aaaaaaaaa");
             return "redirect:/hoa-don/showDetail";
         } else {
             if (hdDelete.getSoluong() < sl) {
@@ -863,6 +864,7 @@ public class hoaDonController {
                 daoSPCT.addSPCT(spUpdateQuantity);
                 hdDelete.setSoluong(sl);
                 daoHDCT.capnhat(hdDelete);
+                System.out.println("bbbbbbbbb");
                 return "redirect:/hoa-don/showDetail";
             }
         }
@@ -872,6 +874,7 @@ public class hoaDonController {
         daoSPCT.addSPCT(spUpdateQuantity);
         hdDelete.setSoluong(sl);
         daoHDCT.capnhat(hdDelete);
+        System.out.println("ccccccccc");
         return "redirect:/hoa-don/showDetail";
     }
 

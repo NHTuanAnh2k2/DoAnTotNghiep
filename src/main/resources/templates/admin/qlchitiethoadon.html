@@ -2407,7 +2407,8 @@
                 input.value = numericValue;
 
                 var element = document.getElementById(input.id + 'fsport');
-                var newHref = "http://localhost:8080/ban-hang-tai-quay/update/" + input.id + "/" + input.value;
+                //var newHref = "http://localhost:8080/hoa-don/update-sp-hdct/" + input.id + "/" + input.value;
+                var newHref = "update-sp-hdct/" + input.id + "/" + input.value;
                 element.setAttribute("href", newHref);
             } catch (error) {
                 console.error('Error fetching data:', error);
