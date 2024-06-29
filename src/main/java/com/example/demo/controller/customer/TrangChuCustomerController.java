@@ -24,7 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
 import java.util.*;
-
+///////////////////////////////
+///////////////////////////////
 @Controller
 public class TrangChuCustomerController {
     @Autowired
