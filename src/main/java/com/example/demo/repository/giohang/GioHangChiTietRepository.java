@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public interface GioHangChiTietRepository extends JpaRepository<GioHangChiTiet, Integer> {
 
-    List<GioHangChiTiet> findBySanphamchitiet(SanPhamChiTiet sanPhamChiTiet);
+    GioHangChiTiet findByGiohangAndSanphamchitiet(GioHang gioHang, SanPhamChiTiet sanPhamChiTiet);
 
     @Transactional
     @Modifying

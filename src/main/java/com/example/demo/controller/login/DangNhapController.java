@@ -48,8 +48,6 @@ public class DangNhapController {
     @Autowired
     public UserManager userManager;
 
-    public List<TaiKhoanTokenInfo> taiKhoanTokenInfos= new ArrayList<>();
-
     @PostMapping("/dangnhap")
     public String dangnhap(Model model,
                            HttpSession session,
@@ -65,38 +63,37 @@ public class DangNhapController {
                 redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
                 return "redirect:/dangky";
             }
-            System.out.println("tkabc" + taikhoan);
-            System.out.println("matkhauabc" + matkhau);
             if (passwordEncoder.matches(matkhau, userDetails.getPassword())) {
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities()
-                );
+                        userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 String token = jwtGenerator.generateToken(authentication);
                 Integer userId = nd.getId();
-                TaiKhoanTokenInfo taiKhoanTokenInfo=new TaiKhoanTokenInfo(userId,token);
+                TaiKhoanTokenInfo taiKhoanTokenInfo = new TaiKhoanTokenInfo(userId, token);
+                // Lấy danh sách token từ session và thêm mới
+                List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
+                if (taiKhoanTokenInfos == null) {
+                    taiKhoanTokenInfos = new ArrayList<>();
+                }
                 taiKhoanTokenInfos.add(taiKhoanTokenInfo);
-                session.setAttribute("taiKhoanTokenInfos",taiKhoanTokenInfos);
-                session.setAttribute("token",token);
+                session.setAttribute("taiKhoanTokenInfos", taiKhoanTokenInfos);
+                session.setAttribute("token", token);
                 userManager.addUser(userId, token);
                 session.setAttribute("userDangnhap", nd.getTaikhoan());
-                System.out.println("Danh sách người dùng đang đăng nhập: " + userManager.getLoggedInUsers());
                 return "redirect:/customer/trangchu";
             } else {
                 redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
-                System.out.println("Mật khẩu không đúng");
                 return "redirect:/dangky";
             }
         } catch (UsernameNotFoundException e) {
             redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
-            System.out.println("Sai tài khoản hoặc mật khẩu");
             return "redirect:/dangky";
         } catch (Exception e) {
-            System.out.println(e);
             redirectAttributes.addFlashAttribute("error", "Đã có lỗi xảy ra, vui lòng thử lại");
             return "redirect:/dangky";
         }
     }
+
 
 //    @PostMapping("/dangnhap")
 //    public String dangnhap(Model model,
@@ -174,7 +171,7 @@ public class DangNhapController {
             userManager.logoutUser(userId, token);
             System.out.println("Danh sách người dùng đang đăng nhập: " + userManager.getLoggedInUsers());
         }
-        return "redirect:/trangchu";
+        return "redirect:/customer/trangchu";
     }
 
 }

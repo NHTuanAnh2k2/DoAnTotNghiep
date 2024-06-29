@@ -5,11 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class TaiKhoanTokenInfo {
-    Integer id;
-    String token;
+public class CartItem {
+    private Integer idspct;
+    private Integer soluong;
+    private BigDecimal giatien;
 }
