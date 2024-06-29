@@ -222,7 +222,8 @@
             <div class="col-lg-3 order-2 order-lg-1 pt-5 pt-lg-0">
                 <div class="sidebar left-sidebar">
                     <nav class="mt-2">
-                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                            data-accordion="false">
                             <li class="nav-item has-treeview" id="product-filter-treeview">
                                 <a href="#" class="nav-link">
                                     <p>
@@ -251,7 +252,9 @@
                                                                    class="custom-control-label"
                                                                    th:for="'customSwitch-' + ${kichco.id}"></label>
                                                         </p>
-                                                        <span class="ml-3">(5)</span>
+                                                        <span class="ml-3" th:each="kichCoCount : ${soLuongKichCoList}"
+                                                              th:if="${kichCoCount[0] == kichco.ten}"
+                                                              th:text="${'(' + kichCoCount[1] + ')'}"></span>
                                                     </div>
                                                 </div>
                                                 <p></p>
@@ -269,7 +272,9 @@
                                                                    style="margin-left: 25px;"></label>
                                                         </p>
                                                         <span class="ml-3"
-                                                              th:text="${'('+soLuongThuongHieu+')'}"></span>
+                                                              th:each="thuongHieuCount : ${soLuongThuongHieuList}"
+                                                              th:if="${thuongHieuCount[0] == thuonghieu.ten}"
+                                                              th:text="${'(' + thuongHieuCount[1] + ')'}"></span>
                                                     </div>
                                                 </div>
                                                 <div class="sidebar-title">
@@ -444,38 +449,38 @@
                     </div>
                     <!--end-->
                     <!--phân trang-->
-<!--                    <div class="d-flex justify-content-center align-items-center">-->
-<!--                        &lt;!&ndash; Nút trang trước &ndash;&gt;-->
-<!--                        <a th:href="@{/customer/sanphamnu(p=${listnu.number-1})}" class="text-decoration-none mx-2"-->
-<!--                           th:classappend="${listnu.number == 0} ? 'disabled' : ''" style="color: black;">-->
-<!--                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"-->
-<!--                                 class="bi bi-chevron-left" viewBox="0 0 16 16">-->
-<!--                                <path fill-rule="evenodd"-->
-<!--                                      d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>-->
-<!--                            </svg>-->
-<!--                        </a>-->
+                    <!--                    <div class="d-flex justify-content-center align-items-center">-->
+                    <!--                        &lt;!&ndash; Nút trang trước &ndash;&gt;-->
+                    <!--                        <a th:href="@{/customer/sanphamnu(p=${listnu.number-1})}" class="text-decoration-none mx-2"-->
+                    <!--                           th:classappend="${listnu.number == 0} ? 'disabled' : ''" style="color: black;">-->
+                    <!--                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"-->
+                    <!--                                 class="bi bi-chevron-left" viewBox="0 0 16 16">-->
+                    <!--                                <path fill-rule="evenodd"-->
+                    <!--                                      d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>-->
+                    <!--                            </svg>-->
+                    <!--                        </a>-->
 
-<!--                        &lt;!&ndash; Các trang &ndash;&gt;-->
-<!--                        <div th:if="${listnu.totalPages > 0}" class="d-flex mx-2">-->
-<!--                            <div th:each="i : ${#numbers.sequence(0, listnu.totalPages-1)}">-->
-<!--                                <a th:href="@{/customer/sanphamnu(p=${i})}"-->
-<!--                                   th:classappend="${i == listnu.number} ? 'active' : ''"-->
-<!--                                   class="text-decoration-none btn custom-btn mx-1"-->
-<!--                                   th:text="${i + 1}"></a>-->
-<!--                            </div>-->
-<!--                        </div>-->
+                    <!--                        &lt;!&ndash; Các trang &ndash;&gt;-->
+                    <!--                        <div th:if="${listnu.totalPages > 0}" class="d-flex mx-2">-->
+                    <!--                            <div th:each="i : ${#numbers.sequence(0, listnu.totalPages-1)}">-->
+                    <!--                                <a th:href="@{/customer/sanphamnu(p=${i})}"-->
+                    <!--                                   th:classappend="${i == listnu.number} ? 'active' : ''"-->
+                    <!--                                   class="text-decoration-none btn custom-btn mx-1"-->
+                    <!--                                   th:text="${i + 1}"></a>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
 
-<!--                        &lt;!&ndash; Nút trang sau &ndash;&gt;-->
-<!--                        <a th:href="@{/customer/sanphamnu(p=${listnu.number+1})}" class="text-decoration-none mx-2"-->
-<!--                           th:classappend="${listnu.number + 1 >= listnu.totalPages} ? 'disabled' : ''"-->
-<!--                           style="color: black;">-->
-<!--                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"-->
-<!--                                 class="bi bi-chevron-right" viewBox="0 0 16 16">-->
-<!--                                <path fill-rule="evenodd"-->
-<!--                                      d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>-->
-<!--                            </svg>-->
-<!--                        </a>-->
-<!--                    </div>-->
+                    <!--                        &lt;!&ndash; Nút trang sau &ndash;&gt;-->
+                    <!--                        <a th:href="@{/customer/sanphamnu(p=${listnu.number+1})}" class="text-decoration-none mx-2"-->
+                    <!--                           th:classappend="${listnu.number + 1 >= listnu.totalPages} ? 'disabled' : ''"-->
+                    <!--                           style="color: black;">-->
+                    <!--                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"-->
+                    <!--                                 class="bi bi-chevron-right" viewBox="0 0 16 16">-->
+                    <!--                                <path fill-rule="evenodd"-->
+                    <!--                                      d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>-->
+                    <!--                            </svg>-->
+                    <!--                        </a>-->
+                    <!--                    </div>-->
 
                 </div>
 
@@ -672,7 +677,7 @@
 
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         var treeview = document.getElementById("product-filter-treeview");
 
         // Check if the treeview was previously opened
@@ -682,7 +687,7 @@
         }
 
         // Add click event to toggle the state
-        treeview.querySelector(".nav-link").addEventListener("click", function() {
+        treeview.querySelector(".nav-link").addEventListener("click", function () {
             var isOpen = treeview.classList.contains("menu-open");
             localStorage.setItem("treeview-open", !isOpen);
         });
