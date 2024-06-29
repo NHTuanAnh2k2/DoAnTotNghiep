@@ -670,6 +670,9 @@ public class BanHangController {
             hdset1.setTennguoinhan(thongTin.getTen());
             hdset1.setSdt(thongTin.getSdt());
             hdset1.setEmail(thongTin.getEmail());
+//            hdset1.setNgaygiaodukien();
+            System.out.println("abcabcabc");
+            System.out.println(thongTin.getNgaygiaodukien());
             hoaDonCheckBill = hdset1;
             daoHD.capNhatHD(hdset1);
             phieugiamgiachtietset.setHoadon(hdset1);
@@ -738,6 +741,9 @@ public class BanHangController {
             hdset1.setTennguoinhan(thongTin.getTen());
             hdset1.setSdt(thongTin.getSdt());
             hdset1.setEmail(thongTin.getEmail());
+            //hdset1.setNgaygiaodukien();
+            System.out.println("abcabcabc");
+            System.out.println(thongTin.getNgaygiaodukien());
             daoHD.capNhatHD(hdset1);
             phieugiamgiachtietset.setHoadon(hdset1);
             phieugiamgiachtietset.setPhieugiamgia(phieugiamsaoluu);

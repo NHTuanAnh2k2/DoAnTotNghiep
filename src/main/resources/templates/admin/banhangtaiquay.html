@@ -786,7 +786,7 @@
                                 </div>
                                 <div class="d-flex justify-content-between ms-1">
                                     <p>Ngày giao dự kiến:</p>
-                                    <p id="ngaygiaodukiens">
+                                    <p id="ngaygiaodukiens" th:field="*{ngaygiaodukien}">
                                         đang tính toán...
                                     </p>
                                 </div>
@@ -843,7 +843,7 @@
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between">
-                            <p style="font-weight: bold">Tổng thanh toán (<span style="color: red">đã bao gồm phí vận
+                            <p style="font-weight: bold">Tổng thanh toán (<span style="color: red">chưa bao gồm phí vận
                                     chuyển</span>):</p>
                             <p style="color: red;font-weight: bold" id="tongThanhToan">0 đ</p>
                         </div>
