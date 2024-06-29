@@ -79,7 +79,7 @@ public class TrangChuCustomerController {
     @Autowired
     HttpServletRequest request;
 
-    public List<TaiKhoanTokenInfo> taiKhoanTokenInfos= new ArrayList<>();
+    public List<TaiKhoanTokenInfo> taiKhoanTokenInfos = new ArrayList<>();
 
     @GetMapping("/customer/trangchu")
     public String hienthiTrangChu(Model model, HttpSession session) {
@@ -146,7 +146,7 @@ public class TrangChuCustomerController {
 
     @GetMapping("/detailsanphamCustomer/{id}")
     public String detailsanphamCustomer(@PathVariable Integer id, @RequestParam(required = false) String color, @RequestParam(required = false)
-            String size, Model model,HttpSession session) {
+            String size, Model model, HttpSession session) {
 
         List<GioHangChiTiet> cartItems = new ArrayList<>();
         String token = (String) session.getAttribute("token");
@@ -260,4 +260,10 @@ public class TrangChuCustomerController {
         model.addAttribute("page2", page2);
         return "customer/product-details";
     }
+
+    @GetMapping("/search-trangchu")
+    public String searchTrangChu(Model model) {
+        return "customer/search-trangchu";
+    }
+
 }

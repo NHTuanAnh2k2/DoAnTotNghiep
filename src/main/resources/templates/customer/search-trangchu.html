@@ -1,0 +1,89 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<!--thư viện-->
+<nav th:replace="~{/layoutadmin/head.html}"></nav>
+<nav th:replace="~{/layout/head.html}"></nav>
+
+<body>
+
+<!-- header -->
+<nav th:replace="~{/layout/header.html}"></nav>
+<!-- header end -->
+
+<!-- page banner -->
+<!--<nav th:replace="~{/layout/banner.html}"></nav>-->
+<!-- page banner end -->
+
+<!-- product content section start -->
+
+<section class="product-content" style="margin-top: 0;">
+
+    <div class="container">
+        <div class="row" style="margin-top: 30px;margin-bottom: 30px">
+            <!--Nội dung -->
+            <div class="card" style="height: 600px;">
+                <h5 style="font-weight: bold;margin-top: 10px">TÌM KIẾM</h5>
+                <hr>
+                <h6>Kết quả tìm kiếm cho "GIÀY ĐÁ BÓNG MIZUNO ALPHA ELITE FG/AG MUGEN - LASER".</h6>
+                <br>
+                <div class="tab-content">
+                    <!--nội dung-->
+                    <div class="tab-pane fade text-center active show" id="gird">
+                        <div class="single-products row">
+                            <div class="col-md-3">
+                                <div class="product-item margin40">
+                                    <div class="pro-img">
+                                        <img src="../../dist/img/bongda1.jpg">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="product-item margin40">
+                                    <div class="pro-img">
+                                        <img src="../../dist/img/bongda2.jpg">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="product-item margin40">
+                                    <div class="pro-img">
+                                        <img src="../../dist/img/bongda3.jpg">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="product-item margin40">
+                                    <div class="pro-img">
+                                        <img src="../../dist/img/bongda4.webp">
+                                    </div>
+                                </div>
+                            </div>
+                            <!---end-->
+                        </div>
+                    </div>
+                    <!--end-->
+                </div>
+
+
+            </div>
+            <!--end-->
+        </div>
+
+
+    </div>
+</section>
+
+<!-- product content section end -->
+
+<!-- footer start -->
+<nav th:replace="~{/layout/footer.html}"></nav>
+<!--script-->
+<nav th:replace="~{/layoutadmin/script.html}"></nav>
+<!-- footer end -->
+
+</body>
+</html>
+
