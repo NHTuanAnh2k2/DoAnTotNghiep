@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -21,9 +22,9 @@ public class GioHang {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    Date ngaytao;
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    LocalDateTime ngaytao;
     Boolean trangthai;
     @OneToOne
     @JoinColumn(name = "idkhachhang")

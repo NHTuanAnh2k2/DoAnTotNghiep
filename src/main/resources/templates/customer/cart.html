@@ -179,6 +179,13 @@
     }
 </style>
 <body>
+<!--<h2>Test</h2>-->
+<!--<p>NguoiDung: <span th:text="${debugNguoiDung}">N/A</span></p>-->
+<!--<p>KhachHang: <span th:text="${debugKhachHang}">N/A</span></p>-->
+<!--<p>GioHang: <span th:text="${debugGioHang}">N/A</span></p>-->
+<!--<p>CartItems: <span th:text="${debugCartItems}">N/A</span></p>-->
+
+<input type="hidden" th:value="${token}" id="tokenDN">
 
 <!-- header section start -->
 <nav th:replace="~{/layout/header.html}"></nav>
@@ -406,4 +413,11 @@
             console.error('Không thể sao chép mã: ', err);
         });
     }
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var token = document.getElementById("tokenDN").value;
+        console.log("hhhh"+token);
+    });
 </script>
