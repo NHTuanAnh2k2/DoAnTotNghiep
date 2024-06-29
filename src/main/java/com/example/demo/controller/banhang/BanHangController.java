@@ -273,8 +273,6 @@ public class BanHangController {
     public ResponseEntity<?> addvoucherselect(@PathVariable("id") String id) {
         PhieuGiamGia phieutim = daoPGG.findPhieuGiamGiaById(Integer.valueOf(id));
         phieugiamsaoluu = phieutim;
-        System.out.println("aaaaaaaaaaaa");
-        System.out.println(phieugiamsaoluu.getMacode());
         return ResponseEntity.ok(phieutim);
     }
 //hiển thị all phiếu giảm

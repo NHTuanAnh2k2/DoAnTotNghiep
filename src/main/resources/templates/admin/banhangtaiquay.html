@@ -843,7 +843,7 @@
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between">
-                            <p style="font-weight: bold">Tổng thanh toán (<span style="color: red">chưa bao gồm phí vận
+                            <p style="font-weight: bold">Tổng thanh toán (<span style="color: red">đã bao gồm phí vận
                                     chuyển</span>):</p>
                             <p style="color: red;font-weight: bold" id="tongThanhToan">0 đ</p>
                         </div>
@@ -869,6 +869,7 @@
 
     <script>
         //tạo biến toàn cũng để sử dụng
+        var shipToanCuc=0;// tiền ship toàn cục
         var tongTienDon;//tổng cả đơn chưa có mã
         var TienGiamDon;//tổng tiền giảm
         var tienkhachthanhtoan;//tổng đã có mã
@@ -2307,6 +2308,7 @@ tabindex="0">
 
             } else {
                 // ẩn div
+                tienkhachthanhtoan=tienkhachthanhtoan-shipToanCuc;
                 document.getElementById('diachidiv').style.display = 'none';
 
             }
@@ -3051,9 +3053,9 @@ tabindex="0">
                             // phiếu vnđ
                             TienGiamDon = b.giatrigiam;
                         }
-                        tienkhachthanhtoan = tongTienDon - TienGiamDon;
+                        tienkhachthanhtoan = tongTienDon - TienGiamDon+shipToanCuc;
                     } else {
-                        tienkhachthanhtoan = tongTienDon;
+                        tienkhachthanhtoan = tongTienDon+shipToanCuc;
                     }
                     // console.log("tiền tệ")
                     // console.log('tiền ban đầu:' + tongTienDon)
@@ -3348,8 +3350,6 @@ tabindex="0">
                                             // phigiaohang
                                             feship(idHuyenreturn, idXareturn);
 
-
-
                                         })
                                 })
 
@@ -3393,6 +3393,8 @@ tabindex="0">
                 .then(function (d) {
                     var shipfe = convertCashInput(d.data.total);
                     document.getElementById('phigiaohang').value = shipfe;
+                    shipToanCuc=d.data.total;
+                    tienkhachthanhtoan=tienkhachthanhtoan+shipToanCuc;
                 })
 
         }
