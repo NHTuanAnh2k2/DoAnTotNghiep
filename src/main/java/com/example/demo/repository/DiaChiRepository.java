@@ -13,6 +13,8 @@ import java.util.Optional;
 @Repository
 public interface DiaChiRepository extends JpaRepository<DiaChi, Integer> {
     List<DiaChi> getDiaChiByTrangthai(Boolean trangThai);
+    @Query("SELECT c FROM DiaChi c JOIN NhanVien n on n.nguoidung.id = c.nguoidung.id Order by c.nguoidung.id desc")
+    List<DiaChi> getAll();
     List<DiaChi> getAllByOrderByIdDesc();
     @Query("SELECT c FROM DiaChi c  WHERE c.nguoidung.id = ?1 and c.trangthai=true")
     DiaChi TimIdNguoiDungMacDinh(Integer id);
