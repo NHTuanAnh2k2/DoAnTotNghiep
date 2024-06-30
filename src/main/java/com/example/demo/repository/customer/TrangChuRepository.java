@@ -97,4 +97,38 @@ public interface TrangChuRepository extends JpaRepository<SanPham, Integer> {
     ORDER BY sp.ngaytao ASC , spctg.tongSoLuong ASC
 """)
     List<Object[]> topspnoibatdetail();
+
+    // search-trangchu
+    @Query(value = """
+            SELECT sp.id, sp.tensanpham, sp.ngaytao, SUM(spct.soluong) AS tongSoLuong, sp.trangthai, MAX(spct.giatien) AS maxGiaTien, MAX(anh.tenanh) AS maxTenAnh, spct.gioitinh
+            FROM SanPham sp
+            JOIN sp.spct spct
+            JOIN spct.anh anh
+            WHERE 
+                 (sp.masanpham LIKE %?1% OR sp.tensanpham LIKE %?2%)
+            GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai, spct.gioitinh
+            ORDER BY sp.ngaytao DESC, tongSoLuong DESC
+                  """)
+    List<Object[]>searchTrangChu(String masanpham, String tensanpham);
+
+
+    @Query(nativeQuery = true, value = """
+                WITH AnhDaiDien AS (
+                    SELECT spct.IdSanPham, anh.tenanh,
+                           ROW_NUMBER() OVER (PARTITION BY spct.IdSanPham ORDER BY anh.tenanh DESC) AS row_num
+                    FROM Anh anh
+                    JOIN SanPhamChiTiet spct ON anh.IdSanPhamChiTiet = spct.id
+                ),
+                SanPhamChiTietGrouped AS (
+                    SELECT IdSanPham, SUM(soluong) AS tongSoLuong, MIN(giatien) AS giatien
+                    FROM SanPhamChiTiet
+                    GROUP BY IdSanPham
+                )
+                SELECT sp.id, sp.tensanpham, sp.ngaytao, spctg.tongSoLuong, sp.trangthai, spctg.giatien, anhdd.tenanh
+                FROM SanPham sp
+                JOIN SanPhamChiTietGrouped spctg ON sp.id = spctg.IdSanPham
+                JOIN AnhDaiDien anhdd ON sp.id = anhdd.IdSanPham AND anhdd.row_num = 1
+                ORDER BY sp.ngaytao DESC, spctg.tongSoLuong DESC
+            """)
+    List<Object[]> searchAll();
 }
