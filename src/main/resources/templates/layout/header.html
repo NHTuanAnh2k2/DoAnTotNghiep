@@ -1,10 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <style>
-    .text-dark:hover {
-        color: red;
+    .nav-item {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
     }
 
+    .nav-link {
+        text-decoration: none;
+        color: black;
+        font-weight: bold;
+        padding-left: 20px;
+    }
+
+    .nav-link:hover {
+        color: red;
+    }
 </style>
 <head>
     <meta charset="UTF-8">
@@ -12,74 +24,67 @@
 </head>
 <body style="font-family: 'Bahnschrift'">
 <header style="height: 80px; line-height: 80px; background-color: white; color: black; display: flex; align-items: center;">
-    <div style="margin-left: 20px">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-telephone-fill"
-             viewBox="0 0 16 16">
-            <path fill-rule="evenodd"
-                  d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z"/>
-        </svg>
-        0345506813
+    <div style="margin-left: 50px">
+        <a th:href="@{/customer/trangchu}">
+            <img src="../../dist/img/logo_bong2.jpg" width="70px" height="50px" alt="Logo">
+        </a>
     </div>
-    <div style="margin-left: 20px">
+
+    <div style="margin-left: 10px">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
              class="bi bi-envelope-arrow-up-fill" viewBox="0 0 16 16">
             <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zm.192 8.159 6.57-4.027L8 9.586l1.239-.757.367.225A4.49 4.49 0 0 0 8 12.5c0 .526.09 1.03.256 1.5H2a2 2 0 0 1-1.808-1.144M16 4.697v4.974A4.5 4.5 0 0 0 12.5 8a4.5 4.5 0 0 0-1.965.45l-.338-.207z"/>
             <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.354-5.354 1.25 1.25a.5.5 0 0 1-.708.708L13 12.207V14a.5.5 0 0 1-1 0v-1.717l-.28.305a.5.5 0 0 1-.737-.676l1.149-1.25a.5.5 0 0 1 .722-.016"/>
         </svg>
-        duynvph30146@fpt.edu.vn
+        fsport.hau29@gmail.com
     </div>
-    <div style="margin-left: 100px;">
-        <ul style="list-style-type: none; margin: 0; padding: 0;">
-            <li class="text-dark">
-                <a th:href="@{/customer/trangchu}" class="text-decoration-none text-dark" style="font-weight: bold;">TRANG
-                    CHỦ</a>
+    <div style="margin-left: 30px;">
+        <ul class="nav-item">
+            <li>
+                <a th:href="@{/customer/trangchu}" class="nav-link">TRANG CHỦ</a>
             </li>
-            <li class="text-dark" style="padding-left: 20px;">
-                <a th:href="@{/customer/sanphamnam}" class="text-decoration-none text-dark" style="font-weight: bold;">NAM</a>
+            <li>
+                <a th:href="@{/customer/sanphamnam}" class="nav-link">NAM</a>
             </li>
-            <li class="text-dark" style="padding-left: 20px;">
-                <a th:href="@{/customer/sanphamnu}" class="text-decoration-none text-dark"
-                   style="font-weight: bold;">NỮ</a>
+            <li>
+                <a th:href="@{/customer/sanphamnu}" class="nav-link">NỮ</a>
             </li>
-            <li class="text-dark" style="padding-left: 20px;">
-                <a th:href="@{/customer/gioithieu}" class="text-decoration-none text-dark" style="font-weight: bold;">GIỚI
-                    THIỆU</a>
+            <li>
+                <a th:href="@{/customer/gioithieu}" class="nav-link">GIỚI THIỆU</a>
             </li>
-            <li class="text-dark" style="padding-left: 20px;">
-                <a th:href="@{/customer/vechungtoi}" class="text-decoration-none text-dark" style="font-weight: bold;">VỀ
-                    CHÚNG TÔI</a>
+            <li>
+                <a th:href="@{/customer/vechungtoi}" class="nav-link">VỀ CHÚNG TÔI</a>
             </li>
-            <li class="text-dark" style="padding-left: 20px;">
-                <a th:href="@{/customer/lienhe}" class="text-decoration-none text-dark" style="font-weight: bold;">LIÊN
-                    HỆ</a>
+            <li>
+                <a th:href="@{/customer/vechungtoi}" class="nav-link">TRA CỨU</a>
+            </li>
+            <li>
+                <a th:href="@{/customer/lienhe}" class="nav-link">LIÊN HỆ</a>
             </li>
         </ul>
     </div>
-
-
-    <!--    <div style="margin-left: 20px">-->
-    <!--        <input class="form-control " type="search" placeholder="Nhập tên sản phẩm..." aria-label="Search" style="width: 200px;">-->
-    <!--    </div>-->
     <div style="margin-left: 40px">
         <ul>
             <!--cart-->
             <li style="margin-top: 20px">
                 <div style="margin-left: auto; margin-right: 20px;">
-                    <div style="position: relative;">
-                        <input class="form-control" type="search" placeholder="Bạn cần tìm gì?..." aria-label="Search"
-                               style="width: 300px; padding-right: 40px;">
-                        <span style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%);">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search"
-               viewBox="0 0 16 16">
-  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-</svg>
+                    <form id="searchForm" th:method="get" th:object="${search}" th:action="@{/search-trangchu}">
+                        <div style="position: relative;">
+                            <input class="form-control" type="search" placeholder="Bạn cần tìm gì?..." aria-label="Search"
+                                   style="width: 300px; padding-right: 40px;" name="key" th:value="${fillSearch}">
+                            <span style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;" onclick="submitSearchForm()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search"
+                 viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+            </svg>
         </span>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </li>
             <li style="padding-left: 20px;color: #0a0e14">
                 <a th:href="@{/cart}" style="color: #0a0e14; text-decoration: none; position: relative;">
-                    <img alt="" style="width:40px" src="../dist/img/cart.png"/>
+                    <img alt="" style="width:40px" src="../../dist/img/cart.png"/>
                     <span class="position-absolute badge rounded-pill bg-danger" style="top: 0; left: 110%; transform: translate(-50%, -50%); width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 50%;" th:text="${totalQuantity}"></span>
                 </a>
             </li>
@@ -132,3 +137,8 @@
 </body>
 </html>
 
+<script>
+    function submitSearchForm() {
+        document.getElementById('searchForm').submit();
+    }
+</script>

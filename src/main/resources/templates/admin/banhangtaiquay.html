@@ -789,6 +789,8 @@
                                     <p id="ngaygiaodukiens">
                                         đang tính toán...
                                     </p>
+                                    <input type="text" class="form-control" 
+                                    id="thongtingiao_ngaygiao" th:field="*{ngaygiaodukien}" style="display: none;">
                                 </div>
                             </form>
                         </div>
@@ -869,6 +871,7 @@
 
     <script>
         //tạo biến toàn cũng để sử dụng
+        var shipToanCuc=0;// tiền ship toàn cục
         var tongTienDon;//tổng cả đơn chưa có mã
         var TienGiamDon;//tổng tiền giảm
         var tienkhachthanhtoan;//tổng đã có mã
@@ -1001,7 +1004,7 @@
     <p> Size: ${hd.sanphamchitiet.kichco.ten}</p>
 </td>
 <td style="vertical-align: middle;">
-    <input class="form-control" style="width: 120px;height: 30px; margin-left: 20%;" type="text" id="${hd.id}" value="${hd.soluong}" oninput="changeQuantity(event)">
+    <input class="form-control" style="width: 120px;height: 30px; margin-left: 20%;" type="text" id="${hd.id}" value="${hd.soluong}" oninput="changeQuantity(event)" name="${hd.sanphamchitiet.id}">
 </td>
 <td style="color: red;font-weight: bold;vertical-align: middle;">${(hd.soluong * hd.giasanpham).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
 <td style="vertical-align: middle;">
@@ -1423,9 +1426,12 @@ tabindex="0">
         }
 
         //thay đổi số lượng ở table
-        function changeQuantity(event) {
+
+        async function changeQuantity(event) {
             const input = event.target;
             let inputValue = input.value;
+            var idsp = input.name;
+            var idhdct = input.id;
 
             // Loại bỏ tất cả các ký tự không phải số từ giá trị đầu vào
             inputValue = inputValue.replace(/\D/g, '');
@@ -1440,19 +1446,75 @@ tabindex="0">
             }
 
             // Kiểm tra xem giá trị có nằm trong khoảng từ 1 đến 100 không
-            if (numericValue < 1 || isNaN(numericValue)) {
-                numericValue = 1;
-            } else if (numericValue > 100) {
-                numericValue = 100;
+            var urlVLD = `http://localhost:8080/ban-hang-tai-quay/validate-SL?id=${idhdct}`;
+            try {
+                const response = await fetch(urlVLD);
+                const data = await response.json();
+                var slSpTrongDon = data.soluong;
+                var slSpCon = data.sanphamchitiet.soluong;
+
+                if (numericValue < 1 || isNaN(numericValue)) {
+                    numericValue = 1;
+                    thongbao('Số lượng phải lớn hơn 0', 'warning');
+                } else if (numericValue-slSpTrongDon > slSpCon) {
+                    numericValue = slSpCon+slSpTrongDon;
+                    thongbao('Số lượng đang vượt quá số lượng hàng hiện có', 'warning');
+
+                }
+
+                // Cập nhật giá trị của input
+                input.value = numericValue;
+
+                var element = document.getElementById(input.id + 'fsport');
+                var newHref = "http://localhost:8080/ban-hang-tai-quay/update/" + input.id + "/" + input.value;
+                element.setAttribute("href", newHref);
+            } catch (error) {
+                console.error('Error fetching data:', error);
             }
-
-            // Cập nhật giá trị của input
-            input.value = numericValue;
-
-            var element = document.getElementById(input.id + 'fsport');
-            var newHref = " http://localhost:8080/ban-hang-tai-quay/update/" + input.id + "/" + input.value;
-            element.setAttribute("href", newHref);
         }
+
+        // function changeQuantity(event) {
+        //     const input = event.target;
+        //     let inputValue = input.value;
+        //     var idsp = input.name;
+        //     var slhientai;
+        //     // Loại bỏ tất cả các ký tự không phải số từ giá trị đầu vào
+        //     inputValue = inputValue.replace(/\D/g, '');
+
+        //     // Chuyển đổi giá trị thành số
+        //     let numericValue = parseInt(inputValue);
+
+        //     // Kiểm tra xem giá trị nhập vào có rỗng không
+        //     if (inputValue === '') {
+        //         input.value = '';
+        //         return;
+        //     }
+        //     //thongbao('Số lượng phải lớn hơn 0','warning');
+        //     // Kiểm tra xem giá trị có nằm trong khoảng từ 1 đến 100 không
+        //     var urlVLD = `http://localhost:8080/ban-hang-tai-quay/validate-SL?id=${idsp}`;
+        //     fetch(urlVLD)
+        //         .then(function (c) {
+        //             return c.json();
+        //         })
+        //         .then(function (b) {
+        //             slhientai = b.soluong;
+
+        //         })
+
+        //     alert(slhientai)
+        //     if (numericValue < 1 || isNaN(numericValue)) {
+        //         numericValue = 1;
+        //     } else if (numericValue > 100) {
+        //         numericValue = 100;
+        //     }
+
+        //     // Cập nhật giá trị của input
+        //     input.value = numericValue;
+
+        //     var element = document.getElementById(input.id + 'fsport');
+        //     var newHref = " http://localhost:8080/ban-hang-tai-quay/update/" + input.id + "/" + input.value;
+        //     element.setAttribute("href", newHref);
+        // }
     </script>
     <!-- thay đổi sản phẩm hdct -->
     <script>
@@ -2248,6 +2310,7 @@ tabindex="0">
 
             } else {
                 // ẩn div
+                tienkhachthanhtoan=tienkhachthanhtoan-shipToanCuc;
                 document.getElementById('diachidiv').style.display = 'none';
 
             }
@@ -2805,9 +2868,11 @@ tabindex="0">
             document.getElementById('changeSP').disabled = false;
             var checkgiaohang = document.getElementById('checktrasau');
             var actionGiao = document.getElementById('thongtingiaohangform');
+
             var checksubmit = validateForm();
-            if (checksubmit === true) {
-                if (checkgiaohang.checked) {
+
+            if (checkgiaohang.checked) {
+                if (checksubmit === true) {
                     thongbao('Đặt đơn thành công', 'success');
                     //giao hàng submit
                     setTimeout(function () {
@@ -2815,20 +2880,22 @@ tabindex="0">
                         actionGiao.submit();
                     }, 1300);
 
+
                 } else {
-                    //giao hàng submit
-                    thongbao('Đặt đơn thành công', 'success');
-                    setTimeout(function () {
-                        actionGiao.action = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/1';
-                        actionGiao.submit();
-
-                    }, 1300);
-
-
+                    thongbao('Thông tin giao hàng còn thiếu hoặc có lỗi!', 'warning');
                 }
             } else {
-                thongbao('Thông tin giao hàng còn thiếu hoặc có lỗi!', 'warning');
+                //giao hàng submit
+                thongbao('Đặt đơn thành công', 'success');
+                setTimeout(function () {
+                    actionGiao.action = 'http://localhost:8080/ban-hang-tai-quay/xacnhanthanhtoan/1';
+                    actionGiao.submit();
+
+                }, 1300);
+
+
             }
+
 
             // thongbao('Chưa xác nhận thông tin thanh toán!!!', 'warning');
 
@@ -2988,9 +3055,9 @@ tabindex="0">
                             // phiếu vnđ
                             TienGiamDon = b.giatrigiam;
                         }
-                        tienkhachthanhtoan = tongTienDon - TienGiamDon;
+                        tienkhachthanhtoan = tongTienDon - TienGiamDon+shipToanCuc;
                     } else {
-                        tienkhachthanhtoan = tongTienDon;
+                        tienkhachthanhtoan = tongTienDon+shipToanCuc;
                     }
                     // console.log("tiền tệ")
                     // console.log('tiền ban đầu:' + tongTienDon)
@@ -3282,9 +3349,10 @@ tabindex="0">
                                             var days = day + '/' + month + '/' + year;
 
                                             document.getElementById('ngaygiaodukiens').innerHTML = days;
+                                            document.getElementById('thongtingiao_ngaygiao').value = timestamp;
+                                            
                                             // phigiaohang
                                             feship(idHuyenreturn, idXareturn);
-
 
 
                                         })
@@ -3330,6 +3398,8 @@ tabindex="0">
                 .then(function (d) {
                     var shipfe = convertCashInput(d.data.total);
                     document.getElementById('phigiaohang').value = shipfe;
+                    shipToanCuc=d.data.total;
+                    tienkhachthanhtoan=tienkhachthanhtoan+shipToanCuc;
                 })
 
         }
@@ -3469,7 +3539,7 @@ tabindex="0">
             // Biến để kiểm tra nếu có lỗi
             var error = false;
 
-  
+
 
             // Kiểm tra họ và tên
             if (hoVaTen === "") {
@@ -3534,17 +3604,17 @@ tabindex="0">
             }
 
             // Kiểm tra chọn huyện
-            if (huyen === "chọn huyện"||huyen.length===4) {
+            if (huyen === "chọn huyện" || huyen.length === 4) {
                 // alert("Bạn phải chọn huyện");
                 document.getElementById('regexhuyen').innerHTML = 'Chưa chọn huyện!';
                 error = true;
             } else {
                 document.getElementById('regexhuyen').innerHTML = '';
             }
-            
+
 
             // Kiểm tra chọn xã
-            if (xa === "chọn xã" || xa.length===4) {
+            if (xa === "chọn xã" || xa.length === 4) {
                 // alert("Bạn phải chọn xã");
                 document.getElementById('regexxa').innerHTML = 'Chưa chọn xã!';
                 error = true;
