@@ -123,7 +123,6 @@
             </div>
         </div>
     </form>
-    <p th:text="${dangnhapthatbai}"></p>
     <!--FORM KHOI PHUC MAT KHAU-->
     <form id="formKhoiPhuc">
         <h4 class="mt-3 d-flex justify-content-start">Khôi phục mật khẩu</h4>
@@ -181,13 +180,13 @@
         <div class="d-flex mt-4">
             <p style="font-size: 16px; font-weight: bold">Giới tính: </p>
             <div class="form-check" style="margin-left: 10px;">
-                <input class="form-check-input" type="radio" th:field="*{gioitinh}" value="1">
+                <input class="form-check-input" type="radio" th:field="*{gioitinh}" value="1" checked/>
                 <label class="form-check-label">
                     Nam
                 </label>
             </div>
             <div class="form-check" style="margin-left: 10px;">
-                <input class="form-check-input" type="radio" th:field="*{gioitinh}" value="0" checked>
+                <input class="form-check-input" type="radio" th:field="*{gioitinh}" value="0"/>
                 <label class="form-check-label">
                     Nữ
                 </label>
@@ -223,7 +222,7 @@
             <p style="color: red" th:text="${saiMatKhau}"></p>
         </div>
         <div class="mt-6 d-flex justify-content-start">
-            <button style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 46px; border-radius: 15px; border-color: rgb(249,72,42);">ĐĂNG KÝ</button>
+            <button type="submit" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 46px; border-radius: 15px; border-color: rgb(249,72,42);">ĐĂNG KÝ</button>
             <p style="padding-left: 15px; margin-top: 10px;">Bạn đã có tài khoản?</p>
             <a href="#" id="loginLink" style="color: rgb(249,72,42); padding-left: 5px; margin-top: 10px; text-decoration: none;">Đăng nhập ngay</a>
         </div>

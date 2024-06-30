@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -27,8 +28,13 @@ public class CustomerUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         NguoiDung nguoiDung = nguoiDungRepository.findNguoiDungByTaikhoan(username);
+        if (nguoiDung == null) {
+            System.out.println("NguoiDung null");
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = bCryptPasswordEncoder.encode(nguoiDung.getMatkhau());
+        System.out.println("PasswordEncode: " + encodedPassword);
         return new User(nguoiDung.getTaikhoan(), encodedPassword, Collections.emptyList());
     }
 }

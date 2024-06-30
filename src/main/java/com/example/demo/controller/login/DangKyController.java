@@ -7,6 +7,7 @@ import com.example.demo.info.DangKyDCInfo;
 import com.example.demo.info.DangKyKHInfo;
 import com.example.demo.info.DangKyNDInfo;
 import com.example.demo.info.DangNhapNDInfo;
+import com.example.demo.security.CustomerUserDetailService;
 import com.example.demo.service.DiaChiService;
 import com.example.demo.service.KhachHangService;
 import com.example.demo.service.NguoiDungService;
@@ -32,6 +33,8 @@ public class DangKyController {
     NguoiDungService nguoiDungService;
     @Autowired
     DiaChiService diaChiService;
+    @Autowired
+    CustomerUserDetailService userDetailService;
 
     @GetMapping("/dangky")
     public String view(@ModelAttribute("nguoidung") DangKyNDInfo nguoidung,
@@ -51,6 +54,8 @@ public class DangKyController {
                          BindingResult dcBindingResult,
                          Model model
     ) {
+        System.out.println("BBB");
+        System.out.println(nguoidung.getHovaten());
         if (ndBindingResult.hasErrors()) {
             List<ObjectError> ndError = ndBindingResult.getAllErrors();
             System.out.println(ndError);
@@ -65,13 +70,15 @@ public class DangKyController {
             return "customer/login";
         }
 
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = bCryptPasswordEncoder.encode(nguoidung.getMatkhau());
+//        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+//        String encodedPassword = bCryptPasswordEncoder.encode(nguoidung.getMatkhau());
 
 
         //nguoi dung
         LocalDateTime currentDate = LocalDateTime.now();
 
+        System.out.println("AAA");
+        System.out.println(nguoidung.getTaikhoan());
         NguoiDung nd = new NguoiDung();
         nd.setHovaten(nguoidung.getHovaten());
         nd.setNgaysinh(nguoidung.getNgaysinh());
@@ -81,10 +88,10 @@ public class DangKyController {
         nd.setNgaytao(Timestamp.valueOf(currentDate));
         nd.setLancapnhatcuoi(Timestamp.valueOf(currentDate));
         nd.setTaikhoan(nguoidung.getTaikhoan());
-        nd.setMatkhau(encodedPassword);
+        nd.setMatkhau(nguoidung.getMatkhau());
         nd.setTrangthai(true);
-        nd.setNguoitao("Customer");
-        nd.setNguoicapnhat("Customer");
+        nd.setNguoitao("CUSTOMER");
+        nd.setNguoicapnhat("CUSTOMER");
         khachHangService.addNguoiDung(nd);
 
         //Khach hang
