@@ -337,6 +337,11 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
     }
 
     @Override
+    public List<KhachHang> findKHGanNhat() {
+        return khachHangRepostory.findKHGanNhat();
+    }
+
+    @Override
     public KhachHang getOne(int id) {
         return khachHangRepostory.getReferenceById(id);
     }

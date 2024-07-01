@@ -26,4 +26,6 @@ public interface KhachHangRepostory extends JpaRepository<KhachHang, Integer> {
 
     @Query("SELECT N FROM KhachHang N WHERE N.nguoidung.hovaten like %?1% or N.nguoidung.sodienthoai like %?1%")
     List<KhachHang> timNVTheoMa(String ten);
+    @Query("SELECT k FROM KhachHang k ORDER BY k.id DESC")
+    List<KhachHang> findKHGanNhat();
 }

@@ -255,8 +255,17 @@ public class BanHangController {
         diachi.setNguoidung(nguoidungtim);
         diachi.setTrangthai(true);
         daoDiaChi.save(diachi);
+        KhachHang newkhGanNhat = daoKH.findKHGanNhat().get(0);
+        Integer maSoKHCu = Integer.valueOf(newkhGanNhat.getMakhachhang().substring(2)) + 1;
+        String newMaKH = "KH" + maSoKHCu;
         KhachHang khAdd = new KhachHang();
+        khAdd.setMakhachhang(newMaKH);
         khAdd.setNguoidung(nguoidungtim);
+        khAdd.setTrangthai(true);
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        khAdd.setNgaytao(Timestamp.valueOf(currentDateTime));
+        //fake người tạo
+        khAdd.setNguoitao("nhân viên");
         daoKH.save(khAdd);
         KhachHang khTim = daoKH.findByNguoiDung(nguoidungtim.getId());
         String diaChiHD = kh.getDiachi() + ", " + kh.getXa() + ", " + kh.getHuyen() + ", " + kh.getTinh();

@@ -49,4 +49,5 @@ public interface KhachHangService {
     NguoiDung doimatkhau(DoiMatKhauNguoiDung nguoidung, int id);
     void scanQr() throws NotFoundException;
     String readQRCode(File qrCodeImage) throws IOException;
+    List<KhachHang> findKHGanNhat();
 }
