@@ -24,17 +24,23 @@ public class ThuongHieuController {
 
     @GetMapping("/listthuonghieu")
     public String hienthi(@RequestParam(defaultValue = "0") int p, @ModelAttribute("th") ThuocTinhInfo info, @ModelAttribute("thuonghieu") ThuongHieu thuongHieu, Model model) {
-        List<ThuongHieu> list = null;
-        if (info.getKey() != null) {
-            list = thuongHieuImp.getThuongHieuByTenOrTrangthai(info.getKey(), info.getTrangthai());
-        } else {
+        List<ThuongHieu> list;
+
+        boolean isKeyEmpty = (info.getKey() == null || info.getKey().trim().isEmpty());
+        boolean isTrangthaiNull = (info.getTrangthai() == null);
+
+        if (isKeyEmpty && isTrangthaiNull) {
             list = thuongHieuRepository.findAllByOrderByNgaytaoDesc();
+        } else {
+            list = thuongHieuImp.getThuongHieuByTenOrTrangthai(info.getKey(), info.getTrangthai());
         }
+
         model.addAttribute("page", list);
         model.addAttribute("fillSearch", info.getKey());
         model.addAttribute("fillTrangThai", info.getTrangthai());
         return "admin/qlthuonghieu";
     }
+
 
     @PostMapping("/addSaveThuongHieu")
     @CacheEvict(value = "thuonghieuCache", allEntries = true)

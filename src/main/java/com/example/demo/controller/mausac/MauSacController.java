@@ -27,17 +27,23 @@ public class MauSacController {
 
     @GetMapping("/listMauSac")
     public String listMauSac(Model model, @ModelAttribute("mausac") MauSac mauSac, @ModelAttribute("tim") ThuocTinhInfo info) {
-        List<MauSac> page = null;
-        if (info.getKey() != null) {
-            page = mauSacRepository.getDeGiayByTenOrTrangthai(info.getKey(), info.getTrangthai());
-        } else {
+        List<MauSac> page;
+
+        boolean isKeyEmpty = (info.getKey() == null || info.getKey().trim().isEmpty());
+        boolean isTrangthaiNull = (info.getTrangthai() == null);
+
+        if (isKeyEmpty && isTrangthaiNull) {
             page = mauSacRepository.findAllByOrderByNgaytaoDesc();
+        } else {
+            page = mauSacRepository.getDeGiayByTenOrTrangthai(info.getKey(), info.getTrangthai());
         }
+
         model.addAttribute("fillSearch", info.getKey());
         model.addAttribute("fillTrangThai", info.getTrangthai());
         model.addAttribute("list", page);
         return "admin/qlmausac";
     }
+
     @PostMapping("/addSaveMauSac")
     @CacheEvict(value = "mausacCache", allEntries = true)
     public String addSave(@ModelAttribute("mausac") MauSac mauSac, @ModelAttribute("ms") ThuocTinhInfo info, Model model) {

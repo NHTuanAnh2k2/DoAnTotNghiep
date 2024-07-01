@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,17 +22,23 @@ public class DeGiayController {
 
     @GetMapping("/listdegiay")
     public String listdegiay(Model model, @ModelAttribute("degiay") DeGiay deGiay, @ModelAttribute("tim") ThuocTinhInfo info) {
-        List<DeGiay> page = null;
-        if (info.getKey() != null) {
-            page = deGiayImp.getDeGiayByTenOrTrangthai(info.getKey(), info.getTrangthai());
-        } else {
+        List<DeGiay> page;
+
+        boolean isKeyEmpty = (info.getKey() == null || info.getKey().trim().isEmpty());
+        boolean isTrangthaiNull = (info.getTrangthai() == null);
+
+        if (isKeyEmpty && isTrangthaiNull) {
             page = deGiayRepository.findAllByOrderByNgaytaoDesc();
+        } else {
+            page = deGiayImp.getDeGiayByTenOrTrangthai(info.getKey(), info.getTrangthai());
         }
+
         model.addAttribute("list", page);
         model.addAttribute("fillSearch", info.getKey());
         model.addAttribute("fillTrangThai", info.getTrangthai());
         return "admin/qldegiay";
     }
+
 
     @GetMapping("/update/{id}")
     public String viewUpdate(@PathVariable Integer id, Model model) {

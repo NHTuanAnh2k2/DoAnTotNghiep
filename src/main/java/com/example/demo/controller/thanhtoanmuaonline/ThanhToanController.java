@@ -60,7 +60,7 @@ public class ThanhToanController {
                 }
                 if (nguoiDung != null) {
                     // Lấy giỏ hàng của người dùng đã đăng nhập
-                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung);
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
                     if (khachHang != null) {
                         gioHang = gioHangRepository.findByKhachhang(khachHang);
                         if (gioHang != null) {

@@ -353,7 +353,7 @@
 
             <div class="col-lg-9 order-1 order-lg-2">
                 <div class="shop-menu clearfix">
-                    <form id="searchForm" th:method="get" th:object="${searchspnam}"
+                    <form id="searchFormNam" th:method="get" th:object="${searchspnam}"
                           th:action="@{/customer/searchMaAnhTen/spnam}">
                         <div class="left floatleft">
                             <div style="margin-left: auto; margin-right: 20px;">
@@ -667,7 +667,7 @@
 <script>
     // Lắng nghe sự kiện change trong các trường input
     document.getElementById('searchInput').addEventListener('change', function () {
-        document.getElementById('searchForm').submit(); // Gửi form khi có sự thay đổi
+        document.getElementById('searchFormNam').submit(); // Gửi form khi có sự thay đổi
     });
 </script>
 

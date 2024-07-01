@@ -3,6 +3,8 @@
 <!--thư viện-->
 <nav th:replace="~{/layout/head.html}"></nav>
 <!--Các sản phẩm nổi bật-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <style>
     /* Dùng thanh cuộn ngang */
     .tab-pane.horizontal-scrollable .single-products.row {
@@ -336,7 +338,6 @@
 <script src="../sweetalert2/dist/sweetalert2.min.js/"></script>
 <link rel="stylesheet" type="text/css" href="../sweetalert2/dist/sweetalert2.min.css">
 <body>
-<input type="hidden" th:value="${token}" id="tokenDN">
 
 <!-- header section start -->
 <nav th:replace="~{/layout/header.html}"></nav>
@@ -411,7 +412,8 @@
                         </h6>
 
                         <form id="addToCartForm" action="/add-to-cart" method="post">
-                            <input type="hidden" name="id" th:value="${sanphamchitiet.id}">
+                            <input type="hidden" th:value="${token}" id="tokenDN" name="tokenDN">
+                            <input type="hidden" name="id" th:value="${sanphamchitiet.id}" id="idspct">
                             <input type="hidden" name="selectedColor" id="selectedColor" th:value="${defaultColor}">
                             <input type="hidden" name="selectedSize" id="selectedSize" th:value="${defaultSize}">
                             <div th:id="'product-details-' + ${sanpham.id}" th:data-color="${defaultColor}">
@@ -480,9 +482,13 @@
                                                 <img src="../../dist/img/chonsize3.jpg" style="width: 100%;"
                                                      alt="Hướng dẫn chọn size giày fsport">
                                                 <p></p>
-                                                <h6 style="font-style: italic">CHỌN 1 ĐÔI GIÀY BÓNG ĐÁ PHÙ HỢP VỚI FORM CHÂN SẼ GIÚP BẠN CẢM THẤY THOẢI MÁI HƠN KHI KHI ĐẤU</h6>
-                                            <p></p>
-                                                <h6 style="color: rgb(217,185,28)">FSPORT VỚI ĐỘI NGŨ CSKH ONLINE RẤT CÓ KINH NGHIỆM VỀ TƯ VẤN SIZE GIÀY BÓNG ĐÁ CHÍNH HÃNG SẼ HỖ TRỢ KHÁCH HÀNG MỘT CÁCH NHANH CHÓNG VÀ CHÍNH XÁC NHẤT THÔNG QUA FACEBOOK, ZALO,HOTLINE 24/7</h6>
+                                                <h6 style="font-style: italic">CHỌN 1 ĐÔI GIÀY BÓNG ĐÁ PHÙ HỢP VỚI FORM
+                                                    CHÂN SẼ GIÚP BẠN CẢM THẤY THOẢI MÁI HƠN KHI KHI ĐẤU</h6>
+                                                <p></p>
+                                                <h6 style="color: rgb(217,185,28)">FSPORT VỚI ĐỘI NGŨ CSKH ONLINE RẤT CÓ
+                                                    KINH NGHIỆM VỀ TƯ VẤN SIZE GIÀY BÓNG ĐÁ CHÍNH HÃNG SẼ HỖ TRỢ KHÁCH
+                                                    HÀNG MỘT CÁCH NHANH CHÓNG VÀ CHÍNH XÁC NHẤT THÔNG QUA FACEBOOK,
+                                                    ZALO,HOTLINE 24/7</h6>
                                             </div>
                                         </div>
                                     </div>
@@ -965,19 +971,19 @@
     }
 </script>
 <!--validate soluong-->
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    document.getElementById('addToCartForm').addEventListener('submit', function (event) {
-        var selectedQuantity = parseInt(document.getElementById('quantityInput').value);
-        var availableQuantity = parseInt(document.getElementById('product-quantity').innerText); // Lấy số lượng có sẵn từ thẻ span
+<!--<script th:inline="javascript">-->
+<!--    /*<![CDATA[*/-->
+<!--    document.getElementById('addToCartForm').addEventListener('submit', function (event) {-->
+<!--        var selectedQuantity = parseInt(document.getElementById('quantityInput').value);-->
+<!--        var availableQuantity = parseInt(document.getElementById('product-quantity').innerText); // Lấy số lượng có sẵn từ thẻ span-->
 
-        if (selectedQuantity > availableQuantity) {
-            alert('Số lượng nhập vào vượt quá số lượng có sẵn trong kho (' + availableQuantity + ')');
-            event.preventDefault(); // Ngăn không gửi form nếu số lượng vượt quá
-        }
-    });
-    /*]]>*/
-</script>
+<!--        if (selectedQuantity > availableQuantity) {-->
+<!--            alert('Số lượng nhập vào vượt quá số lượng có sẵn trong kho (' + availableQuantity + ')');-->
+<!--            event.preventDefault(); // Ngăn không gửi form nếu số lượng vượt quá-->
+<!--        }-->
+<!--    });-->
+<!--    /*]]>*/-->
+<!--</script>-->
 <!--dùng cho mã coupont coupon cố định-->
 <script>
     // JavaScript để giữ coupon-noti ở vị trí cố định khi scroll
@@ -1013,3 +1019,47 @@
         console.log("hhhh" + token);
     });
 </script>
+
+<!--<script>-->
+<!--    async function getProducts() {-->
+<!--        const response = await fetch('/giohangchitietsssss');-->
+<!--        return await response.json();-->
+<!--    }-->
+
+<!--    // Hàm để lấy chi tiết sản phẩm từ server dựa vào productId-->
+<!--    async function getProductDetails(Id) {-->
+<!--        const response = await fetch(`/findBySPCTById/${Id}`);-->
+<!--        return await response.json();-->
+<!--    }-->
+
+<!--    var addToCartForm = document.getElementById("addToCartForm");-->
+
+<!--    async function submitFormadd() {-->
+<!--        var idspct = document.getElementById("idspct").value;-->
+<!--        var soluongmuonthem = parseInt(document.getElementById("quantityInput").value); // Chuyển đổi sang kiểu số-->
+
+<!--        const spct = await getProductDetails(idspct); // Đợi cho đến khi getProductDetails hoàn thành-->
+
+<!--        try {-->
+<!--            const cartdetail = await getProducts(); // Đợi cho đến khi getProducts hoàn thành-->
+<!--            if (cartdetail === null) {-->
+<!--                console.log('cartdetail is null');-->
+<!--                addToCartForm.submit();-->
+<!--            } else {-->
+<!--                cartdetail.forEach(c => {-->
+<!--                    if (c.sanphamchitiet.id === spct.id) {-->
+<!--                        var soluongtong = soluongmuonthem + c.soluong;-->
+<!--                        if (soluongtong > spct.soluong) {-->
+<!--                            alert("Số lượng không đủ");-->
+<!--                        } else {-->
+<!--                            addToCartForm.submit();-->
+<!--                        }-->
+<!--                    }-->
+<!--                });-->
+<!--            }-->
+<!--        } catch (error) {-->
+<!--            console.error('Error fetching products:', error);-->
+<!--            addToCartForm.submit();-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->

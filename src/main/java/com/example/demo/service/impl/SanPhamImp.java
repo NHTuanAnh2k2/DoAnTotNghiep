@@ -41,5 +41,11 @@ public class SanPhamImp implements SanPhamService {
         return sanPhamRepositoty.getById(Id);
     }
 
+    public void updateProductStatus(Integer id, boolean trangthai) {
+        SanPham sanPham = sanPhamRepositoty.findById(id).orElse(null);
+        sanPham.setTrangthai(trangthai);
+        sanPhamRepositoty.save(sanPham);
+    }
+
 
 }

@@ -22,12 +22,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-
-
 import java.math.BigDecimal;
 import java.util.*;
-///////////////////////////////
-///////////////////////////////
+
 @Controller
 public class TrangChuCustomerController {
     @Autowired
@@ -108,7 +105,7 @@ public class TrangChuCustomerController {
 
                 if (nguoiDung != null) {
                     // Lấy giỏ hàng của người dùng đã đăng nhập
-                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung);
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
                     if (khachHang != null) {
                         gioHang = gioHangRepository.findByKhachhang(khachHang);
                         if (gioHang != null) {
@@ -172,7 +169,7 @@ public class TrangChuCustomerController {
                 }
                 if (nguoiDung != null) {
                     // Lấy giỏ hàng của người dùng đã đăng nhập
-                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung);
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
                     if (khachHang != null) {
                         gioHang = gioHangRepository.findByKhachhang(khachHang);
                         if (gioHang != null) {
@@ -197,7 +194,7 @@ public class TrangChuCustomerController {
             totalAmount = totalAmount.add(giatien.multiply(BigDecimal.valueOf(item.getSoluong())));
         }
         // Thêm các thông tin vào model
-        model.addAttribute("token", token);
+
         model.addAttribute("totalAmount", totalAmount);
         model.addAttribute("totalQuantity", totalQuantity);
         model.addAttribute("cartItems", cartItems);
@@ -261,6 +258,7 @@ public class TrangChuCustomerController {
         model.addAttribute("page", page);
         List<Object[]> page2 = trangChuRepository.topspnoibatdetail();
         model.addAttribute("page2", page2);
+        model.addAttribute("token", token);
         return "customer/product-details";
     }
 
@@ -290,7 +288,7 @@ public class TrangChuCustomerController {
                 }
                 if (nguoiDung != null) {
                     // Lấy giỏ hàng của người dùng đã đăng nhập
-                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung);
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
                     if (khachHang != null) {
                         gioHang = gioHangRepository.findByKhachhang(khachHang);
                         if (gioHang != null) {

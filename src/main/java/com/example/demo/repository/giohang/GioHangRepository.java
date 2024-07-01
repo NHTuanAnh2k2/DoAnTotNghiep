@@ -17,4 +17,9 @@ public interface GioHangRepository extends JpaRepository<GioHang,Integer> {
 
     GioHang findByKhachhang(KhachHang khachHang);
 
+    @Query(value = """
+            SELECT g FROM GioHang g where g.khachhang.id= :id
+            """)
+    GioHang findByIdKhachHang(Integer id);
+
 }
