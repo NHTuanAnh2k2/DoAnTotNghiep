@@ -253,14 +253,24 @@ public class BanHangController {
         diachi.setQuanhuyen(kh.getHuyen());
         diachi.setTinhthanhpho(kh.getTinh());
         diachi.setNguoidung(nguoidungtim);
+        diachi.setTrangthai(true);
         daoDiaChi.save(diachi);
         KhachHang khAdd = new KhachHang();
         khAdd.setNguoidung(nguoidungtim);
         daoKH.save(khAdd);
         KhachHang khTim = daoKH.findByNguoiDung(nguoidungtim.getId());
-        hdHienTai.setKhachhang(khTim);
+        String diaChiHD = kh.getDiachi() + ", " + kh.getXa() + ", " + kh.getHuyen() + ", " + kh.getTinh();
+        hdHienTai.setDiachi(diaChiHD);
+        hdHienTai.setTennguoinhan(kh.getTen());
+        hdHienTai.setSdt(kh.getSdt());
+        hdHienTai.setEmail(kh.getEmail());
+        daoHD.capNhatHD(hdHienTai);
         if (kh.getCheck()) {
             hdHienTai.setKhachhang(khTim);
+            hdHienTai.setDiachi(diaChiHD);
+            hdHienTai.setTennguoinhan(kh.getTen());
+            hdHienTai.setSdt(kh.getSdt());
+            hdHienTai.setEmail(kh.getEmail());
             daoHD.capNhatHD(hdHienTai);
             return "redirect:/hoa-don/ban-hang";
         }
@@ -893,7 +903,7 @@ public class BanHangController {
     @GetMapping("validate-SL")
     public ResponseEntity<?> validateSL(@RequestParam("id") String id
     ) {
-        HoaDonChiTiet hdct=daoHDCT.findByID(Integer.valueOf(id));
+        HoaDonChiTiet hdct = daoHDCT.findByID(Integer.valueOf(id));
         return ResponseEntity.ok(hdct);
     }
 
