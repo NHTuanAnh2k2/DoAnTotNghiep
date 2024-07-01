@@ -22,5 +22,10 @@ public interface GioHangChiTietRepository extends JpaRepository<GioHangChiTiet, 
     @Query("UPDATE GioHangChiTiet ghct SET ghct.soluong = :soLuong WHERE ghct.id = :id")
     void updateSoLuongById(Integer soLuong, Integer id);
 
+    @Query(value = """
+            SELECT g FROM GioHangChiTiet g where g.giohang.id=:id
+            """)
+    List<GioHangChiTiet> findGioHangChiTietByGiohang(Integer id);
+
 
 }

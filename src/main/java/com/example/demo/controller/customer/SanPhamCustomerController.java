@@ -24,12 +24,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-///////////////////////////////
-//////////////////////////////////////////////////////////////
+
 @Controller
 public class SanPhamCustomerController {
     @Autowired
@@ -120,7 +118,7 @@ public class SanPhamCustomerController {
                 }
                 if (nguoiDung != null) {
                     // Lấy giỏ hàng của người dùng đã đăng nhập
-                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung);
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
                     if (khachHang != null) {
                         gioHang = gioHangRepository.findByKhachhang(khachHang);
                         if (gioHang != null) {
@@ -210,7 +208,7 @@ public class SanPhamCustomerController {
                 }
                 if (nguoiDung != null) {
                     // Lấy giỏ hàng của người dùng đã đăng nhập
-                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung);
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
                     if (khachHang != null) {
                         gioHang = gioHangRepository.findByKhachhang(khachHang);
                         if (gioHang != null) {
@@ -349,7 +347,7 @@ public class SanPhamCustomerController {
                 }
                 if (nguoiDung != null) {
                     // Lấy giỏ hàng của người dùng đã đăng nhập
-                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung);
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
                     if (khachHang != null) {
                         gioHang = gioHangRepository.findByKhachhang(khachHang);
                         if (gioHang != null) {
@@ -456,7 +454,7 @@ public class SanPhamCustomerController {
                 }
                 if (nguoiDung != null) {
                     // Lấy giỏ hàng của người dùng đã đăng nhập
-                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung);
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
                     if (khachHang != null) {
                         gioHang = gioHangRepository.findByKhachhang(khachHang);
                         if (gioHang != null) {
@@ -561,7 +559,7 @@ public class SanPhamCustomerController {
                 }
                 if (nguoiDung != null) {
                     // Lấy giỏ hàng của người dùng đã đăng nhập
-                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung);
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
                     if (khachHang != null) {
                         gioHang = gioHangRepository.findByKhachhang(khachHang);
                         if (gioHang != null) {
@@ -696,7 +694,7 @@ public class SanPhamCustomerController {
                 }
                 if (nguoiDung != null) {
                     // Lấy giỏ hàng của người dùng đã đăng nhập
-                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung);
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
                     if (khachHang != null) {
                         gioHang = gioHangRepository.findByKhachhang(khachHang);
                         if (gioHang != null) {
@@ -805,7 +803,7 @@ public class SanPhamCustomerController {
                 }
                 if (nguoiDung != null) {
                     // Lấy giỏ hàng của người dùng đã đăng nhập
-                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung);
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
                     if (khachHang != null) {
                         gioHang = gioHangRepository.findByKhachhang(khachHang);
                         if (gioHang != null) {
@@ -913,7 +911,7 @@ public class SanPhamCustomerController {
                 }
                 if (nguoiDung != null) {
                     // Lấy giỏ hàng của người dùng đã đăng nhập
-                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung);
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
                     if (khachHang != null) {
                         gioHang = gioHangRepository.findByKhachhang(khachHang);
                         if (gioHang != null) {

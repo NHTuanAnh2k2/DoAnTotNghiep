@@ -48,6 +48,8 @@ public class DangNhapController {
     @Autowired
     public UserManager userManager;
 
+    public List<TaiKhoanTokenInfo> taiKhoanTokenInfos=new ArrayList<>();
+
     @PostMapping("/dangnhap")
     public String dangnhap(Model model,
                            HttpSession session,
@@ -71,10 +73,10 @@ public class DangNhapController {
                 Integer userId = nd.getId();
                 TaiKhoanTokenInfo taiKhoanTokenInfo = new TaiKhoanTokenInfo(userId, token);
                 // Lấy danh sách token từ session và thêm mới
-                List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
-                if (taiKhoanTokenInfos == null) {
-                    taiKhoanTokenInfos = new ArrayList<>();
-                }
+//                List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
+//                if (taiKhoanTokenInfos == null) {
+//                    taiKhoanTokenInfos = new ArrayList<>();
+//                }
                 taiKhoanTokenInfos.add(taiKhoanTokenInfo);
                 session.setAttribute("taiKhoanTokenInfos", taiKhoanTokenInfos);
                 session.setAttribute("token", token);
