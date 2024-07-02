@@ -3039,7 +3039,7 @@ tabindex="0">
                                         <a onclick="apdungvoucher('http://localhost:8080/ban-hang-tai-quay/ap-dung-voucher/${hd.id}')" data-bs-dismiss="modal" >
                                             Áp dụng
                                                           </a>
-                                        </div>
+                                        </div>S
                                     </div>
                                 </div>
                             </div>
@@ -3057,33 +3057,38 @@ tabindex="0">
                     return a.json();
                 })
                 .then(function (b) {
+                    if (tongTienDon >= b.dontoithieu) {
+                        if (b.id != null) {
+                            if (b.loaiphieu == true) {
+                                // phiếu %
+                                if (b.giatrigiam * (tongTienDon / 100) > b.giatrigiamtoida) {
+                                    TienGiamDon = b.giatrigiamtoida;
+                                } else {
+                                    TienGiamDon = b.giatrigiam * (tongTienDon / 100);
+                                }
 
-                    if (b.id != null) {
-                        if (b.loaiphieu == true) {
-                            // phiếu %
-                            if (b.giatrigiam * (tongTienDon / 100) > b.giatrigiamtoida) {
-                                TienGiamDon = b.giatrigiamtoida;
                             } else {
-                                TienGiamDon = b.giatrigiam * (tongTienDon / 100);
+                                // phiếu vnđ
+                                TienGiamDon = b.giatrigiam;
                             }
-
+                            tienkhachthanhtoan = tongTienDon - TienGiamDon + shipToanCuc;
                         } else {
-                            // phiếu vnđ
-                            TienGiamDon = b.giatrigiam;
+                            tienkhachthanhtoan = tongTienDon + shipToanCuc;
                         }
-                        tienkhachthanhtoan = tongTienDon - TienGiamDon + shipToanCuc;
-                    } else {
-                        tienkhachthanhtoan = tongTienDon + shipToanCuc;
-                    }
-                    // console.log("tiền tệ")
-                    // console.log('tiền ban đầu:' + tongTienDon)
-                    // console.log('tiền giảm :' + TienGiamDon)
-                    // console.log('tiền tổng thanh toán:' + tienkhachthanhtoan)
-                    document.getElementById('maGiamFill').innerHTML = b.macode;
-                    document.getElementById('giamgia').innerHTML = TienGiamDon.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-                    document.getElementById('tongThanhToan').innerHTML = tienkhachthanhtoan.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                        // console.log("tiền tệ")
+                        // console.log('tiền ban đầu:' + tongTienDon)
+                        // console.log('tiền giảm :' + TienGiamDon)
+                        // console.log('tiền tổng thanh toán:' + tienkhachthanhtoan)
+                        thongbao('Áp dụng thành công','success')
+                        document.getElementById('maGiamFill').innerHTML = b.macode;
+                        document.getElementById('giamgia').innerHTML = TienGiamDon.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                        document.getElementById('tongThanhToan').innerHTML = (tienkhachthanhtoan - shipToanCuc).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 
+                    } else {
+                        thongbao('Hóa đơn chưa đạt đủ số tiền tối thiểu!', 'warning');
+                    }
                 })
+
         }
     </script>
     <!-- chạy lại cdn bootstrap -->
