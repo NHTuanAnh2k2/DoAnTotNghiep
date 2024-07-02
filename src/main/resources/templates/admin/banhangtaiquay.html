@@ -356,7 +356,7 @@
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                       
+
                                     </div>
                                     <nav class="navbar bg-body-tertiary">
                                         <div class="container-fluid">
@@ -608,10 +608,10 @@
                                     <input type="text" class="form-control" placeholder="Nhập họ và tên" id="TTTK_ten"
                                         th:field="*{ten}">
                                 </p>
-                                <i style="color: red; size: 1px;" id="TTTK_ten_regex" ></i>
+                                <i style="color: red; size: 1px;" id="TTTK_ten_regex"></i>
                                 <p>
-                                    <input type="text" class="form-control" placeholder="Nhập số điện thoại" id="TTTK_sdt"
-                                        th:field="*{sdt}">
+                                    <input type="text" class="form-control" placeholder="Nhập số điện thoại"
+                                        id="TTTK_sdt" th:field="*{sdt}">
                                 </p>
                                 <i style="color: red;" id="TTTK_sdt_regex"></i>
                                 <p>
@@ -619,22 +619,30 @@
                                         th:field="*{email}">
                                 </p>
                                 <i style="color: red;" id="TTTK_email_regex"></i>
-                                <p class="d-flex">
-                                    <select class="form-select form-select-sm mb-3" id="city" th:field="*{tinh}">
-                                        <option value="chọn tỉnh" th:text="*{tinh}" selected>
-                                            Chọn tỉnh thành</option>
-                                    </select>
-                                    <i style="color: red;" id="TTTK_city_regex"></i>
-                                    <select class="form-select form-select-sm mb-3" id="district" th:field="*{huyen}">
-                                        <option value="chọn huyện" th:text="*{huyen}" selected>Chọn quận huyện</option>
-                                    </select>
-                                    <i style="color: red;" id="TTTK_district_regex"></i>
-                                    <select class="form-select form-select-sm mb-3" id="ward" th:field="*{xa}">
-                                        <option value="chọn xã" th:text="*{xa}" selected>
-                                            Chọn phường xã</option>
-                                    </select>
-                                    <i style="color: red;" id="TTTK_ward_regex"></i>
-                                </p>
+                                <div class="d-flex">
+                                    <div class="col-md-4">
+                                        <select class="form-select form-select-sm mb-3" id="city" th:field="*{tinh}">
+                                            <option value="chọn tỉnh" th:text="*{tinh}" selected>
+                                                Chọn tỉnh thành</option>
+                                        </select>
+                                        <i style="color: red;" id="TTTK_city_regex"></i>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select class="form-select form-select-sm mb-3" id="district"
+                                            th:field="*{huyen}">
+                                            <option value="chọn huyện" th:text="*{huyen}" selected>Chọn quận huyện
+                                            </option>
+                                        </select>
+                                        <i style="color: red;" id="TTTK_district_regex"></i>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select class="form-select form-select-sm mb-3" id="ward" th:field="*{xa}">
+                                            <option value="chọn xã" th:text="*{xa}" selected>
+                                                Chọn phường xã</option>
+                                        </select>
+                                        <i style="color: red;" id="TTTK_ward_regex"></i>
+                                    </div>
+                                </div>
                                 <p>
                                     <textarea class="form-control" placeholder="Số nhà/đường" id="TTTK_diachi"
                                         th:field="*{diachi}"></textarea>
@@ -704,10 +712,9 @@
                         </svg>
                         Chọn tài khoản
                     </button>
-                    <button type="button" class="btn ms-1" data-bs-toggle="modal" 
-                    data-bs-target="#exampleModal"
-                    style="background-color: rgb(42, 197, 249);color: white">+Thêm khách
-                    hàng</button>
+                    <button type="button" class="btn ms-1" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                        style="background-color: rgb(42, 197, 249);color: white">+Thêm khách
+                        hàng</button>
 
                 </div>
                 <hr>
@@ -3743,14 +3750,14 @@ tabindex="0">
             } else {
                 document.getElementById('TTTK_ward_regex').innerHTML = '';
             }
-            
+
             // Nếu có lỗi, ngăn chặn form không submit
             if (error) {
                 return false;
             }
 
             // Nếu không có lỗi, cho phép form submit
-            thongbao('Thêm thành công!','success')
+            thongbao('Thêm thành công!', 'success')
             return true;
         }
 
