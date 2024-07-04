@@ -127,6 +127,21 @@ public class ThongKeImpl implements ThongKeService {
     }
 
     @Override
+    public List<Object[]> dayex() {
+        return dao.dayex();
+    }
+
+    @Override
+    public List<Object[]> thangex() {
+        return dao.thangex();
+    }
+
+    @Override
+    public List<Object[]> namex() {
+        return dao.namex();
+    }
+
+    @Override
     public Map<String, Object> khoangngayData() {
         // Trả về dữ liệu tùy chỉnh
         Map<String, Object> data = new HashMap<>();

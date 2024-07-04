@@ -205,33 +205,27 @@ public interface ThongKeRepository extends JpaRepository<HoaDon, Integer> {
             "ORDER BY ct.sanphamchitiet.soluong ASC")
     List<Object[]> soLuongTon();
     @Query(value = "WITH DateRange AS (\n" +
-            "    SELECT CAST(GETDATE() - 6 AS DATE) AS SaleDay\n" +
-            "    UNION ALL\n" +
-            "    SELECT DATEADD(DAY, 1, SaleDay)\n" +
-            "    FROM DateRange\n" +
-            "    WHERE SaleDay < CAST(GETDATE() AS DATE)\n" +
+            "SELECT CAST(GETDATE() - 6 AS DATE) AS SaleDay\n" +
+            "UNION ALL\n" +
+            "SELECT DATEADD(DAY, 1, SaleDay)\n" +
+            "FROM DateRange\n" +
+            "WHERE SaleDay < CAST(GETDATE() AS DATE)\n" +
             ")\n" +
-            "\n" +
-            "-- Truy vấn dữ liệu bán hàng và kết hợp với DateRange\n" +
-            "SELECT \n" +
-            "    d.SaleDay,\n" +
-            "    COALESCE(SUM(sales.SoLuong), 0) AS total_quantity_sold,\n" +
-            "    COALESCE(COUNT(sales.IdHoaDon), 0) AS total_invoices\n" +
-            "FROM \n" +
-            "    DateRange d\n" +
+            "SELECT d.SaleDay,\n" +
+            "       COALESCE(SUM(sales.SoLuong), 0) AS total_quantity_sold,\n" +
+            "       COALESCE(COUNT(sales.IdHoaDon), 0) AS total_invoices\n" +
+            "FROM DateRange d\n" +
             "LEFT JOIN \n" +
             "    (SELECT CAST(hd.LanCapNhatCuoi AS DATE) AS sale_day, ct.SoLuong, hd.Id AS IdHoaDon\n" +
             "     FROM HoaDon hd\n" +
             "     JOIN HoaDonChiTiet ct ON hd.Id = ct.IdHoaDon\n" +
-            "     WHERE hd.LanCapNhatCuoi >= DATEADD(DAY, -7, CAST(GETDATE() AS DATE))\n" +
-            "       AND hd.LanCapNhatCuoi < CAST(GETDATE() AS DATE)\n" +
-            "       AND hd.TrangThai = 5) AS sales\n" +
-            "ON d.SaleDay = sales.sale_day\n" +
-            "GROUP BY \n" +
-            "    d.SaleDay\n" +
-            "ORDER BY \n" +
-            "    d.SaleDay\n" +
-            "OPTION (MAXRECURSION 7);",nativeQuery = true)
+            "     WHERE hd.LanCapNhatCuoi >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE))\n" +
+            "\t\tAND hd.LanCapNhatCuoi < DATEADD(DAY, 1, CAST(GETDATE() AS DATE))\n" +
+            "\t\tAND hd.TrangThai = 5) AS sales\n" +
+            "     ON d.SaleDay = sales.sale_day\n" +
+            "     GROUP BY d.SaleDay\n" +
+            "     ORDER BY d.SaleDay\n" +
+            "     OPTION (MAXRECURSION 7);",nativeQuery = true)
     List<Object[]> dayData();
     @Query(value ="WITH MonthRange AS (\n" +
             "    SELECT FORMAT(DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()) - 11, 0), 'yyyy-MM') AS SaleMonth\n" +
@@ -288,6 +282,100 @@ public interface ThongKeRepository extends JpaRepository<HoaDon, Integer> {
             "ORDER BY \n" +
             "    y.SaleYear;\n",nativeQuery = true)
     List<Object[]> namData();
+
+    @Query(value = "WITH DateRange AS (\n" +
+            "    SELECT CAST(GETDATE() - 6 AS DATE) AS SaleDay\n" +
+            "    UNION ALL\n" +
+            "    SELECT DATEADD(DAY, 1, SaleDay)\n" +
+            "    FROM DateRange\n" +
+            "    WHERE SaleDay < CAST(GETDATE() AS DATE)\n" +
+            ")\n" +
+            "SELECT d.SaleDay,\n" +
+            "       COALESCE(SUM(sales.total_quantity_sold), 0) AS total_quantity_sold,\n" +
+            "       COALESCE(SUM(sales.total_money), 0) AS total_money_sold\n" +
+            "FROM DateRange d\n" +
+            "LEFT JOIN \n" +
+            "    (SELECT CAST(hd.LanCapNhatCuoi AS DATE) AS sale_day,\n" +
+            "            SUM(ct.SoLuong) AS total_quantity_sold,\n" +
+            "            SUM(hd.TongTien) AS total_money,\n" +
+            "            hd.Id AS IdHoaDon\n" +
+            "     FROM HoaDon hd\n" +
+            "     JOIN HoaDonChiTiet ct ON hd.Id = ct.IdHoaDon\n" +
+            "     WHERE hd.LanCapNhatCuoi >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE))\n" +
+            "           AND hd.LanCapNhatCuoi < DATEADD(DAY, 1, CAST(GETDATE() AS DATE))\n" +
+            "           AND hd.TrangThai = 5\n" +
+            "     GROUP BY hd.Id, CAST(hd.LanCapNhatCuoi AS DATE)\n" +
+            "    ) AS sales\n" +
+            "    ON d.SaleDay = sales.sale_day\n" +
+            "GROUP BY d.SaleDay\n" +
+            "ORDER BY d.SaleDay\n" +
+            "OPTION (MAXRECURSION 7);\n",nativeQuery = true)
+    List<Object[]> dayex();
+    @Query(value = "WITH MonthRange AS (\n" +
+            "    SELECT FORMAT(DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()) - 11, 0), 'yyyy-MM') AS SaleMonth\n" +
+            "    UNION ALL\n" +
+            "    SELECT FORMAT(DATEADD(MONTH, 1, CAST(SaleMonth + '-01' AS DATE)), 'yyyy-MM')\n" +
+            "    FROM MonthRange\n" +
+            "    WHERE DATEADD(MONTH, 1, CAST(SaleMonth + '-01' AS DATE)) < GETDATE()\n" +
+            ")\n" +
+            "\n" +
+            "SELECT \n" +
+            "    m.SaleMonth,\n" +
+            "    COALESCE(SUM(sales.total_quantity_sold), 0) AS total_quantity_sold,\n" +
+            "    COALESCE(SUM(sales.total_money), 0) AS total_money_sold\n" +
+            "FROM \n" +
+            "    MonthRange m\n" +
+            "LEFT JOIN \n" +
+            "    (SELECT FORMAT(DATEADD(MONTH, DATEDIFF(MONTH, 0, hd.LanCapNhatCuoi), 0), 'yyyy-MM') AS SaleMonth,\n" +
+            "            SUM(ct.SoLuong) AS total_quantity_sold,\n" +
+            "            SUM(hd.TongTien) AS total_money,\n" +
+            "            hd.Id AS IdHoaDon\n" +
+            "     FROM HoaDon hd\n" +
+            "     JOIN HoaDonChiTiet ct ON hd.Id = ct.IdHoaDon\n" +
+            "     WHERE hd.LanCapNhatCuoi >= DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()) - 12, 0)\n" +
+            "           AND hd.LanCapNhatCuoi < GETDATE()\n" +
+            "           AND hd.TrangThai = 5\n" +
+            "     GROUP BY hd.Id, FORMAT(DATEADD(MONTH, DATEDIFF(MONTH, 0, hd.LanCapNhatCuoi), 0), 'yyyy-MM')\n" +
+            "    ) AS sales\n" +
+            "ON m.SaleMonth = sales.SaleMonth\n" +
+            "GROUP BY \n" +
+            "    m.SaleMonth\n" +
+            "ORDER BY \n" +
+            "    m.SaleMonth\n" +
+            "OPTION (MAXRECURSION 0);\n",nativeQuery = true)
+    List<Object[]> thangex();
+    @Query(value = "WITH YearRange AS (\n" +
+            "    SELECT DATEPART(YEAR, DATEADD(YEAR, -4, GETDATE())) AS SaleYear\n" +
+            "    UNION ALL\n" +
+            "    SELECT SaleYear + 1\n" +
+            "    FROM YearRange\n" +
+            "    WHERE SaleYear < DATEPART(YEAR, GETDATE())\n" +
+            ")\n" +
+            "\n" +
+            "SELECT \n" +
+            "    y.SaleYear,\n" +
+            "    COALESCE(SUM(sales.total_quantity_sold), 0) AS total_quantity_sold,\n" +
+            "    COALESCE(SUM(sales.total_money), 0) AS total_money_sold\n" +
+            "FROM \n" +
+            "    YearRange y\n" +
+            "LEFT JOIN \n" +
+            "    (SELECT DATEPART(YEAR, hd.LanCapNhatCuoi) AS SaleYear,\n" +
+            "            SUM(ct.SoLuong) AS total_quantity_sold,\n" +
+            "            SUM(hd.TongTien) AS total_money,\n" +
+            "            hd.Id AS IdHoaDon\n" +
+            "     FROM HoaDon hd\n" +
+            "     JOIN HoaDonChiTiet ct ON hd.Id = ct.IdHoaDon\n" +
+            "     WHERE hd.LanCapNhatCuoi >= DATEADD(YEAR, -5, GETDATE())\n" +
+            "           AND hd.LanCapNhatCuoi < GETDATE()\n" +
+            "           AND hd.TrangThai = 5\n" +
+            "     GROUP BY hd.Id, DATEPART(YEAR, hd.LanCapNhatCuoi)\n" +
+            "    ) AS sales\n" +
+            "ON y.SaleYear = sales.SaleYear\n" +
+            "GROUP BY \n" +
+            "    y.SaleYear\n" +
+            "ORDER BY \n" +
+            "    y.SaleYear;\n",nativeQuery = true)
+    List<Object[]> namex();
 
     @Query(value = "WITH DateRange AS (" +
             "    SELECT CAST(:startDate AS DATE) AS SaleDay" +
