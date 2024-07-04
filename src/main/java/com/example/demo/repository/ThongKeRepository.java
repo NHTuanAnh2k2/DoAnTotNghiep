@@ -81,8 +81,10 @@ public interface ThongKeRepository extends JpaRepository<HoaDon, Integer> {
 
     @Query(value = "SELECT \n" +
             "    CASE \n" +
-            "        WHEN COALESCE(SUM(CASE WHEN MONTH(hd.lancapnhatcuoi) = MONTH(DATEADD(MONTH, -1, GETDATE())) THEN hd.TongTien ELSE 0 END), 0) = 0 \n" +
-            "            THEN 100\n" +
+            "        WHEN COALESCE(SUM(CASE WHEN MONTH(hd.lancapnhatcuoi) = MONTH(GETDATE()) THEN hd.TongTien ELSE 0 END), 0) =\n" +
+            "             COALESCE(SUM(CASE WHEN MONTH(hd.lancapnhatcuoi) = MONTH(DATEADD(MONTH, -1, GETDATE())) THEN hd.TongTien ELSE 0 END), 0) THEN 100\n" +
+            "        WHEN COALESCE(SUM(CASE WHEN MONTH(hd.lancapnhatcuoi) = MONTH(GETDATE()) THEN hd.TongTien ELSE 0 END), 0) = 0 THEN 0\n" +
+            "        WHEN COALESCE(SUM(CASE WHEN MONTH(hd.lancapnhatcuoi) = MONTH(DATEADD(MONTH, -1, GETDATE())) THEN hd.TongTien ELSE 0 END), 0) = 0 THEN 0\n" +
             "        ELSE\n" +
             "            CAST(ROUND(((SUM(CASE WHEN MONTH(hd.lancapnhatcuoi) = MONTH(GETDATE()) THEN hd.TongTien ELSE 0 END) /\n" +
             "            SUM(CASE WHEN MONTH(hd.lancapnhatcuoi) = MONTH(DATEADD(MONTH, -1, GETDATE())) THEN hd.TongTien ELSE 0 END)) - 1) * 100, 0) AS INT)\n" +
@@ -94,10 +96,12 @@ public interface ThongKeRepository extends JpaRepository<HoaDon, Integer> {
             "    AND YEAR(hd.lancapnhatcuoi) = YEAR(GETDATE())\n" +
             "    AND hd.TrangThai = 5;\n",nativeQuery = true)
     int ptdtt();
-    @Query(value = "\tSELECT\n" +
+    @Query(value = "SELECT\n" +
             "    CASE\n" +
-            "        WHEN COALESCE(SUM(CASE WHEN CAST(hd.lancapnhatcuoi AS DATE) = CAST(GETDATE() AS DATE) THEN hd.TongTien ELSE 0 END), 0) = 0 THEN 100\n" +
-            "        WHEN COALESCE(SUM(CASE WHEN CAST(hd.lancapnhatcuoi AS DATE) = CAST(DATEADD(DAY, -1, GETDATE()) AS DATE) THEN hd.TongTien ELSE 0 END), 0) = 0 THEN 100\n" +
+            "        WHEN COALESCE(SUM(CASE WHEN CAST(hd.lancapnhatcuoi AS DATE) = CAST(GETDATE() AS DATE) THEN hd.TongTien ELSE 0 END), 0) =\n" +
+            "             COALESCE(SUM(CASE WHEN CAST(hd.lancapnhatcuoi AS DATE) = CAST(DATEADD(DAY, -1, GETDATE()) AS DATE) THEN hd.TongTien ELSE 0 END), 0) THEN 100\n" +
+            "        WHEN COALESCE(SUM(CASE WHEN CAST(hd.lancapnhatcuoi AS DATE) = CAST(GETDATE() AS DATE) THEN hd.TongTien ELSE 0 END), 0) = 0 THEN 0\n" +
+            "        WHEN COALESCE(SUM(CASE WHEN CAST(hd.lancapnhatcuoi AS DATE) = CAST(DATEADD(DAY, -1, GETDATE()) AS DATE) THEN hd.TongTien ELSE 0 END), 0) = 0 THEN 0\n" +
             "        ELSE\n" +
             "            CAST(ROUND(((SUM(CASE WHEN CAST(hd.lancapnhatcuoi AS DATE) = CAST(GETDATE() AS DATE) THEN hd.TongTien ELSE 0 END) /\n" +
             "            SUM(CASE WHEN CAST(hd.lancapnhatcuoi AS DATE) = CAST(DATEADD(DAY, -1, GETDATE()) AS DATE) THEN hd.TongTien ELSE 0 END)) - 1) * 100, 0) AS INT)\n" +
@@ -106,12 +110,14 @@ public interface ThongKeRepository extends JpaRepository<HoaDon, Integer> {
             "    HoaDon hd\n" +
             "WHERE\n" +
             "    (CAST(hd.lancapnhatcuoi AS DATE) = CAST(GETDATE() AS DATE) OR CAST(hd.lancapnhatcuoi AS DATE) = CAST(DATEADD(DAY, -1, GETDATE()) AS DATE))\n" +
-            "    AND hd.TrangThai = 5;", nativeQuery = true)
+            "    AND hd.TrangThai = 5;\n", nativeQuery = true)
     int ptdtn();
     @Query(value = "SELECT \n" +
             "    CASE \n" +
-            "        WHEN COALESCE(SUM(CASE WHEN CAST(hd.LanCapNhatCuoi AS DATE) = CAST(GETDATE() AS DATE) THEN ct.SoLuong ELSE 0 END), 0) = 0 \n" +
-            "            THEN 100\n" +
+            "        WHEN COALESCE(SUM(CASE WHEN CAST(hd.LanCapNhatCuoi AS DATE) = CAST(GETDATE() AS DATE) THEN ct.SoLuong ELSE 0 END), 0) =\n" +
+            "             COALESCE(SUM(CASE WHEN CAST(hd.LanCapNhatCuoi AS DATE) = CAST(DATEADD(DAY, -1, GETDATE()) AS DATE) THEN ct.SoLuong ELSE 0 END), 0) THEN 100\n" +
+            "        WHEN COALESCE(SUM(CASE WHEN CAST(hd.LanCapNhatCuoi AS DATE) = CAST(GETDATE() AS DATE) THEN ct.SoLuong ELSE 0 END), 0) = 0 THEN 0\n" +
+            "        WHEN COALESCE(SUM(CASE WHEN CAST(hd.LanCapNhatCuoi AS DATE) = CAST(DATEADD(DAY, -1, GETDATE()) AS DATE) THEN ct.SoLuong ELSE 0 END), 0) = 0 THEN 0\n" +
             "        ELSE\n" +
             "            CAST(ROUND(((SUM(CASE WHEN CAST(hd.LanCapNhatCuoi AS DATE) = CAST(GETDATE() AS DATE) THEN ct.SoLuong ELSE 0 END) /\n" +
             "            SUM(CASE WHEN CAST(hd.LanCapNhatCuoi AS DATE) = CAST(DATEADD(DAY, -1, GETDATE()) AS DATE) THEN ct.SoLuong ELSE 0 END)) - 1) * 100, 0) AS INT)\n" +
@@ -122,12 +128,14 @@ public interface ThongKeRepository extends JpaRepository<HoaDon, Integer> {
             "    HoaDonChiTiet ct ON hd.Id = ct.IdHoaDon\n" +
             "WHERE \n" +
             "    (CAST(hd.LanCapNhatCuoi AS DATE) = CAST(GETDATE() AS DATE) OR CAST(hd.LanCapNhatCuoi AS DATE) = CAST(DATEADD(DAY, -1, GETDATE()) AS DATE))\n" +
-            "    AND hd.TrangThai = 5;",nativeQuery = true)
+            "    AND hd.TrangThai = 5;\n",nativeQuery = true)
     int ptspn();
     @Query(value = "SELECT \n" +
             "    CASE \n" +
-            "        WHEN COALESCE(SUM(CASE WHEN MONTH(hd.LanCapNhatCuoi) = MONTH(GETDATE()) THEN ct.SoLuong ELSE 0 END), 0) = 0 \n" +
-            "            THEN 100\n" +
+            "        WHEN COALESCE(SUM(CASE WHEN MONTH(hd.LanCapNhatCuoi) = MONTH(GETDATE()) THEN ct.SoLuong ELSE 0 END), 0) =\n" +
+            "             COALESCE(SUM(CASE WHEN MONTH(hd.LanCapNhatCuoi) = MONTH(DATEADD(MONTH, -1, GETDATE())) THEN ct.SoLuong ELSE 0 END), 0) THEN 100\n" +
+            "        WHEN COALESCE(SUM(CASE WHEN MONTH(hd.LanCapNhatCuoi) = MONTH(GETDATE()) THEN ct.SoLuong ELSE 0 END), 0) = 0 THEN 0\n" +
+            "        WHEN COALESCE(SUM(CASE WHEN MONTH(hd.LanCapNhatCuoi) = MONTH(DATEADD(MONTH, -1, GETDATE())) THEN ct.SoLuong ELSE 0 END), 0) = 0 THEN 0\n" +
             "        ELSE\n" +
             "            CAST(ROUND(((SUM(CASE WHEN MONTH(hd.LanCapNhatCuoi) = MONTH(GETDATE()) THEN ct.SoLuong ELSE 0 END) /\n" +
             "            SUM(CASE WHEN MONTH(hd.LanCapNhatCuoi) = MONTH(DATEADD(MONTH, -1, GETDATE())) THEN ct.SoLuong ELSE 0 END)) - 1) * 100, 0) AS INT)\n" +
@@ -139,12 +147,14 @@ public interface ThongKeRepository extends JpaRepository<HoaDon, Integer> {
             "WHERE \n" +
             "    (MONTH(hd.LanCapNhatCuoi) = MONTH(GETDATE()) OR MONTH(hd.LanCapNhatCuoi) = MONTH(DATEADD(MONTH, -1, GETDATE())))\n" +
             "    AND YEAR(hd.LanCapNhatCuoi) = YEAR(GETDATE())\n" +
-            "    AND hd.TrangThai = 5;",nativeQuery = true)
+            "    AND hd.TrangThai = 5;\n",nativeQuery = true)
     int ptspt();
     @Query(value = "SELECT \n" +
             "    CASE \n" +
-            "        WHEN COALESCE(SUM(CASE WHEN CAST(hd.LanCapNhatCuoi AS DATE) = CAST(GETDATE() AS DATE) THEN 1 ELSE 0 END), 0) = 0 \n" +
-            "            THEN 100\n" +
+            "        WHEN COALESCE(SUM(CASE WHEN CAST(hd.LanCapNhatCuoi AS DATE) = CAST(GETDATE() AS DATE) THEN 1 ELSE 0 END), 0) =\n" +
+            "             COALESCE(SUM(CASE WHEN CAST(hd.LanCapNhatCuoi AS DATE) = CAST(DATEADD(DAY, -1, GETDATE()) AS DATE) THEN 1 ELSE 0 END), 0) THEN 100\n" +
+            "        WHEN COALESCE(SUM(CASE WHEN CAST(hd.LanCapNhatCuoi AS DATE) = CAST(GETDATE() AS DATE) THEN 1 ELSE 0 END), 0) = 0 THEN 0\n" +
+            "        WHEN COALESCE(SUM(CASE WHEN CAST(hd.LanCapNhatCuoi AS DATE) = CAST(DATEADD(DAY, -1, GETDATE()) AS DATE) THEN 1 ELSE 0 END), 0) = 0 THEN 0\n" +
             "        ELSE\n" +
             "            CAST(ROUND(((SUM(CASE WHEN CAST(hd.LanCapNhatCuoi AS DATE) = CAST(GETDATE() AS DATE) THEN 1 ELSE 0 END) /\n" +
             "            SUM(CASE WHEN CAST(hd.LanCapNhatCuoi AS DATE) = CAST(DATEADD(DAY, -1, GETDATE()) AS DATE) THEN 1 ELSE 0 END)) - 1) * 100, 0) AS INT)\n" +
@@ -153,12 +163,14 @@ public interface ThongKeRepository extends JpaRepository<HoaDon, Integer> {
             "    HoaDon hd\n" +
             "WHERE \n" +
             "    (CAST(hd.LanCapNhatCuoi AS DATE) = CAST(GETDATE() AS DATE) OR CAST(hd.LanCapNhatCuoi AS DATE) = CAST(DATEADD(DAY, -1, GETDATE()) AS DATE))\n" +
-            "    AND hd.TrangThai = 5;",nativeQuery = true)
+            "    AND hd.TrangThai = 5;\n",nativeQuery = true)
     int pthdn();
     @Query(value = "SELECT \n" +
             "    CASE \n" +
-            "        WHEN COALESCE(SUM(CASE WHEN MONTH(hd.LanCapNhatCuoi) = MONTH(GETDATE()) THEN 1 ELSE 0 END), 0) = 0 \n" +
-            "            THEN 100\n" +
+            "        WHEN COALESCE(SUM(CASE WHEN MONTH(hd.LanCapNhatCuoi) = MONTH(GETDATE()) THEN 1 ELSE 0 END), 0) =\n" +
+            "             COALESCE(SUM(CASE WHEN MONTH(hd.LanCapNhatCuoi) = MONTH(DATEADD(MONTH, -1, GETDATE())) THEN 1 ELSE 0 END), 0) THEN 100\n" +
+            "        WHEN COALESCE(SUM(CASE WHEN MONTH(hd.LanCapNhatCuoi) = MONTH(GETDATE()) THEN 1 ELSE 0 END), 0) = 0 THEN 0\n" +
+            "        WHEN COALESCE(SUM(CASE WHEN MONTH(hd.LanCapNhatCuoi) = MONTH(DATEADD(MONTH, -1, GETDATE())) THEN 1 ELSE 0 END), 0) = 0 THEN 0\n" +
             "        ELSE\n" +
             "            CAST(ROUND(((SUM(CASE WHEN MONTH(hd.LanCapNhatCuoi) = MONTH(GETDATE()) THEN 1 ELSE 0 END) /\n" +
             "            SUM(CASE WHEN MONTH(hd.LanCapNhatCuoi) = MONTH(DATEADD(MONTH, -1, GETDATE())) THEN 1 ELSE 0 END)) - 1) * 100, 0) AS INT)\n" +
@@ -168,9 +180,12 @@ public interface ThongKeRepository extends JpaRepository<HoaDon, Integer> {
             "WHERE \n" +
             "    (MONTH(hd.LanCapNhatCuoi) = MONTH(GETDATE()) OR MONTH(hd.LanCapNhatCuoi) = MONTH(DATEADD(MONTH, -1, GETDATE())))\n" +
             "    AND YEAR(hd.LanCapNhatCuoi) = YEAR(GETDATE())\n" +
-            "    AND hd.TrangThai = 5;",nativeQuery = true)
+            "    AND hd.TrangThai = 5;\n",nativeQuery = true)
     int pthdt();
-    @Query(value = "SELECT COALESCE(SUM(ct.SoLuong), 0) FROM HoaDonChiTiet ct  Join HoaDon h on ct.IdHoaDon = h.Id WHERE MONTH(h.lancapnhatcuoi) = MONTH(GETDATE()) AND YEAR(h.lancapnhatcuoi) = YEAR(GETDATE()) AND h.trangthai = 5",nativeQuery = true)
+    @Query(value = "SELECT COALESCE(SUM(ct.SoLuong), 0) \n" +
+            "FROM HoaDonChiTiet ct  Join HoaDon h on ct.IdHoaDon = h.Id \n" +
+            "WHERE MONTH(h.lancapnhatcuoi) = MONTH(GETDATE()) AND \n" +
+            "YEAR(h.lancapnhatcuoi) = YEAR(GETDATE()) AND h.trangthai = 5",nativeQuery = true)
     int soLuongsp();
 
     @Query(value ="SELECT sct.MaSanPhamChiTiet, sp.TenSanPham + ' [' + kc.Ten + ' - ' + ms.Ten + ']', sct.GiaTien , COALESCE(SUM(ct.SoLuong), 0)\n" +
