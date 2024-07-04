@@ -30,6 +30,9 @@ public interface ThongKeService {
     public List<Object[]> dayData();
     public List<Object[]> thangData();
     public List<Object[]> namData();
+    public List<Object[]> dayex();
+    public List<Object[]> thangex();
+    public List<Object[]> namex();
     public Map<String, Object> khoangngayData();
     public List<Object[]> khoangngay(Date startDate, Date endDate);
 
