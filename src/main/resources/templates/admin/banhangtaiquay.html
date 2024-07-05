@@ -194,7 +194,7 @@
                     </svg>
                     Sản phẩm
                 </h5>
-                <a class="btn btn-dark" style="margin-left: 710px">
+                <a class="btn btn-dark" style="margin-left: 710px" id="start-scan">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                         class="bi bi-qr-code-scan" viewBox="0 0 16 16">
                         <path
@@ -228,6 +228,25 @@
                 </div>
             </div>
             <!-- các modal -->
+            <!-- modal qr -->
+            <div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="qrModalLabel"></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div style="display: flex; justify-content: center;">
+                                <video id="video" width="100%" height="100%" style="border: 1px solid gray"></video>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- modal tràn chờ -->
             <div class="modal fade" id="trancho" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                 aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -3079,7 +3098,7 @@ tabindex="0">
                         // console.log('tiền ban đầu:' + tongTienDon)
                         // console.log('tiền giảm :' + TienGiamDon)
                         // console.log('tiền tổng thanh toán:' + tienkhachthanhtoan)
-                        thongbao('Áp dụng thành công','success')
+                        thongbao('Áp dụng thành công', 'success')
                         document.getElementById('maGiamFill').innerHTML = b.macode;
                         document.getElementById('giamgia').innerHTML = TienGiamDon.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                         document.getElementById('tongThanhToan').innerHTML = (tienkhachthanhtoan - shipToanCuc).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
@@ -3768,6 +3787,46 @@ tabindex="0">
 
     </script>
 
+    <script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.18.6/umd/index.min.js"></script>
+    <script>
+        window.addEventListener('load', function () {
+            let selectedDeviceId;
+            const codeReader = new ZXing.BrowserQRCodeReader();
+            const resultElement = document.getElementById('result-content');
+            const startScanButton = document.getElementById('start-scan');
+            const modalElement = document.getElementById('qrModal');
+            const modal = new bootstrap.Modal(modalElement);
+
+            startScanButton.addEventListener('click', () => {
+                modal.show();
+
+                codeReader.getVideoInputDevices()
+                    .then((videoInputDevices) => {
+                        selectedDeviceId = videoInputDevices[0].deviceId;
+                        codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
+                            if (result) {
+                                alert("QR Code Result: " + result.text);
+
+                                // Stop the camera and hide the modal
+                                codeReader.reset();
+                                modal.hide();
+                            }
+                            if (err && !(err instanceof ZXing.NotFoundException)) {
+                                console.error(err);
+                            }
+                        });
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
+            });
+
+            // Stop the camera when the modal is closed
+            modalElement.addEventListener('hidden.bs.modal', () => {
+                codeReader.reset();
+            });
+        });
+    </script>
 
 </body>
 

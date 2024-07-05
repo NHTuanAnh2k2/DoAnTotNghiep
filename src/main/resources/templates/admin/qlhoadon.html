@@ -89,6 +89,7 @@
                                     </h3>
                                     <a th:href="@{/hoa-don/ban-hang}"><button style="margin-left: 1000px;"
                                             class="btn btn-success">Tạo mới</button></a>
+
                                     <br>
                                     <hr class="border border-danger border-2 opacity-50">
                                     <form th:action="@{loc}" method="get" th:object="${hdcustom}">
@@ -139,7 +140,8 @@
                                             style="margin-right: 35%; margin-left: 35%;">
                                             <button type="submit" class="btn btn-success">Tìm kiếm</button>
                                             <button type="reset" class="btn btn-danger">Làm mới</button>
-
+                                            <button type="button" class="btn btn-success" id="start-scan">QR-Hóa
+                                                đơn</button>
                                         </div>
                                     </form>
 
@@ -157,7 +159,25 @@
                 </div>
                 <!-- /.container-fluid -->
             </section>
-
+            <!-- Modal qr hóa đơn-->
+            <div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="qrModalLabel"></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div style="display: flex; justify-content: center;">
+                                <video id="video" width="100%" height="100%" style="border: 1px solid gray"></video>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!--Nội dung chính hóa đơn-->
             <section class="content">
                 <div class="container-fluid">
@@ -335,7 +355,9 @@
                                                             <td th:text="${aStat.index+1}"></td>
                                                             <td th:text="${a.mahoadon}"></td>
                                                             <td th:text="${a.nhanvien.manhanvien}"></td>
-                                                            <td th:text="${a.khachhang==null?'khách lẻ':a.khachhang.nguoidung.hovaten}"></td>
+                                                            <td
+                                                                th:text="${a.khachhang==null?'khách lẻ':a.khachhang.nguoidung.hovaten}">
+                                                            </td>
                                                             <td th:text="${a.sdt==null?'khách lẻ':a.sdt}"></td>
                                                             <td th:text="${a.loaihoadon==true?'online':'tại quầy'}">
                                                             </td>
@@ -478,6 +500,48 @@
     <!-- <script src="../dist/js/demo.js"></script> -->
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="../dist/js/pages/dashboard.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.18.6/umd/index.min.js"></script>
+    <script>
+        window.addEventListener('load', function () {
+            let selectedDeviceId;
+            const codeReader = new ZXing.BrowserQRCodeReader();
+            const resultElement = document.getElementById('result-content');
+            const startScanButton = document.getElementById('start-scan');
+            const modalElement = document.getElementById('qrModal');
+            const modal = new bootstrap.Modal(modalElement);
+
+            startScanButton.addEventListener('click', () => {
+                modal.show();
+
+                codeReader.getVideoInputDevices()
+                    .then((videoInputDevices) => {
+                        selectedDeviceId = videoInputDevices[0].deviceId;
+                        codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
+                            if (result) {
+                                alert("QR Code Result: " + result.text);
+
+                                // Stop the camera and hide the modal
+                                codeReader.reset();
+                                modal.hide();
+                            }
+                            if (err && !(err instanceof ZXing.NotFoundException)) {
+                                console.error(err);
+                            }
+                        });
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
+            });
+
+            // Stop the camera when the modal is closed
+            modalElement.addEventListener('hidden.bs.modal', () => {
+                codeReader.reset();
+            });
+        });
+    </script>
+
 </body>
 
 </html>
