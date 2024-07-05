@@ -13,6 +13,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 
 @JsonIdentityInfo(
@@ -70,6 +72,19 @@ public class SanPhamChiTiet {
     @JoinColumn(name = "iddegiay")
     DeGiay degiay;
 
-    @OneToMany(mappedBy = "sanphamchitiet")
+    @OneToMany(mappedBy = "sanphamchitiet", fetch = FetchType.EAGER)
     List<Anh> anh;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SanPhamChiTiet that = (SanPhamChiTiet) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
