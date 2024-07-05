@@ -194,7 +194,7 @@
                     </svg>
                     Sản phẩm
                 </h5>
-                <a class="btn btn-dark" style="margin-left: 710px" id="start-scan">
+                <button class="btn btn-dark" style="margin-left: 710px" id="start-scan">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                         class="bi bi-qr-code-scan" viewBox="0 0 16 16">
                         <path
@@ -206,7 +206,7 @@
                         <path d="M12 9h2V8h-2z" />
                     </svg>
                     Quét QR Sản phẩm
-                </a>
+                </button>
                 <button class="btn" style="margin-left: 20px;background-color: rgb(249,72,42);color: white"
                     data-bs-toggle="modal" data-bs-target="#modalThemSanPhamHD" id="changeSP">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -732,7 +732,7 @@
                         Chọn tài khoản
                     </button>
                     <button type="button" class="btn ms-1" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                        style="background-color: rgb(42, 197, 249);color: white">+Thêm khách
+                        id="themKHS" style="background-color: rgb(42, 197, 249);color: white">+Thêm khách
                         hàng</button>
 
                 </div>
@@ -859,7 +859,7 @@
                             <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white; padding-top: 10px;"
                                 id="maGiamFill">Chưa có mã giảm phù hợp!</p>
 
-                            <button class="btn btn-light" style="margin-bottom: 20px;" data-bs-toggle="modal"
+                            <button class="btn btn-light" style="margin-bottom: 20px;" data-bs-toggle="modal" id="chonMaGiam"
                                 data-bs-target="#staticBackdrop" onclick="showmagiam()">
                                 Chọn mã giảm</button>
                         </div>
@@ -937,8 +937,10 @@
 
         // JavaScript để mở tab lúc load
         function openInvoice1(evt, invoiceName) {
-
+            document.getElementById('chonMaGiam').disabled = false;
             document.getElementById('changeNV').disabled = false;
+            document.getElementById('start-scan').disabled = false;
+            document.getElementById('themKHS').disabled = false;
             document.getElementById('changeSP').disabled = false;
             document.getElementById('tienmat').disabled = false;
             document.getElementById('chuyenkhoan').disabled = false;
@@ -1076,7 +1078,7 @@ tabindex="0">
 <th>Thao tác</th>
 </tr>
 </thead>
-<tbody>`+ htmlTR + `
+<tbody id="boddydssp">`+ htmlTR + `
 
 </tbody>
 </table>
@@ -1229,6 +1231,9 @@ tabindex="0">
         function openInvoice(evt, invoiceName) {
             document.getElementById('ngaygiaodukiens').innerHTML = "đang tính toán...";
             document.getElementById('changeNV').disabled = false;
+            document.getElementById('chonMaGiam').disabled = false;
+            document.getElementById('start-scan').disabled = false;
+            document.getElementById('themKHS').disabled = false;
             document.getElementById('changeSP').disabled = false;
             document.getElementById('tienmat').disabled = false;
             document.getElementById('chuyenkhoan').disabled = false;
@@ -2786,9 +2791,25 @@ tabindex="0">
         function xacnhanPTTT() {
             document.getElementById('xacnhanthanhtoanhoadon').disabled = false;
             document.getElementById('changeNV').disabled = true;
+            document.getElementById('chonMaGiam').disabled = true;
+            document.getElementById('start-scan').disabled = true;
+            document.getElementById('themKHS').disabled = true;
             document.getElementById('changeSP').disabled = true;
+            var inputs = document.querySelectorAll('#boddydssp input');
+            inputs.forEach(function (input) {
+                input.disabled = true;
+            });
+            var button = document.querySelectorAll('#boddydssp button');
+            button.forEach(function (btn) {
+                btn.disabled = true;
+            });
+            var inputss = document.querySelectorAll('#boddydssp a');
+            inputss.forEach(function (inp) {
+                inp.removeAttribute('href');
+            });
             xacnhanthanhcongcf();
             // disabled hết các nút sau khi xác nhận
+
 
         }
         //xóa bản ghi phương thức thanh toán
@@ -2898,8 +2919,10 @@ tabindex="0">
         }
         //chặn đường dẫn thẻ a
         function handleLinkClick() {
-
+            document.getElementById('start-scan').disabled = false;
+            document.getElementById('themKHS').disabled = false;
             document.getElementById('changeNV').disabled = false;
+            document.getElementById('chonMaGiam').disabled = false;
             document.getElementById('changeSP').disabled = false;
             var checkgiaohang = document.getElementById('checktrasau');
             var actionGiao = document.getElementById('thongtingiaohangform');
@@ -3840,6 +3863,8 @@ tabindex="0">
                 codeReader.reset();
             });
         });
+
+        //chặn tất cả thẻ a khi bấm xác nhận thanh toán
     </script>
 
 </body>
