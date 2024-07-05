@@ -30,9 +30,12 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         String token = getJWTFromRequest(request);
 
         String path = request.getRequestURI();
-        // Bỏ qua các endpoint đăng ký (POST method)
-        if ("/dangky".equals(path) && HttpMethod.POST.matches(request.getMethod())) {
-            System.out.println("CCC");
+        String method = request.getMethod();
+        // Các endpoint cần bỏ qua
+        if (("/dangky".equals(path) && HttpMethod.POST.matches(method)) ||
+                ("/doimatkhau".equals(path) && HttpMethod.POST.matches(method)) ||  // Bỏ qua endpoint đổi mật khẩu
+                ("/quenmatkhau".equals(path) && HttpMethod.POST.matches(method))) {  // Bỏ qua endpoint quên mật khẩu
+            logger.info("Skipping filter for specific endpoints");
             filterChain.doFilter(request, response);
             return;
         }

@@ -109,7 +109,7 @@
                             <p><a th:href="@{/hosokhachhang}" class="text-decoration-none"
                                   style="font-weight: bold;color: black">Tài khoản của tôi</a></p>
 <!--                            <div th:if="${userDangnhap}">-->
-                                <p><a th:href="@{/hosokhachhang}">HỒ SƠ KHÁCH HÀNG</a></p>
+                                <p><a th:href="@{/hosokhachhang/{username}(username=${userDangnhap})}">HỒ SƠ KHÁCH HÀNG</a></p>
                                 <p><a th:href="@{/dangxuat}">ĐĂNG XUẤT</a></p>
 <!--                            </div>-->
 <!--                            <div th:unless="${userDangnhap}">-->

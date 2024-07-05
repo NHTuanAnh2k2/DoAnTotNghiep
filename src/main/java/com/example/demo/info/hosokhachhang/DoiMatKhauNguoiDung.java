@@ -11,4 +11,5 @@ public class DoiMatKhauNguoiDung {
     Integer id;
     String matkhau;
     String matkhaumoi;
+    String xacnhanmatkhau;
 }
