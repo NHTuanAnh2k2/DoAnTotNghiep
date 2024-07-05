@@ -164,11 +164,8 @@ public class CustomerController {
             return "redirect:/hosokhachhang/{username}";
         }
 
-        //Mã hóa mật khẩu mới rồi lưu vào db
-        String encodePassword = passwordEncoder.encode(nguoidungdoimatkhau.getMatkhau());
-        System.out.println("Mat khau da ma hoa: " + encodePassword);
-        nd.setMatkhau(encodePassword);
-        khachHangService.updateNguoiDung(nd);
+        String matkhaumoi = passwordEncoder.encode(nguoidungdoimatkhau.getMatkhaumoi());
+        nguoiDungRepository.updatePassword(username, matkhaumoi);
         System.out.println("Đã update mật khẩu");
         redirectAttributes.addFlashAttribute("success", "Đổi mật khẩu thành công.");
 
