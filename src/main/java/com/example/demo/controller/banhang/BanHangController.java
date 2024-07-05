@@ -166,10 +166,54 @@ public class BanHangController {
         return ResponseEntity.ok(pageNV);
     }
 
+    @GetMapping("checkSPQR")
+    @ResponseBody
+    public ResponseEntity<?> checkSPQR(@RequestParam("ma") String ma) {
+        Boolean found = daoSPCT.checkSPQR(ma);
+        Boolean result = false;
+        if (found == true) {
+            SanPhamChiTiet spct = daoSPCT.findBySanPhambyMa(ma).get(0);
+            if (spct.getSoluong() > 0) {
+                result = true;
+            }
+        }
+        return ResponseEntity.ok(result);
+    }
+
     // thêm sản phẩm tại hdct
     @GetMapping("ChoseSP/{id}")
     public String choseSP(@PathVariable("id") Integer id) {
         SanPhamChiTiet spct = daoSPCT.findById(id);
+        SanPhamChiTiet spctCapNhatSL = spct;
+        spctCapNhatSL.setSoluong(spctCapNhatSL.getSoluong() - 1);
+        List<HoaDon> hd = daoHD.timTheoID(hdHienTai.getId());
+        HoaDon hdset = hd.get(0);
+        Boolean result = daoHDCT.checkHDCT(hdset, spct);
+
+        if (result == true) {
+            List<HoaDonChiTiet> lstTim = daoHDCT.timHDCT(hdset, spct);
+            HoaDonChiTiet hdct = lstTim.get(0);
+            int sl = hdct.getSoluong() + 1;
+            hdct.setSoluong(sl);
+            daoSPCT.addSPCT(spctCapNhatSL);
+            daoHDCT.capnhat(hdct);
+            return "redirect:/hoa-don/ban-hang";
+        }
+        HoaDonChiTiet hdctNew = new HoaDonChiTiet();
+        hdctNew.setHoadon(hdset);
+        hdctNew.setSanphamchitiet(spct);
+        hdctNew.setSoluong(1);
+        hdctNew.setTrangthai(true);
+        hdctNew.setGiasanpham(spct.getGiatien());
+        daoSPCT.addSPCT(spctCapNhatSL);
+        daoHDCT.capnhat(hdctNew);
+        return "redirect:/hoa-don/ban-hang";
+    }
+
+    //chọn sản phẩm bằng QR
+    @GetMapping("ChoseSPQR/{id}")
+    public String choseSPQR(@PathVariable("id") String id) {
+        SanPhamChiTiet spct = daoSPCT.findBySanPhambyMa(id).get(0);
         SanPhamChiTiet spctCapNhatSL = spct;
         spctCapNhatSL.setSoluong(spctCapNhatSL.getSoluong() - 1);
         List<HoaDon> hd = daoHD.timTheoID(hdHienTai.getId());

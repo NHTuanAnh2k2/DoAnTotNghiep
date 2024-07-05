@@ -3805,11 +3805,25 @@ tabindex="0">
                         selectedDeviceId = videoInputDevices[0].deviceId;
                         codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
                             if (result) {
-                                alert("QR Code Result: " + result.text);
-
-                                // Stop the camera and hide the modal
-                                codeReader.reset();
-                                modal.hide();
+                                var urlChuyendoi = `http://localhost:8080/ban-hang-tai-quay/checkSPQR?ma=${result.text}`;
+                                fetch(urlChuyendoi)
+                                    .then(function (c) {
+                                        return c.json();
+                                    })
+                                    .then(function (b) {
+                                        if (b == true) {
+                                            var urf = "http://localhost:8080/ban-hang-tai-quay/ChoseSPQR/" + result.text;
+                                            window.location.href = urf;
+                                            // Stop the camera and hide the modal
+                                            codeReader.reset();
+                                            modal.hide();
+                                            thongbao('Thêm thành công!', 'success')
+                                        } else {
+                                            codeReader.reset();
+                                            modal.hide();
+                                            thongbao('Sản phẩm này đã hết hàng!', 'warning')
+                                        }
+                                    })
                             }
                             if (err && !(err instanceof ZXing.NotFoundException)) {
                                 console.error(err);
