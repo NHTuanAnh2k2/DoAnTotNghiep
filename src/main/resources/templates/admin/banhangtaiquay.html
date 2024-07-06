@@ -859,8 +859,8 @@
                             <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white; padding-top: 10px;"
                                 id="maGiamFill">Chưa có mã giảm phù hợp!</p>
 
-                            <button class="btn btn-light" style="margin-bottom: 20px;" data-bs-toggle="modal" id="chonMaGiam"
-                                data-bs-target="#staticBackdrop" onclick="showmagiam()">
+                            <button class="btn btn-light" style="margin-bottom: 20px;" data-bs-toggle="modal"
+                                id="chonMaGiam" data-bs-target="#staticBackdrop" onclick="showmagiam()">
                                 Chọn mã giảm</button>
                         </div>
                         <div class="d-flex justify-content-between">
@@ -1156,7 +1156,7 @@ tabindex="0">
             closeIcon.innerHTML = "&times;"; // Thêm biểu tượng xóa (dấu x)
             closeIcon.className = "close";
             closeIcon.setAttribute("onclick", "closeTab('" + tabId + "')"); // Gọi hàm closeTab khi được nhấn
-
+            button.id = tabId;
             button.appendChild(closeIcon); // Thêm biểu tượng xóa vào tab
 
             tabContainer.appendChild(button);
@@ -1433,17 +1433,14 @@ tabindex="0">
 
         // JavaScript để đóng tab
         function closeTab(tabId) {
-            var tabContent = document.getElementById(tabId);
-            if (tabContent) {
-                tabContent.parentNode.removeChild(tabContent); // Xóa nội dung tab
-                var tabButton = document.querySelector("[data-tab='" + tabId + "']");
-                if (tabButton) {
-                    tabButton.parentNode.removeChild(tabButton); // Xóa tab button từ container
+            if (confirm("Bạn có chắc chắn muốn loại bỏ hóa đơn " + tabId + " không?")) {
+                var tabContent = document.getElementById(tabId);
+                if (tabContent) {
+                    var urf = "http://localhost:8080/ban-hang-tai-quay/deleteHDCho/" + tabId;
+                    window.location.href = urf;
                 }
-                numberOfInvoices--; // Giảm số lượng tab đã tạo
             }
         }
-
 
         // Hàm để hiển thị thông báo Toast
         function showToast() {
@@ -3145,8 +3142,17 @@ tabindex="0">
     <!-- hienthibill -->
     <script th:inline="javascript">
         /*<![CDATA[*/
+        var checkdeleteHD = /*[[${checkdeleteHD}]]*/ false;
+        /*]]>*/
+        if (checkdeleteHD == true) {
+            thongbao('Hóa đơn đã được xóa!', 'success');
+        }
+    </script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
         var orderSuccess = /*[[${orderSuccess}]]*/ false;
         var checkHangCho = /*[[${checkHangCho}]]*/ false;
+        var checkdeleteHD = /*[[${checkdeleteHD}]]*/ false;
         /*]]>*/
 
         if (checkHangCho == true) {

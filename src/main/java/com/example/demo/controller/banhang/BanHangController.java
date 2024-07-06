@@ -240,6 +240,25 @@ public class BanHangController {
         return "redirect:/hoa-don/ban-hang";
     }
 
+    @GetMapping("deleteHDCho/{id}")
+    public String deleteHDCho(@PathVariable("id") String mahd,RedirectAttributes redirectAttributes) {
+        HoaDon hd = daoHD.timHDTheoMaHD(mahd);
+        //tìm hóa đơn chi tiết
+        List<HoaDonChiTiet> listHDCTUpdateSL=daoHDCT.timDSHDTCTTheoMaHD(hd.getMahoadon());
+        for (HoaDonChiTiet a:listHDCTUpdateSL
+             ) {
+            SanPhamChiTiet spctUp=daoSPCT.findById(a.getSanphamchitiet().getId());
+            spctUp.setSoluong(spctUp.getSoluong()+a.getSoluong());
+            daoSPCT.addSPCT(spctUp);
+            daoHDCT.deleteById(a.getId());
+        }
+       boolean result= daoHD.delete(hd);
+        if(result){
+            redirectAttributes.addFlashAttribute("checkdeleteHD", true);
+        }
+        return "redirect:/hoa-don/ban-hang";
+    }
+
 
     @GetMapping("delete/{id}")
     public String deleteSP(@PathVariable("id") Integer id) {
@@ -885,7 +904,8 @@ public class BanHangController {
     @GetMapping("fillDiachi")
     @ResponseBody
     public ResponseEntity<?> fillDiachi() {
-        HoaDon hddc = daoHD.timHDTheoMaHD(hdHienTai.getMahoadon());
+
+        HoaDon hddc = hdHienTai==null?new HoaDon():daoHD.timHDTheoMaHD(hdHienTai.getMahoadon());
         DiaChiGiaoCaseBanHangOff diachiRT = new DiaChiGiaoCaseBanHangOff();
         if (hddc.getKhachhang() != null) {
             List<String> diachiLst = Arrays.asList(hddc.getDiachi().split(", "));
