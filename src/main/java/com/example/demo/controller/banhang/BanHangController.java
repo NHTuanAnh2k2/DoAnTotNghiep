@@ -362,6 +362,9 @@ public class BanHangController {
     @GetMapping("show-all-voucher")
     @ResponseBody
     public ResponseEntity<?> showAllMa() {
+        if(hdHienTai==null){
+            return ResponseEntity.ok(false);
+        }
         KhachHang kh = hdHienTai.getKhachhang();
         List<KhachHangPhieuGiam> lst = new ArrayList<>();
         if (kh != null) {
