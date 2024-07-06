@@ -34,7 +34,7 @@ public class KichCoController {
         if (isKeyEmpty && isTrangthaiNull) {
             page = kichCoRepository.findAllByOrderByNgaytaoDesc();
         } else {
-            page = kichCoRepository.getDeGiayByTenOrTrangthai(info.getKey(), info.getTrangthai());
+            page = kichCoRepository.getKichCoByTenOrTrangthai(info.getKey(), info.getTrangthai());
         }
         model.addAttribute("fillSearch", info.getKey());
         model.addAttribute("fillTrangThai", info.getTrangthai());
