@@ -6,12 +6,15 @@
     #idThuongHieu:hover {
         cursor: pointer; /* Đổi con trỏ chuột thành bàn tay khi hover vào select */
     }
+
     #idChatLieu:hover {
         cursor: pointer; /* Đổi con trỏ chuột thành bàn tay khi hover vào p */
     }
+
     #idDeGiay:hover {
         cursor: pointer; /* Đổi con trỏ chuột thành bàn tay khi hover vào p */
     }
+
     #gioiTinhSelect:hover {
         cursor: pointer; /* Đổi con trỏ chuột thành bàn tay khi hover vào select */
     }
@@ -176,7 +179,8 @@
                                     <h5 style="font-family: 'Bahnschrift'">
                                         <span style="color: red">* </span>Tên sản phẩm:
                                         <select class="form-control select2 select2-primary"
-                                                data-dropdown-css-class="select2-primary" style="width: 100%;font-family: 'Bahnschrift'"
+                                                data-dropdown-css-class="select2-primary"
+                                                style="width: 100%;font-family: 'Bahnschrift'"
                                                 name="tensp" data-tags="true" data-placeholder="Nhập tên sản phẩm"
                                                 onchange="clearErrorMessageTenSP()">
                                             <option style="font-family: 'Bahnschrift'"></option>
@@ -184,24 +188,30 @@
                                                     th:text="${sp.tensanpham}"
                                                     th:selected="${sp.tensanpham} == ${selectedTensp}"></option>
                                         </select>
-                                        <span id="tenspError" style="color: red; font-style: italic;font-family: 'Bahnschrift'"></span>
+                                        <span id="tenspError"
+                                              style="color: red; font-style: italic;font-family: 'Bahnschrift'"></span>
                                     </h5>
                                     <h5 style="font-family: 'Bahnschrift'">
                                         <span style="color: red">* </span>Giới tính:
-                                        <select id="gioiTinhSelect" class="form-control" name="gioitinh" onchange="clearErrorMessageGioiTinh()">
+                                        <select id="gioiTinhSelect" class="form-control" name="gioitinh"
+                                                onchange="clearErrorMessageGioiTinh()">
                                             <option value="" selected disabled hidden>Chọn giới tính</option>
-                                            <option value="true" th:selected="${gioitinh != null && gioitinh}">Nam</option>
-                                            <option value="false" th:selected="${gioitinh != null && !gioitinh}">Nữ</option>
+                                            <option value="true" th:selected="${gioitinh != null && gioitinh}">Nam
+                                            </option>
+                                            <option value="false" th:selected="${gioitinh != null && !gioitinh}">Nữ
+                                            </option>
                                         </select>
 
-                                        <span id="gioitinhError" style="color: red;font-style: italic;font-family: 'Bahnschrift'"></span>
+                                        <span id="gioitinhError"
+                                              style="color: red;font-style: italic;font-family: 'Bahnschrift'"></span>
                                     </h5>
                                     <h5 style="font-family: 'Bahnschrift'">
                                         <span style="color: red">* </span>Mô tả:
                                         <textarea rows="4" cols="164" class="form-control" name="mota"
                                                   th:text="${motas}"
                                                   oninput="clearErrorMessageMoTa()"></textarea>
-                                        <span id="motaError" style="color: red; font-style: italic;font-family: 'Bahnschrift'"></span>
+                                        <span id="motaError"
+                                              style="color: red; font-style: italic;font-family: 'Bahnschrift'"></span>
                                     </h5>
                                 </div>
                             </div>
@@ -212,8 +222,10 @@
                                     <div class="d-flex">
                                         <p style="margin-left: 20px; font-weight: bold;">
                                             <span style="color: red;">* </span>Thương hiệu:
-                                            <select id="idThuongHieu" class="form-control" style="width: 520px;" name="idThuongHieu">
-                                                <option th:each="th : ${th}" th:value="${th.id}" th:text="${th.ten}"></option>
+                                            <select id="idThuongHieu" class="form-control" style="width: 520px;"
+                                                    name="idThuongHieu">
+                                                <option th:each="th : ${th}" th:value="${th.id}"
+                                                        th:text="${th.ten}"></option>
                                             </select>
                                         </p>
                                         <input type="button" class="btn"
@@ -228,8 +240,10 @@
                                     <div class="d-flex">
                                         <p id="chatLieuLabel" style="margin-left: 20px; font-weight: bold;">
                                             <span style="color: red;">* </span>Chất liệu:
-                                            <select id="idChatLieu" class="form-control" style="width: 520px;" name="idChatLieu">
-                                                <option th:each="cl : ${cl}" th:value="${cl.id}" th:text="${cl.ten}"></option>
+                                            <select id="idChatLieu" class="form-control" style="width: 520px;"
+                                                    name="idChatLieu">
+                                                <option th:each="cl : ${cl}" th:value="${cl.id}"
+                                                        th:text="${cl.ten}"></option>
                                             </select>
                                         </p>
                                         <input type="button" class="btn"
@@ -241,8 +255,10 @@
                                     <div class="d-flex">
                                         <p id="deGiayLabel" style="margin-left: 20px; font-weight: bold;">
                                             <span style="color: red;">* </span>Đế giày:
-                                            <select id="idDeGiay" class="form-control" style="width: 520px;" name="idDeGiay">
-                                                <option th:each="dg : ${dg}" th:value="${dg.id}" th:text="${dg.ten}"></option>
+                                            <select id="idDeGiay" class="form-control" style="width: 520px;"
+                                                    name="idDeGiay">
+                                                <option th:each="dg : ${dg}" th:value="${dg.id}"
+                                                        th:text="${dg.ten}"></option>
                                             </select>
                                         </p>
                                         <input type="button" class="btn"
@@ -263,7 +279,8 @@
                                                 <option th:each="ms : ${ms}" th:value="${ms.id}"
                                                         th:text="${ms.ten}"></option>
                                             </select>
-                                            <span id="mausacError" style="color: red;font-style: italic;font-family: 'Bahnschrift'"></span>
+                                            <span id="mausacError"
+                                                  style="color: red;font-style: italic;font-family: 'Bahnschrift'"></span>
                                         </p>
                                         <p>
                                         </p>
@@ -346,15 +363,21 @@
                                                 aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form id="addFormThuongHieu" name="addThuongHieu" th:method="post" th:object="${thuonghieu}"
-                                              th:action="@{/addThuongHieuModal}" onsubmit="return validateTrungThuongHieu()">
+                                        <form id="addFormThuongHieu" name="addThuongHieu" th:method="post"
+                                              th:object="${thuonghieu}"
+                                              th:action="@{/addThuongHieuModal}"
+                                              onsubmit="return validateTrungThuongHieu()">
                                             <p>
                                                 <span style="color: red">* </span>
                                                 Tên thương hiệu:
                                                 <input id="tenInputThuongHieu" class="form-control" th:field="*{ten}"/>
-                                            <div style="color: red; font-weight: initial;font-style: italic" id="errorTenThuongHieu"></div>
+                                            <div style="color: red; font-weight: initial;font-style: italic"
+                                                 id="errorTenThuongHieu"></div>
                                             </p>
-                                            <button id="submitButtonThuongHieu" class="btn" style="margin-left: 400px;background-color:rgb(249,72,42);color: white">Thêm</button>
+                                            <button id="submitButtonThuongHieu" class="btn"
+                                                    style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
+                                                Thêm
+                                            </button>
                                         </form>
 
                                     </div>
@@ -372,14 +395,20 @@
                                                 aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form id="addFormChatLieu" name="addChatLieu" th:method="post" th:action="@{/addChatLieuModal}" th:object="${chatlieu}" onsubmit="return validateTrungChatLieu()">
+                                        <form id="addFormChatLieu" name="addChatLieu" th:method="post"
+                                              th:action="@{/addChatLieuModal}" th:object="${chatlieu}"
+                                              onsubmit="return validateTrungChatLieu()">
                                             <p>
                                                 <span style="color: red">* </span>
                                                 Tên chất liệu:
                                                 <input id="tenInputChatLieu" th:field="*{ten}" class="form-control">
-                                            <div style="color: red; font-weight: initial;font-style: italic" id="errorTenChatLieu"></div>
+                                            <div style="color: red; font-weight: initial;font-style: italic"
+                                                 id="errorTenChatLieu"></div>
                                             </p>
-                                            <button class="btn" style="margin-left: 400px;background-color:rgb(249,72,42);color: white">Thêm</button>
+                                            <button class="btn"
+                                                    style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
+                                                Thêm
+                                            </button>
                                         </form>
                                     </div>
                                 </div>
@@ -396,14 +425,19 @@
                                                 aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form id="addFormDeGiay" name="addDeGiay" th:method="post" th:object="${degiay}" th:action="@{/addDeGiayModal}" onsubmit="return validateTrungDeGiay()">
+                                        <form id="addFormDeGiay" name="addDeGiay" th:method="post" th:object="${degiay}"
+                                              th:action="@{/addDeGiayModal}" onsubmit="return validateTrungDeGiay()">
                                             <p>
                                                 <span style="color: red">* </span>
                                                 Tên đế giày:
                                                 <input id="tenInputDeGiay" class="form-control" th:field="*{ten}"/>
-                                            <div style="color: red; font-weight: initial;font-style: italic" id="errorTenDeGiay"></div>
+                                            <div style="color: red; font-weight: initial;font-style: italic"
+                                                 id="errorTenDeGiay"></div>
                                             </p>
-                                            <button id="submitButtonDeGiay" class="btn" style="margin-left: 400px;background-color:rgb(249,72,42);color: white">Thêm</button>
+                                            <button id="submitButtonDeGiay" class="btn"
+                                                    style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
+                                                Thêm
+                                            </button>
                                         </form>
                                     </div>
                                 </div>
@@ -449,14 +483,19 @@
                                                 aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form id="addFormMauSac" th:method="post" name="addMauSac" th:object="${mausac}" th:action="@{/addMauSacModal}" onsubmit="return validateTrungMauSac()">
+                                        <form id="addFormMauSac" th:method="post" name="addMauSac" th:object="${mausac}"
+                                              th:action="@{/addMauSacModal}" onsubmit="return validateTrungMauSac()">
                                             <p>
                                                 <span style="color: red">* </span>
                                                 Tên màu sắc:
                                                 <input id="tenInputMauSac" class="form-control" th:field="*{ten}"/>
-                                            <div style="color: red; font-weight: initial;font-style: italic" id="errorTenMauSac"></div>
+                                            <div style="color: red; font-weight: initial;font-style: italic"
+                                                 id="errorTenMauSac"></div>
                                             </p>
-                                            <button id="submitButtonMauSac" class="btn" style="margin-left: 400px;background-color:rgb(249,72,42);color: white">Thêm</button>
+                                            <button id="submitButtonMauSac" class="btn"
+                                                    style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
+                                                Thêm
+                                            </button>
                                         </form>
                                     </div>
                                 </div>
@@ -474,17 +513,13 @@
         </section>
         <!-- Main content -->
         <h3 class="text-bold text-center" style="padding-left: 15px">CHI TIẾT SẢN PHẨM</h3>
-        <form id="submitid" th:action="@{/addImage}" name="addImage" method="post" enctype="multipart/form-data"
-              onsubmit="return validateForm2()">
-            <a id="editButton" class="btn disabled"
-               style="margin-left: 900px;margin-bottom: 15px;background-color:rgb(249,72,42);color: white"
-               data-bs-toggle="modal" data-bs-target="#chinhsuasoluongvagia">Chỉnh sửa số lượng và giá chung</a>
 
 
-            <input type="hidden" name="choncheckbox" value="-1">
-            <!-- Modal chỉnh sửa số lượng và giá -->
-            <div class="modal fade" id="chinhsuasoluongvagia" tabindex="-1" aria-labelledby="exampleModalLabel"
-                 aria-hidden="true">
+        <!-- Modal chỉnh sửa số lượng và giá -->
+        <div class="modal fade" id="chinhsuasoluongvagia" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <form method="post" th:action="@{/updateGiaAndSoLuong}" id="submitid">
+                <input type="hidden" name="choncheckbox" value="-1">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -493,21 +528,33 @@
                         </div>
                         <div class="modal-body">
                             <p>Số lượng:
-                                <input type="number" class="form-control" name="soluong">
+                                <input type="number" class="form-control" name="soluong" id="soluongInput" min="1"
+                                       max="100">
+                                <span id="soluongError" style="color: red; display: none; font-style: italic">Vui lòng nhập số lượng.</span>
+                                <span id="soluongRangeError" style="color: red; display: none;font-style: italic">Vui lòng nhập số lượng từ 1 đến 100.</span>
                             </p>
                             <p>Đơn giá:
-                                <input class="form-control" name="giatienDisplay" id="giatienInput" onkeyup="formatCurrency('giatienInput')">
+                                <input class="form-control" name="giatienDisplay" id="giatienInput"
+                                       onkeyup="formatCurrency('giatienInput')">
                                 <input type="hidden" name="giatien" id="giatienRawInput">
+                                <span id="giatienError" style="color: red; display: none;font-style: italic">Vui lòng nhập giá tiền.</span>
                             </p>
                         </div>
                         <p style="margin-left: 400px">
-                            <button class="btn btn-primary" onclick="layGiaTri()"
-                                    th:formaction="@{/updateGiaAndSoLuong}">Cập nhật
+                            <button type="button" class="btn btn-primary" onclick="validateAndSubmit()">Cập nhật
                             </button>
                         </p>
                     </div>
                 </div>
-            </div>
+            </form>
+        </div>
+
+
+        <form th:action="@{/addImage}" name="addImage" method="post" enctype="multipart/form-data"
+              onsubmit="return validateForm2()">
+            <a id="editButton" class="btn disabled"
+               style="margin-left: 900px;margin-bottom: 15px;background-color:rgb(249,72,42);color: white"
+               data-bs-toggle="modal" data-bs-target="#chinhsuasoluongvagia">Chỉnh sửa số lượng và giá chung</a>
             <button class="btn-sm btn-dark" style="margin-left: 10px; margin-bottom: 15px"
                     type="submit"
                     id="submitButton">Hoàn tất
@@ -545,16 +592,32 @@
                                             <td>
                                                 <span style="margin-left: 7px" th:text="${stt.index+1}"></span>
                                             </td>
-                                            <td th:text="${spctt.sanpham.tensanpham} +' '+ '[' + ${spctt.kichco.ten} + '-' + ${spctt.mausac.ten} + ']'"></td>
+                                            <!--                                            <td th:text="${spctt.sanpham.tensanpham} +' '+ '[' + ${spctt.kichco.ten} + '-' + ${spctt.mausac.ten} + ']'"></td>-->
                                             <td>
-                                                <input type="number" style="width: 70px; height: 30px"
-                                                       class="form-control" th:value="${spctt.soluong}">
+    <span th:if="${#strings.length(spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']') > 40}"
+          th:text="${#strings.substring(spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']', 0, 40)} + '...'">
+    </span>
+                                                <span th:unless="${#strings.length(spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']') > 40}"
+                                                      th:text="${spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']' }">
+    </span>
                                             </td>
+                                            <!--                                            <td>-->
+                                            <!--                                                <input type="text" style="width: 70px; height: 30px"-->
+                                            <!--                                                       class="form-control" th:value="${spctt.soluong}">-->
+                                            <!--                                            </td>-->
                                             <td>
-                                                <input type="text"
-                                                       style="width: 150px; height: 30px;color: red;font-weight: bold"
-                                                       class="form-control"
-                                                       th:value="${#numbers.formatDecimal(spctt.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}">
+                                                <span style="width: 70px; height: 30px; line-height: 30px;"
+                                                      th:text="${spctt.soluong}"></span>
+                                            </td>
+                                            <!--                                            <td>-->
+                                            <!--                                                <input type="text"-->
+                                            <!--                                                       style="width: 150px; height: 30px;color: red;font-weight: bold"-->
+                                            <!--                                                       class="form-control"-->
+                                            <!--                                                       th:value="${#numbers.formatDecimal(spctt.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}">-->
+                                            <!--                                            </td>-->
+                                            <td>
+    <span style="width: 150px; height: 30px; color: red; font-weight: bold; line-height: 30px;"
+          th:text="${#numbers.formatDecimal(spctt.giatien, 0, 'COMMA', 0, 'POINT')} + '&#x20ab;'"></span>
                                             </td>
                                             <td>
                                                 <a th:href="@{/deleteCTSP/{id}(id=${spctt.id})}"
@@ -1038,47 +1101,6 @@
     var giaTriTuCheckbox = []; // Mảng lưu trữ giá trị từ checkbox
 
     // Hàm lưu trữ giá trị từ checkbox khi thay đổi
-    function luuGiaTri(checkbox) {
-        if (checkbox.checked) {
-            giaTriTuCheckbox.push(checkbox.value);
-        } else {
-            var index = giaTriTuCheckbox.indexOf(checkbox.value);
-            if (index !== -1) {
-                giaTriTuCheckbox.splice(index, 1);
-            }
-        }
-        console.log(giaTriTuCheckbox);
-    }
-
-    function layGiaTri() {
-        if (giaTriTuCheckbox.length > 0) {
-            for (var i = 0; i < giaTriTuCheckbox.length; i++) {
-                var input = document.createElement("input");
-                input.type = "hidden";
-                input.name = "choncheckbox";
-                input.value = giaTriTuCheckbox[i];
-                document.getElementById("submitid").appendChild(input);
-            }
-        }
-        // Gọi hàm để hiển thị toast
-        const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-            }
-        });
-
-        Toast.fire({
-            icon: "success",
-            title: "Cập nhật thành công"
-        });
-    }
-
     function toggleRowHighlight(checkbox) {
         const row = checkbox.closest('tr');
         if (checkbox.checked) {
@@ -1101,6 +1123,81 @@
         for (var i = 0; i < checkboxes.length; i++) {
             checkboxes[i].checked = source.checked;
             toggleRowHighlight(checkboxes[i]); // Call toggleRowHighlight for each checkbox
+        }
+    }
+
+    function validateAndSubmit() {
+        var soluong = document.getElementById("soluongInput").value.trim();
+        var giatien = document.getElementsByName("giatienDisplay")[0].value.trim();
+
+        // Kiểm tra nếu số lượng và giá tiền không hợp lệ
+        if (soluong === "") {
+            document.getElementById("soluongError").style.display = "inline";
+            document.getElementById("soluongRangeError").style.display = "none";
+            document.getElementById("giatienError").style.display = "none";
+            return;
+        } else if (parseInt(soluong) < 1 || parseInt(soluong) > 100) {
+            document.getElementById("soluongRangeError").style.display = "inline";
+            document.getElementById("soluongError").style.display = "none";
+            document.getElementById("giatienError").style.display = "none";
+            return;
+        } else {
+            document.getElementById("soluongError").style.display = "none";
+            document.getElementById("soluongRangeError").style.display = "none";
+        }
+
+        if (giatien === "") {
+            document.getElementById("giatienError").style.display = "inline";
+            return;
+        } else {
+            document.getElementById("giatienError").style.display = "none";
+        }
+
+        // Lưu giá trị từ checkbox vào form trước khi submit
+        if (giaTriTuCheckbox.length > 0) {
+            for (var i = 0; i < giaTriTuCheckbox.length; i++) {
+                var input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "choncheckbox";
+                input.value = giaTriTuCheckbox[i];
+                document.getElementById("submitid").appendChild(input);
+            }
+        }
+
+        // Gọi hàm để hiển thị toast
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+
+        Toast.fire({
+            icon: "success",
+            title: "Cập nhật thành công"
+        });
+
+        // Submit form
+        document.getElementById("submitid").submit();
+    }
+
+    function formatCurrency(elementId) {
+        var input = document.getElementById(elementId);
+        var rawInput = document.getElementById('giatienRawInput');
+        var value = input.value.replace(/[^0-9]/g, ''); // Loại bỏ tất cả ký tự không phải số
+
+        if (value) {
+            rawInput.value = value; // Gán giá trị thô vào input ẩn
+            value = (parseInt(value, 10)).toLocaleString('vi-VN'); // Định dạng giá trị với phân cách hàng nghìn
+            input.value = value + ' ₫'; // Hiển thị giá trị với đơn vị tiền tệ
+        } else {
+            rawInput.value = ''; // Đảm bảo input ẩn được xóa nếu không có giá trị hợp lệ
+            input.value = '';
         }
     }
 </script>
@@ -1183,23 +1280,6 @@
 
 <script>
     var giaTriTuCheckbox = []; // Mảng lưu trữ giá trị từ checkbox
-</script>
-<!--dùng để format giá tiền-->
-<script>
-    function formatCurrency(elementId) {
-        var input = document.getElementById(elementId);
-        var rawInput = document.getElementById('giatienRawInput');
-        var value = input.value.replace(/[^0-9]/g, ''); // Loại bỏ tất cả ký tự không phải số
-
-        if (value) {
-            rawInput.value = value; // Gán giá trị thô vào input ẩn
-            value = (parseInt(value, 10)).toLocaleString('vi-VN'); // Định dạng giá trị với phân cách hàng nghìn
-            input.value = value + ' ₫'; // Hiển thị giá trị với đơn vị tiền tệ
-        } else {
-            rawInput.value = ''; // Đảm bảo input ẩn được xóa nếu không có giá trị hợp lệ
-            input.value = '';
-        }
-    }
 </script>
 <!--validate thuộc tính sp-->
 <script th:inline="javascript">
@@ -1495,5 +1575,6 @@
         // Ngăn form được gửi đi ngay lập tức
         return false;
     }
+
     /*]]>*/
 </script>

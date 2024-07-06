@@ -166,7 +166,10 @@
                                     <tbody>
                                     <tr th:each="th,stt:${page}">
                                         <td th:text="${stt.index+1}"></td>
-                                        <td th:text="${th.ten}"></td>
+                                        <td>
+                                            <span th:if="${#strings.length(th.ten) > 20}" th:text="${#strings.substring(th.ten, 0, 20)} + '...'"></span>
+                                            <span th:unless="${#strings.length(th.ten) > 20}" th:text="${th.ten}"></span>
+                                        </td>
                                         <td th:text="${#temporals.format(th.ngaytao, 'dd-MM-yyyy HH:mm:ss')}"></td>
 
                                         <td>
