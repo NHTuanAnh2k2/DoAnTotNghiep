@@ -14,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -123,6 +122,13 @@ public class SanPhamController {
         }
         model.addAttribute("listMS", listMS);
 
+        List<KichCo> listKC = null;
+        if (info.getKey() != null) {
+            listKC = kichCoRepository.getKichCoByTenOrTrangthai(info.getKey(), info.getTrangthai());
+        } else {
+            listKC = kichCoRepository.findAllByOrderByNgaytaoDesc();
+        }
+        model.addAttribute("listKC", listKC);
 
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<SanPhamChiTiet> listSPCT = sanPhamChiTietImp.findAll();

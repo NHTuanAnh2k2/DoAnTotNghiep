@@ -61,10 +61,7 @@
                             <h1 class="m-0">QUẢN LÝ HÓA ĐƠN</h1>
                         </div>
                         <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Quản lý hóa đơn</li>
-                            </ol>
+
                         </div>
                     </div>
                 </div>
@@ -139,7 +136,6 @@
                                             style="margin-right: 35%; margin-left: 35%;">
                                             <button type="submit" class="btn btn-success">Tìm kiếm</button>
                                             <button type="reset" class="btn btn-danger">Làm mới</button>
-
                                         </div>
                                     </form>
 
@@ -157,6 +153,7 @@
                 </div>
                 <!-- /.container-fluid -->
             </section>
+            <!-- Modal qr hóa đơn-->
 
             <!--Nội dung chính hóa đơn-->
             <section class="content">
@@ -335,7 +332,9 @@
                                                             <td th:text="${aStat.index+1}"></td>
                                                             <td th:text="${a.mahoadon}"></td>
                                                             <td th:text="${a.nhanvien.manhanvien}"></td>
-                                                            <td th:text="${a.khachhang==null?'khách lẻ':a.khachhang.nguoidung.hovaten}"></td>
+                                                            <td
+                                                                th:text="${a.khachhang==null?'khách lẻ':a.khachhang.nguoidung.hovaten}">
+                                                            </td>
                                                             <td th:text="${a.sdt==null?'khách lẻ':a.sdt}"></td>
                                                             <td th:text="${a.loaihoadon==true?'online':'tại quầy'}">
                                                             </td>

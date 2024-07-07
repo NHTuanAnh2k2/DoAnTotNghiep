@@ -343,7 +343,7 @@
                     window.location.href = 'admin/qlnhanvien';
                 }, 3000);
 
-            } else {
+            } else if(result.cancelButtonText) {
                 // Nếu người dùng chọn Không, đóng hộp thoại và không thực hiện hành động nào
                 // Swal.fire('Đã hủy', 'Dữ liệu không được thêm vào.', 'info');
                 document.getElementById('addForm').addEventListener('submit', function(event) {
@@ -353,6 +353,7 @@
                 return false;
             }
         });
+        return false;
     }
 </script>
 <script>

@@ -14,14 +14,18 @@ import java.util.List;
 
 @Repository
 public interface GioHangChiTietRepository extends JpaRepository<GioHangChiTiet, Integer> {
-    List<GioHangChiTiet> findBySanphamchitiet(SanPhamChiTiet sanPhamChiTiet);
 
-    List<GioHangChiTiet> findBySanphamchitietAndGiohang(SanPhamChiTiet sanPhamChiTiet, GioHang gioHang);
+    GioHangChiTiet findByGiohangAndSanphamchitiet(GioHang gioHang, SanPhamChiTiet sanPhamChiTiet);
 
     @Transactional
     @Modifying
     @Query("UPDATE GioHangChiTiet ghct SET ghct.soluong = :soLuong WHERE ghct.id = :id")
     void updateSoLuongById(Integer soLuong, Integer id);
+
+    @Query(value = """
+            SELECT g FROM GioHangChiTiet g where g.giohang.id=:id
+            """)
+    List<GioHangChiTiet> findGioHangChiTietByGiohang(Integer id);
 
 
 }

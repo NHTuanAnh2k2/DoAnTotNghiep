@@ -36,4 +36,5 @@ public interface HoaDonService {
     HoaDon timBanGhiDuocTaoGanNhat();
     HoaDon timHDTheoMaHD(String mahd);
     public  String htmlToPdfTaiQuay(String htmlfile,String pdfname);
+    Boolean delete(HoaDon idhd);
 }

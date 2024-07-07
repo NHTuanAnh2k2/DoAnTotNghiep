@@ -481,7 +481,7 @@ public class hoaDonController {
     @ResponseBody
     public ResponseEntity<?> getlistSP(@RequestParam("pageSPChanges") Optional<Integer> pageParam) {
         Pageable p = PageRequest.of(pageParam.orElse(0), 5);
-        Page<SanPhamChiTiet> pageSP = daoSPCT.finAllPage(0,p);
+        Page<SanPhamChiTiet> pageSP = daoSPCT.finAllPage(0, p);
         return ResponseEntity.ok(pageSP);
     }
 
@@ -519,7 +519,9 @@ public class hoaDonController {
         ) {
             tongTienSP = tongTienSP.add(b.getGiasanpham().multiply(new BigDecimal(b.getSoluong())));
         }
-        BigDecimal tongTT = (tongTienSP.add(hoaDonXem.getPhivanchuyen())).subtract(phieuGiamCT.getTiengiam());
+
+        BigDecimal tongTT = (tongTienSP.add(hoaDonXem.getPhivanchuyen())).subtract(phieuGiamCT.getTiengiam() == null ? new BigDecimal("0") : phieuGiamCT.getTiengiam());
+
         List<String> diachiLst = Arrays.asList(hoaDonXem.getDiachi().split(", "));
         String diachiCT = diachiLst.get(0);
         String xa = diachiLst.get(1);
@@ -551,7 +553,6 @@ public class hoaDonController {
     @GetMapping("call-api-ngay-giao")
     @ResponseBody
     public ResponseEntity<?> callapi() {
-
         return ResponseEntity.ok(lstdiachigiao);
     }
 
@@ -566,9 +567,7 @@ public class hoaDonController {
         hoaDonXem = hoaDonTim.get(0);
         hoaDonXem.setNgaygiaodukien(timestamp);
         dao.capNhatHD(hoaDonXem);
-        System.out.println("aaaaaaaaaaaaaa");
-        System.out.println(timestamp);
-        System.out.println(hoaDonXem.getMahoadon());
+
     }
 
     //xác nhận đơn
@@ -589,6 +588,14 @@ public class hoaDonController {
         List<HoaDon> lstSaveHD = dao.timTheoID(idhdshowdetail);
         HoaDon hdTT = lstSaveHD.get(0);
         Integer trangthaiset = hdTT.getTrangthai() + 1;
+        if (trangthaiset == 4) {
+            List<PhuongThucThanhToan> lstpttim = daoPT.timTheoHoaDon(hdTT);
+            for (PhuongThucThanhToan a : lstpttim
+            ) {
+                a.setTrangthai(true);
+                daoPT.add_update(a);
+            }
+        }
         //set ngày xác nhận
         LocalDateTime currentDateTime = LocalDateTime.now();
         if (trangthaiset == 1) {
@@ -630,10 +637,10 @@ public class hoaDonController {
         }
         BigDecimal tongTT = (tongTienSP.add(hdTT.getPhivanchuyen())).subtract(phieuGiamCT.getTiengiam());
         MauHoaDon u = new MauHoaDon("FSPORT", hdTT.getMahoadon(), hdTT.getNgaytao(), "Lô H023, Nhà số 39, Ngõ 148, Xuân Phương, Phương Canh,Nam Từ Liêm, Hà Nội",
-                hdTT.getDiachi(), "0379036607", hdTT.getSdt(), hdTT.getTennguoinhan(), lstin, tongTT,"");
+                hdTT.getDiachi(), "0379036607", hdTT.getSdt(), hdTT.getTennguoinhan(), lstin, tongTT, "");
         String finalhtml = null;
         //tạo qr
-        String qrCodeText =hdTT.getMahoadon(); // Chuỗi để tạo QR
+        String qrCodeText = hdTT.getMahoadon(); // Chuỗi để tạo QR
         int size = 250; // Kích thước của mã QR
 
         // Tạo tham số cho mã QR
@@ -676,7 +683,9 @@ public class hoaDonController {
 
         Context data = dao.setData(u);
         finalhtml = dao1.process("index", data);
-        dao.htmlToPdf(finalhtml, hdTT.getMahoadon());
+        if (hdTT.getTrangthai() == 2) {
+            dao.htmlToPdf(finalhtml, hdTT.getMahoadon());
+        }
         return "redirect:/hoa-don/showDetail";
     }
 
@@ -901,7 +910,7 @@ public class hoaDonController {
 
     @ModelAttribute("thongtingiaohang")
     public DiaChiGiaoCaseBanHangOff diachigiaohangtaiquay() {
-        return new DiaChiGiaoCaseBanHangOff(null, null, null, "chọn tỉnh", "chọn huyện", "chọn xã", null, null, null, null);
+        return new DiaChiGiaoCaseBanHangOff(null, null, null, "chọn tỉnh", "chọn huyện", "chọn xã", null, null, null, null,"ta..");
     }
 
 }

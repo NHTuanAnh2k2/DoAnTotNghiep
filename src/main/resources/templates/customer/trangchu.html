@@ -99,7 +99,10 @@
         right: 0; /* Đặt vị trí của nút cuộn về sau */
     }
 </style>
-<body>
+<body style="font-family: 'Bahnschrift'">
+
+<input type="hidden" th:value="${token}" id="tokenDN">
+
 <!--style="font-family: sans-serif"-->
 <!-- header -->
 <nav th:replace="~{/layout/header.html}"></nav>
@@ -176,11 +179,7 @@
                             <div class="product-title">
                                 <a href="#"><h3 class="title" th:text="${sp[1]}" style="font-weight: bold"></h3></a>
                                 <div class="ratting">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star gray-star"></i>
+                                    <h6><span th:text="${sp[7]} + ' size'" style="font-family: 'Bahnschrift'"></span> / <span th:text="${sp[8]} + ' màu sắc'" style="font-family: 'Bahnschrift'"></span></h6>
                                 </div>
                                 <p>
                                     <span style="color: red; font-weight: bold"
@@ -246,11 +245,7 @@
                             <div class="product-title">
                                 <a href="#"><h3 class="title" th:text="${sp[1]}" style="font-weight: bold"></h3></a>
                                 <div class="ratting">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star gray-star"></i>
+                                    <h6><span th:text="${sp[5]} + ' size'" style="font-family: 'Bahnschrift'"></span> / <span th:text="${sp[6]} + ' màu sắc'" style="font-family: 'Bahnschrift'"></span></h6>
                                 </div>
                                 <p>
                             <span style="color: red;font-weight: bold"
@@ -279,11 +274,11 @@
         <div class="tab-content">
             <!--nội dung-->
             <div class="tab-pane fade text-center active show" id="gird">
-                <div class="single-products row" >
+                <div class="single-products row">
                     <div class="col-md-3">
                         <div class="product-item margin40">
                             <div class="pro-img">
-                                <img src="/dist/img/cuahang.jpg">
+                                <img src="../../dist/img/bongda1.jpg">
                             </div>
                         </div>
                     </div>
@@ -291,7 +286,7 @@
                     <div class="col-md-3">
                         <div class="product-item margin40">
                             <div class="pro-img">
-                                <img src="/dist/img/cuahang.jpg">
+                                <img src="../../dist/img/bongda2.jpg">
                             </div>
                         </div>
                     </div>
@@ -299,7 +294,7 @@
                     <div class="col-md-3">
                         <div class="product-item margin40">
                             <div class="pro-img">
-                                <img src="/dist/img/cuahang.jpg">
+                                <img src="../../dist/img/bongda3.jpg">
                             </div>
                         </div>
                     </div>
@@ -307,7 +302,136 @@
                     <div class="col-md-3">
                         <div class="product-item margin40">
                             <div class="pro-img">
-                                <img src="/dist/img/cuahang.jpg">
+                                <img src="../../dist/img/bongda4.webp">
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                </div>
+            </div>
+            <!--end-->
+        </div>
+
+        <h3 style="margin-top: 30px; color: rgb(249, 72, 42); font-family: 'Lucida Sans Typewriter'"
+            class="text-center">THƯƠNG HIỆU</h3>
+        <hr class="border border-danger border opacity-50">
+        <div class="tab-content">
+            <!--nội dung-->
+            <div class="tab-pane fade text-center active show" id="gird">
+                <div class="single-products row">
+                    <div class="col-md-4">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <img src="../../dist/img/thuonghieu1.jpg" style="width: 423px; height: 148px">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <img src="../../dist/img/thuonghieu2.webp" style="width: 423px; height: 148px">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <img src="../../dist/img/thuonghieu3.jpg" style="width: 423px; height: 148px">
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                </div>
+            </div>
+            <!--end-->
+
+            <!--nội dung-->
+            <div class="tab-pane fade text-center active show" id="gird">
+                <div class="single-products row">
+                    <div class="col-md-4">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <img src="../../dist/img/thuonghieu4.jpg" style="width: 423px; height: 148px">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <img src="../../dist/img/thuonghieu5.webp" style="width: 423px; height: 148px">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <img src="../../dist/img/thuonghieu6.jpg" style="width: 423px; height: 148px">
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                </div>
+            </div>
+            <!--end-->
+
+            <!--nội dung-->
+            <div class="tab-pane fade text-center active show" id="gird">
+                <div class="single-products row">
+                    <div class="col-md-4">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <img src="../../dist/img/thuonghieu7.webp" style="width: 423px; height: 148px">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <img src="../../dist/img/thuonghieu8.jpg" style="width: 423px; height: 148px">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <img src="../../dist/img/thuonghieu9.jpg" style="width: 423px; height: 148px">
+                            </div>
+                        </div>
+                    </div>
+                    <!---end-->
+                </div>
+            </div>
+            <!--end-->
+
+            <!--nội dung-->
+            <div class="tab-pane fade text-center active show" id="gird">
+                <div class="single-products row">
+                    <div class="col-md-4">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <img src="../../dist/img/thuonghieu10.jpg" style="width: 423px; height: 148px">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <img src="../../dist/img/thuonghieu11.jpg" style="width: 423px; height: 148px">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="product-item margin40">
+                            <div class="pro-img">
+                                <img src="../../dist/img/thuonghieu12.jpg" style="width: 423px; height: 148px">
                             </div>
                         </div>
                     </div>
@@ -413,5 +537,12 @@
                 scrollableContainerHot.scrollBy({left: 200, behavior: "smooth"});
             }
         });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var token = document.getElementById("tokenDN").value;
+        console.log("hhhh"+token);
     });
 </script>

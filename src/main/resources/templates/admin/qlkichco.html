@@ -165,7 +165,10 @@
                                     <tbody>
                                     <tr th:each="kc,stt:${list}">
                                         <td th:text="${stt.index+1}"></td>
-                                        <td th:text="${kc.ten}"></td>
+                                        <td>
+                                            <span th:if="${#strings.length(kc.ten) > 20}" th:text="${#strings.substring(kc.ten, 0, 20)} + '...'"></span>
+                                            <span th:unless="${#strings.length(kc.ten) > 20}" th:text="${kc.ten}"></span>
+                                        </td>
                                         <td th:text="${#temporals.format(kc.ngaytao, 'dd-MM-yyyy HH:mm:ss')}"></td>
                                         <td>
                                             <button style="border-radius: 5px"

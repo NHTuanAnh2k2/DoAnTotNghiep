@@ -40,7 +40,7 @@ public class HoaDonImp implements HoaDonService {
 
     @Override
     public Page<HoaDon> findAll(Pageable p) {
-        return dao.findAll(p);
+        return dao.findAlls(p);
     }
 
     @Override
@@ -164,6 +164,15 @@ public class HoaDonImp implements HoaDonService {
 
         }
         return null;
+    }
+
+    @Override
+    public Boolean delete(HoaDon idhd) {
+        if(dao.existsById(idhd.getId())){
+            dao.delete(idhd);
+            return true;
+        }
+        return false;
     }
 
 

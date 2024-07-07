@@ -275,8 +275,7 @@
 
                                                                         <div class="d-flex flex-row-reverse">
                                                                             <button type="submit" id="xacnhanbtn"
-                                                                                onclick="xacnhanngaygiao()" disabled
-                                                                                class="btn btn-primary">Xác
+                                                                                disabled class="btn btn-primary">Xác
                                                                                 nhận</button>
                                                                             <button type="button"
                                                                                 class="btn btn-secondary ms-1"
@@ -428,7 +427,8 @@
 
                                                                         <div class="d-flex flex-row-reverse">
                                                                             <button type="submit" id="chogiaobtn"
-                                                                                disabled class="btn btn-primary">Xác
+                                                                                onclick="xacnhanngaygiao()" disabled
+                                                                                class="btn btn-primary">Xác
                                                                                 nhận</button>
                                                                             <button type="button"
                                                                                 class="btn btn-secondary ms-1"
@@ -619,11 +619,16 @@
                                                 <tr th:each="a:${lstphuongThucTT}">
                                                     <td th:text="${aStat.index+1}"></td>
                                                     <td th:text="${a.magiaodichvnpay}"></td>
-                                                    <td th:text="${a.tongtien}"></td>
-                                                    <td th:text="${a.trangthai==true?'Thành công':'Chưa thành công'}">
-
+                                                    <td
+                                                        th:text="${#numbers.formatDecimal(a.tongtien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}">
                                                     </td>
-                                                    <td th:text="${a.ngaytao}"></td>
+                                                    <td>
+                                                        <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;"
+                                                            th:text="${a.trangthai==true?'Thành công':'Chưa thành công'}">
+                                                        </p>
+                                                    </td>
+                                                    <td th:text="${ #dates.format(a.ngaytao, 'dd-MM-yyyy HH:mm:ss')}">
+                                                    </td>
                                                     <td>
                                                         <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;"
                                                             th:text="${a.tenphuongthuc}"></p>
@@ -924,7 +929,7 @@
                                                     <div class="d-flex justify-content-start">
                                                         <h6 style="font-family: 'Times New Roman'; font-weight: bold">
                                                             Tên khách hàng:</h6>
-                                                        <p th:text="${hoaDonDT.khachhang.nguoidung.hovaten}"
+                                                        <p th:text="${hoaDonDT.tennguoinhan}"
                                                             style="margin-left: 70px; font-family: 'Times New Roman'; font-size: 15px;">
                                                         </p>
                                                     </div>
@@ -984,7 +989,7 @@
                                                 <h6 style="font-family: 'Times New Roman'; font-weight: bold">Phiếu giảm
                                                     giá
                                                     :</h6>
-                                                <p th:text="${phieuGiamCT.phieugiamgia.giatrigiamtoida!=null?#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiamtoida, 0, 'COMMA', 0, 'POINT')+'&#x20ab;':'0'}"
+                                                <p th:text="${phieuGiamCT.phieugiamgia.loaiphieu==false?#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiam, 0, 'COMMA', 0, 'POINT')+'&#x20ab;':phieuGiamCT.phieugiamgia.giatrigiam+' %, tối đa '+#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiamtoida, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
                                                     style="font-family: 'Times New Roman'; font-size: 16px;">
                                                 </p>
                                             </div>
@@ -1256,6 +1261,7 @@
                                                         style="vertical-align: middle;"></td>
 
                                                     <td style="vertical-align: middle;"><input
+                                                            th:name="${a.sanphamchitiet.id}"
                                                             class="form-control form-control-sm" type="text"
                                                             th:id="${a.id}" oninput="changeQuantity(event)"
                                                             aria-label=".form-control-sm example" style="width: 100px;"
@@ -1272,7 +1278,7 @@
                                                     <td style="vertical-align: middle;">
 
                                                         <a th:if="${trangThaiHienTai==0}"
-                                                            th:href="@{delete-sp-hdct/{id}(id=${a.id})}">
+                                                            th:href="@{http://localhost:8080/hoa-don/delete-sp-hdct/{id}(id=${a.id})}">
                                                             <button class="btn btn-outline-danger"
                                                                 onclick="return confirm('Bạn có muốn xóa sản phẩm này không?')"
                                                                 type="button"><i class="bi bi-trash3"></i></button></a>
@@ -1288,7 +1294,7 @@
                                                                 class="bi bi-arrow-clockwise bi-warning"></i></button>
 
                                                         <a th:if="${trangThaiHienTai==0}" th:id="${a.id+'fsport'}"
-                                                            th:href="@{update-sp-hdct/{id}/{sl}(id=${a.id},sl=${a.soluong})}">
+                                                            th:href="@{http://localhost:8080/hoa-don/update-sp-hdct/{id}/{sl}(id=${a.id},sl=${a.soluong})}">
                                                             <button class="btn btn-outline-warning"
                                                                 onclick="return confirm('Bạn có muốn cập nhật lại sản phẩm này không?')"
                                                                 type="button"><i
@@ -2343,9 +2349,30 @@
     </script> -->
     <!-- tạo khoảng giá -->
     <script>
-        function changeQuantity(event) {
+        function thongbao(title, iconsz) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: iconsz,
+                title: title
+            });
+        }
+
+        async function changeQuantity(event) {
             const input = event.target;
             let inputValue = input.value;
+            var idsp = input.name;
+            var idhdct = input.id;
 
             // Loại bỏ tất cả các ký tự không phải số từ giá trị đầu vào
             inputValue = inputValue.replace(/\D/g, '');
@@ -2360,19 +2387,65 @@
             }
 
             // Kiểm tra xem giá trị có nằm trong khoảng từ 1 đến 100 không
-            if (numericValue < 1 || isNaN(numericValue)) {
-                numericValue = 1;
-            } else if (numericValue > 100) {
-                numericValue = 100;
+            var urlVLD = `http://localhost:8080/ban-hang-tai-quay/validate-SL?id=${idhdct}`;
+            try {
+                const response = await fetch(urlVLD);
+                const data = await response.json();
+                var slSpTrongDon = data.soluong;
+                var slSpCon = data.sanphamchitiet.soluong;
+
+                if (numericValue < 1 || isNaN(numericValue)) {
+                    numericValue = 1;
+                    thongbao('Số lượng phải lớn hơn 0', 'warning');
+                } else if (numericValue-slSpTrongDon > slSpCon) {
+                    numericValue = slSpCon+slSpTrongDon;
+                    thongbao('Số lượng đang vượt quá số lượng hàng hiện có', 'warning');
+
+                }
+
+                // Cập nhật giá trị của input
+                input.value = numericValue;
+
+                var element = document.getElementById(input.id + 'fsport');
+                //var newHref = "http://localhost:8080/hoa-don/update-sp-hdct/" + input.id + "/" + input.value;
+                var newHref = "update-sp-hdct/" + input.id + "/" + input.value;
+                element.setAttribute("href", newHref);
+            } catch (error) {
+                console.error('Error fetching data:', error);
             }
-
-            // Cập nhật giá trị của input
-            input.value = numericValue;
-
-            var element = document.getElementById(input.id + 'fsport');
-            var newHref = "update-sp-hdct/" + input.id + "/" + input.value;
-            element.setAttribute("href", newHref);
         }
+
+        // function changeQuantity(event) {
+        //     const input = event.target;
+        //     let inputValue = input.value;
+
+        //     // Loại bỏ tất cả các ký tự không phải số từ giá trị đầu vào
+        //     inputValue = inputValue.replace(/\D/g, '');
+
+        //     // Chuyển đổi giá trị thành số
+        //     let numericValue = parseInt(inputValue);
+
+        //     // Kiểm tra xem giá trị nhập vào có rỗng không
+        //     if (inputValue === '') {
+        //         input.value = '';
+        //         return;
+        //     }
+
+        //     // Kiểm tra xem giá trị có nằm trong khoảng từ 1 đến 100 không
+        //     if (numericValue < 1 || isNaN(numericValue)) {
+        //         numericValue = 1;
+        //     } else if (numericValue > 100) {
+        //         numericValue = 100;
+        //     }
+
+        //     // Cập nhật giá trị của input
+        //     input.value = numericValue;
+
+        //     var element = document.getElementById(input.id + 'fsport');
+        //     var newHref = "update-sp-hdct/" + input.id + "/" + input.value;
+        //     element.setAttribute("href", newHref);
+        // }
+
     </script>
 
 
@@ -2504,6 +2577,8 @@
                                             idXareturn = id.WardCode;
                                         }
                                     }
+
+
                                     var requestDataDate = {
                                         from_district_id: 3440,//địa chỉ mặc địch của shop
                                         from_ward_code: "13007",//địa chỉ mặc địch của shop
@@ -2511,6 +2586,7 @@
                                         to_ward_code: idXareturn.toString(),
                                         service_id: 53320
                                     };
+
                                     // Cấu hình yêu cầu với axios, bao gồm Token và dữ liệu gửi đi
                                     var ParameterDate = {
                                         url: "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/leadtime",
@@ -2530,8 +2606,6 @@
                                         .then(function (d) {
                                             // Số nguyên đại diện cho một thời điểm trong JavaScript (ví dụ: số giây kể từ Epoch)
                                             var timestamp = d.data.leadtime;
-
-                                            // http://localhost:8080/hoa-don/set-ngay-giao-du-kien/{date}
                                             var urlsetdate = `http://localhost:8080/hoa-don/set-ngay-giao-du-kien/${timestamp}`;
                                             callController(urlsetdate);
                                         })
@@ -2544,6 +2618,7 @@
         }
         //test thử
         function xacnhanngaygiao() {
+
             //http://localhost:8080/hoa-don/set-ngay-giao-du-kien/{date}
             var urlAPI = `http://localhost:8080/hoa-don/call-api-ngay-giao`;
             fetch(urlAPI)

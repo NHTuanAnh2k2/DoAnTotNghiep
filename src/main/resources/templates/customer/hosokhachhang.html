@@ -107,6 +107,7 @@
                 <div class=" card border-light" style="width: 100%;height: 100%">
                     <div class="card-body">
                         <div class="tab-content" id="v-pills-tabContent">
+
                             <!--hồ sơ cá nhân-->
                             <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
                                  aria-labelledby="v-pills-home-tab" tabindex="0">
@@ -145,26 +146,34 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!--cap nhat thong tin tai khoan-->
                                 <div id="capnhatthongtintaikhoan">
                                     <p style="font-size: 18px; font-weight: 650; padding-top: 7px;">CẬP NHẬT THÔNG TIN
                                         TÀI KHOẢN</p>
                                     <hr class="border border-danger border opacity-50">
                                     <div style="width: 70%;" class="d-flex justify-content-center">
-                                        <form th:object="${nguoidung}" th:method="post" th:action="@{/capnhattaikhoan}">
+                                        <form th:object="${nguoidung}" th:method="post"
+                                              th:action="@{/capnhattaikhoan/{username}(username=${userDangnhap})}">
                                             <div class="form-floating mb-3">
                                                 <input type="text" class="form-control" th:field="*{hovaten}"
                                                        placeholder="Họ và tên">
                                                 <label>Họ và tên</label>
+                                                <p th:if="${#fields.hasErrors('hovaten')}"
+                                                   th:errors="*{hovaten}" style="color: red;"></p>
                                             </div>
                                             <div class="form-floating mb-3">
                                                 <input type="email" class="form-control" th:field="*{email}"
                                                        placeholder="name@example.com">
                                                 <label>Email</label>
+                                                <p th:if="${#fields.hasErrors('email')}"
+                                                   th:errors="*{hovaten}" style="color: red;"></p>
                                             </div>
                                             <div class="form-floating mb-3">
                                                 <input type="text" class="form-control" th:field="*{sodienthoai}"
                                                        placeholder="Số điện thoại">
                                                 <label>Số điện thoại</label>
+                                                <p th:if="${#fields.hasErrors('sodienthoai')}"
+                                                   th:errors="*{sodienthoai}" style="color: red;"></p>
                                             </div>
                                             <div class="form-floating mb-3">
                                                 <input type="text" class="form-control" th:field="*{ngaysinh}"
@@ -180,32 +189,40 @@
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-4">
                                                     <div class="form-floating" style="padding-right: 20px;">
-                                                        <select class="form-select" th:field="*{tinhthanhpho}"
-                                                                onchange="getDiaChi()"
+                                                        <select class="form-select" id="city" th:field="*{tinhthanhpho}"
                                                                 aria-label="Floating label select example">
-                                                            <option value="">Chọn tỉnh/thành phố</option>
-                                                            <option th:each="city : ${cities}"
-                                                                    th:value="${city.getName()}"
-                                                                    th:text="${city.getName()}">City
+                                                            <option th:value="*{tinhthanhpho}"
+                                                                    th:text="*{tinhthanhpho}">Chọn tỉnh/thành phố
                                                             </option>
+                                                            <!--                                                            <option th:each="city : ${cities}"-->
+                                                            <!--                                                                    th:value="${city.getName()}"-->
+                                                            <!--                                                                    th:text="${city.getName()}">City-->
+                                                            <!--                                                            </option>-->
                                                         </select>
                                                         <label>Tỉnh/thành phố</label>
                                                     </div>
                                                     <div class="form-floating" style="padding-right: 20px;">
-                                                        <select class="form-select" th:field="*{quanhuyen}"
-                                                                onchange="getQuanHuyen()"
+                                                        <select class="form-select" id="district"
+                                                                th:field="*{quanhuyen}"
+
                                                                 aria-label="Floating label select example">
-                                                            <option th:value="*{quanhuyen}"
-                                                                    th:text="*{quanhuyen}">Chọn quận/huyện
+                                                            <!--                                                            <option th:value="*{quanhuyen}"-->
+                                                            <!--                                                                    th:text="*{quanhuyen}">Chọn quận/huyện-->
+                                                            <!--                                                            </option>-->
+                                                            <option th:value="*{quanhuyen}" th:text="*{quanhuyen}"
+                                                                    selected>Chọn quận huyện
                                                             </option>
                                                         </select>
                                                         <label>Quận/huyện</label>
                                                     </div>
                                                     <div class="form-floating">
-                                                        <select class="form-select" th:field="*{xaphuong}"
+                                                        <select class="form-select" id="ward" th:field="*{xaphuong}"
                                                                 aria-label="Floating label select example">
-                                                            <option th:value="*{xaphuong}"
-                                                                    th:text="*{xaphuong}">Chọn xã/phường
+                                                            <!--                                                            <option th:value="*{xaphuong}"-->
+                                                            <!--                                                                    th:text="*{xaphuong}">Chọn xã/phường-->
+                                                            <!--                                                            </option>-->
+                                                            <option th:value="*{xaphuong}" th:text="*{xaphuong}"
+                                                                    selected>Chọn phường xã
                                                             </option>
                                                         </select>
                                                         <label>Phường/xã</label>
@@ -333,127 +350,140 @@
                                                         </div>
                                                     </form>
                                                 </div>
-                                                <!--=======-->
-                                                <!--                                <h3>Địa chỉ của tôi</h3>-->
-                                                <!--                                <table class="table">-->
-                                                <!--                                    <tr>-->
-                                                <!--                                        <th>Tỉnh/Thành phố</th>-->
-                                                <!--                                        <th>Quận/Huyện</th>-->
-                                                <!--                                        <th>Xã/Phường</th>-->
-                                                <!--                                        <th>Địa chỉ cụ thể</th>-->
-                                                <!--                                        <th>Action</th>-->
-                                                <!--                                    </tr>-->
-                                                <!--                                    <tr>-->
-                                                <!--                                        <td th:text="${diachi.tinhthanhpho}">Hà Nội</td>-->
-                                                <!--                                        <td th:text="${diachi.quanhuyen}">Hà Nội</td>-->
-                                                <!--                                        <td th:text="${diachi.xaphuong}">Hà Nội</td>-->
-                                                <!--                                        <td th:text="${diachi.tenduong}">Hà Nội</td>-->
-                                                <!--                                        <td>-->
-                                                <!--                                            <a href="#" class="btn btn-danger" data-bs-toggle="modal"-->
-                                                <!--                                               data-bs-target="#capnhatdiachi">Cập nhật</a>-->
-                                                <!--                                            <a href="#" class="btn btn-danger">Thiết lập mặc định</a>-->
-                                                <!--                                            <a href="#" class="btn btn-danger">Xóa</a>-->
-                                                <!--                                        </td>-->
-                                                <!--                                    </tr>-->
-                                                <!--                                </table>-->
-                                                <!--                                &lt;!&ndash;Modal&ndash;&gt;-->
-                                                <!--                                <div class="modal fade" id="capnhatdiachi" tabindex="-1"-->
-                                                <!--                                     aria-labelledby="exampleModalLabel" aria-hidden="true">-->
-                                                <!--                                    <div class="modal-dialog">-->
-                                                <!--                                        <div class="modal-content">-->
-                                                <!--                                            <div class="modal-header">-->
-                                                <!--                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Cập nhật địa chỉ</h1>-->
-                                                <!--                                                <button type="button" class="btn-close" data-bs-dismiss="modal"-->
-                                                <!--                                                        aria-label="Close"></button>-->
-                                                <!--&gt;>>>>>> thinh-->
-                                                <!--                                            </div>-->
-                                                <!--                                        </div>-->
-                                                <div class="col-lg-6">
-                                                    <button id="chuyenthemdiachi"
-                                                            style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100%; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">
-                                                        THÊM ĐỊA CHỈ MỚI
-                                                    </button>
-                                                    <div id="themdiachi"
-                                                         style="padding-left: 20px; padding-right: 20px; margin-top: 35px;">
-                                                        <form>
-                                                            <div class="form-floating mb-3">
-                                                                <input type="text" class="form-control"
-                                                                       id="hovatenthemdiachi" placeholder="Họ và tên">
-                                                                <label for="hovatenthemdiachi">Họ và tên</label>
+                                                <h3>Địa chỉ của tôi</h3>
+                                                <table class="table">
+                                                    <tr>
+                                                        <th>Tỉnh/Thành phố</th>
+                                                        <th>Quận/Huyện</th>
+                                                        <th>Xã/Phường</th>
+                                                        <th>Địa chỉ cụ thể</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td th:text="${diachi.tinhthanhpho}">Hà Nội</td>
+                                                        <td th:text="${diachi.quanhuyen}">Hà Nội</td>
+                                                        <td th:text="${diachi.xaphuong}">Hà Nội</td>
+                                                        <td th:text="${diachi.tenduong}">Hà Nội</td>
+                                                        <td>
+                                                            <a href="#" class="btn btn-danger" data-bs-toggle="modal"
+                                                               data-bs-target="#capnhatdiachi">Cập nhật</a>
+                                                            <a href="#" class="btn btn-danger">Thiết lập mặc định</a>
+                                                            <a href="#" class="btn btn-danger">Xóa</a>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+
+                                                <!--Modal-->
+                                                <div class="modal fade" id="capnhatdiachi" tabindex="-1"
+                                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Cập
+                                                                    nhật địa chỉ</h1>
+                                                                <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
                                                             </div>
-                                                            <div class="form-floating mb-3">
-                                                                <input type="text" class="form-control"
-                                                                       id="sdtthemdiachi" placeholder="Số điện thoại">
-                                                                <label for="sdtthemdiachi">Số điện thoại</label>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <button id="chuyenthemdiachi"
+                                                                    style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100%; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">
+                                                                THÊM ĐỊA CHỈ MỚI
+                                                            </button>
+                                                            <div id="themdiachi"
+                                                                 style="padding-left: 20px; padding-right: 20px; margin-top: 35px;">
+                                                                <form>
+                                                                    <div class="form-floating mb-3">
+                                                                        <input type="text" class="form-control"
+                                                                               id="hovatenthemdiachi"
+                                                                               placeholder="Họ và tên">
+                                                                        <label for="hovatenthemdiachi">Họ và tên</label>
+                                                                    </div>
+                                                                    <div class="form-floating mb-3">
+                                                                        <input type="text" class="form-control"
+                                                                               id="sdtthemdiachi"
+                                                                               placeholder="Số điện thoại">
+                                                                        <label for="sdtthemdiachi">Số điện thoại</label>
+                                                                    </div>
+                                                                    <div class="form-floating mb-3">
+                                                                        <input type="text" class="form-control"
+                                                                               id="diachithemdiachi"
+                                                                               placeholder="Địa chỉ">
+                                                                        <label for="diachithemdiachi">Địa chỉ</label>
+                                                                    </div>
+                                                                    <div class="form-floating mb-3">
+                                                                        <select class="form-select" id="tinhthemdiachi"
+                                                                                aria-label="Floating label select example">
+                                                                            <option selected>Open this select menu
+                                                                            </option>
+                                                                            <option value="1">One</option>
+                                                                            <option value="2">Two</option>
+                                                                            <option value="3">Three</option>
+                                                                        </select>
+                                                                        <label for="tinhthemdiachi">Tỉnh/thành
+                                                                            phố</label>
+                                                                    </div>
+                                                                    <div class="form-floating mb-3">
+                                                                        <select class="form-select" id="huyenthemdiachi"
+                                                                                aria-label="Floating label select example">
+                                                                            <option selected>Open this select menu
+                                                                            </option>
+                                                                            <option value="1">One</option>
+                                                                            <option value="2">Two</option>
+                                                                            <option value="3">Three</option>
+                                                                        </select>
+                                                                        <label for="huyenthemdiachi">Quận/huyện</label>
+                                                                    </div>
+                                                                    <div class="form-floating mb-3">
+                                                                        <select class="form-select" id="xathemdiachi"
+                                                                                aria-label="Floating label select example">
+                                                                            <option selected>Open this select menu
+                                                                            </option>
+                                                                            <option value="1">One</option>
+                                                                            <option value="2">Two</option>
+                                                                            <option value="3">Three</option>
+                                                                        </select>
+                                                                        <label for="xathemdiachi">Phường/xã</label>
+                                                                    </div>
+                                                                    <div class="form-check mb-3">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                               value=""
+                                                                               id="checkdiachithemmacdinh">
+                                                                        <label class="form-check-label"
+                                                                               for="checkdiachithemmacdinh">
+                                                                            Chọn làm địa chỉ mặc định
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="d-flex justify-content-center align-items-center mb-4">
+                                                                        <a id="huythemdiachi" href="#"
+                                                                           style="color: #808080; text-decoration: none; text-transform: none; margin-right: 50px; font-weight: 550; ">Hủy</a>
+                                                                        <button id="btnthemdiachi"
+                                                                                style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 30%; height: 40px; border-radius: 10px; border-color: rgb(249,72,42);">
+                                                                            CẬP NHẬT
+                                                                        </button>
+                                                                    </div>
+                                                                </form>
                                                             </div>
-                                                            <div class="form-floating mb-3">
-                                                                <input type="text" class="form-control"
-                                                                       id="diachithemdiachi" placeholder="Địa chỉ">
-                                                                <label for="diachithemdiachi">Địa chỉ</label>
-                                                            </div>
-                                                            <div class="form-floating mb-3">
-                                                                <select class="form-select" id="tinhthemdiachi"
-                                                                        aria-label="Floating label select example">
-                                                                    <option selected>Open this select menu</option>
-                                                                    <option value="1">One</option>
-                                                                    <option value="2">Two</option>
-                                                                    <option value="3">Three</option>
-                                                                </select>
-                                                                <label for="tinhthemdiachi">Tỉnh/thành phố</label>
-                                                            </div>
-                                                            <div class="form-floating mb-3">
-                                                                <select class="form-select" id="huyenthemdiachi"
-                                                                        aria-label="Floating label select example">
-                                                                    <option selected>Open this select menu</option>
-                                                                    <option value="1">One</option>
-                                                                    <option value="2">Two</option>
-                                                                    <option value="3">Three</option>
-                                                                </select>
-                                                                <label for="huyenthemdiachi">Quận/huyện</label>
-                                                            </div>
-                                                            <div class="form-floating mb-3">
-                                                                <select class="form-select" id="xathemdiachi"
-                                                                        aria-label="Floating label select example">
-                                                                    <option selected>Open this select menu</option>
-                                                                    <option value="1">One</option>
-                                                                    <option value="2">Two</option>
-                                                                    <option value="3">Three</option>
-                                                                </select>
-                                                                <label for="xathemdiachi">Phường/xã</label>
-                                                            </div>
-                                                            <div class="form-check mb-3">
-                                                                <input class="form-check-input" type="checkbox" value=""
-                                                                       id="checkdiachithemmacdinh">
-                                                                <label class="form-check-label"
-                                                                       for="checkdiachithemmacdinh">
-                                                                    Chọn làm địa chỉ mặc định
-                                                                </label>
-                                                            </div>
-                                                            <div class="d-flex justify-content-center align-items-center mb-4">
-                                                                <a id="huythemdiachi" href="#"
-                                                                   style="color: #808080; text-decoration: none; text-transform: none; margin-right: 50px; font-weight: 550; ">Hủy</a>
-                                                                <button id="btnthemdiachi"
-                                                                        style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 30%; height: 40px; border-radius: 10px; border-color: rgb(249,72,42);">
-                                                                    CẬP NHẬT
-                                                                </button>
-                                                            </div>
-                                                        </form>
+                                                        </div>
                                                     </div>
                                                 </div>
+
                                             </div>
                                         </div>
-                                        <!--end -->
                                     </div>
                                 </div>
                             </div>
-                            <!--end-->
+                            <!--end -->
 
                             <!--đổi mật khẩu-->
                             <div class="tab-pane fade" id="v-pills-disabled" role="tabpanel"
                                  aria-labelledby="v-pills-disabled-tab" tabindex="0">
-                                <form th:object="${nguoidungDoiMk}" th:method="post" th:action="@{/doimatkhau/{id}(id=${nguoidung.id})}">
+                                <form th:object="${nguoidungdoimatkhau}" th:method="post" th:action="@{/doimatkhau/{username}(username=${userDangnhap})}">
                                     <h3>Đổi mật khẩu</h3>
-                                    <h6 style="color: red;font-style: italic">Để bảo mật tài khoản, vui lòng không
+                                    <h6 style="color: red;font-style: italic">Để bảo mật tài khoản,
+                                        vui lòng
+                                        không
                                         chia sẻ mật khẩu cho người khác</h6>
                                     <hr class="border border-danger border opacity-50">
                                     <p><span style="color: red">(*)</span> Mật khẩu hiện tại:
@@ -463,10 +493,11 @@
                                         <input type="password" class="form-control" th:field="*{matkhaumoi}">
                                     </p>
                                     <p><span style="color: red">(*)</span> Xác nhận mật khẩu mới:
-                                        <input type="password" class="form-control" name="xacnhanmatkhau">
+                                        <input type="password" class="form-control" name="xacnhanmatkhau" th:field="*{xacnhanmatkhau}">
                                     </p>
                                     <p>
-                                        <button class="btn" style="background-color: rgb(249,72,42);color: white">
+                                        <button type="submit" class="btn"
+                                                style="background-color: rgb(249,72,42);color: white">
                                             Đổi mật khẩu
                                         </button>
                                     </p>
@@ -480,48 +511,67 @@
 
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
-                                                data-bs-target="#home-tab-pane" type="button" role="tab"
-                                                aria-controls="home-tab-pane" aria-selected="true">Tất cả
+                                        <button class="nav-link active" id="home-tab"
+                                                data-bs-toggle="tab"
+                                                data-bs-target="#home-tab-pane" type="button"
+                                                role="tab"
+                                                aria-controls="home-tab-pane" aria-selected="true">
+                                            Tất cả
                                         </button>
                                     </li>
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab"
-                                                data-bs-target="#profile-tab-pane" type="button" role="tab"
-                                                aria-controls="profile-tab-pane" aria-selected="false">Chờ thanh
+                                        <button class="nav-link" id="profile-tab"
+                                                data-bs-toggle="tab"
+                                                data-bs-target="#profile-tab-pane" type="button"
+                                                role="tab"
+                                                aria-controls="profile-tab-pane"
+                                                aria-selected="false">Chờ thanh
                                             toán
                                         </button>
                                     </li>
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="contact-tab" data-bs-toggle="tab"
-                                                data-bs-target="#contact-tab-pane" type="button" role="tab"
-                                                aria-controls="contact-tab-pane" aria-selected="false">Vận
+                                        <button class="nav-link" id="contact-tab"
+                                                data-bs-toggle="tab"
+                                                data-bs-target="#contact-tab-pane" type="button"
+                                                role="tab"
+                                                aria-controls="contact-tab-pane"
+                                                aria-selected="false">Vận
                                             chuyển
                                         </button>
                                     </li>
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="disabled-tab1" data-bs-toggle="tab"
-                                                data-bs-target="#disabled-tab-pane" type="button" role="tab"
-                                                aria-controls="disabled-tab-pane" aria-selected="false">Chờ giao
+                                        <button class="nav-link" id="disabled-tab1"
+                                                data-bs-toggle="tab"
+                                                data-bs-target="#disabled-tab-pane" type="button"
+                                                role="tab"
+                                                aria-controls="disabled-tab-pane"
+                                                aria-selected="false">Chờ giao
                                             hàng
                                         </button>
                                     </li>
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="disabled-tab2" data-bs-toggle="tab"
-                                                data-bs-target="#disabled-tab-pane" type="button" role="tab"
-                                                aria-controls="disabled-tab-pane" aria-selected="false">Hoàn
+                                        <button class="nav-link" id="disabled-tab2"
+                                                data-bs-toggle="tab"
+                                                data-bs-target="#disabled-tab-pane" type="button"
+                                                role="tab"
+                                                aria-controls="disabled-tab-pane"
+                                                aria-selected="false">Hoàn
                                             thành
                                         </button>
                                     </li>
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="disabled-tab3" data-bs-toggle="tab"
-                                                data-bs-target="#disabled-tab-pane" type="button" role="tab"
-                                                aria-controls="disabled-tab-pane" aria-selected="false">Đã hủy
+                                        <button class="nav-link" id="disabled-tab3"
+                                                data-bs-toggle="tab"
+                                                data-bs-target="#disabled-tab-pane" type="button"
+                                                role="tab"
+                                                aria-controls="disabled-tab-pane"
+                                                aria-selected="false">Đã hủy
                                         </button>
                                     </li>
                                 </ul>
                                 <div class="tab-content" id="myTabContent">
-                                    <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel"
+                                    <div class="tab-pane fade show active" id="home-tab-pane"
+                                         role="tabpanel"
                                          aria-labelledby="home-tab" tabindex="0">
                                         <table class="table">
                                             <tr>
@@ -542,7 +592,8 @@
                                             </tr>
                                         </table>
                                         <button class="btn"
-                                                style="background-color: rgb(249,72,42);color: white">Mua lại
+                                                style="background-color: rgb(249,72,42);color: white">
+                                            Mua lại
                                         </button>
                                         <button class="btn btn-dark">Đánh giá</button>
                                     </div>
@@ -567,7 +618,8 @@
                                             </tr>
                                         </table>
                                         <button class="btn"
-                                                style="background-color: rgb(249,72,42);color: white">Mua lại
+                                                style="background-color: rgb(249,72,42);color: white">
+                                            Mua lại
                                         </button>
                                         <button class="btn btn-dark">Đánh giá</button>
                                     </div>
@@ -592,11 +644,13 @@
                                             </tr>
                                         </table>
                                         <button class="btn"
-                                                style="background-color: rgb(249,72,42);color: white">Mua lại
+                                                style="background-color: rgb(249,72,42);color: white">
+                                            Mua lại
                                         </button>
                                         <button class="btn btn-dark">Đánh giá</button>
                                     </div>
-                                    <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel"
+                                    <div class="tab-pane fade" id="disabled-tab-pane"
+                                         role="tabpanel"
                                          aria-labelledby="disabled-tab" tabindex="0">
                                         <table class="table">
                                             <tr>
@@ -617,28 +671,23 @@
                                             </tr>
                                         </table>
                                         <button class="btn"
-                                                style="background-color: rgb(249,72,42);color: white">Mua lại
+                                                style="background-color: rgb(249,72,42);color: white">
+                                            Mua lại
                                         </button>
                                         <button class="btn btn-dark">Đánh giá</button>
                                     </div>
                                 </div>
-
-
                             </div>
+                            <!-- /.card -->
                         </div>
+                        <!-- /.col -->
                     </div>
+                    <!-- /.row -->
                 </div>
-                <!-- /.card -->
-            </div>
-            <!-- /.col -->
-        </div>
-        <!-- /.row -->
-    </div>
-    <!-- /.container-fluid -->
-    </div>
-    </div>
+                <!-- /.container-fluid -->
 </section>
 <!-- cart page content section end -->
+
 <script>
     document.getElementById("capnhatthongtintaikhoan").style.display = "none";
     document.getElementById("capnhatdiachi").style.display = "none";
@@ -677,54 +726,99 @@
     });
 </script>
 
-<!--dia chi-->
 <script>
-    function getDiaChi() {
-        var selectedProvince = document.getElementById("tinhthanhpho").value;
-        var quanhuyenSelect = document.getElementById("quanhuyen");
+    document.addEventListener("DOMContentLoaded", function () {
+        // Kiểm tra và hiển thị lại form khi load trang
+        showFormErrors("capnhatthongtintaikhoan", document.getElementById("capnhatthongtintaikhoan").classList.contains("has-errors"));
+        showFormErrors("capnhatdiachi", document.getElementById("capnhatdiachi").classList.contains("has-errors"));
+        showFormErrors("themdiachi", document.getElementById("themdiachi").classList.contains("has-errors"));
+    });
 
-        quanhuyenSelect.innerHTML = "<option value=''>Chọn quận/huyện</option>";
+    function showFormErrors(formId, hasErrors) {
+        if (hasErrors) {
+            // Hiển thị form có lỗi
+            document.getElementById(formId).style.display = "block";
 
-        // Lấy thông tin về tỉnh/thành phố đã chọn từ biến cities
-        var selectedProvinceData = cities.find(function (city) {
-            return city.name === selectedProvince;
-        });
+            // Ẩn nút 'Xem thông tin tài khoản' khi hiển thị form cập nhật thông tin tài khoản
+            if (formId === "capnhatthongtintaikhoan") {
+                document.getElementById("xemthongtintaikhoan").style.display = "none";
+            }
+            // Ẩn nút 'Thông tin địa chỉ' khi hiển thị form cập nhật địa chỉ
+            else if (formId === "capnhatdiachi") {
+                document.getElementById("thongtindiachi").style.display = "none";
+            }
+            // Không cần xử lý khi hiển thị form thêm địa chỉ
+        } else {
+            // Ẩn các form khi không có lỗi
+            document.getElementById(formId).style.display = "none";
 
-        if (selectedProvinceData) {
-            selectedProvinceData.districts.forEach(function (district) {
-                var option = document.createElement("option");
-                option.text = district.name;
-                option.value = district.name;
-                quanhuyenSelect.appendChild(option);
-            });
+            // Hiển thị lại nút 'Xem thông tin tài khoản' sau khi ẩn form cập nhật thông tin tài khoản
+            if (formId === "capnhatthongtintaikhoan") {
+                document.getElementById("xemthongtintaikhoan").style.display = "block";
+            }
+            // Hiển thị lại nút 'Thông tin địa chỉ' sau khi ẩn form cập nhật địa chỉ
+            else if (formId === "capnhatdiachi") {
+                document.getElementById("thongtindiachi").style.display = "block";
+            }
+            // Không cần xử lý khi ẩn form thêm địa chỉ
         }
     }
+</script>
 
-    function getQuanHuyen() {
-        var selectedDistrict = document.getElementById("quanhuyen").value;
-        var xaphuongSelect = document.getElementById("xaphuong");
-        xaphuongSelect.innerHTML = "<option value=''>Chọn xã/phường</option>";
+<!--dia chi-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+<script>
+    var citis = document.getElementById("city");
+    var districts = document.getElementById("district");
+    var wards = document.getElementById("ward");
+    var Parameter = {
+        url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
+        method: "GET",
+        responseType: "application/json",
+    };
+    var promise = axios(Parameter);
+    promise.then(function (result) {
+        renderCity(result.data);
+    });
 
-        // Lấy thông tin về tỉnh/thành phố đã chọn từ biến cities
-        var selectedProvince = document.getElementById("tinhthanhpho").value;
-        var selectedProvinceData = cities.find(function (city) {
-            return city.name === selectedProvince;
-        });
-
-        if (selectedProvinceData) {
-            var selectedDistrictData = selectedProvinceData.districts.find(function (district) {
-                return district.name === selectedDistrict;
-            });
-
-            if (selectedDistrictData) {
-                selectedDistrictData.wards.forEach(function (ward) {
-                    var option = document.createElement("option");
-                    option.text = ward.name;
-                    option.value = ward.name;
-                    xaphuongSelect.appendChild(option);
-                });
-            }
+    function renderCity(data) {
+        for (const x of data) {
+            var opt = document.createElement('option');
+            opt.value = x.Name;
+            opt.text = x.Name;
+            opt.setAttribute('data-id', x.Id);
+            citis.options.add(opt);
         }
+        citis.onchange = function () {
+            districts.length = 1;
+            wards.length = 1;
+            if (this.options[this.selectedIndex].dataset.id != "") {
+                const result = data.filter(n => n.Id === this.options[this.selectedIndex].dataset.id);
+
+                for (const k of result[0].Districts) {
+                    var opt = document.createElement('option');
+                    opt.value = k.Name;
+                    opt.text = k.Name;
+                    opt.setAttribute('data-id', k.Id);
+                    districts.options.add(opt);
+                }
+            }
+        };
+        districts.onchange = function () {
+            wards.length = 1;
+            const dataCity = data.filter((n) => n.Id === citis.options[citis.selectedIndex].dataset.id);
+            if (this.options[this.selectedIndex].dataset.id != "") {
+                const dataWards = dataCity[0].Districts.filter(n => n.Id === this.options[this.selectedIndex].dataset.id)[0].Wards;
+
+                for (const w of dataWards) {
+                    var opt = document.createElement('option');
+                    opt.value = w.Name;
+                    opt.text = w.Name;
+                    opt.setAttribute('data-id', w.Id);
+                    wards.options.add(opt);
+                }
+            }
+        };
     }
 </script>
 

@@ -206,7 +206,7 @@
                                     <div class="d-flex">
                                         <th:block th:each="anh, iterStat : *{anh}">
                                             <img th:if="${anh.tenanh != null}"
-                                                 th:src="@{'/upload/' + ${anh.tenanh.substring(anh.tenanh.lastIndexOf('upload') + 6)}}"
+                                                 th:src="@{'/upload' + ${anh.tenanh.substring(anh.tenanh.lastIndexOf('upload') + 6)}}"
                                                  width="100" height="100" alt="Ảnh"
                                                  style="margin-left: 20px"
                                                  th:classappend="${iterStat.index > 0} ? 'additional-margin' : ''">

@@ -17,9 +17,6 @@ import java.util.Optional;
 
 public interface KhachHangService {
     List<KhachHang> findAllKhachHang();
-
-    //Add khách hàng
-    KhachHang add(KhachHang khachHang, NguoiDung nguoiDung, DiaChi diaChi, String tinhthanhpho, String quanhuyen, String xaphuong, String tenduong);
     DiaChi addDiaChi(DiaChi diaChi);
     KhachHang addKhachHang(KhachHang khachHang);
     NguoiDung addNguoiDung(NguoiDung nguoiDung);
@@ -49,4 +46,5 @@ public interface KhachHangService {
     NguoiDung doimatkhau(DoiMatKhauNguoiDung nguoidung, int id);
     void scanQr() throws NotFoundException;
     String readQRCode(File qrCodeImage) throws IOException;
+    List<KhachHang> findKHGanNhat();
 }

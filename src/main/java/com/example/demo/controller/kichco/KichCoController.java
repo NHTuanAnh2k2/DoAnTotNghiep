@@ -26,18 +26,22 @@ public class KichCoController {
     KichCoRepository kichCoRepository;
 
     @GetMapping("/listKichCo")
-    public String listdegiay(Model model, @ModelAttribute("kichco") KichCo kichCo, @ModelAttribute("tim") ThuocTinhInfo info) {
-        List<KichCo> page = null;
-        if (info.getKey() != null) {
-            page = kichCoRepository.getDeGiayByTenOrTrangthai(info.getKey(), info.getTrangthai());
-        } else {
+    public String listKichCo(Model model, @ModelAttribute("kichco") KichCo kichCo, @ModelAttribute("tim") ThuocTinhInfo info) {
+        List<KichCo> page;
+        boolean isKeyEmpty = (info.getKey() == null || info.getKey().trim().isEmpty());
+        boolean isTrangthaiNull = (info.getTrangthai() == null);
+
+        if (isKeyEmpty && isTrangthaiNull) {
             page = kichCoRepository.findAllByOrderByNgaytaoDesc();
+        } else {
+            page = kichCoRepository.getKichCoByTenOrTrangthai(info.getKey(), info.getTrangthai());
         }
         model.addAttribute("fillSearch", info.getKey());
         model.addAttribute("fillTrangThai", info.getTrangthai());
         model.addAttribute("list", page);
         return "admin/qlkichco";
     }
+
     @PostMapping("/addSaveKichCo")
     @CacheEvict(value = "kichcoCache", allEntries = true)
     public String addSave(@ModelAttribute("kichco") KichCo kichCo, @ModelAttribute("kc") ThuocTinhInfo info, Model model) {
