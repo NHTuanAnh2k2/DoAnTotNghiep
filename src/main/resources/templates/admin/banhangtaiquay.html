@@ -359,7 +359,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Hủy</button>
-                            <button type="button" class="btn" style="background-color: rgb(249,72,42);color: white"
+                            <button type="button" class="btn" style="background-color: rgb(249,72,42);color: white" 
                                 data-bs-dismiss="modal" id="xacnhanPT" onclick="xacnhanPTTT()">Xác nhận</button>
 
                         </div>
@@ -846,10 +846,10 @@
                             </svg>
                             Thông tin thanh toán
                         </h5>
+                        <!-- data-bs-toggle="modal" data-bs-target="#modalThayDoiHoaDon5" -->
                         <div class="d-flex justify-content-between">
                             <p style="font-weight: bold">Khách thanh toán:
-                                <button class="btn" data-bs-toggle="modal" data-bs-target="#modalThayDoiHoaDon5"
-                                    id="chantrasau" onclick="thanhtoan()">
+                                <button class="btn" id="chantrasau" onclick="thanhtoan()">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                                         class="bi bi-credit-card" viewBox="0 0 16 16">
                                         <path
@@ -1381,7 +1381,7 @@ tabindex="0">
             <th>Thao tác</th>
         </tr>
     </thead>
-    <tbody>`+ htmlTR + `
+    <tbody id="boddydssp">`+ htmlTR + `
 
     </tbody>
 </table>
@@ -2346,18 +2346,37 @@ tabindex="0">
         //hiển thị nút trả sau trước
 
         function giaohang(event) {
-            var isChecked = event.target.checked;
-            if (isChecked) {
-                // hiển thị div 
-                document.getElementById('diachidiv').style.display = 'block';
-                showdiachimacdinh();
+            const urlchecksize = `http://localhost:8080/ban-hang-tai-quay/checkGiaoThanhToan`;
+            fetch(urlchecksize)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    if (b === true) {
+                        if(tienkhachthanhtoan===0){
+                            document.getElementById("checktrasau").checked = false;
+                            thongbao('Bạn chưa chọn sản phẩm nào', 'warning')
+                        }else{
+                            var isChecked = event.target.checked;
+                        if (isChecked) {
+                            // hiển thị div 
+                            document.getElementById('diachidiv').style.display = 'block';
+                            showdiachimacdinh();
 
-            } else {
-                // ẩn div
-                tienkhachthanhtoan = tienkhachthanhtoan - shipToanCuc;
-                document.getElementById('diachidiv').style.display = 'none';
+                        } else {
+                            // ẩn div
+                            tienkhachthanhtoan = tienkhachthanhtoan - shipToanCuc;
+                            document.getElementById('diachidiv').style.display = 'none';
 
-            }
+                        }
+                        }
+                      
+                    } else {
+                        
+                        document.getElementById("checktrasau").checked = false;
+                        thongbao('Chưa có hóa đơn nào được chọn', 'warning')
+                    }
+                })
         }
 
 
@@ -2610,30 +2629,37 @@ tabindex="0">
 
         // thanh toán modal hóa đơn
         function thanhtoan() {
-            const urlthanhtoan = `http://localhost:8080/ban-hang-tai-quay/thanh-toan`;
-            fetch(urlthanhtoan)
+            const urlchecksize = `http://localhost:8080/ban-hang-tai-quay/checkGiaoThanhToan`;
+            fetch(urlchecksize)
                 .then(function (a) {
                     return a.json();
                 })
                 .then(function (b) {
-                    var htmlpt = '';
-                    console.log(b)
-                    if (b.length > 0) {
-                        var stt = 0;
-                        var tiendathanhtoan = 0;
-                        var checktienmat = 0;
-                        var checkchuyenkhoan = 0;
-                        for (const hd of b) {
-                            if (hd.mota == 'tiền mặt') {
-                                checktienmat = 1;
+                    if (b === true) {
+                        const urlthanhtoan = `http://localhost:8080/ban-hang-tai-quay/thanh-toan`;
+                        fetch(urlthanhtoan)
+                            .then(function (a) {
+                                return a.json();
+                            })
+                            .then(function (b) {
+                                var htmlpt = '';
+                                console.log(b)
+                                if (b.length > 0) {
+                                    var stt = 0;
+                                    var tiendathanhtoan = 0;
+                                    var checktienmat = 0;
+                                    var checkchuyenkhoan = 0;
+                                    for (const hd of b) {
+                                        if (hd.mota == 'tiền mặt') {
+                                            checktienmat = 1;
 
-                            }
-                            if (hd.mota == 'chuyển khoản') {
-                                checkchuyenkhoan = 1;
-                            }
-                            tiendathanhtoan += hd.tongtien;
-                            stt++;
-                            htmlpt += ` <tr>
+                                        }
+                                        if (hd.mota == 'chuyển khoản') {
+                                            checkchuyenkhoan = 1;
+                                        }
+                                        tiendathanhtoan += hd.tongtien;
+                                        stt++;
+                                        htmlpt += ` <tr>
                                               <td>${stt}</td>
                                               <td>${hd.magiaodichvnpay == null ? '' : hd.magiaodichvnpay}</td>
                                               <td>${hd.tongtien}</td>
@@ -2646,40 +2672,51 @@ tabindex="0">
                                                                 type="button"><i class="bi bi-trash3"></i></button></a>
                                               </td>
                                           </tr>`;
-                        }
-                        if (checkchuyenkhoan == 1) {
-                            document.getElementById('chuyenkhoan').disabled = true;
-                        }
-                        if (checktienmat == 1) {
-                            document.getElementById('tienmat').disabled = true;
-                        }
-                        document.getElementById('dathanhtoanroi').innerHTML = tiendathanhtoan;
-                        document.getElementById('showpt').innerHTML = htmlpt;
-                        var showTien = document.getElementById('sotienhienthi');
-                        showTien.value = (tienkhachthanhtoan - tiendathanhtoan).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-                        document.getElementById('tienthieu').innerHTML = (tienkhachthanhtoan - tiendathanhtoan).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-                        document.getElementById('hdThanhToanShow').innerHTML = hdHienTai;
-                        if (convertCurrency(document.getElementById('sotienhienthi').value) == 0) {
-                            document.getElementById('xacnhanPT').disabled = false;
-                        } else {
-                            document.getElementById('xacnhanPT').disabled = true;
-                        }
+                                    }
+                                    if (checkchuyenkhoan == 1) {
+                                        document.getElementById('chuyenkhoan').disabled = true;
+                                    }
+                                    if (checktienmat == 1) {
+                                        document.getElementById('tienmat').disabled = true;
+                                    }
+                                    document.getElementById('dathanhtoanroi').innerHTML = tiendathanhtoan;
+                                    document.getElementById('showpt').innerHTML = htmlpt;
+                                    var showTien = document.getElementById('sotienhienthi');
+                                    showTien.value = (tienkhachthanhtoan - tiendathanhtoan).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                                    document.getElementById('tienthieu').innerHTML = (tienkhachthanhtoan - tiendathanhtoan).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                                    document.getElementById('hdThanhToanShow').innerHTML = hdHienTai;
+                                    if (convertCurrency(document.getElementById('sotienhienthi').value) == 0) {
+                                        document.getElementById('xacnhanPT').disabled = true;
+                                    } else {
+                                        document.getElementById('xacnhanPT').disabled = true;
+                                    }
 
 
+                                } else {
+
+                                    var showTien = document.getElementById('sotienhienthi');
+                                    document.getElementById('showpt').innerHTML = htmlpt;
+                                    showTien.value = tienkhachthanhtoan.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                                    document.getElementById('tienthieu').innerHTML = tienkhachthanhtoan.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                                    document.getElementById('hdThanhToanShow').innerHTML = hdHienTai;
+                                    document.getElementById('dathanhtoanroi').innerHTML = '0đ';
+                                    if (convertCurrency(document.getElementById('sotienhienthi').value) == 0) {
+                                        document.getElementById('xacnhanPT').disabled = true;
+                                    } else {
+                                        document.getElementById('xacnhanPT').disabled = true;
+                                    }
+
+                                }
+                                const modalElement = document.getElementById('modalThayDoiHoaDon5');
+                                // Khởi tạo một instance của modal
+                                const modal = new bootstrap.Modal(modalElement);
+                                // Gọi phương thức show để hiển thị modal
+                                modal.show();
+
+                            })
                     } else {
 
-                        var showTien = document.getElementById('sotienhienthi');
-                        document.getElementById('showpt').innerHTML = htmlpt;
-                        showTien.value = tienkhachthanhtoan.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-                        document.getElementById('tienthieu').innerHTML = tienkhachthanhtoan.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-                        document.getElementById('hdThanhToanShow').innerHTML = hdHienTai;
-                        document.getElementById('dathanhtoanroi').innerHTML = '0đ';
-                        if (convertCurrency(document.getElementById('sotienhienthi').value) == 0) {
-                            document.getElementById('xacnhanPT').disabled = false;
-                        } else {
-                            document.getElementById('xacnhanPT').disabled = true;
-                        }
-
+                        thongbao('Chưa có hóa đơn nào được chọn', 'warning')
                     }
 
                 })
@@ -2802,14 +2839,17 @@ tabindex="0">
             var inputs = document.querySelectorAll('#boddydssp input');
             inputs.forEach(function (input) {
                 input.disabled = true;
+
             });
             var button = document.querySelectorAll('#boddydssp button');
             button.forEach(function (btn) {
                 btn.disabled = true;
+
             });
             var inputss = document.querySelectorAll('#boddydssp a');
             inputss.forEach(function (inp) {
                 inp.removeAttribute('href');
+
             });
             xacnhanthanhcongcf();
             // disabled hết các nút sau khi xác nhận
@@ -3833,7 +3873,7 @@ tabindex="0">
     <script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.18.6/umd/index.min.js"></script>
     <script>
         window.addEventListener('load', function () {
-            
+
             let selectedDeviceId;
             const codeReader = new ZXing.BrowserQRCodeReader();
             const resultElement = document.getElementById('result-content');

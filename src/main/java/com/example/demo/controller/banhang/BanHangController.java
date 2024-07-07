@@ -253,6 +253,12 @@ public class BanHangController {
             daoHDCT.deleteById(a.getId());
         }
        boolean result= daoHD.delete(hd);
+        List<HoaDon> lst1 = daoHD.timTheoTrangThaiVaLoai(7, false);
+        if(lst1.size()>0){
+            HoaDon hdChuyen01=lst1.get(0);
+            hdChuyen01.setTrangthai(0);
+            daoHD.capNhatHD(hdChuyen01);
+        }
         if(result){
             redirectAttributes.addFlashAttribute("checkdeleteHD", true);
         }
@@ -958,6 +964,18 @@ public class BanHangController {
         lstrt.add(lst1);
         lstrt.add(lst);
         return ResponseEntity.ok(lstrt);
+    }
+
+    //chặn giao và thanh toán khi không có đơn
+    //http://localhost:8080/ban-hang-tai-quay/checkGiaoThanhToan
+    @GetMapping("checkGiaoThanhToan")
+    @ResponseBody
+    public ResponseEntity<?> checkGiaoThanhToan() {
+        List<HoaDon> lst=daoHD.timTheoTrangThaiVaLoai(0,false);
+        if(lst.size()>0){
+            return ResponseEntity.ok(true);
+        }
+        return ResponseEntity.ok(false);
     }
 
     //chuyển đổi đơn tt7-->> tt0
