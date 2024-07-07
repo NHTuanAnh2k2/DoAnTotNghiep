@@ -173,7 +173,7 @@ public class SanPhamController {
         }
         nextId++;
         SanPham sanPham = new SanPham();
-        int doDaiChuoi = 10;
+        int doDaiChuoi = 7;
         // Chuỗi chứa tất cả các ký tự có thể có trong chuỗi ngẫu nhiên
         String kiTu = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         // Tạo đối tượng Random

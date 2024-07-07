@@ -59,6 +59,16 @@ public class ChatLieuController {
         return "redirect:/viewaddSPGET";
     }
 
+    @PostMapping("/addChatLieuSua")
+    public String addChatLieuSua(Model model, @ModelAttribute("chatlieu") ChatLieu chatLieu, @RequestParam("spctId") Integer spctId) {
+        LocalDateTime currentTime = LocalDateTime.now();
+        chatLieu.setTrangthai(true);
+        chatLieu.setNgaytao(currentTime);
+        chatLieu.setLancapnhatcuoi(currentTime);
+        chatLieuService.add(chatLieu);
+        return "redirect:/updateCTSP/" + spctId;
+    }
+
     @GetMapping("/chatlieu/delete/{id}")
     public String delete(@PathVariable int id) {
         chatLieuService.deleteById(id);

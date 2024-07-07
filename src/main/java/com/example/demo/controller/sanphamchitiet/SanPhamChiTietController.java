@@ -2,6 +2,7 @@ package com.example.demo.controller.sanphamchitiet;
 
 import com.example.demo.entity.*;
 import com.example.demo.info.SanPhamChiTietInfo;
+import com.example.demo.info.ThuocTinhInfo;
 import com.example.demo.repository.*;
 import com.example.demo.service.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -111,7 +113,53 @@ public class SanPhamChiTietController {
 
 
     @GetMapping("/updateCTSP/{id}")
-    public String viewupdateCTSP(@PathVariable Integer id, Model model) {
+    public String viewupdateCTSP(@PathVariable Integer id, Model model,
+                                 @ModelAttribute("thuonghieu") ThuongHieu thuongHieu,
+                                 @ModelAttribute("chatlieu") ChatLieu chatLieu,
+                                 @ModelAttribute("kichco") KichCo kichCo,
+                                 @ModelAttribute("degiay") DeGiay deGiay,
+                                 @ModelAttribute("mausac") MauSac mauSac,
+                                 @ModelAttribute("tim") ThuocTinhInfo info
+
+    ) {
+        List<DeGiay> listDG = null;
+        if (info.getKey() != null) {
+            listDG = deGiayImp.getDeGiayByTenOrTrangthai(info.getKey(), info.getTrangthai());
+        } else {
+            listDG = deGiayRepository.findAllByOrderByNgaytaoDesc();
+        }
+        model.addAttribute("listDG", listDG);
+        List<ThuongHieu> listTH = null;
+        if (info.getKey() != null) {
+            listTH = thuongHieuImp.getThuongHieuByTenOrTrangthai(info.getKey(), info.getTrangthai());
+        } else {
+            listTH = thuongHieuRepository.findAllByOrderByNgaytaoDesc();
+        }
+        model.addAttribute("listTH", listTH);
+
+        List<ChatLieu> listCL = null;
+        if (info.getKey() != null) {
+            listCL = chatLieuRepository.getChatLieuByTenOrTrangthai(info.getKey(), info.getTrangthai());
+        } else {
+            listCL = chatLieuRepository.findAllByOrderByNgaytaoDesc();
+        }
+        model.addAttribute("listCL", listCL);
+        List<MauSac> listMS = null;
+        if (info.getKey() != null) {
+            listMS = mauSacRepository.getDeGiayByTenOrTrangthai(info.getKey(), info.getTrangthai());
+        } else {
+            listMS = mauSacRepository.findAllByOrderByNgaytaoDesc();
+        }
+        model.addAttribute("listMS", listMS);
+
+        List<KichCo> listKC = null;
+        if (info.getKey() != null) {
+            listKC = kichCoRepository.getKichCoByTenOrTrangthai(info.getKey(), info.getTrangthai());
+        } else {
+            listKC = kichCoRepository.findAllByOrderByNgaytaoDesc();
+        }
+        model.addAttribute("listKC", listKC);
+
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<SanPhamChiTiet> listSPCT = sanPhamChiTietImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
@@ -215,6 +263,7 @@ public class SanPhamChiTietController {
         Integer firstProductId = sanPhamChiTiet.getSanpham().getId();
         return "redirect:/detailsanpham/" + firstProductId;
     }
+
     private String saveImage(MultipartFile file) {
         String uploadDir = "G:\\Ki7\\DATN\\DATN\\src\\main\\resources\\static\\upload";
         try {
