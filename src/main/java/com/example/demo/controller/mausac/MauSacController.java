@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -65,6 +66,16 @@ public class MauSacController {
         mauSac.setLancapnhatcuoi(currentTime);
         mauSacImp.addMauSac(mauSac);
         return "redirect:/viewaddSPGET";
+    }
+
+    @PostMapping("/addMauSacSua")
+    public String addMauSacSua(@ModelAttribute("mausac") MauSac mauSac, @RequestParam("spctId") Integer spctId) {
+        LocalDateTime currentTime = LocalDateTime.now();
+        mauSac.setTrangthai(true);
+        mauSac.setNgaytao(currentTime);
+        mauSac.setLancapnhatcuoi(currentTime);
+        mauSacImp.addMauSac(mauSac);
+        return "redirect:/updateCTSP/" + spctId;
     }
 
 }

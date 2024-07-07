@@ -68,4 +68,15 @@ public class ThuongHieuController {
         return "redirect:/viewaddSPGET";
     }
 
+    @PostMapping("/addThuongHieuSua")
+    public String addThuongHieuSua(@ModelAttribute("thuonghieu") ThuongHieu thuongHieu, @ModelAttribute("th") ThuocTinhInfo info, @RequestParam("spctId") Integer spctId) {
+        LocalDateTime currentTime = LocalDateTime.now();
+        thuongHieu.setTrangthai(true);
+        thuongHieu.setNgaytao(currentTime);
+        thuongHieu.setLancapnhatcuoi(currentTime);
+        thuongHieuImp.add(thuongHieu);
+        // Chuyển hướng đến trang chi tiết sản phẩm với id của SanPhamChiTiet
+        return "redirect:/updateCTSP/" + spctId;
+    }
+
 }
