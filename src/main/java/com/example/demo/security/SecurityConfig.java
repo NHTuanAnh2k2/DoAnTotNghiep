@@ -34,9 +34,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     @Autowired
+    private CustomerUserDetailService userDetailService;
+    @Autowired
     private JwtAuthEntryPoint authEntryPoint;
     @Autowired
-    NguoiDungRepository nguoiDungRepository;
+    private NguoiDungRepository nguoiDungRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -48,7 +50,7 @@ public class SecurityConfig {
                 .anyRequest().permitAll()
                 .and()
                 .formLogin(form -> form
-                        .loginPage("/dangky")
+                        .loginPage("/account")
                         .permitAll()
                 )
                 .httpBasic(Customizer.withDefaults());
@@ -57,31 +59,31 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new UserDetailsService() {
-            @Override
-            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                NguoiDung nd = nguoiDungRepository.findNguoiDungByTaikhoan(username);
-//                NhanVien staff = nhanVienRepository.getNhanVienByEmail(username);
-                if (nd != null) {
-                    return (UserDetails) nd.get();
-//                }else if (staff != null) {
-//                    System.out.println(staff);
-//                    return staff.get();
-                } else {
-                    throw new UsernameNotFoundException("Không tìm thấy người dùng với email: " + username);
-                }
-            }
-        };
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        return new UserDetailsService() {
+//            @Override
+//            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//                NguoiDung nd = nguoiDungRepository.findNguoiDungByTaikhoan(username);
+////                NhanVien staff = nhanVienRepository.getNhanVienByEmail(username);
+//                if (nd != null) {
+//                    return (UserDetails) nd.get();
+////                }else if (staff != null) {
+////                    System.out.println(staff);
+////                    return staff.get();
+//                } else {
+//                    throw new UsernameNotFoundException("Không tìm thấy người dùng với email: " + username);
+//                }
+//            }
+//        };
+//    }
 
 
     @Bean
     public AuthenticationProvider getProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder());
-        provider.setUserDetailsService(userDetailsService());
+        provider.setUserDetailsService(userDetailService);
         return provider;
     }
 

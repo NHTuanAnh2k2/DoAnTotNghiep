@@ -33,14 +33,13 @@ public class DangKyController {
     NguoiDungService nguoiDungService;
     @Autowired
     DiaChiService diaChiService;
-    @Autowired
-    CustomerUserDetailService userDetailService;
 
-    @GetMapping("/dangky")
+    @GetMapping("/account")
     public String view(@ModelAttribute("nguoidung") DangKyNDInfo nguoidung,
                        @ModelAttribute("khachhang") DangKyKHInfo khachhang,
                        @ModelAttribute("dangnhap") DangNhapNDInfo dangnhap
                        ) {
+
         return "customer/login";
     }
 
@@ -54,8 +53,7 @@ public class DangKyController {
                          BindingResult dcBindingResult,
                          Model model
     ) {
-        System.out.println("BBB");
-        System.out.println(nguoidung.getHovaten());
+
         if (ndBindingResult.hasErrors()) {
             List<ObjectError> ndError = ndBindingResult.getAllErrors();
             System.out.println(ndError);
@@ -70,8 +68,8 @@ public class DangKyController {
             return "customer/login";
         }
 
-//        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-//        String encodedPassword = bCryptPasswordEncoder.encode(nguoidung.getMatkhau());
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = bCryptPasswordEncoder.encode(nguoidung.getMatkhau());
 
 
         //nguoi dung
@@ -88,7 +86,7 @@ public class DangKyController {
         nd.setNgaytao(Timestamp.valueOf(currentDate));
         nd.setLancapnhatcuoi(Timestamp.valueOf(currentDate));
         nd.setTaikhoan(nguoidung.getTaikhoan());
-        nd.setMatkhau(nguoidung.getMatkhau());
+        nd.setMatkhau(encodedPassword);
         nd.setTrangthai(true);
         nd.setNguoitao("CUSTOMER");
         nd.setNguoicapnhat("CUSTOMER");
@@ -125,25 +123,25 @@ public class DangKyController {
 
 //        khachHangService.sendEmail(nd.getEmail(), nd.getTaikhoan(), nd.getMatkhau(), hoten);
 
-        return "customer/login";
+        return "redirect:/account";
     }
 
-    @PostMapping("/quenmatkhau")
-    public String quenmatkhau(@RequestParam("email") String email, Model model) {
-        NguoiDung nd = khachHangService.findByEmail(email);
-        SecureRandom random = new SecureRandom();
-        int CODE_LENGTH = 6;
-        if (nd != null) {
-            int code = random.nextInt((int) Math.pow(10, CODE_LENGTH));
-            khachHangService.sendEmailQuenMatKhau(email, nd.getHovaten(), String.valueOf(code));
-            model.addAttribute("dangnhap", true);
-            return "same/quenmatkhau";
-        } else {
-            model.addAttribute("message", "Email không tồn tại trong hệ thống.");
-            model.addAttribute("dangnhap", false);
-            return "same/quenmatkhau";
-        }
-    }
+//    @PostMapping("/quenmatkhau")
+//    public String quenmatkhau(@RequestParam("email") String email, Model model) {
+//        NguoiDung nd = khachHangService.findByEmail(email);
+//        SecureRandom random = new SecureRandom();
+//        int CODE_LENGTH = 6;
+//        if (nd != null) {
+//            int code = random.nextInt((int) Math.pow(10, CODE_LENGTH));
+//            khachHangService.sendEmailQuenMatKhau(email, nd.getHovaten(), String.valueOf(code));
+//            model.addAttribute("dangnhap", true);
+//            return "same/quenmatkhau";
+//        } else {
+//            model.addAttribute("message", "Email không tồn tại trong hệ thống.");
+//            model.addAttribute("dangnhap", false);
+//            return "same/quenmatkhau";
+//        }
+//    }
 
 
 }

@@ -9,6 +9,7 @@ import com.example.demo.info.hosokhachhang.UpdateDiaChi;
 import com.example.demo.info.hosokhachhang.UpdateKhachHang;
 import com.example.demo.info.hosokhachhang.UpdateNguoiDung;
 import com.example.demo.info.token.UserManager;
+import com.example.demo.repository.DiaChiRepository;
 import com.example.demo.repository.NguoiDungRepository;
 import com.example.demo.restcontroller.khachhang.Province;
 import com.example.demo.security.JWTGenerator;
@@ -37,6 +38,8 @@ public class CustomerController {
     KhachHangService khachHangService;
     @Autowired
     NguoiDungRepository nguoiDungRepository;
+    @Autowired
+    DiaChiRepository diaChiRepository;
     @Autowired
     UserManager userManager;
 
@@ -69,8 +72,10 @@ public class CustomerController {
             if (userDangnhap != null) {
                 NguoiDung nd = khachHangService.findNguoiDungByTaikhoan(userDangnhap);
                 DiaChi dc = khachHangService.findDiaChiByIdNguoidung(nd.getId());
+                List<DiaChi> lstDiaChi = diaChiRepository.findDiaChiByIdNd(nd.getId());
                 model.addAttribute("nguoidung", nd);
                 model.addAttribute("diachi", dc);
+                model.addAttribute("lstDiaChi", lstDiaChi);
                 model.addAttribute("userDangnhap", userDangnhap);
                 model.addAttribute("nguoidungdoimatkhau", new DoiMatKhauNguoiDung());
                 System.out.println("Danh sách người dùng đang đăng nhập: " + userManager.getLoggedInUsers());
@@ -153,7 +158,7 @@ public class CustomerController {
         NguoiDung nd = khachHangService.findNguoiDungByTaikhoan(username);
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        if (!nguoidungdoimatkhau.getMatkhau().equals(nd.getMatkhau())) {
+        if (!passwordEncoder.matches(nguoidungdoimatkhau.getMatkhau(), nd.getMatkhau())) {
             redirectAttributes.addFlashAttribute("error", "Mật khẩu hiện tại không đúng.");
             System.out.println("Lỗi ở so sánh 2 mật khẩu");
             return "redirect:/hosokhachhang/{username}";

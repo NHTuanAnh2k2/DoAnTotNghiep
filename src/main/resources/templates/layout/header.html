@@ -70,9 +70,11 @@
                 <div style="margin-left: auto; margin-right: 20px;">
                     <form id="searchForm" th:method="get" th:object="${search}" th:action="@{/search-trangchu}">
                         <div style="position: relative;">
-                            <input class="form-control" type="search" placeholder="Bạn cần tìm gì?..." aria-label="Search"
+                            <input class="form-control" type="search" placeholder="Bạn cần tìm gì?..."
+                                   aria-label="Search"
                                    style="width: 300px; padding-right: 40px;" name="key" th:value="${fillSearch}">
-                            <span style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;" onclick="submitSearchForm()">
+                            <span style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"
+                                  onclick="submitSearchForm()">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search"
                  viewBox="0 0 16 16">
                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
@@ -85,13 +87,14 @@
             <li style="padding-left: 20px;color: #0a0e14">
                 <a th:href="@{/cart}" style="color: #0a0e14; text-decoration: none; position: relative;">
                     <img alt="" style="width:40px" src="../../dist/img/cart.png"/>
-                    <span class="position-absolute badge rounded-pill bg-danger" style="top: 0; left: 110%; transform: translate(-50%, -50%); width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 50%;" th:text="${totalQuantity}"></span>
+                    <span class="position-absolute badge rounded-pill bg-danger"
+                          style="top: 0; left: 110%; transform: translate(-50%, -50%); width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 50%;"
+                          th:text="${totalQuantity}"></span>
                 </a>
             </li>
             <!--end-->
             <!--account-->
             <li style="padding-left: 20px">
-
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
                      class="bi bi-person-circle" viewBox="0 0 16 16" data-bs-toggle="modal"
                      data-bs-target="#exampleModal">
@@ -99,6 +102,8 @@
                     <path fill-rule="evenodd"
                           d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
                 </svg>
+                <span style="margin-left: 5px;" th:if="${userDangnhap}"
+                      th:text="${userHeader}">Xin chào</span>
             </li>
             <!-- Modal -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -108,13 +113,14 @@
                         <div class="modal-body">
                             <p><a th:href="@{/hosokhachhang}" class="text-decoration-none"
                                   style="font-weight: bold;color: black">Tài khoản của tôi</a></p>
-<!--                            <div th:if="${userDangnhap}">-->
-                                <p><a th:href="@{/hosokhachhang/{username}(username=${userDangnhap})}">HỒ SƠ KHÁCH HÀNG</a></p>
+                            <div th:if="${userDangnhap}">
+                                <p><a th:href="@{/hosokhachhang/{username}(username=${userDangnhap})}">HỒ SƠ KHÁCH
+                                    HÀNG</a></p>
                                 <p><a th:href="@{/dangxuat}">ĐĂNG XUẤT</a></p>
-<!--                            </div>-->
-<!--                            <div th:unless="${userDangnhap}">-->
-                                <p><a th:href="@{/dangky}">ĐĂNG NHẬP</a></p>
-<!--                            </div>-->
+                            </div>
+                            <div th:unless="${userDangnhap}">
+                                <p><a th:href="@{/account}">ĐĂNG NHẬP</a></p>
+                            </div>
                         </div>
                     </div>
                 </div>
