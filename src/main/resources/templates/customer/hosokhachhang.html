@@ -359,11 +359,11 @@
                                                         <th>Địa chỉ cụ thể</th>
                                                         <th>Action</th>
                                                     </tr>
-                                                    <tr>
-                                                        <td th:text="${diachi.tinhthanhpho}">Hà Nội</td>
-                                                        <td th:text="${diachi.quanhuyen}">Hà Nội</td>
-                                                        <td th:text="${diachi.xaphuong}">Hà Nội</td>
-                                                        <td th:text="${diachi.tenduong}">Hà Nội</td>
+                                                    <tr th:each="lstDc,stt:${lstDiaChi}">
+                                                        <td th:text="${lstDc.tinhthanhpho}">Hà Nội</td>
+                                                        <td th:text="${lstDc.quanhuyen}">Hà Nội</td>
+                                                        <td th:text="${lstDc.xaphuong}">Hà Nội</td>
+                                                        <td th:text="${lstDc.tenduong}">Hà Nội</td>
                                                         <td>
                                                             <a href="#" class="btn btn-danger" data-bs-toggle="modal"
                                                                data-bs-target="#capnhatdiachi">Cập nhật</a>
@@ -468,7 +468,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                         </div>
                                     </div>
@@ -479,7 +478,8 @@
                             <!--đổi mật khẩu-->
                             <div class="tab-pane fade" id="v-pills-disabled" role="tabpanel"
                                  aria-labelledby="v-pills-disabled-tab" tabindex="0">
-                                <form th:object="${nguoidungdoimatkhau}" th:method="post" th:action="@{/doimatkhau/{username}(username=${userDangnhap})}">
+                                <form th:object="${nguoidungdoimatkhau}" th:method="post"
+                                      th:action="@{/doimatkhau/{username}(username=${userDangnhap})}">
                                     <h3>Đổi mật khẩu</h3>
                                     <h6 style="color: red;font-style: italic">Để bảo mật tài khoản,
                                         vui lòng
@@ -493,7 +493,8 @@
                                         <input type="password" class="form-control" th:field="*{matkhaumoi}">
                                     </p>
                                     <p><span style="color: red">(*)</span> Xác nhận mật khẩu mới:
-                                        <input type="password" class="form-control" name="xacnhanmatkhau" th:field="*{xacnhanmatkhau}">
+                                        <input type="password" class="form-control" name="xacnhanmatkhau"
+                                               th:field="*{xacnhanmatkhau}">
                                     </p>
                                     <p>
                                         <button type="submit" class="btn"

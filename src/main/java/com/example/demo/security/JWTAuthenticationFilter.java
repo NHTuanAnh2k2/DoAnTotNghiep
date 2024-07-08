@@ -29,16 +29,16 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         String token = getJWTFromRequest(request);
 
-        String path = request.getRequestURI();
-        String method = request.getMethod();
-        // Các endpoint cần bỏ qua
-        if (("/dangky".equals(path) && HttpMethod.POST.matches(method)) ||
-                ("/doimatkhau".equals(path) && HttpMethod.POST.matches(method)) ||  // Bỏ qua endpoint đổi mật khẩu
-                ("/quenmatkhau".equals(path) && HttpMethod.POST.matches(method))) {  // Bỏ qua endpoint quên mật khẩu
-            logger.info("Skipping filter for specific endpoints");
-            filterChain.doFilter(request, response);
-            return;
-        }
+//        String path = request.getRequestURI();
+//        String method = request.getMethod();
+//        // Các endpoint cần bỏ qua
+//        if (("/dangky".equals(path) && HttpMethod.POST.matches(method)) ||
+//                ("/doimatkhau".equals(path) && HttpMethod.POST.matches(method)) ||  // Bỏ qua endpoint đổi mật khẩu
+//                ("/quenmatkhau".equals(path) && HttpMethod.POST.matches(method))) {  // Bỏ qua endpoint quên mật khẩu
+//            logger.info("Skipping filter for specific endpoints");
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
 
         if (StringUtils.hasText(token) && tokenGenerator.validateToken(token)) {
             String username = tokenGenerator.getUsernameFromJWT(token);

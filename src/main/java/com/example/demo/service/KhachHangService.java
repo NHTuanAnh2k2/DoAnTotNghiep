@@ -37,14 +37,18 @@ public interface KhachHangService {
     void sendEmail(String recipient, String username, String password, String name);
     List<KhachHangInfo> displayKhachHang();
     KhachHang findKhachHangByIdNguoiDung(Integer id);
+
     //Tìm kiếm
     List<KhachHangInfo> findByTenSdtMa(String tenSdtMa);
     NguoiDung findByEmail(String email);
-    void sendEmailQuenMatKhau(String recipient, String name, String maDoiMatKhau);
     NguoiDung findNguoiDungByTaikhoan(String taikhoan);
     DiaChi findDiaChiByIdNguoidung(Integer idNd);
     NguoiDung doimatkhau(DoiMatKhauNguoiDung nguoidung, int id);
     void scanQr() throws NotFoundException;
     String readQRCode(File qrCodeImage) throws IOException;
     List<KhachHang> findKHGanNhat();
+
+    boolean sendPasswordResetCode(String email, String name);
+    boolean validateResetCode(String email, String code);
+
 }
