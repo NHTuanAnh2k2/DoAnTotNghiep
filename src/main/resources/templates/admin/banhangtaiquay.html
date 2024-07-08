@@ -3521,7 +3521,7 @@ tabindex="0">
 
                                             document.getElementById('ngaygiaodukiens').innerHTML = days;
                                             document.getElementById('thongtingiao_ngaygiao').value = timestamp;
-
+                                            
                                             // phigiaohang
                                             feship(idHuyenreturn, idXareturn);
 
@@ -3569,6 +3569,7 @@ tabindex="0">
                 .then(function (d) {
                     var shipfe = convertCashInput(d.data.total);
                     document.getElementById('phigiaohang').value = shipfe;
+                    var shipluutam=shipToanCuc;
                     shipToanCuc = d.data.total;
                     tienkhachthanhtoan = tienkhachthanhtoan + shipToanCuc;
                 })
