@@ -133,8 +133,12 @@
                                     <tbody>
                                     <tr th:each="sp, stt : ${page.content}">
                                         <td th:text="${stt.index + 1}"></td>
-                                        <th th:text="${sp[5]}"></th>
-                                        <td th:text="${sp[1]}"></td>
+                                        <th th:text="'SP'+${sp[5]}"></th>
+                                        <td>
+                                            <span th:if="${#strings.length(sp[1]) > 30}" th:text="${#strings.substring(sp[1], 0, 30)} + '...'"></span>
+                                            <span th:unless="${#strings.length(sp[1]) > 30}" th:text="${sp[1]}"></span>
+                                        </td>
+
                                         <td>
                                             <span th:text="${sp[3]}"></span>
                                         </td>

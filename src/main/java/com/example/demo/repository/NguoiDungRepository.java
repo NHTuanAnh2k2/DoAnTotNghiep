@@ -23,8 +23,8 @@ public interface NguoiDungRepository extends JpaRepository<NguoiDung, Integer> {
     @Query("SELECT n FROM NguoiDung n WHERE n.ngaysinh BETWEEN :startDate AND :endDate")
     List<NguoiDung> findNguoiDungByNgaysinhBetween(@Param("startDate")Date startDate,
                                                    @Param("endDate") Date endDate);
-    @Query("SELECT n FROM NguoiDung n WHERE n.email LIKE %?1%")
-    NguoiDung findNguoiDungByEmail(@Param("email") String email);
+    @Query("SELECT n FROM NguoiDung n WHERE n.email = ?1")
+    NguoiDung findNguoiDungByEmail(@Param("emailResetPassword") String emailResetPassword);
 
     NguoiDung findByEmail(String email);
 

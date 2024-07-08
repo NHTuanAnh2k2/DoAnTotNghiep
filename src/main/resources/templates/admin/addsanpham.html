@@ -2,6 +2,21 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <nav th:replace="~{/layoutadmin/head.html}"></nav>
 <style>
+    /* CSS cho các tùy chọn được chọn và khi hover */
+    .select2-container--default .select2-results__option--highlighted {
+        background-color: rgb(249, 72, 42) !important;
+        color: white !important;
+    }
+</style>
+
+<style>
+    .select2-container--default .select2-selection__choice {
+        background-color: rgb(249, 72, 42) !important;
+        color: white !important;
+        border-color: rgb(249, 72, 42) !important;
+    }
+</style>
+<style>
     .size-button {
         background-color: transparent !important;
         border-color: rgb(249, 72, 42) !important;
@@ -36,6 +51,7 @@
         opacity: 1 !important;
         background-color: rgba(249, 72, 42, 0.1); /* Optional: Adding a slight background color for better visibility */
     }
+
     tr {
     }
 </style>
@@ -184,21 +200,37 @@
                                     THÊM SẢN PHẨM
                                 </h3>
                                 <div class="card-header">
-<!--                                    <h5 style="font-family: 'Bahnschrift'">-->
-<!--                                        <span style="color: red">* </span>Tên sản phẩm:-->
-<!--                                        <select class="form-control select2 select2-primary"-->
-<!--                                                data-dropdown-css-class="select2-primary"-->
-<!--                                                style="width: 100%;font-family: 'Bahnschrift'"-->
-<!--                                                name="tensp" data-tags="true" data-placeholder="Nhập tên sản phẩm"-->
-<!--                                                onchange="clearErrorMessageTenSP()">-->
-<!--                                            <option style="font-family: 'Bahnschrift'"></option>-->
-<!--                                            <option th:each="sp : ${sp}" th:value="${sp.tensanpham}"-->
-<!--                                                    th:text="${sp.tensanpham}"-->
-<!--                                                    th:selected="${sp.tensanpham} == ${selectedTensp}"></option>-->
-<!--                                        </select>-->
-<!--                                        <span id="tenspError"-->
-<!--                                              style="color: red; font-style: italic;font-family: 'Bahnschrift'"></span>-->
-<!--                                    </h5>-->
+                                    <!--qr sp-->
+                                    <a class="btn btn-dark" style="margin-left: 1000px" id="start-scan">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                             class="bi bi-qr-code-scan" viewBox="0 0 16 16">
+                                            <path
+                                                    d="M0 .5A.5.5 0 0 1 .5 0h3a.5.5 0 0 1 0 1H1v2.5a.5.5 0 0 1-1 0zm12 0a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0V1h-2.5a.5.5 0 0 1-.5-.5M.5 12a.5.5 0 0 1 .5.5V15h2.5a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1 0-1H15v-2.5a.5.5 0 0 1 .5-.5M4 4h1v1H4z" />
+                                            <path d="M7 2H2v5h5zM3 3h3v3H3zm2 8H4v1h1z" />
+                                            <path d="M7 9H2v5h5zm-4 1h3v3H3zm8-6h1v1h-1z" />
+                                            <path
+                                                    d="M9 2h5v5H9zm1 1v3h3V3zM8 8v2h1v1H8v1h2v-2h1v2h1v-1h2v-1h-3V8zm2 2H9V9h1zm4 2h-1v1h-2v1h3zm-4 2v-1H8v1z" />
+                                            <path d="M12 9h2V8h-2z" />
+                                        </svg>
+                                        Quét QR Sản phẩm
+                                    </a>
+                                    <p></p>
+
+                                    <!--                                    <h5 style="font-family: 'Bahnschrift'">-->
+                                    <!--                                        <span style="color: red">* </span>Tên sản phẩm:-->
+                                    <!--                                        <select class="form-control select2 select2-primary"-->
+                                    <!--                                                data-dropdown-css-class="select2-primary"-->
+                                    <!--                                                style="width: 100%;font-family: 'Bahnschrift'"-->
+                                    <!--                                                name="tensp" data-tags="true" data-placeholder="Nhập tên sản phẩm"-->
+                                    <!--                                                onchange="clearErrorMessageTenSP()">-->
+                                    <!--                                            <option style="font-family: 'Bahnschrift'"></option>-->
+                                    <!--                                            <option th:each="sp : ${sp}" th:value="${sp.tensanpham}"-->
+                                    <!--                                                    th:text="${sp.tensanpham}"-->
+                                    <!--                                                    th:selected="${sp.tensanpham} == ${selectedTensp}"></option>-->
+                                    <!--                                        </select>-->
+                                    <!--                                        <span id="tenspError"-->
+                                    <!--                                              style="color: red; font-style: italic;font-family: 'Bahnschrift'"></span>-->
+                                    <!--                                    </h5>-->
                                     <h5 style="font-family: 'Bahnschrift'">
                                         <span style="color: red">* </span>Tên sản phẩm:
                                         <input type="text" class="form-control"
@@ -206,7 +238,8 @@
                                                name="tensp" placeholder="Nhập tên sản phẩm"
                                                onchange="clearErrorMessageTenSP()"
                                                th:value="${selectedTensp}">
-                                        <span id="tenspError" style="color: red; font-style: italic;font-family: 'Bahnschrift'"></span>
+                                        <span id="tenspError"
+                                              style="color: red; font-style: italic;font-family: 'Bahnschrift'"></span>
                                     </h5>
 
                                     <h5 style="font-family: 'Bahnschrift'">
@@ -240,15 +273,20 @@
                                     <div class="d-flex">
                                         <p style="margin-left: 20px; font-weight: bold;">
                                             <span style="color: red;">* </span>Thương hiệu:
-                                            <select id="idThuongHieu" class="form-control" style="width: 520px;"
+                                            <select id="idThuongHieu" class="form-control" style="width: 500px;"
                                                     name="idThuongHieu">
                                                 <option th:each="th : ${th}" th:value="${th.id}"
                                                         th:text="${th.ten}"></option>
                                             </select>
                                         </p>
-                                        <input type="button" class="btn"
-                                               style="margin:3%;background-color:rgb(249,72,42);color: white" value="+"
-                                               data-bs-toggle="modal" data-bs-target="#themthuonghieu">
+                                        <span class="btn"
+                                              style="margin: 3%; background-color: white; color: black;border-color: black; padding: 7px 10px; cursor: pointer;"
+                                              data-bs-toggle="modal" data-bs-target="#themthuonghieu">
+    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-circle-fill"
+         viewBox="0 0 16 16">
+        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+    </svg>
+</span>
                                     </div>
                                     <!--end-->
 
@@ -258,30 +296,40 @@
                                     <div class="d-flex">
                                         <p id="chatLieuLabel" style="margin-left: 20px; font-weight: bold;">
                                             <span style="color: red;">* </span>Chất liệu:
-                                            <select id="idChatLieu" class="form-control" style="width: 520px;"
+                                            <select id="idChatLieu" class="form-control" style="width: 500px;"
                                                     name="idChatLieu">
                                                 <option th:each="cl : ${cl}" th:value="${cl.id}"
                                                         th:text="${cl.ten}"></option>
                                             </select>
                                         </p>
-                                        <input type="button" class="btn"
-                                               style="margin:3%;background-color:rgb(249,72,42);color: white" value="+"
-                                               data-bs-toggle="modal" data-bs-target="#themchatlieu">
+                                        <span class="btn"
+                                              style="margin: 3%; background-color: white; color: black;border-color: black; padding: 7px 10px; cursor: pointer;"
+                                              data-bs-toggle="modal" data-bs-target="#themchatlieu">
+    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-circle-fill"
+         viewBox="0 0 16 16">
+        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+    </svg>
+</span>
                                     </div>
 
                                     <!--đế giày-->
                                     <div class="d-flex">
                                         <p id="deGiayLabel" style="margin-left: 20px; font-weight: bold;">
                                             <span style="color: red;">* </span>Đế giày:
-                                            <select id="idDeGiay" class="form-control" style="width: 520px;"
+                                            <select id="idDeGiay" class="form-control" style="width: 500px;"
                                                     name="idDeGiay">
                                                 <option th:each="dg : ${dg}" th:value="${dg.id}"
                                                         th:text="${dg.ten}"></option>
                                             </select>
                                         </p>
-                                        <input type="button" class="btn"
-                                               style="margin:3%;background-color:rgb(249,72,42);color: white" value="+"
-                                               data-bs-toggle="modal" data-bs-target="#themdegiay">
+                                        <span class="btn"
+                                              style="margin: 3%; background-color: white; color: black;border-color: black; padding: 7px 10px; cursor: pointer;"
+                                              data-bs-toggle="modal" data-bs-target="#themdegiay">
+    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-circle-fill"
+         viewBox="0 0 16 16">
+        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+    </svg>
+</span>
                                     </div>
                                     <!--end-->
                                 </div>
@@ -292,7 +340,7 @@
                                         <p style="margin-left: 20px;font-weight: bold"><span
                                                 style="color: red">* </span>Màu sắc:
                                             <select class="select2" multiple="multiple" data-placeholder="Màu sắc"
-                                                    style="width: 520px;" name="idMauSac"
+                                                    style="width: 500px;" name="idMauSac"
                                                     onchange="clearErrorMessageMauSac()">
                                                 <option th:each="ms : ${ms}" th:value="${ms.id}"
                                                         th:text="${ms.ten}"></option>
@@ -302,9 +350,14 @@
                                         </p>
                                         <p>
                                         </p>
-                                        <input type="button" class="btn"
-                                               style="margin:3%;background-color:rgb(249,72,42);color: white" value="+"
-                                               data-bs-toggle="modal" data-bs-target="#themmausac">
+                                        <span class="btn"
+                                              style="margin: 3%; background-color: white; color: black;border-color: black; padding: 7px 10px; cursor: pointer;"
+                                              data-bs-toggle="modal" data-bs-target="#themmausac">
+    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-circle-fill"
+         viewBox="0 0 16 16">
+        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+    </svg>
+</span>
                                     </div>
                                     <!--end-->
                                     <!--kích cỡ-->
@@ -316,28 +369,35 @@
                                             <h6 id="displayValue"></h6>
                                         </div>
                                     </div>
-                                 <div class="d-flex" style="margin-top: 10px">
-                                     <div style="margin-right: 2%;margin-left: 20px">
-                                         <input type="button" class="btn"
-                                                style="background-color:rgb(249,72,42);color: white" value="+"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#themkichco2">
-                                     </div>
-                                     <div style="margin-right: 2%;margin-left: 10px">
-                                         <input type="button" class="btn"
-                                                style="background-color:rgb(249,72,42);color: white" value="+"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#themnhanhkichco">
-                                     </div>
-                                 </div>
+                                    <div class="d-flex" style="margin-top: 10px">
+                                        <div style="margin-right: 2%;margin-left: 20px">
+                                                                             <span class="btn"
+                                                                                   style="margin: 3%; background-color: white; color: black;border-color: black; padding: 7px 10px; cursor: pointer;"
+                                                                                   data-bs-toggle="modal" data-bs-target="#themkichco2">
+    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-circle-fill"
+         viewBox="0 0 16 16">
+        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+    </svg>
+</span>
+                                        </div>
+                                        <div style="margin-right: 2%;margin-left: 10px">
+                                                                              <span class="btn"
+                                                                                    style="margin: 3%; background-color: white; color: black;border-color: black; padding: 7px 10px; cursor: pointer;"
+                                                                                    data-bs-toggle="modal" data-bs-target="#themnhanhkichco">
+    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-circle-fill"
+         viewBox="0 0 16 16">
+        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+    </svg>
+</span>
+                                        </div>
+                                    </div>
                                     <span id="kichcoError"
                                           style="color: red;font-style: italic;margin-left: 100px;font-family: 'Bahnschrift'"></span>
                                     <!--end-->
                                     <button type="submit" class="btn"
-                                            style="margin-left: 20px;margin-bottom: 20px;margin-top: 30px; width: 110px;background-color:rgb(249,72,42);color: white">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                             fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                            style="margin-left: 22px;margin-bottom: 20px;margin-top: 30px; width: 110px;background-color: white; color: black;border-color: black">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-node-plus-fill" viewBox="0 0 16 16">
+                                            <path d="M11 13a5 5 0 1 0-4.975-5.5H4A1.5 1.5 0 0 0 2.5 6h-1A1.5 1.5 0 0 0 0 7.5v1A1.5 1.5 0 0 0 1.5 10h1A1.5 1.5 0 0 0 4 8.5h2.025A5 5 0 0 0 11 13m.5-7.5v2h2a.5.5 0 0 1 0 1h-2v2a.5.5 0 0 1-1 0v-2h-2a.5.5 0 0 1 0-1h2v-2a.5.5 0 0 1 1 0"/>
                                         </svg>
                                         Thêm
                                     </button>
@@ -480,8 +540,9 @@
                                                 aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form id="addFormKichCo" name="addKichCo" onsubmit="return validateTrungKichCo()"
-                                                method="post" th:action="@{/addKichCoModal}" th:object="${kichco}">
+                                        <form id="addFormKichCo" name="addKichCo"
+                                              onsubmit="return validateTrungKichCo()"
+                                              method="post" th:action="@{/addKichCoModal}" th:object="${kichco}">
                                             <p>
                                                 Tên kích cỡ:
                                                 <input id="tenInputKichCo" class="form-control" th:field="*{ten}"/>
@@ -566,7 +627,8 @@
                             </p>
                         </div>
                         <p style="margin-left: 400px">
-                            <button type="button" class="btn btn-primary" onclick="validateAndSubmit()">Cập nhật
+                            <button style="background-color:rgb(249,72,42);border-color: rgb(249,72,42);color: white"
+                                    type="button" class="btn btn-primary" onclick="validateAndSubmit()">Cập nhật
                             </button>
                         </p>
                     </div>

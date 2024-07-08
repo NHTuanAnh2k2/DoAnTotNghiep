@@ -241,19 +241,25 @@ public class BanHangController {
     }
 
     @GetMapping("deleteHDCho/{id}")
-    public String deleteHDCho(@PathVariable("id") String mahd,RedirectAttributes redirectAttributes) {
+    public String deleteHDCho(@PathVariable("id") String mahd, RedirectAttributes redirectAttributes) {
         HoaDon hd = daoHD.timHDTheoMaHD(mahd);
         //tìm hóa đơn chi tiết
-        List<HoaDonChiTiet> listHDCTUpdateSL=daoHDCT.timDSHDTCTTheoMaHD(hd.getMahoadon());
-        for (HoaDonChiTiet a:listHDCTUpdateSL
-             ) {
-            SanPhamChiTiet spctUp=daoSPCT.findById(a.getSanphamchitiet().getId());
-            spctUp.setSoluong(spctUp.getSoluong()+a.getSoluong());
+        List<HoaDonChiTiet> listHDCTUpdateSL = daoHDCT.timDSHDTCTTheoMaHD(hd.getMahoadon());
+        for (HoaDonChiTiet a : listHDCTUpdateSL
+        ) {
+            SanPhamChiTiet spctUp = daoSPCT.findById(a.getSanphamchitiet().getId());
+            spctUp.setSoluong(spctUp.getSoluong() + a.getSoluong());
             daoSPCT.addSPCT(spctUp);
             daoHDCT.deleteById(a.getId());
         }
-       boolean result= daoHD.delete(hd);
-        if(result){
+        boolean result = daoHD.delete(hd);
+        List<HoaDon> lst1 = daoHD.timTheoTrangThaiVaLoai(7, false);
+        if (lst1.size() > 0) {
+            HoaDon hdChuyen01 = lst1.get(0);
+            hdChuyen01.setTrangthai(0);
+            daoHD.capNhatHD(hdChuyen01);
+        }
+        if (result) {
             redirectAttributes.addFlashAttribute("checkdeleteHD", true);
         }
         return "redirect:/hoa-don/ban-hang";
@@ -355,6 +361,21 @@ public class BanHangController {
     public ResponseEntity<?> addvoucherselect(@PathVariable("id") String id) {
         PhieuGiamGia phieutim = daoPGG.findPhieuGiamGiaById(Integer.valueOf(id));
         phieugiamsaoluu = phieutim;
+// tính lại số tiền giảm
+        sotiengiam = new BigDecimal("0");
+
+        if (phieugiamsaoluu.getLoaiphieu() == true) {
+            // phiếu %
+            if ((new BigDecimal(phieugiamsaoluu.getGiatrigiam())).multiply(tongtienhoadonhientai.divide(new BigDecimal("100"))).compareTo(phieugiamsaoluu.getGiatrigiamtoida()) > 0) {
+                sotiengiam = phieugiamsaoluu.getGiatrigiamtoida();
+            } else {
+                sotiengiam = (new BigDecimal(phieugiamsaoluu.getGiatrigiam())).multiply(tongtienhoadonhientai.divide(new BigDecimal("100")));
+            }
+
+        } else {
+            // phiếu vnđ
+            sotiengiam = new BigDecimal(phieugiamsaoluu.getGiatrigiam());
+        }
         return ResponseEntity.ok(phieutim);
     }
 //hiển thị all phiếu giảm
@@ -362,7 +383,7 @@ public class BanHangController {
     @GetMapping("show-all-voucher")
     @ResponseBody
     public ResponseEntity<?> showAllMa() {
-        if(hdHienTai==null){
+        if (hdHienTai == null) {
             return ResponseEntity.ok(false);
         }
         KhachHang kh = hdHienTai.getKhachhang();
@@ -858,6 +879,8 @@ public class BanHangController {
             daoHD.capNhatHD(hdset1);
             phieugiamgiachtietset.setHoadon(hdset1);
             phieugiamgiachtietset.setPhieugiamgia(phieugiamsaoluu);
+            System.out.println("aaaaaaaaa");
+            System.out.println(phieugiamsaoluu.getMacode());
             phieugiamgiachtietset.setGiasauapdung(hdset1.getTongtien());
             phieugiamgiachtietset.setGiabandau(tongtienhoadonhientai);
             phieugiamgiachtietset.setTiengiam(sotiengiam);
@@ -908,7 +931,7 @@ public class BanHangController {
     @ResponseBody
     public ResponseEntity<?> fillDiachi() {
 
-        HoaDon hddc = hdHienTai==null?new HoaDon():daoHD.timHDTheoMaHD(hdHienTai.getMahoadon());
+        HoaDon hddc = hdHienTai == null ? new HoaDon() : daoHD.timHDTheoMaHD(hdHienTai.getMahoadon());
         DiaChiGiaoCaseBanHangOff diachiRT = new DiaChiGiaoCaseBanHangOff();
         if (hddc.getKhachhang() != null) {
             List<String> diachiLst = Arrays.asList(hddc.getDiachi().split(", "));
@@ -958,6 +981,18 @@ public class BanHangController {
         lstrt.add(lst1);
         lstrt.add(lst);
         return ResponseEntity.ok(lstrt);
+    }
+
+    //chặn giao và thanh toán khi không có đơn
+    //http://localhost:8080/ban-hang-tai-quay/checkGiaoThanhToan
+    @GetMapping("checkGiaoThanhToan")
+    @ResponseBody
+    public ResponseEntity<?> checkGiaoThanhToan() {
+        List<HoaDon> lst = daoHD.timTheoTrangThaiVaLoai(0, false);
+        if (lst.size() > 0) {
+            return ResponseEntity.ok(true);
+        }
+        return ResponseEntity.ok(false);
     }
 
     //chuyển đổi đơn tt7-->> tt0
