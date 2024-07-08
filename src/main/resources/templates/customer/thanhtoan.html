@@ -182,6 +182,7 @@
     }
     </style>
 <body class="container">
+<input type="hidden" th:value="${token}" id="kiemtratokendangnhap">
 <div class="tong">
     <div class="left">
         <div id="left1" class="left1">
@@ -282,28 +283,19 @@
                 <div class="d-flex justify-content-between mb-4">
                     <div class="form-floating" style="padding-right: 20px;">
                         <select class="form-select" id="tinh2" aria-label="Floating label select example">
-                            <option selected>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                            <option selected>Tỉnh/Thành phố</option>
                         </select>
                         <label for="tinh2">Tỉnh/thành phố</label>
                     </div>
                     <div class="form-floating" style="padding-right: 20px;">
                         <select class="form-select" id="huyen2" aria-label="Floating label select example">
-                            <option selected>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                            <option selected>Quận/huyện</option>
                         </select>
                         <label for="huyen2">Quận/huyện</label>
                     </div>
                     <div class="form-floating">
                         <select class="form-select" id="xa2" aria-label="Floating label select example">
-                            <option selected>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                            <option selected>Phường/xã</option>
                         </select>
                         <label for="xa2">Phường/xã</label>
                     </div>
@@ -526,9 +518,29 @@
     </div>
 </div>
 <script>
+    // async function tokenTaiKhoanDN() {
+    //     const response = await fetch('/lay-token-tai-khoan-dang-nhap');
+    //     return await response.json();
+    // }
+    // document.addEventListener("DOMContentLoaded", async function() {
+    //     const token= await tokenTaiKhoanDN();
+    //     if(token === null){
+    //         document.getElementById("left2").style.display = "none";
+    //         document.getElementById("left3").style.display = "none";
+    //     }else{
+    //
+    //     }
+    // });
+    var token= document.getElementById("kiemtratokendangnhap").value;
+    if(token !== null){
+        document.getElementById("left1").style.display = "none";
+        document.getElementById("left3").style.display = "none";
+    }else{
+        document.getElementById("left2").style.display = "none";
+        document.getElementById("left3").style.display = "none";
+    }
     document.getElementById("fillMaGiam").style.display = "none";
-    document.getElementById("left2").style.display = "none";
-    document.getElementById("left3").style.display = "none";
+
     document.getElementById("button_left2").addEventListener("click", function(event) {
         event.preventDefault();
         document.getElementById("left1").style.display = "none";
@@ -541,6 +553,9 @@
     var citis = document.getElementById("tinh");
     var districts = document.getElementById("huyen");
     var wards = document.getElementById("xa");
+    var citis2 = document.getElementById("tinh2");
+    var districts2 = document.getElementById("huyen2");
+    var wards2 = document.getElementById("xa2");
     var Parameter = {
         url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
         method: "GET",
@@ -558,6 +573,7 @@
             opt.text = x.Name;
             opt.setAttribute('data-id', x.Id);
             citis.options.add(opt);
+            citis2.options.add(opt);
         }
         citis.onchange = function () {
             districts.length = 1;
@@ -574,6 +590,21 @@
                 }
             }
         };
+        citis2.onchange = function () {
+            districts2.length = 1;
+            wards2.length = 1;
+            if(this.options[this.selectedIndex].dataset.id != ""){
+                const result = data.filter(n => n.Id === this.options[this.selectedIndex].dataset.id);
+
+                for (const k of result[0].Districts) {
+                    var opt = document.createElement('option');
+                    opt.value = k.Name;
+                    opt.text = k.Name;
+                    opt.setAttribute('data-id', k.Id);
+                    districts2.options.add(opt);
+                }
+            }
+        };
         districts.onchange = function () {
             wards.length = 1;
             const dataCity = data.filter((n) => n.Id === citis.options[citis.selectedIndex].dataset.id);
@@ -586,6 +617,21 @@
                     opt.text = w.Name;
                     opt.setAttribute('data-id', w.Id);
                     wards.options.add(opt);
+                }
+            }
+        };
+        districts2.onchange = function () {
+            wards2.length = 1;
+            const dataCity = data.filter((n) => n.Id === citis2.options[citis2.selectedIndex].dataset.id);
+            if (this.options[this.selectedIndex].dataset.id != "") {
+                const dataWards = dataCity[0].Districts.filter(n => n.Id === this.options[this.selectedIndex].dataset.id)[0].Wards;
+
+                for (const w of dataWards) {
+                    var opt = document.createElement('option');
+                    opt.value = w.Name;
+                    opt.text = w.Name;
+                    opt.setAttribute('data-id', w.Id);
+                    wards2.options.add(opt);
                 }
             }
         };
