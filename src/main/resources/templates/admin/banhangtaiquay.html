@@ -1500,10 +1500,19 @@ tabindex="0">
                 if (numericValue < 1 || isNaN(numericValue)) {
                     numericValue = 1;
                     thongbao('Số lượng phải lớn hơn 0', 'warning');
-                } else if (numericValue - slSpTrongDon > slSpCon) {
-                    numericValue = slSpCon + slSpTrongDon;
-                    thongbao('Số lượng đang vượt quá số lượng hàng hiện có', 'warning');
+                } else {
+                    if (slSpCon <= 10) {
+                        if (numericValue - slSpTrongDon > slSpCon) {
+                            numericValue = slSpCon + slSpTrongDon;
+                            thongbao('Số lượng đang vượt quá số lượng hàng hiện có', 'warning');
 
+                        }
+                    } else {
+                        if (numericValue > 10) {
+                            thongbao('Chỉ được chọn tối đa 10 sản phẩm', 'warning');
+                            numericValue = 10;
+                        }
+                    }
                 }
 
                 // Cập nhật giá trị của input
@@ -3521,7 +3530,7 @@ tabindex="0">
 
                                             document.getElementById('ngaygiaodukiens').innerHTML = days;
                                             document.getElementById('thongtingiao_ngaygiao').value = timestamp;
-                                            
+
                                             // phigiaohang
                                             feship(idHuyenreturn, idXareturn);
 
@@ -3569,7 +3578,7 @@ tabindex="0">
                 .then(function (d) {
                     var shipfe = convertCashInput(d.data.total);
                     document.getElementById('phigiaohang').value = shipfe;
-                    var shipluutam=shipToanCuc;
+                    var shipluutam = shipToanCuc;
                     shipToanCuc = d.data.total;
                     tienkhachthanhtoan = tienkhachthanhtoan + shipToanCuc;
                 })
@@ -3848,7 +3857,22 @@ tabindex="0">
                     document.getElementById('TTTK_sdt_regex').innerHTML = 'Số điện thoại phải bắt đầu bằng 0, độ dài 10 số!';
                     error = true;
                 } else {
-                    document.getElementById('TTTK_sdt_regex').innerHTML = '';
+                    var urlchecksdt = `http://localhost:8080/ban-hang-tai-quay/checksdt?sdt=${soDienThoai}`;
+                    fetch(urlchecksdt)
+                        .then(function (a) {
+                            return a.json();
+                        })
+                        .then(function (b) {
+                            if (b === true) {
+                                document.getElementById('TTTK_sdt_regex').innerHTML = 'Số điện thoại đã được sử dụng';
+                                error = true;
+
+                            } else {
+                                document.getElementById('TTTK_sdt_regex').innerHTML = '';
+                            }
+
+                        })
+
                 }
             }
 
@@ -3865,6 +3889,21 @@ tabindex="0">
                     document.getElementById('TTTK_email_regex').innerHTML = 'Email sai định dạng!';
                     error = true;
                 } else {
+                    var urlcheckemail = `http://localhost:8080/ban-hang-tai-quay/checkemail?email=${email}`;
+                    fetch(urlcheckemail)
+                        .then(function (a) {
+                            return a.json();
+                        })
+                        .then(function (b) {
+                            if (b === true) {
+                                document.getElementById('TTTK_email_regex').innerHTML = 'Email đã được sử dụng';
+                                error = true;
+
+                            } else {
+                                document.getElementById('TTTK_email_regex').innerHTML = '';
+                            }
+
+                        })
                     document.getElementById('TTTK_email_regex').innerHTML = '';
                 }
             }

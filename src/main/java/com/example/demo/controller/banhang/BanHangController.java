@@ -180,6 +180,17 @@ public class BanHangController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping("checksdt")
+    @ResponseBody
+    public ResponseEntity<?> checksdt(@RequestParam("sdt") String sdt) {
+        return ResponseEntity.ok(daoNguoiDung.existsBySodienthoai(sdt.trim()));
+    }
+    @GetMapping("checkemail")
+    @ResponseBody
+    public ResponseEntity<?> checkemail(@RequestParam("email") String email) {
+        return ResponseEntity.ok(daoNguoiDung.existsByEmail(email.trim()));
+    }
+
     // thêm sản phẩm tại hdct
     @GetMapping("ChoseSP/{id}")
     public String choseSP(@PathVariable("id") Integer id) {
@@ -307,13 +318,17 @@ public class BanHangController {
 
     @PostMapping("add-nhanh")
     public String changesTTDH(Model model, @ModelAttribute("AddKHNhanh") AddKHNhanhFormBanHang kh) {
+        LocalDateTime currentDateTime = LocalDateTime.now();
         NguoiDung nguoidung = new NguoiDung();
         nguoidung.setHovaten(kh.getTen());
         nguoidung.setSodienthoai(kh.getSdt());
         nguoidung.setEmail(kh.getEmail());
         nguoidung.setGioitinh(true);
         nguoidung.setNgaysinh(Date.valueOf("2020-06-06"));
-        nguoidung.setCccd("024099013632");
+        nguoidung.setNgaytao(Timestamp.valueOf(currentDateTime));
+        nguoidung.setTrangthai(true);
+        //fake nhân viên
+        nguoidung.setNguoitao("nhân viên");
         daoNguoiDung.save(nguoidung);
         NguoiDung nguoidungtim = daoNguoiDung.findByEmail(kh.getEmail());
         DiaChi diachi = new DiaChi();
@@ -331,7 +346,7 @@ public class BanHangController {
         khAdd.setMakhachhang(newMaKH);
         khAdd.setNguoidung(nguoidungtim);
         khAdd.setTrangthai(true);
-        LocalDateTime currentDateTime = LocalDateTime.now();
+
         khAdd.setNgaytao(Timestamp.valueOf(currentDateTime));
         //fake người tạo
         khAdd.setNguoitao("nhân viên");
