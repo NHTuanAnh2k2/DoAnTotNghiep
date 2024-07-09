@@ -2355,6 +2355,7 @@ tabindex="0">
         //hiển thị nút trả sau trước
 
         function giaohang(event) {
+            document.getElementById('phigiaohang').value='';
             const urlchecksize = `http://localhost:8080/ban-hang-tai-quay/checkGiaoThanhToan`;
             fetch(urlchecksize)
                 .then(function (a) {
@@ -2857,6 +2858,9 @@ tabindex="0">
             });
             var inputss = document.querySelectorAll('#boddydssp a');
             inputss.forEach(function (inp) {
+                // Lưu giá trị href ban đầu vào thuộc tính data-href
+                inp.setAttribute('data-href', inp.getAttribute('href'));
+                // Xóa thuộc tính href
                 inp.removeAttribute('href');
 
             });
@@ -2868,6 +2872,29 @@ tabindex="0">
         //xóa bản ghi phương thức thanh toán
         function xoaphuongthuc(url) {
             if (confirm('Bạn muốn loại bỏ bản giao dịch này?')) {
+                document.getElementById('xacnhanthanhtoanhoadon').disabled = true;
+                document.getElementById('chantrasau').disabled = false;
+                document.getElementById('changeNV').disabled = false;
+                document.getElementById('chonMaGiam').disabled = false;
+                document.getElementById('start-scan').disabled = false;
+                document.getElementById('themKHS').disabled = false;
+                document.getElementById('changeSP').disabled = false;
+                var inputs = document.querySelectorAll('#boddydssp input');
+                inputs.forEach(function (input) {
+                    input.disabled = false;
+
+                });
+                var button = document.querySelectorAll('#boddydssp button');
+                button.forEach(function (btn) {
+                    btn.disabled = false;
+
+                });
+                var inputss = document.querySelectorAll('#boddydssp a');
+                inputss.forEach(function (inp) {
+                    inp.setAttribute('href', inp.getAttribute('data-href'));
+                    // Xóa thuộc tính data-href không cần thiết nữa
+                    inp.removeAttribute('data-href');
+                });
                 fetch(url)
                     .then(function (a) {
                         return a.json();
