@@ -200,48 +200,34 @@
                                     THÊM SẢN PHẨM
                                 </h3>
                                 <div class="card-header">
-                                    <!--qr sp-->
-                                    <a class="btn btn-dark" style="margin-left: 1000px" id="start-scan">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                             class="bi bi-qr-code-scan" viewBox="0 0 16 16">
-                                            <path
-                                                    d="M0 .5A.5.5 0 0 1 .5 0h3a.5.5 0 0 1 0 1H1v2.5a.5.5 0 0 1-1 0zm12 0a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0V1h-2.5a.5.5 0 0 1-.5-.5M.5 12a.5.5 0 0 1 .5.5V15h2.5a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1 0-1H15v-2.5a.5.5 0 0 1 .5-.5M4 4h1v1H4z" />
-                                            <path d="M7 2H2v5h5zM3 3h3v3H3zm2 8H4v1h1z" />
-                                            <path d="M7 9H2v5h5zm-4 1h3v3H3zm8-6h1v1h-1z" />
-                                            <path
-                                                    d="M9 2h5v5H9zm1 1v3h3V3zM8 8v2h1v1H8v1h2v-2h1v2h1v-1h2v-1h-3V8zm2 2H9V9h1zm4 2h-1v1h-2v1h3zm-4 2v-1H8v1z" />
-                                            <path d="M12 9h2V8h-2z" />
-                                        </svg>
-                                        Quét QR Sản phẩm
-                                    </a>
+                                    <div style="display: flex; align-items: center;">
+                                        <h5 style="font-family: 'Bahnschrift'; margin: 0;">
+                                            <span style="color: red">* </span>Tên sản phẩm:
+                                            <select class="form-control select2 select2-primary"
+                                                    data-dropdown-css-class="select2-primary"
+                                                    style="width: 1130px; font-family: 'Bahnschrift'"
+                                                    name="tensp" data-placeholder="Nhập tên sản phẩm"
+                                                    onchange="clearErrorMessageTenSP()">
+                                                <option style="font-family: 'Bahnschrift'"></option>
+                                                <option th:each="sp : ${sp}" th:value="${sp.tensanpham}"
+                                                        th:text="${sp.tensanpham}"
+                                                        th:selected="${sp.tensanpham} == ${selectedTensp}"></option>
+                                            </select>
+
+                                        </h5>
+                                        <span class="btn"
+                                              style="margin: 0 0 -20px 10px; background-color: white; color: black; border-color: black; padding: 7px 10px; cursor: pointer;"
+                                              data-bs-toggle="modal" data-bs-target="#themtensp">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+             class="bi bi-plus-circle-fill"
+             viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+        </svg>
+    </span>
+                                    </div>
+                                    <span id="tenspError"
+                                          style="color: red; font-style: italic; font-family: 'Bahnschrift';font-weight: bold"></span>
                                     <p></p>
-
-                                    <!--                                    <h5 style="font-family: 'Bahnschrift'">-->
-                                    <!--                                        <span style="color: red">* </span>Tên sản phẩm:-->
-                                    <!--                                        <select class="form-control select2 select2-primary"-->
-                                    <!--                                                data-dropdown-css-class="select2-primary"-->
-                                    <!--                                                style="width: 100%;font-family: 'Bahnschrift'"-->
-                                    <!--                                                name="tensp" data-tags="true" data-placeholder="Nhập tên sản phẩm"-->
-                                    <!--                                                onchange="clearErrorMessageTenSP()">-->
-                                    <!--                                            <option style="font-family: 'Bahnschrift'"></option>-->
-                                    <!--                                            <option th:each="sp : ${sp}" th:value="${sp.tensanpham}"-->
-                                    <!--                                                    th:text="${sp.tensanpham}"-->
-                                    <!--                                                    th:selected="${sp.tensanpham} == ${selectedTensp}"></option>-->
-                                    <!--                                        </select>-->
-                                    <!--                                        <span id="tenspError"-->
-                                    <!--                                              style="color: red; font-style: italic;font-family: 'Bahnschrift'"></span>-->
-                                    <!--                                    </h5>-->
-                                    <h5 style="font-family: 'Bahnschrift'">
-                                        <span style="color: red">* </span>Tên sản phẩm:
-                                        <input type="text" class="form-control"
-                                               style="width: 100%;font-family: 'Bahnschrift'"
-                                               name="tensp" placeholder="Nhập tên sản phẩm"
-                                               onchange="clearErrorMessageTenSP()"
-                                               th:value="${selectedTensp}">
-                                        <span id="tenspError"
-                                              style="color: red; font-style: italic;font-family: 'Bahnschrift'"></span>
-                                    </h5>
-
                                     <h5 style="font-family: 'Bahnschrift'">
                                         <span style="color: red">* </span>Giới tính:
                                         <select id="gioiTinhSelect" class="form-control" name="gioitinh"
@@ -252,18 +238,17 @@
                                             <option value="false" th:selected="${gioitinh != null && !gioitinh}">Nữ
                                             </option>
                                         </select>
-
-                                        <span id="gioitinhError"
-                                              style="color: red;font-style: italic;font-family: 'Bahnschrift'"></span>
                                     </h5>
+                                    <span id="gioitinhError"
+                                          style="color: red;font-style: italic;font-family: 'Bahnschrift';font-weight: bold"></span>
                                     <h5 style="font-family: 'Bahnschrift'">
                                         <span style="color: red">* </span>Mô tả:
                                         <textarea rows="4" cols="164" class="form-control" name="mota"
                                                   th:text="${motas}"
                                                   oninput="clearErrorMessageMoTa()"></textarea>
-                                        <span id="motaError"
-                                              style="color: red; font-style: italic;font-family: 'Bahnschrift'"></span>
                                     </h5>
+                                    <span id="motaError"
+                                          style="color: red; font-style: italic;font-family: 'Bahnschrift';font-weight: bold"></span>
                                 </div>
                             </div>
 
@@ -373,7 +358,8 @@
                                         <div style="margin-right: 2%;margin-left: 20px">
                                                                              <span class="btn"
                                                                                    style="margin: 3%; background-color: white; color: black;border-color: black; padding: 7px 10px; cursor: pointer;"
-                                                                                   data-bs-toggle="modal" data-bs-target="#themkichco2">
+                                                                                   data-bs-toggle="modal"
+                                                                                   data-bs-target="#themkichco2">
     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-circle-fill"
          viewBox="0 0 16 16">
         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
@@ -383,7 +369,8 @@
                                         <div style="margin-right: 2%;margin-left: 10px">
                                                                               <span class="btn"
                                                                                     style="margin: 3%; background-color: white; color: black;border-color: black; padding: 7px 10px; cursor: pointer;"
-                                                                                    data-bs-toggle="modal" data-bs-target="#themnhanhkichco">
+                                                                                    data-bs-toggle="modal"
+                                                                                    data-bs-target="#themnhanhkichco">
     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-circle-fill"
          viewBox="0 0 16 16">
         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
@@ -392,11 +379,12 @@
                                         </div>
                                     </div>
                                     <span id="kichcoError"
-                                          style="color: red;font-style: italic;margin-left: 100px;font-family: 'Bahnschrift'"></span>
+                                          style="color: red;font-style: italic;margin-left: 20px;font-family: 'Bahnschrift';font-weight: bold"></span>
                                     <!--end-->
                                     <button type="submit" class="btn"
                                             style="margin-left: 22px;margin-bottom: 20px;margin-top: 30px; width: 110px;background-color: white; color: black;border-color: black">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-node-plus-fill" viewBox="0 0 16 16">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                                             fill="currentColor" class="bi bi-node-plus-fill" viewBox="0 0 16 16">
                                             <path d="M11 13a5 5 0 1 0-4.975-5.5H4A1.5 1.5 0 0 0 2.5 6h-1A1.5 1.5 0 0 0 0 7.5v1A1.5 1.5 0 0 0 1.5 10h1A1.5 1.5 0 0 0 4 8.5h2.025A5 5 0 0 0 11 13m.5-7.5v2h2a.5.5 0 0 1 0 1h-2v2a.5.5 0 0 1-1 0v-2h-2a.5.5 0 0 1 0-1h2v-2a.5.5 0 0 1 1 0"/>
                                         </svg>
                                         Thêm
@@ -587,7 +575,35 @@
                                 </div>
                             </div>
                         </div>
-
+                        <!-- Modal thêm tên sản phẩm-->
+                        <div class="modal fade" id="themtensp" tabindex="-1" aria-labelledby="exampleModalLabelTenSP"
+                             aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabelTenSP">Thêm tên sản phẩm</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="addFormTenSP" th:method="post" name="addTenSP" th:object="${sanpham}"
+                                              th:action="@{/addTenSPModel}" onsubmit="return validateTrungTenSP()">
+                                            <p>
+                                                <span style="color: red">* </span>
+                                                Tên sản phẩm:
+                                                <input id="tenInputTenSP" class="form-control" th:field="*{tensanpham}"/>
+                                            <div style="color: red; font-weight: initial;font-style: italic"
+                                                 id="errorTenSP"></div>
+                                            </p>
+                                            <button id="submitButtonTenSP" class="btn"
+                                                    style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
+                                                Thêm
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- /.card -->
                     </div>
@@ -1378,6 +1394,39 @@
     var objectsFromControllerDeGiay = /*[[${listDG}]]*/ [];
     var objectsFromControllerMauSac = /*[[${listMS}]]*/ [];
     var objectsFromControllerKichCo = /*[[${listKC}]]*/ [];
+    var objectsFromControllerTenSP = /*[[${listTenSP}]]*/ [];
+    function validateTrungTenSP() {
+        var inputMaTenSP = document.getElementById("tenInputTenSP").value;
+        var errorMaTenSP = document.getElementById("errorTenSP");
+        var isMaValid = true;
+
+
+        // Kiểm tra xem trường "Tên đế giày" có trống không
+        if (inputMaTenSP.trim() === "") {
+            errorMaTenSP.innerText = "Vui lòng nhập tên tên sản phẩm.";
+            return false; // Ngăn form được gửi đi
+        } else {
+            errorMaTenSP.innerText = ""; // Xóa thông báo lỗi nếu có
+        }
+
+
+        // Kiểm tra trùng tên sản phẩm
+        for (var i = 0; i < objectsFromControllerTenSP.length; i++) {
+            var obj = objectsFromControllerTenSP[i];
+            if (inputMaTenSP === obj[1]) {
+                errorMaTenSP.innerText = "Tên sản phẩm đã tồn tại!";
+                isMaValid = false;
+                break;
+            }
+        }
+
+        if (isMaValid) {
+            errorMaTenSP.innerText = "";
+            themTenSP();
+        }
+
+        return false;
+    }
 
     function validateTrungThuongHieu() {
         var inputMaThuongHieu = document.getElementById("tenInputThuongHieu").value;
@@ -1725,6 +1774,44 @@
 
                 setTimeout(function () {
                     document.addKichCo.submit();
+                }, 3000);
+            }
+        });
+
+        // Ngăn form được gửi đi ngay lập tức
+        return false;
+    }
+
+    function themTenSP() {
+        // Sử dụng SweetAlert2 thay vì hộp thoại confirm
+        Swal.fire({
+            title: 'Bạn có muốn thêm không?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "success",
+                    title: "Thêm thành công!"
+                });
+
+                setTimeout(function () {
+                    document.addTenSP.submit();
                 }, 3000);
             }
         });
