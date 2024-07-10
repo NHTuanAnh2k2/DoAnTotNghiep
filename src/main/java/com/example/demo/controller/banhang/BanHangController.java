@@ -85,6 +85,7 @@ public class BanHangController {
         return Base64.getEncoder().encodeToString(bytes);
     }
 
+
     @GetMapping("hoa-don-cho")
     @ResponseBody
     public ResponseEntity<?> getLstCho() {
@@ -185,6 +186,7 @@ public class BanHangController {
     public ResponseEntity<?> checksdt(@RequestParam("sdt") String sdt) {
         return ResponseEntity.ok(daoNguoiDung.existsBySodienthoai(sdt.trim()));
     }
+
     @GetMapping("checkemail")
     @ResponseBody
     public ResponseEntity<?> checkemail(@RequestParam("email") String email) {
@@ -792,9 +794,6 @@ public class BanHangController {
             hdset1.setSdt(thongTin.getSdt());
             hdset1.setEmail(thongTin.getEmail());
 //            hdset1.setNgaygiaodukien();
-            System.out.println("abcabcabc");
-
-            System.out.println("abcabcabc");
             long unixTimestamp = Long.valueOf(thongTin.getNgaygiaodukien());
             // Convert Unix timestamp to milliseconds
             long milliseconds = unixTimestamp * 1000;
@@ -806,7 +805,11 @@ public class BanHangController {
             java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
             Timestamp ngaygiaodukien = new Timestamp(sqlDate.getTime());
             hdset1.setNgaygiaodukien(ngaygiaodukien);
-
+            if (thongTin.getGiaohoatoc() == true) {
+                hdset1.setHoatoc(true);
+            } else {
+                hdset1.setHoatoc(false);
+            }
             hoaDonCheckBill = hdset1;
             daoHD.capNhatHD(hdset1);
             phieugiamgiachtietset.setHoadon(hdset1);
@@ -860,6 +863,7 @@ public class BanHangController {
             }
         } else {
             //trả trước
+
             hdset1.setTrangthai(1);
             BigDecimal tienTong = new BigDecimal("0.00");
             for (PhuongThucThanhToan a : lstPTTT
@@ -890,7 +894,11 @@ public class BanHangController {
             java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
             Timestamp ngaygiaodukien = new Timestamp(sqlDate.getTime());
             hdset1.setNgaygiaodukien(ngaygiaodukien);
-
+            if (thongTin.getGiaohoatoc() == true) {
+                hdset1.setHoatoc(true);
+            } else {
+                hdset1.setHoatoc(false);
+            }
             daoHD.capNhatHD(hdset1);
             phieugiamgiachtietset.setHoadon(hdset1);
             phieugiamgiachtietset.setPhieugiamgia(phieugiamsaoluu);

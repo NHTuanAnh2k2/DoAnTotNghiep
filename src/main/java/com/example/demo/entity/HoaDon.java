@@ -21,7 +21,7 @@ public class HoaDon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    String maqr;
+    Boolean hoatoc;
     String sdt;
     String mahoadon;
     String tennguoinhan;
