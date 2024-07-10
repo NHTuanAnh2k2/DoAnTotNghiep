@@ -131,7 +131,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="sp, stt : ${page.content}">
+                                    <tr th:each="sp, stt : ${list}">
                                         <td th:text="${stt.index + 1}"></td>
                                         <th th:text="'SP'+${sp[5]}"></th>
                                         <td>
