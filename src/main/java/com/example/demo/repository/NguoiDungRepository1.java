@@ -13,8 +13,8 @@ import java.util.Optional;
 
 @Repository
 public interface NguoiDungRepository1 extends JpaRepository<NguoiDung, Integer> {
-    @Query("SELECT c FROM NguoiDung c WHERE c.email = ?1")
-    NguoiDung searchEmail(String email);
+    @Query("SELECT c FROM NguoiDung c WHERE c.sodienthoai = ?1")
+    NguoiDung searchEmail(String sdt);
     @Query("SELECT c FROM NguoiDung c WHERE c.id = ?1")
     NguoiDung searchId(Integer id);
     List<NguoiDung> getAllByOrderByIdDesc();

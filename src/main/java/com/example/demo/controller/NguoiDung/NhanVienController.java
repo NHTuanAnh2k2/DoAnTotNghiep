@@ -81,14 +81,20 @@ public class NhanVienController {
     public String viewAdd(
                           @ModelAttribute("nd") NguoiDungNVInfo nd,
                           @ModelAttribute("dc") DiaChiNVInfo dc,
+                          @ModelAttribute("nv") NhanVienInfo nv,
                           Model model, RedirectAttributes redirectAttributes) {
-
+        List<DiaChi> page = diaChi.getAll();
+        List<NhanVien> listnv = nhanVien.getAll();
+        model.addAttribute("items1", page);
+        model.addAttribute("items2", listnv);
         return "admin/addnhanvien";
     }
     @PostMapping("/addnv")
     public String addSave(
             @Valid  @ModelAttribute("nd") NguoiDungNVInfo nd,
             BindingResult ndBindingResult,
+            @Valid  @ModelAttribute("nv") NhanVienInfo nv,
+            BindingResult nvBindingResult,
             @Valid  @ModelAttribute("dc") DiaChiNVInfo dc,
             BindingResult dcBindingResult,
                           Model model, BindingResult result, Errors errors) {
@@ -97,39 +103,8 @@ public class NhanVienController {
         nd.setCccd(nd.getCccd().trim().replaceAll("\\s+", ""));
         nd.setSodienthoai(nd.getSodienthoai().trim().replaceAll("\\s+", ""));
         dc.setTenduong(dc.getTenduong().trim().replaceAll("\\s+", " "));
-
-        List<NhanVien> timsdt = nhanVien.timSDT(nd.getSodienthoai());
-        List<NhanVien> timEm = nhanVien.timEmail(nd.getEmail());
-        if (!timsdt.isEmpty()) {
-            // Nếu tồn tại, trả về lỗi
-            ndBindingResult.rejectValue("sodienthoai", "error.sodienthoai", "Số điện thoại đã tồn tại");
-        }
-        if (!timEm.isEmpty()) {
-            // Nếu tồn tại, trả về lỗi
-            ndBindingResult.rejectValue("email", "error.email", "Email đã tồn tại");
-        }
-        if(nd.getNgaysinh() == null){
-            ndBindingResult.rejectValue("ngaysinh", "error.ngaysinh", "Không được để trống ngày sinh");
-            return "/admin/addnhanvien";
-        }
-        if(nd.getNgaysinh() != null){
-            Calendar dob = Calendar.getInstance();
-            dob.setTime(nd.getNgaysinh());
-            Calendar today = Calendar.getInstance();
-            int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
-            if (dob.after(today)) {
-                ndBindingResult.rejectValue("ngaysinh", "error.ngaysinh", "Ngày sinh không được lớn hơn ngày hiện tại");
-            }else if(age < 18 || age > 40){
-                ndBindingResult.rejectValue("ngaysinh", "error.ngaysinh", "Nhân viên phải trên 18 tuổi");
-            }
-        }
-
-        if (ndBindingResult.hasErrors() || dcBindingResult.hasErrors()) {
-            return "/admin/addnhanvien";
-        }
         nguoiDung.add(nd);
-        NguoiDung n = nguoiDung.search(nd.getEmail());
-        NhanVienInfo nv = new NhanVienInfo();
+        NguoiDung n = nguoiDung.search(nd.getSodienthoai());
         nv.setIdnguoidung(n);
         nhanVien.add(nv);
         dc.setIdnguoidung(n);

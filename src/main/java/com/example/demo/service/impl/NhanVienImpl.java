@@ -49,12 +49,12 @@ public class NhanVienImpl implements NhanVienService {
         }
         int s = l.size() + 1;
         tenCuoi = tenCuoi + chuoiMoi.toString().toLowerCase() + s;
-        nv.setVaitro(true);
+        nv.setVaitro(nhanVien.getVaitro());
         nv.setManhanvien(tenCuoi);
         nv.setNgaytao(new Timestamp(new Date().getTime()));
-        nv.setNguoitao("");
+        nv.setNguoitao("a");
         nv.setLancapnhatcuoi(new Timestamp(new Date().getTime()));
-        nv.setNguoicapnhat("");
+        nv.setNguoicapnhat("a");
         nv.setTrangthai(true);
         nv.setNguoidung((NguoiDung) nhanVien.getIdnguoidung());
         return nhanVienRepository.save(nv);
