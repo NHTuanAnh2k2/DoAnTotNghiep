@@ -209,9 +209,9 @@
                                                     name="tensp" data-placeholder="Nhập tên sản phẩm"
                                                     onchange="clearErrorMessageTenSP()">
                                                 <option style="font-family: 'Bahnschrift'"></option>
-                                                <option th:each="sp : ${sp}" th:value="${sp.tensanpham}"
+                                                <option th:each="sp : ${sp}" th:value="${sp.id}"
                                                         th:text="${sp.tensanpham}"
-                                                        th:selected="${sp.tensanpham} == ${selectedTensp}"></option>
+                                                        th:selected="${selectedTensp}"></option>
                                             </select>
 
                                         </h5>
@@ -392,37 +392,38 @@
                                     </button>
                                 </div>
                             </div>
-                        </form>
-                        <!-- Modal thêm kích cỡ 2-->
-                        <div class="modal fade" id="themkichco2" tabindex="-1"
-                             aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5">Chọn kích cỡ</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="d-flex flex-wrap">
-                                            <!-- Lặp qua danh sách kích cỡ và tạo các checkbox -->
-                                            <div th:each="size : ${kc}">
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="btn-check"
-                                                           th:id="'btn-check-' + ${size.id}" th:value="${size.ten}"
-                                                           name="kichCoId" autocomplete="off"
-                                                           onchange="handleCheckboxChange()">
-                                                    <label class="btn btn-outline-primary size-button"
-                                                           th:for="'btn-check-' + ${size.id}"
-                                                           th:text="${size.ten}"></label>
+                            <!-- Modal thêm kích cỡ 2-->
+                            <div class="modal fade" id="themkichco2" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5">Chọn kích cỡ</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="d-flex flex-wrap">
+                                                <!-- Lặp qua danh sách kích cỡ và tạo các checkbox -->
+                                                <div th:each="size : ${kc}">
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="btn-check"
+                                                               th:id="'btn-check-' + ${size.id}" th:value="${size.ten}"
+                                                               name="kichCoId" autocomplete="off"
+                                                               onchange="handleCheckboxChange()">
+                                                        <label class="btn btn-outline-primary size-button"
+                                                               th:for="'btn-check-' + ${size.id}"
+                                                               th:text="${size.ten}"></label>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <div id="displayValue"></div>
                                         </div>
-                                        <div id="displayValue"></div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
+
                         <!-- Modal thêm thương hiệu-->
                         <div class="modal fade" id="themthuonghieu" tabindex="-1"
                              aria-labelledby="exampleModalLabel" aria-hidden="true">
