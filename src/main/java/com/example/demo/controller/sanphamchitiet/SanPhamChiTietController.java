@@ -124,9 +124,9 @@ public class SanPhamChiTietController {
     ) {
         List<DeGiay> listDG = null;
         if (info.getKey() != null) {
-            listDG = deGiayImp.getDeGiayByTenOrTrangthai(info.getKey(), info.getTrangthai());
+            listDG = deGiayImp.getDeGiayByTen(info.getKey());
         } else {
-            listDG = deGiayRepository.findAllByOrderByNgaytaoDesc();
+            listDG = deGiayRepository.getAll();
         }
         model.addAttribute("listDG", listDG);
         List<ThuongHieu> listTH = null;
