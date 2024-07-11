@@ -104,50 +104,17 @@ public class SanPhamController {
                             @ModelAttribute("sanpham") SanPham sanpham,
                             @ModelAttribute("tim") ThuocTinhInfo info
     ) {
-        List<DeGiay> listDG = null;
-        if (info.getKey() != null) {
-            listDG = deGiayImp.getDeGiayByTenOrTrangthai(info.getKey(), info.getTrangthai());
-        } else {
-            listDG = deGiayRepository.findAllByOrderByNgaytaoDesc();
-        }
+        List<DeGiay> listDG = deGiayRepository.findAll();
         model.addAttribute("listDG", listDG);
-        List<ThuongHieu> listTH = null;
-        if (info.getKey() != null) {
-            listTH = thuongHieuImp.getThuongHieuByTenOrTrangthai(info.getKey(), info.getTrangthai());
-        } else {
-            listTH = thuongHieuRepository.findAllByOrderByNgaytaoDesc();
-        }
+        List<ThuongHieu> listTH = thuongHieuRepository.findAll();
         model.addAttribute("listTH", listTH);
-
-        List<ChatLieu> listCL = null;
-        if (info.getKey() != null) {
-            listCL = chatLieuRepository.getChatLieuByTenOrTrangthai(info.getKey(), info.getTrangthai());
-        } else {
-            listCL = chatLieuRepository.findAllByOrderByNgaytaoDesc();
-        }
+        List<ChatLieu> listCL = chatLieuRepository.findAll();
         model.addAttribute("listCL", listCL);
-        List<MauSac> listMS = null;
-        if (info.getKey() != null) {
-            listMS = mauSacRepository.getDeGiayByTenOrTrangthai(info.getKey(), info.getTrangthai());
-        } else {
-            listMS = mauSacRepository.findAllByOrderByNgaytaoDesc();
-        }
+        List<MauSac> listMS = mauSacRepository.findAll();
         model.addAttribute("listMS", listMS);
-
-        List<KichCo> listKC = null;
-        if (info.getKey() != null) {
-            listKC = kichCoRepository.getKichCoByTenOrTrangthai(info.getKey(), info.getTrangthai());
-        } else {
-            listKC = kichCoRepository.findAllByOrderByNgaytaoDesc();
-        }
+        List<KichCo> listKC = kichCoRepository.findAll();
         model.addAttribute("listKC", listKC);
-
-        List<Object[]> listTenSP = null;
-        if (info.getKey() != null) {
-            listTenSP = sanPhamRepositoty.findByMasanphamAndTenSanPhamAndTrangThai("%" + info.getKey() + "%", "%" + info.getKey() + "%", info.getTrangthai());
-        } else {
-            listTenSP = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc();
-        }
+        List<SanPham> listTenSP = sanPhamRepositoty.findAll();
         model.addAttribute("listTenSP", listTenSP);
 
         List<SanPham> listSanPham = sanPhamImp.findAll();
