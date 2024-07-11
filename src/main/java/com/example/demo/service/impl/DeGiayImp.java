@@ -41,8 +41,8 @@ public class DeGiayImp implements DeGiayService {
     }
 
     @Override
-    public List<DeGiay> getDeGiayByTenOrTrangthai(String ten, Boolean trangthai) {
-        return deGiayRepository.getDeGiayByTenOrTrangthai(ten, trangthai);
+    public List<DeGiay> getDeGiayByTen(String ten) {
+        return deGiayRepository.findDeGiayByTenAndTrangThaiFalse(ten);
     }
 
 

@@ -28,9 +28,9 @@ public class DeGiayController {
         boolean isTrangthaiNull = (info.getTrangthai() == null);
 
         if (isKeyEmpty && isTrangthaiNull) {
-            page = deGiayRepository.findAllByOrderByNgaytaoDesc();
+            page = deGiayRepository.getAll();
         } else {
-            page = deGiayImp.getDeGiayByTenOrTrangthai(info.getKey(), info.getTrangthai());
+            page = deGiayImp.getDeGiayByTen(info.getKey());
         }
 
         model.addAttribute("list", page);
@@ -40,16 +40,9 @@ public class DeGiayController {
     }
 
 
-    @GetMapping("/update/{id}")
-    public String viewUpdate(@PathVariable Integer id, Model model) {
-        model.addAttribute("degiay", deGiayImp.findById(id));
-        return "admin/updategiay";
-    }
-
     @PostMapping("/update/{id}")
-    public String update(@PathVariable Integer id, @ModelAttribute("degiay") DeGiay deGiay) {
-        deGiay.setId(id);
-        deGiayImp.add(deGiay);
+    public String update(@PathVariable Integer id) {
+        deGiayRepository.updateTrangThaiToFalseById(id);
         return "redirect:/listdegiay";
     }
 
