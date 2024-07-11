@@ -354,6 +354,7 @@
                                             <h6 id="displayValue"></h6>
                                         </div>
                                     </div>
+
                                     <div class="d-flex" style="margin-top: 10px">
                                         <div style="margin-right: 2%;margin-left: 20px">
                                                                              <span class="btn"
@@ -390,42 +391,38 @@
                                         Thêm
                                     </button>
                                 </div>
-
                             </div>
-
-                            <!-- Modal thêm kích cỡ 2-->
-                            <div class="modal fade" id="themkichco2" tabindex="-1"
-                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5">Chọn kích cỡ</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="d-flex flex-wrap">
-                                                <!-- Lặp qua danh sách kích cỡ và tạo các checkbox -->
-                                                <div th:each="size : ${kc}">
-                                                    <div class="form-check">
-                                                        <input type="checkbox" class="btn-check"
-                                                               th:id="'btn-check-' + ${size.id}" th:value="${size.ten}"
-                                                               name="kichCoId" autocomplete="off"
-                                                               onchange="handleCheckboxChange()">
-                                                        <label class="btn btn-outline-primary size-button"
-                                                               th:for="'btn-check-' + ${size.id}"
-                                                               th:text="${size.ten}"></label>
-                                                    </div>
+                        </form>
+                        <!-- Modal thêm kích cỡ 2-->
+                        <div class="modal fade" id="themkichco2" tabindex="-1"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5">Chọn kích cỡ</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="d-flex flex-wrap">
+                                            <!-- Lặp qua danh sách kích cỡ và tạo các checkbox -->
+                                            <div th:each="size : ${kc}">
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="btn-check"
+                                                           th:id="'btn-check-' + ${size.id}" th:value="${size.ten}"
+                                                           name="kichCoId" autocomplete="off"
+                                                           onchange="handleCheckboxChange()">
+                                                    <label class="btn btn-outline-primary size-button"
+                                                           th:for="'btn-check-' + ${size.id}"
+                                                           th:text="${size.ten}"></label>
                                                 </div>
                                             </div>
-                                            <div id="displayValue"></div>
                                         </div>
+                                        <div id="displayValue"></div>
                                     </div>
                                 </div>
                             </div>
-
-                        </form>
-
+                        </div>
                         <!-- Modal thêm thương hiệu-->
                         <div class="modal fade" id="themthuonghieu" tabindex="-1"
                              aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -587,11 +584,12 @@
                                     </div>
                                     <div class="modal-body">
                                         <form id="addFormTenSP" th:method="post" name="addTenSP" th:object="${sanpham}"
-                                              th:action="@{/addTenSPModel}" onsubmit="return validateTrungTenSP()">
+                                              th:action="@{/addTenSPModal}" onsubmit="return validateTrungTenSP()">
                                             <p>
                                                 <span style="color: red">* </span>
                                                 Tên sản phẩm:
-                                                <input id="tenInputTenSP" class="form-control" th:field="*{tensanpham}"/>
+                                                <input id="tenInputTenSP" class="form-control"
+                                                       th:field="*{tensanpham}"/>
                                             <div style="color: red; font-weight: initial;font-style: italic"
                                                  id="errorTenSP"></div>
                                             </p>
@@ -954,8 +952,9 @@
         var tensp = document.forms["addProduct"]["tensp"].value;
         var mota = document.forms["addProduct"]["mota"].value;
         var gioitinh = document.forms["addProduct"]["gioitinh"].value;
-        var kichco = document.forms["addProduct"]["kichCoId"].value;
         var mausac = document.forms["addProduct"]["idMauSac"].value;
+        // Lấy tất cả các checkbox có name là "kichCoId" và đã được chọn
+        var checkboxes = document.querySelectorAll('input[name="kichCoId"]:checked');
 
         // Kiểm tra và cập nhật thông báo lỗi cho mỗi trường dữ liệu
         if (isEmpty(tensp)) {
@@ -987,9 +986,6 @@
         } else {
             document.getElementById("mausacError").innerText = "";
         }
-        // Lấy tất cả các checkbox có name là "kichCoId" và đã được chọn
-        var checkboxes = document.querySelectorAll('input[name="kichCoId"]:checked');
-
 // Kiểm tra xem có ít nhất một checkbox đã được chọn hay không
         if (checkboxes.length === 0) {
             document.getElementById("kichcoError").innerText = "Vui lòng chọn ít nhất một kích cỡ.";
@@ -1384,17 +1380,16 @@
 <script>
     var giaTriTuCheckbox = []; // Mảng lưu trữ giá trị từ checkbox
 </script>
-<!--validate thuộc tính sp-->
+<!--validate thuộc tính sp trong modal-->
 <script th:inline="javascript">
-
     /*<![CDATA[*/
+    var objectsFromControllerThuongHieu = /*[[${th}]]*/ [];
+    var objectsFromControllerChatLieu = /*[[${cl}]]*/ [];
+    var objectsFromControllerDeGiay = /*[[${dg}]]*/ [];
+    var objectsFromControllerMauSac = /*[[${ms}]]*/ [];
+    var objectsFromControllerKichCo = /*[[${kc}]]*/ [];
+    var objectsFromControllerTenSP = /*[[${sp}]]*/ [];
 
-    var objectsFromControllerThuongHieu = /*[[${listTH}]]*/ [];
-    var objectsFromControllerChatLieu = /*[[${listCL}]]*/ [];
-    var objectsFromControllerDeGiay = /*[[${listDG}]]*/ [];
-    var objectsFromControllerMauSac = /*[[${listMS}]]*/ [];
-    var objectsFromControllerKichCo = /*[[${listKC}]]*/ [];
-    var objectsFromControllerTenSP = /*[[${listTenSP}]]*/ [];
     function validateTrungTenSP() {
         var inputMaTenSP = document.getElementById("tenInputTenSP").value;
         var errorMaTenSP = document.getElementById("errorTenSP");
@@ -1592,6 +1587,45 @@
         return false;
     }
 
+
+    function themTenSP() {
+        // Sử dụng SweetAlert2 thay vì hộp thoại confirm
+        Swal.fire({
+            title: 'Bạn có muốn thêm không?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "success",
+                    title: "Thêm thành công!"
+                });
+
+                setTimeout(function () {
+                    document.addTenSP.submit();
+                }, 3000);
+            }
+        });
+
+        // Ngăn form được gửi đi ngay lập tức
+        return false;
+    }
+
     function themThuongHieu() {
         // Sử dụng SweetAlert2 thay vì hộp thoại confirm
         Swal.fire({
@@ -1774,44 +1808,6 @@
 
                 setTimeout(function () {
                     document.addKichCo.submit();
-                }, 3000);
-            }
-        });
-
-        // Ngăn form được gửi đi ngay lập tức
-        return false;
-    }
-
-    function themTenSP() {
-        // Sử dụng SweetAlert2 thay vì hộp thoại confirm
-        Swal.fire({
-            title: 'Bạn có muốn thêm không?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Có',
-            cancelButtonText: 'Không'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.onmouseenter = Swal.stopTimer;
-                        toast.onmouseleave = Swal.resumeTimer;
-                    }
-                });
-
-                Toast.fire({
-                    icon: "success",
-                    title: "Thêm thành công!"
-                });
-
-                setTimeout(function () {
-                    document.addTenSP.submit();
                 }, 3000);
             }
         });

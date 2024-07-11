@@ -68,12 +68,23 @@ public class SanPhamController {
     @Autowired
     HttpServletRequest request;
 
-    @PostMapping("/addTenSPModel")
+    @PostMapping("/addTenSPModal")
     public String addTenSPModel(Model model, @ModelAttribute("sanpham") SanPham sanPham) {
+        int doDaiChuoi2 = 10;
+        String kiTu2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        Random random2 = new Random();
+        StringBuilder chuoiNgauNhien2 = new StringBuilder(doDaiChuoi2);
+        for (int i = 0; i < doDaiChuoi2; i++) {
+            chuoiNgauNhien2.append(kiTu2.charAt(random2.nextInt(kiTu2.length())));
+        }
         LocalDateTime currentTime = LocalDateTime.now();
         sanPham.setTrangthai(true);
+        sanPham.setMasanpham(chuoiNgauNhien2.toString());
         sanPham.setNgaytao(currentTime);
         sanPham.setLancapnhatcuoi(currentTime);
+        sanPham.setNguoitao("DuyNV");
+        sanPham.setNguoicapnhat("DuyNV");
+        sanPham.setQrcode("ABC");
         sanPhamRepositoty.save(sanPham);
         return "redirect:/viewaddSPGET";
     }
@@ -104,18 +115,6 @@ public class SanPhamController {
                             @ModelAttribute("sanpham") SanPham sanpham,
                             @ModelAttribute("tim") ThuocTinhInfo info
     ) {
-        List<DeGiay> listDG = deGiayRepository.findAll();
-        model.addAttribute("listDG", listDG);
-        List<ThuongHieu> listTH = thuongHieuRepository.findAll();
-        model.addAttribute("listTH", listTH);
-        List<ChatLieu> listCL = chatLieuRepository.findAll();
-        model.addAttribute("listCL", listCL);
-        List<MauSac> listMS = mauSacRepository.findAll();
-        model.addAttribute("listMS", listMS);
-        List<KichCo> listKC = kichCoRepository.findAll();
-        model.addAttribute("listKC", listKC);
-        List<SanPham> listTenSP = sanPhamRepositoty.findAll();
-        model.addAttribute("listTenSP", listTenSP);
 
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<SanPhamChiTiet> listSPCT = sanPhamChiTietImp.findAll();
