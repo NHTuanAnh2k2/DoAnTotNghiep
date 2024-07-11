@@ -7,9 +7,6 @@ import com.example.demo.repository.*;
 import com.example.demo.service.impl.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -68,12 +65,26 @@ public class SanPhamController {
     @Autowired
     HttpServletRequest request;
 
-    @PostMapping("/addTenSPModel")
+    private String taoChuoiNgauNhien(int doDaiChuoi, String kiTu) {
+        Random random = new Random();
+        StringBuilder chuoiNgauNhien = new StringBuilder(doDaiChuoi);
+        for (int i = 0; i < doDaiChuoi; i++) {
+            chuoiNgauNhien.append(kiTu.charAt(random.nextInt(kiTu.length())));
+        }
+        return chuoiNgauNhien.toString();
+    }
+
+    @PostMapping("/addTenSPModal")
     public String addTenSPModel(Model model, @ModelAttribute("sanpham") SanPham sanPham) {
+        String chuoiNgauNhien = taoChuoiNgauNhien(7, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
         LocalDateTime currentTime = LocalDateTime.now();
         sanPham.setTrangthai(true);
+        sanPham.setMasanpham(chuoiNgauNhien);
         sanPham.setNgaytao(currentTime);
         sanPham.setLancapnhatcuoi(currentTime);
+        sanPham.setNguoitao("DuyNV");
+        sanPham.setNguoicapnhat("DuyNV");
+        sanPham.setQrcode("ABC");
         sanPhamRepositoty.save(sanPham);
         return "redirect:/viewaddSPGET";
     }
@@ -104,19 +115,6 @@ public class SanPhamController {
                             @ModelAttribute("sanpham") SanPham sanpham,
                             @ModelAttribute("tim") ThuocTinhInfo info
     ) {
-        List<DeGiay> listDG = deGiayRepository.findAll();
-        model.addAttribute("listDG", listDG);
-        List<ThuongHieu> listTH = thuongHieuRepository.findAll();
-        model.addAttribute("listTH", listTH);
-        List<ChatLieu> listCL = chatLieuRepository.findAll();
-        model.addAttribute("listCL", listCL);
-        List<MauSac> listMS = mauSacRepository.findAll();
-        model.addAttribute("listMS", listMS);
-        List<KichCo> listKC = kichCoRepository.findAll();
-        model.addAttribute("listKC", listKC);
-        List<SanPham> listTenSP = sanPhamRepositoty.findAll();
-        model.addAttribute("listTenSP", listTenSP);
-
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<SanPhamChiTiet> listSPCT = sanPhamChiTietImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
@@ -136,12 +134,11 @@ public class SanPhamController {
         return "admin/addsanpham";
     }
 
-    List<SanPham> sanPhamList = new ArrayList<>();
     List<SanPhamChiTiet> sanPhamChiTietList = new ArrayList<>();
 
     @PostMapping("/addProduct")
     public String addProduct(@RequestParam(defaultValue = "0") int p, Model model,
-                             @RequestParam String tensp,
+                             @RequestParam Integer tensp,
                              @RequestParam String mota,
                              @RequestParam ThuongHieu idThuongHieu,
                              @RequestParam ChatLieu idChatLieu,
@@ -153,57 +150,24 @@ public class SanPhamController {
         model.addAttribute("selectedTensp", tensp);
         model.addAttribute("motas", mota);
         model.addAttribute("gioitinh", gioitinh);
-        Integer nextId = sanPhamRepositoty.findMaxIdSP();
-        Integer nextId2 = sanPhamChiTietRepository.findMaxIdSPCT();
-        if (nextId == null || nextId2 == null) {
+        SanPham sanPham = sanPhamRepositoty.findById(tensp).orElse(null);
+        if (sanPham == null) {
             return "redirect:/error";
         }
-        nextId++;
-        SanPham sanPham = new SanPham();
-        int doDaiChuoi = 7;
-        // Chuỗi chứa tất cả các ký tự có thể có trong chuỗi ngẫu nhiên
-        String kiTu = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        // Tạo đối tượng Random
-        Random random = new Random();
-        // StringBuilder để xây dựng chuỗi ngẫu nhiên
-        StringBuilder chuoiNgauNhien = new StringBuilder(doDaiChuoi);
-        // Lặp để thêm ký tự ngẫu nhiên vào chuỗi
-        for (int i = 0; i < doDaiChuoi; i++) {
-            // Lấy một ký tự ngẫu nhiên từ chuỗi kiTu và thêm vào chuỗi ngẫu nhiên
-            chuoiNgauNhien.append(kiTu.charAt(random.nextInt(kiTu.length())));
-        }
-        sanPham.setId(nextId);
-        sanPham.setMasanpham(chuoiNgauNhien.toString());
-        sanPham.setTensanpham(tensp);
-        sanPham.setTrangthai(true);
-        LocalDateTime currentTime = LocalDateTime.now();
-        sanPham.setNgaytao(currentTime);
-        sanPhamList.add(sanPham);
-        for (SanPham sp : sanPhamList) {
-            System.out.println("idsp:" + sp.getId());
-            System.out.println("tensp:" + sp.getTensanpham());
+        Integer nextId2 = sanPhamChiTietRepository.findMaxIdSPCT();
+        if (nextId2 == null) {
+            return "redirect:/error";
         }
         if (sanPhamChiTietList == null || sanPhamChiTietList.isEmpty()) {
             for (MauSac colorId : idMauSac) {
                 for (String sizeName : kichCoNames) {
                     KichCo kichCo = kichCoRepository.findByTen(sizeName);
                     if (kichCo != null) {
-                        int doDaiChuoi2 = 10;
-                        // Chuỗi chứa tất cả các ký tự có thể có trong chuỗi ngẫu nhiên
-                        String kiTu2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-                        // Tạo đối tượng Random
-                        Random random2 = new Random();
-                        // StringBuilder để xây dựng chuỗi ngẫu nhiên
-                        StringBuilder chuoiNgauNhien2 = new StringBuilder(doDaiChuoi2);
-                        // Lặp để thêm ký tự ngẫu nhiên vào chuỗi
-                        for (int i = 0; i < doDaiChuoi2; i++) {
-                            // Lấy một ký tự ngẫu nhiên từ chuỗi kiTu và thêm vào chuỗi ngẫu nhiên
-                            chuoiNgauNhien2.append(kiTu2.charAt(random2.nextInt(kiTu2.length())));
-                        }
+                        String chuoiNgauNhien = taoChuoiNgauNhien(7, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
                         nextId2++;
                         SanPhamChiTiet spct = new SanPhamChiTiet();
                         spct.setId(nextId2);
-                        spct.setMasanphamchitiet(chuoiNgauNhien2.toString());
+                        spct.setMasanphamchitiet(chuoiNgauNhien);
                         spct.setSanpham(sanPham);
                         spct.setSoluong(1);
                         spct.setGiatien(BigDecimal.valueOf(100000.000));
@@ -240,18 +204,7 @@ public class SanPhamController {
                             }
                         }
                         if (!found) {
-                            int doDaiChuoi2 = 10;
-                            // Chuỗi chứa tất cả các ký tự có thể có trong chuỗi ngẫu nhiên
-                            String kiTu2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-                            // Tạo đối tượng Random
-                            Random random2 = new Random();
-                            // StringBuilder để xây dựng chuỗi ngẫu nhiên
-                            StringBuilder chuoiNgauNhien2 = new StringBuilder(doDaiChuoi2);
-                            // Lặp để thêm ký tự ngẫu nhiên vào chuỗi
-                            for (int i = 0; i < doDaiChuoi2; i++) {
-                                // Lấy một ký tự ngẫu nhiên từ chuỗi kiTu và thêm vào chuỗi ngẫu nhiên
-                                chuoiNgauNhien2.append(kiTu2.charAt(random2.nextInt(kiTu2.length())));
-                            }
+                            String chuoiNgauNhien = taoChuoiNgauNhien(7, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
                             int lastIndex = sanPhamChiTietList.size() - 1;
                             SanPhamChiTiet lastItem = sanPhamChiTietList.get(lastIndex);
                             int count = lastItem.getId();
@@ -259,7 +212,7 @@ public class SanPhamController {
                             SanPhamChiTiet spct = new SanPhamChiTiet();
                             spct.setId(count);
                             spct.setSanpham(sanPham);
-                            spct.setMasanphamchitiet(chuoiNgauNhien2.toString());
+                            spct.setMasanphamchitiet(chuoiNgauNhien);
                             spct.setSoluong(1);
                             spct.setGiatien(BigDecimal.valueOf(100000.000));
                             spct.setMota(mota);
@@ -272,7 +225,6 @@ public class SanPhamController {
                             spct.setMausac(colorId);
                             sanPhamChiTietList.add(spct);
                         }
-
                     }
                 }
             }
@@ -304,16 +256,10 @@ public class SanPhamController {
             @RequestParam(name = "anh3") List<MultipartFile> anhFiles3,
             @RequestParam(name = "spctId") List<Integer> spctIds
     ) {
-        for (SanPham sanPham : sanPhamList) {
-            SanPham savedSanPham = sanPhamRepositoty.save(sanPham);
-            for (SanPhamChiTiet spct : sanPhamChiTietList) {
-                if (spct.getSanpham().equals(sanPham)) {
-                    spct.setSanpham(savedSanPham);
-                    sanPhamChiTietRepository.save(spct);
-                }
-            }
+
+        for (SanPhamChiTiet spct : sanPhamChiTietList) {
+            sanPhamChiTietRepository.save(spct);
         }
-        sanPhamList.clear();
         sanPhamChiTietList.clear();
         if (anhFiles1.size() != anhFiles2.size() || anhFiles1.size() != anhFiles3.size() || anhFiles1.size() != spctIds.size()) {
             System.out.println("Số lượng phần tử của các danh sách không khớp");
@@ -333,6 +279,7 @@ public class SanPhamController {
         }
         return "redirect:/listsanpham";
     }
+
 
     private void addAnh(SanPhamChiTiet spct, MultipartFile anhFile) {
         if (!anhFile.isEmpty()) {
