@@ -1413,7 +1413,7 @@
         // Kiểm tra trùng tên sản phẩm
         for (var i = 0; i < objectsFromControllerTenSP.length; i++) {
             var obj = objectsFromControllerTenSP[i];
-            if (inputMaTenSP === obj[1]) {
+            if (inputMaTenSP === obj.tensanpham) {
                 errorMaTenSP.innerText = "Tên sản phẩm đã tồn tại!";
                 isMaValid = false;
                 break;
