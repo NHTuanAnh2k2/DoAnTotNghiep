@@ -69,7 +69,7 @@
                                 <br>
                                 <hr class="border border-danger border opacity-50">
                                 <form id="searchForm" th:method="get" th:object="${search}">
-                                    <h3 class="card-title">Tìm kiếm:
+                                    <h3 class="card-title">
                                         <input type="text" id="searchInput" placeholder="Tìm kiếm chất liệu" name="key"
                                                class="form-control" style="width: 1200px" th:value="${fillSearch}">
                                     </h3>
@@ -80,10 +80,6 @@
 <!--                                            <option value="false" th:selected="${fillTrangThai != null && !fillTrangThai}">Ngừng kinh doanh</option>-->
 <!--                                        </select>-->
 <!--                                    </h3>-->
-
-                                    <br>
-                                    <br>
-                                    <br>
 <!--                                    <button style="margin-left: 100px;background-color:rgb(249,72,42);color: white" class="btn">Tìm kiếm</button>-->
 <!--                                    <input type="button" class="btn btn-dark" value="Làm mới bộ lọc" onclick="clearSearch()"/>-->
                                 </form>

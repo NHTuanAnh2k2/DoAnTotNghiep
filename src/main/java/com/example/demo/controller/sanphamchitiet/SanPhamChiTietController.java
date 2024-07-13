@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -78,11 +77,11 @@ public class SanPhamChiTietController {
                     info.getGioitinh());
         }
         List<SanPham> listSanPham = sanPhamImp.findAll();
-        List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
-        List<MauSac> listMauSac = mauSacImp.findAll();
-        List<KichCo> listKichCo = kichCoImp.findAll();
-        List<DeGiay> listDeGiay = deGiayImp.findAll();
-        List<ChatLieu> listChatLieu = chatLieuImp.findAll();
+        List<ThuongHieu> listThuongHieu = thuongHieuRepository.getAll();
+        List<MauSac> listMauSac = mauSacRepository.getAll();
+        List<KichCo> listKichCo = kichCoRepository.getAll();
+        List<DeGiay> listDeGiay = deGiayRepository.getAll();
+        List<ChatLieu> listChatLieu = chatLieuRepository.getAll();
         List<SanPhamChiTiet> listSanPhamChiTiet = sanPhamChiTietRepository.findAll();
         model.addAttribute("sp", listSanPham);
         model.addAttribute("th", listThuongHieu);
@@ -162,11 +161,11 @@ public class SanPhamChiTietController {
 
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<SanPhamChiTiet> listSPCT = sanPhamChiTietImp.findAll();
-        List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
-        List<MauSac> listMauSac = mauSacImp.findAll();
-        List<KichCo> listKichCo = kichCoImp.findAll();
-        List<DeGiay> listDeGiay = deGiayImp.findAll();
-        List<ChatLieu> listChatLieu = chatLieuImp.findAll();
+        List<ThuongHieu> listThuongHieu = thuongHieuRepository.getAll();
+        List<MauSac> listMauSac = mauSacRepository.getAll();
+        List<KichCo> listKichCo = kichCoRepository.getAll();
+        List<DeGiay> listDeGiay = deGiayRepository.getAll();
+        List<ChatLieu> listChatLieu = chatLieuRepository.getAll();
         List<Anh> listAnh = anhImp.findAll();
         model.addAttribute("sp", listSanPham);
         model.addAttribute("spct", listSPCT);

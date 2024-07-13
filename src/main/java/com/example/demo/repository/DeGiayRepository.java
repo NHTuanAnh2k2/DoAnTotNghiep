@@ -26,4 +26,6 @@ public interface DeGiayRepository extends JpaRepository<DeGiay, Integer> {
     @Transactional
     @Query("UPDATE DeGiay d SET d.trangthai = false WHERE d.id = :id")
     void updateTrangThaiToFalseById(Integer id);
+
+    boolean existsByTen(String ten);
 }

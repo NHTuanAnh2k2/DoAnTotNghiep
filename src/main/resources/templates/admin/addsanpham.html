@@ -230,15 +230,23 @@
                                     <p></p>
                                     <h5 style="font-family: 'Bahnschrift'">
                                         <span style="color: red">* </span>Giới tính:
-                                        <select id="gioiTinhSelect" class="form-control" name="gioitinh"
-                                                onchange="clearErrorMessageGioiTinh()">
-                                            <option value="" selected disabled hidden>Chọn giới tính</option>
-                                            <option value="true" th:selected="${gioitinh != null && gioitinh}">Nam
-                                            </option>
-                                            <option value="false" th:selected="${gioitinh != null && !gioitinh}">Nữ
-                                            </option>
-                                        </select>
+                                        <br>
+                                        <div class="form-check d-inline-block" style="margin-left: 20px">
+                                            <input class="form-check-input" type="radio" name="gioitinh" id="gioitinhNam" value="true" th:checked="${gioitinh != null && gioitinh}" onchange="clearErrorMessageGioiTinh()">
+                                            <label for="gioitinhNam" style="font-size: 15px" class="form-check-label">
+                                                Nam
+                                            </label>
+                                        </div>
+                                        <div class="form-check d-inline-block" style="margin-left: 20px;">
+                                            <input class="form-check-input" type="radio" name="gioitinh" id="gioitinhNu" value="false" th:checked="${gioitinh != null && !gioitinh}" onchange="clearErrorMessageGioiTinh()">
+                                            <label for="gioitinhNu" style="font-size: 15px" class="form-check-label">
+                                                Nữ
+                                            </label>
+                                        </div>
+
+
                                     </h5>
+
                                     <span id="gioitinhError"
                                           style="color: red;font-style: italic;font-family: 'Bahnschrift';font-weight: bold"></span>
                                     <h5 style="font-family: 'Bahnschrift'">
