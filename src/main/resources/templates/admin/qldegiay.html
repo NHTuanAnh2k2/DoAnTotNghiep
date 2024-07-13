@@ -307,15 +307,11 @@
                         toast.onmouseleave = Swal.resumeTimer;
                     }
                 });
-
-                Toast.fire({
-                    icon: "success",
-                    title: "Thêm thành công!"
-                });
-
                 setTimeout(function () {
+                    // Lưu thông báo vào sessionStorage
+                    sessionStorage.setItem('successMessage2', 'Thêm thành công!');
                     document.addDeGiay.submit();
-                }, 3000);
+                });
             }
         });
 
@@ -403,7 +399,7 @@
 
         const errorMessage = document.getElementById('error-message');
         const lengthErrorMessage = document.getElementById('length-error-message');
-        const duplicateErrorMessage = document.getElementById('duplicate-error-message'); // Thông báo lỗi mới
+        const duplicateErrorMessage = document.getElementById('duplicate-error-message');
 
         // Reset thông báo lỗi
         errorMessage.style.display = 'none';
@@ -412,13 +408,13 @@
 
         // Kiểm tra tính hợp lệ
         if (!ten) {
-            errorMessage.style.display = 'block'; // Hiện thông báo lỗi
-            return; // Dừng hàm nếu tên trống
+            errorMessage.style.display = 'block';
+            return;
         }
 
         if (ten.length > 20) {
-            lengthErrorMessage.style.display = 'block'; // Hiện thông báo lỗi độ dài
-            return; // Dừng hàm nếu tên vượt quá 10 ký tự
+            lengthErrorMessage.style.display = 'block';
+            return;
         }
 
         // Kiểm tra tên trùng
@@ -426,33 +422,109 @@
             .then(response => response.json())
             .then(exists => {
                 if (exists) {
-                    duplicateErrorMessage.style.display = 'block'; // Hiện thông báo lỗi trùng
-                    return; // Dừng hàm nếu tên đã tồn tại
+                    duplicateErrorMessage.style.display = 'block';
+                    return;
                 }
 
-                const updatedDeGiay = { ten };
+                // Hiển thị xác nhận trước khi cập nhật
+                Swal.fire({
+                    title: 'Bạn có muốn cập nhật không?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Có',
+                    cancelButtonText: 'Không'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const updatedDeGiay = { ten };
 
-                fetch(`/updateDeGiay/${id}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(updatedDeGiay),
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            // Redirect về trang qldegiay
-                            window.location.href = '/listdegiay';
-                        } else {
-                            throw new Error('Cập nhật thất bại');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Có lỗi xảy ra:', error);
-                        alert('Có lỗi xảy ra: ' + error.message);
-                    });
+                        fetch(`/updateDeGiay/${id}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(updatedDeGiay),
+                        })
+                            .then(response => {
+                                if (response.ok) {
+                                    // Lưu thông báo vào sessionStorage
+                                    sessionStorage.setItem('successMessage', 'Cập nhật thành công!');
+                                    // Chuyển hướng
+                                    window.location.href = '/listdegiay';
+                                } else {
+                                    throw new Error('Cập nhật thất bại');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Có lỗi xảy ra:', error);
+                                alert('Có lỗi xảy ra: ' + error.message);
+                            });
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Có lỗi xảy ra:', error);
+                alert('Có lỗi xảy ra: ' + error.message);
             });
     }
+
+
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const successMessage = sessionStorage.getItem('successMessage');
+        if (successMessage) {
+            // Hiển thị thông báo ở góc bên phải màn hình
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: successMessage
+            });
+
+            // Xóa thông báo khỏi sessionStorage sau khi hiển thị
+            sessionStorage.removeItem('successMessage');
+        }
+    });
+</script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const successMessage = sessionStorage.getItem('successMessage2');
+        if (successMessage) {
+            // Hiển thị thông báo ở góc bên phải màn hình
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: successMessage
+            });
+
+            // Xóa thông báo khỏi sessionStorage sau khi hiển thị
+            sessionStorage.removeItem('successMessage2');
+        }
+    });
 </script>
 </body>
 </html>
