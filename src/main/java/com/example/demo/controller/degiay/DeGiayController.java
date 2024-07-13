@@ -1,6 +1,5 @@
 package com.example.demo.controller.degiay;
 
-
 import com.example.demo.entity.DeGiay;
 import com.example.demo.info.ThuocTinhInfo;
 import com.example.demo.repository.DeGiayRepository;
@@ -22,18 +21,19 @@ public class DeGiayController {
 
     @GetMapping("/listdegiay")
     public String listdegiay(Model model, @ModelAttribute("degiay") DeGiay deGiay, @ModelAttribute("tim") ThuocTinhInfo info) {
-        List<DeGiay> page;
+        List<DeGiay> list;
 
         boolean isKeyEmpty = (info.getKey() == null || info.getKey().trim().isEmpty());
         boolean isTrangthaiNull = (info.getTrangthai() == null);
 
         if (isKeyEmpty && isTrangthaiNull) {
-            page = deGiayRepository.getAll();
+            list = deGiayRepository.getAll();
         } else {
-            page = deGiayImp.getDeGiayByTen(info.getKey());
+            list = deGiayImp.getDeGiayByTen(info.getKey());
         }
-
-        model.addAttribute("list", page);
+        List<DeGiay> listAll=deGiayRepository.findAll();
+        model.addAttribute("listAll", listAll);
+        model.addAttribute("list", list);
         model.addAttribute("fillSearch", info.getKey());
         model.addAttribute("fillTrangThai", info.getTrangthai());
         return "admin/qldegiay";
@@ -85,7 +85,6 @@ public class DeGiayController {
         deGiayImp.add(deGiay);
         return "redirect:/updateCTSP/" + spctId;
     }
-
     @ModelAttribute("dsdg")
     public List<DeGiay> getDS() {
         return deGiayImp.findAll();

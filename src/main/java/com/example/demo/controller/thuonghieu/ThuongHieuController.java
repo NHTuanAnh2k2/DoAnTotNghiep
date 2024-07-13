@@ -1,6 +1,5 @@
 package com.example.demo.controller.thuonghieu;
 
-import com.example.demo.entity.DeGiay;
 import com.example.demo.entity.ThuongHieu;
 import com.example.demo.info.ThuocTinhInfo;
 import com.example.demo.repository.ThuongHieuRepository;
@@ -10,10 +9,8 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
-
 
 @Controller
 public class ThuongHieuController {
@@ -30,18 +27,21 @@ public class ThuongHieuController {
         boolean isTrangthaiNull = (info.getTrangthai() == null);
 
         if (isKeyEmpty && isTrangthaiNull) {
-            list = thuongHieuRepository.findAllByOrderByNgaytaoDesc();
+            list = thuongHieuRepository.getAll();
         } else {
-            list = thuongHieuImp.getThuongHieuByTenOrTrangthai(info.getKey(), info.getTrangthai());
+            list = thuongHieuRepository.findThuongHieuByTenAndTrangThaiFalse(info.getKey());
         }
-
         model.addAttribute("page", list);
         model.addAttribute("fillSearch", info.getKey());
         model.addAttribute("fillTrangThai", info.getTrangthai());
         return "admin/qlthuonghieu";
     }
 
-
+    @PostMapping("/updateThuongHieu/{id}")
+    public String updateThuongHieu(@PathVariable Integer id) {
+        thuongHieuRepository.updateTrangThaiToFalseById(id);
+        return "redirect:/listthuonghieu";
+    }
     @PostMapping("/addSaveThuongHieu")
     @CacheEvict(value = "thuonghieuCache", allEntries = true)
     public String addSave(@ModelAttribute("thuonghieu") ThuongHieu thuongHieu, @ModelAttribute("th") ThuocTinhInfo info, Model model) {
