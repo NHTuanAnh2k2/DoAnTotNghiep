@@ -1029,22 +1029,17 @@
                         toast.onmouseleave = Swal.resumeTimer;
                     }
                 });
-
-                Toast.fire({
-                    icon: "success",
-                    title: "Thêm thành công!"
-                });
-
                 setTimeout(function () {
+                    // Lưu thông báo vào sessionStorage
+                    sessionStorage.setItem('successMessage', 'Thêm thành công!');
                     document.addProduct.submit();
-                }, 3000);
+                });
             }
         });
 
         // Ngăn form được gửi đi ngay lập tức
         return false;
     }
-
 
     function isEmpty(str) {
         return !str.trim();
@@ -1054,6 +1049,34 @@
         document.getElementById("kichcoError").innerText = "";
     }
 
+</script>
+<!--thông báo thêm thành công-->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const successMessage = sessionStorage.getItem('successMessage');
+        if (successMessage) {
+            // Hiển thị thông báo ở góc bên phải màn hình
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: successMessage
+            });
+
+            // Xóa thông báo khỏi sessionStorage sau khi hiển thị
+            sessionStorage.removeItem('successMessage');
+        }
+    });
 </script>
 <!--confirm khi xóa spct-->
 <script>
