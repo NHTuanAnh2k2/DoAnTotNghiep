@@ -17,6 +17,7 @@
 </style>
 <script src="../sweetalert2/dist/sweetalert2.min.js/"></script>
 <link rel="stylesheet" type="text/css" href="../sweetalert2/dist/sweetalert2.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <body class="hold-transition sidebar-mini" style="font-family: 'Bahnschrift'">
 <div class="wrapper">
     <!-- Navbar -->
@@ -71,16 +72,16 @@
                                 <form id="searchForm" method="get" th:object="${tim}">
                                     <h3 class="card-title">Tìm kiếm:
                                         <input type="text" id="searchInput" placeholder="Tìm kiếm thương hiệu"
-                                               class="form-control" name="key" style="width: 990px" th:value="${fillSearch}">
+                                               class="form-control" name="key" style="width: 1200px" th:value="${fillSearch}">
                                     </h3>
 
-                                    <h3 class="card-title" style="margin-left: 50px;font-weight: bold">Trạng thái:
-                                        <select id="statusSelect" class="form-control" name="trangthai" style="color: rgb(249,72,42); font-weight: bold; width: 150px">
-                                            <option value="" th:selected="${fillTrangThai == null}">Tất cả</option>
-                                            <option value="true" th:selected="${fillTrangThai != null && fillTrangThai}">Đang kinh doanh</option>
-                                            <option value="false" th:selected="${fillTrangThai != null && !fillTrangThai}">Ngừng kinh doanh</option>
-                                        </select>
-                                    </h3>
+<!--                                    <h3 class="card-title" style="margin-left: 50px;font-weight: bold">Trạng thái:-->
+<!--                                        <select id="statusSelect" class="form-control" name="trangthai" style="color: rgb(249,72,42); font-weight: bold; width: 150px">-->
+<!--                                            <option value="" th:selected="${fillTrangThai == null}">Tất cả</option>-->
+<!--                                            <option value="true" th:selected="${fillTrangThai != null && fillTrangThai}">Đang kinh doanh</option>-->
+<!--                                            <option value="false" th:selected="${fillTrangThai != null && !fillTrangThai}">Ngừng kinh doanh</option>-->
+<!--                                        </select>-->
+<!--                                    </h3>-->
                                     <br>
                                     <br>
                                     <br>
@@ -159,7 +160,7 @@
                                         <th>STT</th>
                                         <th>Tên thương hiệu</th>
                                         <th>Ngày tạo</th>
-                                        <th>Trạng thái</th>
+<!--                                        <th>Trạng thái</th>-->
                                         <th>Thao tác</th>
                                     </tr>
                                     </thead>
@@ -172,22 +173,25 @@
                                         </td>
                                         <td th:text="${#temporals.format(th.ngaytao, 'dd-MM-yyyy HH:mm:ss')}"></td>
 
-                                        <td>
-                                            <button style="border-radius: 5px"
-                                                    class="btn-xs"
-                                                    th:classappend="${th.trangthai ? 'btn-custom-info' : 'btn-custom-warning'}"
-                                                    th:text="${th.trangthai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>
-                                        </td>
+<!--                                        <td>-->
+<!--                                            <button style="border-radius: 5px"-->
+<!--                                                    class="btn-xs"-->
+<!--                                                    th:classappend="${th.trangthai ? 'btn-custom-info' : 'btn-custom-warning'}"-->
+<!--                                                    th:text="${th.trangthai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>-->
+<!--                                        </td>-->
 
 
                                         <td>
-                                            <a style="color: rgb(249,72,42)">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
-                                                     fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
-                                                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
-                                                </svg>
+                                            <a style="color: rgb(249,72,42); font-size: 25px;">
+                                                <i class="bi bi-eye-fill"></i>
                                             </a>
+                                            <form th:action="@{/updateThuongHieu/{id}(id=${th.id})}" method="post" style="display: inline;">
+                                                <button type="submit" style="background: none; border: none; color: rgb(249,72,42); padding-left: 10px" onclick="return confirm('Bạn có muốn xóa không?')">
+                                                    <a style="color: rgb(249,72,42); font-size: 25px;"> <!-- Thay đổi giá trị font-size theo ý muốn -->
+                                                        <i class="bi bi-trash3-fill"></i>
+                                                    </a>
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
 

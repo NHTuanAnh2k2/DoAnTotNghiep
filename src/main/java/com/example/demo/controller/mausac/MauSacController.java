@@ -1,9 +1,6 @@
 package com.example.demo.controller.mausac;
 
-
-import com.example.demo.entity.DeGiay;
 import com.example.demo.entity.MauSac;
-import com.example.demo.entity.ThuongHieu;
 import com.example.demo.info.ThuocTinhInfo;
 import com.example.demo.repository.MauSacRepository;
 import com.example.demo.service.impl.MauSacImp;
@@ -11,11 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,15 +27,20 @@ public class MauSacController {
         boolean isTrangthaiNull = (info.getTrangthai() == null);
 
         if (isKeyEmpty && isTrangthaiNull) {
-            page = mauSacRepository.findAllByOrderByNgaytaoDesc();
+            page = mauSacRepository.getAll();
         } else {
-            page = mauSacRepository.getDeGiayByTenOrTrangthai(info.getKey(), info.getTrangthai());
+            page = mauSacRepository.findMauSacByTenAndTrangThaiFalse(info.getKey());
         }
 
         model.addAttribute("fillSearch", info.getKey());
         model.addAttribute("fillTrangThai", info.getTrangthai());
         model.addAttribute("list", page);
         return "admin/qlmausac";
+    }
+    @PostMapping("/updateMauSac/{id}")
+    public String updateMauSac(@PathVariable Integer id) {
+        mauSacRepository.updateTrangThaiToFalseById(id);
+        return "redirect:/listMauSac";
     }
 
     @PostMapping("/addSaveMauSac")

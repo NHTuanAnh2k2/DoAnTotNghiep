@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,9 +26,9 @@ public class ChatLieuController {
         boolean isTrangthaiNull = (info.getTrangthai() == null);
 
         if (isKeyEmpty && isTrangthaiNull) {
-            list = chatLieuRepository.findAllByOrderByNgaytaoDesc();
+            list = chatLieuRepository.getAll();
         } else {
-            list = chatLieuRepository.getChatLieuByTenOrTrangthai(info.getKey(), info.getTrangthai());
+            list = chatLieuRepository.findChatLieuByTenAndTrangThaiFalse(info.getKey());
         }
 
         model.addAttribute("fillSearch", info.getKey());
@@ -38,7 +37,11 @@ public class ChatLieuController {
         return "admin/qlchatlieu";
     }
 
-
+    @PostMapping("/updateChatLieu/{id}")
+    public String updateChatLieu(@PathVariable Integer id) {
+        chatLieuRepository.updateTrangThaiToFalseById(id);
+        return "redirect:/chatlieu";
+    }
     @PostMapping("/add")
     public String add(Model model, @ModelAttribute("chatlieu") ChatLieu chatLieu) {
         LocalDateTime currentTime = LocalDateTime.now();
