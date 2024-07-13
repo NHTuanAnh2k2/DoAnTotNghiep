@@ -22,5 +22,7 @@ public class UpdateDiaChi {
     String tinhthanhpho;
     String sdtnguoinhan;
     String hotennguoinhan;
+    boolean trangthai;
     Timestamp lancapnhatcuoi;
+    Timestamp ngaytao;
 }
