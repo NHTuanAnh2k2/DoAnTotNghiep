@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -78,8 +77,9 @@ public class SanPhamController {
     public String addTenSPModel(Model model, @ModelAttribute("sanpham") SanPham sanPham) {
         String chuoiNgauNhien = taoChuoiNgauNhien(7, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
         LocalDateTime currentTime = LocalDateTime.now();
+        String maSanPham = "SP" + chuoiNgauNhien;
         sanPham.setTrangthai(true);
-        sanPham.setMasanpham(chuoiNgauNhien);
+        sanPham.setMasanpham(maSanPham);
         sanPham.setNgaytao(currentTime);
         sanPham.setLancapnhatcuoi(currentTime);
         sanPham.setNguoitao("DuyNV");
@@ -92,18 +92,23 @@ public class SanPhamController {
 
     @GetMapping("/listsanpham")
     public String hienthi(@RequestParam(defaultValue = "0") int p, @ModelAttribute("tim") SanPhamInfo info, Model model) {
-//        Pageable pageable = PageRequest.of(p, 20);
         List<Object[]> list = null;
-        if (info.getKey() != null) {
-            list = sanPhamRepositoty.findByMasanphamAndTenSanPhamAndTrangThai("%" + info.getKey() + "%", "%" + info.getKey() + "%", info.getTrangthai());
+
+        // Trim khoảng trắng ở đầu và cuối
+        String trimmedKey = (info.getKey() != null) ? info.getKey().trim() : null;
+
+        if (trimmedKey != null && !trimmedKey.isEmpty()) {
+            list = sanPhamRepositoty.findByMasanphamAndTenSanPhamAndTrangThai("%" + trimmedKey + "%", "%" + trimmedKey + "%", info.getTrangthai());
         } else {
             list = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc();
         }
+
         model.addAttribute("list", list);
-        model.addAttribute("fillSearch", info.getKey());
+        model.addAttribute("fillSearch", trimmedKey);
         model.addAttribute("fillTrangThai", info.getTrangthai());
         return "admin/qlsanpham";
     }
+
 
     @RequestMapping(value = {"/viewaddSPGET", "/viewaddSPPOST"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String viewaddSP(Model model, @RequestParam(defaultValue = "0") int p,
@@ -117,11 +122,11 @@ public class SanPhamController {
     ) {
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<SanPhamChiTiet> listSPCT = sanPhamChiTietImp.findAll();
-        List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
-        List<MauSac> listMauSac = mauSacImp.findAll();
-        List<KichCo> listKichCo = kichCoImp.findAll();
-        List<DeGiay> listDeGiay = deGiayImp.findAll();
-        List<ChatLieu> listChatLieu = chatLieuImp.findAll();
+        List<ThuongHieu> listThuongHieu = thuongHieuRepository.getAll();
+        List<MauSac> listMauSac = mauSacRepository.getAll();
+        List<KichCo> listKichCo = kichCoRepository.getAll();
+        List<DeGiay> listDeGiay = deGiayRepository.getAll();
+        List<ChatLieu> listChatLieu = chatLieuRepository.getAll();
         List<Anh> listAnh = anhImp.findAll();
         model.addAttribute("sp", listSanPham);
         model.addAttribute("spct", listSPCT);
@@ -164,10 +169,11 @@ public class SanPhamController {
                     KichCo kichCo = kichCoRepository.findByTen(sizeName);
                     if (kichCo != null) {
                         String chuoiNgauNhien = taoChuoiNgauNhien(7, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
+                        String maSanPhamCT= "SPCT" + chuoiNgauNhien;
                         nextId2++;
                         SanPhamChiTiet spct = new SanPhamChiTiet();
                         spct.setId(nextId2);
-                        spct.setMasanphamchitiet(chuoiNgauNhien);
+                        spct.setMasanphamchitiet(maSanPhamCT);
                         spct.setSanpham(sanPham);
                         spct.setSoluong(1);
                         spct.setGiatien(BigDecimal.valueOf(100000.000));
@@ -205,6 +211,7 @@ public class SanPhamController {
                         }
                         if (!found) {
                             String chuoiNgauNhien = taoChuoiNgauNhien(7, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
+                            String maSanPhamCT= "SPCT" + chuoiNgauNhien;
                             int lastIndex = sanPhamChiTietList.size() - 1;
                             SanPhamChiTiet lastItem = sanPhamChiTietList.get(lastIndex);
                             int count = lastItem.getId();
@@ -212,7 +219,7 @@ public class SanPhamController {
                             SanPhamChiTiet spct = new SanPhamChiTiet();
                             spct.setId(count);
                             spct.setSanpham(sanPham);
-                            spct.setMasanphamchitiet(chuoiNgauNhien);
+                            spct.setMasanphamchitiet(maSanPhamCT);
                             spct.setSoluong(1);
                             spct.setGiatien(BigDecimal.valueOf(100000.000));
                             spct.setMota(mota);
