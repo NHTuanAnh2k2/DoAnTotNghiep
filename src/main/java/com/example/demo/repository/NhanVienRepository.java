@@ -16,6 +16,9 @@ public interface NhanVienRepository extends JpaRepository<NhanVien, Integer> {
     @Query("SELECT N FROM NhanVien N WHERE N.manhanvien like %?1%")
     List<NhanVien> timNVTheoMa(String ten);
 
+    @Query("SELECT n FROM NhanVien n WHERE n.nguoidung.id = ?1")
+    NhanVien findNhanVienByIdNd(Integer id);
+
     List<NhanVien> getNhanVienByTrangthai(Boolean trangThai);
 
     List<NhanVien> getAllByOrderByIdDesc();

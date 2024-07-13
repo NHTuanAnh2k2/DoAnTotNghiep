@@ -37,22 +37,17 @@ public class SecurityConfig {
     private CustomerUserDetailService userDetailService;
     @Autowired
     private JwtAuthEntryPoint authEntryPoint;
-    @Autowired
-    private NguoiDungRepository nguoiDungRepository;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain clientFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .exceptionHandling((exception) -> exception.authenticationEntryPoint(authEntryPoint))
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeRequests()
+                .requestMatchers("/khachhang/**").permitAll()
                 .anyRequest().permitAll()
                 .and()
-                .formLogin(form -> form
-                        .loginPage("/account")
-                        .permitAll()
-                )
                 .httpBasic(Customizer.withDefaults());
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
@@ -60,24 +55,24 @@ public class SecurityConfig {
     }
 
 //    @Bean
-//    public UserDetailsService userDetailsService() {
-//        return new UserDetailsService() {
-//            @Override
-//            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//                NguoiDung nd = nguoiDungRepository.findNguoiDungByTaikhoan(username);
-////                NhanVien staff = nhanVienRepository.getNhanVienByEmail(username);
-//                if (nd != null) {
-//                    return (UserDetails) nd.get();
-////                }else if (staff != null) {
-////                    System.out.println(staff);
-////                    return staff.get();
-//                } else {
-//                    throw new UsernameNotFoundException("Không tìm thấy người dùng với email: " + username);
-//                }
-//            }
-//        };
+//    public SecurityFilterChain adminFilterChain(HttpSecurity http) throws Exception {
+//        http
+//                .csrf(csrf -> csrf.disable())
+//                .exceptionHandling((exception) -> exception.authenticationEntryPoint(authEntryPoint))
+//                .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .authorizeRequests()
+//                .requestMatchers("/khachhang").authenticated()
+//                .anyRequest().permitAll()
+//                .and()
+//                .formLogin(form -> form
+//                        .loginPage("/admin/account")
+//                        .permitAll()
+//                )
+//                .httpBasic(Customizer.withDefaults());
+//        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+//
+//        return http.build();
 //    }
-
 
     @Bean
     public AuthenticationProvider getProvider() {

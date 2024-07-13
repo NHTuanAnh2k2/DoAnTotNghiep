@@ -19,12 +19,12 @@
         text-align: center;
     }
 
-    .thongtindiachi p {
-        font-size: 16px;
-        line-height: 25px;
-        margin: 10px 0 5px;
-        font-weight: 550;
-    }
+    /*.thongtindiachi p {*/
+    /*    font-size: 16px;*/
+    /*    line-height: 25px;*/
+    /*    margin: 10px 0 5px;*/
+    /*    font-weight: 550;*/
+    /*}*/
 </style>
 <body style="font-family: 'futura-REGULAR', sans-serif;">
 
@@ -116,7 +116,7 @@
                                         KHOẢN</p>
                                     <hr class="border border-danger border opacity-50">
                                     <div class="row">
-                                        <div class="thongtintaikhoan col-lg-8">
+                                        <div class="thongtintaikhoan col-lg-9">
                                             <p>
                                                 <span style="color: #808080;min-width: 115px;display: inline-block;">Họ và tên: </span>
                                                 <span th:text="${nguoidung.hovaten}"></span>
@@ -138,96 +138,54 @@
                                                 <span th:text="${nguoidung.sodienthoai}"></span>
                                             </p>
                                         </div>
-                                        <div class="col-lg-4 mt-2" style="right: 0;">
+                                        <div class="col-lg-3 mt-2" style="right: 0;">
                                             <button id="btnchuyencapnhattaikhoan"
                                                     style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100%; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">
-                                                CẬP NHẬT THÔNG TIN TÀI KHOẢN
+                                                CẬP NHẬT THÔNG TIN
                                             </button>
                                         </div>
                                     </div>
                                 </div>
+
                                 <!--cap nhat thong tin tai khoan-->
                                 <div id="capnhatthongtintaikhoan">
                                     <p style="font-size: 18px; font-weight: 650; padding-top: 7px;">CẬP NHẬT THÔNG TIN
                                         TÀI KHOẢN</p>
                                     <hr class="border border-danger border opacity-50">
-                                    <div style="width: 70%;" class="d-flex justify-content-center">
-                                        <form th:object="${nguoidung}" th:method="post"
-                                              th:action="@{/capnhattaikhoan/{username}(username=${userDangnhap})}">
+                                    <div style="width: 70%;" class="d-flex justify-content-center container">
+                                        <form th:object="${nguoidung}" th:method="post" name="updateThongTinNguoiDung"
+                                              th:action="@{/capnhattaikhoan/{username}(username=${userDangnhap})}"
+                                              onsubmit="return updateThongTin()"
+                                              style="width: 100%">
                                             <div class="form-floating mb-3">
                                                 <input type="text" class="form-control" th:field="*{hovaten}"
+                                                       id="hovaten" oninput="validateNguoiDung()"
                                                        placeholder="Họ và tên">
                                                 <label>Họ và tên</label>
-                                                <p th:if="${#fields.hasErrors('hovaten')}"
-                                                   th:errors="*{hovaten}" style="color: red;"></p>
+                                                <span id="hovatenNdError" style="color: red"></span>
                                             </div>
                                             <div class="form-floating mb-3">
-                                                <input type="email" class="form-control" th:field="*{email}"
+                                                <input type="email" class="form-control" th:field="*{email}" id="email"
+                                                       oninput="validateNguoiDung()"
                                                        placeholder="name@example.com">
                                                 <label>Email</label>
-                                                <p th:if="${#fields.hasErrors('email')}"
-                                                   th:errors="*{hovaten}" style="color: red;"></p>
+                                                <span id="emailNdError" style="color: red"></span>
                                             </div>
                                             <div class="form-floating mb-3">
                                                 <input type="text" class="form-control" th:field="*{sodienthoai}"
+                                                       id="sodienthoai"
+                                                       oninput="validateNguoiDung()"
                                                        placeholder="Số điện thoại">
                                                 <label>Số điện thoại</label>
-                                                <p th:if="${#fields.hasErrors('sodienthoai')}"
-                                                   th:errors="*{sodienthoai}" style="color: red;"></p>
+                                                <span id="sdtNdError" style="color: red"></span>
                                             </div>
                                             <div class="form-floating mb-3">
-                                                <input type="text" class="form-control" th:field="*{ngaysinh}"
+                                                <input type="date" class="form-control" th:field="*{ngaysinh}"
+                                                       id="ngaysinh"
+                                                       oninput="validateNguoiDung()"
                                                        placeholder="Ngày sinh">
                                                 <label>Ngày sinh</label>
-                                            </div>
-                                            <div th:object="${diachi}">
-                                                <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" id="tenduong"
-                                                           th:field="*{tenduong}"
-                                                           placeholder="Địa chỉ">
-                                                    <label for="tenduong">Địa chỉ</label>
-                                                </div>
-                                                <div class="d-flex justify-content-between mb-4">
-                                                    <div class="form-floating" style="padding-right: 20px;">
-                                                        <select class="form-select" id="city" th:field="*{tinhthanhpho}"
-                                                                aria-label="Floating label select example">
-                                                            <option th:value="*{tinhthanhpho}"
-                                                                    th:text="*{tinhthanhpho}">Chọn tỉnh/thành phố
-                                                            </option>
-                                                            <!--                                                            <option th:each="city : ${cities}"-->
-                                                            <!--                                                                    th:value="${city.getName()}"-->
-                                                            <!--                                                                    th:text="${city.getName()}">City-->
-                                                            <!--                                                            </option>-->
-                                                        </select>
-                                                        <label>Tỉnh/thành phố</label>
-                                                    </div>
-                                                    <div class="form-floating" style="padding-right: 20px;">
-                                                        <select class="form-select" id="district"
-                                                                th:field="*{quanhuyen}"
-
-                                                                aria-label="Floating label select example">
-                                                            <!--                                                            <option th:value="*{quanhuyen}"-->
-                                                            <!--                                                                    th:text="*{quanhuyen}">Chọn quận/huyện-->
-                                                            <!--                                                            </option>-->
-                                                            <option th:value="*{quanhuyen}" th:text="*{quanhuyen}"
-                                                                    selected>Chọn quận huyện
-                                                            </option>
-                                                        </select>
-                                                        <label>Quận/huyện</label>
-                                                    </div>
-                                                    <div class="form-floating">
-                                                        <select class="form-select" id="ward" th:field="*{xaphuong}"
-                                                                aria-label="Floating label select example">
-                                                            <!--                                                            <option th:value="*{xaphuong}"-->
-                                                            <!--                                                                    th:text="*{xaphuong}">Chọn xã/phường-->
-                                                            <!--                                                            </option>-->
-                                                            <option th:value="*{xaphuong}" th:text="*{xaphuong}"
-                                                                    selected>Chọn phường xã
-                                                            </option>
-                                                        </select>
-                                                        <label>Phường/xã</label>
-                                                    </div>
-                                                </div>
+                                                <span id="ngaysinhNdError" style="color: red"></span>
                                             </div>
                                             <div class="d-flex justify-content-center align-items-center mb-4">
                                                 <a id="huycapnhattaikhoan" href="#"
@@ -246,232 +204,219 @@
                             <!--địa chỉ của tôi-->
                             <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
                                  aria-labelledby="v-pills-profile-tab" tabindex="0">
-                                <p style="font-size: 18px; font-weight: 650; padding-top: 7px;">THÔNG TIN ĐỊA CHỈ</p>
-                                <hr class="border border-danger border opacity-50">
-                                <div>
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="mb-5">
-                                                <div style="font-size: 16px;background-color: #d9edf7;border-color: #bce8f1; height: 50px;"
-                                                     class="d-flex justify-content-between align-items-center">
-                                                    <h6 style="padding-left: 15px; padding-top: 5px;">
-                                                        <strong th:text="${nguoidung.getHovaten()}">Văn Hoa
-                                                            Nguyễn</strong>
-                                                        <span class="default_address note">(Địa chỉ mặc định)</span>
-                                                    </h6>
-                                                    <p style="padding-right: 15px; padding-top: 15px;">
-                                                        <span class="action_link action_edit"><a href="#"
-                                                                                                 id="chuyencapnhatdiachi"><i
-                                                                class="fa fa-pencil-square-o"
-                                                                aria-hidden="true"></i></a></span>
-                                                        <span class="action_link action_delete"
-                                                              style="padding-left: 20px;"><a href="#"><i
-                                                                class="fa fa-times" aria-hidden="true"></i></a></span>
-                                                    </p>
-                                                </div>
-                                                <br>
-                                                <div id="thongtindiachi" class="thongtindiachi"
-                                                     style="padding-left: 20px;padding-right: 20px;">
-                                                    <strong th:text="${nguoidung.getHovaten()}">Văn Hoa Nguyễn</strong>
-                                                    <br>
-                                                    <br>
-                                                    <p>
-                                                        <span style="color: #808080;min-width: 115px;display: inline-block;">Địa chỉ: </span>
-                                                        <span th:text="${diachi.tenduong + ', ' + diachi.xaphuong + ', ' + diachi.quanhuyen + ', ' + diachi.tinhthanhpho}"></span>
-                                                    </p>
-                                                    <p>
-                                                        <span style="color: #808080;min-width: 115px;display: inline-block;">Số điện thoại: </span>
-                                                        <span th:text="${nguoidung.getSodienthoai()}"></span>
-                                                    </p>
-                                                </div>
-                                                <div id="capnhatdiachi"
-                                                     style="padding-left: 20px; padding-right: 20px;">
-                                                    <form>
-                                                        <div class="form-floating mb-3">
-                                                            <input type="text" class="form-control"
-                                                                   id="hovatencapnhatdiachi" placeholder="Họ và tên">
-                                                            <label for="hovatencapnhatdiachi">Họ và tên</label>
-                                                        </div>
-                                                        <div class="form-floating mb-3">
-                                                            <input type="text" class="form-control"
-                                                                   id="sdtcapnhatdiachi" placeholder="Số điện thoại">
-                                                            <label for="sdtcapnhatdiachi">Số điện thoại</label>
-                                                        </div>
-                                                        <div class="form-floating mb-3">
-                                                            <input type="text" class="form-control"
-                                                                   id="diachicapnhatdiachi" placeholder="Địa chỉ">
-                                                            <label for="diachicapnhatdiachi">Địa chỉ</label>
-                                                        </div>
-                                                        <div class="form-floating mb-3">
-                                                            <select class="form-select" id="tinhcapnhatdiachi"
-                                                                    aria-label="Floating label select example">
-                                                                <option selected>Open this select menu</option>
-                                                                <option value="1">One</option>
-                                                                <option value="2">Two</option>
-                                                                <option value="3">Three</option>
-                                                            </select>
-                                                            <label for="tinhcapnhatdiachi">Tỉnh/thành phố</label>
-                                                        </div>
-                                                        <div class="form-floating mb-3">
-                                                            <select class="form-select" id="huyencapnhatdiachi"
-                                                                    aria-label="Floating label select example">
-                                                                <option selected>Open this select menu</option>
-                                                                <option value="1">One</option>
-                                                                <option value="2">Two</option>
-                                                                <option value="3">Three</option>
-                                                            </select>
-                                                            <label for="huyencapnhatdiachi">Quận/huyện</label>
-                                                        </div>
-                                                        <div class="form-floating mb-3">
-                                                            <select class="form-select" id="xacapnhatdiachi"
-                                                                    aria-label="Floating label select example">
-                                                                <option selected>Open this select menu</option>
-                                                                <option value="1">One</option>
-                                                                <option value="2">Two</option>
-                                                                <option value="3">Three</option>
-                                                            </select>
-                                                            <label for="xacapnhatdiachi">Phường/xã</label>
-                                                        </div>
-                                                        <div class="form-check mb-3">
-                                                            <input class="form-check-input" type="checkbox" value=""
-                                                                   id="checkdiachicapnhatmacdinh">
-                                                            <label class="form-check-label"
-                                                                   for="checkdiachicapnhatmacdinh">
-                                                                Chọn làm địa chỉ mặc định
-                                                            </label>
-                                                        </div>
-                                                        <div class="d-flex justify-content-center align-items-center mb-4">
-                                                            <a id="huycapnhatdiachi" href="#"
-                                                               style="color: #808080; text-decoration: none; text-transform: none; margin-right: 50px; font-weight: 550; ">Hủy</a>
-                                                            <button id="btncapnhatdiachi"
-                                                                    style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 30%; height: 40px; border-radius: 10px; border-color: rgb(249,72,42);">
-                                                                CẬP NHẬT
-                                                            </button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <h3>Địa chỉ của tôi</h3>
-                                                <table class="table">
-                                                    <tr>
-                                                        <th>Tỉnh/Thành phố</th>
-                                                        <th>Quận/Huyện</th>
-                                                        <th>Xã/Phường</th>
-                                                        <th>Địa chỉ cụ thể</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                    <tr th:each="lstDc,stt:${lstDiaChi}">
-                                                        <td th:text="${lstDc.tinhthanhpho}">Hà Nội</td>
-                                                        <td th:text="${lstDc.quanhuyen}">Hà Nội</td>
-                                                        <td th:text="${lstDc.xaphuong}">Hà Nội</td>
-                                                        <td th:text="${lstDc.tenduong}">Hà Nội</td>
-                                                        <td>
-                                                            <a href="#" class="btn btn-danger" data-bs-toggle="modal"
-                                                               data-bs-target="#capnhatdiachi">Cập nhật</a>
-                                                            <a href="#" class="btn btn-danger">Thiết lập mặc định</a>
-                                                            <a href="#" class="btn btn-danger">Xóa</a>
-                                                        </td>
-                                                    </tr>
-                                                </table>
+                                <div id="xemthongtindiachi">
+                                    <p style="font-size: 18px; font-weight: 650; padding-top: 7px;">THÔNG TIN ĐỊA CHỈ
+                                    </p>
+                                    <hr class="border border-danger border opacity-50">
 
-                                                <!--Modal-->
-                                                <div class="modal fade" id="capnhatdiachi" tabindex="-1"
-                                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Cập
-                                                                    nhật địa chỉ</h1>
-                                                                <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal"
-                                                                        aria-label="Close"></button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <button id="chuyenthemdiachi"
-                                                                    style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100%; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">
-                                                                THÊM ĐỊA CHỈ MỚI
-                                                            </button>
-                                                            <div id="themdiachi"
-                                                                 style="padding-left: 20px; padding-right: 20px; margin-top: 35px;">
-                                                                <form>
-                                                                    <div class="form-floating mb-3">
-                                                                        <input type="text" class="form-control"
-                                                                               id="hovatenthemdiachi"
-                                                                               placeholder="Họ và tên">
-                                                                        <label for="hovatenthemdiachi">Họ và tên</label>
-                                                                    </div>
-                                                                    <div class="form-floating mb-3">
-                                                                        <input type="text" class="form-control"
-                                                                               id="sdtthemdiachi"
-                                                                               placeholder="Số điện thoại">
-                                                                        <label for="sdtthemdiachi">Số điện thoại</label>
-                                                                    </div>
-                                                                    <div class="form-floating mb-3">
-                                                                        <input type="text" class="form-control"
-                                                                               id="diachithemdiachi"
-                                                                               placeholder="Địa chỉ">
-                                                                        <label for="diachithemdiachi">Địa chỉ</label>
-                                                                    </div>
-                                                                    <div class="form-floating mb-3">
-                                                                        <select class="form-select" id="tinhthemdiachi"
-                                                                                aria-label="Floating label select example">
-                                                                            <option selected>Open this select menu
-                                                                            </option>
-                                                                            <option value="1">One</option>
-                                                                            <option value="2">Two</option>
-                                                                            <option value="3">Three</option>
-                                                                        </select>
-                                                                        <label for="tinhthemdiachi">Tỉnh/thành
-                                                                            phố</label>
-                                                                    </div>
-                                                                    <div class="form-floating mb-3">
-                                                                        <select class="form-select" id="huyenthemdiachi"
-                                                                                aria-label="Floating label select example">
-                                                                            <option selected>Open this select menu
-                                                                            </option>
-                                                                            <option value="1">One</option>
-                                                                            <option value="2">Two</option>
-                                                                            <option value="3">Three</option>
-                                                                        </select>
-                                                                        <label for="huyenthemdiachi">Quận/huyện</label>
-                                                                    </div>
-                                                                    <div class="form-floating mb-3">
-                                                                        <select class="form-select" id="xathemdiachi"
-                                                                                aria-label="Floating label select example">
-                                                                            <option selected>Open this select menu
-                                                                            </option>
-                                                                            <option value="1">One</option>
-                                                                            <option value="2">Two</option>
-                                                                            <option value="3">Three</option>
-                                                                        </select>
-                                                                        <label for="xathemdiachi">Phường/xã</label>
-                                                                    </div>
-                                                                    <div class="form-check mb-3">
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                               value=""
-                                                                               id="checkdiachithemmacdinh">
-                                                                        <label class="form-check-label"
-                                                                               for="checkdiachithemmacdinh">
-                                                                            Chọn làm địa chỉ mặc định
-                                                                        </label>
-                                                                    </div>
-                                                                    <div class="d-flex justify-content-center align-items-center mb-4">
-                                                                        <a id="huythemdiachi" href="#"
-                                                                           style="color: #808080; text-decoration: none; text-transform: none; margin-right: 50px; font-weight: 550; ">Hủy</a>
-                                                                        <button id="btnthemdiachi"
-                                                                                style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 30%; height: 40px; border-radius: 10px; border-color: rgb(249,72,42);">
-                                                                            CẬP NHẬT
-                                                                        </button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
+                                    <!-- Address Section -->
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <!--                                        <h3>Địa chỉ của tôi</h3>-->
+                                        <button id="chuyencapnhatdiachi" class="btn btn-danger">+ Thêm địa chỉ
+                                            mới
+                                        </button>
+                                    </div>
+                                    <!-- List địa chỉ-->
+                                    <div id="thongtindiachi">
+                                        <div th:each="lstDiaChi:${lstDiaChi}">
+                                            <div class="address-item mb-3" th:if="${lstDiaChi.trangthai == true}">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <strong th:text="${lstDiaChi.hotennguoinhan}">Đỗ Quốc
+                                                            Thịnh</strong> <span th:text="${lstDiaChi.sdtnguoinhan}">(+84) 866511075</span>
+                                                        <p th:text="${lstDiaChi.tenduong}">ố 24 liên kề 31 khu đô thị
+                                                            mới vân canh</p>
+                                                        <p th:text="${lstDiaChi.xaphuong + ', ' + lstDiaChi.quanhuyen + ', ' + lstDiaChi.tinhthanhpho}">
+                                                            Xã Vân Canh, Huyện Hoài Đức, Hà Nội</p>
+                                                    </div>
+                                                    <div>
+                                                        <a id="chuyencapnhatdiachi2" href="#" class="btn btn-link">Cập
+                                                            nhật</a>
+                                                        <button class="btn btn-light btn-sm">Mặc định</button>
                                                     </div>
                                                 </div>
+                                                <hr>
+                                            </div>
+                                            <div class="address-item mb-3" th:if="${lstDiaChi.trangthai == false}">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <strong th:text="${lstDiaChi.hotennguoinhan}">Đỗ Quốc
+                                                            Thịnh</strong> <span th:text="${lstDiaChi.sdtnguoinhan}">(+84) 866511075</span>
+                                                        <p th:text="${lstDiaChi.tenduong}">Abcd Lương Văn Can TP Nam
+                                                            Định</p>
+                                                        <p th:text="${lstDiaChi.xaphuong + ', ' + lstDiaChi.quanhuyen + ', ' + lstDiaChi.tinhthanhpho}">
+                                                            Phường Hạ Long, Thành Phố Nam Định, Nam Định</p>
+                                                    </div>
+                                                    <div>
+                                                        <a th:href="@{/xoadiachi/username(username=${lstDiaChi.nguoidung.taikhoan}, id=${lstDiaChi.id})}"
+                                                           class="btn btn-link">Xóa</a>
+                                                        <a th:href="@{/thietlapmacdinh/username(username=${lstDiaChi.nguoidung.taikhoan}, id=${lstDiaChi.id})}"
+                                                           class="btn btn-link">Thiết lập mặc định</a>
+                                                    </div>
+                                                </div>
+                                                <hr>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <!-- Form thêm địa chỉ-->
+                                <div id="capnhatdiachi">
+                                    <p style="font-size: 18px; font-weight: 650; padding-top: 7px;">THÊM THÔNG TIN
+                                        ĐỊA CHỈ</p>
+                                    <hr class="border border-danger border opacity-50">
+                                    <div id="themdiachi" style="width: 70%;"
+                                         class="d-flex justify-content-center container">
+                                        <form th:object="${addDiaChi}" th:method="post"
+                                              th:action="@{/themdiachi/{username}(username=${userDangnhap})}"
+                                              onsubmit="return addDiaChi()"
+                                              style="width: 100%">
+                                            <div>
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control" th:field="*{hotennguoinhan}"
+                                                           id="hotennguoinhan"
+                                                           oninput="validateThemDiaChi()"
+                                                           placeholder="Họ và tên">
+                                                    <label>Họ và tên</label>
+                                                    <span id="hotennguoinhanError" style="color: red"></span>
+                                                </div>
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control" th:field="*{sdtnguoinhan}"
+                                                           id="sdtnguoinhan"
+                                                           oninput="validateThemDiaChi()"
+                                                           placeholder="Số điện thoại">
+                                                    <label>Số điện thoại</label>
+                                                    <span id="sdtnguoinhanError" style="color: red"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="tenduong"
+                                                       th:field="*{tenduong}"
+                                                       oninput="validateThemDiaChi()"
+                                                       placeholder="Địa chỉ">
+                                                <label for="tenduong2">Địa chỉ</label>
+                                                <span id="tenduongError" style="color: red"></span>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-4">
+                                                <div class="form-floating">
+                                                    <select class="form-select" id="city" th:field="*{tinhthanhpho}"
+                                                            aria-label="Floating label select example"
+                                                            style="width: 200px">
+                                                        <option th:value="*{tinhthanhpho}"
+                                                                th:text="*{tinhthanhpho}">Chọn tỉnh/thành phố
+                                                        </option>
+                                                    </select>
+                                                    <label>Tỉnh/thành phố</label>
+                                                </div>
+                                                <div class="form-floating">
+                                                    <select class="form-select" id="district"
+                                                            th:field="*{quanhuyen}"
+                                                            aria-label="Floating label select example"
+                                                            style="width: 200px">
+                                                        <option th:value="*{quanhuyen}" th:text="*{quanhuyen}"
+                                                                selected>Chọn quận huyện
+                                                        </option>
+                                                    </select>
+                                                    <label>Quận/huyện</label>
+                                                </div>
+                                                <div class="form-floating">
+                                                    <select class="form-select" id="ward" th:field="*{xaphuong}"
+                                                            aria-label="Floating label select example"
+                                                            style="width: 200px">
+                                                        <option th:value="*{xaphuong}" th:text="*{xaphuong}"
+                                                                selected>Chọn phường xã
+                                                        </option>
+                                                    </select>
+                                                    <label>Phường/xã</label>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-center align-items-center mb-4">
+                                                <a id="huycapnhatdiachi" href="#"
+                                                   style="color: #808080; text-decoration: none; text-transform: none; margin-right: 50px; font-weight: 550; ">Hủy</a>
+                                                <button type="submit"
+                                                        style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 40%; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">
+                                                    CẬP NHẬT THÔNG TIN
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- form cập nhật địa chỉ -->
+                                <div id="capnhatdiachi2">
+                                    <p style="font-size: 18px; font-weight: 650; padding-top: 7px;">CẬP NHẬT THÔNG TIN
+                                        ĐỊA CHỈ</p>
+                                    <hr class="border border-danger border opacity-50">
+                                    <div id="themdiachi2" style="width: 70%;"
+                                         class="d-flex justify-content-center container">
+                                        <form th:object="${updateDiaChi}" th:method="post"
+                                              th:action="@{/suadiachi/{username}(username=${userDangnhap})}"
+                                              style="width: 100%">
+                                            <div>
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control" th:field="*{hotennguoinhan}"
+                                                           placeholder="Họ và tên">
+                                                    <label>Họ và tên</label>
+                                                    <p th:if="${#fields.hasErrors('hotennguoinhan')}"
+                                                       th:errors="*{hotennguoinhan}" style="color: red;"></p>
+                                                </div>
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control" th:field="*{sdtnguoinhan}"
+                                                           placeholder="Số điện thoại">
+                                                    <label>Số điện thoại</label>
+                                                    <p th:if="${#fields.hasErrors('sdtnguoinhan')}"
+                                                       th:errors="*{sdtnguoinhan}" style="color: red;"></p>
+                                                </div>
+                                            </div>
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="tenduong2"
+                                                       th:field="*{tenduong}"
+                                                       placeholder="Địa chỉ">
+                                                <label for="tenduong2">Địa chỉ</label>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-4">
+                                                <div class="form-floating">
+                                                    <select class="form-select" id="city2" th:field="*{tinhthanhpho}"
+                                                            aria-label="Floating label select example"
+                                                            style="width: 200px">
+                                                        <option th:value="*{tinhthanhpho}"
+                                                                th:text="*{tinhthanhpho}">Chọn tỉnh/thành phố
+                                                        </option>
+                                                    </select>
+                                                    <label>Tỉnh/thành phố</label>
+                                                </div>
+                                                <div class="form-floating">
+                                                    <select class="form-select" id="district2"
+                                                            th:field="*{quanhuyen}"
+                                                            aria-label="Floating label select example"
+                                                            style="width: 200px">
+                                                        <option th:value="*{quanhuyen}" th:text="*{quanhuyen}"
+                                                                selected>Chọn quận huyện
+                                                        </option>
+                                                    </select>
+                                                    <label>Quận/huyện</label>
+                                                </div>
+                                                <div class="form-floating">
+                                                    <select class="form-select" id="ward2" th:field="*{xaphuong}"
+                                                            aria-label="Floating label select example"
+                                                            style="width: 200px">
+                                                        <option th:value="*{xaphuong}" th:text="*{xaphuong}"
+                                                                selected>Chọn phường xã
+                                                        </option>
+                                                    </select>
+                                                    <label>Phường/xã</label>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-center align-items-center mb-4">
+                                                <a id="huycapnhatdiachi2" href="#"
+                                                   style="color: #808080; text-decoration: none; text-transform: none; margin-right: 50px; font-weight: 550; ">Hủy</a>
+                                                <button type="submit"
+                                                        style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 40%; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">
+                                                    CẬP NHẬT ĐỊA CHỈ
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- end form cập nhật địa chỉ-->
                             </div>
                             <!--end -->
 
@@ -689,9 +634,11 @@
 </section>
 <!-- cart page content section end -->
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.getElementById("capnhatthongtintaikhoan").style.display = "none";
     document.getElementById("capnhatdiachi").style.display = "none";
+    document.getElementById("capnhatdiachi2").style.display = "none";
     document.getElementById("themdiachi").style.display = "none";
     document.getElementById("btnchuyencapnhattaikhoan").addEventListener("click", function (event) {
         event.preventDefault();
@@ -704,27 +651,40 @@
         document.getElementById("capnhatthongtintaikhoan").style.display = "none";
         document.getElementById("xemthongtintaikhoan").style.display = "block";
     });
+
     document.getElementById("chuyencapnhatdiachi").addEventListener("click", function (event) {
         event.preventDefault();
-        document.getElementById("thongtindiachi").style.display = "none";
+        document.getElementById("xemthongtindiachi").style.display = "none";
+        document.getElementById("capnhatdiachi2").style.display = "none";
         document.getElementById("capnhatdiachi").style.display = "block";
     });
-
     document.getElementById("huycapnhatdiachi").addEventListener("click", function (event) {
         event.preventDefault();
         document.getElementById("capnhatdiachi").style.display = "none";
-        document.getElementById("thongtindiachi").style.display = "block";
+        document.getElementById("xemthongtindiachi").style.display = "block";
     });
 
-    document.getElementById("chuyenthemdiachi").addEventListener("click", function (event) {
+    document.getElementById("chuyencapnhatdiachi2").addEventListener("click", function (event) {
         event.preventDefault();
-        document.getElementById("themdiachi").style.display = "block";
+        document.getElementById("xemthongtindiachi").style.display = "none";
+        document.getElementById("capnhatdiachi").style.display = "none";
+        document.getElementById("capnhatdiachi2").style.display = "block";
+    });
+    document.getElementById("huycapnhatdiachi2").addEventListener("click", function (event) {
+        event.preventDefault();
+        document.getElementById("capnhatdiachi2").style.display = "none";
+        document.getElementById("xemthongtindiachi").style.display = "block";
     });
 
-    document.getElementById("huythemdiachi").addEventListener("click", function (event) {
-        event.preventDefault();
-        document.getElementById("themdiachi").style.display = "none";
-    });
+    // document.getElementById("chuyenthemdiachi").addEventListener("click", function (event) {
+    //     event.preventDefault();
+    //     document.getElementById("themdiachi").style.display = "block";
+    // });
+    //
+    // document.getElementById("huythemdiachi").addEventListener("click", function (event) {
+    //     event.preventDefault();
+    //     document.getElementById("themdiachi").style.display = "none";
+    // });
 </script>
 
 <script>
@@ -765,6 +725,117 @@
         }
     }
 </script>
+
+<script>
+    const specialCharPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+    const numberPattern = /\d/;
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    const phoneNumberPattern = /^0[0-9]{9}$/;
+    const currentDate = new Date();
+
+    function validateNguoiDung() {
+        var inputTenNd = document.getElementById("hovaten").value.trim();
+        var inputEmail = document.getElementById("email").value.trim();
+        var inputSdt = document.getElementById("sodienthoai").value.trim();
+        var inputNgaySinh = new Date(document.getElementById("ngaysinh").value.trim());
+        var tenError = document.getElementById("hovatenNdError");
+        var emailError = document.getElementById("emailNdError");
+        var sdtError = document.getElementById("sdtNdError");
+        var ngaysinhError = document.getElementById("ngaysinhNdError");
+
+        var isValid = true;
+
+        tenError.innerText = "";
+        emailError.innerText = "";
+        sdtError.innerText = "";
+        ngaysinhError.innerText = "";
+
+        if (inputTenNd === "") {
+            tenError.innerText = "Họ và tên không được trống";
+            isValid = false;
+        } else if (specialCharPattern.test(inputTenNd)) {
+            tenError.innerText = "Họ và tên không được chứa ký tự đặc biệt";
+            isValid = false;
+        } else if (numberPattern.test(inputTenNd)) {
+            tenError.innerText = "Họ và tên không được chứa số";
+            isValid = false;
+        }
+
+        if (inputEmail === "") {
+            emailError.innerText = "Email không được trống";
+            isValid = false;
+        } else if (!emailPattern.test(inputEmail)) {
+            emailError.innerText = "Email không hợp lệ";
+            isValid = false;
+        }
+
+        if (inputSdt === "") {
+            sdtError.innerText = "Số điện thoại không được trống";
+            isValid = false;
+        } else if (!phoneNumberPattern.test(inputSdt)) {
+            sdtError.innerText = "Số điện thoại không hợp lệ";
+            isValid = false;
+        }
+
+        if (inputNgaySinh === "" || inputNgaySinh > currentDate) {
+            ngaysinhError.innerText = "Ngày sinh không hợp lệ";
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    function validateThemDiaChi() {
+        var inputHoten = document.getElementById("hotennguoinhan").value.trim();
+        var inputSdt= document.getElementById("sdtnguoinhan").value.trim();
+        var inputTenDuong = document.getElementById("tenduong").value.trim();
+        var tennguoinhanError = document.getElementById("hotennguoinhanError");
+        var sdtError = document.getElementById("sdtnguoinhanError");
+        var tenduongError = document.getElementById("tenduongError");
+
+        var isValid = true;
+
+        tennguoinhanError.innerText = "";
+        sdtError.innerText = "";
+        tenduongError.innerText = "";
+
+        if (inputHoten === "") {
+            tennguoinhanError.innerText = "Họ và tên không được trống";
+            isValid = false;
+        } else if (specialCharPattern.test(inputHoten)) {
+            tennguoinhanError.innerText = "Họ và tên không được chứa ký tự đặc biệt";
+            isValid = false;
+        } else if (numberPattern.test(inputHoten)) {
+            tennguoinhanError.innerText = "Họ và tên không được chứa số";
+            isValid = false;
+        }
+
+        if (inputTenDuong === "") {
+            tenduongError.innerText = "Không được để trống tên đường";
+            isValid = false;
+        }
+
+        if (inputSdt === "") {
+            sdtError.innerText = "Số điện thoại không được trống";
+            isValid = false;
+        } else if (!phoneNumberPattern.test(inputSdt)) {
+            sdtError.innerText = "Số điện thoại không hợp lệ";
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    function updateThongTin() {
+        return validateNguoiDung();
+    }
+    function addDiaChi() {
+        return validateThemDiaChi();
+    }
+
+
+</script>
+
 
 <!--dia chi-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
@@ -821,6 +892,60 @@
             }
         };
     }
+
+    var citis2 = document.getElementById("city2");
+    var districts2 = document.getElementById("district2");
+    var wards2 = document.getElementById("ward2");
+    var Parameter = {
+        url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
+        method: "GET",
+        responseType: "application/json",
+    };
+    var promise = axios(Parameter);
+    promise.then(function (result) {
+        renderCity2(result.data);
+    });
+
+    function renderCity2(data) {
+        for (const x2 of data) {
+            var opt = document.createElement('option');
+            opt.value = x2.Name;
+            opt.text = x2.Name;
+            opt.setAttribute('data-id', x2.Id);
+            citis2.options.add(opt);
+        }
+        citis2.onchange = function () {
+            districts2.length = 1;
+            wards2.length = 1;
+            if (this.options[this.selectedIndex].dataset.id != "") {
+                const result = data.filter(n => n.Id === this.options[this.selectedIndex].dataset.id);
+
+                for (const k2 of result[0].Districts) {
+                    var opt = document.createElement('option');
+                    opt.value = k2.Name;
+                    opt.text = k2.Name;
+                    opt.setAttribute('data-id', k2.Id);
+                    districts2.options.add(opt);
+                }
+            }
+        };
+        districts2.onchange = function () {
+            wards2.length = 1;
+            const dataCity = data.filter((n) => n.Id === citis2.options[citis2.selectedIndex].dataset.id);
+            if (this.options[this.selectedIndex].dataset.id != "") {
+                const dataWards = dataCity[0].Districts.filter(n => n.Id === this.options[this.selectedIndex].dataset.id)[0].Wards;
+
+                for (const w2 of dataWards) {
+                    var opt = document.createElement('option');
+                    opt.value = w2.Name;
+                    opt.text = w2.Name;
+                    opt.setAttribute('data-id', w2.Id);
+                    wards2.options.add(opt);
+                }
+            }
+        };
+    }
+
 </script>
 
 <!-- footer section start -->

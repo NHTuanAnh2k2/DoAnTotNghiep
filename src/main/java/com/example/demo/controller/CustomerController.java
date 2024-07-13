@@ -66,94 +66,152 @@ public class CustomerController {
     public String hosokhachhang(Model model,
                                 @PathVariable("username") String username,
                                 HttpSession session
-                                ) {
+    ) {
         String userDangnhap = (String) session.getAttribute("userDangnhap");
         if (username != null) {
             if (userDangnhap != null) {
                 NguoiDung nd = khachHangService.findNguoiDungByTaikhoan(userDangnhap);
-                DiaChi dc = khachHangService.findDiaChiByIdNguoidung(nd.getId());
+                DiaChi dc = diaChiRepository.findDiaChiByTrangthai(nd.getId(), true);
                 List<DiaChi> lstDiaChi = diaChiRepository.findDiaChiByIdNd(nd.getId());
                 model.addAttribute("nguoidung", nd);
                 model.addAttribute("diachi", dc);
                 model.addAttribute("lstDiaChi", lstDiaChi);
                 model.addAttribute("userDangnhap", userDangnhap);
                 model.addAttribute("nguoidungdoimatkhau", new DoiMatKhauNguoiDung());
+                model.addAttribute("addDiaChi", new UpdateDiaChi());
+                model.addAttribute("updateDiaChi", dc);
                 System.out.println("Danh sách người dùng đang đăng nhập: " + userManager.getLoggedInUsers());
                 return "customer/hosokhachhang";
             } else {
-                return "redirect:/dangky";
+                return "redirect:/account";
             }
         } else {
-            return "redirect:/dangky";
+            return "redirect:/account";
         }
     }
 
-        @PostMapping("/capnhattaikhoan/{username}")
-        public String capnhattaikhoan(Model model,
-                                      @PathVariable("username") String username,
-                                      @Valid @ModelAttribute("nguoidung") UpdateNguoiDung nguoidung,
-                                      BindingResult ndBindingResult,
-                                      @Valid @ModelAttribute("diachi") UpdateDiaChi diachi,
-                                      BindingResult dcBindingResult,
-                                      @Valid @ModelAttribute("khachhangptL7mn08")UpdateKhachHang khachhang,
-                                      BindingResult khBindingResult
-                                      ) {
+    @PostMapping("/capnhattaikhoan/{username}")
+    public String capnhattaikhoan(Model model,
+                                  @PathVariable("username") String username,
+                                  @ModelAttribute("nguoidung") UpdateNguoiDung nguoidung,
+                                  @ModelAttribute("diachi") UpdateDiaChi diachi,
+                                  @ModelAttribute("khachhang") UpdateKhachHang khachhang
 
-            if (ndBindingResult.hasErrors()) {
-                List<ObjectError> lstErrorNd = ndBindingResult.getAllErrors();
-                System.out.println("List Error NguoiDung: " + lstErrorNd);
-                return "customer/hosokhachhang";
-            } else if (dcBindingResult.hasErrors()) {
-                List<ObjectError> lstErrorDc = dcBindingResult.getAllErrors();
-                System.out.println("List Error DiaChi: " + lstErrorDc);
-                return "customer/hosokhachhang";
-            } else if (khBindingResult.hasErrors()) {
-                List<ObjectError> lstErrorKh = ndBindingResult.getAllErrors();
-                System.out.println("List Error KhachHang: " + lstErrorKh);
-                return "customer/hosokhachhang";
-            }
+    ) {
 
-            NguoiDung userSelect = khachHangService.findNguoiDungByTaikhoan(username);
-            int userId = userSelect.getId();
+        NguoiDung userSelect = khachHangService.findNguoiDungByTaikhoan(username);
+        int userId = userSelect.getId();
 
-            NguoiDung nd = khachHangService.findNguoiDungById(userId);
-            System.out.println("Nguoi dung: " + nd);
-            nd.setHovaten(nguoidung.getHovaten());
-            nd.setEmail(nguoidung.getEmail());
-            nd.setNgaysinh(nguoidung.getNgaysinh());
-            nd.setSodienthoai(nguoidung.getSodienthoai());
-            nd.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
-            nd.setNguoicapnhat("CUSTOMER");
-            khachHangService.updateNguoiDung(nd);
-            System.out.println("updateND ok");
+        NguoiDung nd = khachHangService.findNguoiDungById(userId);
+        System.out.println("Nguoi dung: " + nd);
+        nd.setHovaten(nguoidung.getHovaten());
+        nd.setEmail(nguoidung.getEmail());
+        nd.setNgaysinh(nguoidung.getNgaysinh());
+        nd.setSodienthoai(nguoidung.getSodienthoai());
+        nd.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
+        nd.setNguoicapnhat("CUSTOMER");
+        khachHangService.updateNguoiDung(nd);
+        System.out.println("updateND ok");
 
-            DiaChi dc = khachHangService.findDiaChiByIdNguoidung(userId);
-            dc.setTinhthanhpho(diachi.getTinhthanhpho());
-            dc.setQuanhuyen(diachi.getQuanhuyen());
-            dc.setXaphuong(diachi.getXaphuong());
-            dc.setTenduong(diachi.getTenduong());
-            dc.setHotennguoinhan(nd.getHovaten());
-            dc.setLancapnhatcuoi(nd.getLancapnhatcuoi());
-            dc.setNguoicapnhat("CUSTOMER");
-            khachHangService.updateDiaChi(dc);
+        return "redirect:/hosokhachhang/{username}";
+    }
 
-            KhachHang kh = khachHangService.findKhachHangByIdNguoiDung(userId);
-            kh.setLancapnhatcuoi(nd.getLancapnhatcuoi());
-            kh.setNguoicapnhat("CUSTOMER");
-            khachHangService.updateKhachHang(kh);
+    @PostMapping("/themdiachi/{username}")
+    public String themdiachi(Model model,
+                             @PathVariable("username") String username,
+                             @Valid @ModelAttribute("addDiaChi") UpdateDiaChi diachi,
+                             BindingResult dcBindingResult,
+                             RedirectAttributes redirectAttributes
 
-            model.addAttribute("nguoidung", nd);
-            model.addAttribute("diachi", dc);
-            model.addAttribute("nguoidungdoimatkhau", new DoiMatKhauNguoiDung());
-
+    ) {
+        if (dcBindingResult.hasErrors()) {
+            List<ObjectError> lstErrorDc = dcBindingResult.getAllErrors();
+            System.out.println("List Error DiaChi: " + lstErrorDc);
             return "customer/hosokhachhang";
         }
+
+        NguoiDung userSelect = khachHangService.findNguoiDungByTaikhoan(username);
+
+        DiaChi dc = new DiaChi();
+        dc.setNguoidung(userSelect);
+        dc.setTinhthanhpho(diachi.getTinhthanhpho());
+        dc.setQuanhuyen(diachi.getQuanhuyen());
+        dc.setXaphuong(diachi.getXaphuong());
+        dc.setTenduong(diachi.getTenduong());
+        dc.setSdtnguoinhan(diachi.getSdtnguoinhan());
+        dc.setHotennguoinhan(diachi.getHotennguoinhan());
+        dc.setNguoicapnhat("CUSTOMER");
+        dc.setNguoitao("CUSTOMER");
+        dc.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
+        dc.setNgaytao(Timestamp.valueOf(LocalDateTime.now()));
+        dc.setTrangthai(diachi.isTrangthai());
+        khachHangService.addDiaChi(dc);
+
+        return "redirect:/hosokhachhang/{username}";
+    }
+
+    @PostMapping("/suadiachi/{username}")
+    public String suadiachi (Model model,
+                             @PathVariable("username") String username,
+                             @Valid @ModelAttribute("updateDiaChi") UpdateDiaChi diachi,
+                             BindingResult dcBindingResult,
+                             RedirectAttributes redirectAttributes
+
+    ) {
+        if (dcBindingResult.hasErrors()) {
+            List<ObjectError> lstErrorDc = dcBindingResult.getAllErrors();
+            System.out.println("List Error DiaChi: " + lstErrorDc);
+            return "customer/hosokhachhang";
+        }
+
+        NguoiDung userSelect = khachHangService.findNguoiDungByTaikhoan(username);
+
+        DiaChi dc = diaChiRepository.findDiaChiByTrangthai(userSelect.getId(), true);
+        dc.setTinhthanhpho(diachi.getTinhthanhpho());
+        dc.setQuanhuyen(diachi.getQuanhuyen());
+        dc.setXaphuong(diachi.getXaphuong());
+        dc.setTenduong(diachi.getTenduong());
+        dc.setSdtnguoinhan(diachi.getSdtnguoinhan());
+        dc.setHotennguoinhan(diachi.getHotennguoinhan());
+        dc.setNguoicapnhat("CUSTOMER");
+        dc.setNguoitao("CUSTOMER");
+        dc.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
+        khachHangService.addDiaChi(dc);
+
+        return "redirect:/hosokhachhang/{username}";
+    }
+
+    @GetMapping("/thietlapmacdinh/{username}")
+    public String thietlapmacdinh(Model model,
+                                  @RequestParam("id") Integer id,
+                                  @PathVariable("username") String username) {
+
+        DiaChi dc = khachHangService.findDiaChiById(id);
+        DiaChi dcMacDinh = diaChiRepository.findDiaChiByTrangthai(dc.getNguoidung().getId(), true);
+        dcMacDinh.setTrangthai(false);
+        dc.setTrangthai(true);
+        khachHangService.updateDiaChi(dcMacDinh);
+        khachHangService.updateDiaChi(dc);
+
+        return "redirect:/hosokhachhang/{username}";
+    }
+
+    @GetMapping("/xoadiachi/{username}")
+    public String xoadiachi(Model model,
+                                  @RequestParam("id") Integer id,
+                                  @PathVariable("username") String username) {
+
+        DiaChi dc = khachHangService.findDiaChiById(id);
+        diaChiRepository.delete(dc);
+
+        return "redirect:/hosokhachhang/{username}";
+    }
 
     @PostMapping("/doimatkhau/{username}")
     public String doimatkhau(@ModelAttribute("nguoidungdoimatkhau") DoiMatKhauNguoiDung nguoidungdoimatkhau,
                              @PathVariable("username") String username,
                              RedirectAttributes redirectAttributes,
-                             Model model){
+                             Model model) {
 
         NguoiDung nd = khachHangService.findNguoiDungByTaikhoan(username);
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -172,7 +230,6 @@ public class CustomerController {
         String matkhaumoi = passwordEncoder.encode(nguoidungdoimatkhau.getMatkhaumoi());
         nguoiDungRepository.updatePassword(username, matkhaumoi);
         System.out.println("Đã update mật khẩu");
-        redirectAttributes.addFlashAttribute("success", "Đổi mật khẩu thành công.");
 
 //        DiaChi dc = khachHangService.findDiaChiByIdNguoidung(nd.getId());
 //        NguoiDung ndCurrent = khachHangService.findNguoiDungByTaikhoan(username);
