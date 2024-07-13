@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <nav th:replace="~{/layoutadmin/head.html}"></nav>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <style>
     /* CSS cho các tùy chọn được chọn và khi hover */
     .select2-container--default .select2-results__option--highlighted {
@@ -1092,21 +1095,31 @@
             cancelButtonText: 'Hủy',
         }).then((result) => {
             if (result.isConfirmed) {
-                // Hiển thị thông báo xóa thành công
-                Swal.fire({
-                    title: 'Đã xóa thành công!',
-                    icon: 'success',
-                    timer: 3000, // Hiển thị trong 3 giây
-                    showConfirmButton: false // Ẩn nút Xác nhận
-                });
-                // Chờ 3 giây trước khi chuyển hướng đến URL xóa
                 setTimeout(function () {
+                    sessionStorage.setItem('successMessageXoa', 'Xóa thành công!');
                     window.location.href = deleteUrl;
-                }, 1000);
+                });
             }
         });
     }
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const successMessage = sessionStorage.getItem('successMessageXoa');
+        if (successMessage) {
+            // Hiển thị thông báo ở góc bên phải màn hình
+            toastr.info(successMessage, 'Thông báo', {
+                positionClass: 'toast-top-right',
+                timeOut: 1000
+            });
+
+            // Xóa thông báo khỏi sessionStorage sau khi hiển thị
+            sessionStorage.removeItem('successMessageXoa');
+        }
+    });
+</script>
+
 
 <!--dùng cho thêm size-->
 <script>
@@ -1851,3 +1864,5 @@
 
     /*]]>*/
 </script>
+
+
