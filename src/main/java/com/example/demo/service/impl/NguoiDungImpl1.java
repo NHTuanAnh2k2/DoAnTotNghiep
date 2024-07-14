@@ -78,7 +78,7 @@ public class NguoiDungImpl1 implements NguoiDungService1 {
         nd.setAnh(nguoiDung.getAnh());
         nd.setNguoicapnhat("a");
         nd.setLancapnhatcuoi(new Timestamp(new Date().getTime()));
-        nd.setTrangthai(true);
+        nd.setTrangthai(nguoiDung.getTrangthai());
         return nguoiDungRepository.save(nd);
     }
 

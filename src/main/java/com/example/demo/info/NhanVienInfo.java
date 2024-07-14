@@ -18,7 +18,6 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class NhanVienInfo {
     String manhanvien;
-//    @NotNull(message = "Vui lòng chọn vai trò")
     Boolean vaitro;
     Timestamp ngaytao;
     String nguoitao;
