@@ -26,6 +26,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
@@ -574,7 +575,7 @@ public class hoaDonController {
 
     //xác nhận đơn
     @GetMapping("xac-nhan-don")
-    public String xacNhanHD(Model model, @ModelAttribute("ghichu") LichSuHoaDonCustom noidung) {
+    public String xacNhanHD(Model model, @ModelAttribute("ghichu") LichSuHoaDonCustom noidung, RedirectAttributes redirectAttributes) {
         String ngaytao = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
         HoaDon hoadon = new HoaDon();
         hoadon.setId(idhdshowdetail);
@@ -632,6 +633,7 @@ public class hoaDonController {
             String mailType = "";
             String mailContent = "Mã vận đơn của bạn là: " + mahdemail + "\nNgày tạo: " + ngaytaoemail;
             nguoiDung.sendEmail(to, subject, mailType, mailContent);
+            redirectAttributes.addFlashAttribute("sendmail", true);
         }
         dao.capNhatHD(hdTT);
         lshd.setTrangthai(trangthaiset);
