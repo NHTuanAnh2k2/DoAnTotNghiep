@@ -9,6 +9,7 @@ import com.example.demo.repository.PhieuGiamGiaChiTiet.PhieuGiamChiTietRepositor
 import com.example.demo.repository.PhieuGiamGiaRepository;
 import com.example.demo.repository.khachhang.KhachHangRepostory;
 import com.example.demo.service.*;
+import com.example.demo.service.impl.NguoiDungImpl1;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
@@ -34,8 +35,10 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.Normalizer;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("ban-hang-tai-quay")
@@ -60,6 +63,8 @@ public class BanHangController {
     SanPhamChiTietService daoSPCT;
     @Autowired
     KhachHangRepostory daoKH;
+    @Autowired
+    NguoiDungImpl1 nguoiDung;
 
     @Autowired
     HoaDonService daoHD;
@@ -317,6 +322,27 @@ public class BanHangController {
         return "redirect:/hoa-don/ban-hang";
     }
 
+    public static String processName(String name) {
+        // Remove diacritics
+        String normalized = Normalizer.normalize(name, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        String noDiacritics = pattern.matcher(normalized).replaceAll("");
+
+        // Split the name into parts
+        String[] parts = noDiacritics.split("\\s+");
+
+        // Get the last part (last name)
+        String lastName = parts[parts.length - 1].toLowerCase();
+
+        // Get the initials of the other parts
+        StringBuilder initials = new StringBuilder();
+        for (int i = 0; i < parts.length - 1; i++) {
+            initials.append(parts[i].charAt(0));
+        }
+
+        // Combine last name and initials
+        return lastName + initials.toString().toLowerCase();
+    }
 
     @PostMapping("add-nhanh")
     public String changesTTDH(Model model, @ModelAttribute("AddKHNhanh") AddKHNhanhFormBanHang kh) {
@@ -331,6 +357,14 @@ public class BanHangController {
         nguoidung.setTrangthai(true);
         //fake nhân viên
         nguoidung.setNguoitao("nhân viên");
+        String to = kh.getEmail();
+        String taikhoan = processName(kh.getTen());
+        String matkhau = "12345";
+        String subject = "Chúc mừng bạn đã đăng kí thành công tài khoản T&T shop";
+        String mailType = "";
+        String mailContent = "Tài khoản của bạn là: " + taikhoan + "\nMật khẩu của bạn là: " + matkhau;
+        nguoidung.setTaikhoan(taikhoan);
+        nguoidung.setMatkhau(matkhau);
         daoNguoiDung.save(nguoidung);
         NguoiDung nguoidungtim = daoNguoiDung.findByEmail(kh.getEmail());
         DiaChi diachi = new DiaChi();
@@ -360,6 +394,8 @@ public class BanHangController {
         hdHienTai.setSdt(kh.getSdt());
         hdHienTai.setEmail(kh.getEmail());
         daoHD.capNhatHD(hdHienTai);
+
+
         if (kh.getCheck()) {
             hdHienTai.setKhachhang(khTim);
             hdHienTai.setDiachi(diaChiHD);
@@ -367,8 +403,11 @@ public class BanHangController {
             hdHienTai.setSdt(kh.getSdt());
             hdHienTai.setEmail(kh.getEmail());
             daoHD.capNhatHD(hdHienTai);
+            nguoiDung.sendEmail(to, subject, mailType, mailContent);
             return "redirect:/hoa-don/ban-hang";
         }
+
+        nguoiDung.sendEmail(to, subject, mailType, mailContent);
         return "redirect:/hoa-don/ban-hang";
     }
 

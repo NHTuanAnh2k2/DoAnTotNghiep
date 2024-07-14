@@ -950,8 +950,8 @@
                                                     <div class="d-flex justify-content-start">
                                                         <h6 style="font-family: 'Times New Roman'; font-weight: bold">
                                                             Hình thức giao:</h6>
-                            
-                                                           <p th:text="${hoaDonDT.hoatoc==true?'Hỏa tốc':'Thông thường'}"
+
+                                                        <p th:text="${hoaDonDT.hoatoc==true?'Hỏa tốc':'Thông thường'}"
                                                             style="margin-left: 75px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
                                                         </p>
                                                     </div>
@@ -2405,8 +2405,8 @@
                 if (numericValue < 1 || isNaN(numericValue)) {
                     numericValue = 1;
                     thongbao('Số lượng phải lớn hơn 0', 'warning');
-                } else if (numericValue-slSpTrongDon > slSpCon) {
-                    numericValue = slSpCon+slSpTrongDon;
+                } else if (numericValue - slSpTrongDon > slSpCon) {
+                    numericValue = slSpCon + slSpTrongDon;
                     thongbao('Số lượng đang vượt quá số lượng hàng hiện có', 'warning');
 
                 }
@@ -2643,7 +2643,14 @@
         }
 
     </script>
-
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var sendmail = /*[[${sendmail}]]*/ false;
+        /*]]>*/
+        if (sendmail == true) {
+            thongbao('In hóa đơn thành công!', 'success')
+        }
+    </script>
 
 </body>
 

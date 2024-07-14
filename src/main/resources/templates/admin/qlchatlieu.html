@@ -170,8 +170,10 @@
 <!--                                                    th:text="${cl.trangthai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>-->
 <!--                                        </td>-->
                                         <td>
-                                            <a style="color: rgb(249,72,42); font-size: 25px;">
-                                                <i class="bi bi-eye-fill"></i>
+                                            <a style="color: rgb(249,72,42); font-size: 25px;" th:data-id="${cl.id}"
+                                               data-bs-toggle="modal" data-bs-target="#capnhatchatlieu"
+                                               onclick="fillShoeSoleNameChatLieu(this)">
+                                                <i class="bi bi-pencil-square"></i>
                                             </a>
                                             <form th:action="@{/updateChatLieu/{id}(id=${cl.id})}"  method="post" style="display: inline;">
                                                 <button type="submit" style="background: none; border: none; color: rgb(249,72,42); padding-left: 10px" onclick="return confirm('Bạn có muốn xóa không?')">
@@ -180,10 +182,48 @@
                                                     </a>
                                                 </button>
                                             </form>
-
                                         </td>
                                     </tr>
                                 </table>
+                                <!-- Modal -->
+                                <div class="modal fade" id="capnhatchatlieu" tabindex="-1"
+                                     aria-labelledby="capnhatchatlieuLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="capnhatchatlieuLabel">Cập nhật chất liệu</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <input type="hidden" id="chatLieuId">
+                                                <div class="mb-3">
+                                                    <label for="tenChatLieu" class="form-label">Tên chất liệu</label>
+                                                    <input type="text" class="form-control" id="tenChatLieu">
+                                                    <div id="error-message" class="text-danger" style="display: none;">
+                                                        Tên chất liệu không được để trống.
+                                                    </div>
+                                                    <div id="length-error-message" class="text-danger"
+                                                         style="display: none;">Tên chất liệu không được vượt quá 20 ký
+                                                        tự.
+                                                    </div>
+                                                    <div id="duplicate-error-message" class="text-danger"
+                                                         style="display: none;">Tên chất liệu đã tồn tại.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <!--                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>-->
+                                                <button type="button" class="btn btn-primary"
+                                                        onclick="updateShoeSoleNameChatLieu()"
+                                                        style="background-color:rgb(249,72,42);color: white;border-color:rgb(249,72,42)"
+                                                        id="updateButton" disabled>Cập nhật
+                                                </button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -205,13 +245,16 @@
 <!--script-->
 <nav th:replace="~{/layoutadmin/script.html}"></nav>
 <!--end-->
+</body>
+</html>
+<!--search-->
 <script>
     function clearSearch() {
         document.getElementById("searchInput").value = "";
         document.getElementById("statusSelect").selectedIndex = 0;
     }
 </script>
-
+<!--them-->
 <script th:inline="javascript">
 
     /*<![CDATA[*/
@@ -287,9 +330,6 @@
     }
     /*]]>*/
 </script>
-</body>
-</html>
-
 <!--tìm-->
 <script>
     // Lắng nghe sự kiện change trong các trường input
@@ -300,3 +340,156 @@
         document.getElementById('searchForm').submit(); // Gửi form khi có sự thay đổi
     });
 </script>
+<!--cập nhật-->
+<script>
+    let originalName = ''; // Biến toàn cục để lưu tên ban đầu
+
+    function fillShoeSoleNameChatLieu(element) {
+        const id = element.getAttribute('data-id');
+
+        // Gọi API để lấy thông tin đế giày
+        fetch(`/updateChatLieu/${id}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Không thể lấy thông tin chất liệu');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Hiển thị thông tin trong modal
+                document.getElementById('tenChatLieu').value = data.ten || '';
+                document.getElementById('chatLieuId').value = data.id || id;
+                originalName = data.ten || ''; // Lưu tên ban đầu
+                checkChanges(); // Kiểm tra thay đổi ban đầu
+            })
+            .catch(error => {
+                console.error('Có lỗi xảy ra:', error);
+                alert('Có lỗi xảy ra: ' + error.message);
+            });
+    }
+
+    function checkChanges() {
+        const currentName = document.getElementById('tenChatLieu').value.trim();
+        const updateButton = document.getElementById('updateButton');
+
+        // So sánh tên hiện tại với tên ban đầu
+        if (currentName === originalName) {
+            updateButton.disabled = true; // Vô hiệu hóa nút nếu không thay đổi
+        } else {
+            updateButton.disabled = false; // Kích hoạt nút nếu có thay đổi
+        }
+    }
+
+    // Thêm sự kiện cho input
+    document.getElementById('tenChatLieu').addEventListener('input', checkChanges);
+
+
+    // Thêm hàm cập nhật
+    function updateShoeSoleNameChatLieu() {
+        const id = document.getElementById('chatLieuId').value;
+        let ten = document.getElementById('tenChatLieu').value;
+
+        // Loại bỏ khoảng trắng ở đầu và cuối
+        ten = ten.trim();
+
+        const errorMessage = document.getElementById('error-message');
+        const lengthErrorMessage = document.getElementById('length-error-message');
+        const duplicateErrorMessage = document.getElementById('duplicate-error-message');
+
+        // Reset thông báo lỗi
+        errorMessage.style.display = 'none';
+        lengthErrorMessage.style.display = 'none';
+        duplicateErrorMessage.style.display = 'none';
+
+        // Kiểm tra tính hợp lệ
+        if (!ten) {
+            errorMessage.style.display = 'block';
+            return;
+        }
+
+        if (ten.length > 20) {
+            lengthErrorMessage.style.display = 'block';
+            return;
+        }
+
+        // Kiểm tra tên trùng
+        fetch(`/checkTenChatLieu?ten=${encodeURIComponent(ten)}`)
+            .then(response => response.json())
+            .then(exists => {
+                if (exists) {
+                    duplicateErrorMessage.style.display = 'block';
+                    return;
+                }
+
+                // Hiển thị xác nhận trước khi cập nhật
+                Swal.fire({
+                    title: 'Bạn có muốn cập nhật không?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Có',
+                    cancelButtonText: 'Không'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const updatedChatLieu = {ten};
+
+                        fetch(`/updateChatLieu/${id}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(updatedChatLieu),
+                        })
+                            .then(response => {
+                                if (response.ok) {
+                                    // Lưu thông báo vào sessionStorage
+                                    sessionStorage.setItem('successMessage', 'Cập nhật thành công!');
+                                    // Chuyển hướng
+                                    window.location.href = '/chatlieu';
+                                } else {
+                                    throw new Error('Cập nhật thất bại');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Có lỗi xảy ra:', error);
+                                alert('Có lỗi xảy ra: ' + error.message);
+                            });
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Có lỗi xảy ra:', error);
+                alert('Có lỗi xảy ra: ' + error.message);
+            });
+    }
+
+
+</script>
+<!--message1-->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const successMessage = sessionStorage.getItem('successMessage');
+        if (successMessage) {
+            // Hiển thị thông báo ở góc bên phải màn hình
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: successMessage
+            });
+
+            // Xóa thông báo khỏi sessionStorage sau khi hiển thị
+            sessionStorage.removeItem('successMessage');
+        }
+    });
+</script>
+

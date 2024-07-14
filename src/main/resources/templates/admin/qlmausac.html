@@ -155,7 +155,7 @@
                                     <tr>
                                         <th>STT</th>
                                         <th>Tên màu sắc</th>
-                                        <th>Người tạo</th>
+                                        <th>Ngày tạo</th>
 <!--                                        <th>Trạng thái</th>-->
                                         <th>Thao tác</th>
                                     </tr>
@@ -176,8 +176,10 @@
 <!--                                                    th:text="${ms.trangthai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>-->
 <!--                                        </td>-->
                                         <td>
-                                            <a style="color: rgb(249,72,42); font-size: 25px;">
-                                                <i class="bi bi-eye-fill"></i>
+                                            <a style="color: rgb(249,72,42); font-size: 25px;" th:data-id="${ms.id}"
+                                               data-bs-toggle="modal" data-bs-target="#capnhatmausac"
+                                               onclick="fillShoeSoleNameMauSac(this)">
+                                                <i class="bi bi-pencil-square"></i>
                                             </a>
                                             <form th:action="@{/updateMauSac/{id}(id=${ms.id})}" method="post" style="display: inline;">
                                                 <button type="submit" style="background: none; border: none; color: rgb(249,72,42); padding-left: 10px" onclick="return confirm('Bạn có muốn xóa không?')">
@@ -186,13 +188,49 @@
                                                     </a>
                                                 </button>
                                             </form>
-
                                         </td>
                                     </tr>
                                     </tbody>
-
                                     </tfoot>
                                 </table>
+                                <div class="modal fade" id="capnhatmausac" tabindex="-1"
+                                     aria-labelledby="capnhatmausacLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="capnhatmausacLabel">Cập nhật màu sắc</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <input type="hidden" id="mauSacId">
+                                                <div class="mb-3">
+                                                    <label for="tenMauSac" class="form-label">Tên màu sắc</label>
+                                                    <input type="text" class="form-control" id="tenMauSac">
+                                                    <div id="error-message" class="text-danger" style="display: none;">
+                                                        Tên màu sắc không được để trống.
+                                                    </div>
+                                                    <div id="length-error-message" class="text-danger"
+                                                         style="display: none;">Tên màu sắc không được vượt quá 20 ký
+                                                        tự.
+                                                    </div>
+                                                    <div id="duplicate-error-message" class="text-danger"
+                                                         style="display: none;">Tên màu sắc đã tồn tại.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <!--                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>-->
+                                                <button type="button" class="btn btn-primary"
+                                                        onclick="updateShoeSoleNameMauSac()"
+                                                        style="background-color:rgb(249,72,42);color: white;border-color:rgb(249,72,42)"
+                                                        id="updateButton" disabled>Cập nhật
+                                                </button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -307,5 +345,158 @@
     });
     document.getElementById('statusSelect').addEventListener('change', function() {
         document.getElementById('searchForm').submit(); // Gửi form khi có sự thay đổi
+    });
+</script>
+
+<!--cập nhật-->
+<script>
+    let originalName = ''; // Biến toàn cục để lưu tên ban đầu
+
+    function fillShoeSoleNameMauSac(element) {
+        const id = element.getAttribute('data-id');
+
+        // Gọi API để lấy thông tin đế giày
+        fetch(`/updateMauSac/${id}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Không thể lấy thông tin màu sắc');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Hiển thị thông tin trong modal
+                document.getElementById('tenMauSac').value = data.ten || '';
+                document.getElementById('mauSacId').value = data.id || id;
+                originalName = data.ten || ''; // Lưu tên ban đầu
+                checkChanges(); // Kiểm tra thay đổi ban đầu
+            })
+            .catch(error => {
+                console.error('Có lỗi xảy ra:', error);
+                alert('Có lỗi xảy ra: ' + error.message);
+            });
+    }
+
+    function checkChanges() {
+        const currentName = document.getElementById('tenMauSac').value.trim();
+        const updateButton = document.getElementById('updateButton');
+
+        // So sánh tên hiện tại với tên ban đầu
+        if (currentName === originalName) {
+            updateButton.disabled = true; // Vô hiệu hóa nút nếu không thay đổi
+        } else {
+            updateButton.disabled = false; // Kích hoạt nút nếu có thay đổi
+        }
+    }
+
+    // Thêm sự kiện cho input
+    document.getElementById('tenMauSac').addEventListener('input', checkChanges);
+
+
+    // Thêm hàm cập nhật
+    function updateShoeSoleNameMauSac() {
+        const id = document.getElementById('mauSacId').value;
+        let ten = document.getElementById('tenMauSac').value;
+
+        // Loại bỏ khoảng trắng ở đầu và cuối
+        ten = ten.trim();
+
+        const errorMessage = document.getElementById('error-message');
+        const lengthErrorMessage = document.getElementById('length-error-message');
+        const duplicateErrorMessage = document.getElementById('duplicate-error-message');
+
+        // Reset thông báo lỗi
+        errorMessage.style.display = 'none';
+        lengthErrorMessage.style.display = 'none';
+        duplicateErrorMessage.style.display = 'none';
+
+        // Kiểm tra tính hợp lệ
+        if (!ten) {
+            errorMessage.style.display = 'block';
+            return;
+        }
+
+        if (ten.length > 20) {
+            lengthErrorMessage.style.display = 'block';
+            return;
+        }
+
+        // Kiểm tra tên trùng
+        fetch(`/checkTenMauSac?ten=${encodeURIComponent(ten)}`)
+            .then(response => response.json())
+            .then(exists => {
+                if (exists) {
+                    duplicateErrorMessage.style.display = 'block';
+                    return;
+                }
+
+                // Hiển thị xác nhận trước khi cập nhật
+                Swal.fire({
+                    title: 'Bạn có muốn cập nhật không?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Có',
+                    cancelButtonText: 'Không'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const updatedDeGiay = {ten};
+
+                        fetch(`/updateMauSac/${id}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(updatedDeGiay),
+                        })
+                            .then(response => {
+                                if (response.ok) {
+                                    // Lưu thông báo vào sessionStorage
+                                    sessionStorage.setItem('successMessage', 'Cập nhật thành công!');
+                                    // Chuyển hướng
+                                    window.location.href = '/listMauSac';
+                                } else {
+                                    throw new Error('Cập nhật thất bại');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Có lỗi xảy ra:', error);
+                                alert('Có lỗi xảy ra: ' + error.message);
+                            });
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Có lỗi xảy ra:', error);
+                alert('Có lỗi xảy ra: ' + error.message);
+            });
+    }
+
+
+</script>
+<!--message1-->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const successMessage = sessionStorage.getItem('successMessage');
+        if (successMessage) {
+            // Hiển thị thông báo ở góc bên phải màn hình
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: successMessage
+            });
+
+            // Xóa thông báo khỏi sessionStorage sau khi hiển thị
+            sessionStorage.removeItem('successMessage');
+        }
     });
 </script>

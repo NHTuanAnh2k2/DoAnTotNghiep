@@ -164,7 +164,7 @@
                                     <tr>
                                         <th>STT</th>
                                         <th>Tên đế giày</th>
-                                        <th>Người tạo</th>
+                                        <th>Ngày tạo</th>
                                         <th>Thao tác</th>
                                     </tr>
                                     </thead>
@@ -179,11 +179,16 @@
                                         </td>
                                         <td th:text="${#temporals.format(dg.ngaytao, 'dd-MM-yyyy HH:mm:ss')}"></td>
                                         <td>
-                                            <a style="color: rgb(249,72,42); font-size: 25px;" th:data-id="${dg.id}" data-bs-toggle="modal" data-bs-target="#capnhatdegiay" onclick="fillShoeSoleName(this)">
-                                                <i class="bi bi-eye-fill"></i>
+                                            <a style="color: rgb(249,72,42); font-size: 25px;" th:data-id="${dg.id}"
+                                               data-bs-toggle="modal" data-bs-target="#capnhatdegiay"
+                                               onclick="fillShoeSoleName(this)">
+                                                <i class="bi bi-pencil-square"></i>
                                             </a>
-                                            <form th:action="@{/update/{id}(id=${dg.id})}" method="post" style="display: inline;">
-                                                <button type="submit" style="background: none; border: none; color: rgb(249,72,42); padding-left: 10px" onclick="return confirm('Bạn có muốn xóa không?')">
+                                            <form th:action="@{/update/{id}(id=${dg.id})}" method="post"
+                                                  style="display: inline;">
+                                                <button type="submit"
+                                                        style="background: none; border: none; color: rgb(249,72,42); padding-left: 10px"
+                                                        onclick="return confirm('Bạn có muốn xóa không?')">
                                                     <a style="color: rgb(249,72,42); font-size: 25px;">
                                                         <i class="bi bi-trash3-fill"></i>
                                                     </a>
@@ -195,28 +200,39 @@
                                     </tfoot>
                                 </table>
                                 <!-- Modal -->
-                                <div class="modal fade" id="capnhatdegiay" tabindex="-1" aria-labelledby="capnhatdegiayLabel" aria-hidden="true">
+                                <div class="modal fade" id="capnhatdegiay" tabindex="-1"
+                                     aria-labelledby="capnhatdegiayLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="capnhatdegiayLabel">Cập nhật đế giày</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <input type="hidden" id="deGiayId">
                                                 <div class="mb-3">
                                                     <label for="tenDeGiay" class="form-label">Tên đế giày</label>
                                                     <input type="text" class="form-control" id="tenDeGiay">
-                                                    <div id="error-message" class="text-danger" style="display: none;">Tên đế giày không được để trống.</div>
-                                                    <div id="length-error-message" class="text-danger" style="display: none;">Tên đế giày không được vượt quá 10 ký tự.</div>
-                                                    <div id="duplicate-error-message" class="text-danger" style="display: none;">Tên đế giày đã tồn tại.</div>
+                                                    <div id="error-message" class="text-danger" style="display: none;">
+                                                        Tên đế giày không được để trống.
+                                                    </div>
+                                                    <div id="length-error-message" class="text-danger"
+                                                         style="display: none;">Tên đế giày không được vượt quá 20 ký
+                                                        tự.
+                                                    </div>
+                                                    <div id="duplicate-error-message" class="text-danger"
+                                                         style="display: none;">Tên đế giày đã tồn tại.
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-<!--                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>-->
-                                                <button type="button" class="btn btn-primary" onclick="updateShoeSoleName()"
+                                                <!--                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>-->
+                                                <button type="button" class="btn btn-primary"
+                                                        onclick="updateShoeSoleName()"
                                                         style="background-color:rgb(249,72,42);color: white;border-color:rgb(249,72,42)"
-                                                        id="updateButton" disabled>Cập nhật</button>
+                                                        id="updateButton" disabled>Cập nhật
+                                                </button>
 
                                             </div>
                                         </div>
@@ -321,7 +337,6 @@
 
     /*]]>*/
 </script>
-
 <!--tìm-->
 <script>
     // Lắng nghe sự kiện change trong các trường input
@@ -332,7 +347,7 @@
         document.getElementById('searchForm').submit(); // Gửi form khi có sự thay đổi
     });
 </script>
-
+<!--xóa-->
 <script>
     function xoa() {
         if (confirm("Ban co muon xoa khong")) {
@@ -343,9 +358,7 @@
         }
     }
 </script>
-
-
-
+<!--cập nhật-->
 <script>
     let originalName = ''; // Biến toàn cục để lưu tên ban đầu
 
@@ -435,7 +448,7 @@
                     cancelButtonText: 'Không'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        const updatedDeGiay = { ten };
+                        const updatedDeGiay = {ten};
 
                         fetch(`/updateDeGiay/${id}`, {
                             method: 'PUT',
@@ -469,7 +482,7 @@
 
 
 </script>
-
+<!--message1-->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const successMessage = sessionStorage.getItem('successMessage');
@@ -497,8 +510,7 @@
         }
     });
 </script>
-
-
+<!--message2-->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const successMessage = sessionStorage.getItem('successMessage2');

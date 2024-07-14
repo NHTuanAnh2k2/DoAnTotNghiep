@@ -26,6 +26,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
@@ -71,6 +72,8 @@ public class hoaDonController {
     LichSuHoaDonService daoLS;
     @Autowired
     HoaDonService dao;
+    @Autowired
+    NguoiDungImpl1 nguoiDung;
     Integer idhdshowdetail = null;
     HoaDonCustom hdSaveInfoSeachr = new HoaDonCustom();
     List<String> lstdiachigiao = new ArrayList<>();
@@ -572,7 +575,7 @@ public class hoaDonController {
 
     //xác nhận đơn
     @GetMapping("xac-nhan-don")
-    public String xacNhanHD(Model model, @ModelAttribute("ghichu") LichSuHoaDonCustom noidung) {
+    public String xacNhanHD(Model model, @ModelAttribute("ghichu") LichSuHoaDonCustom noidung, RedirectAttributes redirectAttributes) {
         String ngaytao = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
         HoaDon hoadon = new HoaDon();
         hoadon.setId(idhdshowdetail);
@@ -588,6 +591,7 @@ public class hoaDonController {
         List<HoaDon> lstSaveHD = dao.timTheoID(idhdshowdetail);
         HoaDon hdTT = lstSaveHD.get(0);
         Integer trangthaiset = hdTT.getTrangthai() + 1;
+
         if (trangthaiset == 4) {
             List<PhuongThucThanhToan> lstpttim = daoPT.timTheoHoaDon(hdTT);
             for (PhuongThucThanhToan a : lstpttim
@@ -621,6 +625,16 @@ public class hoaDonController {
 
         //
         hdTT.setTrangthai(trangthaiset);
+        if (trangthaiset == 2) {
+            String to = hdTT.getEmail();
+            String mahdemail = hdTT.getMahoadon();
+            String ngaytaoemail = Timestamp.valueOf(ngaytao) + "";
+            String subject = "Chúc mừng bạn đã đặt thành công đơn hàng của T&T shop";
+            String mailType = "";
+            String mailContent = "Mã vận đơn của bạn là: " + mahdemail + "\nNgày tạo: " + ngaytaoemail;
+            nguoiDung.sendEmail(to, subject, mailType, mailContent);
+            redirectAttributes.addFlashAttribute("sendmail", true);
+        }
         dao.capNhatHD(hdTT);
         lshd.setTrangthai(trangthaiset);
         daoLS.add(lshd);
@@ -910,7 +924,7 @@ public class hoaDonController {
 
     @ModelAttribute("thongtingiaohang")
     public DiaChiGiaoCaseBanHangOff diachigiaohangtaiquay() {
-        return new DiaChiGiaoCaseBanHangOff(null, null, null, "chọn tỉnh", "chọn huyện", "chọn xã", null, null, null, null,"ta..",null);
+        return new DiaChiGiaoCaseBanHangOff(null, null, null, "chọn tỉnh", "chọn huyện", "chọn xã", null, null, null, null, "ta..", null);
     }
 
 }

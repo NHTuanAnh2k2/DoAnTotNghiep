@@ -9,6 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface KichCoRepository extends JpaRepository<KichCo,Integer> {
+
+    boolean existsByTen(String ten);
+
     List<KichCo> getKichCoByTenOrTrangthai(String ten, Boolean trangthai);
 
     List<KichCo> findAllByOrderByNgaytaoDesc();

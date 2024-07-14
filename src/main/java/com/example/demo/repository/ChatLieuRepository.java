@@ -11,6 +11,8 @@ import java.util.List;
 
 @Repository
 public interface ChatLieuRepository extends JpaRepository<ChatLieu, Integer> {
+    boolean existsByTen(String ten);
+
     @Query("SELECT c FROM ChatLieu c WHERE c.ten LIKE %?1% OR c.trangthai = ?2")
     List<ChatLieu> findByTenVaTrangThai(String ten, Boolean trangthai);
 
