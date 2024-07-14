@@ -533,9 +533,11 @@
     // });
     var token= document.getElementById("kiemtratokendangnhap").value;
     if(token !== null){
+        document.getElementById("left2").style.display = "block";
         document.getElementById("left1").style.display = "none";
         document.getElementById("left3").style.display = "none";
     }else{
+        document.getElementById("left1").style.display = "block";
         document.getElementById("left2").style.display = "none";
         document.getElementById("left3").style.display = "none";
     }
