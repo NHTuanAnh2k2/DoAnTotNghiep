@@ -3,6 +3,7 @@ package com.example.demo.info;
 import com.example.demo.entity.NguoiDung;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
