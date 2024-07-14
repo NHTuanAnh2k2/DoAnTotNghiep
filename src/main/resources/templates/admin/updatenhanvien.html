@@ -45,6 +45,11 @@
         height: 100%;
         border-radius: 50%; /* Hình ảnh sẽ được làm tròn */
     }
+    #uploadedImage1 {
+        width: 100%; /* Kích thước hình ảnh sẽ phù hợp với kích thước của ô tròn */
+        height: 100%;
+        border-radius: 50%; /* Hình ảnh sẽ được làm tròn */
+    }
 </style>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper" >
@@ -69,27 +74,16 @@
                                 <path fill-rule="evenodd"
                                       d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6 6a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z"/>
                             </svg>
-                            THÊM NHÂN VIÊN
+                            CẬP NHẬT NHÂN VIÊN
                         </h1>
-                        <h1 class="text-center">
-                            Ảnh đại diện
-                        </h1>
+<!--                        <h1 class="text-center">-->
+<!--                            Ảnh đại diện-->
+<!--                        </h1>-->
                     </div>
                 </div>
             </div><!-- /.container-fluid -->
         </section>
         <!---filter-->
-        <section class="content" style="margin-left: 450px">
-            <div class="file-input-wrapper">
-                <input type="file" id="fileInput" class="file-input">
-                <label for="fileInput" class="file-input-label">
-                    <span>+</span>
-                    <span>Upload</span>
-                </label>
-                <img id="uploadedImage" src="" alt="Uploaded Image" style="display: none;">
-
-            </div>
-        </section>
         <br>
         <section class="content">
             <div class="container-fluid">
@@ -100,92 +94,214 @@
                             <div class="card-body">
                                 <section class="content">
                                     <div class="container">
-                                        <form th:method="post" th:object="${nd}" th:action="@{/updateNhanVien/{id}(id=${nd.id})}">
+                                        <form th:method="post"  id="addForm" th:object="${nd}" th:action="@{/updateNhanVien/{id}(id=${nd.id})}" enctype="multipart/form-data" onsubmit="return validate(event)">
+                                            <section class="content">
+                                                <div class="row">
+                                                    <h1 class="text-center">
+                                                        Ảnh đại diện
+                                                    </h1>
+                                                </div>
+                                                <div class=" d-flex justify-content-center align-items-center">
+                                                    <div class="file-input-wrapper">
+<!--                                                        <div th:if="*{anh == null}">-->
+<!--                                                        <input type="file" id="fileInput" class="file-input" name="anh">-->
+<!--                                                        <label for="fileInput" class="file-input-label">-->
+<!--                                                            <span>+</span>-->
+<!--                                                            <span>Upload</span>-->
+<!--                                                        </label>-->
+<!--                                                        <img id="uploadedImage"  src="" alt="Uploaded Image" style="display: none;">-->
+<!--                                                        </div>-->
+                                                        <img id="uploadedImage1" th:if="*{anh != null}" th:src="@{'/upload' + *{anh.substring(anh.lastIndexOf('upload') + 6)}}">
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <!--                                        <button id="openCamera"  class="btn btn-primary">Quét mã CCCD</button>-->
+                                            <div class="modal"  id="cameraModal" th:width="200px" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button class="close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <video id="cameraStream" autoplay width="100%"></video>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--                                        <form id="addItemForm" th:object="${nd}">-->
+                                            <!--                                        <form th:method="post"  id="addForm" th:object="${nd}" th:action="@{/addnv}">-->
                                             <div class="d-flex">
-                                                <div>
-                                                    <p>Tên nhân viên:
-                                                        <input placeholder="Tên nhân viên" id="name" name="name" class="form-control"  th:field="*{hovaten}"
-                                                               style="width: 500px" th:errorclass="is-invalid">
-                                                    </p>
-                                                    <p th:if="${#fields.hasErrors('hovaten')}" th:errors="*{hovaten}" style="width: 500px; color: red"></p>
+                                                <div class="align-items-center col-lg-6 col-md-6">
+                                                    <div class="col-auto">
+                                                        <label class="col-form-label">Tên nhân viên:</label>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <input placeholder="Tên nhân viên" id="inputTen" name="name" th:field="*{hovaten}" th:errorclass="is-invalid" class="form-control">
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <!--                                                    <p th:if="${#fields.hasErrors('hovaten')}" class="error" th:errors="*{hovaten}" style="width: 500px; color: red"></p>-->
+                                                        <p style="color: red; font-weight: initial;" id="errorTen"></p>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <p style="margin-left: 20px">Ngày sinh:
-                                                        <input type="date" class="form-control"
-                                                               style="width: 500px" th:field="*{ngaysinh}"  placeholder="dd/MM/yyyy" th:errorclass="is-invalid">
-                                                    </p>
-                                                    <p th:if="${#fields.hasErrors('ngaysinh')}" th:errors="*{ngaysinh}" style="width: 500px; color: red"></p>
+                                                <div class="align-items-center col-lg-6 col-md-6">
+                                                    <div class="col-auto">
+                                                        <label class="col-form-label">Ngày sinh:</label>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <input class="form-control" id="inputNgSinh"  onkeydown="return false" type="date" th:field="*{ngaysinh}"  placeholder="dd/MM/yyyy" th:errorclass="is-invalid">
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <!--                                                    <p th:if="${#fields.hasErrors('ngaysinh')}" class="error" th:errors="*{ngaysinh}" style="width: 500px; color: red"></p>-->
+                                                        <p style="color: red; font-weight: initial;" id="errorNgSinh"></p>
+                                                    </div>
                                                 </div>
-
                                             </div>
                                             <div class="d-flex">
-                                                <div>
-                                                    <p>Căn cước công dân:
-                                                        <input placeholder="Căn cước công dân" id="citizenID" name="citizenID" class="form-control"
-                                                               style="width: 500px" th:field="*{cccd}" th:errorclass="is-invalid"></p>
-                                                    <p th:if="${#fields.hasErrors('cccd')}" th:errors="*{cccd}" style="width: 500px; color: red"></p>
+                                                <div class="align-items-center col-lg-6 col-md-6">
+                                                    <div class="col-auto">
+                                                        <label class="col-form-label">Căn cước công dân:</label>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <input class="form-control" placeholder="Căn cước công dân" id="inputCCCD" name="citizenID" th:field="*{cccd}" th:errorclass="is-invalid">
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <!--                                                    <p th:if="${#fields.hasErrors('cccd')}" class="error" th:errors="*{cccd}" style="width: 500px; color: red"></p>-->
+                                                        <p style="color: red; font-weight: initial;" id="errorCCCD"></p>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <p style="margin-left: 20px">Giới tính:
-                                                        <br>
-                                                        <input type="radio" value="true" th:field="*{gioitinh}" style="margin-top: 10px">Nam
+                                                <div class="align-items-center col-lg-6 col-md-6">
+                                                    <div class="col-auto">
+                                                        <label class="col-form-label">Giới tính:</label>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <input type="radio" value="true" id="radioGT" th:field="*{gioitinh}" style="margin-top: 10px">Nam
                                                         <input type="radio" value="false" th:field="*{gioitinh}" style="margin-left: 10px;margin-top: 10px">Nữ
-                                                    </p>
-                                                    <p th:if="${#fields.hasErrors('gioitinh')}" th:errors="*{gioitinh}" style="width: 500px; color: red"></p>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <p th:if="${#fields.hasErrors('gioitinh')}" class="error" th:errors="*{gioitinh}" style="width: 500px; color: red"></p>
+                                                    </div>
                                                 </div>
                                             </div>
-
                                             <div class="d-flex">
-                                                <div>
-                                                    <p>Email:
-                                                        <input placeholder="Email" class="form-control"
-                                                               style="width: 500px" th:field="*{email}" th:errorclass="is-invalid"></p>
-                                                    <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="width: 500px; color: red"></p>
+                                                <div class="align-items-center col-lg-6 col-md-6">
+                                                    <div class="col-auto">
+                                                        <label class="col-form-label">Email:</label>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <input class="form-control" id="inputEmail" placeholder="Email" th:field="*{email}" th:errorclass="is-invalid">
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <!--                                                    <p th:if="${#fields.hasErrors('email')}" class="error" th:errors="*{email}" style="width: 500px; color: red"></p>-->
+                                                        <p style="color: red; font-weight: initial;" id="errorEmail"></p>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <p style="margin-left: 20px">Số điện thoại:
-                                                        <input placeholder="Số điện thoại" class="form-control"
-                                                               style="width: 500px" th:field="*{sodienthoai}" th:errorclass="is-invalid"></p>
-                                                    <p th:if="${#fields.hasErrors('sodienthoai')}" th:errors="*{sodienthoai}" style="width: 500px; color: red"></p>
+                                                <div class="align-items-center col-lg-6 col-md-6">
+                                                    <div class="col-auto">
+                                                        <label class="col-form-label">Số điện thoại:</label>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <input class="form-control" id="inputSdt" placeholder="Số điện thoại" th:field="*{sodienthoai}" th:errorclass="is-invalid">
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <!--                                                    <p th:if="${#fields.hasErrors('sodienthoai')}" class="error" th:errors="*{sodienthoai}" style="width: 500px; color: red"></p>-->
+                                                        <p style="color: red; font-weight: initial;" id="errorSdt"></p>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div th:object="${dc}">
                                                 <div class="d-flex">
-                                                    <div>
-                                                        <!-- Combobox cho Tỉnh/Thành phố -->
-                                                        <p>Tỉnh/Thành phố:
-                                                            <select class="form-select form-select-sm mb-3" id="city" th:field="*{tinhthanhpho}"  aria-label=".form-select-sm" style="width: 500px">
+                                                    <div class="align-items-center col-lg-6 col-md-6">
+                                                        <div class="col-auto">
+                                                            <label class="col-form-label">Tỉnh/Thành phố:</label>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <select class="form-control form-select form-select-sm mb-3" id="city" th:field="*{tinhthanhpho}"  aria-label=".form-select-sm">
                                                                 <option value="" th:text="*{tinhthanhpho}" th:value="*{tinhthanhpho}" selected>Chọn tỉnh thành</option>
-                                                            </select></p>
-                                                        <p th:if="${#fields.hasErrors('tinhthanhpho')}" th:errors="*{tinhthanhpho}" style="width: 500px; color: red"></p>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <p style="color: red; font-weight: initial;" id="errorTinh"></p>
+                                                            <!--                                                    <p th:if="${#fields.hasErrors('tinhthanhpho')}" class="error" th:errors="*{tinhthanhpho}" style="width: 500px; color: red"></p>-->
+                                                        </div>
                                                     </div>
-                                                    <div>
-                                                        <p style="margin-left: 20px">Quận/Huyện:
-                                                            <select class="form-select form-select-sm mb-3" id="district"  th:field="*{quanhuyen}" aria-label=".form-select-sm" style="width: 500px">
+                                                    <div class="align-items-center col-lg-6 col-md-6">
+                                                        <div class="col-auto">
+                                                            <label class="col-form-label">Quận/Huyện:</label>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <select class="form-control form-select form-select-sm mb-3" id="district"  th:field="*{quanhuyen}" aria-label=".form-select-sm">
                                                                 <option value="" th:text="*{quanhuyen}" th:value="*{quanhuyen}" selected>Chọn quận huyện</option>
-                                                            </select></p>
-                                                        <p th:if="${#fields.hasErrors('quanhuyen')}" th:errors="*{quanhuyen}" style="width: 500px; color: red"></p>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <p style="color: red; font-weight: initial;" id="errorQuan"></p>
+                                                            <!--                                                    <p th:if="${#fields.hasErrors('quanhuyen')}" class="error" th:errors="*{quanhuyen}" style="width: 500px; color: red"></p>-->
+                                                        </div>
                                                     </div>
                                                 </div>
 
                                                 <div class="d-flex">
-                                                    <div>
-                                                        <p>Xã/Phường:
-                                                            <select class="form-select form-select-sm" id="ward"  th:field="*{xaphuong}" aria-label=".form-select-sm" style="width: 500px">
+                                                    <div class="align-items-center col-lg-6 col-md-6">
+                                                        <div class="col-auto">
+                                                            <label class="col-form-label">Xã/Phường:</label>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <select class="form-control form-select form-select-sm" id="ward"  th:field="*{xaphuong}" aria-label=".form-select-sm">
                                                                 <option value="" th:text="*{xaphuong}" th:value="*{xaphuong}" selected>Chọn phường xã</option>
-                                                            </select></p>
-                                                        <p th:if="${#fields.hasErrors('xaphuong')}" th:errors="*{xaphuong}" style="width: 500px; color: red"></p>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <p style="color: red; font-weight: initial;" id="errorPhuong"></p>
+                                                            <!--                                                    <p th:if="${#fields.hasErrors('xaphuong')}" class="error" th:errors="*{xaphuong}" style="width: 500px; color: red"></p>-->
+                                                        </div>
                                                     </div>
-                                                    <div>
-                                                        <p style="margin-left: 20px">Tên Đường:
-                                                            <input th:field="*{tenduong}" placeholder="Tên Đường" class="form-control"
-                                                                   style="width: 500px"></p>
-                                                        <p th:if="${#fields.hasErrors('tenduong')}" th:errors="*{tenduong}" style="width: 500px; color: red"></p>
+                                                    <div class="align-items-center col-lg-6 col-md-6">
+                                                        <div class="col-auto">
+                                                            <label class="col-form-label">Địa chỉ cụ thể:</label>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <input class="form-control" th:field="*{tenduong}" id="inputDuong" placeholder="Tên Đường" th:errorclass="is-invalid">
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <p style="color: red; font-weight: initial;" id="errorDuong"></p>
+                                                            <!--                                                    <p th:if="${#fields.hasErrors('tenduong')}" class="error" th:errors="*{tenduong}" style="width: 500px; color: red"></p>-->
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div th:object="${nv}">
+                                                <div class="d-flex">
+                                                    <div class="align-items-center col-lg-6 col-md-6">
+                                                        <div class="col-auto">
+                                                            <label class="col-form-label">Vai trò:</label>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <input type="radio" value="true" id="radioVaitro"  th:field="*{vaitro}" style="margin-top: 10px"  checked>Quản lý
+                                                            <input type="radio" value="false" th:field="*{vaitro}" style="margin-left: 10px;margin-top: 10px">Nhân viên
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <!--                                                        <p th:if="${#fields.hasErrors('vaitro')}" class="error" th:errors="*{vaitro}" style="width: 500px; color: red"></p>-->
+                                                        </div>
+                                                    </div>
+                                                    <div class="align-items-center col-lg-6 col-md-6">
+                                                        <div class="col-auto">
+                                                            <label class="col-form-label">Trạng thái:</label>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <select class="form-control form-select form-select-sm" th:field="*{trangthai}" aria-label=".form-select-sm">
+                                                                <option value="1" selected>Làm việc</option>
+                                                                <option value="0">Nghỉ làm</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <!--                                                        <p th:if="${#fields.hasErrors('trangthai')}" class="error" th:errors="*{trangthai}" style="width: 500px; color: red"></p>-->
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button class="btn btn-primary" onclick="confirmUpdate()" >Cập nhật nhân viên</button>
-                                            <button class="btn btn-danger"  onclick="goBack()">Thoát</button>
+                                            <button class="btn btn-primary" style="margin-top: 20px"  >Cập nhật nhân viên</button>
+                                            <button class="btn btn-danger" style="margin-top: 20px"  onclick="goBack()">Thoát</button>
                                         </form>
                                     </div>
                                 </section>
@@ -265,53 +381,8 @@
     }
 </script>
 <script>
-    function confirmUpdate() {
-        // Sử dụng SweetAlert2 thay vì hộp thoại confirm
-        Swal.fire({
-            title: 'Bạn có muốn update không?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Có',
-            cancelButtonText: 'Không'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.onmouseenter = Swal.stopTimer;
-                        toast.onmouseleave = Swal.resumeTimer;
-                    }
-                });
-
-                Toast.fire({
-                    icon: "success",
-                    title: "Update thành công!"
-                });
-
-                setTimeout(function () {
-                    document.getElementById('addForm').submit();
-                    window.location.href = 'admin/qlnhanvien';
-                }, 3000);
-
-            } else  if(result.cancelButtonText){
-                // Nếu người dùng chọn Không, đóng hộp thoại và không thực hiện hành động nào
-                // Swal.fire('Đã hủy', 'Dữ liệu không được thêm vào.', 'info');
-                document.getElementById('addForm').addEventListener('submit', function(event) {
-                    event.preventDefault(); // Ngăn chặn hành động mặc định của sự kiện submit
-                    // Các xử lý khác có thể được thực hiện ở đây
-                });
-                return false;
-            }
-        });
-        return false;
-    }
     function goBack() {
-        window.location.href = 'admin/qlnhanvien';
+        window.location.href = '/admin/qlnhanvien';
     }
 </script>
 
@@ -331,6 +402,289 @@
 
         reader.readAsDataURL(file);
     });
+</script>
+<script>
+    var list;
+    document.addEventListener("DOMContentLoaded", function() {
+        // Đặt giá trị radio button mặc định
+        // document.getElementById("radioGT").checked = true;
+        // document.getElementById("radioVaitro").checked = true;
+        list = /*[[${list}]]*/ '[]';
+    });
+    function checkNhieuKhoangTrang(str) {
+        // Sử dụng biểu thức chính quy để tìm các mẫu có ít nhất hai khoảng trắng liên tiếp giữa các từ
+        return /\s{2,}/.test(str.trim());
+    }
+    function checkKhongPhaiChuCai(str) {
+        // Biểu thức chính quy để kiểm tra bất kỳ ký tự nào không phải là chữ cái tiếng Việt có dấu hoặc chữ cái Latinh không dấu
+        const regex = /[^a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚờợứừửữựỳỵỷỹỪừựÙúỦửỤụỴỳỵỷỹẠ-ỹ\s]/;
+        return regex.test(str);
+    }
+    function checkDinhDangNgayThang(str) {
+        // Biểu thức chính quy kiểm tra định dạng DD/MM/YYYY với năm có đúng 4 chữ số
+        const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+        return regex.test(str);
+    }
+    function checkDinhDangCCCD(str) {
+        // Biểu thức chính quy kiểm tra số CCCD bắt đầu từ 0 và có 12 chữ số
+        const regex = /^0\d{11}$/;
+        return regex.test(str);
+    }
+    function checkDinhDangEmail(email) {
+        // Biểu thức chính quy kiểm tra định dạng email
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    }
+    function checkDinhDangSDT(str) {
+        // Biểu thức chính quy kiểm tra số điện thoại bắt đầu từ 0 và có 10 chữ số
+        const regex = /^0\d{9}$/;
+        return regex.test(str);
+    }
+    function kiemTraDu18Tuoi(ngaySinh) {
+        const [year, month, day] = ngaySinh.split('-').map(Number);
+
+        // Tạo ngày đủ 18 tuổi từ ngày sinh
+        const ngaySinhDate = new Date(year, month - 1, day);
+        const ngayDu18Tuoi = new Date(ngaySinhDate);
+        ngayDu18Tuoi.setFullYear(ngayDu18Tuoi.getFullYear() + 18);
+
+        // Lấy ngày hiện tại và đặt thời gian về đầu ngày
+        const ngayHienTai = new Date();
+        ngayHienTai.setHours(0, 0, 0, 0);
+
+        // So sánh ngày hiện tại với ngày đủ 18 tuổi
+        return ngayHienTai >= ngayDu18Tuoi;
+    }
+    function validate(event){
+        event.preventDefault();
+        // const list = /*[[${items2}]]*/ '[]';
+        console.log("list", list );
+        var inputTen=document.getElementById("inputTen").value;
+        var errorTen=document.getElementById("errorTen");
+        var isTenValid = true;
+        if(inputTen.trim() === ""){
+            errorTen.innerText = "Tên nhân viên không được để trống!";
+            document.getElementById("inputTen").style.border="1.2px solid red";
+            isTenValid = false;
+        }
+        if(inputTen.trim().length > 100){
+            errorTen.innerText = "Tên nhân viên không được quá 100 kí tự";
+            document.getElementById("inputTen").style.border="1.2px solid red";
+            isTenValid = false;
+        }
+        if(inputTen.trim().length > 0){
+            if(checkNhieuKhoangTrang(inputTen)){
+                errorTen.innerText = "Giữa các từ không được nhiều hơn 1 khoảng trắng!";
+                document.getElementById("inputTen").style.border="1.2px solid red";
+                isTenValid = false;
+            }
+        }
+        if(inputTen.trim().length > 0){
+            if(checkKhongPhaiChuCai(inputTen) == true){
+                errorTen.innerText = "Tên nhân viên chỉ chứa ký tự";
+                document.getElementById("inputTen").style.border="1.2px solid red";
+                isTenValid = false;
+            }
+        }
+        if(isTenValid){
+            document.getElementById("inputTen").style.border="";
+            errorTen.innerText = "";
+        }
+        var inputNgSinh=document.getElementById("inputNgSinh").value;
+        var errorNgSinh=document.getElementById("errorNgSinh");
+        var isNgSinhValid = true;
+        const dateNow = new Date();
+        dateNow.setHours(0, 0, 0, 0);
+        const ngaySinhDate = new Date(inputNgSinh);
+        if (inputNgSinh === "") {
+            document.getElementById("inputNgSinh").style.border="1.2px solid red";
+            errorNgSinh.innerText = "Ngày sinh không được để trống!";
+            isNgSinhValid = false;
+        }else if(ngaySinhDate >= dateNow){
+            document.getElementById("inputNgSinh").style.border="1.2px solid red";
+            errorNgSinh.innerText = "Ngày sinh phải là ngày trong quá khứ!";
+            isNgSinhValid = false;
+        }else if(kiemTraDu18Tuoi(inputNgSinh) == false){
+            document.getElementById("inputNgSinh").style.border="1.2px solid red";
+            errorNgSinh.innerText = "Nhân viên phải từ đủ 18 tuổi!";
+            isNgSinhValid = false;
+        }
+        if(isNgSinhValid){
+            document.getElementById("inputNgSinh").style.border="";
+            errorNgSinh.innerText = "";
+        }
+        var inputCCCD =document.getElementById("inputCCCD").value;
+        var errorCCCD=document.getElementById("errorCCCD");
+        var isCCCDValid = true;
+        if (inputCCCD.trim() === "") {
+            document.getElementById("inputCCCD").style.border="1.2px solid red";
+            errorCCCD.innerText = "CCCD không được để trống!";
+            isCCCDValid = false;
+        }else if(checkDinhDangCCCD(inputCCCD) == false){
+            document.getElementById("inputCCCD").style.border="1.2px solid red";
+            errorCCCD.innerText = "Sai định dạng CCCD!";
+            isCCCDValid = false;
+        }
+        if(isCCCDValid){
+            document.getElementById("inputCCCD").style.border="";
+            errorCCCD.innerText = "";
+        }
+        var inputEmail =document.getElementById("inputEmail").value;
+        var errorEmail=document.getElementById("errorEmail");
+        var isEmailValid = true;
+        if (inputEmail.trim() === "") {
+            document.getElementById("inputEmail").style.border="1.2px solid red";
+            errorEmail.innerText = "Email không được để trống!";
+            isEmailValid = false;
+        }else if(checkDinhDangEmail(inputEmail.trim()) == false){
+            document.getElementById("inputEmail").style.border="1.2px solid red";
+            errorEmail.innerText = "Sai định dạng Email!";
+            isEmailValid = false;
+        }else if(inputEmail.trim().length > 50){
+            document.getElementById("inputEmail").style.border="1.2px solid red";
+            errorEmail.innerText = "Email không được quá 50 kí tự!";
+            isEmailValid = false;
+        }
+        // for (var i = 0; i < list.length; i++) {
+        //     var obj = list[i];
+        //     if(inputEmail === obj.nguoidung.email){
+        //         errorEmail.innerText = "Email đã tồn tại!";
+        //         document.getElementById("inputEmail").style.border = "1.2px solid red";
+        //         isEmailValid = false;
+        //         break;
+        //     }
+        // }
+        if(isEmailValid){
+            document.getElementById("inputEmail").style.border="";
+            errorEmail.innerText = "";
+        }
+        var inputSdt =document.getElementById("inputSdt").value;
+        var errorSdt=document.getElementById("errorSdt");
+        var isSdtValid = true;
+        if (inputSdt.trim() === "") {
+            document.getElementById("inputSdt").style.border="1.2px solid red";
+            errorSdt.innerText = "Sđt không được để trống!";
+            isSdtValid = false;
+        }else if(checkDinhDangSDT(inputSdt.trim()) == false){
+            document.getElementById("inputSdt").style.border="1.2px solid red";
+            errorSdt.innerText = "Sai định dạng Sđt!";
+            isSdtValid = false;
+        }
+        // for (var i = 0; i < list.length; i++) {
+        //     var obj = list[i];
+        //     if(inputSdt.trim() === obj.nguoidung.SoDienThoai){
+        //         errorSdt.innerText = "Sđt đã tồn tại!";
+        //         document.getElementById("inputSdt").style.border = "1.2px solid red";
+        //         isSdtValid = false;
+        //         break;
+        //     }
+        // }
+        if(isSdtValid){
+            document.getElementById("inputSdt").style.border="";
+            errorSdt.innerText = "";
+        }
+
+        var cbbTinh =document.getElementById("city").value;
+        var errorTinh=document.getElementById("errorTinh");
+        var isTinhValid = true;
+        if (cbbTinh.trim() === "") {
+            document.getElementById("city").style.border="1.2px solid red";
+            errorTinh.innerText = "Vui lòng chọn Tỉnh/Thành Phố!";
+            isTinhValid = false;
+        }
+        if(isTinhValid){
+            document.getElementById("city").style.border="";
+            errorTinh.innerText = "";
+        }
+        var cbbQuan =document.getElementById("district").value;
+        var errorQuan=document.getElementById("errorQuan");
+        var isQuanValid = true;
+        if (cbbQuan.trim() === "") {
+            document.getElementById("district").style.border="1.2px solid red";
+            errorQuan.innerText = "Vui lòng chọn Quận/Huyện!";
+            isQuanValid = false;
+        }
+        if(isQuanValid){
+            document.getElementById("district").style.border="";
+            errorQuan.innerText = "";
+        }
+        var cbbHuyen =document.getElementById("ward").value;
+        var errorHuyen=document.getElementById("errorPhuong");
+        var isHuyenValid = true;
+        if (cbbHuyen.trim() === "") {
+            document.getElementById("ward").style.border="1.2px solid red";
+            errorHuyen.innerText = "Vui lòng chọn Phường/Xã!";
+            isHuyenValid = false;
+        }
+        if(isHuyenValid){
+            document.getElementById("ward").style.border="";
+            errorHuyen.innerText = "";
+        }
+        var inputDuong=document.getElementById("inputDuong").value;
+        var errorDuong=document.getElementById("errorDuong");
+        var isDuongValid = true;
+        if(inputDuong.trim() === ""){
+            errorDuong.innerText = "Địa chỉ cụ thể không được để trống!";
+            document.getElementById("inputDuong").style.border="1.2px solid red";
+            isDuongValid = false;
+        }else if(inputDuong.trim().length > 100){
+            errorDuong.innerText = "Địa chỉ cụ thể không được quá 100 kí tự";
+            document.getElementById("inputDuong").style.border="1.2px solid red";
+            isDuongValid = false;
+        }
+        if(isDuongValid){
+            document.getElementById("inputDuong").style.border="";
+            errorDuong.innerText = "";
+        }
+        console.log("tên: ",inputTen)
+        console.log("ngày sinh: ",inputNgSinh)
+        console.log("cccd: ",inputCCCD)
+        // console.log("GT: ",inputTen)
+        console.log("email: ",inputEmail)
+        console.log("sđt: ",inputSdt)
+        console.log("tp: ",cbbTinh)
+        console.log("quận: ",cbbQuan)
+        console.log("xã: ",cbbHuyen)
+        console.log("dc: ",inputDuong)
+        console.log("role: ",inputTen)
+        if(isTenValid && isNgSinhValid && isCCCDValid && isEmailValid && isSdtValid && isTinhValid && isQuanValid && isHuyenValid && isDuongValid){
+            Swal.fire({
+                title: 'Bạn có chắc chắn muốn cập nhật nhân viên không?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Có',
+                cancelButtonText: 'Không'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+
+                    // Toast.fire({
+                    //     icon: "success",
+                    //     title: "Thêm thành công!"
+                    // });
+
+                    setTimeout(function () {
+                        document.getElementById("addForm").submit();
+                    }, 500);
+                }
+            });
+            // Ngăn form được gửi đi ngay lập tức
+            return false;
+        }else{
+            return false;
+        }
+    }
 </script>
 <!--end-->
 </body>
