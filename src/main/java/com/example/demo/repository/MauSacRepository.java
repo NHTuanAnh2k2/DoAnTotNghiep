@@ -9,6 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface MauSacRepository extends JpaRepository<MauSac, Integer> {
+
+    boolean existsByTen(String ten);
+
     List<MauSac> getDeGiayByTenOrTrangthai(String ten, Boolean trangthai);
 
     List<MauSac> findAllByOrderByNgaytaoDesc();
