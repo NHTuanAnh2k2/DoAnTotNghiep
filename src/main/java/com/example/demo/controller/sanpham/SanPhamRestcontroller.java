@@ -17,13 +17,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 @RestController
 public class SanPhamRestcontroller {
     @Autowired
     SanPhamImp sanPhamImp;
 
     @Autowired
-     SanPhamRepositoty sanPhamRepositoty;
+    SanPhamRepositoty sanPhamRepositoty;
     @Autowired
     SanPhamChiTietRepository sanPhamChiTietRepository;
 
@@ -63,6 +64,37 @@ public class SanPhamRestcontroller {
             response.put("success", false);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
+    }
+
+
+    @GetMapping("/updateSanPham/{id}")
+    public ResponseEntity<Object[]> getSanPham(@PathVariable Integer id) {
+        List<Object[]> sanPhamList = sanPhamRepositoty.findById2(id);
+        if (!sanPhamList.isEmpty()) {
+            Object[] sanPham = sanPhamList.get(0);
+            return ResponseEntity.ok(sanPham);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+    @PutMapping("/updateSanPham/{id}")
+    public ResponseEntity<String> updateSanPham(@PathVariable Integer id, @RequestBody SanPham updatedSanPham) {
+        SanPham existingSanPham = sanPhamRepositoty.findById(id).orElse(null);
+        if (existingSanPham == null || updatedSanPham == null) {
+            return ResponseEntity.notFound().build();
+        }
+        existingSanPham.setTensanpham(updatedSanPham.getTensanpham());
+        sanPhamRepositoty.save(existingSanPham);
+        return ResponseEntity.ok("redirect:/listsanpham");
+    }
+
+
+    @GetMapping("/checkTenSanPham")
+    public ResponseEntity<Boolean> checkTenSanPham(@RequestParam String ten) {
+        boolean exists = sanPhamRepositoty.existsByTensanpham(ten);
+        return ResponseEntity.ok(exists);
     }
 
 }
