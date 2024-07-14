@@ -193,7 +193,7 @@
                 <p>Bạn đã có tài khoản?</p>
                 <a href="#" style="color: rgb(249,72,42); padding-left: 5px; text-decoration: none; text-transform: none;">Đăng nhập</a>
             </div>
-            <form id="formDiaChiKhachLe" th:action="@{/customer/thanh-toan-khach-le}" th:object="${diachikotaikhoan}" method="post" onsubmit="return validateFormDiaChiKhachLe(event)">
+            <form id="formDiaChiKhachLe" onsubmit="return validateFormDiaChiKhachLe(event)">
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="hovaten" placeholder="Họ và tên">
                     <label for="hovaten">Họ và tên</label>
@@ -219,28 +219,28 @@
                 <div class="d-flex justify-content-between mb-4">
                     <div class="form-floating" style="padding-right: 10px; width: 250px;">
                         <select class="form-select" id="tinh" aria-label="Floating label select example">
-                            <option selected>Tỉnh/Thành phố</option>
+                            <option value="" selected>Tỉnh/Thành phố</option>
                         </select>
                         <label for="tinh">Tỉnh/thành phố</label>
                         <div style="color: red; font-weight: initial;" id="errorTinh"></div>
                     </div>
                     <div class="form-floating" style="padding-right: 10px; width: 250px;">
                         <select class="form-select" id="huyen" aria-label="Floating label select example">
-                            <option selected>Quận/Huyện</option>
+                            <option value="" selected>Quận/Huyện</option>
                         </select>
                         <label for="huyen">Quận/huyện</label>
                         <div style="color: red; font-weight: initial;" id="errorHuyen"></div>
                     </div>
                     <div class="form-floating" style="width: 250px;">
                         <select class="form-select" id="xa" aria-label="Floating label select example">
-                            <option selected>Phường/Xã</option>
+                            <option value="" selected>Phường/Xã</option>
                         </select>
                         <label for="xa">Phường/xã</label>
                         <div style="color: red; font-weight: initial;" id="errorXa"></div>
                     </div>
                 </div>
                 <div class="d-flex justify-content-end mb-4">
-                    <button id="button_left1" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 40%; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">Tiếp tục đến phương thức thanh toán</button>
+                    <button onclick="layDiaChi()" type="submit" id="button_left1" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 40%; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">Tiếp tục đến phương thức thanh toán</button>
                 </div>
             </form>
         </div>
@@ -308,47 +308,64 @@
         <div id="left3" class="left3">
             <img class="logo" src="../dist/img/logo_bong2.jpg" height="70" width="130">
             <p style="color: red; margin: 0;padding: 0;">Mang đến sự tự tin trong bạn</p>
-            <h6 style="margin-top: 50px; margin-bottom: 25px;">PHƯƠNG THỨC VẬN CHUYỂN</h6>
-            <ul class="list-group">
-                <li class="list-group-item" style="width: 100%; height: 70px;">
-                    <div class="opciones-radio">
-                        <div class="form-group" style="padding-top: 7px;">
+            <form th:action="@{/customer/thanh-toan-online-khach-le}" th:object="${diachikotaikhoan}" method="post">
+                <h6 style="margin-top: 50px; margin-bottom: 25px;">PHƯƠNG THỨC VẬN CHUYỂN</h6>
+                <ul class="list-group">
+                    <li class="list-group-item" style="width: 100%; height: 70px;">
+                        <div class="opciones-radio">
+                            <div class="form-group" style="padding-top: 7px;">
                         <span class="opcion-radio">
                             <input type="radio" id="comida_mexicana" name="abc" checked>
                             <label for="comida_mexicana">Miễn phí vận chuyển cho đơn hàng 1,5 triệu</label>
                         </span>
+                            </div>
                         </div>
-                    </div>
-                </li>
-            </ul>
-            <h6 style="margin-top: 35px; margin-bottom: 25px;">PHƯƠNG THỨC THANH TOÁN</h6>
-            <ul class="list-group">
-                <li class="list-group-item" style="width: 100%; height: 70px;">
-                    <div class="opciones-radio">
-                        <div class="form-group" style="padding-top: 7px;">
+                    </li>
+                </ul>
+                <h6 style="margin-top: 35px; margin-bottom: 25px;">PHƯƠNG THỨC THANH TOÁN</h6>
+                <ul class="list-group">
+                    <li class="list-group-item" style="width: 100%; height: 70px;">
+                        <div class="opciones-radio">
+                            <div class="form-group" style="padding-top: 7px;">
                         <span class="opcion-radio">
                             <input type="radio" id="comida_mexicana1" name="pttt" checked>
                             <label for="comida_mexicana1">
                                 <img class="main-img" src="https://hstatic.net/0/0/global/design/seller/image/payment/cod.svg?v=6">
                                 Thanh toán khi nhận hàng (COD)</label>
                         </span>
+                            </div>
                         </div>
-                    </div>
-                </li>
-                <li class="list-group-item" style="width: 100%; height: 70px;">
-                    <div class="opciones-radio">
-                        <div class="form-group" style="padding-top: 7px;">
+                    </li>
+                    <li class="list-group-item" style="width: 100%; height: 70px;">
+                        <div class="opciones-radio">
+                            <div class="form-group" style="padding-top: 7px;">
                         <span class="opcion-radio">
                             <input type="radio" id="comida_mexicana2" name="pttt">
                             <label for="comida_mexicana2">Thanh toán qua ví điện tử VNPay</label>
                         </span>
+                            </div>
                         </div>
-                    </div>
-                </li>
-            </ul>
-            <div class="d-flex justify-content-end mb-4" style="margin-top: 30px;">
-                <button style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 40%; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">Hoàn tất đơn hàng</button>
-            </div>
+                    </li>
+                </ul>
+                <input type="hidden" id="hotennhan" th:field="*{hovaten}"  value="">
+                <input type="hidden" id="emailnhan" th:field="*{email}" value="">
+                <input type="hidden" id="sdtnhan" th:field="*{sodienthoai}" value="">
+                <input type="hidden" id="diachinhan" th:field="*{diachicuthe}" value="">
+                <input type="hidden" id="tinhnhan" th:field="*{tinhthanhpho}" value="">
+                <input type="hidden" id="huyennhan" th:field="*{quanhuyen}" value="">
+                <input type="hidden" id="xanhan" th:field="*{phuongxa}" value="">
+
+                <input type="hidden" id="maCodeGiam1" name="maCodeGiam" value="">
+                <input type="hidden" id="phivanchuyen1" name="phivanchuyen" value="">
+                <input type="hidden" id="ngaygiaodukiens1" name="ngaygiaodukien" value="">
+                <input type="hidden" id="tongtien1" name="tongtien" value="">
+                <input type="hidden" id="tamtinh1" name="tamtinh" value="">
+                <input type="hidden" id="sotiengiam1" name="sotiengiam" value="">
+                <div class="d-flex justify-content-end mb-4" style="margin-top: 30px;">
+                    <button onclick="layGiaTri()" type="submit" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 40%; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">Hoàn tất đơn hàng</button>
+                </div>
+            </form>
+
         </div>
     </div>
     <div class="right">
@@ -491,6 +508,12 @@
                 <h4 style="color: #000;" id="tongtien"></h4>
             </div>
         </div>
+        <div class="d-flex justify-content-between align-items-center">
+            <p style="color: #000; font-size: 20px;">Ngày giao dự kiến</p>
+            <div style="display: flex; align-items: center;">
+                <h7 style="color: #000;" id="ngaygiaodukiens" ></h7>
+            </div>
+        </div>
         <div style="position: relative; padding: 10px 0; color: #666;">
             <div style="position: relative; z-index: 1;text-align: center;">
                 <span style="background: #f2f2f2; padding: 0 15px;">Lý do bạn chọn FSPORT</span>
@@ -532,10 +555,12 @@
     //     }
     // });
     var token= document.getElementById("kiemtratokendangnhap").value;
-    if(token !== null){
+    if(token !== ""){
+        document.getElementById("left2").style.display = "block";
         document.getElementById("left1").style.display = "none";
         document.getElementById("left3").style.display = "none";
     }else{
+        document.getElementById("left1").style.display = "block";
         document.getElementById("left2").style.display = "none";
         document.getElementById("left3").style.display = "none";
     }
@@ -553,9 +578,9 @@
     var citis = document.getElementById("tinh");
     var districts = document.getElementById("huyen");
     var wards = document.getElementById("xa");
-    var citis2 = document.getElementById("tinh2");
-    var districts2 = document.getElementById("huyen2");
-    var wards2 = document.getElementById("xa2");
+    // var citis2 = document.getElementById("tinh2");
+    // var districts2 = document.getElementById("huyen2");
+    // var wards2 = document.getElementById("xa2");
     var Parameter = {
         url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
         method: "GET",
@@ -573,7 +598,7 @@
             opt.text = x.Name;
             opt.setAttribute('data-id', x.Id);
             citis.options.add(opt);
-            citis2.options.add(opt);
+            // citis2.options.add(opt);
         }
         citis.onchange = function () {
             districts.length = 1;
@@ -590,21 +615,21 @@
                 }
             }
         };
-        citis2.onchange = function () {
-            districts2.length = 1;
-            wards2.length = 1;
-            if(this.options[this.selectedIndex].dataset.id != ""){
-                const result = data.filter(n => n.Id === this.options[this.selectedIndex].dataset.id);
-
-                for (const k of result[0].Districts) {
-                    var opt = document.createElement('option');
-                    opt.value = k.Name;
-                    opt.text = k.Name;
-                    opt.setAttribute('data-id', k.Id);
-                    districts2.options.add(opt);
-                }
-            }
-        };
+        // citis2.onchange = function () {
+        //     districts2.length = 1;
+        //     wards2.length = 1;
+        //     if(this.options[this.selectedIndex].dataset.id != ""){
+        //         const result = data.filter(n => n.Id === this.options[this.selectedIndex].dataset.id);
+        //
+        //         for (const k of result[0].Districts) {
+        //             var opt = document.createElement('option');
+        //             opt.value = k.Name;
+        //             opt.text = k.Name;
+        //             opt.setAttribute('data-id', k.Id);
+        //             districts2.options.add(opt);
+        //         }
+        //     }
+        // };
         districts.onchange = function () {
             wards.length = 1;
             const dataCity = data.filter((n) => n.Id === citis.options[citis.selectedIndex].dataset.id);
@@ -620,21 +645,21 @@
                 }
             }
         };
-        districts2.onchange = function () {
-            wards2.length = 1;
-            const dataCity = data.filter((n) => n.Id === citis2.options[citis2.selectedIndex].dataset.id);
-            if (this.options[this.selectedIndex].dataset.id != "") {
-                const dataWards = dataCity[0].Districts.filter(n => n.Id === this.options[this.selectedIndex].dataset.id)[0].Wards;
-
-                for (const w of dataWards) {
-                    var opt = document.createElement('option');
-                    opt.value = w.Name;
-                    opt.text = w.Name;
-                    opt.setAttribute('data-id', w.Id);
-                    wards2.options.add(opt);
-                }
-            }
-        };
+        // districts2.onchange = function () {
+        //     wards2.length = 1;
+        //     const dataCity = data.filter((n) => n.Id === citis2.options[citis2.selectedIndex].dataset.id);
+        //     if (this.options[this.selectedIndex].dataset.id != "") {
+        //         const dataWards = dataCity[0].Districts.filter(n => n.Id === this.options[this.selectedIndex].dataset.id)[0].Wards;
+        //
+        //         for (const w of dataWards) {
+        //             var opt = document.createElement('option');
+        //             opt.value = w.Name;
+        //             opt.text = w.Name;
+        //             opt.setAttribute('data-id', w.Id);
+        //             wards2.options.add(opt);
+        //         }
+        //     }
+        // };
     }
     function checkCoKhoangTrang(str) {
         // Sử dụng biểu thức chính quy để kiểm tra có khoảng trắng giữa hai từ không
@@ -803,7 +828,7 @@
                                         // Trả về chuỗi định dạng dd/mm/yyyy
                                         var days = day + '/' + month + '/' + year;
 
-                                        // document.getElementById('ngaygiaodukiens').innerHTML = days;
+                                         document.getElementById('ngaygiaodukiens').innerHTML = days;
                                         // phigiaohang
                                         feship(idHuyenreturn, idXareturn);
 
@@ -1231,6 +1256,42 @@
         const numberString = inputTamTinhValue.replace(/[^\d]/g, '');
         // Chuyển chuỗi đã làm sạch thành số nguyên
         return parseInt(numberString, 10);
+    }
+    function layGiaTri() {
+        var maCode = document.getElementById('maCodeGiam').innerText;
+        var phi = document.getElementById('phivanchuyen').innerText;
+        var tong = document.getElementById('tongtien').innerText;
+        var ngay = document.getElementById('ngaygiaodukiens').innerText;
+        var tamTinh = document.getElementById('tamTinh').innerText;
+        var soTienGiam = document.getElementById('soTienGiam').innerText;
+
+
+        // Đưa nội dung vào input hidden
+
+        document.getElementById('maCodeGiam1').value = maCode;
+        document.getElementById('phivanchuyen1').value = phi;
+        document.getElementById('tongtien1').value = tong;
+        document.getElementById('ngaygiaodukiens1').value = ngay;
+        document.getElementById('tamtinh1').value = tamTinh;
+        document.getElementById('sotiengiam1').value = soTienGiam;
+
+    }
+    function layDiaChi(){
+        var inputTen=document.getElementById("hovaten").value;
+        var inputEmail=document.getElementById("email").value;
+        var inputSDT=document.getElementById("sdt").value;
+        var inputDiaChi=document.getElementById("diachi").value;
+        var inputTinh=document.getElementById("tinh").value;
+        var inputHuyen=document.getElementById("huyen").value;
+        var inputXa=document.getElementById("xa").value;
+
+        document.getElementById('hotennhan').value = inputTen;
+        document.getElementById('emailnhan').value = inputEmail;
+        document.getElementById('sdtnhan').value = inputSDT;
+        document.getElementById('diachinhan').value = inputDiaChi;
+        document.getElementById('tinhnhan').value = inputTinh;
+        document.getElementById('huyennhan').value = inputHuyen;
+        document.getElementById('xanhan').value = inputXa;
     }
 </script>
 </body>

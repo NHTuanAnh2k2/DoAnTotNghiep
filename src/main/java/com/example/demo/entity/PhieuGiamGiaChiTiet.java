@@ -19,12 +19,19 @@ public class PhieuGiamGiaChiTiet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+    @Column(name = "GiaBanDau")
     BigDecimal giabandau;
+    @Column(name = "GiaSauApDung")
     BigDecimal giasauapdung;
+    @Column(name = "TienGiam")
     BigDecimal tiengiam;
+    @Column(name = "NgayTao")
     Timestamp ngaytao;
+    @Column(name = "NguoiTao")
     String nguoitao;
+    @Column(name = "LanCapNhatCuoi")
     Timestamp lancapnhatcuoi;
+    @Column(name = "NguoiCapNhat")
     String nguoicapnhat;
     @ManyToOne
     @JoinColumn(name = "idhoadon")
