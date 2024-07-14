@@ -73,7 +73,7 @@
                                                     <label class="col-form-label">Từ:</label>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <input id="batdau" type="date" class="form-control" th:field="*{batdau}" th:value="${null}">
+                                                    <input id="batdau"  onkeydown="return false" type="date" class="form-control" th:field="*{batdau}" th:value="${null}">
 <!--                                                    <i th:if="${errdate==1}" class="text-danger">Ngày bắt đầu không lớn-->
 <!--                                                        hơn ngày kết thúc!!</i>-->
                                                 </div>
@@ -83,7 +83,7 @@
                                                     <label class="col-form-label">Đến:</label>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <input id="ketthuc" type="date" class="form-control" th:field="*{ketthuc}">
+                                                    <input id="ketthuc" type="date" onkeydown="return false" class="form-control" th:field="*{ketthuc}">
                                                     <p th:if="${#fields.hasErrors('ketthuc')}" th:errors="*{ketthuc}" style="width: 500px; color: red"></p>
                                                 </div>
                                             </div>
