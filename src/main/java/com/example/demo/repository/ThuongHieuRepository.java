@@ -17,7 +17,7 @@ public interface ThuongHieuRepository extends JpaRepository<ThuongHieu, Integer>
 
     List<ThuongHieu> findAllByOrderByNgaytaoDesc();
 
-    Boolean existsByTen(String ten);
+    boolean existsByTen(String ten);
 
 
 
