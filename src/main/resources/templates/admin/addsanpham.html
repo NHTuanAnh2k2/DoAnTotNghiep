@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <nav th:replace="~{/layoutadmin/head.html}"></nav>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <style>
     /* CSS cho các tùy chọn được chọn và khi hover */
     .select2-container--default .select2-results__option--highlighted {
@@ -200,70 +203,63 @@
                                     THÊM SẢN PHẨM
                                 </h3>
                                 <div class="card-header">
-                                    <!--qr sp-->
-                                    <a class="btn btn-dark" style="margin-left: 1000px" id="start-scan">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                             class="bi bi-qr-code-scan" viewBox="0 0 16 16">
-                                            <path
-                                                    d="M0 .5A.5.5 0 0 1 .5 0h3a.5.5 0 0 1 0 1H1v2.5a.5.5 0 0 1-1 0zm12 0a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0V1h-2.5a.5.5 0 0 1-.5-.5M.5 12a.5.5 0 0 1 .5.5V15h2.5a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1 0-1H15v-2.5a.5.5 0 0 1 .5-.5M4 4h1v1H4z" />
-                                            <path d="M7 2H2v5h5zM3 3h3v3H3zm2 8H4v1h1z" />
-                                            <path d="M7 9H2v5h5zm-4 1h3v3H3zm8-6h1v1h-1z" />
-                                            <path
-                                                    d="M9 2h5v5H9zm1 1v3h3V3zM8 8v2h1v1H8v1h2v-2h1v2h1v-1h2v-1h-3V8zm2 2H9V9h1zm4 2h-1v1h-2v1h3zm-4 2v-1H8v1z" />
-                                            <path d="M12 9h2V8h-2z" />
-                                        </svg>
-                                        Quét QR Sản phẩm
-                                    </a>
+                                    <div style="display: flex; align-items: center;">
+                                        <h5 style="font-family: 'Bahnschrift'; margin: 0;">
+                                            <span style="color: red">* </span>Tên sản phẩm:
+                                            <select class="form-control select2 select2-primary"
+                                                    data-dropdown-css-class="select2-primary"
+                                                    style="width: 1130px; font-family: 'Bahnschrift'"
+                                                    name="tensp" data-placeholder="Nhập tên sản phẩm"
+                                                    onchange="clearErrorMessageTenSP()">
+                                                <option style="font-family: 'Bahnschrift'"></option>
+                                                <option th:each="sp : ${sp}" th:value="${sp.id}"
+                                                        th:text="${sp.tensanpham}"
+                                                        th:selected="${selectedTensp}"></option>
+                                            </select>
+
+                                        </h5>
+                                        <span class="btn"
+                                              style="margin: 0 0 -20px 10px; background-color: white; color: black; border-color: black; padding: 7px 10px; cursor: pointer;"
+                                              data-bs-toggle="modal" data-bs-target="#themtensp">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+             class="bi bi-plus-circle-fill"
+             viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+        </svg>
+    </span>
+                                    </div>
+                                    <span id="tenspError"
+                                          style="color: red; font-style: italic; font-family: 'Bahnschrift';font-weight: bold"></span>
                                     <p></p>
-
-                                    <!--                                    <h5 style="font-family: 'Bahnschrift'">-->
-                                    <!--                                        <span style="color: red">* </span>Tên sản phẩm:-->
-                                    <!--                                        <select class="form-control select2 select2-primary"-->
-                                    <!--                                                data-dropdown-css-class="select2-primary"-->
-                                    <!--                                                style="width: 100%;font-family: 'Bahnschrift'"-->
-                                    <!--                                                name="tensp" data-tags="true" data-placeholder="Nhập tên sản phẩm"-->
-                                    <!--                                                onchange="clearErrorMessageTenSP()">-->
-                                    <!--                                            <option style="font-family: 'Bahnschrift'"></option>-->
-                                    <!--                                            <option th:each="sp : ${sp}" th:value="${sp.tensanpham}"-->
-                                    <!--                                                    th:text="${sp.tensanpham}"-->
-                                    <!--                                                    th:selected="${sp.tensanpham} == ${selectedTensp}"></option>-->
-                                    <!--                                        </select>-->
-                                    <!--                                        <span id="tenspError"-->
-                                    <!--                                              style="color: red; font-style: italic;font-family: 'Bahnschrift'"></span>-->
-                                    <!--                                    </h5>-->
-                                    <h5 style="font-family: 'Bahnschrift'">
-                                        <span style="color: red">* </span>Tên sản phẩm:
-                                        <input type="text" class="form-control"
-                                               style="width: 100%;font-family: 'Bahnschrift'"
-                                               name="tensp" placeholder="Nhập tên sản phẩm"
-                                               onchange="clearErrorMessageTenSP()"
-                                               th:value="${selectedTensp}">
-                                        <span id="tenspError"
-                                              style="color: red; font-style: italic;font-family: 'Bahnschrift'"></span>
-                                    </h5>
-
                                     <h5 style="font-family: 'Bahnschrift'">
                                         <span style="color: red">* </span>Giới tính:
-                                        <select id="gioiTinhSelect" class="form-control" name="gioitinh"
-                                                onchange="clearErrorMessageGioiTinh()">
-                                            <option value="" selected disabled hidden>Chọn giới tính</option>
-                                            <option value="true" th:selected="${gioitinh != null && gioitinh}">Nam
-                                            </option>
-                                            <option value="false" th:selected="${gioitinh != null && !gioitinh}">Nữ
-                                            </option>
-                                        </select>
+                                        <br>
+                                        <div class="form-check d-inline-block" style="margin-left: 20px">
+                                            <input class="form-check-input" type="radio" name="gioitinh" id="gioitinhNam" value="true" th:checked="${gioitinh != null && gioitinh}" onchange="clearErrorMessageGioiTinh()">
+                                            <label for="gioitinhNam" style="font-size: 15px" class="form-check-label">
+                                                Nam
+                                            </label>
+                                        </div>
+                                        <div class="form-check d-inline-block" style="margin-left: 20px;">
+                                            <input class="form-check-input" type="radio" name="gioitinh" id="gioitinhNu" value="false" th:checked="${gioitinh != null && !gioitinh}" onchange="clearErrorMessageGioiTinh()">
+                                            <label for="gioitinhNu" style="font-size: 15px" class="form-check-label">
+                                                Nữ
+                                            </label>
+                                        </div>
 
-                                        <span id="gioitinhError"
-                                              style="color: red;font-style: italic;font-family: 'Bahnschrift'"></span>
+
                                     </h5>
+
+                                    <span id="gioitinhError"
+                                          style="color: red;font-style: italic;font-family: 'Bahnschrift';font-weight: bold"></span>
                                     <h5 style="font-family: 'Bahnschrift'">
                                         <span style="color: red">* </span>Mô tả:
                                         <textarea rows="4" cols="164" class="form-control" name="mota"
                                                   th:text="${motas}"
                                                   oninput="clearErrorMessageMoTa()"></textarea>
-                                        <span id="motaError"
-                                              style="color: red; font-style: italic;font-family: 'Bahnschrift'"></span>
                                     </h5>
+                                    <span id="motaError"
+                                          style="color: red; font-style: italic;font-family: 'Bahnschrift';font-weight: bold"></span>
                                 </div>
                             </div>
 
@@ -345,8 +341,7 @@
                                                 <option th:each="ms : ${ms}" th:value="${ms.id}"
                                                         th:text="${ms.ten}"></option>
                                             </select>
-                                            <span id="mausacError"
-                                                  style="color: red;font-style: italic;font-family: 'Bahnschrift'"></span>
+
                                         </p>
                                         <p>
                                         </p>
@@ -359,6 +354,8 @@
     </svg>
 </span>
                                     </div>
+                                    <span id="mausacError"
+                                          style="color: red;font-style: italic;font-family: 'Bahnschrift';padding-left: 20px;font-weight: bold"></span>
                                     <!--end-->
                                     <!--kích cỡ-->
                                     <div class="d-flex align-items-center" style="margin-left: 20px">
@@ -369,11 +366,13 @@
                                             <h6 id="displayValue"></h6>
                                         </div>
                                     </div>
+
                                     <div class="d-flex" style="margin-top: 10px">
                                         <div style="margin-right: 2%;margin-left: 20px">
                                                                              <span class="btn"
                                                                                    style="margin: 3%; background-color: white; color: black;border-color: black; padding: 7px 10px; cursor: pointer;"
-                                                                                   data-bs-toggle="modal" data-bs-target="#themkichco2">
+                                                                                   data-bs-toggle="modal"
+                                                                                   data-bs-target="#themkichco2">
     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-circle-fill"
          viewBox="0 0 16 16">
         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
@@ -383,7 +382,8 @@
                                         <div style="margin-right: 2%;margin-left: 10px">
                                                                               <span class="btn"
                                                                                     style="margin: 3%; background-color: white; color: black;border-color: black; padding: 7px 10px; cursor: pointer;"
-                                                                                    data-bs-toggle="modal" data-bs-target="#themnhanhkichco">
+                                                                                    data-bs-toggle="modal"
+                                                                                    data-bs-target="#themnhanhkichco">
     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-circle-fill"
          viewBox="0 0 16 16">
         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
@@ -392,19 +392,18 @@
                                         </div>
                                     </div>
                                     <span id="kichcoError"
-                                          style="color: red;font-style: italic;margin-left: 100px;font-family: 'Bahnschrift'"></span>
+                                          style="color: red;font-style: italic;margin-left: 20px;font-family: 'Bahnschrift';font-weight: bold"></span>
                                     <!--end-->
                                     <button type="submit" class="btn"
                                             style="margin-left: 22px;margin-bottom: 20px;margin-top: 30px; width: 110px;background-color: white; color: black;border-color: black">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-node-plus-fill" viewBox="0 0 16 16">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                                             fill="currentColor" class="bi bi-node-plus-fill" viewBox="0 0 16 16">
                                             <path d="M11 13a5 5 0 1 0-4.975-5.5H4A1.5 1.5 0 0 0 2.5 6h-1A1.5 1.5 0 0 0 0 7.5v1A1.5 1.5 0 0 0 1.5 10h1A1.5 1.5 0 0 0 4 8.5h2.025A5 5 0 0 0 11 13m.5-7.5v2h2a.5.5 0 0 1 0 1h-2v2a.5.5 0 0 1-1 0v-2h-2a.5.5 0 0 1 0-1h2v-2a.5.5 0 0 1 1 0"/>
                                         </svg>
                                         Thêm
                                     </button>
                                 </div>
-
                             </div>
-
                             <!-- Modal thêm kích cỡ 2-->
                             <div class="modal fade" id="themkichco2" tabindex="-1"
                                  aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -435,7 +434,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </form>
 
                         <!-- Modal thêm thương hiệu-->
@@ -587,7 +585,36 @@
                                 </div>
                             </div>
                         </div>
-
+                        <!-- Modal thêm tên sản phẩm-->
+                        <div class="modal fade" id="themtensp" tabindex="-1" aria-labelledby="exampleModalLabelTenSP"
+                             aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabelTenSP">Thêm tên sản phẩm</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="addFormTenSP" th:method="post" name="addTenSP" th:object="${sanpham}"
+                                              th:action="@{/addTenSPModal}" onsubmit="return validateTrungTenSP()">
+                                            <p>
+                                                <span style="color: red">* </span>
+                                                Tên sản phẩm:
+                                                <input id="tenInputTenSP" class="form-control"
+                                                       th:field="*{tensanpham}"/>
+                                            <div style="color: red; font-weight: initial;font-style: italic"
+                                                 id="errorTenSP"></div>
+                                            </p>
+                                            <button id="submitButtonTenSP" class="btn"
+                                                    style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
+                                                Thêm
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- /.card -->
                     </div>
@@ -701,7 +728,7 @@
                                             <!--                                                       style="width: 150px; height: 30px;color: red;font-weight: bold"-->
                                             <!--                                                       class="form-control"-->
                                             <!--                                                       th:value="${#numbers.formatDecimal(spctt.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}">-->
-                                            <!--                                            </td>-->
+                                                            <!--                                            </td>-->
                                             <td>
     <span style="width: 150px; height: 30px; color: red; font-weight: bold; line-height: 30px;"
           th:text="${#numbers.formatDecimal(spctt.giatien, 0, 'COMMA', 0, 'POINT')} + '&#x20ab;'"></span>
@@ -938,8 +965,9 @@
         var tensp = document.forms["addProduct"]["tensp"].value;
         var mota = document.forms["addProduct"]["mota"].value;
         var gioitinh = document.forms["addProduct"]["gioitinh"].value;
-        var kichco = document.forms["addProduct"]["kichCoId"].value;
         var mausac = document.forms["addProduct"]["idMauSac"].value;
+        // Lấy tất cả các checkbox có name là "kichCoId" và đã được chọn
+        var checkboxes = document.querySelectorAll('input[name="kichCoId"]:checked');
 
         // Kiểm tra và cập nhật thông báo lỗi cho mỗi trường dữ liệu
         if (isEmpty(tensp)) {
@@ -971,9 +999,6 @@
         } else {
             document.getElementById("mausacError").innerText = "";
         }
-        // Lấy tất cả các checkbox có name là "kichCoId" và đã được chọn
-        var checkboxes = document.querySelectorAll('input[name="kichCoId"]:checked');
-
 // Kiểm tra xem có ít nhất một checkbox đã được chọn hay không
         if (checkboxes.length === 0) {
             document.getElementById("kichcoError").innerText = "Vui lòng chọn ít nhất một kích cỡ.";
@@ -1007,22 +1032,17 @@
                         toast.onmouseleave = Swal.resumeTimer;
                     }
                 });
-
-                Toast.fire({
-                    icon: "success",
-                    title: "Thêm thành công!"
-                });
-
                 setTimeout(function () {
+                    // Lưu thông báo vào sessionStorage
+                    sessionStorage.setItem('successMessage', 'Thêm thành công!');
                     document.addProduct.submit();
-                }, 3000);
+                });
             }
         });
 
         // Ngăn form được gửi đi ngay lập tức
         return false;
     }
-
 
     function isEmpty(str) {
         return !str.trim();
@@ -1032,6 +1052,34 @@
         document.getElementById("kichcoError").innerText = "";
     }
 
+</script>
+<!--thông báo thêm thành công-->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const successMessage = sessionStorage.getItem('successMessage');
+        if (successMessage) {
+            // Hiển thị thông báo ở góc bên phải màn hình
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: successMessage
+            });
+
+            // Xóa thông báo khỏi sessionStorage sau khi hiển thị
+            sessionStorage.removeItem('successMessage');
+        }
+    });
 </script>
 <!--confirm khi xóa spct-->
 <script>
@@ -1047,21 +1095,31 @@
             cancelButtonText: 'Hủy',
         }).then((result) => {
             if (result.isConfirmed) {
-                // Hiển thị thông báo xóa thành công
-                Swal.fire({
-                    title: 'Đã xóa thành công!',
-                    icon: 'success',
-                    timer: 3000, // Hiển thị trong 3 giây
-                    showConfirmButton: false // Ẩn nút Xác nhận
-                });
-                // Chờ 3 giây trước khi chuyển hướng đến URL xóa
                 setTimeout(function () {
+                    sessionStorage.setItem('successMessageXoa', 'Xóa thành công!');
                     window.location.href = deleteUrl;
-                }, 1000);
+                });
             }
         });
     }
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const successMessage = sessionStorage.getItem('successMessageXoa');
+        if (successMessage) {
+            // Hiển thị thông báo ở góc bên phải màn hình
+            toastr.info(successMessage, 'Thông báo', {
+                positionClass: 'toast-top-right',
+                timeOut: 1000
+            });
+
+            // Xóa thông báo khỏi sessionStorage sau khi hiển thị
+            sessionStorage.removeItem('successMessageXoa');
+        }
+    });
+</script>
+
 
 <!--dùng cho thêm size-->
 <script>
@@ -1368,16 +1426,48 @@
 <script>
     var giaTriTuCheckbox = []; // Mảng lưu trữ giá trị từ checkbox
 </script>
-<!--validate thuộc tính sp-->
+<!--validate thuộc tính sp trong modal-->
 <script th:inline="javascript">
-
     /*<![CDATA[*/
+    var objectsFromControllerThuongHieu = /*[[${th}]]*/ [];
+    var objectsFromControllerChatLieu = /*[[${cl}]]*/ [];
+    var objectsFromControllerDeGiay = /*[[${dg}]]*/ [];
+    var objectsFromControllerMauSac = /*[[${ms}]]*/ [];
+    var objectsFromControllerKichCo = /*[[${kc}]]*/ [];
+    var objectsFromControllerTenSP = /*[[${sp}]]*/ [];
 
-    var objectsFromControllerThuongHieu = /*[[${listTH}]]*/ [];
-    var objectsFromControllerChatLieu = /*[[${listCL}]]*/ [];
-    var objectsFromControllerDeGiay = /*[[${listDG}]]*/ [];
-    var objectsFromControllerMauSac = /*[[${listMS}]]*/ [];
-    var objectsFromControllerKichCo = /*[[${listKC}]]*/ [];
+    function validateTrungTenSP() {
+        var inputMaTenSP = document.getElementById("tenInputTenSP").value;
+        var errorMaTenSP = document.getElementById("errorTenSP");
+        var isMaValid = true;
+
+
+        // Kiểm tra xem trường "Tên đế giày" có trống không
+        if (inputMaTenSP.trim() === "") {
+            errorMaTenSP.innerText = "Vui lòng nhập tên tên sản phẩm.";
+            return false; // Ngăn form được gửi đi
+        } else {
+            errorMaTenSP.innerText = ""; // Xóa thông báo lỗi nếu có
+        }
+
+
+        // Kiểm tra trùng tên sản phẩm
+        for (var i = 0; i < objectsFromControllerTenSP.length; i++) {
+            var obj = objectsFromControllerTenSP[i];
+            if (inputMaTenSP === obj.tensanpham) {
+                errorMaTenSP.innerText = "Tên sản phẩm đã tồn tại!";
+                isMaValid = false;
+                break;
+            }
+        }
+
+        if (isMaValid) {
+            errorMaTenSP.innerText = "";
+            themTenSP();
+        }
+
+        return false;
+    }
 
     function validateTrungThuongHieu() {
         var inputMaThuongHieu = document.getElementById("tenInputThuongHieu").value;
@@ -1540,6 +1630,45 @@
             themKichCo();
         }
 
+        return false;
+    }
+
+
+    function themTenSP() {
+        // Sử dụng SweetAlert2 thay vì hộp thoại confirm
+        Swal.fire({
+            title: 'Bạn có muốn thêm không?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "success",
+                    title: "Thêm thành công!"
+                });
+
+                setTimeout(function () {
+                    document.addTenSP.submit();
+                }, 3000);
+            }
+        });
+
+        // Ngăn form được gửi đi ngay lập tức
         return false;
     }
 
@@ -1735,3 +1864,5 @@
 
     /*]]>*/
 </script>
+
+

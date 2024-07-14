@@ -17,7 +17,7 @@ public class DangKyRestController {
     NguoiDungRepository nguoiDungRepository;
 
     @PostMapping("/send-code")
-    public ResponseEntity<String> sendPasswordResetCode(@RequestParam("emailResetPassword") String emailResetPassword) {
+        public ResponseEntity<String> sendPasswordResetCode(@RequestParam("emailResetPassword") String emailResetPassword) {
 
         NguoiDung nguoiDung = nguoiDungRepository.findNguoiDungByEmail(emailResetPassword);
 

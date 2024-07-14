@@ -811,7 +811,7 @@
                                     </div>
                                 </div>
                                 <p>
-                                    <input type="text" class="form-control" placeholder="Phí vận chuyển"
+                                    <input type="text" class="form-control" placeholder="Phí vận chuyển" readonly
                                         oninput="showcasst('phigiaohang')" id="phigiaohang" th:field="*{phivanchuyen}">
                                     <i style="color: red;" id="regexship"></i>
                                 </p>
@@ -824,6 +824,13 @@
                                     <p class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" role="switch"
                                             th:field="*{trasau}" onchange="handleCheckboxChange(event)">
+                                    </p>
+                                </div>
+                                <div class="d-flex justify-content-between ms-1">
+                                    <p>Hỏa tốc:</p>
+                                    <p class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" th:field="*{giaohoatoc}"
+                                            onchange="hoatoc(event)">
                                     </p>
                                 </div>
                                 <div class="d-flex justify-content-between ms-1">
@@ -1500,10 +1507,19 @@ tabindex="0">
                 if (numericValue < 1 || isNaN(numericValue)) {
                     numericValue = 1;
                     thongbao('Số lượng phải lớn hơn 0', 'warning');
-                } else if (numericValue - slSpTrongDon > slSpCon) {
-                    numericValue = slSpCon + slSpTrongDon;
-                    thongbao('Số lượng đang vượt quá số lượng hàng hiện có', 'warning');
+                } else {
+                    if (slSpCon <= 10) {
+                        if (numericValue - slSpTrongDon > slSpCon) {
+                            numericValue = slSpCon + slSpTrongDon;
+                            thongbao('Số lượng đang vượt quá số lượng hàng hiện có', 'warning');
 
+                        }
+                    } else {
+                        if (numericValue > 10) {
+                            thongbao('Chỉ được chọn tối đa 10 sản phẩm', 'warning');
+                            numericValue = 10;
+                        }
+                    }
                 }
 
                 // Cập nhật giá trị của input
@@ -2346,6 +2362,7 @@ tabindex="0">
         //hiển thị nút trả sau trước
 
         function giaohang(event) {
+            document.getElementById('phigiaohang').value = '';
             const urlchecksize = `http://localhost:8080/ban-hang-tai-quay/checkGiaoThanhToan`;
             fetch(urlchecksize)
                 .then(function (a) {
@@ -2738,7 +2755,18 @@ tabindex="0">
                         + ' ₫';
                 });
             });
+            var numberString = document.getElementById('phigiaohang').value.replace(/[^0-9.]/g, '');
+            // Chuyển đổi tiền ship nhập tay
+            var number = parseFloat(numberString.replace(/\./g, ''));
+            shipToanCuc = number;
+            //lấy tiền đã áp voucher
+            var tiensaukhicovucher = document.getElementById('tongThanhToan').textContent.replace(/[^0-9.]/g, '');
+            // Chuyển đổi tiền đã apvoucher thành số nguyên
+            var tienChuaShip = parseFloat(tiensaukhicovucher.replace(/\./g, ''));
+            tienkhachthanhtoan = tienChuaShip + number;
+
         }
+
 
         function xacnhanphuongthuc(inputv) {
             const kieuTT = [inputv, document.getElementById('sotienhienthi').value];
@@ -2848,6 +2876,9 @@ tabindex="0">
             });
             var inputss = document.querySelectorAll('#boddydssp a');
             inputss.forEach(function (inp) {
+                // Lưu giá trị href ban đầu vào thuộc tính data-href
+                inp.setAttribute('data-href', inp.getAttribute('href'));
+                // Xóa thuộc tính href
                 inp.removeAttribute('href');
 
             });
@@ -2859,6 +2890,29 @@ tabindex="0">
         //xóa bản ghi phương thức thanh toán
         function xoaphuongthuc(url) {
             if (confirm('Bạn muốn loại bỏ bản giao dịch này?')) {
+                document.getElementById('xacnhanthanhtoanhoadon').disabled = true;
+                document.getElementById('chantrasau').disabled = false;
+                document.getElementById('changeNV').disabled = false;
+                document.getElementById('chonMaGiam').disabled = false;
+                document.getElementById('start-scan').disabled = false;
+                document.getElementById('themKHS').disabled = false;
+                document.getElementById('changeSP').disabled = false;
+                var inputs = document.querySelectorAll('#boddydssp input');
+                inputs.forEach(function (input) {
+                    input.disabled = false;
+
+                });
+                var button = document.querySelectorAll('#boddydssp button');
+                button.forEach(function (btn) {
+                    btn.disabled = false;
+
+                });
+                var inputss = document.querySelectorAll('#boddydssp a');
+                inputss.forEach(function (inp) {
+                    inp.setAttribute('href', inp.getAttribute('data-href'));
+                    // Xóa thuộc tính data-href không cần thiết nữa
+                    inp.removeAttribute('data-href');
+                });
                 fetch(url)
                     .then(function (a) {
                         return a.json();
@@ -3000,6 +3054,19 @@ tabindex="0">
 
 
             // thongbao('Chưa xác nhận thông tin thanh toán!!!', 'warning');
+
+        }
+
+        function hoatoc(event) {
+            // Lấy phần tử checkbox từ sự kiện
+            // validateForm();
+            var checkbox = event.target;
+            // Kiểm tra trạng thái của checkbox
+            if (checkbox.checked) {
+                document.getElementById('phigiaohang').readOnly = false;
+            } else {
+                document.getElementById('phigiaohang').readOnly = true;
+            }
 
         }
         //xác định nghiệp vụ trả sau trả trước
@@ -3569,6 +3636,7 @@ tabindex="0">
                 .then(function (d) {
                     var shipfe = convertCashInput(d.data.total);
                     document.getElementById('phigiaohang').value = shipfe;
+                    var shipluutam = shipToanCuc;
                     shipToanCuc = d.data.total;
                     tienkhachthanhtoan = tienkhachthanhtoan + shipToanCuc;
                 })
@@ -3847,7 +3915,22 @@ tabindex="0">
                     document.getElementById('TTTK_sdt_regex').innerHTML = 'Số điện thoại phải bắt đầu bằng 0, độ dài 10 số!';
                     error = true;
                 } else {
-                    document.getElementById('TTTK_sdt_regex').innerHTML = '';
+                    var urlchecksdt = `http://localhost:8080/ban-hang-tai-quay/checksdt?sdt=${soDienThoai}`;
+                    fetch(urlchecksdt)
+                        .then(function (a) {
+                            return a.json();
+                        })
+                        .then(function (b) {
+                            if (b === true) {
+                                document.getElementById('TTTK_sdt_regex').innerHTML = 'Số điện thoại đã được sử dụng';
+                                error = true;
+
+                            } else {
+                                document.getElementById('TTTK_sdt_regex').innerHTML = '';
+                            }
+
+                        })
+
                 }
             }
 
@@ -3864,6 +3947,21 @@ tabindex="0">
                     document.getElementById('TTTK_email_regex').innerHTML = 'Email sai định dạng!';
                     error = true;
                 } else {
+                    var urlcheckemail = `http://localhost:8080/ban-hang-tai-quay/checkemail?email=${email}`;
+                    fetch(urlcheckemail)
+                        .then(function (a) {
+                            return a.json();
+                        })
+                        .then(function (b) {
+                            if (b === true) {
+                                document.getElementById('TTTK_email_regex').innerHTML = 'Email đã được sử dụng';
+                                error = true;
+
+                            } else {
+                                document.getElementById('TTTK_email_regex').innerHTML = '';
+                            }
+
+                        })
                     document.getElementById('TTTK_email_regex').innerHTML = '';
                 }
             }

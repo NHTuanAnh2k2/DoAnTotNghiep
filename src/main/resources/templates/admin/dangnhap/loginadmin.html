@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<nav th:replace="~{/layout/head.html}"></nav>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    body {
+        background-color: #f0f2f5;
+    }
+
+    .login-container {
+        max-width: 1000px;
+        margin: auto;
+        padding-top: 100px;
+    }
+
+    .login-form {
+        padding: 30px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        height: 90%;
+    }
+
+    .login-form h1 {
+        font-size: 32px;
+        margin-bottom: 20px;
+    }
+
+    .btn-custom-login {
+        background-color: rgb(232, 62, 0);
+        border-color: rgb(232, 62, 0);
+        color: white;
+    }
+
+    .btn-custom-login:hover {
+        background-color: rgb(210, 56, 0);
+        border-color: rgb(210, 56, 0);
+        color: white;
+    }
+
+    .btn-custom-create {
+        background-color: rgb(240, 240, 36);
+        border-color: rgb(240, 240, 36);
+        color: black;
+    }
+
+    .btn-custom-create:hover {
+        background-color: rgb(199, 199, 7);
+        border-color: rgb(199, 199, 7);
+        color: black;
+    }
+
+    img {
+        width: 70%;
+    }
+
+    #fsport {
+        color: rgb(232, 62, 0);
+    }
+</style>
+<body class="hold-transition sidebar-mini">
+<div class="container login-container">
+    <div class="row">
+        <div class="col-md-6">
+            <h1 id="fsport">FSPORT</h1>
+            <img src="../../dist/img/logo_bong2.jpg" alt="">
+        </div>
+        <div class="col-md-6">
+            <div class="login-form">
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="taikhoan" placeholder="Tài khoản">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="matkhau" placeholder="Mật khẩu">
+                    </div>
+                    <button type="submit" class="btn btn-custom-login btn-block">ĐĂNG NHẬP</button>
+                    <div class="text-center mt-3">
+                        <a href="#">Quên mật khẩu?</a>
+                    </div>
+                    <hr>
+                    <a class="btn btn-custom-create btn-block">Create new account</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

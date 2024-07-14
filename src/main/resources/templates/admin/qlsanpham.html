@@ -66,21 +66,22 @@
                                 <br>
                                 <hr class="border border-danger border opacity-50">
                                 <form id="searchForm" method="get" th:object="${tim}">
-                                    <h3 class="card-title" style="font-weight: bold">Tìm kiếm theo mã và tên sản phẩm
-                                        <input type="text" id="searchInput" placeholder="Tìm kiếm theo mã và tên sản phẩm" class="form-control text-muted font-italic" name="key" style="width: 990px" th:value="${fillSearch}">
+                                    <h3 style="position: relative; display: inline-block;">
+                                        <input type="text" id="searchInput" placeholder="Tìm kiếm theo mã và tên sản phẩm" class="form-control text-muted" name="key" style="width: 1200px; padding-right: 30px;" th:value="${fillSearch}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search"
+                                             viewBox="0 0 16 16" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                        </svg>
                                     </h3>
-                                    <h3 class="card-title" style="margin-left: 50px;font-weight: bold">Trạng thái:
-                                        <select id="statusSelect" class="form-control" name="trangthai" style="color: rgb(249,72,42); font-weight: bold; width: 150px">
-                                            <option value="" th:selected="${fillTrangThai == null}">Tất cả</option>
-                                            <option value="true" th:selected="${fillTrangThai != null && fillTrangThai}">Đang kinh doanh</option>
-                                            <option value="false" th:selected="${fillTrangThai != null && !fillTrangThai}">Ngừng kinh doanh</option>
-                                        </select>
-                                    </h3>
-                                    <br>
-                                    <br>
-                                    <br>
-                                </form>
 
+                                    <!--                                    <h3 class="card-title" style="margin-left: 50px;font-weight: bold">Trạng thái:-->
+<!--                                        <select id="statusSelect" class="form-control" name="trangthai" style="color: rgb(249,72,42); font-weight: bold; width: 150px">-->
+<!--                                            <option value="" th:selected="${fillTrangThai == null}">Tất cả</option>-->
+<!--                                            <option value="true" th:selected="${fillTrangThai != null && fillTrangThai}">Đang kinh doanh</option>-->
+<!--                                            <option value="false" th:selected="${fillTrangThai != null && !fillTrangThai}">Ngừng kinh doanh</option>-->
+<!--                                        </select>-->
+<!--                                    </h3>-->
+                                </form>
                             </div>
 
                         </div>
@@ -126,14 +127,14 @@
                                         <th>Tên sản phẩm</th>
                                         <th>Số lượng tồn</th>
                                         <th>Ngày tạo</th>
-                                        <th>Trạng thái</th>
+<!--                                        <th>Trạng thái</th>-->
                                         <th>Thao tác</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="sp, stt : ${page.content}">
+                                    <tr th:each="sp, stt : ${list}">
                                         <td th:text="${stt.index + 1}"></td>
-                                        <th th:text="'SP'+${sp[5]}"></th>
+                                        <th th:text="${sp[5]}"></th>
                                         <td>
                                             <span th:if="${#strings.length(sp[1]) > 30}" th:text="${#strings.substring(sp[1], 0, 30)} + '...'"></span>
                                             <span th:unless="${#strings.length(sp[1]) > 30}" th:text="${sp[1]}"></span>
@@ -145,12 +146,12 @@
                                         <td>
                                             <span th:text="${#temporals.format(sp[2], 'dd-MM-yyyy HH:mm:ss')}"></span>
                                         </td>
-                                        <td>
-                                            <button id="statusBtn_[[${sp[0]}]]" style="border-radius: 5px"
-                                                    class="btn-xs"
-                                                    th:classappend="${sp[4] ? 'btn-custom-info' : 'btn-custom-warning'}"
-                                                    th:text="${sp[4] ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>
-                                        </td>
+<!--                                        <td>-->
+<!--                                            <button id="statusBtn_[[${sp[0]}]]" style="border-radius: 5px"-->
+<!--                                                    class="btn-xs"-->
+<!--                                                    th:classappend="${sp[4] ? 'btn-custom-info' : 'btn-custom-warning'}"-->
+<!--                                                    th:text="${sp[4] ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>-->
+<!--                                        </td>-->
                                         <td>
                                             <a th:href="@{/detailsanpham/{id}(id=${sp[0]})}" style="color:rgb(249,72,42)">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"

@@ -19,7 +19,7 @@ public interface DeGiayService {
 
     void delete(Integer id);
 
-    List<DeGiay> getDeGiayByTenOrTrangthai(String ten,Boolean trangthai);
+    List<DeGiay> getDeGiayByTen(String ten);
 
 
 }

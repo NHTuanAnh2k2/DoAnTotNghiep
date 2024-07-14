@@ -85,6 +85,7 @@ public class BanHangController {
         return Base64.getEncoder().encodeToString(bytes);
     }
 
+
     @GetMapping("hoa-don-cho")
     @ResponseBody
     public ResponseEntity<?> getLstCho() {
@@ -178,6 +179,18 @@ public class BanHangController {
             }
         }
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("checksdt")
+    @ResponseBody
+    public ResponseEntity<?> checksdt(@RequestParam("sdt") String sdt) {
+        return ResponseEntity.ok(daoNguoiDung.existsBySodienthoai(sdt.trim()));
+    }
+
+    @GetMapping("checkemail")
+    @ResponseBody
+    public ResponseEntity<?> checkemail(@RequestParam("email") String email) {
+        return ResponseEntity.ok(daoNguoiDung.existsByEmail(email.trim()));
     }
 
     // thêm sản phẩm tại hdct
@@ -307,13 +320,17 @@ public class BanHangController {
 
     @PostMapping("add-nhanh")
     public String changesTTDH(Model model, @ModelAttribute("AddKHNhanh") AddKHNhanhFormBanHang kh) {
+        LocalDateTime currentDateTime = LocalDateTime.now();
         NguoiDung nguoidung = new NguoiDung();
         nguoidung.setHovaten(kh.getTen());
         nguoidung.setSodienthoai(kh.getSdt());
         nguoidung.setEmail(kh.getEmail());
         nguoidung.setGioitinh(true);
         nguoidung.setNgaysinh(Date.valueOf("2020-06-06"));
-        nguoidung.setCccd("024099013632");
+        nguoidung.setNgaytao(Timestamp.valueOf(currentDateTime));
+        nguoidung.setTrangthai(true);
+        //fake nhân viên
+        nguoidung.setNguoitao("nhân viên");
         daoNguoiDung.save(nguoidung);
         NguoiDung nguoidungtim = daoNguoiDung.findByEmail(kh.getEmail());
         DiaChi diachi = new DiaChi();
@@ -331,7 +348,7 @@ public class BanHangController {
         khAdd.setMakhachhang(newMaKH);
         khAdd.setNguoidung(nguoidungtim);
         khAdd.setTrangthai(true);
-        LocalDateTime currentDateTime = LocalDateTime.now();
+
         khAdd.setNgaytao(Timestamp.valueOf(currentDateTime));
         //fake người tạo
         khAdd.setNguoitao("nhân viên");
@@ -777,9 +794,6 @@ public class BanHangController {
             hdset1.setSdt(thongTin.getSdt());
             hdset1.setEmail(thongTin.getEmail());
 //            hdset1.setNgaygiaodukien();
-            System.out.println("abcabcabc");
-
-            System.out.println("abcabcabc");
             long unixTimestamp = Long.valueOf(thongTin.getNgaygiaodukien());
             // Convert Unix timestamp to milliseconds
             long milliseconds = unixTimestamp * 1000;
@@ -791,7 +805,11 @@ public class BanHangController {
             java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
             Timestamp ngaygiaodukien = new Timestamp(sqlDate.getTime());
             hdset1.setNgaygiaodukien(ngaygiaodukien);
-
+            if (thongTin.getGiaohoatoc() == true) {
+                hdset1.setHoatoc(true);
+            } else {
+                hdset1.setHoatoc(false);
+            }
             hoaDonCheckBill = hdset1;
             daoHD.capNhatHD(hdset1);
             phieugiamgiachtietset.setHoadon(hdset1);
@@ -845,6 +863,7 @@ public class BanHangController {
             }
         } else {
             //trả trước
+
             hdset1.setTrangthai(1);
             BigDecimal tienTong = new BigDecimal("0.00");
             for (PhuongThucThanhToan a : lstPTTT
@@ -875,7 +894,11 @@ public class BanHangController {
             java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
             Timestamp ngaygiaodukien = new Timestamp(sqlDate.getTime());
             hdset1.setNgaygiaodukien(ngaygiaodukien);
-
+            if (thongTin.getGiaohoatoc() == true) {
+                hdset1.setHoatoc(true);
+            } else {
+                hdset1.setHoatoc(false);
+            }
             daoHD.capNhatHD(hdset1);
             phieugiamgiachtietset.setHoadon(hdset1);
             phieugiamgiachtietset.setPhieugiamgia(phieugiamsaoluu);

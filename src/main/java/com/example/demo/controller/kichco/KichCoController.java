@@ -1,8 +1,6 @@
 package com.example.demo.controller.kichco;
 
-import com.example.demo.entity.DeGiay;
 import com.example.demo.entity.KichCo;
-import com.example.demo.entity.MauSac;
 import com.example.demo.info.ThuocTinhInfo;
 import com.example.demo.repository.KichCoRepository;
 import com.example.demo.service.impl.KichCoImp;
@@ -10,11 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -33,14 +27,19 @@ public class KichCoController {
         boolean isTrangthaiNull = (info.getTrangthai() == null);
 
         if (isKeyEmpty && isTrangthaiNull) {
-            page = kichCoRepository.findAllByOrderByNgaytaoDesc();
+            page = kichCoRepository.getAll();
         } else {
-            page = kichCoRepository.getKichCoByTenOrTrangthai(info.getKey(), info.getTrangthai());
+            page = kichCoRepository.findKichCoByTenAndTrangThaiFalse(info.getKey());
         }
         model.addAttribute("fillSearch", info.getKey());
         model.addAttribute("fillTrangThai", info.getTrangthai());
         model.addAttribute("list", page);
         return "admin/qlkichco";
+    }
+    @PostMapping("/updateKichCo/{id}")
+    public String updateKichCo(@PathVariable Integer id) {
+        kichCoRepository.updateTrangThaiToFalseById(id);
+        return "redirect:/listKichCo";
     }
 
     @PostMapping("/addSaveKichCo")

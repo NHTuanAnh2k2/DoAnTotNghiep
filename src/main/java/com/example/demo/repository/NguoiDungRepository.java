@@ -32,5 +32,7 @@ public interface NguoiDungRepository extends JpaRepository<NguoiDung, Integer> {
     @Modifying
     @Query("UPDATE NguoiDung n SET n.matkhau = :newPassword WHERE n.taikhoan = :username")
     void updatePassword(String username, String newPassword);
+    boolean existsBySodienthoai(String sdt);
+    boolean existsByEmail(String email);
 
 }

@@ -1,339 +1,359 @@
-    <!DOCTYPE html>
-    <html xmlns:th="http://www.thymeleaf.org" lang="vi">
-    <!--<nav th:replace="~{/layoutadmin/head.html}"></nav>-->
-    <nav th:replace="~{/layout/head.html}"></nav>
-    <style>
-            .tab {
-                overflow: hidden;
-            }
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<!--<nav th:replace="~{/layoutadmin/head.html}"></nav>-->
+<nav th:replace="~{/layout/head.html}"></nav>
+<style>
+    .tab {
+        overflow: hidden;
+    }
 
-            .tab a {
-                float: left;
-                border: none;
-                outline: none;
-                cursor: pointer;
-                padding: 14px 16px;
-                transition: 0.3s;
-                font-size: 30px;
-                color: #888; /* Màu chữ ban đầu là xám */
-            }
+    .tab a {
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: 0.3s;
+        font-size: 30px;
+        color: #888; /* Màu chữ ban đầu là xám */
+    }
 
-            .tab a:hover {
-            }
+    .tab a:hover {
+    }
 
-            .tab a.active {
-                color: #000; /* Màu chữ khi được chọn là đen */
-            }
+    .tab a.active {
+        color: #000; /* Màu chữ khi được chọn là đen */
+    }
 
-            .tabcontent {
-                display: none;
-                padding: 6px 12px;
-                position: absolute;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 550px; /* Độ rộng của tab content */
-                text-align: center; /* Căn giữa nội dung tab content */
-            }
+    .tabcontent {
+        display: none;
+        padding: 6px 12px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 550px; /* Độ rộng của tab content */
+        text-align: center; /* Căn giữa nội dung tab content */
+    }
 
-            .form123 {
-                position: relative;
-                margin-bottom: 15px;
-            }
+    .form123 {
+        position: relative;
+        margin-bottom: 15px;
+    }
 
-            .form123 label {
-                position: absolute;
-                top: 50%;
-                left: 5px;
-                transform: translateY(-50%);
-                font-size: 16px;
-                color: black;
-                font-weight: bold;
-                padding: 0 5px;
-                pointer-events: none;
-                transition: .5s;
-            }
+    .form123 label {
+        position: absolute;
+        top: 50%;
+        left: 5px;
+        transform: translateY(-50%);
+        font-size: 16px;
+        color: black;
+        font-weight: bold;
+        padding: 0 5px;
+        pointer-events: none;
+        transition: .5s;
+    }
 
-            .form123 input {
-                width: 100%;
-                height: 45px;
-                font-size: 16px;
-                color: black;
-                padding: 0 10px;
-                background: transparent;
-                outline: none;
-                border-radius: 5px;
-            }
+    .form123 input {
+        width: 100%;
+        height: 45px;
+        font-size: 16px;
+        color: black;
+        padding: 0 10px;
+        background: transparent;
+        outline: none;
+        border-radius: 5px;
+    }
 
-            .form123 input~label {
-                top: 0;
-                font-size: 12px;
-                background: white;
-            }
-            .link-container {
-                display: flex;
-                justify-content: start;
-                padding-left: 15px;
-                margin: 0; /* Đặt margin cho link-container */
-            }
+    .form123 input ~ label {
+        top: 0;
+        font-size: 12px;
+        background: white;
+    }
 
-            .link-container p {
-                margin: 0;
-            }
+    .link-container {
+        display: flex;
+        justify-content: start;
+        padding-left: 15px;
+        margin: 0; /* Đặt margin cho link-container */
+    }
 
-            .link-container + .link-container {
-                margin-top: 0; /* Đảm bảo khoảng cách giữa các container là 0 */
-            }
+    .link-container p {
+        margin: 0;
+    }
 
-            #abc .link-container {
-                margin-bottom: 0; /* Đảm bảo khoảng cách giữa các container bên trong abc là 0 */
-            }
-    </style>
-    <body>
-    <nav th:replace="~{/layout/header.html}"></nav>
+    .link-container + .link-container {
+        margin-top: 0; /* Đảm bảo khoảng cách giữa các container là 0 */
+    }
 
-    <div class="tab d-flex justify-content-center mt-4">
-        <a id="dangnhap" class="btn tablinks" onclick="openTab(event, 'login')">ĐĂNG NHẬP</a>
-        <strong style="font-size: 40px; color: #888;">|</strong>
-        <a class="btn tablinks" onclick="openTab(event, 'register')" id="defaultOpen">ĐĂNG KÝ</a>
-    </div>
+    #abc .link-container {
+        margin-bottom: 0; /* Đảm bảo khoảng cách giữa các container bên trong abc là 0 */
+    }
+</style>
+<body>
+<nav th:replace="~{/layout/header.html}"></nav>
 
-    <div id="login" class="tabcontent">
+<div class="tab d-flex justify-content-center mt-4">
+    <a id="dangnhap" class="btn tablinks" onclick="openTab(event, 'login')">ĐĂNG NHẬP</a>
+    <strong style="font-size: 40px; color: #888;">|</strong>
+    <a class="btn tablinks" onclick="openTab(event, 'register')" id="defaultOpen">ĐĂNG KÝ</a>
+</div>
+
+<div id="login" class="tabcontent">
     <!--    <h3>Form Đăng Nhập</h3>-->
-        <form id="formDangNhap" th:object="${dangnhap}" th:method="post" th:action="@{/dangnhap}">
-            <div class="form123 mt-3">
-                <input type="text" placeholder="Vui lòng nhập tên đăng nhập hoặc email" th:field="*{taikhoan}"/>
-                <label>Tên đăng nhập</label>
-            </div>
-            <div class="form123 mt-4">
-                <input type="password" placeholder="Vui lòng nhập mật khẩu" th:field="*{matkhau}"/>
-                <label>Mật khẩu</label>
-            </div>
-            <p th:text="${error}" style="color: red"></p>
-            <div class="mt-6 d-flex justify-content-start">
-                <button style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 46px; border-radius: 15px; border-color: rgb(249,72,42);">ĐĂNG NHẬP</button>
-                <div id="abc">
-                    <div class="link-container">
-                        <p>Bạn chưa có tài khoản?</p>
-                        <a href="#" id="registerLink" style="color: rgb(249,72,42); padding-left: 5px; text-decoration: none;">Đăng ký ngay</a>
-                    </div>
-                    <div class="link-container">
-                        <p >Bạn quên mật khẩu?</p>
-                        <a href="#" id="khoiphucmk" style="color: rgb(249,72,42); padding-left: 5px; text-decoration: none;">Khôi phục mật khẩu</a>
-                    </div>
+    <form id="formDangNhap" th:object="${dangnhap}" th:method="post" th:action="@{/dangnhap}">
+        <div class="form123 mt-3">
+            <input type="text" placeholder="Vui lòng nhập tên đăng nhập hoặc email" th:field="*{taikhoan}"/>
+            <label>Tên đăng nhập</label>
+        </div>
+        <div class="form123 mt-4">
+            <input type="password" placeholder="Vui lòng nhập mật khẩu" th:field="*{matkhau}"/>
+            <label>Mật khẩu</label>
+        </div>
+        <p th:text="${error}" style="color: red"></p>
+        <div class="mt-6 d-flex justify-content-start">
+            <button style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 46px; border-radius: 15px; border-color: rgb(249,72,42);">
+                ĐĂNG NHẬP
+            </button>
+            <div id="abc">
+                <div class="link-container">
+                    <p>Bạn chưa có tài khoản?</p>
+                    <a href="#" id="registerLink"
+                       style="color: rgb(249,72,42); padding-left: 5px; text-decoration: none;">Đăng ký ngay</a>
+                </div>
+                <div class="link-container">
+                    <p>Bạn quên mật khẩu?</p>
+                    <a href="#" id="khoiphucmk"
+                       style="color: rgb(249,72,42); padding-left: 5px; text-decoration: none;">Khôi phục mật khẩu</a>
                 </div>
             </div>
-        </form>
-        <!--FORM KHOI PHUC MAT KHAU-->
-        <form id="formKhoiPhuc">
-            <h4 class="mt-3 d-flex justify-content-start">Khôi phục mật khẩu</h4>
-            <div class="form123 mt-3">
-                <input type="text" placeholder="Vui lòng nhập email" name="emailResetPassword"/>
-                <label>Email</label>
-            </div>
-            <div class="mt-6 d-flex justify-content-start">
-                <button id="btnKhoiPhuc" type="submit" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 46px; border-radius: 15px; border-color: rgb(249,72,42);">GỬI</button>
-            </div>
-        </form>
-        <!--FORM XAC NHAN TAI KHOAN-->
-        <form id="formXacNhan">
-            <h4 class="mt-3 d-flex justify-content-start">Xác nhân tài khoản</h4>
-            <div class="form123 mt-3">
-                <input type="text" placeholder="Vui lòng nhập mã xác nhận" name="codeReset"/>
-                <label>Mã xác nhận</label>
-            </div>
-            <div class="mt-6 d-flex justify-content-start">
-                <button id="btnXacNhan" type="button" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 46px; border-radius: 15px; border-color: rgb(249,72,42);">XÁC NHẬN</button>
-            </div>
-        </form>
-        <!--FORM ĐỔI MẬT KHẨU-->
-        <form id="formDoiMatKhau">
-            <h4 class="mt-3 d-flex justify-content-start">Thiết lập mật khẩu mới</h4>
-            <div class="form123 mt-3">
-                <input type="text" placeholder="Vui lòng nhập mật khẩu mới"/>
-                <label>Mật khẩu mới</label>
-            </div>
-            <div class="form123 mt-3">
-                <input type="text" placeholder="Vui lòng xác nhận mật khẩu"/>
-                <label>Xác nhận mật khẩu</label>
-            </div>
-            <div class="mt-6 d-flex justify-content-start">
-                <button id="btnDoiMatKhau" type="button" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 150px; height: 46px; border-radius: 15px; border-color: rgb(249,72,42);">ĐỔI MẬT KHẨU</button>
-            </div>
-        </form>
-    </div>
+        </div>
+    </form>
+    <!--FORM KHOI PHUC MAT KHAU-->
+    <form id="formKhoiPhuc">
+        <h4 class="mt-3 d-flex justify-content-start">Khôi phục mật khẩu</h4>
+        <div class="form123 mt-3">
+            <input type="text" placeholder="Vui lòng nhập email" name="emailResetPassword"/>
+            <label>Email</label>
+        </div>
+        <div class="mt-6 d-flex justify-content-start">
+            <button id="btnKhoiPhuc" type="submit"
+                    style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 46px; border-radius: 15px; border-color: rgb(249,72,42);">
+                GỬI
+            </button>
+        </div>
+    </form>
+    <!--FORM XAC NHAN TAI KHOAN-->
+    <form id="formXacNhan">
+        <h4 class="mt-3 d-flex justify-content-start">Xác nhân tài khoản</h4>
+        <div class="form123 mt-3">
+            <input type="text" placeholder="Vui lòng nhập mã xác nhận" name="codeReset"/>
+            <label>Mã xác nhận</label>
+        </div>
+        <div class="mt-6 d-flex justify-content-start">
+            <button id="btnXacNhan" type="button"
+                    style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 46px; border-radius: 15px; border-color: rgb(249,72,42);">
+                XÁC NHẬN
+            </button>
+        </div>
+    </form>
+    <!--FORM ĐỔI MẬT KHẨU-->
+    <form id="formDoiMatKhau">
+        <h4 class="mt-3 d-flex justify-content-start">Thiết lập mật khẩu mới</h4>
+        <div class="form123 mt-3">
+            <input type="text" placeholder="Vui lòng nhập mật khẩu mới"/>
+            <label>Mật khẩu mới</label>
+        </div>
+        <div class="form123 mt-3">
+            <input type="text" placeholder="Vui lòng xác nhận mật khẩu"/>
+            <label>Xác nhận mật khẩu</label>
+        </div>
+        <div class="mt-6 d-flex justify-content-start">
+            <button id="btnDoiMatKhau" type="button"
+                    style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 150px; height: 46px; border-radius: 15px; border-color: rgb(249,72,42);">
+                ĐỔI MẬT KHẨU
+            </button>
+        </div>
+    </form>
+</div>
 
-    <div id="register" class="tabcontent">
+<div id="register" class="tabcontent">
     <!--    <h3>Form Đăng Ký</h3>-->
-        <form th:object="${nguoidung}" th:action="@{/dangky}" th:method="post">
-            <div class="form123 mt-3">
-                <input th:field="*{hovaten}" type="text" placeholder="Họ tên"/>
-                <label>Họ tên</label>
-                <p th:if="${#fields.hasErrors('hovaten')}"
-                   th:errors="*{hovaten}" style="color: red;"></p>
+    <form th:object="${nguoidung}" th:action="@{/dangky}" th:method="post">
+        <div class="form123 mt-3">
+            <input th:field="*{hovaten}" type="text" placeholder="Họ tên"/>
+            <label>Họ tên</label>
+            <p th:if="${#fields.hasErrors('hovaten')}"
+               th:errors="*{hovaten}" style="color: red;"></p>
+        </div>
+        <div class="form123 mt-4">
+            <input type="date" th:field="*{ngaysinh}"/>
+            <label>Ngày sinh</label>
+            <p th:if="${#fields.hasErrors('ngaysinh')}"
+               th:errors="*{ngaysinh}" style="color: red;"></p>
+        </div>
+        <div class="d-flex mt-4">
+            <p style="font-size: 16px; font-weight: bold">Giới tính: </p>
+            <div class="form-check" style="margin-left: 10px;">
+                <input class="form-check-input" type="radio" th:field="*{gioitinh}" value="1" checked/>
+                <label class="form-check-label">
+                    Nam
+                </label>
             </div>
-            <div class="form123 mt-4">
-                <input type="date" th:field="*{ngaysinh}" />
-                <label>Ngày sinh</label>
-                <p th:if="${#fields.hasErrors('ngaysinh')}"
-                   th:errors="*{ngaysinh}" style="color: red;"></p>
+            <div class="form-check" style="margin-left: 10px;">
+                <input class="form-check-input" type="radio" th:field="*{gioitinh}" value="0"/>
+                <label class="form-check-label">
+                    Nữ
+                </label>
             </div>
-            <div class="d-flex mt-4">
-                <p style="font-size: 16px; font-weight: bold">Giới tính: </p>
-                <div class="form-check" style="margin-left: 10px;">
-                    <input class="form-check-input" type="radio" th:field="*{gioitinh}" value="1" checked/>
-                    <label class="form-check-label">
-                        Nam
-                    </label>
-                </div>
-                <div class="form-check" style="margin-left: 10px;">
-                    <input class="form-check-input" type="radio" th:field="*{gioitinh}" value="0"/>
-                    <label class="form-check-label">
-                        Nữ
-                    </label>
-                </div>
-            </div>
-            <div class="form123">
-                <input type="text" placeholder="Tên đăng nhập" th:field="*{taikhoan}"/>
-                <label>Tên đăng nhập</label>
-                <p th:if="${#fields.hasErrors('taikhoan')}"
-                   th:errors="*{taikhoan}" style="color: red;"></p>
-            </div>
-            <div class="form123 mt-4">
-                <input type="text" placeholder="Số điện thoại" th:field="*{sodienthoai}"/>
-                <label>Số điện thoại</label>
-                <p th:if="${#fields.hasErrors('sodienthoai')}"
-                   th:errors="*{sodienthoai}" style="color: red;"></p>
-            </div>
-            <div class="form123 mt-4">
-                <input type="text" placeholder="Email" th:field="*{email}" />
-                <label>Email</label>
-                <p th:if="${#fields.hasErrors('email')}"
-                   th:errors="*{email}" style="color: red;"></p>
-            </div>
-            <div class="form123 mt-4">
-                <input type="password" placeholder="Mật khẩu" th:field="*{matkhau}"/>
-                <label>Mật khẩu</label>
-                <p th:if="${#fields.hasErrors('matkhau')}"
-                   th:errors="*{matkhau}" style="color: red;"></p>
-            </div>
-            <div class="form123 mt-4">
-                <input type="password" placeholder="Xác nhận mật khẩu" th:field="*{xacnhanmatkhau}" />
-                <label>Xác nhận mật khẩu</label>
-                <p style="color: red" th:text="${saiMatKhau}"></p>
-            </div>
-            <div class="mt-6 d-flex justify-content-start">
-                <button type="submit" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 46px; border-radius: 15px; border-color: rgb(249,72,42);">ĐĂNG KÝ</button>
-                <p style="padding-left: 15px; margin-top: 10px;">Bạn đã có tài khoản?</p>
-                <a href="#" id="loginLink" style="color: rgb(249,72,42); padding-left: 5px; margin-top: 10px; text-decoration: none;">Đăng nhập ngay</a>
-            </div>
-        </form>
-    </div>
+        </div>
+        <div class="form123">
+            <input type="text" placeholder="Tên đăng nhập" th:field="*{taikhoan}"/>
+            <label>Tên đăng nhập</label>
+            <p th:if="${#fields.hasErrors('taikhoan')}"
+               th:errors="*{taikhoan}" style="color: red;"></p>
+        </div>
+        <div class="form123 mt-4">
+            <input type="text" placeholder="Số điện thoại" th:field="*{sodienthoai}"/>
+            <label>Số điện thoại</label>
+            <p th:if="${#fields.hasErrors('sodienthoai')}"
+               th:errors="*{sodienthoai}" style="color: red;"></p>
+        </div>
+        <div class="form123 mt-4">
+            <input type="text" placeholder="Email" th:field="*{email}"/>
+            <label>Email</label>
+            <p th:if="${#fields.hasErrors('email')}"
+               th:errors="*{email}" style="color: red;"></p>
+        </div>
+        <div class="form123 mt-4">
+            <input type="password" placeholder="Mật khẩu" th:field="*{matkhau}"/>
+            <label>Mật khẩu</label>
+            <p th:if="${#fields.hasErrors('matkhau')}"
+               th:errors="*{matkhau}" style="color: red;"></p>
+        </div>
+        <div class="form123 mt-4">
+            <input type="password" placeholder="Xác nhận mật khẩu" th:field="*{xacnhanmatkhau}"/>
+            <label>Xác nhận mật khẩu</label>
+            <p style="color: red" th:text="${saiMatKhau}"></p>
+        </div>
+        <div class="mt-6 d-flex justify-content-start">
+            <button type="submit"
+                    style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 46px; border-radius: 15px; border-color: rgb(249,72,42);">
+                ĐĂNG KÝ
+            </button>
+            <p style="padding-left: 15px; margin-top: 10px;">Bạn đã có tài khoản?</p>
+            <a href="#" id="loginLink"
+               style="color: rgb(249,72,42); padding-left: 5px; margin-top: 10px; text-decoration: none;">Đăng nhập
+                ngay</a>
+        </div>
+    </form>
+</div>
 
-    <script>
-        document.getElementById("defaultOpen").click();
-        document.getElementById("formKhoiPhuc").style.display = "none";
-        document.getElementById("formXacNhan").style.display = "none";
-        document.getElementById("formDoiMatKhau").style.display = "none";
-        function openTab(evt, tabName) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-            document.getElementById(tabName).style.display = "block";
-            evt.currentTarget.className += " active";
+<script>
+    document.getElementById("defaultOpen").click();
+    document.getElementById("formKhoiPhuc").style.display = "none";
+    document.getElementById("formXacNhan").style.display = "none";
+    document.getElementById("formDoiMatKhau").style.display = "none";
+
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
         }
-        document.getElementById("loginLink").addEventListener("click", function(event) {
-            event.preventDefault();
-            document.getElementById("dangnhap").click();
-        });
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
 
-        document.getElementById("registerLink").addEventListener("click", function(event) {
-            event.preventDefault();
-            document.getElementById("defaultOpen").click();
-        });
+    document.getElementById("loginLink").addEventListener("click", function (event) {
+        event.preventDefault();
+        document.getElementById("dangnhap").click();
+    });
 
-        // Form điền email khôi phục mật khẩu
-        document.getElementById("khoiphucmk").addEventListener("click", function(event) {
-            event.preventDefault();
-            document.getElementById("formDangNhap").style.display = "none";
-            document.getElementById("formKhoiPhuc").style.display = "block";
-        });
+    document.getElementById("registerLink").addEventListener("click", function (event) {
+        event.preventDefault();
+        document.getElementById("defaultOpen").click();
+    });
 
-        document.getElementById("btnKhoiPhuc").addEventListener("click", function(event) {
-            event.preventDefault();
+    // Form điền email khôi phục mật khẩu
+    document.getElementById("khoiphucmk").addEventListener("click", function (event) {
+        event.preventDefault();
+        document.getElementById("formDangNhap").style.display = "none";
+        document.getElementById("formKhoiPhuc").style.display = "block";
+    });
 
-            var email = document.querySelector("#formKhoiPhuc input[name='emailResetPassword']").value;
+    document.getElementById("btnKhoiPhuc").addEventListener("click", function (event) {
+        event.preventDefault();
 
-            const urlSendCode = `http://localhost:8080/api/send-code?emailResetPassword=${email}`;
+        var email = document.querySelector("#formKhoiPhuc input[name='emailResetPassword']").value;
 
-            if (email.trim() === '') {
-                alert('Vui lòng nhập email');
-                return;
-            }
+        const urlSendCode = `http://localhost:8080/api/send-code?emailResetPassword=${email}`;
 
-            fetch(urlSendCode, {
-                method: 'POST',
+        if (email.trim() === '') {
+            alert('Vui lòng nhập email');
+            return;
+        }
+
+        fetch
+        (urlSendCode, {method: 'POST',})
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Đã xảy ra lỗi trong quá trình gửi mã khôi phục mật khẩu.');
+                }
+                return response.text();
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Đã xảy ra lỗi trong quá trình gửi mã khôi phục mật khẩu.');
-                    }
-                    return response.text();
-                })
-                .then(data => {
-                    alert(data); // Hiển thị thông báo thành công
-                    document.getElementById("formKhoiPhuc").style.display = "none";
-                    document.getElementById("formXacNhan").style.display = "block";
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert(error.message); // Hiển thị thông báo lỗi
-                });
-        });
-
-        document.getElementById("btnXacNhan").addEventListener("click", function(event) {
-            event.preventDefault();
-            var email = document.querySelector("#formKhoiPhuc input[name='emailResetPassword']").value;
-            var code = document.querySelector("#formXacNhan input[name='codeReset']").value;
-
-            if (code.trim() === '') {
-                alert('Vui lòng nhập mã xác nhận');
-                return;
-            }
-
-            fetch(`/api/validate-code`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ emailResetPassword: email, codeReset: code }),
+            .then(data => {
+                alert(data); // Hiển thị thông báo thành công
+                document.getElementById("formKhoiPhuc").style.display = "none";
+                document.getElementById("formXacNhan").style.display = "block";
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Mã xác nhận không hợp lệ.');
-                    }
-                    return response.text();
-                })
-                .then(data => {
-                    alert(data); // Hiển thị thông báo thành công
-                    document.getElementById("formXacNhan").style.display = "none";
-                    document.getElementById("formDoiMatKhau").style.display = "block";
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert(error.message); // Hiển thị thông báo lỗi
-                });
-        });
+            .catch(error => {
+                console.error('Error:', error);
+                alert(error.message); // Hiển thị thông báo lỗi
+            });
+    });
 
-        document.getElementById("btnDoiMatKhau").addEventListener("click", function(event) {
-            event.preventDefault();
-            document.getElementById("formDoiMatKhau").style.display = "none";
-            document.getElementById("formDangNhap").style.display = "block";
-        });
-    </script>
+    document.getElementById("btnXacNhan").addEventListener("click", function (event) {
+        event.preventDefault();
+        var email = document.querySelector("#formKhoiPhuc input[name='emailResetPassword']").value;
+        var code = document.querySelector("#formXacNhan input[name='codeReset']").value;
 
-    </body>
-    </html>
+        if (code.trim() === '') {
+            alert('Vui lòng nhập mã xác nhận');
+            return;
+        }
+
+        fetch(`/api/validate-code`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({emailResetPassword: email, codeReset: code}),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Mã xác nhận không hợp lệ.');
+                }
+                return response.text();
+            })
+            .then(data => {
+                alert(data); // Hiển thị thông báo thành công
+                document.getElementById("formXacNhan").style.display = "none";
+                document.getElementById("formDoiMatKhau").style.display = "block";
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert(error.message); // Hiển thị thông báo lỗi
+            });
+    });
+
+    document.getElementById("btnDoiMatKhau").addEventListener("click", function (event) {
+        event.preventDefault();
+        document.getElementById("formDoiMatKhau").style.display = "none";
+        document.getElementById("formDangNhap").style.display = "block";
+    });
+</script>
+
+</body>
+</html>

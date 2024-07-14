@@ -937,15 +937,23 @@
                                                         <h6 style="font-family: 'Times New Roman'; font-weight: bold">Số
                                                             điện thoại:</h6>
                                                         <p th:text="${hoaDonDT.sdt}"
-                                                            style="margin-left: 89px; font-family: 'Times New Roman'; font-size: 15px;">
+                                                            style="margin-left: 90px; font-family: 'Times New Roman'; font-size: 15px;">
                                                         </p>
                                                     </div>
                                                     <div class="d-flex justify-content-start">
                                                         <h6 style="font-family: 'Times New Roman'; font-weight: bold">
                                                             Ngày giao dự kiến:</h6>
                                                         <p th:text="${hoaDonDT.ngaygiaodukien==null?' -------':#dates.format(hoaDonDT.ngaygiaodukien, 'dd-MM-yyyy')}"
-                                                            style="margin-left: 48px; font-family: 'Times New Roman'; font-size: 15px;">
+                                                            style="margin-left: 53px; font-family: 'Times New Roman'; font-size: 15px;">
                                                             25/12/2024</p>
+                                                    </div>
+                                                    <div class="d-flex justify-content-start">
+                                                        <h6 style="font-family: 'Times New Roman'; font-weight: bold">
+                                                            Hình thức giao:</h6>
+                            
+                                                           <p th:text="${hoaDonDT.hoatoc==true?'Hỏa tốc':'Thông thường'}"
+                                                            style="margin-left: 75px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
+                                                        </p>
                                                     </div>
                                                 </div>
                                             </div>

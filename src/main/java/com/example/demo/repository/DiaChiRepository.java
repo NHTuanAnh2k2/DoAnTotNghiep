@@ -55,10 +55,11 @@ public interface DiaChiRepository extends JpaRepository<DiaChi, Integer> {
 
     @Query("SELECT d FROM DiaChi d WHERE d.tinhthanhpho LIKE %?1%")
     List<DiaChi> findDiaChiByTinhthanhpho(@Param("tinhthanhpho") String tinhthanhpho);
-    @Query("SELECT d FROM DiaChi d WHERE d.nguoidung.id = ?1")
+    @Query("SELECT d FROM DiaChi d WHERE d.nguoidung.id = ?1 ORDER BY d.trangthai DESC, d.ngaytao DESC")
     List<DiaChi> findDiaChiByIdNd(Integer idNd);
-
     @Query("SELECT d FROM DiaChi d WHERE d.nguoidung.id = ?1")
     DiaChi findDiaChiByIdNguoidung(Integer idNd);
+    @Query("SELECT d FROM DiaChi d WHERE d.nguoidung.id = ?1 AND d.trangthai = ?2")
+    DiaChi findDiaChiByTrangthai(Integer idNd, boolean trangthai);
 
 }

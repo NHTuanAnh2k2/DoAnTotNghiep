@@ -1,6 +1,5 @@
 package com.example.demo.controller.degiay;
 
-
 import com.example.demo.entity.DeGiay;
 import com.example.demo.info.ThuocTinhInfo;
 import com.example.demo.repository.DeGiayRepository;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,56 +22,68 @@ public class DeGiayController {
 
     @GetMapping("/listdegiay")
     public String listdegiay(Model model, @ModelAttribute("degiay") DeGiay deGiay, @ModelAttribute("tim") ThuocTinhInfo info) {
-        List<DeGiay> page;
+        List<DeGiay> list;
 
-        boolean isKeyEmpty = (info.getKey() == null || info.getKey().trim().isEmpty());
+        // Trim khoảng trắng ở đầu và cuối
+        String trimmedKey = (info.getKey() != null) ? info.getKey().trim() : null;
+
+        boolean isKeyEmpty = (trimmedKey == null || trimmedKey.isEmpty());
         boolean isTrangthaiNull = (info.getTrangthai() == null);
 
         if (isKeyEmpty && isTrangthaiNull) {
-            page = deGiayRepository.findAllByOrderByNgaytaoDesc();
+            list = deGiayRepository.getAll();
         } else {
-            page = deGiayImp.getDeGiayByTenOrTrangthai(info.getKey(), info.getTrangthai());
+            list = deGiayImp.getDeGiayByTen(trimmedKey);
         }
 
-        model.addAttribute("list", page);
-        model.addAttribute("fillSearch", info.getKey());
+        List<DeGiay> listAll = deGiayRepository.findAll();
+        model.addAttribute("listAll", listAll);
+        model.addAttribute("list", list);
+        model.addAttribute("fillSearch", trimmedKey);
         model.addAttribute("fillTrangThai", info.getTrangthai());
         return "admin/qldegiay";
     }
 
 
-    @GetMapping("/update/{id}")
-    public String viewUpdate(@PathVariable Integer id, Model model) {
-        model.addAttribute("degiay", deGiayImp.findById(id));
-        return "admin/updategiay";
-    }
-
     @PostMapping("/update/{id}")
-    public String update(@PathVariable Integer id, @ModelAttribute("degiay") DeGiay deGiay) {
-        deGiay.setId(id);
-        deGiayImp.add(deGiay);
+    public String update(@PathVariable Integer id) {
+        deGiayRepository.updateTrangThaiToFalseById(id);
         return "redirect:/listdegiay";
     }
 
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id) {
-        deGiayImp.delete(id);
-        return "redirect:/listdegiay";
+
+//    @GetMapping("/updateDeGiay/{id}")
+//    public String delete(@PathVariable Integer id, Model model) {
+//        DeGiay degiay = deGiayRepository.findById(id).orElse(null);
+//        model.addAttribute("degiay", degiay);
+//        return "admin/qldegiay";
+//    }
+
+    @PostMapping("/updateDeGiay")
+    public String updateDeGiay(@ModelAttribute("degiay") DeGiay degiay) {
+        DeGiay existingDeGiay = deGiayRepository.findById(degiay.getId()).orElse(null);
+        if (existingDeGiay != null) {
+            existingDeGiay.setTen(degiay.getTen());
+            existingDeGiay.setLancapnhatcuoi(LocalDateTime.now());
+            existingDeGiay.setNguoicapnhat("DuyNV");
+            deGiayRepository.save(existingDeGiay);
+        }
+        return "redirect:/admin/qldegiay";
     }
+
 
     @PostMapping("/addSave")
     public String addSave(@ModelAttribute("degiay") DeGiay deGiay, RedirectAttributes redirectAttributes) {
-        if (deGiay.getTen().equals("")) {
-            redirectAttributes.addFlashAttribute("err", "Tên không được để trống");
-            return "admin/qldegiay";
-        }
         LocalDateTime currentTime = LocalDateTime.now();
+        String trimmedName = (deGiay.getTen() != null) ? deGiay.getTen().trim() : null;
+        deGiay.setTen(trimmedName);
         deGiay.setTrangthai(true);
         deGiay.setNgaytao(currentTime);
         deGiay.setLancapnhatcuoi(currentTime);
         deGiayImp.add(deGiay);
         return "redirect:/listdegiay";
     }
+
 
     @PostMapping("/addDeGiayModal")
     public String addDeGiayModal(@ModelAttribute("degiay") DeGiay deGiay) {
