@@ -18,4 +18,5 @@ public interface PhieuGiamGiaService {
     PhieuGiamGia AddPhieuGiamGia(PhieuGiamGia phieuGiamGia);
     PhieuGiamGia findFirstByOrderByNgaytaoDesc();
     PhieuGiamGia findPhieuGiamGiaById(Integer Id);
+    PhieuGiamGia findPhieuGiamGiaByMaCode(String maCode);
 }

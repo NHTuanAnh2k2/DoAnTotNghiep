@@ -48,5 +48,10 @@ public class PhieuGiamGiaImp implements PhieuGiamGiaService {
         return phieuGiamGiaRepository.findPhieuGiamGiaById(Id);
     }
 
+    @Override
+    public PhieuGiamGia findPhieuGiamGiaByMaCode(String maCode) {
+        return phieuGiamGiaRepository.findPhieuGiamGiaByMaCode(maCode);
+    }
+
 
 }
