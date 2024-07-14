@@ -73,7 +73,7 @@ public class DeGiayController {
 
 
     @PostMapping("/addSave")
-    public String addSave(@ModelAttribute("degiay") DeGiay deGiay, RedirectAttributes redirectAttributes) {
+    public String addSave(@ModelAttribute("degiay") DeGiay deGiay) {
         LocalDateTime currentTime = LocalDateTime.now();
         String trimmedName = (deGiay.getTen() != null) ? deGiay.getTen().trim() : null;
         deGiay.setTen(trimmedName);
