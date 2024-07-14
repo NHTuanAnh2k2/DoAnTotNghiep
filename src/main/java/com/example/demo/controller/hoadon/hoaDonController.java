@@ -71,6 +71,8 @@ public class hoaDonController {
     LichSuHoaDonService daoLS;
     @Autowired
     HoaDonService dao;
+    @Autowired
+    NguoiDungImpl1 nguoiDung;
     Integer idhdshowdetail = null;
     HoaDonCustom hdSaveInfoSeachr = new HoaDonCustom();
     List<String> lstdiachigiao = new ArrayList<>();
@@ -588,6 +590,7 @@ public class hoaDonController {
         List<HoaDon> lstSaveHD = dao.timTheoID(idhdshowdetail);
         HoaDon hdTT = lstSaveHD.get(0);
         Integer trangthaiset = hdTT.getTrangthai() + 1;
+
         if (trangthaiset == 4) {
             List<PhuongThucThanhToan> lstpttim = daoPT.timTheoHoaDon(hdTT);
             for (PhuongThucThanhToan a : lstpttim
@@ -621,6 +624,15 @@ public class hoaDonController {
 
         //
         hdTT.setTrangthai(trangthaiset);
+        if (trangthaiset == 2) {
+            String to = hdTT.getEmail();
+            String mahdemail = hdTT.getMahoadon();
+            String ngaytaoemail = Timestamp.valueOf(ngaytao) + "";
+            String subject = "Chúc mừng bạn đã đặt thành công đơn hàng của T&T shop";
+            String mailType = "";
+            String mailContent = "Mã vận đơn của bạn là: " + mahdemail + "\nNgày tạo: " + ngaytaoemail;
+            nguoiDung.sendEmail(to, subject, mailType, mailContent);
+        }
         dao.capNhatHD(hdTT);
         lshd.setTrangthai(trangthaiset);
         daoLS.add(lshd);
@@ -910,7 +922,7 @@ public class hoaDonController {
 
     @ModelAttribute("thongtingiaohang")
     public DiaChiGiaoCaseBanHangOff diachigiaohangtaiquay() {
-        return new DiaChiGiaoCaseBanHangOff(null, null, null, "chọn tỉnh", "chọn huyện", "chọn xã", null, null, null, null,"ta..",null);
+        return new DiaChiGiaoCaseBanHangOff(null, null, null, "chọn tỉnh", "chọn huyện", "chọn xã", null, null, null, null, "ta..", null);
     }
 
 }
