@@ -5,6 +5,10 @@
 <!--Các sản phẩm nổi bật-->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <style>
     /* Dùng thanh cuộn ngang */
     .tab-pane.horizontal-scrollable .single-products.row {
@@ -411,7 +415,7 @@
                             <span id="product-quantity" th:text="${selectedQuantity}"></span>
                         </h6>
 
-                        <form id="addToCartForm" action="/add-to-cart" method="post">
+                        <form id="addToCartForm" action="/add-to-cart" method="post" onsubmit="return handleSubmit();">
                             <input type="hidden" th:value="${token}" id="tokenDN" name="tokenDN">
                             <input type="hidden" name="id" th:value="${sanphamchitiet.id}" id="idspct">
                             <input type="hidden" name="selectedColor" id="selectedColor" th:value="${defaultColor}">
@@ -439,8 +443,7 @@
                                                th:onclick="'changeButtonBackground(this); selectSize(this)'"></a>
                                         </div>
                                     </div>
-                                    <a th:href="@{#}" data-bs-toggle="modal" data-bs-target="#cachchonsize">Cách chọn
-                                        size</a>
+                                    <a th:href="@{#}" data-bs-toggle="modal" data-bs-target="#cachchonsize">Cách chọn size</a>
                                 </div>
                                 <!-- Modal -->
                                 <div class="modal fade" id="cachchonsize" tabindex="-1"
@@ -493,8 +496,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-
                                 <p></p>
                                 <div class="d-flex align-items-center">
                                     <span style="margin-right: 10px;">Số lượng:</span>
@@ -508,17 +509,16 @@
                                 <span style="margin-right: 10px;">Mô tả: <span th:text="${sanphamchitiet.mota}"></span></span>
                                 <hr>
                                 <div class="d-flex">
-                                    <a class="btn btn-dark" style="width: 200px;height: 50px;line-height: 40px">Mua
-                                        ngay</a>
+                                    <a class="btn btn-dark" style="width: 200px;height: 50px;line-height: 40px">Mua ngay</a>
                                     <button type="submit"
                                             class="btn btn"
-                                            style="background-color: rgb(249,72,42); color: white; width: 200px;height: 50px;line-height: 40px;margin-left: 20px"
-                                            th:disabled="${selectedQuantity == 0}">
+                                            style="background-color: rgb(249,72,42); color: white; width: 200px;height: 50px;line-height: 40px;margin-left: 20px">
                                         THÊM VÀO GIỎ HÀNG
                                     </button>
                                 </div>
                             </div>
                         </form>
+
                         <br>
                         <br>
                         <ul style="list-style-type: disc;">
@@ -1055,3 +1055,25 @@
 <!--        }-->
 <!--    }-->
 <!--</script>-->
+
+<script>
+    function handleSubmit() {
+        // Hiển thị thông báo Toastr khi form được submit
+        sessionStorage.setItem('successMessageThemGioHang', 'Thêm giỏ hàng thành công!');
+        return true; // Trả về true để tiếp tục submit
+    }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const successMessage = sessionStorage.getItem('successMessageThemGioHang');
+        if (successMessage) {
+            // Hiển thị thông báo ở góc bên phải màn hình
+            toastr.success(successMessage, 'Thông báo', {
+                positionClass: 'toast-top-right',
+                timeOut: 1500
+            });
+            // Xóa thông báo khỏi sessionStorage sau khi hiển thị
+            sessionStorage.removeItem('successMessageThemGioHang');
+        }
+    });
+</script>
