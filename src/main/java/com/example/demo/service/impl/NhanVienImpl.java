@@ -4,6 +4,7 @@ import com.example.demo.entity.NguoiDung;
 import com.example.demo.entity.NhanVien;
 import com.example.demo.info.NhanVienInfo;
 import com.example.demo.info.NhanVienSearch;
+import com.example.demo.repository.NguoiDungRepository1;
 import com.example.demo.repository.NhanVienRepository;
 import com.example.demo.service.NhanVienService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ import java.util.List;
 public class NhanVienImpl implements NhanVienService {
     @Autowired
     NhanVienRepository nhanVienRepository;
+
+    @Autowired
+    NguoiDungRepository1 ndRepo;
     @Override
     public List<NhanVien> getNhanVienByTrangThai(Boolean trangThai) {
         return nhanVienRepository.getNhanVienByTrangthai(trangThai);
@@ -63,8 +67,10 @@ public class NhanVienImpl implements NhanVienService {
     @Override
     public NhanVien update(NhanVienInfo nhanVien, Integer id) {
         NhanVien nv = nhanVienRepository.TimIdNguoiDung(id);
-        List<NhanVien> l = nhanVienRepository.getAllByOrderByIdDesc();
-        String ten = nhanVien.getIdnguoidung().getHovaten();
+        NguoiDung nd = ndRepo.searchId(id);
+        System.out.println(nd.getHovaten());
+//        List<NhanVien> l = nhanVienRepository.getAllByOrderByIdDesc();
+        String ten = nd.getHovaten();
         String[] cacTu = ten.split("\\s+");
         for (int i = 0; i < cacTu.length; i++) {
             cacTu[i] = Normalizer.normalize(cacTu[i], Normalizer.Form.NFD)
@@ -82,7 +88,7 @@ public class NhanVienImpl implements NhanVienService {
         int s = nv.getId();
         tenCuoi = tenCuoi + chuoiMoi.toString().toLowerCase() + s;
         nv.setVaitro(nhanVien.getVaitro());
-//        nv.setManhanvien(tenCuoi);
+        nv.setManhanvien(tenCuoi);
         nv.setLancapnhatcuoi(new Timestamp(new Date().getTime()));
         nv.setNguoicapnhat("");
         nv.setTrangthai(nhanVien.getTrangthai());
