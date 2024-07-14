@@ -25,11 +25,27 @@ public interface SanPhamNuRepository extends JpaRepository<SanPham, Integer> {
                     FROM SanPhamChiTiet
                     WHERE gioitinh = 0
                     GROUP BY IdSanPham
+                ),
+                KichCoCount AS (
+                    SELECT spct.IdSanPham, COUNT(DISTINCT kc.id) AS soLuongKichCo
+                    FROM SanPhamChiTiet spct
+                    JOIN KichCo kc ON spct.IdKichCo = kc.id
+                    WHERE spct.gioitinh = 0
+                    GROUP BY spct.IdSanPham
+                ),
+                MauSacCount AS (
+                    SELECT spct.IdSanPham, COUNT(DISTINCT ms.id) AS soLuongMauSac
+                    FROM SanPhamChiTiet spct
+                    JOIN MauSac ms ON spct.IdMauSac = ms.id
+                    WHERE spct.gioitinh = 0
+                    GROUP BY spct.IdSanPham
                 )
-                SELECT sp.id, sp.tensanpham, sp.ngaytao, spctg.tongSoLuong, sp.trangthai, spctg.giatien, anhdd.tenanh
+                SELECT sp.id, sp.tensanpham, sp.ngaytao, spctg.tongSoLuong, sp.trangthai, spctg.giatien, anhdd.tenanh, kc.soLuongKichCo, ms.soLuongMauSac
                 FROM SanPham sp
                 JOIN SanPhamChiTietGrouped spctg ON sp.id = spctg.IdSanPham
                 JOIN AnhDaiDien anhdd ON sp.id = anhdd.IdSanPham AND anhdd.row_num = 1
+                JOIN KichCoCount kc ON sp.id = kc.IdSanPham
+                JOIN MauSacCount ms ON sp.id = ms.IdSanPham
                 ORDER BY sp.ngaytao DESC, spctg.tongSoLuong DESC
             """)
     List<Object[]> findProductsGioiTinh0();
@@ -47,12 +63,26 @@ public interface SanPhamNuRepository extends JpaRepository<SanPham, Integer> {
                     FROM SanPhamChiTiet
                     WHERE gioitinh = 0
                     GROUP BY IdSanPham
+                ),
+                KichCoCount AS (
+                    SELECT spct.IdSanPham, COUNT(DISTINCT kc.id) AS soLuongKichCo
+                    FROM SanPhamChiTiet spct
+                    JOIN KichCo kc ON spct.IdKichCo = kc.id
+                    GROUP BY spct.IdSanPham
+                ),
+                MauSacCount AS (
+                    SELECT spct.IdSanPham, COUNT(DISTINCT ms.id) AS soLuongMauSac
+                    FROM SanPhamChiTiet spct
+                    JOIN MauSac ms ON spct.IdMauSac = ms.id
+                    GROUP BY spct.IdSanPham
                 )
-                SELECT sp.id, sp.tensanpham, sp.ngaytao, spctg.tongSoLuong, sp.trangthai, spctg.giatien, anhdd.tenanh
+                SELECT sp.id, sp.tensanpham, sp.ngaytao, spctg.tongSoLuong, sp.trangthai, spctg.giatien, anhdd.tenanh, kc.soLuongKichCo, ms.soLuongMauSac
                 FROM SanPham sp
                 JOIN SanPhamChiTietGrouped spctg ON sp.id = spctg.IdSanPham
                 JOIN AnhDaiDien anhdd ON sp.id = anhdd.IdSanPham AND anhdd.row_num = 1
-                ORDER BY spctg.giatien ASC , spctg.tongSoLuong DESC
+                JOIN KichCoCount kc ON sp.id = kc.IdSanPham
+                JOIN MauSacCount ms ON sp.id = ms.IdSanPham
+                ORDER BY spctg.giatien ASC, spctg.tongSoLuong DESC
             """)
     List<Object[]> loctangdannu();
 
@@ -69,18 +99,35 @@ public interface SanPhamNuRepository extends JpaRepository<SanPham, Integer> {
                     FROM SanPhamChiTiet
                     WHERE gioitinh = 0
                     GROUP BY IdSanPham
+                ),
+                KichCoCount AS (
+                    SELECT spct.IdSanPham, COUNT(DISTINCT kc.id) AS soLuongKichCo
+                    FROM SanPhamChiTiet spct
+                    JOIN KichCo kc ON spct.IdKichCo = kc.id
+                    GROUP BY spct.IdSanPham
+                ),
+                MauSacCount AS (
+                    SELECT spct.IdSanPham, COUNT(DISTINCT ms.id) AS soLuongMauSac
+                    FROM SanPhamChiTiet spct
+                    JOIN MauSac ms ON spct.IdMauSac = ms.id
+                    GROUP BY spct.IdSanPham
                 )
-                SELECT sp.id, sp.tensanpham, sp.ngaytao, spctg.tongSoLuong, sp.trangthai, spctg.giatien, anhdd.tenanh
+                SELECT sp.id, sp.tensanpham, sp.ngaytao, spctg.tongSoLuong, sp.trangthai, spctg.giatien, anhdd.tenanh, kc.soLuongKichCo, ms.soLuongMauSac
                 FROM SanPham sp
                 JOIN SanPhamChiTietGrouped spctg ON sp.id = spctg.IdSanPham
                 JOIN AnhDaiDien anhdd ON sp.id = anhdd.IdSanPham AND anhdd.row_num = 1
-                ORDER BY spctg.giatien DESC , spctg.tongSoLuong DESC
+                JOIN KichCoCount kc ON sp.id = kc.IdSanPham
+                JOIN MauSacCount ms ON sp.id = ms.IdSanPham
+                ORDER BY spctg.giatien DESC, spctg.tongSoLuong DESC
             """)
     List<Object[]> locgiamdannu();
 
     //lọc sản phẩm là nữ
     @Query(value = """
-            SELECT sp.id, sp.tensanpham, sp.ngaytao, SUM(spct.soluong) AS tongSoLuong, sp.trangthai, MAX(spct.giatien) AS maxGiaTien, MAX(anh.tenanh) AS maxTenAnh, spct.gioitinh
+            SELECT sp.id, sp.tensanpham, sp.ngaytao, SUM(spct.soluong) AS tongSoLuong, sp.trangthai, 
+                   MAX(spct.giatien) AS maxGiaTien, MAX(anh.tenanh) AS maxTenAnh,
+                   COUNT(CASE WHEN spct.kichco IS NOT NULL THEN spct.kichco.id ELSE NULL END) AS countKichCo,
+                   COUNT(CASE WHEN spct.mausac IS NOT NULL THEN spct.mausac.id ELSE NULL END) AS countMauSac
             FROM SanPham sp
             JOIN sp.spct spct
             JOIN spct.anh anh
@@ -92,24 +139,56 @@ public interface SanPhamNuRepository extends JpaRepository<SanPham, Integer> {
                     OR (?4 = true AND spct.giatien BETWEEN 3000000 AND 5000000)
                     OR (?5 = true AND spct.giatien > 5000000)
                 )
-                OR ((?6 IS NULL OR spct.thuonghieu.id IN (?6))
-                OR (?7 IS NULL OR spct.kichco.id IN (?7))
-                OR (?8 IS NULL OR spct.mausac.id IN (?8))) AND spct.gioitinh = false 
-                GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai, spct.gioitinh
-                ORDER BY sp.ngaytao DESC, tongSoLuong DESC
-                  """)
+                OR (
+                    (?6 IS NULL OR spct.thuonghieu.id IN (?6))
+                    OR (?7 IS NULL OR spct.kichco.id IN (?7))
+                    OR (?8 IS NULL OR spct.mausac.id IN (?8))
+                ) 
+                AND spct.gioitinh = false 
+            GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai
+            ORDER BY sp.ngaytao DESC, tongSoLuong DESC
+            """)
     List<Object[]> loctheothkcnu(Boolean range1, Boolean range2, Boolean range3, Boolean range4, Boolean range5, List<Integer> idthuonghieu, List<Integer> idkichco, List<Integer> idmausac);
 
     // tìm kiếm theo mã và tên sản phẩm nữ
-    @Query(value = """
-            SELECT sp.id, sp.tensanpham, sp.ngaytao, SUM(spct.soluong) AS tongSoLuong, sp.trangthai, MAX(spct.giatien) AS maxGiaTien, MAX(anh.tenanh) AS maxTenAnh, spct.gioitinh
-            FROM SanPham sp
-            JOIN sp.spct spct
-            JOIN spct.anh anh
-            WHERE 
-                 (sp.masanpham LIKE %?1% OR sp.tensanpham LIKE %?2%) AND spct.gioitinh = false 
-            GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai, spct.gioitinh
-            ORDER BY sp.ngaytao DESC, tongSoLuong DESC
-                  """)
+    @Query(nativeQuery = true, value = """
+                WITH SanPhamChiTietGrouped AS (
+                    SELECT spct.IdSanPham, SUM(spct.soluong) AS tongSoLuong, MAX(spct.giatien) AS maxGiaTien
+                    FROM SanPhamChiTiet spct
+                    WHERE spct.gioitinh = 0
+                    GROUP BY spct.IdSanPham
+                ),
+                AnhDaiDien AS (
+                    SELECT spct.IdSanPham, MAX(anh.tenanh) AS maxTenAnh
+                    FROM Anh anh
+                    JOIN SanPhamChiTiet spct ON anh.IdSanPhamChiTiet = spct.id
+                    WHERE spct.gioitinh = 0
+                    GROUP BY spct.IdSanPham
+                ),
+                KichCoCount AS (
+                    SELECT spct.IdSanPham, COUNT(DISTINCT kc.id) AS soLuongKichCo
+                    FROM SanPhamChiTiet spct
+                    JOIN KichCo kc ON spct.IdKichCo = kc.id
+                    WHERE spct.gioitinh = 0
+                    GROUP BY spct.IdSanPham
+                ),
+                MauSacCount AS (
+                    SELECT spct.IdSanPham, COUNT(DISTINCT ms.id) AS soLuongMauSac
+                    FROM SanPhamChiTiet spct
+                    JOIN MauSac ms ON spct.IdMauSac = ms.id
+                    WHERE spct.gioitinh = 0
+                    GROUP BY spct.IdSanPham
+                )
+                SELECT sp.id, sp.tensanpham, sp.ngaytao, spctg.tongSoLuong, sp.trangthai, spctg.maxGiaTien, anhdd.maxTenAnh, kc.soLuongKichCo, ms.soLuongMauSac
+                FROM SanPham sp
+                JOIN SanPhamChiTietGrouped spctg ON sp.id = spctg.IdSanPham
+                JOIN AnhDaiDien anhdd ON sp.id = anhdd.IdSanPham
+                JOIN KichCoCount kc ON sp.id = kc.IdSanPham
+                JOIN MauSacCount ms ON sp.id = ms.IdSanPham
+                JOIN SanPhamChiTiet spct ON sp.id = spct.IdSanPham
+                WHERE (sp.masanpham LIKE %?1% OR sp.tensanpham LIKE %?2%) AND spct.gioitinh = 0
+                GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai, spctg.tongSoLuong, spctg.maxGiaTien, anhdd.maxTenAnh, kc.soLuongKichCo, ms.soLuongMauSac
+                ORDER BY sp.ngaytao DESC, spctg.tongSoLuong DESC
+            """)
     List<Object[]> searchByMaAnhTenSPNu(String masanpham, String tensanpham);
 }

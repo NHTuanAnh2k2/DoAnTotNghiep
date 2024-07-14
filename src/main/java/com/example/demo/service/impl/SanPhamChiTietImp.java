@@ -66,5 +66,15 @@ public class SanPhamChiTietImp implements SanPhamChiTietService {
        return sanPhamChiTietRepository.findById(id).orElse(null);
     }
 
+    @Override
+    public List<SanPhamChiTiet> findBySanPhambyMa(String idSanPham) {
+        return sanPhamChiTietRepository.searchSPCTtheoMa(idSanPham);
+    }
+
+    @Override
+    public Boolean checkSPQR(String ma) {
+        return sanPhamChiTietRepository.existsByMasanphamchitiet(ma);
+    }
+
 
 }

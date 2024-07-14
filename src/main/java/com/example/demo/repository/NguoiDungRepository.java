@@ -1,7 +1,9 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.NguoiDung;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -21,9 +23,16 @@ public interface NguoiDungRepository extends JpaRepository<NguoiDung, Integer> {
     @Query("SELECT n FROM NguoiDung n WHERE n.ngaysinh BETWEEN :startDate AND :endDate")
     List<NguoiDung> findNguoiDungByNgaysinhBetween(@Param("startDate")Date startDate,
                                                    @Param("endDate") Date endDate);
-    @Query("SELECT n FROM NguoiDung n WHERE n.email LIKE %?1%")
-    NguoiDung findNguoiDungByEmail(@Param("email") String email);
+    @Query("SELECT n FROM NguoiDung n WHERE n.email = ?1")
+    NguoiDung findNguoiDungByEmail(@Param("emailResetPassword") String emailResetPassword);
 
     NguoiDung findByEmail(String email);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE NguoiDung n SET n.matkhau = :newPassword WHERE n.taikhoan = :username")
+    void updatePassword(String username, String newPassword);
+    boolean existsBySodienthoai(String sdt);
+    boolean existsByEmail(String email);
 
 }

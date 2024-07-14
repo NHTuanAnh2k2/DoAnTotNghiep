@@ -194,7 +194,7 @@
                     </svg>
                     Sản phẩm
                 </h5>
-                <a class="btn btn-dark" style="margin-left: 710px">
+                <button class="btn btn-dark" style="margin-left: 535px" id="start-scan">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                         class="bi bi-qr-code-scan" viewBox="0 0 16 16">
                         <path
@@ -206,7 +206,7 @@
                         <path d="M12 9h2V8h-2z" />
                     </svg>
                     Quét QR Sản phẩm
-                </a>
+                </button>
                 <button class="btn" style="margin-left: 20px;background-color: rgb(249,72,42);color: white"
                     data-bs-toggle="modal" data-bs-target="#modalThemSanPhamHD" id="changeSP">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -216,6 +216,13 @@
                     </svg>
                     Thêm sản phẩm
                 </button>
+                <a href="http://localhost:8080/hoa-don/hien-thi">
+                    <button class="btn" style="margin-left: 20px;background-color: rgb(220, 67, 40);color: white">
+                        <i class="bi bi-list-ol"></i>
+                        Danh sách hóa đơn
+                    </button>
+                </a>
+
             </div>
             <hr <!-- Nội dung của các tab -->
             <div id="GhiDeTab">
@@ -228,6 +235,25 @@
                 </div>
             </div>
             <!-- các modal -->
+            <!-- modal qr -->
+            <div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="qrModalLabel"></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div style="display: flex; justify-content: center;">
+                                <video id="video" width="100%" height="100%" style="border: 1px solid gray"></video>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- modal tràn chờ -->
             <div class="modal fade" id="trancho" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                 aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -713,7 +739,7 @@
                         Chọn tài khoản
                     </button>
                     <button type="button" class="btn ms-1" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                        style="background-color: rgb(42, 197, 249);color: white">+Thêm khách
+                        id="themKHS" style="background-color: rgb(42, 197, 249);color: white">+Thêm khách
                         hàng</button>
 
                 </div>
@@ -785,7 +811,7 @@
                                     </div>
                                 </div>
                                 <p>
-                                    <input type="text" class="form-control" placeholder="Phí vận chuyển"
+                                    <input type="text" class="form-control" placeholder="Phí vận chuyển" readonly
                                         oninput="showcasst('phigiaohang')" id="phigiaohang" th:field="*{phivanchuyen}">
                                     <i style="color: red;" id="regexship"></i>
                                 </p>
@@ -798,6 +824,13 @@
                                     <p class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" role="switch"
                                             th:field="*{trasau}" onchange="handleCheckboxChange(event)">
+                                    </p>
+                                </div>
+                                <div class="d-flex justify-content-between ms-1">
+                                    <p>Hỏa tốc:</p>
+                                    <p class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" th:field="*{giaohoatoc}"
+                                            onchange="hoatoc(event)">
                                     </p>
                                 </div>
                                 <div class="d-flex justify-content-between ms-1">
@@ -820,10 +853,10 @@
                             </svg>
                             Thông tin thanh toán
                         </h5>
+                        <!-- data-bs-toggle="modal" data-bs-target="#modalThayDoiHoaDon5" -->
                         <div class="d-flex justify-content-between">
                             <p style="font-weight: bold">Khách thanh toán:
-                                <button class="btn" data-bs-toggle="modal" data-bs-target="#modalThayDoiHoaDon5"
-                                    id="chantrasau" onclick="thanhtoan()">
+                                <button class="btn" id="chantrasau" onclick="thanhtoan()">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                                         class="bi bi-credit-card" viewBox="0 0 16 16">
                                         <path
@@ -841,7 +874,7 @@
                                 id="maGiamFill">Chưa có mã giảm phù hợp!</p>
 
                             <button class="btn btn-light" style="margin-bottom: 20px;" data-bs-toggle="modal"
-                                data-bs-target="#staticBackdrop" onclick="showmagiam()">
+                                id="chonMaGiam" data-bs-target="#staticBackdrop" onclick="showmagiam()">
                                 Chọn mã giảm</button>
                         </div>
                         <div class="d-flex justify-content-between">
@@ -918,8 +951,10 @@
 
         // JavaScript để mở tab lúc load
         function openInvoice1(evt, invoiceName) {
-
+            document.getElementById('chonMaGiam').disabled = false;
             document.getElementById('changeNV').disabled = false;
+            document.getElementById('start-scan').disabled = false;
+            document.getElementById('themKHS').disabled = false;
             document.getElementById('changeSP').disabled = false;
             document.getElementById('tienmat').disabled = false;
             document.getElementById('chuyenkhoan').disabled = false;
@@ -1057,7 +1092,7 @@ tabindex="0">
 <th>Thao tác</th>
 </tr>
 </thead>
-<tbody>`+ htmlTR + `
+<tbody id="boddydssp">`+ htmlTR + `
 
 </tbody>
 </table>
@@ -1135,7 +1170,7 @@ tabindex="0">
             closeIcon.innerHTML = "&times;"; // Thêm biểu tượng xóa (dấu x)
             closeIcon.className = "close";
             closeIcon.setAttribute("onclick", "closeTab('" + tabId + "')"); // Gọi hàm closeTab khi được nhấn
-
+            button.id = tabId;
             button.appendChild(closeIcon); // Thêm biểu tượng xóa vào tab
 
             tabContainer.appendChild(button);
@@ -1210,6 +1245,9 @@ tabindex="0">
         function openInvoice(evt, invoiceName) {
             document.getElementById('ngaygiaodukiens').innerHTML = "đang tính toán...";
             document.getElementById('changeNV').disabled = false;
+            document.getElementById('chonMaGiam').disabled = false;
+            document.getElementById('start-scan').disabled = false;
+            document.getElementById('themKHS').disabled = false;
             document.getElementById('changeSP').disabled = false;
             document.getElementById('tienmat').disabled = false;
             document.getElementById('chuyenkhoan').disabled = false;
@@ -1350,7 +1388,7 @@ tabindex="0">
             <th>Thao tác</th>
         </tr>
     </thead>
-    <tbody>`+ htmlTR + `
+    <tbody id="boddydssp">`+ htmlTR + `
 
     </tbody>
 </table>
@@ -1409,17 +1447,14 @@ tabindex="0">
 
         // JavaScript để đóng tab
         function closeTab(tabId) {
-            var tabContent = document.getElementById(tabId);
-            if (tabContent) {
-                tabContent.parentNode.removeChild(tabContent); // Xóa nội dung tab
-                var tabButton = document.querySelector("[data-tab='" + tabId + "']");
-                if (tabButton) {
-                    tabButton.parentNode.removeChild(tabButton); // Xóa tab button từ container
+            if (confirm("Bạn có chắc chắn muốn loại bỏ hóa đơn " + tabId + " không?")) {
+                var tabContent = document.getElementById(tabId);
+                if (tabContent) {
+                    var urf = "http://localhost:8080/ban-hang-tai-quay/deleteHDCho/" + tabId;
+                    window.location.href = urf;
                 }
-                numberOfInvoices--; // Giảm số lượng tab đã tạo
             }
         }
-
 
         // Hàm để hiển thị thông báo Toast
         function showToast() {
@@ -1472,10 +1507,19 @@ tabindex="0">
                 if (numericValue < 1 || isNaN(numericValue)) {
                     numericValue = 1;
                     thongbao('Số lượng phải lớn hơn 0', 'warning');
-                } else if (numericValue - slSpTrongDon > slSpCon) {
-                    numericValue = slSpCon + slSpTrongDon;
-                    thongbao('Số lượng đang vượt quá số lượng hàng hiện có', 'warning');
+                } else {
+                    if (slSpCon <= 10) {
+                        if (numericValue - slSpTrongDon > slSpCon) {
+                            numericValue = slSpCon + slSpTrongDon;
+                            thongbao('Số lượng đang vượt quá số lượng hàng hiện có', 'warning');
 
+                        }
+                    } else {
+                        if (numericValue > 10) {
+                            thongbao('Chỉ được chọn tối đa 10 sản phẩm', 'warning');
+                            numericValue = 10;
+                        }
+                    }
                 }
 
                 // Cập nhật giá trị của input
@@ -2318,18 +2362,38 @@ tabindex="0">
         //hiển thị nút trả sau trước
 
         function giaohang(event) {
-            var isChecked = event.target.checked;
-            if (isChecked) {
-                // hiển thị div 
-                document.getElementById('diachidiv').style.display = 'block';
-                showdiachimacdinh();
+            document.getElementById('phigiaohang').value = '';
+            const urlchecksize = `http://localhost:8080/ban-hang-tai-quay/checkGiaoThanhToan`;
+            fetch(urlchecksize)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    if (b === true) {
+                        if (tienkhachthanhtoan === 0) {
+                            document.getElementById("checktrasau").checked = false;
+                            thongbao('Bạn chưa chọn sản phẩm nào', 'warning')
+                        } else {
+                            var isChecked = event.target.checked;
+                            if (isChecked) {
+                                // hiển thị div 
+                                document.getElementById('diachidiv').style.display = 'block';
+                                showdiachimacdinh();
 
-            } else {
-                // ẩn div
-                tienkhachthanhtoan = tienkhachthanhtoan - shipToanCuc;
-                document.getElementById('diachidiv').style.display = 'none';
+                            } else {
+                                // ẩn div
+                                tienkhachthanhtoan = tienkhachthanhtoan - shipToanCuc;
+                                document.getElementById('diachidiv').style.display = 'none';
 
-            }
+                            }
+                        }
+
+                    } else {
+
+                        document.getElementById("checktrasau").checked = false;
+                        thongbao('Chưa có hóa đơn nào được chọn', 'warning')
+                    }
+                })
         }
 
 
@@ -2582,30 +2646,37 @@ tabindex="0">
 
         // thanh toán modal hóa đơn
         function thanhtoan() {
-            const urlthanhtoan = `http://localhost:8080/ban-hang-tai-quay/thanh-toan`;
-            fetch(urlthanhtoan)
+            const urlchecksize = `http://localhost:8080/ban-hang-tai-quay/checkGiaoThanhToan`;
+            fetch(urlchecksize)
                 .then(function (a) {
                     return a.json();
                 })
                 .then(function (b) {
-                    var htmlpt = '';
-                    console.log(b)
-                    if (b.length > 0) {
-                        var stt = 0;
-                        var tiendathanhtoan = 0;
-                        var checktienmat = 0;
-                        var checkchuyenkhoan = 0;
-                        for (const hd of b) {
-                            if (hd.mota == 'tiền mặt') {
-                                checktienmat = 1;
+                    if (b === true) {
+                        const urlthanhtoan = `http://localhost:8080/ban-hang-tai-quay/thanh-toan`;
+                        fetch(urlthanhtoan)
+                            .then(function (a) {
+                                return a.json();
+                            })
+                            .then(function (b) {
+                                var htmlpt = '';
+                                console.log(b)
+                                if (b.length > 0) {
+                                    var stt = 0;
+                                    var tiendathanhtoan = 0;
+                                    var checktienmat = 0;
+                                    var checkchuyenkhoan = 0;
+                                    for (const hd of b) {
+                                        if (hd.mota == 'tiền mặt') {
+                                            checktienmat = 1;
 
-                            }
-                            if (hd.mota == 'chuyển khoản') {
-                                checkchuyenkhoan = 1;
-                            }
-                            tiendathanhtoan += hd.tongtien;
-                            stt++;
-                            htmlpt += ` <tr>
+                                        }
+                                        if (hd.mota == 'chuyển khoản') {
+                                            checkchuyenkhoan = 1;
+                                        }
+                                        tiendathanhtoan += hd.tongtien;
+                                        stt++;
+                                        htmlpt += ` <tr>
                                               <td>${stt}</td>
                                               <td>${hd.magiaodichvnpay == null ? '' : hd.magiaodichvnpay}</td>
                                               <td>${hd.tongtien}</td>
@@ -2618,40 +2689,51 @@ tabindex="0">
                                                                 type="button"><i class="bi bi-trash3"></i></button></a>
                                               </td>
                                           </tr>`;
-                        }
-                        if (checkchuyenkhoan == 1) {
-                            document.getElementById('chuyenkhoan').disabled = true;
-                        }
-                        if (checktienmat == 1) {
-                            document.getElementById('tienmat').disabled = true;
-                        }
-                        document.getElementById('dathanhtoanroi').innerHTML = tiendathanhtoan;
-                        document.getElementById('showpt').innerHTML = htmlpt;
-                        var showTien = document.getElementById('sotienhienthi');
-                        showTien.value = (tienkhachthanhtoan - tiendathanhtoan).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-                        document.getElementById('tienthieu').innerHTML = (tienkhachthanhtoan - tiendathanhtoan).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-                        document.getElementById('hdThanhToanShow').innerHTML = hdHienTai;
-                        if (convertCurrency(document.getElementById('sotienhienthi').value) == 0) {
-                            document.getElementById('xacnhanPT').disabled = false;
-                        } else {
-                            document.getElementById('xacnhanPT').disabled = true;
-                        }
+                                    }
+                                    if (checkchuyenkhoan == 1) {
+                                        document.getElementById('chuyenkhoan').disabled = true;
+                                    }
+                                    if (checktienmat == 1) {
+                                        document.getElementById('tienmat').disabled = true;
+                                    }
+                                    document.getElementById('dathanhtoanroi').innerHTML = tiendathanhtoan;
+                                    document.getElementById('showpt').innerHTML = htmlpt;
+                                    var showTien = document.getElementById('sotienhienthi');
+                                    showTien.value = (tienkhachthanhtoan - tiendathanhtoan).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                                    document.getElementById('tienthieu').innerHTML = (tienkhachthanhtoan - tiendathanhtoan).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                                    document.getElementById('hdThanhToanShow').innerHTML = hdHienTai;
+                                    if (convertCurrency(document.getElementById('sotienhienthi').value) == 0) {
+                                        document.getElementById('xacnhanPT').disabled = true;
+                                    } else {
+                                        document.getElementById('xacnhanPT').disabled = true;
+                                    }
 
 
+                                } else {
+
+                                    var showTien = document.getElementById('sotienhienthi');
+                                    document.getElementById('showpt').innerHTML = htmlpt;
+                                    showTien.value = tienkhachthanhtoan.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                                    document.getElementById('tienthieu').innerHTML = tienkhachthanhtoan.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                                    document.getElementById('hdThanhToanShow').innerHTML = hdHienTai;
+                                    document.getElementById('dathanhtoanroi').innerHTML = '0đ';
+                                    if (convertCurrency(document.getElementById('sotienhienthi').value) == 0) {
+                                        document.getElementById('xacnhanPT').disabled = true;
+                                    } else {
+                                        document.getElementById('xacnhanPT').disabled = true;
+                                    }
+
+                                }
+                                const modalElement = document.getElementById('modalThayDoiHoaDon5');
+                                // Khởi tạo một instance của modal
+                                const modal = new bootstrap.Modal(modalElement);
+                                // Gọi phương thức show để hiển thị modal
+                                modal.show();
+
+                            })
                     } else {
 
-                        var showTien = document.getElementById('sotienhienthi');
-                        document.getElementById('showpt').innerHTML = htmlpt;
-                        showTien.value = tienkhachthanhtoan.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-                        document.getElementById('tienthieu').innerHTML = tienkhachthanhtoan.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-                        document.getElementById('hdThanhToanShow').innerHTML = hdHienTai;
-                        document.getElementById('dathanhtoanroi').innerHTML = '0đ';
-                        if (convertCurrency(document.getElementById('sotienhienthi').value) == 0) {
-                            document.getElementById('xacnhanPT').disabled = false;
-                        } else {
-                            document.getElementById('xacnhanPT').disabled = true;
-                        }
-
+                        thongbao('Chưa có hóa đơn nào được chọn', 'warning')
                     }
 
                 })
@@ -2673,7 +2755,18 @@ tabindex="0">
                         + ' ₫';
                 });
             });
+            var numberString = document.getElementById('phigiaohang').value.replace(/[^0-9.]/g, '');
+            // Chuyển đổi tiền ship nhập tay
+            var number = parseFloat(numberString.replace(/\./g, ''));
+            shipToanCuc = number;
+            //lấy tiền đã áp voucher
+            var tiensaukhicovucher = document.getElementById('tongThanhToan').textContent.replace(/[^0-9.]/g, '');
+            // Chuyển đổi tiền đã apvoucher thành số nguyên
+            var tienChuaShip = parseFloat(tiensaukhicovucher.replace(/\./g, ''));
+            tienkhachthanhtoan = tienChuaShip + number;
+
         }
+
 
         function xacnhanphuongthuc(inputv) {
             const kieuTT = [inputv, document.getElementById('sotienhienthi').value];
@@ -2767,14 +2860,59 @@ tabindex="0">
         function xacnhanPTTT() {
             document.getElementById('xacnhanthanhtoanhoadon').disabled = false;
             document.getElementById('changeNV').disabled = true;
+            document.getElementById('chonMaGiam').disabled = true;
+            document.getElementById('start-scan').disabled = true;
+            document.getElementById('themKHS').disabled = true;
             document.getElementById('changeSP').disabled = true;
+            var inputs = document.querySelectorAll('#boddydssp input');
+            inputs.forEach(function (input) {
+                input.disabled = true;
+
+            });
+            var button = document.querySelectorAll('#boddydssp button');
+            button.forEach(function (btn) {
+                btn.disabled = true;
+
+            });
+            var inputss = document.querySelectorAll('#boddydssp a');
+            inputss.forEach(function (inp) {
+                // Lưu giá trị href ban đầu vào thuộc tính data-href
+                inp.setAttribute('data-href', inp.getAttribute('href'));
+                // Xóa thuộc tính href
+                inp.removeAttribute('href');
+
+            });
             xacnhanthanhcongcf();
             // disabled hết các nút sau khi xác nhận
+
 
         }
         //xóa bản ghi phương thức thanh toán
         function xoaphuongthuc(url) {
             if (confirm('Bạn muốn loại bỏ bản giao dịch này?')) {
+                document.getElementById('xacnhanthanhtoanhoadon').disabled = true;
+                document.getElementById('chantrasau').disabled = false;
+                document.getElementById('changeNV').disabled = false;
+                document.getElementById('chonMaGiam').disabled = false;
+                document.getElementById('start-scan').disabled = false;
+                document.getElementById('themKHS').disabled = false;
+                document.getElementById('changeSP').disabled = false;
+                var inputs = document.querySelectorAll('#boddydssp input');
+                inputs.forEach(function (input) {
+                    input.disabled = false;
+
+                });
+                var button = document.querySelectorAll('#boddydssp button');
+                button.forEach(function (btn) {
+                    btn.disabled = false;
+
+                });
+                var inputss = document.querySelectorAll('#boddydssp a');
+                inputss.forEach(function (inp) {
+                    inp.setAttribute('href', inp.getAttribute('data-href'));
+                    // Xóa thuộc tính data-href không cần thiết nữa
+                    inp.removeAttribute('data-href');
+                });
                 fetch(url)
                     .then(function (a) {
                         return a.json();
@@ -2879,8 +3017,10 @@ tabindex="0">
         }
         //chặn đường dẫn thẻ a
         function handleLinkClick() {
-
+            document.getElementById('start-scan').disabled = false;
+            document.getElementById('themKHS').disabled = false;
             document.getElementById('changeNV').disabled = false;
+            document.getElementById('chonMaGiam').disabled = false;
             document.getElementById('changeSP').disabled = false;
             var checkgiaohang = document.getElementById('checktrasau');
             var actionGiao = document.getElementById('thongtingiaohangform');
@@ -2916,6 +3056,19 @@ tabindex="0">
             // thongbao('Chưa xác nhận thông tin thanh toán!!!', 'warning');
 
         }
+
+        function hoatoc(event) {
+            // Lấy phần tử checkbox từ sự kiện
+            // validateForm();
+            var checkbox = event.target;
+            // Kiểm tra trạng thái của checkbox
+            if (checkbox.checked) {
+                document.getElementById('phigiaohang').readOnly = false;
+            } else {
+                document.getElementById('phigiaohang').readOnly = true;
+            }
+
+        }
         //xác định nghiệp vụ trả sau trả trước
         function handleCheckboxChange(event) {
             // Lấy phần tử checkbox từ sự kiện
@@ -2926,11 +3079,59 @@ tabindex="0">
                 //hóa đơn lựa chọn trả sau_mở nút xác nhận thanh toán và không cần thanh toán trước
                 document.getElementById('xacnhanthanhtoanhoadon').disabled = false;
                 document.getElementById('chantrasau').disabled = true;
+                document.getElementById('changeNV').disabled = true;
+                document.getElementById('chonMaGiam').disabled = true;
+                document.getElementById('start-scan').disabled = true;
+                document.getElementById('themKHS').disabled = true;
+                document.getElementById('changeSP').disabled = true;
+                var inputs = document.querySelectorAll('#boddydssp input');
+                inputs.forEach(function (input) {
+                    input.disabled = true;
+
+                });
+                var button = document.querySelectorAll('#boddydssp button');
+                button.forEach(function (btn) {
+                    btn.disabled = true;
+
+                });
+                var inputss = document.querySelectorAll('#boddydssp a');
+                inputss.forEach(function (inp) {
+                    // Lưu giá trị href ban đầu vào thuộc tính data-href
+                    inp.setAttribute('data-href', inp.getAttribute('href'));
+                    // Xóa thuộc tính href
+                    inp.removeAttribute('href');
+
+                });
 
             } else {
                 //hóa đơn lựa chọn trả trước đóng nút xác nhận thanh toán và yêu cầu thanh toán trước
                 document.getElementById('xacnhanthanhtoanhoadon').disabled = true;
                 document.getElementById('chantrasau').disabled = false;
+
+                document.getElementById('changeNV').disabled = false;
+                document.getElementById('chonMaGiam').disabled = false;
+                document.getElementById('start-scan').disabled = false;
+                document.getElementById('themKHS').disabled = false;
+                document.getElementById('changeSP').disabled = false;
+                var inputs = document.querySelectorAll('#boddydssp input');
+                inputs.forEach(function (input) {
+                    input.disabled = false;
+
+                });
+                var button = document.querySelectorAll('#boddydssp button');
+                button.forEach(function (btn) {
+                    btn.disabled = false;
+
+                });
+                var inputss = document.querySelectorAll('#boddydssp a');
+                inputss.forEach(function (inp) {
+
+                    // Lấy giá trị href từ thuộc tính data-href và gán lại cho thuộc tính href
+                    inp.setAttribute('href', inp.getAttribute('data-href'));
+                    // Xóa thuộc tính data-href không cần thiết nữa
+                    inp.removeAttribute('data-href');
+
+                });
             }
         }
 
@@ -3016,6 +3217,13 @@ tabindex="0">
                     return a.json();
                 })
                 .then(function (b) {
+                    if (b === false) {
+                        document.getElementById('showvoucher').innerHTML = `<div class="tab-pane fade show active text-center fw-bold" id="tatCaHoaDon-tab-pane" role="tabpanel" aria-labelledby="tatCaHoaDon-tab" tabindex="0">
+                                            <br>
+                                            <img src="../dist/img/no_product.png" width="300px" height="300px">
+                                            <h3 class="text text-danger"><i>Không tìm thấy voucher phù hợp!! <i class="bi bi-emoji-tear"></i>!</i></h3>
+                                        </div>`;
+                    }
                     var htmlvoucher = '';
                     for (const hd of b) {
                         htmlvoucher += `
@@ -3079,7 +3287,7 @@ tabindex="0">
                         // console.log('tiền ban đầu:' + tongTienDon)
                         // console.log('tiền giảm :' + TienGiamDon)
                         // console.log('tiền tổng thanh toán:' + tienkhachthanhtoan)
-                        thongbao('Áp dụng thành công','success')
+                        thongbao('Áp dụng thành công', 'success')
                         document.getElementById('maGiamFill').innerHTML = b.macode;
                         document.getElementById('giamgia').innerHTML = TienGiamDon.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                         document.getElementById('tongThanhToan').innerHTML = (tienkhachthanhtoan - shipToanCuc).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
@@ -3103,8 +3311,17 @@ tabindex="0">
     <!-- hienthibill -->
     <script th:inline="javascript">
         /*<![CDATA[*/
+        var checkdeleteHD = /*[[${checkdeleteHD}]]*/ false;
+        /*]]>*/
+        if (checkdeleteHD == true) {
+            thongbao('Hóa đơn đã được xóa!', 'success');
+        }
+    </script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
         var orderSuccess = /*[[${orderSuccess}]]*/ false;
         var checkHangCho = /*[[${checkHangCho}]]*/ false;
+        var checkdeleteHD = /*[[${checkdeleteHD}]]*/ false;
         /*]]>*/
 
         if (checkHangCho == true) {
@@ -3419,6 +3636,7 @@ tabindex="0">
                 .then(function (d) {
                     var shipfe = convertCashInput(d.data.total);
                     document.getElementById('phigiaohang').value = shipfe;
+                    var shipluutam = shipToanCuc;
                     shipToanCuc = d.data.total;
                     tienkhachthanhtoan = tienkhachthanhtoan + shipToanCuc;
                 })
@@ -3697,7 +3915,22 @@ tabindex="0">
                     document.getElementById('TTTK_sdt_regex').innerHTML = 'Số điện thoại phải bắt đầu bằng 0, độ dài 10 số!';
                     error = true;
                 } else {
-                    document.getElementById('TTTK_sdt_regex').innerHTML = '';
+                    var urlchecksdt = `http://localhost:8080/ban-hang-tai-quay/checksdt?sdt=${soDienThoai}`;
+                    fetch(urlchecksdt)
+                        .then(function (a) {
+                            return a.json();
+                        })
+                        .then(function (b) {
+                            if (b === true) {
+                                document.getElementById('TTTK_sdt_regex').innerHTML = 'Số điện thoại đã được sử dụng';
+                                error = true;
+
+                            } else {
+                                document.getElementById('TTTK_sdt_regex').innerHTML = '';
+                            }
+
+                        })
+
                 }
             }
 
@@ -3714,6 +3947,21 @@ tabindex="0">
                     document.getElementById('TTTK_email_regex').innerHTML = 'Email sai định dạng!';
                     error = true;
                 } else {
+                    var urlcheckemail = `http://localhost:8080/ban-hang-tai-quay/checkemail?email=${email}`;
+                    fetch(urlcheckemail)
+                        .then(function (a) {
+                            return a.json();
+                        })
+                        .then(function (b) {
+                            if (b === true) {
+                                document.getElementById('TTTK_email_regex').innerHTML = 'Email đã được sử dụng';
+                                error = true;
+
+                            } else {
+                                document.getElementById('TTTK_email_regex').innerHTML = '';
+                            }
+
+                        })
                     document.getElementById('TTTK_email_regex').innerHTML = '';
                 }
             }
@@ -3768,6 +4016,64 @@ tabindex="0">
 
     </script>
 
+    <script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.18.6/umd/index.min.js"></script>
+    <script>
+        window.addEventListener('load', function () {
+
+            let selectedDeviceId;
+            const codeReader = new ZXing.BrowserQRCodeReader();
+            const resultElement = document.getElementById('result-content');
+            const startScanButton = document.getElementById('start-scan');
+            const modalElement = document.getElementById('qrModal');
+            const modal = new bootstrap.Modal(modalElement);
+
+            startScanButton.addEventListener('click', () => {
+                modal.show();
+
+                codeReader.getVideoInputDevices()
+                    .then((videoInputDevices) => {
+                        selectedDeviceId = videoInputDevices[0].deviceId;
+                        codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
+                            if (result) {
+                                var urlChuyendoi = `http://localhost:8080/ban-hang-tai-quay/checkSPQR?ma=${result.text}`;
+                                fetch(urlChuyendoi)
+                                    .then(function (c) {
+                                        return c.json();
+                                    })
+                                    .then(function (b) {
+                                        if (b == true) {
+                                            var urf = "http://localhost:8080/ban-hang-tai-quay/ChoseSPQR/" + result.text;
+                                            window.location.href = urf;
+                                            // Stop the camera and hide the modal
+                                            codeReader.reset();
+                                            modal.hide();
+                                            thongbao('Thêm thành công!', 'success')
+                                        } else {
+                                            codeReader.reset();
+                                            modal.hide();
+                                            thongbao('Sản phẩm này đã hết hàng!', 'warning')
+                                        }
+                                    })
+                            }
+                            if (err && !(err instanceof ZXing.NotFoundException)) {
+                                console.error(err);
+                            }
+                        });
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
+            });
+
+            // Stop the camera when the modal is closed
+            modalElement.addEventListener('hidden.bs.modal', () => {
+                codeReader.reset();
+            });
+
+        });
+
+        //chặn tất cả thẻ a khi bấm xác nhận thanh toán
+    </script>
 
 </body>
 

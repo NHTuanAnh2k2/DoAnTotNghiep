@@ -28,13 +28,6 @@ public class CustomerUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         NguoiDung nguoiDung = nguoiDungRepository.findNguoiDungByTaikhoan(username);
-        if (nguoiDung == null) {
-            System.out.println("NguoiDung null");
-            throw new UsernameNotFoundException("User not found with username: " + username);
-        }
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = bCryptPasswordEncoder.encode(nguoiDung.getMatkhau());
-        System.out.println("PasswordEncode: " + encodedPassword);
-        return new User(nguoiDung.getTaikhoan(), encodedPassword, Collections.emptyList());
+        return new User(nguoiDung.getTaikhoan(), nguoiDung.getMatkhau(), Collections.emptyList());
     }
 }

@@ -166,5 +166,14 @@ public class HoaDonImp implements HoaDonService {
         return null;
     }
 
+    @Override
+    public Boolean delete(HoaDon idhd) {
+        if(dao.existsById(idhd.getId())){
+            dao.delete(idhd);
+            return true;
+        }
+        return false;
+    }
+
 
 }

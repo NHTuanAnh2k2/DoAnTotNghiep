@@ -48,4 +48,6 @@ public class NguoiDung {
     String nguoicapnhat;
     Boolean trangthai;
 
+    public NguoiDung get() { return this;}
+
 }

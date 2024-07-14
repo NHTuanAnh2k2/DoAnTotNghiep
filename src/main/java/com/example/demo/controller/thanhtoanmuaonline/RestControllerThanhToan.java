@@ -14,4 +14,10 @@ public class RestControllerThanhToan {
         List<PhieuGiamGia> lst = (List<PhieuGiamGia>) session.getAttribute("lstPGG");
         return lst;
     }
+    @GetMapping("/lay-token-tai-khoan-dang-nhap")
+    public String tokenTaiKhoanDN(HttpSession session){
+        String token= (String) session.getAttribute("tokenTT");
+
+        return token;
+    }
 }

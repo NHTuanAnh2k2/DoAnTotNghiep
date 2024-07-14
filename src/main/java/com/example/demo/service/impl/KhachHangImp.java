@@ -38,6 +38,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class KhachHangImp implements KhachHangService, NguoiDungService {
@@ -52,6 +53,8 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
     private static final String NUMBER = "0123456789";
     private static final String PASSWORD_ALLOW_BASE = CHAR_LOWER + CHAR_UPPER + NUMBER;
     private static final SecureRandom random = new SecureRandom();
+    private static final Map<String, String> codes = new ConcurrentHashMap<>();
+    private static final Map<String, Long> codeExpiryTimes = new ConcurrentHashMap<>();
 
     @Override
     public List<KhachHang> findAllKhachHang() {
@@ -66,48 +69,6 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
     @Override
     public List<NguoiDung> findAllNguoiDung() {
         return nguoiDungRepository.findAll();
-    }
-
-    @Override
-    public KhachHang add(KhachHang khachHang, NguoiDung nguoiDung, DiaChi diaChi, String tinhthanhpho, String quanhuyen, String xaphuong, String tenduong) {
-//        int usernameLength = 8;
-//        int passwordLength = 10;
-//        String username = generateRandomPassword(usernameLength);
-//        String password = generateRandomPassword(passwordLength);
-//
-//        LocalDateTime currentDate = LocalDateTime.now();
-//
-//        nguoiDung.setTaikhoan(username);
-//        nguoiDung.setMatkhau(password);
-//        nguoiDung.setNgaytao(Timestamp.valueOf(currentDate));
-//        nguoiDung.setLancapnhatcuoi(Timestamp.valueOf(currentDate));
-//        nguoiDung.setTrangthai(true);
-//        nguoiDungRepository.save(nguoiDung);
-//
-//        diaChi.setTenduong(tenduong);
-//        diaChi.setQuanhuyen(quanhuyen);
-//        diaChi.setXaphuong(xaphuong);
-//        diaChi.setSdtnguoinhan(nguoiDung.getSodienthoai());
-//        diaChi.setNguoidung(nguoiDung);
-//        diaChi.setTrangthai(nguoiDung.getTrangthai());
-//        diaChi.setTinhthanhpho(tinhthanhpho);
-//        diaChi.setNgaytao(nguoiDung.getNgaytao());
-//        diaChi.setLancapnhatcuoi(nguoiDung.getLancapnhatcuoi());
-//        diaChi.setHotennguoinhan(nguoiDung.getHovaten());
-//        diaChiRepository.save(diaChi);
-//
-//        String maKH = "KH" + (totalCustomer() + 1);
-//        khachHang.setMakhachhang(maKH);
-//        khachHang.setNguoidung(nguoiDung);
-//        khachHang.setTrangthai(nguoiDung.getTrangthai());
-//        khachHang.setNgaytao(nguoiDung.getNgaytao());
-//        khachHang.setLancapnhatcuoi(nguoiDung.getLancapnhatcuoi());
-//        khachHangRepostory.save(khachHang);
-//
-//        String nguoiNhan = diaChi.getNguoidung().getEmail();
-//        String tenNguoiNhan = nguoiDung.getHovaten();
-//        this.sendEmail(nguoiNhan, username, password, tenNguoiNhan);
-        return khachHang;
     }
 
     @Override
@@ -206,7 +167,7 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
     }
 
     @Override
-    public void sendEmailQuenMatKhau(String recipient, String name, String maDoiMatKhau) {
+    public boolean sendPasswordResetCode(String email, String name) {
         // Cấu hình thông tin email
         String host = "smtp.gmail.com";
         String port = "587";
@@ -220,6 +181,12 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
 
+        //Tạo code reset password
+        Random random = new Random();
+        String code = String.valueOf(100000 + random.nextInt(900000)); // Mã 6 chữ số ngẫu nhiên
+        codes.put(email, code);
+        codeExpiryTimes.put(email, System.currentTimeMillis() + 60 * 1000);
+
         // Tạo phiên gửi email
         Session session = Session.getInstance(properties, new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -230,29 +197,40 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
         try {
             // Tạo đối tượng MimeMessage
             MimeMessage message = new MimeMessage(session);
-
             // Thiết lập người nhận
             message.setFrom(new InternetAddress(senderEmail));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
-
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
             // Thiết lập tiêu đề
             message.setSubject("Mã Xác Nhận Đặt Lại Mật Khẩu");
-
             // Thiết lập nội dung email
             String emailContent = "Xin chào, " + name + "\n\n";
-            emailContent += "Đây là mã đặt lại mật khẩu của bạn: " + maDoiMatKhau + "\n\n";
+            emailContent += "Đây là mã đặt lại mật khẩu của bạn: " + code + "\n\n";
             emailContent += "Trân trọng,\n";
             emailContent += "Đỗ Quốc Thịnh";
-
             // Thiết lập nội dung
             message.setText(emailContent);
-
             // Gửi email
             Transport.send(message);
             System.out.println("Email sent successfully");
+            return true;
         } catch (MessagingException mex) {
             mex.printStackTrace();
+            return false;
         }
+    }
+
+    @Override
+    public boolean validateResetCode(String email, String code) {
+        if (codes.containsKey(email) && codes.get(email).equals(code)) {
+            long expiryTime = codeExpiryTimes.get(email);
+            if (System.currentTimeMillis() <= expiryTime) {
+                return true;
+            } else {
+                codes.remove(email);
+                codeExpiryTimes.remove(email);
+            }
+        }
+        return false;
     }
 
     @Override
@@ -277,6 +255,8 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
 
         return lstkhachhanginfo;
     }
+
+
 
 
     @Override

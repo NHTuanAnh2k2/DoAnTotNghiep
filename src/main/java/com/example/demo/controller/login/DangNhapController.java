@@ -1,9 +1,11 @@
 package com.example.demo.controller.login;
 
+import com.example.demo.entity.KhachHang;
 import com.example.demo.entity.NguoiDung;
 import com.example.demo.info.DangNhapNDInfo;
 import com.example.demo.info.TaiKhoanTokenInfo;
 import com.example.demo.info.token.UserManager;
+import com.example.demo.repository.NguoiDungRepository;
 import com.example.demo.security.CustomerUserDetailService;
 import com.example.demo.security.JWTGenerator;
 import com.example.demo.service.KhachHangService;
@@ -11,6 +13,7 @@ import com.example.demo.service.NguoiDungService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -38,6 +41,8 @@ public class DangNhapController {
     @Autowired
     NguoiDungService nguoiDungService;
     @Autowired
+    NguoiDungRepository nguoiDungRepository;
+    @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
     AuthenticationManager authenticationManager;
@@ -48,7 +53,7 @@ public class DangNhapController {
     @Autowired
     public UserManager userManager;
 
-    public List<TaiKhoanTokenInfo> taiKhoanTokenInfos=new ArrayList<>();
+    public List<TaiKhoanTokenInfo> taiKhoanTokenInfos = new ArrayList<>();
 
     @PostMapping("/dangnhap")
     public String dangnhap(Model model,
@@ -59,12 +64,20 @@ public class DangNhapController {
                            HttpServletRequest request,
                            RedirectAttributes redirectAttributes) {
         try {
+
             NguoiDung nd = khachHangService.findNguoiDungByTaikhoan(taikhoan);
             UserDetails userDetails = customerUserDetailService.loadUserByUsername(taikhoan);
+            KhachHang kh = khachHangService.findKhachHangByIdNguoiDung(nd.getId());
+
             if (userDetails == null) {
                 redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
-                return "redirect:/dangky";
+                return "redirect:/account";
             }
+            if (kh == null) {
+                redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
+                return "redirect:/account";
+            }
+
             if (passwordEncoder.matches(matkhau, userDetails.getPassword())) {
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
@@ -82,17 +95,18 @@ public class DangNhapController {
                 session.setAttribute("token", token);
                 userManager.addUser(userId, token);
                 session.setAttribute("userDangnhap", nd.getTaikhoan());
+                session.setAttribute("user", nd);
                 return "redirect:/customer/trangchu";
             } else {
                 redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
-                return "redirect:/dangky";
+                return "redirect:/account";
             }
         } catch (UsernameNotFoundException e) {
             redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
-            return "redirect:/dangky";
+            return "redirect:/account";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Đã có lỗi xảy ra, vui lòng thử lại");
-            return "redirect:/dangky";
+            return "redirect:/account";
         }
     }
 
@@ -175,5 +189,6 @@ public class DangNhapController {
         }
         return "redirect:/customer/trangchu";
     }
+
 
 }

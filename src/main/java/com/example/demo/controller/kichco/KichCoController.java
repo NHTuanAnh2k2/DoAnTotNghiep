@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,7 +35,7 @@ public class KichCoController {
         if (isKeyEmpty && isTrangthaiNull) {
             page = kichCoRepository.findAllByOrderByNgaytaoDesc();
         } else {
-            page = kichCoRepository.getDeGiayByTenOrTrangthai(info.getKey(), info.getTrangthai());
+            page = kichCoRepository.getKichCoByTenOrTrangthai(info.getKey(), info.getTrangthai());
         }
         model.addAttribute("fillSearch", info.getKey());
         model.addAttribute("fillTrangThai", info.getTrangthai());
@@ -60,5 +61,15 @@ public class KichCoController {
         kichCo.setLancapnhatcuoi(currentTime);
         kichCoImp.addKichCo(kichCo);
         return "redirect:/viewaddSPGET";
+    }
+
+    @PostMapping("/addKichCoSua")
+    public String addKichCoSua(@ModelAttribute("kichco") KichCo kichCo, @RequestParam("spctId") Integer spctId) {
+        LocalDateTime currentTime = LocalDateTime.now();
+        kichCo.setTrangthai(true);
+        kichCo.setNgaytao(currentTime);
+        kichCo.setLancapnhatcuoi(currentTime);
+        kichCoImp.addKichCo(kichCo);
+        return "redirect:/updateCTSP/" + spctId;
     }
 }

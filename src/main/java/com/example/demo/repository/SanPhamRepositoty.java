@@ -29,13 +29,13 @@ public interface SanPhamRepositoty extends JpaRepository<SanPham, Integer> {
             "WHERE (sp.masanpham LIKE?1 OR sp.tensanpham LIKE ?2)AND(?3 IS NULL OR sp.trangthai=?3) " +
             "GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai, sp.masanpham " +
             "ORDER BY sp.ngaytao DESC, tongSoLuong DESC")
-    Page<Object[]> findByMasanphamAndTenSanPhamAndTrangThai(String masanpham, String key, Boolean trangthai, Pageable pageable);
+    List<Object[]> findByMasanphamAndTenSanPhamAndTrangThai(String masanpham, String key, Boolean trangthai);
 
     // các sp mới nhất bên sp
     @Query("SELECT sp.id, sp.tensanpham, sp.ngaytao, SUM(spct.soluong) AS tongSoLuong,sp.trangthai, sp.masanpham " +
             "FROM SanPham sp JOIN sp.spct spct " +
             "GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai, sp.masanpham " +
             "ORDER BY sp.ngaytao DESC, tongSoLuong DESC")
-    Page<Object[]> findProductsWithTotalQuantityOrderByDateDesc(Pageable pageable);
+    List<Object[]> findProductsWithTotalQuantityOrderByDateDesc();
 
 }

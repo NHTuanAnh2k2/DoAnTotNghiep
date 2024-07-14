@@ -92,6 +92,7 @@ public class ThanhToanController {
             }
         }
         model.addAttribute("token", token);
+        session.setAttribute("tokenTT",token);
         model.addAttribute("totalAmount", totalAmount);
         model.addAttribute("totalQuantity", totalQuantity);
         model.addAttribute("cartItems", cartItems);

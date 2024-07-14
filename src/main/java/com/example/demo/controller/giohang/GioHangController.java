@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -46,6 +47,12 @@ public class GioHangController {
     @Autowired
     HttpSession session;
 
+    private static int nextItemId = 1;
+
+    public synchronized int generateUniqueItemId() {
+        return nextItemId++;
+    }
+
     public List<GioHangChiTiet> listGioHangKhongTK = new ArrayList<>();
 
     @GetMapping("/cart")
@@ -57,10 +64,15 @@ public class GioHangController {
         System.out.println("KKKKKK" + token);
         NguoiDung nguoiDung = null;
         KhachHang khachHang = null;
+
         // Kiểm tra xem người dùng đã đăng nhập hay chưa
         if (taiKhoanTokenInfos == null || taiKhoanTokenInfos.isEmpty()) {
             System.out.println("EEEEEEEEEEEE");
             cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
+
+            if (cartItems == null) {
+                cartItems = new ArrayList<>();
+            }
 
             session.setAttribute("giohangchitiet", cartItems);
 
@@ -76,38 +88,6 @@ public class GioHangController {
             cartItems = gioHang.getGioHangChiTietList();
             session.setAttribute("giohangchitiet", cartItems);
         }
-
-
-//        if (taiKhoanTokenInfos != null) {
-//            // Tìm người dùng từ danh sách token
-//            for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
-//                if (tkInfo.getToken().equals(token)) {
-//                    Integer userId = tkInfo.getId();
-//                    nguoiDung = nguoiDungGioHangRepository.findById(userId).orElse(null);
-//                    break;
-//                }
-//            }
-//            if (nguoiDung != null) {
-//                // Lấy giỏ hàng của người dùng đã đăng nhập
-////                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung);
-//                if (khachHang != null) {
-//                    gioHang = gioHangRepository.findByKhachhang(khachHang);
-//                    if (gioHang != null) {
-//                        cartItems = gioHang.getGioHangChiTietList();
-//                    }
-//                }
-//            }
-//        }
-//    } else
-//
-//    {
-//        // Giỏ hàng của người dùng chưa đăng nhập
-////            cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
-//        if (cartItems == null) {
-//            cartItems = new ArrayList<>();
-//        }
-//    }
-
         // Tính tổng số lượng sản phẩm và tổng tiền
         int totalQuantity = 0;
         BigDecimal totalAmount = BigDecimal.ZERO;
@@ -143,7 +123,6 @@ public class GioHangController {
         return ResponseEntity.ok(list);
     }
 
-
     @ResponseBody
     @GetMapping("/findBySanPhamId/{Id}")
     public ResponseEntity<?> getProductDetails(@PathVariable int Id) {
@@ -163,12 +142,23 @@ public class GioHangController {
         SanPhamChiTiet sanPhamChiTiet = sanPhamChiTietRepository.findBySanPhamIdAndColorAndSize(id, selectedColor, selectedSize);
         List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
         if (taiKhoanTokenInfos == null || taiKhoanTokenInfos.isEmpty()) {
-            GioHangChiTiet newItem = new GioHangChiTiet();
-            newItem.setSanphamchitiet(sanPhamChiTiet);
-            newItem.setSoluong(quantity);
-            newItem.setNgaytao(new Date());
-            newItem.setTrangthai(true);
-            listGioHangKhongTK.add(newItem);
+            boolean foundInCart = false;
+            for (GioHangChiTiet item : listGioHangKhongTK) {
+                if (item.getSanphamchitiet().equals(sanPhamChiTiet)) {
+                    item.setSoluong(item.getSoluong() + quantity);
+                    foundInCart = true;
+                    break;
+                }
+            }
+            if (!foundInCart) {
+                GioHangChiTiet newItem = new GioHangChiTiet();
+                newItem.setId(generateUniqueItemId()); // Cấp phát id duy nhất
+                newItem.setSanphamchitiet(sanPhamChiTiet);
+                newItem.setSoluong(quantity);
+                newItem.setNgaytao(new Date());
+                newItem.setTrangthai(true);
+                listGioHangKhongTK.add(newItem);
+            }
             session.setAttribute("cartItems", listGioHangKhongTK);
             return "redirect:/detailsanphamCustomer/" + id;
         } else {
@@ -225,109 +215,50 @@ public class GioHangController {
                 if (foundInCart == false) {
                     gioHangChiTietRepository.save(newItem);
                 }
-
                 return "redirect:/detailsanphamCustomer/" + id;
             }
         }
-
-
-//        if (sanPhamChiTiet != null && quantity > 0 && quantity <= sanPhamChiTiet.getSoluong()) {
-//            String token = (String) session.getAttribute("token");
-//            NguoiDung nguoiDung = null;
-//
-//            if (token != null) {
-//                // Lấy thông tin người dùng từ token
-//                List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
-//                if (taiKhoanTokenInfos != null) {
-//                    for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
-//                        if (tkInfo.getToken().equals(token)) {
-//                            Integer userId = tkInfo.getId();
-//                            nguoiDung = nguoiDungGioHangRepository.findById(userId).orElse(null);
-//                            break;
-//                        }
-//                    }
-//                    if (nguoiDung != null) {
-//                        KhachHang khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung);
-//
-//                        if (khachHang == null) {
-//                            LocalDateTime currentTime = LocalDateTime.now();
-//                            // Tạo mới KhachHang nếu chưa tồn tại
-//                            khachHang = new KhachHang();
-//                            khachHang.setMakhachhang("duynvph30146");
-//                            khachHang.setNguoitao("DUY");
-//                            khachHang.setNguoicapnhat("TÙNG");
-//                            khachHang.setTrangthai(false);
-//                            khachHang.setNguoidung(nguoiDung);
-//                            khachHang = khachHangGioHangRepository.save(khachHang);
-//                        }
-//                        GioHang gioHang = gioHangRepository.findByKhachhang(khachHang);
-//                        if (gioHang == null) {
-//                            LocalDateTime currentTime = LocalDateTime.now();
-//                            gioHang = new GioHang();
-//                            gioHang.setNgaytao(currentTime);
-//                            gioHang.setTrangthai(false);
-//                            gioHang.setKhachhang(khachHang);
-//                            gioHang = gioHangRepository.save(gioHang);
-//                        }
-//                        GioHangChiTiet gioHangChiTiet = gioHangChiTietRepository.findByGiohangAndSanphamchitiet(gioHang, sanPhamChiTiet);
-//
-//                        if (gioHangChiTiet != null) {
-//                            gioHangChiTiet.setSoluong(gioHangChiTiet.getSoluong() + quantity);
-//                        } else {
-//                            gioHangChiTiet = new GioHangChiTiet();
-//                            gioHangChiTiet.setGiohang(gioHang);
-//                            gioHangChiTiet.setSanphamchitiet(sanPhamChiTiet);
-//                            gioHangChiTiet.setSoluong(quantity);
-//                            gioHangChiTiet.setNgaytao(new Date());
-//                            gioHangChiTiet.setTrangthai(true);
-//                        }
-//                        gioHangChiTietRepository.save(gioHangChiTiet);
-//                    }
-//                }
-//            } else {
-//                List<GioHangChiTiet> cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
-//                if (cartItems == null) {
-//                    cartItems = new ArrayList<>();
-//                }
-//
-//                boolean foundInCart = false;
-//                for (GioHangChiTiet item : cartItems) {
-//                    if (item.getSanphamchitiet().equals(sanPhamChiTiet)) {
-//                        item.setSoluong(item.getSoluong() + quantity);
-//                        foundInCart = true;
-//                        break;
-//                    }
-//                }
-//                if (!foundInCart) {
-//                    GioHangChiTiet newItem = new GioHangChiTiet();
-//                    newItem.setSanphamchitiet(sanPhamChiTiet);
-//                    newItem.setSoluong(quantity);
-//                    newItem.setNgaytao(new Date());
-//                    newItem.setTrangthai(true);
-//                    cartItems.add(newItem);
-//                }
-//
-//                session.setAttribute("cartItems", cartItems);
-//            }
-//        }
-//        return "redirect:/detailsanphamCustomer/" + id;
     }
 
-
     @GetMapping("/delete/cart/{id}")
-    public String deleteCart(@PathVariable Integer id) {
+    public String deleteCart(@PathVariable("id") Integer id) {
         gioHangChiTietRepository.deleteById(id);
         return "redirect:/cart";
 
     }
 
     @PostMapping("/update-cart/{id}")
-    public String updateCart(@PathVariable Integer id, Integer quantity) {
+    public String updateCart(@PathVariable("id") Integer id, Integer quantity) {
         try {
             gioHangChiTietRepository.updateSoLuongById(quantity, id);
             return "redirect:/cart";
         } catch (Exception e) {
             return "redirect:/error";
         }
+    }
+
+    @GetMapping("/delete/cart/guest/{id}")
+    public String deleteCartForGuest(@PathVariable("id") Integer id, HttpSession session) {
+        List<GioHangChiTiet> cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
+        if (cartItems != null) {
+            cartItems.removeIf(item -> item.getId().equals(id));
+            session.setAttribute("cartItems", cartItems);
+        }
+        return "redirect:/cart";
+    }
+
+    @PostMapping("/update-cart/guest/{id}")
+    public String updateCartForGuest(@PathVariable("id") Integer id, @RequestParam("quantity") Integer quantity, HttpSession session) {
+        List<GioHangChiTiet> cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
+        if (cartItems != null) {
+            for (GioHangChiTiet item : cartItems) {
+                if (item.getId().equals(id)) {
+                    item.setSoluong(quantity);
+                    break;
+                }
+            }
+            session.setAttribute("cartItems", cartItems);
+        }
+        return "redirect:/cart";
     }
 }

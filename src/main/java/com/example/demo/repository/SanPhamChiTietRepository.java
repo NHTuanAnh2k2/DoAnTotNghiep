@@ -16,6 +16,10 @@ import java.util.Optional;
 
 @Repository
 public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, Integer> {
+    Boolean existsByMasanphamchitiet(String ma);
+
+    @Query("SELECT c FROM SanPhamChiTiet c WHERE c.masanphamchitiet like %?1%")
+    List<SanPhamChiTiet> searchSPCTtheoMa(String masp);
 
     @Query(value = """
                     SELECT s FROM SanPhamChiTiet s WHERE  s.id=:Id

@@ -7,7 +7,7 @@
         width: 100px;
         height: 100px;
         object-fit: cover;
-        margin-left: 20px;/* Thêm khoảng cách giữa các ảnh */
+        margin-left: 20px; /* Thêm khoảng cách giữa các ảnh */
     }
 
 
@@ -84,12 +84,12 @@
                             THÔNG TIN CHI TIẾT SẢN PHẨM
                         </h1>
                     </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">THÔNG TIN CHI TIẾT SẢN PHẨM</li>
-                        </ol>
-                    </div>
+                    <!--                    <div class="col-sm-6">-->
+                    <!--                        <ol class="breadcrumb float-sm-right">-->
+                    <!--                            <li class="breadcrumb-item"><a href="#">Home</a></li>-->
+                    <!--                            <li class="breadcrumb-item active">THÔNG TIN CHI TIẾT SẢN PHẨM</li>-->
+                    <!--                        </ol>-->
+                    <!--                    </div>-->
                 </div>
             </div><!-- /.container-fluid -->
         </section>
@@ -143,65 +143,131 @@
                                         <p>
                                             Thương hiệu:
                                             <select th:field="*{thuonghieu.ten}" class="form-control"
-                                                    style="width:550px">
+                                                    style="width:482px">
                                                 <option th:each="th : ${th}" th:value="${th.ten}"
                                                         th:text="${th.ten}"></option>
                                             </select>
                                         </p>
+                                        <p>
+                                                                              <span class="btn"
+                                                                                    style="margin: 3%; background-color: white; color: black;border-color: black; padding: 7px 10px;margin-left: 20px ;margin-top: 22px;cursor: pointer;"
+                                                                                    data-bs-toggle="modal"
+                                                                                    data-bs-target="#themthuonghieu">
+    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-circle-fill"
+         viewBox="0 0 16 16">
+        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+    </svg>
+</span>
+                                        </p>
                                         <p style="margin-left:92px">
                                             Trạng thái:
-                                            <select class="form-control" style="width:550px" th:field="*{trangthai}">
+                                            <select class="form-control" style="width:482px" th:field="*{trangthai}">
                                                 <option value="true">Đang kinh doanh</option>
                                                 <option value="false">Ngừng kinh doanh</option>
                                             </select>
+                                        </p>
+                                        <p>
+                                                                              <span class="btn"
+                                                                                    style="margin: 3%; background-color: white; color: black;border-color: black; padding: 7px 10px;margin-left: 20px ;margin-top: 22px;cursor: pointer;"
+                                                                                    data-bs-toggle="modal"
+                                                                                    data-bs-target="#themchatlieu">
+    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-circle-fill"
+         viewBox="0 0 16 16">
+        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+    </svg>
+</span>
                                         </p>
                                     </div>
                                     <div class="d-flex">
                                         <p>
                                             Chất liệu:
-                                            <select th:field="*{chatlieu.ten}" class="form-control" style="width:550px">
+                                            <select th:field="*{chatlieu.ten}" class="form-control" style="width:482px">
                                                 <option th:each="cl : ${cl}" th:value="${cl.ten}"
                                                         th:text="${cl.ten}"></option>
                                             </select>
                                         </p>
+                                        <p>
+                                                                              <span class="btn"
+                                                                                    style="margin: 3%; background-color: white; color: black;border-color: black; padding: 7px 10px;margin-left: 20px ;margin-top: 22px;cursor: pointer;"
+                                                                                    data-bs-toggle="modal"
+                                                                                    data-bs-target="#themchatlieu">
+    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-circle-fill"
+         viewBox="0 0 16 16">
+        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+    </svg>
+</span>
+                                        </p>
                                         <p style="margin-left:92px">
                                             Đế giày:
-                                            <select th:field="*{degiay.ten}" class="form-control" style="width:550px">
+                                            <select th:field="*{degiay.ten}" class="form-control" style="width:482px">
                                                 <option th:each="dg : ${dg}" th:value="${dg.ten}"
                                                         th:text="${dg.ten}"></option>
                                             </select>
+                                        </p>
+                                        <p>
+                                                                              <span class="btn"
+                                                                                    style="margin: 3%; background-color: white; color: black;border-color: black; padding: 7px 10px;margin-left: 20px ;margin-top: 22px;cursor: pointer;"
+                                                                                    data-bs-toggle="modal"
+                                                                                    data-bs-target="#themdegiay">
+    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-circle-fill"
+         viewBox="0 0 16 16">
+        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+    </svg>
+</span>
                                         </p>
                                     </div>
                                     <div class="d-flex">
                                         <p>
                                             Kích cỡ:
-                                            <select th:field="*{kichco.ten}" class="form-control" style="width:550px">
+                                            <select th:field="*{kichco.ten}" class="form-control" style="width:482px">
                                                 <option th:each="kc : ${kc}" th:value="${kc.ten}"
                                                         th:text="${kc.ten}"></option>
                                             </select>
                                         </p>
+                                        <p>
+                                                                              <span class="btn"
+                                                                                    style="margin: 3%; background-color: white; color: black;border-color: black; padding: 7px 10px;margin-left: 20px ;margin-top: 22px;cursor: pointer;"
+                                                                                    data-bs-toggle="modal"
+                                                                                    data-bs-target="#themnhanhkichco">
+    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-circle-fill"
+         viewBox="0 0 16 16">
+        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+    </svg>
+</span>
+                                        </p>
                                         <p style="margin-left:92px">
                                             Màu sắc:
-                                            <select th:field="*{mausac.ten}" class="form-control" style="width:550px">
+                                            <select th:field="*{mausac.ten}" class="form-control" style="width:482px">
                                                 <option th:each="ms : ${ms}" th:value="${ms.ten}"
                                                         th:text="${ms.ten}"></option>
                                             </select>
+                                        </p>
+                                        <p>
+                                                                              <span class="btn"
+                                                                                    style="margin: 3%; background-color: white; color: black;border-color: black; padding: 7px 10px;margin-left: 20px ;margin-top: 22px;cursor: pointer;"
+                                                                                    data-bs-toggle="modal"
+                                                                                    data-bs-target="#themmausac">
+    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-circle-fill"
+         viewBox="0 0 16 16">
+        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+    </svg>
+</span>
                                         </p>
                                     </div>
                                     <h5>ẢNH SẢN PHẨM</h5>
 
                                     <p>
-<!--                                    <div class="d-flex">-->
-<!--                                        <th:block th:each="anh : *{anh}">-->
-<!--                                            <img th:if="${anh.tenanh != null}"-->
-<!--                                                 th:src="@{'/upload/' + ${anh.tenanh.substring(anh.tenanh.lastIndexOf('upload') + 6)}}"-->
-<!--                                                 width="100" height="100" alt="Ảnh">-->
-<!--                                        </th:block>-->
-<!--                                        <td>-->
-<!--                                            <input type="file" name="anhs" multiple>-->
-<!--                                            <input type="hidden"  name="spctIds" th:value="*{id}">-->
-<!--                                        </td>-->
-<!--                                    </div>-->
+                                        <!--                                    <div class="d-flex">-->
+                                        <!--                                        <th:block th:each="anh : *{anh}">-->
+                                        <!--                                            <img th:if="${anh.tenanh != null}"-->
+                                        <!--                                                 th:src="@{'/upload/' + ${anh.tenanh.substring(anh.tenanh.lastIndexOf('upload') + 6)}}"-->
+                                        <!--                                                 width="100" height="100" alt="Ảnh">-->
+                                        <!--                                        </th:block>-->
+                                        <!--                                        <td>-->
+                                        <!--                                            <input type="file" name="anhs" multiple>-->
+                                        <!--                                            <input type="hidden"  name="spctIds" th:value="*{id}">-->
+                                        <!--                                        </td>-->
+                                        <!--                                    </div>-->
 
                                     <div class="d-flex">
                                         <th:block th:each="anh, iterStat : *{anh}">
@@ -224,10 +290,179 @@
                                     </div>
                                     </p>
                                     <button class="btn" type="submit"
-                                            style="margin-left: 1050px;background-color: rgb(249,72,42);color: white">
-                                        Chỉnh sửa
+                                            style="margin-left: 1070px;background-color: rgb(249,72,42);color: white">
+                                        Cập nhật
                                     </button>
                                 </form>
+                                <!-- Modal thêm thương hiệu-->
+                                <div class="modal fade" id="themthuonghieu" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm thương
+                                                    hiệu</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form id="addFormThuongHieu" name="addThuongHieu" th:method="post"
+                                                      th:object="${thuonghieu}"
+                                                      th:action="@{/addThuongHieuSua}"
+                                                      onsubmit="return validateTrungThuongHieu()">
+                                                    <p>
+                                                        <span style="color: red">* </span>
+                                                        Tên thương hiệu:
+                                                        <input id="tenInputThuongHieu" class="form-control"
+                                                               th:field="*{ten}"/>
+                                                    <div style="color: red; font-weight: initial;font-style: italic"
+                                                         id="errorTenThuongHieu"></div>
+                                                    </p>
+                                                    <input type="hidden" name="spctId" th:value="${hehe.id}">
+                                                    <button id="submitButtonThuongHieu" class="btn"
+                                                            style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
+                                                        Thêm
+                                                    </button>
+                                                </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Modal thêm chất liệu-->
+                                <div class="modal fade" id="themchatlieu" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabelChatLieu">Thêm chất
+                                                    liệu</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form id="addFormChatLieu" name="addChatLieu" th:method="post"
+                                                      th:action="@{/addChatLieuSua}" th:object="${chatlieu}"
+                                                      onsubmit="return validateTrungChatLieu()">
+                                                    <p>
+                                                        <span style="color: red">* </span>
+                                                        Tên chất liệu:
+                                                        <input id="tenInputChatLieu" th:field="*{ten}"
+                                                               class="form-control">
+                                                    <div style="color: red; font-weight: initial;font-style: italic"
+                                                         id="errorTenChatLieu"></div>
+                                                    </p>
+                                                    <input type="hidden" name="spctId" th:value="${hehe.id}">
+                                                    <button class="btn"
+                                                            style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
+                                                        Thêm
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Modal thêm đế giày-->
+                                <div class="modal fade" id="themdegiay" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel2">Thêm đế giày</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form id="addFormDeGiay" name="addDeGiay" th:method="post"
+                                                      th:object="${degiay}"
+                                                      th:action="@{/addDeGiaySua}"
+                                                      onsubmit="return validateTrungDeGiay()">
+                                                    <p>
+                                                        <span style="color: red">* </span>
+                                                        Tên đế giày:
+                                                        <input id="tenInputDeGiay" class="form-control"
+                                                               th:field="*{ten}"/>
+                                                    <div style="color: red; font-weight: initial;font-style: italic"
+                                                         id="errorTenDeGiay"></div>
+                                                    </p>
+                                                    <input type="hidden" name="spctId" th:value="${hehe.id}">
+                                                    <button id="submitButtonDeGiay" class="btn"
+                                                            style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
+                                                        Thêm
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Modal thêm kích cỡ-->
+                                <div class="modal fade" id="themnhanhkichco" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5">Thêm kích cỡ</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form id="addFormKichCo" name="addKichCo"
+                                                      onsubmit="return validateTrungKichCo()"
+                                                      method="post" th:action="@{/addKichCoSua}"
+                                                      th:object="${kichco}">
+                                                    <p>
+                                                        Tên kích cỡ:
+                                                        <input id="tenInputKichCo" class="form-control"
+                                                               th:field="*{ten}"/>
+                                                    <div style="color: red; font-weight: initial;font-style: italic"
+                                                         id="errorTenKichCo"></div>
+                                                    </p>
+                                                    <input type="hidden" name="spctId" th:value="${hehe.id}">
+                                                    <button id="submitButtonKichCo" class="btn"
+                                                            style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
+                                                        Thêm
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Modal thêm màu sắc-->
+                                <div class="modal fade" id="themmausac" tabindex="-1"
+                                     aria-labelledby="exampleModalLabelMauSac"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabelMauSac">Thêm màu
+                                                    sắc</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form id="addFormMauSac" th:method="post" name="addMauSac"
+                                                      th:object="${mausac}"
+                                                      th:action="@{/addMauSacSua}"
+                                                      onsubmit="return validateTrungMauSac()">
+                                                    <p>
+                                                        <span style="color: red">* </span>
+                                                        Tên màu sắc:
+                                                        <input id="tenInputMauSac" class="form-control"
+                                                               th:field="*{ten}"/>
+                                                    <div style="color: red; font-weight: initial;font-style: italic"
+                                                         id="errorTenMauSac"></div>
+                                                    </p>
+                                                    <input type="hidden" name="spctId" th:value="${hehe.id}">
+                                                    <button id="submitButtonMauSac" class="btn"
+                                                            style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
+                                                        Thêm
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -331,4 +566,372 @@
             });
         });
     });
+</script>
+
+
+<script th:inline="javascript">
+
+    /*<![CDATA[*/
+
+    var objectsFromControllerThuongHieu = /*[[${listTH}]]*/ [];
+    var objectsFromControllerChatLieu = /*[[${listCL}]]*/ [];
+    var objectsFromControllerDeGiay = /*[[${listDG}]]*/ [];
+    var objectsFromControllerMauSac = /*[[${listMS}]]*/ [];
+    var objectsFromControllerKichCo = /*[[${listKC}]]*/ [];
+
+    function validateTrungThuongHieu() {
+        var inputMaThuongHieu = document.getElementById("tenInputThuongHieu").value;
+        var errorMaThuongHieu = document.getElementById("errorTenThuongHieu");
+        var isMaValid = true;
+
+
+        // Kiểm tra xem trường "Tên đế giày" có trống không
+        if (inputMaThuongHieu.trim() === "") {
+            errorMaThuongHieu.innerText = "Vui lòng nhập tên thương hiệu.";
+            return false; // Ngăn form được gửi đi
+        } else {
+            errorMaThuongHieu.innerText = ""; // Xóa thông báo lỗi nếu có
+        }
+
+
+        // Kiểm tra trùng tên đế giày
+        for (var i = 0; i < objectsFromControllerThuongHieu.length; i++) {
+            var obj = objectsFromControllerThuongHieu[i];
+            if (inputMaThuongHieu === obj.ten) {
+                errorMaThuongHieu.innerText = "Tên thương hiệu đã tồn tại!";
+                isMaValid = false;
+                break;
+            }
+        }
+
+        if (isMaValid) {
+            errorMaThuongHieu.innerText = "";
+            themThuongHieu();
+        }
+
+        return false;
+    }
+
+    function validateTrungChatLieu() {
+        var inputMaChatLieu = document.getElementById("tenInputChatLieu").value;
+        var errorMaChatLieu = document.getElementById("errorTenChatLieu");
+        var isMaValid = true;
+
+
+        // Kiểm tra xem trường "Tên đế giày" có trống không
+        if (inputMaChatLieu.trim() === "") {
+            errorMaChatLieu.innerText = "Vui lòng nhập tên chất liệu.";
+            return false; // Ngăn form được gửi đi
+        } else {
+            errorMaChatLieu.innerText = ""; // Xóa thông báo lỗi nếu có
+        }
+
+
+        // Kiểm tra trùng tên đế giày
+        for (var i = 0; i < objectsFromControllerChatLieu.length; i++) {
+            var obj = objectsFromControllerChatLieu[i];
+            if (inputMaChatLieu === obj.ten) {
+                errorMaChatLieu.innerText = "Tên chất liệu đã tồn tại!";
+                isMaValid = false;
+                break;
+            }
+        }
+
+        if (isMaValid) {
+            errorMaChatLieu.innerText = "";
+            themChatLieu();
+        }
+
+        return false;
+    }
+
+    function validateTrungDeGiay() {
+        var inputMaDeGiay = document.getElementById("tenInputDeGiay").value;
+        var errorMaDeGiay = document.getElementById("errorTenDeGiay");
+        var isMaValid = true;
+
+
+        // Kiểm tra xem trường "Tên đế giày" có trống không
+        if (inputMaDeGiay.trim() === "") {
+            errorMaDeGiay.innerText = "Vui lòng nhập tên đế giày.";
+            return false; // Ngăn form được gửi đi
+        } else {
+            errorMaDeGiay.innerText = ""; // Xóa thông báo lỗi nếu có
+        }
+
+
+        // Kiểm tra trùng tên đế giày
+        for (var i = 0; i < objectsFromControllerDeGiay.length; i++) {
+            var obj = objectsFromControllerDeGiay[i];
+            if (inputMaDeGiay === obj.ten) {
+                errorMaDeGiay.innerText = "Tên đế giày đã tồn tại!";
+                isMaValid = false;
+                break;
+            }
+        }
+
+        if (isMaValid) {
+            errorMaDeGiay.innerText = "";
+            themDeGiay();
+        }
+        return false;
+    }
+
+    function validateTrungMauSac() {
+        var inputMaMauSac = document.getElementById("tenInputMauSac").value;
+        var errorMaMauSac = document.getElementById("errorTenMauSac");
+        var isMaValid = true;
+
+
+        // Kiểm tra xem trường "Tên đế giày" có trống không
+        if (inputMaMauSac.trim() === "") {
+            errorMaMauSac.innerText = "Vui lòng nhập tên màu sắc.";
+            return false; // Ngăn form được gửi đi
+        } else {
+            errorMaMauSac.innerText = ""; // Xóa thông báo lỗi nếu có
+        }
+
+
+        // Kiểm tra trùng tên đế giày
+        for (var i = 0; i < objectsFromControllerMauSac.length; i++) {
+            var obj = objectsFromControllerMauSac[i];
+            if (inputMaMauSac === obj.ten) {
+                errorMaMauSac.innerText = "Tên màu sắc đã tồn tại!";
+                isMaValid = false;
+                break;
+            }
+        }
+
+        if (isMaValid) {
+            errorMaMauSac.innerText = "";
+            themMauSac();
+        }
+
+        return false;
+    }
+
+    function validateTrungKichCo() {
+        var inputMaKichCo = document.getElementById("tenInputKichCo").value;
+        var errorMaKichCo = document.getElementById("errorTenKichCo");
+        var isMaValid = true;
+
+
+        // Kiểm tra xem trường "Tên đế giày" có trống không
+        if (inputMaKichCo.trim() === "") {
+            errorMaKichCo.innerText = "Vui lòng nhập tên kích cỡ.";
+            return false; // Ngăn form được gửi đi
+        } else {
+            errorMaKichCo.innerText = ""; // Xóa thông báo lỗi nếu có
+        }
+
+
+        // Kiểm tra trùng tên đế giày
+        for (var i = 0; i < objectsFromControllerKichCo.length; i++) {
+            var obj = objectsFromControllerKichCo[i];
+            if (inputMaKichCo === obj.ten) {
+                errorMaKichCo.innerText = "Tên kích cỡ đã tồn tại!";
+                isMaValid = false;
+                break;
+            }
+        }
+
+        if (isMaValid) {
+            errorMaKichCo.innerText = "";
+            themKichCo();
+        }
+
+        return false;
+    }
+
+    function themThuongHieu() {
+        // Sử dụng SweetAlert2 thay vì hộp thoại confirm
+        Swal.fire({
+            title: 'Bạn có muốn thêm không?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "success",
+                    title: "Thêm thành công!"
+                });
+
+                setTimeout(function () {
+                    document.addThuongHieu.submit();
+                }, 3000);
+            }
+        });
+
+        // Ngăn form được gửi đi ngay lập tức
+        return false;
+    }
+
+    function themChatLieu() {
+        // Sử dụng SweetAlert2 thay vì hộp thoại confirm
+        Swal.fire({
+            title: 'Bạn có muốn thêm không?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "success",
+                    title: "Thêm thành công!"
+                });
+
+                setTimeout(function () {
+                    document.addChatLieu.submit();
+                }, 3000);
+            }
+        });
+
+        // Ngăn form được gửi đi ngay lập tức
+        return false;
+    }
+
+    function themDeGiay() {
+        // Sử dụng SweetAlert2 thay vì hộp thoại confirm
+        Swal.fire({
+            title: 'Bạn có muốn thêm không?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "success",
+                    title: "Thêm thành công!"
+                });
+
+                setTimeout(function () {
+                    document.addDeGiay.submit();
+                }, 3000);
+            }
+        });
+
+        // Ngăn form được gửi đi ngay lập tức
+        return false;
+    }
+
+    function themMauSac() {
+        // Sử dụng SweetAlert2 thay vì hộp thoại confirm
+        Swal.fire({
+            title: 'Bạn có muốn thêm không?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "success",
+                    title: "Thêm thành công!"
+                });
+
+                setTimeout(function () {
+                    document.addMauSac.submit();
+                }, 3000);
+            }
+        });
+
+        // Ngăn form được gửi đi ngay lập tức
+        return false;
+    }
+
+    function themKichCo() {
+        // Sử dụng SweetAlert2 thay vì hộp thoại confirm
+        Swal.fire({
+            title: 'Bạn có muốn thêm không?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "success",
+                    title: "Thêm thành công!"
+                });
+
+                setTimeout(function () {
+                    document.addKichCo.submit();
+                }, 3000);
+            }
+        });
+
+        // Ngăn form được gửi đi ngay lập tức
+        return false;
+    }
+
+    /*]]>*/
 </script>

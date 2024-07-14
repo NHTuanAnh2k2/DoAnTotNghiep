@@ -34,7 +34,7 @@ public interface TrangChuRepository extends JpaRepository<SanPham, Integer> {
        JOIN MauSac ms ON spct.IdMauSac = ms.id
        GROUP BY spct.IdSanPham
    )
-   SELECT TOP 8 sp.id, sp.tensanpham, sp.ngaytao, spctg.tongSoLuong, sp.trangthai, spctg.giatien, anhdd.tenanh, kc.soLuongKichCo, ms.soLuongMauSac
+   SELECT sp.id, sp.tensanpham, sp.ngaytao, spctg.tongSoLuong, sp.trangthai, spctg.giatien, anhdd.tenanh, kc.soLuongKichCo, ms.soLuongMauSac
    FROM SanPham sp
    JOIN SanPhamChiTietGrouped spctg ON sp.id = spctg.IdSanPham
    JOIN AnhDaiDien anhdd ON sp.id = anhdd.IdSanPham AND anhdd.row_num = 1
@@ -95,31 +95,120 @@ public interface TrangChuRepository extends JpaRepository<SanPham, Integer> {
 
     // top sp mới nhất của detail
     @Query(nativeQuery = true, value = """
-    WITH AnhDaiDien AS (
-        SELECT spct.IdSanPham, anh.tenanh,
-               ROW_NUMBER() OVER (PARTITION BY spct.IdSanPham ORDER BY anh.tenanh DESC ) AS row_num
-        FROM Anh anh
-        JOIN SanPhamChiTiet spct ON anh.IdSanPhamChiTiet = spct.id
-    ),
-    SanPhamChiTietGrouped AS (
-        SELECT IdSanPham, SUM(soluong) AS tongSoLuong, MIN(giatien) AS giatien
-        FROM SanPhamChiTiet
-        GROUP BY IdSanPham
-    )
-    SELECT TOP 8 sp.id, sp.tensanpham, sp.ngaytao, spctg.tongSoLuong, sp.trangthai, spctg.giatien, anhdd.tenanh
-    FROM SanPham sp
-    JOIN SanPhamChiTietGrouped spctg ON sp.id = spctg.IdSanPham
-    JOIN AnhDaiDien anhdd ON sp.id = anhdd.IdSanPham AND anhdd.row_num = 1
-    ORDER BY sp.ngaytao DESC, spctg.tongSoLuong DESC
+   WITH AnhDaiDien AS (
+       SELECT spct.IdSanPham, anh.tenanh,
+              ROW_NUMBER() OVER (PARTITION BY spct.IdSanPham ORDER BY anh.tenanh DESC ) AS row_num
+       FROM Anh anh
+       JOIN SanPhamChiTiet spct ON anh.IdSanPhamChiTiet = spct.id
+   ),
+   SanPhamChiTietGrouped AS (
+       SELECT IdSanPham, SUM(soluong) AS tongSoLuong, MIN(giatien) AS giatien
+       FROM SanPhamChiTiet
+       GROUP BY IdSanPham
+   ),
+   KichCoCount AS (
+       SELECT spct.IdSanPham, COUNT(DISTINCT kc.id) AS soLuongKichCo
+       FROM SanPhamChiTiet spct
+       JOIN KichCo kc ON spct.IdKichCo = kc.id
+       GROUP BY spct.IdSanPham
+   ),
+   MauSacCount AS (
+       SELECT spct.IdSanPham, COUNT(DISTINCT ms.id) AS soLuongMauSac
+       FROM SanPhamChiTiet spct
+       JOIN MauSac ms ON spct.IdMauSac = ms.id
+       GROUP BY spct.IdSanPham
+   )
+   SELECT TOP 8 sp.id, sp.tensanpham, sp.ngaytao, spctg.tongSoLuong, sp.trangthai, spctg.giatien, anhdd.tenanh, kc.soLuongKichCo, ms.soLuongMauSac
+   FROM SanPham sp
+   JOIN SanPhamChiTietGrouped spctg ON sp.id = spctg.IdSanPham
+   JOIN AnhDaiDien anhdd ON sp.id = anhdd.IdSanPham AND anhdd.row_num = 1
+   JOIN KichCoCount kc ON sp.id = kc.IdSanPham
+   JOIN MauSacCount ms ON sp.id = ms.IdSanPham
+   ORDER BY sp.ngaytao DESC, spctg.tongSoLuong DESC;
 """)
     List<Object[]> topspmoinhatdetail();
 
 
     // top sp nổi bật của detail
     @Query(nativeQuery = true, value = """
+   WITH AnhDaiDien AS (
+       SELECT spct.IdSanPham, anh.tenanh,
+              ROW_NUMBER() OVER (PARTITION BY spct.IdSanPham ORDER BY anh.tenanh DESC ) AS row_num
+       FROM Anh anh
+       JOIN SanPhamChiTiet spct ON anh.IdSanPhamChiTiet = spct.id
+   ),
+   SanPhamChiTietGrouped AS (
+       SELECT IdSanPham, SUM(soluong) AS tongSoLuong, MIN(giatien) AS giatien
+       FROM SanPhamChiTiet
+       GROUP BY IdSanPham
+   ),
+   KichCoCount AS (
+       SELECT spct.IdSanPham, COUNT(DISTINCT kc.id) AS soLuongKichCo
+       FROM SanPhamChiTiet spct
+       JOIN KichCo kc ON spct.IdKichCo = kc.id
+       GROUP BY spct.IdSanPham
+   ),
+   MauSacCount AS (
+       SELECT spct.IdSanPham, COUNT(DISTINCT ms.id) AS soLuongMauSac
+       FROM SanPhamChiTiet spct
+       JOIN MauSac ms ON spct.IdMauSac = ms.id
+       GROUP BY spct.IdSanPham
+   )
+   SELECT TOP 8 sp.id, sp.tensanpham, sp.ngaytao, spctg.tongSoLuong, sp.trangthai, spctg.giatien, anhdd.tenanh, kc.soLuongKichCo, ms.soLuongMauSac
+   FROM SanPham sp
+   JOIN SanPhamChiTietGrouped spctg ON sp.id = spctg.IdSanPham
+   JOIN AnhDaiDien anhdd ON sp.id = anhdd.IdSanPham AND anhdd.row_num = 1
+   JOIN KichCoCount kc ON sp.id = kc.IdSanPham
+   JOIN MauSacCount ms ON sp.id = ms.IdSanPham
+   ORDER BY sp.ngaytao ASC, spctg.tongSoLuong ASC;
+""")
+    List<Object[]> topspnoibatdetail();
+
+    // search-trangchu
+    @Query(nativeQuery = true, value = """
+    WITH SanPhamChiTietGrouped AS (
+        SELECT spct.IdSanPham, SUM(spct.soluong) AS tongSoLuong, MAX(spct.giatien) AS maxGiaTien
+        FROM SanPhamChiTiet spct
+        GROUP BY spct.IdSanPham
+    ),
+    AnhDaiDien AS (
+        SELECT spct.IdSanPham, MAX(anh.tenanh) AS maxTenAnh
+        FROM Anh anh
+        JOIN SanPhamChiTiet spct ON anh.IdSanPhamChiTiet = spct.id
+        GROUP BY spct.IdSanPham
+    ),
+    KichCoCount AS (
+        SELECT spct.IdSanPham, COUNT(DISTINCT kc.id) AS soLuongKichCo
+        FROM SanPhamChiTiet spct
+        JOIN KichCo kc ON spct.IdKichCo = kc.id
+        GROUP BY spct.IdSanPham
+    ),
+    MauSacCount AS (
+        SELECT spct.IdSanPham, COUNT(DISTINCT ms.id) AS soLuongMauSac
+        FROM SanPhamChiTiet spct
+        JOIN MauSac ms ON spct.IdMauSac = ms.id
+        GROUP BY spct.IdSanPham
+    )
+    SELECT sp.id, sp.tensanpham, sp.ngaytao, spctg.tongSoLuong, sp.trangthai, spctg.maxGiaTien, anhdd.maxTenAnh, kc.soLuongKichCo, ms.soLuongMauSac
+    FROM SanPham sp
+    JOIN SanPhamChiTietGrouped spctg ON sp.id = spctg.IdSanPham
+    JOIN AnhDaiDien anhdd ON sp.id = anhdd.IdSanPham
+    JOIN KichCoCount kc ON sp.id = kc.IdSanPham
+    JOIN MauSacCount ms ON sp.id = ms.IdSanPham
+    JOIN SanPhamChiTiet spct ON sp.id = spct.IdSanPham
+    WHERE (sp.masanpham LIKE %?1% OR sp.tensanpham LIKE %?2%)
+    GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai, spctg.tongSoLuong, spctg.maxGiaTien, anhdd.maxTenAnh, kc.soLuongKichCo, ms.soLuongMauSac
+    ORDER BY sp.ngaytao DESC, spctg.tongSoLuong DESC
+""")
+    List<Object[]> searchTrangChu(String masanpham, String tensanpham);
+
+
+
+
+    @Query(nativeQuery = true, value = """
     WITH AnhDaiDien AS (
         SELECT spct.IdSanPham, anh.tenanh,
-               ROW_NUMBER() OVER (PARTITION BY spct.IdSanPham ORDER BY anh.tenanh DESC ) AS row_num
+               ROW_NUMBER() OVER (PARTITION BY spct.IdSanPham ORDER BY anh.tenanh DESC) AS row_num
         FROM Anh anh
         JOIN SanPhamChiTiet spct ON anh.IdSanPhamChiTiet = spct.id
     ),
@@ -127,46 +216,27 @@ public interface TrangChuRepository extends JpaRepository<SanPham, Integer> {
         SELECT IdSanPham, SUM(soluong) AS tongSoLuong, MIN(giatien) AS giatien
         FROM SanPhamChiTiet
         GROUP BY IdSanPham
+    ),
+    KichCoCount AS (
+        SELECT spct.IdSanPham, COUNT(DISTINCT kc.id) AS soLuongKichCo
+        FROM SanPhamChiTiet spct
+        JOIN KichCo kc ON spct.IdKichCo = kc.id
+        GROUP BY spct.IdSanPham
+    ),
+    MauSacCount AS (
+        SELECT spct.IdSanPham, COUNT(DISTINCT ms.id) AS soLuongMauSac
+        FROM SanPhamChiTiet spct
+        JOIN MauSac ms ON spct.IdMauSac = ms.id
+        GROUP BY spct.IdSanPham
     )
-    SELECT TOP 8 sp.id, sp.tensanpham, sp.ngaytao, spctg.tongSoLuong, sp.trangthai, spctg.giatien, anhdd.tenanh
+    SELECT sp.id, sp.tensanpham, sp.ngaytao, spctg.tongSoLuong, sp.trangthai, spctg.giatien, anhdd.tenanh, kc.soLuongKichCo, ms.soLuongMauSac
     FROM SanPham sp
     JOIN SanPhamChiTietGrouped spctg ON sp.id = spctg.IdSanPham
     JOIN AnhDaiDien anhdd ON sp.id = anhdd.IdSanPham AND anhdd.row_num = 1
-    ORDER BY sp.ngaytao ASC , spctg.tongSoLuong ASC
+    JOIN KichCoCount kc ON sp.id = kc.IdSanPham
+    JOIN MauSacCount ms ON sp.id = ms.IdSanPham
+    ORDER BY sp.ngaytao DESC, spctg.tongSoLuong DESC
 """)
-    List<Object[]> topspnoibatdetail();
-
-    // search-trangchu
-    @Query(value = """
-            SELECT sp.id, sp.tensanpham, sp.ngaytao, SUM(spct.soluong) AS tongSoLuong, sp.trangthai, MAX(spct.giatien) AS maxGiaTien, MAX(anh.tenanh) AS maxTenAnh, spct.gioitinh
-            FROM SanPham sp
-            JOIN sp.spct spct
-            JOIN spct.anh anh
-            WHERE 
-                 (sp.masanpham LIKE %?1% OR sp.tensanpham LIKE %?2%)
-            GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai, spct.gioitinh
-            ORDER BY sp.ngaytao DESC, tongSoLuong DESC
-                  """)
-    List<Object[]>searchTrangChu(String masanpham, String tensanpham);
-
-
-    @Query(nativeQuery = true, value = """
-                WITH AnhDaiDien AS (
-                    SELECT spct.IdSanPham, anh.tenanh,
-                           ROW_NUMBER() OVER (PARTITION BY spct.IdSanPham ORDER BY anh.tenanh DESC) AS row_num
-                    FROM Anh anh
-                    JOIN SanPhamChiTiet spct ON anh.IdSanPhamChiTiet = spct.id
-                ),
-                SanPhamChiTietGrouped AS (
-                    SELECT IdSanPham, SUM(soluong) AS tongSoLuong, MIN(giatien) AS giatien
-                    FROM SanPhamChiTiet
-                    GROUP BY IdSanPham
-                )
-                SELECT sp.id, sp.tensanpham, sp.ngaytao, spctg.tongSoLuong, sp.trangthai, spctg.giatien, anhdd.tenanh
-                FROM SanPham sp
-                JOIN SanPhamChiTietGrouped spctg ON sp.id = spctg.IdSanPham
-                JOIN AnhDaiDien anhdd ON sp.id = anhdd.IdSanPham AND anhdd.row_num = 1
-                ORDER BY sp.ngaytao DESC, spctg.tongSoLuong DESC
-            """)
     List<Object[]> searchAll();
+
 }
