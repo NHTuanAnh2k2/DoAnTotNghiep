@@ -63,6 +63,7 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <select id="trangthai" class="form-control" th:field="*{trangThai}">
+<!--                                                        <option value="">Tất cả</option>-->
                                                         <option value="true">Làm việc</option>
                                                         <option value="false">Nghỉ làm</option>
                                                     </select>
@@ -143,23 +144,23 @@
                                     </thead>
                                     <tbody>
                                     <tr th:if="${items1 == null || items2 == null || #lists.isEmpty(items1) || #lists.isEmpty(items2)}">
-                                        <td colspan="9" class="text-center">Không có dữ liệu</td>
+                                        <td colspan="9" class="text-center">Không có bản ghi nào</td>
                                     </tr>
                                     <tr th:each="i, iterStat : ${#numbers.sequence(0, #lists.size(items2)-1)}" th:unless="${items1 == null || items2 == null || #lists.isEmpty(items1) || #lists.isEmpty(items2)}">
                                         <td th:text="${iterStat.count}"></td>
-                                        <td th:text="${items2[i].manhanvien}"></td>
-                                        <td th:text="${items2[i].nguoidung.hovaten}"></td>
-                                        <td th:text="${items2[i].nguoidung.sodienthoai}"></td>
-                                        <td th:text="${#dates.format(items2[i].nguoidung.ngaysinh, 'dd-MM-yyyy')}"></td>
-                                        <td th:text="${items2[i].nguoidung.gioitinh ? 'Nam' : 'Nữ'}"></td>
+                                        <td style="white-space: nowrap;" th:text="${items2[i].manhanvien}"></td>
+                                        <td style="white-space: nowrap;" th:text="${items2[i].nguoidung.hovaten}"></td>
+                                        <td style="white-space: nowrap;" th:text="${items2[i].nguoidung.sodienthoai}"></td>
+                                        <td style="white-space: nowrap;" th:text="${#dates.format(items2[i].nguoidung.ngaysinh, 'dd-MM-yyyy')}"></td>
+                                        <td style="white-space: nowrap;" th:text="${items2[i].nguoidung.gioitinh ? 'Nam' : 'Nữ'}"></td>
                                         <td th:text="${items1[i].tenduong + ' ' + items1[i].xaphuong + ' ' + items1[i].quanhuyen + ' ' + items1[i].tinhthanhpho}"></td>
-                                        <td >
+                                        <td style="white-space: nowrap;" >
                                             <button style="border-radius: 50px"
                                                     class="btn btn-xs custom-button no-border-button"
                                                     th:classappend="${items2[i].trangthai ? 'btn-custom-info' : 'btn-custom-warning'}"
                                                     th:text="${items2[i].trangthai ? 'Làm việc' : 'Nghỉ'}"></button>
                                         </td>
-                                        <td >
+                                        <td style="white-space: nowrap;" >
                                             <a th:href="@{/updateNhanVien/{id}(id=${items2[i].nguoidung.id})}" class="btn btn-outline-info">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
