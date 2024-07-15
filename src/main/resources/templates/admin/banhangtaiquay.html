@@ -869,9 +869,20 @@
                             <p></p>
                         </div>
                         <div class="d-flex justify-content-between mb-1">
+
                             <p style="font-weight: bold; margin-top: 10px;"> Mã giảm giá:</p>
-                            <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white; padding-top: 10px;"
-                                id="maGiamFill">Chưa có mã giảm phù hợp!</p>
+                            <!-- <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white; padding-top: 10px;"
+                                id="maGiamFill">Chưa có mã giảm phù hợp!</p> -->
+
+                            <span class="applied-reduction-code" style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; padding: 3px 15px 3px 15px; padding-top: 10px;">
+                                <svg width="16" height="15" xmlns="http://www.w3.org/2000/svg" 
+                                    class="applied-reduction-code-icon" fill="#CE4549">
+                                    <path
+                                        d="M14.476 0H8.76c-.404 0-.792.15-1.078.42L.446 7.207c-.595.558-.595 1.463 0 2.022l5.703 5.35c.296.28.687.42 1.076.42.39 0 .78-.14 1.077-.418l7.25-6.79c.286-.268.447-.632.447-1.01V1.43C16 .64 15.318 0 14.476 0zm-2.62 5.77c-.944 0-1.713-.777-1.713-1.732 0-.954.77-1.73 1.714-1.73.945 0 1.714.776 1.714 1.73 0 .955-.768 1.73-1.713 1.73z">
+                                    </path>
+                                </svg>
+                                <span class="applied-reduction-code-information"  id="maGiamFill" style="background-color: #D3D3D3;">Chưa có mã giảm phù hợp!</span>
+                            </span>
 
                             <button class="btn btn-light" style="margin-bottom: 20px;" data-bs-toggle="modal"
                                 id="chonMaGiam" data-bs-target="#staticBackdrop" onclick="showmagiam()">
@@ -3330,7 +3341,7 @@ tabindex="0">
         crossorigin="anonymous"></script>
 
     <!-- hienthibill -->
-    <script th:inline="javascript"> 
+    <script th:inline="javascript">
         /*<![CDATA[*/
         var checkdeleteHD = /*[[${checkdeleteHD}]]*/ false;
         /*]]>*/
@@ -3338,37 +3349,37 @@ tabindex="0">
             thongbao('Hóa đơn đã được xóa!', 'success');
         }
     </script>
-   <script th:inline="javascript">
-    /*<![CDATA[*/ 
-    var checkChoseSp = /*[[${checkChoseSp}]]*/ false;
-    var choseSPsucsess = /*[[${choseSPsucsess}]]*/ false;
-    var choseUpdate = /*[[${choseUpdate}]]*/ false;
-    var checkChoseKH = /*[[${checkChoseKH}]]*/ false;
-    var checkaddKH = /*[[${checkaddKH}]]*/ false;
-    var checkaddKHSucsses = /*[[${checkaddKHSucsses}]]*/ false;
-    
-    /*]]>*/
-    if (checkChoseSp == true) {
-        thongbao('Chưa có hóa đơn nào được chọn', 'warning')
-    }
-    if (choseUpdate == true) {
-        thongbao('Sản phẩm đã tồn tại, số lượng sản phẩm đã tăng thêm 1', 'success')
-    }
-    if (choseSPsucsess == true) {
-        thongbao('Thêm sản phẩm thành công', 'success')
-    }
-    if (checkChoseKH == true) {
-        thongbao('Chưa có hóa đơn nào được chọn', 'warning')
-    }
-    if (checkaddKH == true) {
-        thongbao('Chưa có hóa đơn nào được chọn', 'warning')
-    }
-    if (checkaddKHSucsses == true) {
-        thongbao('Thêm khách hàng thành công', 'success')
-    }
-    
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var checkChoseSp = /*[[${checkChoseSp}]]*/ false;
+        var choseSPsucsess = /*[[${choseSPsucsess}]]*/ false;
+        var choseUpdate = /*[[${choseUpdate}]]*/ false;
+        var checkChoseKH = /*[[${checkChoseKH}]]*/ false;
+        var checkaddKH = /*[[${checkaddKH}]]*/ false;
+        var checkaddKHSucsses = /*[[${checkaddKHSucsses}]]*/ false;
+
+        /*]]>*/
+        if (checkChoseSp == true) {
+            thongbao('Chưa có hóa đơn nào được chọn', 'warning')
+        }
+        if (choseUpdate == true) {
+            thongbao('Sản phẩm đã tồn tại, số lượng sản phẩm đã tăng thêm 1', 'success')
+        }
+        if (choseSPsucsess == true) {
+            thongbao('Thêm sản phẩm thành công', 'success')
+        }
+        if (checkChoseKH == true) {
+            thongbao('Chưa có hóa đơn nào được chọn', 'warning')
+        }
+        if (checkaddKH == true) {
+            thongbao('Chưa có hóa đơn nào được chọn', 'warning')
+        }
+        if (checkaddKHSucsses == true) {
+            thongbao('Thêm khách hàng thành công', 'success')
+        }
+
     </script>
-    
+
     <script th:inline="javascript">
         /*<![CDATA[*/
         var orderSuccess = /*[[${orderSuccess}]]*/ false;

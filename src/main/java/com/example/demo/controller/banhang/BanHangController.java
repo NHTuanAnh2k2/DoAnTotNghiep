@@ -158,7 +158,7 @@ public class BanHangController {
 
     // lựa chọn khách hàng tại hóa đơn tại quầy khi khách hàng cung cấp thông tin
     @GetMapping("ChoseKH/{id}")
-    public String choseNV(@PathVariable("id") Integer id, Model model,RedirectAttributes redirectAttributes) {
+    public String choseNV(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
         if (this.hdHienTai == null) {
             redirectAttributes.addFlashAttribute("checkChoseKH", true);
             return "redirect:/hoa-don/ban-hang";
@@ -375,8 +375,8 @@ public class BanHangController {
     }
 
     @PostMapping("add-nhanh")
-    public String changesTTDH(Model model, @ModelAttribute("AddKHNhanh") AddKHNhanhFormBanHang kh,RedirectAttributes redirectAttributes) {
-        if (kh.getCheck()==true){
+    public String changesTTDH(Model model, @ModelAttribute("AddKHNhanh") AddKHNhanhFormBanHang kh, RedirectAttributes redirectAttributes) {
+        if (kh.getCheck() == true) {
             if (this.hdHienTai == null) {
                 redirectAttributes.addFlashAttribute("checkaddKH", true);
                 return "redirect:/hoa-don/ban-hang";
@@ -413,7 +413,7 @@ public class BanHangController {
         daoDiaChi.save(diachi);
         KhachHang newkhGanNhat = daoKH.findKHGanNhat().get(0);
         Integer maSoKHCu = Integer.valueOf(newkhGanNhat.getMakhachhang().substring(2)) + 1;
-        String newMaKH = "KH" + maSoKHCu;
+        String newMaKH = "KH" + taoChuoiNgauNhien(7, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
         KhachHang khAdd = new KhachHang();
         khAdd.setMakhachhang(newMaKH);
         khAdd.setNguoidung(nguoidungtim);
@@ -1116,6 +1116,15 @@ public class BanHangController {
     ) {
         HoaDonChiTiet hdct = daoHDCT.findByID(Integer.valueOf(id));
         return ResponseEntity.ok(hdct);
+    }
+
+    private String taoChuoiNgauNhien(int doDaiChuoi, String kiTu) {
+        Random random = new Random();
+        StringBuilder chuoiNgauNhien = new StringBuilder(doDaiChuoi);
+        for (int i = 0; i < doDaiChuoi; i++) {
+            chuoiNgauNhien.append(kiTu.charAt(random.nextInt(kiTu.length())));
+        }
+        return chuoiNgauNhien.toString();
     }
 
     @GetMapping("in-don-tai-quay")
