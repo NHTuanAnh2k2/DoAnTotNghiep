@@ -19,7 +19,7 @@ public class NguoiDungKHInfo {
     String taikhoan;
     String matkhau;
     @NotBlank(message = "Không được để trống email")
-    @Email(message = "Sai định dạng của email")
+    @Pattern(regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$",message = "Sai định dạng email")
     String email;
     @NotBlank(message = "Không được để trống họ và tên")
 //    @Pattern(regexp="^[\\\\p{L} '‘’]+$", message="Invalid name")

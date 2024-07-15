@@ -102,11 +102,11 @@
     <!--    <h3>Form Đăng Nhập</h3>-->
     <form id="formDangNhap" th:object="${dangnhap}" th:method="post" th:action="@{/dangnhap}">
         <div class="form123 mt-3">
-            <input type="text" placeholder="Vui lòng nhập tên đăng nhập hoặc email" th:field="*{taikhoan}"/>
+            <input type="text" placeholder="Vui lòng nhập tên đăng nhập hoặc email" th:field="*{username}"/>
             <label>Tên đăng nhập</label>
         </div>
         <div class="form123 mt-4">
-            <input type="password" placeholder="Vui lòng nhập mật khẩu" th:field="*{matkhau}"/>
+            <input type="password" placeholder="Vui lòng nhập mật khẩu" th:field="*{password}"/>
             <label>Mật khẩu</label>
         </div>
         <p th:text="${error}" style="color: red"></p>

@@ -35,37 +35,43 @@ public class SecurityConfig {
 
     @Autowired
     private CustomerUserDetailService userDetailService;
-    @Autowired
-    private JwtAuthEntryPoint authEntryPoint;
+
+    private static final String[] NHANVIEN_LINK = {
+            "/hoa-don/ban-hang"
+    };
+    private static final String[] QUANLY_LINK = {
+            "/khachhang"
+    };
 
     @Bean
-    public SecurityFilterChain clientFilterChain(HttpSecurity http) throws Exception {
-        http
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+       return http
                 .csrf(csrf -> csrf.disable())
-                .exceptionHandling((exception) -> exception.authenticationEntryPoint(authEntryPoint))
+                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers(QUANLY_LINK).hasAuthority("ROLE_QUANLY")
+                        .requestMatchers("/api/khachhang").hasAuthority("ROLE_QUANLY")
+                        .anyRequest().permitAll()
+                )
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeRequests()
-                .requestMatchers("/khachhang/**").permitAll()
-                .anyRequest().permitAll()
-                .and()
-                .httpBasic(Customizer.withDefaults());
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .authenticationProvider(getProvider())
+                .exceptionHandling(Customizer.withDefaults())
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class).build();
 
-        return http.build();
     }
+
 
 //    @Bean
 //    public SecurityFilterChain adminFilterChain(HttpSecurity http) throws Exception {
 //        http
 //                .csrf(csrf -> csrf.disable())
-//                .exceptionHandling((exception) -> exception.authenticationEntryPoint(authEntryPoint))
+////                .exceptionHandling((exception) -> exception.authenticationEntryPoint(authEntryPoint))
 //                .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 //                .authorizeRequests()
 //                .requestMatchers("/khachhang").authenticated()
 //                .anyRequest().permitAll()
 //                .and()
 //                .formLogin(form -> form
-//                        .loginPage("/admin/account")
+//                        .loginPage("/account")
 //                        .permitAll()
 //                )
 //                .httpBasic(Customizer.withDefaults());

@@ -5,6 +5,7 @@ import com.example.demo.entity.NguoiDung;
 import com.example.demo.entity.NhanVien;
 import com.example.demo.info.DangNhapNDInfo;
 import com.example.demo.info.TaiKhoanTokenInfo;
+import com.example.demo.info.token.AuthRequestDTO;
 import com.example.demo.info.token.UserManager;
 import com.example.demo.repository.NguoiDungRepository;
 import com.example.demo.repository.NhanVienRepository;
@@ -14,8 +15,14 @@ import com.example.demo.service.KhachHangService;
 import com.example.demo.service.NguoiDungService;
 import com.example.demo.service.NhanVienService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -51,18 +58,20 @@ public class DangNhapAdminController {
     public UserManager userManager;
 
     @GetMapping("/account")
-    public String displaydangnhap() {
+    public String displaydangnhap(Model model) {
+        model.addAttribute("nguoidung", new NguoiDung());
+        model.addAttribute("dangnhap", new AuthRequestDTO());
         return "admin/dangnhap/loginadmin";
     }
 
     @PostMapping("/dangnhap")
     public String dangnhap(Model model,
                            HttpSession session,
-                           @RequestParam("taikhoan") String taikhoan,
-                           @RequestParam("matkhau") String matkhau,
-                           @ModelAttribute("dangnhap") DangNhapNDInfo dangnhap,
-                           HttpServletRequest request,
-                           RedirectAttributes redirectAttributes) {
+                           @RequestParam("username") String taikhoan,
+                           @RequestParam("password") String matkhau,
+                           @ModelAttribute("dangnhap") AuthRequestDTO dangnhap,
+                           RedirectAttributes redirectAttributes
+                           ) {
         try {
 
             NguoiDung nd = khachHangService.findNguoiDungByTaikhoan(taikhoan);
@@ -82,19 +91,20 @@ public class DangNhapAdminController {
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                String token = jwtGenerator.generateToken(authentication);
+                String token = "Bearer " + jwtGenerator.generateToken(authentication);
+                userManager.addUser(nd.getId(), token);
                 session.setAttribute("tokenAdmin", token);
-                return "redirect:/customer/trangchu";
+                return "redirect:/hoa-don/ban-hang";
             } else {
                 redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
-                return "redirect:/account";
+                return "redirect:/admin/account";
             }
         } catch (UsernameNotFoundException e) {
             redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
-            return "redirect:/account";
+            return "redirect:/admin/account";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Đã có lỗi xảy ra, vui lòng thử lại");
-            return "redirect:/account";
+            return "redirect:/admin/account";
         }
     }
 }

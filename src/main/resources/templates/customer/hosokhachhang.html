@@ -266,7 +266,7 @@
                                     <hr class="border border-danger border opacity-50">
                                     <div id="themdiachi" style="width: 70%;"
                                          class="d-flex justify-content-center container">
-                                        <form th:object="${addDiaChi}" th:method="post"
+                                        <form th:object="${addDiaChi}" th:method="post" id="frmAddDiaChi"
                                               th:action="@{/themdiachi/{username}(username=${userDangnhap})}"
                                               onsubmit="return addDiaChi()"
                                               style="width: 100%">
@@ -687,44 +687,45 @@
     // });
 </script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Kiểm tra và hiển thị lại form khi load trang
-        showFormErrors("capnhatthongtintaikhoan", document.getElementById("capnhatthongtintaikhoan").classList.contains("has-errors"));
-        showFormErrors("capnhatdiachi", document.getElementById("capnhatdiachi").classList.contains("has-errors"));
-        showFormErrors("themdiachi", document.getElementById("themdiachi").classList.contains("has-errors"));
-    });
 
-    function showFormErrors(formId, hasErrors) {
-        if (hasErrors) {
-            // Hiển thị form có lỗi
-            document.getElementById(formId).style.display = "block";
+<!--<script>-->
+<!--    document.addEventListener("DOMContentLoaded", function () {-->
+<!--        // Kiểm tra và hiển thị lại form khi load trang-->
+<!--        showFormErrors("capnhatthongtintaikhoan", document.getElementById("capnhatthongtintaikhoan").classList.contains("has-errors"));-->
+<!--        showFormErrors("capnhatdiachi", document.getElementById("capnhatdiachi").classList.contains("has-errors"));-->
+<!--        showFormErrors("themdiachi", document.getElementById("themdiachi").classList.contains("has-errors"));-->
+<!--    });-->
 
-            // Ẩn nút 'Xem thông tin tài khoản' khi hiển thị form cập nhật thông tin tài khoản
-            if (formId === "capnhatthongtintaikhoan") {
-                document.getElementById("xemthongtintaikhoan").style.display = "none";
-            }
-            // Ẩn nút 'Thông tin địa chỉ' khi hiển thị form cập nhật địa chỉ
-            else if (formId === "capnhatdiachi") {
-                document.getElementById("thongtindiachi").style.display = "none";
-            }
-            // Không cần xử lý khi hiển thị form thêm địa chỉ
-        } else {
-            // Ẩn các form khi không có lỗi
-            document.getElementById(formId).style.display = "none";
+<!--    function showFormErrors(formId, hasErrors) {-->
+<!--        if (hasErrors) {-->
+<!--            // Hiển thị form có lỗi-->
+<!--            document.getElementById(formId).style.display = "block";-->
 
-            // Hiển thị lại nút 'Xem thông tin tài khoản' sau khi ẩn form cập nhật thông tin tài khoản
-            if (formId === "capnhatthongtintaikhoan") {
-                document.getElementById("xemthongtintaikhoan").style.display = "block";
-            }
-            // Hiển thị lại nút 'Thông tin địa chỉ' sau khi ẩn form cập nhật địa chỉ
-            else if (formId === "capnhatdiachi") {
-                document.getElementById("thongtindiachi").style.display = "block";
-            }
-            // Không cần xử lý khi ẩn form thêm địa chỉ
-        }
-    }
-</script>
+<!--            // Ẩn nút 'Xem thông tin tài khoản' khi hiển thị form cập nhật thông tin tài khoản-->
+<!--            if (formId === "capnhatthongtintaikhoan") {-->
+<!--                document.getElementById("xemthongtintaikhoan").style.display = "none";-->
+<!--            }-->
+<!--            // Ẩn nút 'Thông tin địa chỉ' khi hiển thị form cập nhật địa chỉ-->
+<!--            else if (formId === "capnhatdiachi") {-->
+<!--                document.getElementById("thongtindiachi").style.display = "none";-->
+<!--            }-->
+<!--            // Không cần xử lý khi hiển thị form thêm địa chỉ-->
+<!--        } else {-->
+<!--            // Ẩn các form khi không có lỗi-->
+<!--            document.getElementById(formId).style.display = "none";-->
+
+<!--            // Hiển thị lại nút 'Xem thông tin tài khoản' sau khi ẩn form cập nhật thông tin tài khoản-->
+<!--            if (formId === "capnhatthongtintaikhoan") {-->
+<!--                document.getElementById("xemthongtintaikhoan").style.display = "block";-->
+<!--            }-->
+<!--            // Hiển thị lại nút 'Thông tin địa chỉ' sau khi ẩn form cập nhật địa chỉ-->
+<!--            else if (formId === "capnhatdiachi") {-->
+<!--                document.getElementById("thongtindiachi").style.display = "block";-->
+<!--            }-->
+<!--            // Không cần xử lý khi ẩn form thêm địa chỉ-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
 
 <script>
     const specialCharPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
