@@ -95,8 +95,18 @@
                                                     <label class="col-form-label">Tìm kiếm</label>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <input th:field="*{key}" type="text" class="form-control" id="keyshearch" 
-                                                        placeholder="Nhập trạng thái đơn ...">
+                                                    <!-- <input th:field="*{key}" type="text" class="form-control" id="keyshearch" 
+                                                        placeholder="Nhập trạng thái đơn ..."> -->
+                                                    <select class="form-control" th:field="*{key}" id="keyshearch">
+                                                        <option value="">Tất cả</option>
+                                                        <option value="Chờ xác nhận">Chờ xác nhận</option>
+                                                        <option value="Đã xác nhận">Đã xác nhận</option>
+                                                        <option value="Chờ giao hàng">Chờ giao hàng</option>
+                                                        <option value="Đang giao hàng">Đang giao hàng</option>
+                                                        <option value="Đã thanh toán">Đã thanh toán</option>
+                                                        <option value="Đã hoàn thành">Đã hoàn thành</option>
+                                                        <option value="Đã hủy">Đã hủy</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="align-items-center col-lg-6 col-md-6">
@@ -116,7 +126,8 @@
                                                     <label class="col-form-label">Ngày bắt đầu</label>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <input id="tusearch" type="date" class="form-control" th:field="*{tu}" value="" onkeydown="return false">
+                                                    <input id="tusearch" type="date" class="form-control"
+                                                        th:field="*{tu}" value="" onkeydown="return false">
                                                     <i th:if="${errdate==1}" class="text-danger">Ngày bắt đầu không được
                                                         lớn
                                                         hơn ngày kết thúc!!</i>
@@ -127,7 +138,8 @@
                                                     <label class="col-form-label">Ngày kết thúc</label>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <input id="densearch" type="date" class="form-control" th:field="*{den}" value="" onkeydown="return false">
+                                                    <input id="densearch" type="date" class="form-control"
+                                                        th:field="*{den}" value="" onkeydown="return false">
                                                 </div>
                                             </div>
                                         </div>
@@ -135,7 +147,8 @@
                                         <div class="d-flex justify-content-between"
                                             style="margin-right: 35%; margin-left: 35%;">
                                             <button type="submit" class="btn btn-success">Tìm kiếm</button>
-                                            <button type="reset" class="btn btn-danger" onclick="lammoi()">Làm mới</button>
+                                            <button type="button" class="btn btn-danger" onclick="lammoi()">Làm
+                                                mới</button>
                                         </div>
                                     </form>
 
@@ -296,7 +309,7 @@
                                     <div class="tab-content" id="myTabContent">
 
                                         <!--Tab hiện thị null nếu tìm kiếm k có kết quả-->
-                                        <div class="tab-pane fade show active text-center fw-bold" 
+                                        <div class="tab-pane fade show active text-center fw-bold"
                                             id="tatCaHoaDon-tab-pane" role="tabpanel" aria-labelledby="tatCaHoaDon-tab"
                                             tabindex="0" th:if="${lst.totalElements<1}">
                                             <br>
@@ -478,20 +491,20 @@
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="../dist/js/pages/dashboard.js"></script>
     <!-- hdSaveInfoSeachr -->
-    <script th:inline="javascript"> 
+    <script th:inline="javascript">
         /*<![CDATA[*/
         var checkKeyNull = /*[[${checkKeyNull}]]*/ false;
         /*]]>*/
         if (checkKeyNull == true) {
-           document.getElementById('keyshearch').value = '';
+            document.getElementById('keyshearch').value = '';
         }
     </script>
     <script>
-       function lammoi(){ 
-        document.getElementById('keyshearch').value = '';
-        document.getElementById('loaihdsearch').value = 'null';
-        document.getElementById('tusearch').value = '';
-        document.getElementById('densearch').value = '';
+        function lammoi() {
+            document.getElementById('keyshearch').value = '';
+            document.getElementById('loaihdsearch').value = 'null';
+            document.getElementById('tusearch').value = '';
+            document.getElementById('densearch').value = '';
         }
     </script>
 </body>
