@@ -95,7 +95,7 @@
                                                     <label class="col-form-label">Tìm kiếm</label>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <input th:field="*{key}" type="text" class="form-control"
+                                                    <input th:field="*{key}" type="text" class="form-control" id="keyshearch" 
                                                         placeholder="Nhập trạng thái đơn ...">
                                                 </div>
                                             </div>
@@ -296,7 +296,7 @@
                                     <div class="tab-content" id="myTabContent">
 
                                         <!--Tab hiện thị null nếu tìm kiếm k có kết quả-->
-                                        <div class="tab-pane fade show active text-center fw-bold"
+                                        <div class="tab-pane fade show active text-center fw-bold" 
                                             id="tatCaHoaDon-tab-pane" role="tabpanel" aria-labelledby="tatCaHoaDon-tab"
                                             tabindex="0" th:if="${lst.totalElements<1}">
                                             <br>
@@ -477,6 +477,15 @@
     <!-- <script src="../dist/js/demo.js"></script> -->
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="../dist/js/pages/dashboard.js"></script>
+    <!-- hdSaveInfoSeachr -->
+    <script th:inline="javascript"> 
+        /*<![CDATA[*/
+        var checkKeyNull = /*[[${checkKeyNull}]]*/ false;
+        /*]]>*/
+        if (checkKeyNull == true) {
+           document.getElementById('keyshearch').value = '';
+        }
+    </script>
 </body>
 
 </html>

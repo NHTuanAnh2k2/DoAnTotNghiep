@@ -133,6 +133,7 @@ public class hoaDonController {
                 || hdSaveInfoSeachr.getLoaiHD().equalsIgnoreCase("null")
                 || hdSaveInfoSeachr.getTu().equalsIgnoreCase("null")
                 || hdSaveInfoSeachr.getDen().equalsIgnoreCase("null")) {
+
             //các case tìm kiếm 1 th null
             //case key null and all not null
             if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("null")
@@ -149,6 +150,7 @@ public class hoaDonController {
                     && !hdSaveInfoSeachr.getTu().equalsIgnoreCase("null")
                     && !hdSaveInfoSeachr.getDen().equalsIgnoreCase("null")) {
                 if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("chờ xác nhận")) {
+
                     trangThai = 0;
                 } else {
                     if (hdSaveInfoSeachr.getKey().trim().equalsIgnoreCase("đã xác nhận")) {
@@ -227,7 +229,6 @@ public class hoaDonController {
                     && hdSaveInfoSeachr.getLoaiHD().equalsIgnoreCase("null")
                     && !hdSaveInfoSeachr.getTu().equalsIgnoreCase("null")
                     && !hdSaveInfoSeachr.getDen().equalsIgnoreCase("null")) {
-
                 lst = dao.LocTheoKhoangNgay(Date.valueOf(hdSaveInfoSeachr.getTu()), Date.valueOf(hdSaveInfoSeachr.getDen()), p);
             }
             //case key and (tu or den null)
@@ -237,6 +238,15 @@ public class hoaDonController {
                     && hdSaveInfoSeachr.getDen().equalsIgnoreCase("null")) {
                 lst = dao.LocTheoLoaiDon(Boolean.valueOf(hdSaveInfoSeachr.getLoaiHD()), p);
             }
+
+            if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("null")
+                    && hdSaveInfoSeachr.getLoaiHD().equalsIgnoreCase("null")
+                    && hdSaveInfoSeachr.getTu().equalsIgnoreCase("null")
+                    && hdSaveInfoSeachr.getDen().equalsIgnoreCase("null")) {
+                lst = dao.findAll(p);
+            }
+
+
 
             //case loaihd and (tu or den null)
             if (!hdSaveInfoSeachr.getKey().equalsIgnoreCase("null")
@@ -321,6 +331,9 @@ public class hoaDonController {
         model.addAttribute("tt5", dao.tinhTong(5));
         model.addAttribute("tt6", dao.tinhTong(6));
         model.addAttribute("tt7", dao.findAll(p).getTotalElements());
+       if(hdSaveInfoSeachr.getKey().equalsIgnoreCase("null")){
+           model.addAttribute("checkKeyNull", true);
+       }
         return "admin/qlhoadon";
     }
 
