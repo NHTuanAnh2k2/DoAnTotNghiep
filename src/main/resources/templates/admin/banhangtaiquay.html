@@ -812,7 +812,7 @@
                                 </div>
                                 <p>
                                     <input type="text" class="form-control" placeholder="Phí vận chuyển" readonly
-                                        oninput="showcasst('phigiaohang')" id="phigiaohang" th:field="*{phivanchuyen}">
+                                        oninput="showcassts('phigiaohang')" id="phigiaohang" th:field="*{phivanchuyen}">
                                     <i style="color: red;" id="regexship"></i>
                                 </p>
                                 <p>
@@ -829,8 +829,8 @@
                                 <div class="d-flex justify-content-between ms-1">
                                     <p>Hỏa tốc:</p>
                                     <p class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch" th:field="*{giaohoatoc}"
-                                            onchange="hoatoc(event)">
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                            th:field="*{giaohoatoc}" onchange="hoatoc(event)">
                                     </p>
                                 </div>
                                 <div class="d-flex justify-content-between ms-1">
@@ -2660,7 +2660,6 @@ tabindex="0">
                             })
                             .then(function (b) {
                                 var htmlpt = '';
-                                console.log(b)
                                 if (b.length > 0) {
                                     var stt = 0;
                                     var tiendathanhtoan = 0;
@@ -2755,6 +2754,27 @@ tabindex="0">
                         + ' ₫';
                 });
             });
+            // var numberString = document.getElementById('phigiaohang').value.replace(/[^0-9.]/g, '');
+            // // Chuyển đổi tiền ship nhập tay
+            // var number = parseFloat(numberString.replace(/\./g, ''));
+            // shipToanCuc = number;
+            // //lấy tiền đã áp voucher
+            // var tiensaukhicovucher = document.getElementById('tongThanhToan').textContent.replace(/[^0-9.]/g, '');
+            // // Chuyển đổi tiền đã apvoucher thành số nguyên
+            // var tienChuaShip = parseFloat(tiensaukhicovucher.replace(/\./g, ''));
+            // tienkhachthanhtoan = tienChuaShip + number;
+
+        }
+        function showcassts(elementId) {
+            $('#' + elementId).keyup(function (event) {
+                $(this).val(function (index, value) {
+                    return value
+                        .replace(/\D/g, "")
+                        .replace(/([0-9])([0-9]{})$/, '$1.$2')
+                        .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".")
+                        + ' ₫';
+                });
+            });
             var numberString = document.getElementById('phigiaohang').value.replace(/[^0-9.]/g, '');
             // Chuyển đổi tiền ship nhập tay
             var number = parseFloat(numberString.replace(/\./g, ''));
@@ -2776,7 +2796,7 @@ tabindex="0">
                     return a.json();
                 })
                 .then(function (b) {
-
+                    console.log(b)
                     var htmlphuongthuc = '';
                     if (b.length > 0) {
                         //xác nhận phương thức
@@ -2816,6 +2836,7 @@ tabindex="0">
                             if (checktienmat == 1) {
                                 document.getElementById('tienmat').disabled = true;
                             }
+
                             var tienthieuconlai = tienkhachthanhtoan - tiendathanhtoan;
 
                             document.getElementById('showpt').innerHTML = htmlphuongthuc;
