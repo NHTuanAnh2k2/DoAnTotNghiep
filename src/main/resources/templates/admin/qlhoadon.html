@@ -95,7 +95,7 @@
                                                     <label class="col-form-label">Tìm kiếm</label>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <input th:field="*{key}" type="text" class="form-control"
+                                                    <input th:field="*{key}" type="text" class="form-control" id="keyshearch" 
                                                         placeholder="Nhập trạng thái đơn ...">
                                                 </div>
                                             </div>
@@ -104,7 +104,7 @@
                                                     <label class="col-form-label">Loại hóa đơn</label>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <select class="form-control" th:field="*{loaiHD}">
+                                                    <select class="form-control" th:field="*{loaiHD}" id="loaihdsearch">
                                                         <option value="null">Tất cả</option>
                                                         <option value="true">Online</option>
                                                         <option value="false">Tại quầy</option>
@@ -116,7 +116,7 @@
                                                     <label class="col-form-label">Ngày bắt đầu</label>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <input type="date" class="form-control" th:field="*{tu}" value="">
+                                                    <input id="tusearch" type="date" class="form-control" th:field="*{tu}" value="" onkeydown="return false">
                                                     <i th:if="${errdate==1}" class="text-danger">Ngày bắt đầu không được
                                                         lớn
                                                         hơn ngày kết thúc!!</i>
@@ -127,7 +127,7 @@
                                                     <label class="col-form-label">Ngày kết thúc</label>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <input type="date" class="form-control" th:field="*{den}" value="">
+                                                    <input id="densearch" type="date" class="form-control" th:field="*{den}" value="" onkeydown="return false">
                                                 </div>
                                             </div>
                                         </div>
@@ -135,7 +135,7 @@
                                         <div class="d-flex justify-content-between"
                                             style="margin-right: 35%; margin-left: 35%;">
                                             <button type="submit" class="btn btn-success">Tìm kiếm</button>
-                                            <button type="reset" class="btn btn-danger">Làm mới</button>
+                                            <button type="reset" class="btn btn-danger" onclick="lammoi()">Làm mới</button>
                                         </div>
                                     </form>
 
@@ -296,7 +296,7 @@
                                     <div class="tab-content" id="myTabContent">
 
                                         <!--Tab hiện thị null nếu tìm kiếm k có kết quả-->
-                                        <div class="tab-pane fade show active text-center fw-bold"
+                                        <div class="tab-pane fade show active text-center fw-bold" 
                                             id="tatCaHoaDon-tab-pane" role="tabpanel" aria-labelledby="tatCaHoaDon-tab"
                                             tabindex="0" th:if="${lst.totalElements<1}">
                                             <br>
@@ -368,7 +368,7 @@
                                                         <ul class="pagination">
                                                             <li class="page-item" th:if="${lst.number>0}"><a
                                                                     class="page-link"
-                                                                    th:href="@{'?page='+${lst.number-1}}">Previous</a>
+                                                                    th:href="@{'?page='+${lst.number-1}}">Trước</a>
                                                             </li>
                                                             <li class="page-item"
                                                                 th:each="i:${#numbers.sequence(1,lst.totalPages)}"
@@ -378,7 +378,7 @@
                                                             <li class="page-item"
                                                                 th:if="${lst.number<lst.totalPages-1}"><a
                                                                     class="page-link"
-                                                                    th:href="@{'?page='+${lst.number+1}}">Next</a>
+                                                                    th:href="@{'?page='+${lst.number+1}}">Sau</a>
                                                             </li>
                                                         </ul>
                                                     </nav>
@@ -477,6 +477,23 @@
     <!-- <script src="../dist/js/demo.js"></script> -->
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="../dist/js/pages/dashboard.js"></script>
+    <!-- hdSaveInfoSeachr -->
+    <script th:inline="javascript"> 
+        /*<![CDATA[*/
+        var checkKeyNull = /*[[${checkKeyNull}]]*/ false;
+        /*]]>*/
+        if (checkKeyNull == true) {
+           document.getElementById('keyshearch').value = '';
+        }
+    </script>
+    <script>
+       function lammoi(){ 
+        document.getElementById('keyshearch').value = '';
+        document.getElementById('loaihdsearch').value = 'null';
+        document.getElementById('tusearch').value = '';
+        document.getElementById('densearch').value = '';
+        }
+    </script>
 </body>
 
 </html>
