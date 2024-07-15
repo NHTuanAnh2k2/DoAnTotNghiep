@@ -3338,6 +3338,37 @@ tabindex="0">
             thongbao('Hóa đơn đã được xóa!', 'success');
         }
     </script>
+   <script th:inline="javascript">
+    /*<![CDATA[*/
+    var checkChoseSp = /*[[${checkChoseSp}]]*/ false;
+    var choseSPsucsess = /*[[${choseSPsucsess}]]*/ false;
+    var choseUpdate = /*[[${choseUpdate}]]*/ false;
+    var checkChoseKH = /*[[${checkChoseKH}]]*/ false;
+    var checkaddKH = /*[[${checkaddKH}]]*/ false;
+    var checkaddKHSucsses = /*[[${checkaddKHSucsses}]]*/ false;
+    
+    /*]]>*/
+    if (checkChoseSp == true) {
+        thongbao('Chưa có hóa đơn nào được chọn', 'warning')
+    }
+    if (choseUpdate == true) {
+        thongbao('Sản phẩm đã tồn tại, số lượng sản phẩm đã tăng thêm 1', 'success')
+    }
+    if (choseSPsucsess == true) {
+        thongbao('Thêm sản phẩm thành công', 'success')
+    }
+    if (checkChoseKH == true) {
+        thongbao('Chưa có hóa đơn nào được chọn', 'warning')
+    }
+    if (checkaddKH == true) {
+        thongbao('Chưa có hóa đơn nào được chọn', 'warning')
+    }
+    if (checkaddKHSucsses == true) {
+        thongbao('Thêm khách hàng thành công', 'success')
+    }
+    
+    </script>
+    
     <script th:inline="javascript">
         /*<![CDATA[*/
         var orderSuccess = /*[[${orderSuccess}]]*/ false;
@@ -4030,8 +4061,6 @@ tabindex="0">
                 return false;
             }
 
-            // Nếu không có lỗi, cho phép form submit
-            thongbao('Thêm thành công!', 'success')
             return true;
         }
 
