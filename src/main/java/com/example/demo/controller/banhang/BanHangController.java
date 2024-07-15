@@ -118,6 +118,11 @@ public class BanHangController {
         hoadonCho.setNgaytao(Timestamp.valueOf(currentDateTime));
         daoHD.capNhatHD(hoadonCho);
         List<HoaDon> lst = daoHD.timTheoTrangThaiVaLoai(0, false);
+        if (lst.size() > 0) {
+            hdHienTai = lst.get(0);
+        } else {
+            hdHienTai = new HoaDon();
+        }
         return ResponseEntity.ok(lst);
     }
 
@@ -150,7 +155,11 @@ public class BanHangController {
 
     // lựa chọn khách hàng tại hóa đơn tại quầy khi khách hàng cung cấp thông tin
     @GetMapping("ChoseKH/{id}")
-    public String choseNV(@PathVariable("id") Integer id, Model model) {
+    public String choseNV(@PathVariable("id") Integer id, Model model,RedirectAttributes redirectAttributes) {
+        if (this.hdHienTai == null) {
+            redirectAttributes.addFlashAttribute("checkChoseKH", true);
+            return "redirect:/hoa-don/ban-hang";
+        }
         HoaDon hdset = hdHienTai;
         Optional<KhachHang> kh = daoKH.findById(id);
         KhachHang khach = kh.get();
@@ -200,7 +209,11 @@ public class BanHangController {
 
     // thêm sản phẩm tại hdct
     @GetMapping("ChoseSP/{id}")
-    public String choseSP(@PathVariable("id") Integer id) {
+    public String choseSP(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
+        if (this.hdHienTai == null) {
+            redirectAttributes.addFlashAttribute("checkChoseSp", true);
+            return "redirect:/hoa-don/ban-hang";
+        }
         SanPhamChiTiet spct = daoSPCT.findById(id);
         SanPhamChiTiet spctCapNhatSL = spct;
         spctCapNhatSL.setSoluong(spctCapNhatSL.getSoluong() - 1);
@@ -215,6 +228,7 @@ public class BanHangController {
             hdct.setSoluong(sl);
             daoSPCT.addSPCT(spctCapNhatSL);
             daoHDCT.capnhat(hdct);
+            redirectAttributes.addFlashAttribute("choseUpdate", true);
             return "redirect:/hoa-don/ban-hang";
         }
         HoaDonChiTiet hdctNew = new HoaDonChiTiet();
@@ -225,12 +239,17 @@ public class BanHangController {
         hdctNew.setGiasanpham(spct.getGiatien());
         daoSPCT.addSPCT(spctCapNhatSL);
         daoHDCT.capnhat(hdctNew);
+        redirectAttributes.addFlashAttribute("choseSPsucsess", true);
         return "redirect:/hoa-don/ban-hang";
     }
 
     //chọn sản phẩm bằng QR
     @GetMapping("ChoseSPQR/{id}")
-    public String choseSPQR(@PathVariable("id") String id) {
+    public String choseSPQR(@PathVariable("id") String id, RedirectAttributes redirectAttributes) {
+        if (this.hdHienTai == null) {
+            redirectAttributes.addFlashAttribute("checkChoseSp", true);
+            return "redirect:/hoa-don/ban-hang";
+        }
         SanPhamChiTiet spct = daoSPCT.findBySanPhambyMa(id).get(0);
         SanPhamChiTiet spctCapNhatSL = spct;
         spctCapNhatSL.setSoluong(spctCapNhatSL.getSoluong() - 1);
@@ -245,6 +264,7 @@ public class BanHangController {
             hdct.setSoluong(sl);
             daoSPCT.addSPCT(spctCapNhatSL);
             daoHDCT.capnhat(hdct);
+            redirectAttributes.addFlashAttribute("choseUpdate", true);
             return "redirect:/hoa-don/ban-hang";
         }
         HoaDonChiTiet hdctNew = new HoaDonChiTiet();
@@ -255,6 +275,7 @@ public class BanHangController {
         hdctNew.setGiasanpham(spct.getGiatien());
         daoSPCT.addSPCT(spctCapNhatSL);
         daoHDCT.capnhat(hdctNew);
+        redirectAttributes.addFlashAttribute("choseSPsucsess", true);
         return "redirect:/hoa-don/ban-hang";
     }
 
@@ -279,6 +300,12 @@ public class BanHangController {
         }
         if (result) {
             redirectAttributes.addFlashAttribute("checkdeleteHD", true);
+        }
+        List<HoaDon> lst = daoHD.timTheoTrangThaiVaLoai(0, false);
+        if (lst.size() > 0) {
+            hdHienTai = lst.get(0);
+        } else {
+            hdHienTai = null;
         }
         return "redirect:/hoa-don/ban-hang";
     }
@@ -345,7 +372,13 @@ public class BanHangController {
     }
 
     @PostMapping("add-nhanh")
-    public String changesTTDH(Model model, @ModelAttribute("AddKHNhanh") AddKHNhanhFormBanHang kh) {
+    public String changesTTDH(Model model, @ModelAttribute("AddKHNhanh") AddKHNhanhFormBanHang kh,RedirectAttributes redirectAttributes) {
+        if (kh.getCheck()==true){
+            if (this.hdHienTai == null) {
+                redirectAttributes.addFlashAttribute("checkaddKH", true);
+                return "redirect:/hoa-don/ban-hang";
+            }
+        }
         LocalDateTime currentDateTime = LocalDateTime.now();
         NguoiDung nguoidung = new NguoiDung();
         nguoidung.setHovaten(kh.getTen());
@@ -389,11 +422,11 @@ public class BanHangController {
         daoKH.save(khAdd);
         KhachHang khTim = daoKH.findByNguoiDung(nguoidungtim.getId());
         String diaChiHD = kh.getDiachi() + ", " + kh.getXa() + ", " + kh.getHuyen() + ", " + kh.getTinh();
-        hdHienTai.setDiachi(diaChiHD);
-        hdHienTai.setTennguoinhan(kh.getTen());
-        hdHienTai.setSdt(kh.getSdt());
-        hdHienTai.setEmail(kh.getEmail());
-        daoHD.capNhatHD(hdHienTai);
+//        hdHienTai.setDiachi(diaChiHD);
+//        hdHienTai.setTennguoinhan(kh.getTen());
+//        hdHienTai.setSdt(kh.getSdt());
+//        hdHienTai.setEmail(kh.getEmail());
+//        daoHD.capNhatHD(hdHienTai);
 
 
         if (kh.getCheck()) {
@@ -404,9 +437,10 @@ public class BanHangController {
             hdHienTai.setEmail(kh.getEmail());
             daoHD.capNhatHD(hdHienTai);
             nguoiDung.sendEmail(to, subject, mailType, mailContent);
+            redirectAttributes.addFlashAttribute("checkaddKHSucsses", true);
             return "redirect:/hoa-don/ban-hang";
         }
-
+        redirectAttributes.addFlashAttribute("checkaddKHSucsses", true);
         nguoiDung.sendEmail(to, subject, mailType, mailContent);
         return "redirect:/hoa-don/ban-hang";
     }
