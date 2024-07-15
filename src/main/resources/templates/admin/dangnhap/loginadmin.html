@@ -67,24 +67,24 @@
         </div>
         <div class="col-md-6">
             <div class="login-form">
-                <form>
+                <form th:object="${dangnhap}" th:action="@{/admin/dangnhap}" method="post" id="frmLogin">
                     <div class="form-group">
-                        <input type="text" class="form-control" id="taikhoan" placeholder="Tài khoản">
+                        <input type="text" class="form-control" id="username" name="username" th:field="*{username}"  placeholder="Tài khoản">
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control" id="matkhau" placeholder="Mật khẩu">
+                        <input type="password" class="form-control" id="password" name="password" th:field="*{password}"  placeholder="Mật khẩu">
                     </div>
                     <button type="submit" class="btn btn-custom-login btn-block">ĐĂNG NHẬP</button>
                     <div class="text-center mt-3">
                         <a href="#">Quên mật khẩu?</a>
                     </div>
                     <hr>
-                    <a class="btn btn-custom-create btn-block">Create new account</a>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

@@ -1,13 +1,15 @@
-package com.example.demo.info;
+package com.example.demo.info.token;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DangNhapNDInfo {
+@Builder
+public class AuthRequestDTO {
     private String username;
     private String password;
 }

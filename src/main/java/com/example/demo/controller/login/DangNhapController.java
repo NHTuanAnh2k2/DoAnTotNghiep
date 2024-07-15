@@ -58,8 +58,8 @@ public class DangNhapController {
     @PostMapping("/dangnhap")
     public String dangnhap(Model model,
                            HttpSession session,
-                           @RequestParam("taikhoan") String taikhoan,
-                           @RequestParam("matkhau") String matkhau,
+                           @RequestParam("username") String taikhoan,
+                           @RequestParam("password") String matkhau,
                            @ModelAttribute("dangnhap") DangNhapNDInfo dangnhap,
                            HttpServletRequest request,
                            RedirectAttributes redirectAttributes) {
@@ -75,6 +75,10 @@ public class DangNhapController {
             }
             if (kh == null) {
                 redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
+                return "redirect:/account";
+            }
+            if (kh.getTrangthai() == false) {
+                redirectAttributes.addFlashAttribute("error", "Tài khoản đã bị khóa");
                 return "redirect:/account";
             }
 

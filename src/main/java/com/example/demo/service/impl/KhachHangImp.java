@@ -242,7 +242,7 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
 
         for (KhachHang khachHang : lstKhachHang) {
             int idNguoiDung = khachHang.getNguoidung().getId();
-            List<DiaChi> lstDiaChi = diaChiRepository.findDiaChiByIdNd(idNguoiDung);
+            List<DiaChi> lstDiaChi = diaChiRepository.findLstDiaChiByTrangthai(idNguoiDung, true);
             Collections.sort(lstDiaChi, Comparator.comparing(DiaChi::getNgaytao).reversed());
 
             if (!lstDiaChi.isEmpty()) {
@@ -265,8 +265,8 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
     }
 
     @Override
-    public List<KhachHangInfo> findByTenSdtMa(String tenSdtMa) {
-        List<KhachHang> lstKhachHang = khachHangRepostory.findByTenSdtMa(tenSdtMa);
+    public List<KhachHangInfo> findByTenSdtMa(String tenSdtMa, boolean trangThai) {
+        List<KhachHang> lstKhachHang = khachHangRepostory.findByTenSdtMa(tenSdtMa, trangThai);
         Collections.sort(lstKhachHang, Comparator.comparing(KhachHang::getNgaytao).reversed());
 
         List<KhachHangInfo> lstkhachhanginfo = new ArrayList<>();

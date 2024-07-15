@@ -231,11 +231,6 @@ public class CustomerController {
         nguoiDungRepository.updatePassword(username, matkhaumoi);
         System.out.println("Đã update mật khẩu");
 
-//        DiaChi dc = khachHangService.findDiaChiByIdNguoidung(nd.getId());
-//        NguoiDung ndCurrent = khachHangService.findNguoiDungByTaikhoan(username);
-//        model.addAttribute("nguoidung", ndCurrent);
-//        model.addAttribute("diachi", dc);
-//        model.addAttribute("nguoidungdoimatkhau", new DoiMatKhauNguoiDung());
 
         return "redirect:/hosokhachhang/{username}";
     }

@@ -39,7 +39,7 @@ public interface KhachHangService {
     KhachHang findKhachHangByIdNguoiDung(Integer id);
 
     //Tìm kiếm
-    List<KhachHangInfo> findByTenSdtMa(String tenSdtMa);
+    List<KhachHangInfo> findByTenSdtMa(String tenSdtMa, boolean trangThai);
     NguoiDung findByEmail(String email);
     NguoiDung findNguoiDungByTaikhoan(String taikhoan);
     DiaChi findDiaChiByIdNguoidung(Integer idNd);
