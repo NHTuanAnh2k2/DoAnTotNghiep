@@ -1078,6 +1078,35 @@
         }
     });
 </script>
+<!--thông báo thêm TÊN SẢN PHẨM thành công-->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const successMessage = sessionStorage.getItem('successMessageThemTenSP');
+        if (successMessage) {
+            // Hiển thị thông báo ở góc bên phải màn hình
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: successMessage
+            });
+
+            // Xóa thông báo khỏi sessionStorage sau khi hiển thị
+            sessionStorage.removeItem('successMessageThemTenSP');
+        }
+    });
+</script>
+
 <!--confirm khi xóa spct-->
 <script>
     function xoa(event) {
@@ -1653,15 +1682,10 @@
                         toast.onmouseleave = Swal.resumeTimer;
                     }
                 });
-
-                Toast.fire({
-                    icon: "success",
-                    title: "Thêm thành công!"
-                });
-
                 setTimeout(function () {
+                    sessionStorage.setItem('successMessageThemTenSP', 'Thêm thành công!');
                     document.addTenSP.submit();
-                }, 3000);
+                });
             }
         });
 
