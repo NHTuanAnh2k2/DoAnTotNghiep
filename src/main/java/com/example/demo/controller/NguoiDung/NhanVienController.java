@@ -55,14 +55,14 @@ public class NhanVienController {
             model.addAttribute("items2", listnv);
             return "admin/qlnhanvien";
         }else if (nd.getBatdau() != "" && nd.getKetthuc() == ""){
-            List<DiaChi> page = diaChi.searchStart(nd.getKey(),nd.isTrangThai(),Date.valueOf(nd.getBatdau()));
-            List<NhanVien> listnv = nhanVien.searchStart(nd.getKey(),nd.isTrangThai(),Date.valueOf(nd.getBatdau()));
+            List<DiaChi> page = diaChi.searchStart(nd.getKey().trim(),nd.isTrangThai(),Date.valueOf(nd.getBatdau()));
+            List<NhanVien> listnv = nhanVien.searchStart(nd.getKey().trim(),nd.isTrangThai(),Date.valueOf(nd.getBatdau()));
             model.addAttribute("items1", page);
             model.addAttribute("items2", listnv);
             return "admin/qlnhanvien";
         }else if (nd.getKetthuc() != "" && nd.getBatdau() == ""){
-            List<DiaChi> page = diaChi.searchEnd(nd.getKey(),nd.isTrangThai(),Date.valueOf(nd.getKetthuc()));
-            List<NhanVien> listnv = nhanVien.searchEnd(nd.getKey(),nd.isTrangThai(),Date.valueOf(nd.getKetthuc()));
+            List<DiaChi> page = diaChi.searchEnd(nd.getKey().trim(),nd.isTrangThai(),Date.valueOf(nd.getKetthuc()));
+            List<NhanVien> listnv = nhanVien.searchEnd(nd.getKey().trim(),nd.isTrangThai(),Date.valueOf(nd.getKetthuc()));
             model.addAttribute("items1", page);
             model.addAttribute("items2", listnv);
             return "admin/qlnhanvien";
@@ -72,8 +72,8 @@ public class NhanVienController {
             if (!a.before(b)){
                 ndBindingResult.rejectValue("ketthuc", "error.ketthuc", "Khoảng ngày không hợp lệ");
             }
-            List<DiaChi> page = diaChi.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
-            List<NhanVien> listnv = nhanVien.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
+            List<DiaChi> page = diaChi.searchND(nd.getKey().trim(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
+            List<NhanVien> listnv = nhanVien.searchND(nd.getKey().trim(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
             model.addAttribute("items1", page);
             model.addAttribute("items2", listnv);
             return "admin/qlnhanvien";
