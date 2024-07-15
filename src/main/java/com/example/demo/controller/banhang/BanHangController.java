@@ -779,6 +779,7 @@ public class BanHangController {
             hdset.setTongtien(tienTong);
             hdset.setPhivanchuyen(new BigDecimal("0.00"));
             hdset.setDiachi("ngõ 11, Phường Phương Canh, Quận Nam Từ Liêm, Thành phố Hà Nội");
+            hdset.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
             if (hdset.getKhachhang() != null) {
                 hdset.setTennguoinhan(hdset.getKhachhang().getNguoidung().getHovaten());
                 hdset.setSdt(hdset.getKhachhang().getNguoidung().getSodienthoai());
