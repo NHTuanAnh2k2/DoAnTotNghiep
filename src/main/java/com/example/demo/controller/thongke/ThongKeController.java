@@ -132,6 +132,30 @@ public class ThongKeController {
         model.addAttribute("knData", formattednknData);
         return "admin/qlthongke";
     }
+    @GetMapping("/admin/qlthongkee")
+    @ResponseBody
+    public Map<String, Object> admin(
+            @RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+            @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
+
+
+        List<Map<String, Object>> formattednknData = new ArrayList<>();
+        if(startDate != null && endDate != null) {
+            for (Object[] row : thongKe.khoangngay(startDate, endDate)) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("label", row[0]);
+                map.put("sp", row[1]);
+                map.put("hd", row[2]);
+                formattednknData.add(map);
+            }
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("knData", formattednknData);
+
+        return response;
+    }
+
 
     @GetMapping("/khngay")
     public String admin1(
@@ -294,6 +318,19 @@ public class ThongKeController {
         cellStyle.setBorderRight(BorderStyle.THIN);
         cellStyle.setWrapText(true); // Tự động dãn dòng cho dữ liệu
 
+        // Tạo CellStyle cho định dạng tiền tệ
+        CellStyle currencyStyle = workbook.createCellStyle();
+        currencyStyle.setFont(cellFont);
+        currencyStyle.setAlignment(HorizontalAlignment.CENTER);
+        currencyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        currencyStyle.setBorderBottom(BorderStyle.THIN);
+        currencyStyle.setBorderTop(BorderStyle.THIN);
+        currencyStyle.setBorderLeft(BorderStyle.THIN);
+        currencyStyle.setBorderRight(BorderStyle.THIN);
+        currencyStyle.setWrapText(true);
+        DataFormat format = workbook.createDataFormat();
+        currencyStyle.setDataFormat(format.getFormat("#,##0₫"));
+
         // Thiết lập dòng mặc định 1 trên các sheet 1, 2, 3
         setHeaderRow(sheet1, titleStyle, headerStyle, "STT", "Thời gian", "Số lượng đã bán", "Doanh thu");
         setHeaderRow(sheet2, titleStyle, headerStyle, "STT", "Thời gian", "Số lượng đã bán", "Doanh thu");
@@ -302,25 +339,18 @@ public class ThongKeController {
         setHeaderRow(sheet5, titleStyle, headerStyle, "STT", "Mã SP", "Tên SP", "Giá bán", "Số lượng");
 
         // Thiết lập dữ liệu cho sheet 4 và sheet 5
-        setSheetData(sheet1,day,cellStyle);
-        setSheetData(sheet2,thang,cellStyle);
-        setSheetData(sheet3,nam,cellStyle);
-        setSheetData(sheet4, sp, cellStyle);
-        setSheetData(sheet5, slt, cellStyle);
+        setSheetData(sheet1,day,cellStyle,currencyStyle);
+        setSheetData(sheet2,thang,cellStyle,currencyStyle);
+        setSheetData(sheet3,nam,cellStyle,currencyStyle);
+        setSheetData(sheet4, sp, cellStyle,currencyStyle);
+        setSheetData(sheet5, slt, cellStyle,currencyStyle);
         // Thiết lập chiều cao cho dòng 1 và các dòng còn lại
         sheet1.getRow(0).setHeightInPoints(40);
         sheet2.getRow(0).setHeightInPoints(40);
         sheet3.getRow(0).setHeightInPoints(40);
         sheet4.getRow(0).setHeightInPoints(40);
         sheet5.getRow(0).setHeightInPoints(40);
-
-//        for (int i = 1; i <= 5; i++) {
-            //sheet1.getRow(i).setHeightInPoints(30);
-            //sheet2.getRow(i).setHeightInPoints(30);
-            //sheet3.getRow(i).setHeightInPoints(30);
-//            sheet4.getRow(i).setHeightInPoints(30);
-//            sheet5.getRow(i).setHeightInPoints(30);
-//        }
+        
 
         // Ghi Workbook ra một mảng byte[]
         byte[] excelBytes = null;
@@ -360,7 +390,7 @@ public class ThongKeController {
         }
     }
 
-    private void setSheetData(Sheet sheet, List<Object[]> data, CellStyle cellStyle) {
+    private void setSheetData(Sheet sheet, List<Object[]> data, CellStyle cellStyle, CellStyle currencyStyle) {
         // Thiết lập header cho sheet 4
         //setHeaderRow(sheet, null, null, "STT", "Mã SP", "Tên SP", "Giá bán", "Số lượng đã bán");
 
@@ -376,8 +406,13 @@ public class ThongKeController {
             for (int cellIndex = 1; cellIndex < rowData.length + 1; cellIndex++) {
                 Cell cell = row.createCell(cellIndex);
                 Object cellData = rowData[cellIndex - 1];
-                cell.setCellValue(cellData != null ? cellData.toString() : "");
-                cell.setCellStyle(cellStyle);
+                if (currencyStyle != null && cellIndex == 3) { // Cột "Giá bán"
+                    cell.setCellValue(cellData != null ? Double.parseDouble(cellData.toString()) : 0);
+                    cell.setCellStyle(currencyStyle);
+                } else {
+                    cell.setCellValue(cellData != null ? cellData.toString() : "");
+                    cell.setCellStyle(cellStyle);
+                }
             }
         }
 
