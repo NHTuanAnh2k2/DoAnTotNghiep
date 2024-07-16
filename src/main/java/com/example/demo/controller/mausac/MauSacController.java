@@ -23,21 +23,24 @@ public class MauSacController {
     MauSacRepository mauSacRepository;
 
     @GetMapping("/listMauSac")
-    public String listMauSac(Model model, @ModelAttribute("mausac") MauSac mauSac, @ModelAttribute("tim") ThuocTinhInfo info) {
+    public String listMauSac(@RequestParam(defaultValue = "0") int p, @ModelAttribute("mausac") MauSac mauSac, @ModelAttribute("tim") ThuocTinhInfo info, Model model) {
         List<MauSac> page;
-        boolean isKeyEmpty = (info.getKey() == null || info.getKey().trim().isEmpty());
+        String trimmedKey = (info.getKey() != null) ? info.getKey().trim().replaceAll("\\s+", " ") : null;
+        boolean isKeyEmpty = (trimmedKey == null || trimmedKey.isEmpty());
         boolean isTrangthaiNull = (info.getTrangthai() == null);
 
         if (isKeyEmpty && isTrangthaiNull) {
             page = mauSacRepository.findAllByOrderByNgaytaoDesc();
         } else {
-            page = mauSacRepository.getDeGiayByTenOrTrangthai(info.getKey(),info.getTrangthai());
+            page = mauSacRepository.findByTenAndTrangthai("%" + trimmedKey + "%", info.getTrangthai());
         }
+
         model.addAttribute("fillSearch", info.getKey());
         model.addAttribute("fillTrangThai", info.getTrangthai());
         model.addAttribute("list", page);
         return "admin/qlmausac";
     }
+
     @PostMapping("/mausac/updateTrangThai/{id}")
     public String updateTrangThaiMauSac(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         MauSac existingMauSac = mauSacRepository.findById(id).orElse(null);

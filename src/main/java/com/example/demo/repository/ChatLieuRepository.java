@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.ChatLieu;
+import com.example.demo.entity.ThuongHieu;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,6 +13,10 @@ import java.util.List;
 @Repository
 public interface ChatLieuRepository extends JpaRepository<ChatLieu, Integer> {
     boolean existsByTen(String ten);
+    @Query(value = """
+            SELECT cl FROM ChatLieu cl WHERE (cl.ten LIKE?1) AND (?2 IS NULL OR cl.trangthai=?2)
+            """)
+    List<ChatLieu> findByTenAndTrangthai(String ten, Boolean trangthai);
 
     @Query("SELECT c FROM ChatLieu c WHERE c.ten LIKE %?1% OR c.trangthai = ?2")
     List<ChatLieu> findByTenVaTrangThai(String ten, Boolean trangthai);

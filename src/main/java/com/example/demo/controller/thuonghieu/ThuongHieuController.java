@@ -22,7 +22,7 @@ public class ThuongHieuController {
     ThuongHieuImp thuongHieuImp;
 
     @GetMapping("/listthuonghieu")
-    public String hienthi(@RequestParam(defaultValue = "0") int p, @ModelAttribute("th") ThuocTinhInfo info, @ModelAttribute("thuonghieu") ThuongHieu thuongHieu, Model model) {
+    public String hienthi(@RequestParam(defaultValue = "0") int p, Model model, @ModelAttribute("thuonghieu") ThuongHieu thuongHieu,@ModelAttribute("tim") ThuocTinhInfo info) {
         List<ThuongHieu> list;
         String trimmedKey = (info.getKey() != null) ? info.getKey().trim().replaceAll("\\s+", " ") : null;
         boolean isKeyEmpty = (trimmedKey == null || trimmedKey.isEmpty());
@@ -30,7 +30,7 @@ public class ThuongHieuController {
         if (isKeyEmpty && isTrangthaiNull) {
             list = thuongHieuRepository.findAllByOrderByNgaytaoDesc();
         } else {
-            list = thuongHieuRepository.getThuongHieuByTenOrTrangthai(trimmedKey,info.getTrangthai());
+            list = thuongHieuRepository.findByTenAndTrangthai("%" + trimmedKey + "%", info.getTrangthai());
         }
         model.addAttribute("page", list);
         model.addAttribute("fillSearch", info.getKey());

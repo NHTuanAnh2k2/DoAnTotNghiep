@@ -24,14 +24,14 @@ public class ChatLieuController {
     @GetMapping("/chatlieu")
     public String display(@ModelAttribute("search") ThuocTinhInfo info, @ModelAttribute("chatlieu") ChatLieu chatLieu, Model model) {
         List<ChatLieu> list;
-
-        boolean isKeyEmpty = (info.getKey() == null || info.getKey().trim().isEmpty());
+        String trimmedKey = (info.getKey() != null) ? info.getKey().trim().replaceAll("\\s+", " ") : null;
+        boolean isKeyEmpty = (trimmedKey == null || trimmedKey.trim().isEmpty());
         boolean isTrangthaiNull = (info.getTrangthai() == null);
 
         if (isKeyEmpty && isTrangthaiNull) {
             list = chatLieuRepository.findAllByOrderByNgaytaoDesc();
         } else {
-            list = chatLieuRepository.getChatLieuByTenOrTrangthai(info.getKey(),info.getTrangthai());
+            list = chatLieuRepository.findByTenAndTrangthai("%" + trimmedKey + "%", info.getTrangthai());
         }
 
         model.addAttribute("fillSearch", info.getKey());
@@ -57,6 +57,7 @@ public class ChatLieuController {
         chatLieuRepository.updateTrangThaiToFalseById(id);
         return "redirect:/chatlieu";
     }
+
     @PostMapping("/add")
     public String add(Model model, @ModelAttribute("chatlieu") ChatLieu chatLieu) {
         String trimmedTenChatLieu = (chatLieu.getTen() != null)

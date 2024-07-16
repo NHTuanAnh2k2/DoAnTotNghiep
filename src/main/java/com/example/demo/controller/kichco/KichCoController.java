@@ -25,18 +25,19 @@ public class KichCoController {
 
     @GetMapping("/listKichCo")
     public String listKichCo(Model model, @ModelAttribute("kichco") KichCo kichCo, @ModelAttribute("tim") ThuocTinhInfo info) {
-        List<KichCo> page;
-        boolean isKeyEmpty = (info.getKey() == null || info.getKey().trim().isEmpty());
+        List<KichCo> list;
+        String trimmedKey = (info.getKey() != null) ? info.getKey().trim().replaceAll("\\s+", " ") : null;
+        boolean isKeyEmpty = (trimmedKey == null || trimmedKey.isEmpty());
         boolean isTrangthaiNull = (info.getTrangthai() == null);
 
         if (isKeyEmpty && isTrangthaiNull) {
-            page = kichCoRepository.findAllByOrderByNgaytaoDesc();
+            list = kichCoRepository.findAllByOrderByNgaytaoDesc();
         } else {
-            page = kichCoRepository.getKichCoByTenOrTrangthai(info.getKey(), info.getTrangthai());
+            list = kichCoRepository.findByTenAndTrangthai("%" + trimmedKey + "%", info.getTrangthai());
         }
         model.addAttribute("fillSearch", info.getKey());
         model.addAttribute("fillTrangThai", info.getTrangthai());
-        model.addAttribute("list", page);
+        model.addAttribute("list", list);
         return "admin/qlkichco";
     }
     @PostMapping("/kichco/updateTrangThai/{id}")
