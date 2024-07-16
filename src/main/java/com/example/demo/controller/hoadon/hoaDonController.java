@@ -247,7 +247,6 @@ public class hoaDonController {
             }
 
 
-
             //case loaihd and (tu or den null)
             if (!hdSaveInfoSeachr.getKey().equalsIgnoreCase("null")
                     && hdSaveInfoSeachr.getLoaiHD().equalsIgnoreCase("null")
@@ -331,9 +330,9 @@ public class hoaDonController {
         model.addAttribute("tt5", dao.tinhTong(5));
         model.addAttribute("tt6", dao.tinhTong(6));
         model.addAttribute("tt7", dao.findAll(p).getTotalElements());
-       if(hdSaveInfoSeachr.getKey().equalsIgnoreCase("null")){
-           model.addAttribute("checkKeyNull", true);
-       }
+        if (hdSaveInfoSeachr.getKey().equalsIgnoreCase("null")) {
+            model.addAttribute("checkKeyNull", true);
+        }
         return "admin/qlhoadon";
     }
 
@@ -603,6 +602,17 @@ public class hoaDonController {
         lshd.setNgaytao(Timestamp.valueOf(ngaytao));
         List<HoaDon> lstSaveHD = dao.timTheoID(idhdshowdetail);
         HoaDon hdTT = lstSaveHD.get(0);
+        if (hdTT.getTrangthai() == 0 && hdTT.getLoaihoadon() == true) {
+            //đơn online thì trừ số lượng vào kho
+            List<HoaDonChiTiet> lsdthdctdownSL = daoHDCT.getListSPHD(hdTT);
+            for (HoaDonChiTiet a : lsdthdctdownSL
+            ) {
+                SanPhamChiTiet sanPhamChiTietUd = daoSPCT.findById(a.getSanphamchitiet().getId());
+                sanPhamChiTietUd.setSoluong(sanPhamChiTietUd.getSoluong() - a.getSoluong());
+                daoSPCT.addSPCT(sanPhamChiTietUd);
+            }
+
+        }
         Integer trangthaiset = hdTT.getTrangthai() + 1;
 
         if (trangthaiset == 4) {
