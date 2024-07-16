@@ -111,7 +111,8 @@
         </div>
         <p th:text="${error}" style="color: red"></p>
         <div class="mt-6 d-flex justify-content-start">
-            <button type="submit" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 46px; border-radius: 15px; border-color: rgb(249,72,42);">
+            <button type="submit"
+                    style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 46px; border-radius: 15px; border-color: rgb(249,72,42);">
                 ĐĂNG NHẬP
             </button>
             <div id="abc">
@@ -179,14 +180,14 @@
 <div id="register" class="tabcontent">
     <!--    <h3>Form Đăng Ký</h3>-->
     <form th:object="${nguoidung}" th:action="@{/dangky}" th:method="post" id="formDangKy" name="formDangKy"
-          onsubmit="return validateNguoiDung();">
+          onsubmit="return validateDangKy();">
         <div class="form123 mt-3">
             <input th:field="*{hovaten}" id="hovaten" type="text" placeholder="Họ tên"/>
             <label>Họ tên</label>
             <span id="tenError" style="color: red;"></span>
         </div>
         <div class="form123 mt-4">
-            <input type="date" th:field="*{ngaysinh}"/>
+            <input type="date" th:field="*{ngaysinh}" onkeydown="return false"/>
             <label>Ngày sinh</label>
             <span id="ngaysinhError" style="color: red;"></span>
         </div>
@@ -206,7 +207,7 @@
             </div>
         </div>
         <div class="form123">
-            <input type="text" placeholder="Tên đăng nhập" th:field="*{taikhoan}"/>
+            <input type="text" placeholder="Tên đăng nhập" th:field="*{taikhoan}" id="taikhoan"/>
             <label>Tên đăng nhập</label>
             <span id="taikhoanError" style="color: red;"></span>
         </div>
@@ -247,6 +248,7 @@
 <script th:inline="javascript">
     var lstEmailFromDb = /*[[${lstEmail}]]*/ [];
     var lstSdtFromDb = /*[[${lstSdt}]]*/ [];
+    var lstTaiKhoanFromDb = /*[[${lstTaiKhoan}]]*/ [];
     /*<![CDATA[*/
     var opentab = /*[[${opentab}]]*/ false;
     /*]]>*/
@@ -367,7 +369,7 @@
     function validateDangKy() {
         var tenInput = document.getElementById('hovaten').value.trim();
         var ngaySinhInput = document.getElementById('ngaysinh');
-        var taikhoanInput = document.getElementById('taikhoan');
+        var taikhoanInput = document.getElementById('taikhoan').value.trim();
         var emailInput = document.getElementById('email').value.trim();
         var sdtInput = document.getElementById('sodienthoai').value.trim();
         var matkhauInput = document.getElementById('matkhau').value.trim();
@@ -414,7 +416,7 @@
             tenError.innerText = 'Họ và tên không được trống';
             isValid = false;
         } else if (specialCharPattern.test(tenInput)) {
-            tenError.innerText = 'Họ và tên không được chứa ký tự đặc biệt';
+            tenError.innerText = 'Họ và tên không được chứa ki tự đặc biệt';
             isValid = false;
         } else if (numberPattern.test(tenInput)) {
             tenError.innerText = 'Họ và tên không được chứa số';
@@ -446,20 +448,26 @@
         if (taikhoanInput === '') {
             taikhoanError.innerText = 'Tài khoản không được trống';
             isValid = false;
-        } else if (specialCharPattern.test(tenInput)) {
+        } else if (specialCharPattern.test(taikhoanInput)) {
             taikhoanError.innerText = 'Tài khoản không được chứa ký tự đặc biệt';
+            isValid = false;
+        } else if (taikhoanInput.length < 5) {
+            taikhoanError.innerText = 'Tài khoản phải tối thiểu 5 ký tự';
+            isValid = false;
+        } else if (checkTrungTaiKhoan() === false) {
+            taikhoanError.innerText = 'Tài khoản đã tồn tại';
             isValid = false;
         }
         if (matkhauInput === '') {
             matkhauError.innerText = 'Mật khẩu không được trống';
             isValid = false;
-        }
-        if (matkhauxnInput !== matkhauInput) {
+        } else if (matkhauInput.length < 8) {
+            matkhauError.innerText("Mật khẩu phải tối thiểu 8 ký tự")
+            isValid = false;
+        } else if (matkhauxnInput !== matkhauInput) {
             xacnhanmkError.innerText = 'Mật khẩu không khớp';
             isValid = false;
         }
-
-
 
         if (isValid) {
             return true;
@@ -477,7 +485,6 @@
                 break;
             }
         }
-
         return isVaLid;
     }
 
@@ -490,7 +497,18 @@
                 break;
             }
         }
+        return isVaLid;
+    }
 
+    function checkTrungTaiKhoan() {
+        var taikhoanInput = document.getElementById('taikhoan').value;
+        var isVaLid = true;
+        for (var i = 0; i < lstTaiKhoanFromDb.length; i++) {
+            if (taikhoanInput === lstTaiKhoanFromDb[i]) {
+                isVaLid = false;
+                break;
+            }
+        }
         return isVaLid;
     }
 
