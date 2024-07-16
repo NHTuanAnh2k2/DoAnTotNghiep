@@ -1,6 +1,7 @@
 package com.example.demo.controller.mausac;
 
 import com.example.demo.entity.MauSac;
+import com.example.demo.entity.ThuongHieu;
 import com.example.demo.info.ThuocTinhInfo;
 import com.example.demo.repository.MauSacRepository;
 import com.example.demo.service.impl.MauSacImp;
@@ -9,6 +10,8 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,26 +25,36 @@ public class MauSacController {
     @GetMapping("/listMauSac")
     public String listMauSac(Model model, @ModelAttribute("mausac") MauSac mauSac, @ModelAttribute("tim") ThuocTinhInfo info) {
         List<MauSac> page;
-
         boolean isKeyEmpty = (info.getKey() == null || info.getKey().trim().isEmpty());
         boolean isTrangthaiNull = (info.getTrangthai() == null);
 
         if (isKeyEmpty && isTrangthaiNull) {
-            page = mauSacRepository.getAll();
+            page = mauSacRepository.findAllByOrderByNgaytaoDesc();
         } else {
-            page = mauSacRepository.findMauSacByTenAndTrangThaiFalse(info.getKey());
+            page = mauSacRepository.getDeGiayByTenOrTrangthai(info.getKey(),info.getTrangthai());
         }
-
         model.addAttribute("fillSearch", info.getKey());
         model.addAttribute("fillTrangThai", info.getTrangthai());
         model.addAttribute("list", page);
         return "admin/qlmausac";
     }
-    @PostMapping("/updateMauSac/{id}")
-    public String updateMauSac(@PathVariable Integer id) {
-        mauSacRepository.updateTrangThaiToFalseById(id);
+    @PostMapping("/mausac/updateTrangThai/{id}")
+    public String updateTrangThaiMauSac(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        MauSac existingMauSac = mauSacRepository.findById(id).orElse(null);
+        if (existingMauSac != null) {
+            existingMauSac.setTrangthai(!existingMauSac.getTrangthai());
+            mauSacRepository.save(existingMauSac);
+            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật trạng thái thành công!");
+        }
         return "redirect:/listMauSac";
     }
+
+
+//    @PostMapping("/updateMauSac/{id}")
+//    public String updateMauSac(@PathVariable Integer id) {
+//        mauSacRepository.updateTrangThaiToFalseById(id);
+//        return "redirect:/listMauSac";
+//    }
 
     @PostMapping("/addSaveMauSac")
     @CacheEvict(value = "mausacCache", allEntries = true)
