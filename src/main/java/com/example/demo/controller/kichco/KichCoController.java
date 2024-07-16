@@ -1,6 +1,7 @@
 package com.example.demo.controller.kichco;
 
 import com.example.demo.entity.KichCo;
+import com.example.demo.entity.ThuongHieu;
 import com.example.demo.info.ThuocTinhInfo;
 import com.example.demo.repository.KichCoRepository;
 import com.example.demo.service.impl.KichCoImp;
@@ -9,6 +10,8 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,15 +30,27 @@ public class KichCoController {
         boolean isTrangthaiNull = (info.getTrangthai() == null);
 
         if (isKeyEmpty && isTrangthaiNull) {
-            page = kichCoRepository.getAll();
+            page = kichCoRepository.findAllByOrderByNgaytaoDesc();
         } else {
-            page = kichCoRepository.findKichCoByTenAndTrangThaiFalse(info.getKey());
+            page = kichCoRepository.getKichCoByTenOrTrangthai(info.getKey(), info.getTrangthai());
         }
         model.addAttribute("fillSearch", info.getKey());
         model.addAttribute("fillTrangThai", info.getTrangthai());
         model.addAttribute("list", page);
         return "admin/qlkichco";
     }
+    @PostMapping("/kichco/updateTrangThai/{id}")
+    public String updateTrangThaiKichCo(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        KichCo existingKichCo = kichCoRepository.findById(id).orElse(null);
+        if (existingKichCo != null) {
+            existingKichCo.setTrangthai(!existingKichCo.getTrangthai());
+            kichCoRepository.save(existingKichCo);
+            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật trạng thái thành công!");
+        }
+        return "redirect:/listKichCo";
+    }
+
+
     @PostMapping("/updateKichCo/{id}")
     public String updateKichCo(@PathVariable Integer id) {
         kichCoRepository.updateTrangThaiToFalseById(id);
@@ -56,6 +71,7 @@ public class KichCoController {
         kichCoRepository.save(kichCo);
         return "redirect:/listKichCo";
     }
+
     @PostMapping("/addKichCoModal")
     public String addKichCoModal(@ModelAttribute("kichco") KichCo kichCo) {
         String trimmedTenKichCo = (kichCo.getTen() != null)

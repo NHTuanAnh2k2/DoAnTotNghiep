@@ -1426,13 +1426,12 @@
     var objectsFromControllerMauSac = /*[[${ms}]]*/ [];
     var objectsFromControllerKichCo = /*[[${kc}]]*/ [];
     var objectsFromControllerTenSP = /*[[${sp}]]*/ [];
-
+    const specialCharPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+    const specialCharPatternSo = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?0-9]/;
     function validateTrungTenSP() {
         var inputMaTenSP = document.getElementById("tenInputTenSP").value;
         var errorMaTenSP = document.getElementById("errorTenSP");
         var isMaValid = true;
-
-
         // Kiểm tra xem trường "Tên sản phẩm" có trống không và không vượt quá 20 ký tự
         if (inputMaTenSP.trim() === "") {
             errorMaTenSP.innerText = "Vui lòng nhập tên sản phẩm.";
@@ -1443,21 +1442,28 @@
         } else if (inputMaTenSP.trim().length > 20) {
             errorMaTenSP.innerText = "Tên sản phẩm không được vượt quá 20 ký tự.";
             return false; // Ngăn form được gửi đi
-        } else if (/[^a-zA-Z0-9\sĐđÊêÔôÁáÀàẢảÃãẤấẦầỄễẾếẸẹ]/.test(inputMaTenSP.trim())) {
+        }
+        else if (specialCharPattern.test(inputMaTenSP.trim())) {
             errorMaTenSP.innerText = "Tên sản phẩm không được chứa ký tự đặc biệt.";
             return false; // Ngăn form được gửi đi
-        } else {
+        }
+        else {
             errorMaTenSP.innerText = ""; // Xóa thông báo lỗi nếu có
         }
 
-// Kiểm tra trùng tên sản phẩm (không phân biệt chữ hoa chữ thường)
+// Kiểm tra trùng tên sản phẩm (không phân biệt chữ hoa chữ thường và khoảng trắng)
         for (var i = 0; i < objectsFromControllerTenSP.length; i++) {
             var obj = objectsFromControllerTenSP[i];
-            if (inputMaTenSP.trim().toLowerCase() === obj.tensanpham.trim().toLowerCase()) {
+            // Loại bỏ khoảng trắng và chuyển đổi về chữ thường để so sánh
+            var normalizedInput = inputMaTenSP.trim().replace(/\s+/g, ' ').toLowerCase();
+            var normalizedObjName = obj.tensanpham.trim().replace(/\s+/g, ' ').toLowerCase();
+
+            if (normalizedInput === normalizedObjName) {
                 errorMaTenSP.innerText = "Tên sản phẩm đã tồn tại!";
                 return false; // Ngăn form được gửi đi
             }
         }
+
 
         if (isMaValid) {
             errorMaTenSP.innerText = "";
@@ -1483,16 +1489,22 @@
         } else if (inputMaThuongHieu.trim().length > 20) {
             errorMaThuongHieu.innerText = "Tên thương hiệu không được vượt quá 20 ký tự.";
             return false; // Ngăn form được gửi đi
-        } else if (/[^a-zA-Z0-9\sĐđÊêÔôÁáÀàẢảÃãẤấẦầỄễẾếẸẹ]/.test(inputMaThuongHieu.trim())) {
+        }
+        else if (specialCharPattern.test(inputMaThuongHieu.trim())) {
             errorMaThuongHieu.innerText = "Tên thương hiệu không được chứa ký tự đặc biệt.";
             return false; // Ngăn form được gửi đi
-        } else {
+        }
+        else {
             errorMaThuongHieu.innerText = ""; // Xóa thông báo lỗi nếu có
         }
-        // Kiểm tra trùng tên thương hiệu (không phân biệt chữ hoa chữ thường)
+        // Kiểm tra trùng tên thương hiệu (không phân biệt chữ hoa chữ thường và khoảng trắng)
         for (var i = 0; i < objectsFromControllerThuongHieu.length; i++) {
             var obj = objectsFromControllerThuongHieu[i];
-            if (inputMaThuongHieu.trim().toLowerCase() === obj.ten.trim().toLowerCase()) {
+            // Loại bỏ khoảng trắng và chuyển đổi về chữ thường để so sánh
+            var normalizedInput = inputMaThuongHieu.trim().replace(/\s+/g, ' ').toLowerCase();
+            var normalizedObjName = obj.ten.trim().replace(/\s+/g, ' ').toLowerCase();
+
+            if (normalizedInput === normalizedObjName) {
                 errorMaThuongHieu.innerText = "Tên thương hiệu đã tồn tại!";
                 isMaValid = false; // Đánh dấu không hợp lệ
                 return false; // Ngăn form được gửi đi
@@ -1524,21 +1536,28 @@
         } else if (inputMaChatLieu.trim().length > 20) {
             errorMaChatLieu.innerText = "Tên chất liệu không được vượt quá 20 ký tự.";
             return false; // Ngăn form được gửi đi
-        } else if (/[^a-zA-Z0-9\sĐđẸệÊêÍíÓóƠơỦủÀàÁáẠạẢảÃãẤấẦầẪẫẬậÊêẾếỂểỄễỆệÍíÓóÔôƠơÙùÚúỦủÝý]/.test(inputMaChatLieu.trim())) {
+        }
+        else if (specialCharPattern.test(inputMaChatLieu.trim())) {
             errorMaChatLieu.innerText = "Tên chất liệu không được chứa ký tự đặc biệt.";
             return false; // Ngăn form được gửi đi
-        } else {
+        }
+        else {
             errorMaChatLieu.innerText = ""; // Xóa thông báo lỗi nếu có
         }
 
-// Kiểm tra trùng tên chất liệu (không phân biệt chữ hoa chữ thường)
+// Kiểm tra trùng tên chất liệu (không phân biệt chữ hoa chữ thường và khoảng trắng)
         for (var i = 0; i < objectsFromControllerChatLieu.length; i++) {
             var obj = objectsFromControllerChatLieu[i];
-            if (inputMaChatLieu.trim().toLowerCase() === obj.ten.trim().toLowerCase()) {
+            // Loại bỏ khoảng trắng và chuyển đổi về chữ thường để so sánh
+            var normalizedInput = inputMaChatLieu.trim().replace(/\s+/g, ' ').toLowerCase();
+            var normalizedObjName = obj.ten.trim().replace(/\s+/g, ' ').toLowerCase();
+
+            if (normalizedInput === normalizedObjName) {
                 errorMaChatLieu.innerText = "Tên chất liệu đã tồn tại!";
                 return false; // Ngăn form được gửi đi
             }
         }
+
 
         if (isMaValid) {
             errorMaChatLieu.innerText = "";
@@ -1563,20 +1582,32 @@
         } else if (inputMaDeGiay.trim().length > 20) {
             errorMaDeGiay.innerText = "Tên đế giày không được vượt quá 20 ký tự.";
             return false; // Ngăn form được gửi đi
-        } else if (/[^a-zA-Z0-9\sĐđÊêÔôÁáÀàẢảÃãẤấẦầỄễẾếẸẹ]/.test(inputMaDeGiay.trim())) {
+        }
+        else if (specialCharPattern.test(inputMaDeGiay.trim())) {
             errorMaDeGiay.innerText = "Tên đế giày không được chứa ký tự đặc biệt.";
             return false; // Ngăn form được gửi đi
-        } else {
+        }
+        // else if (/[^a-zA-Z0-9\sĐđẸệÊêÍíÓóòọƠơỦủÀàÁáẠạẢảÃãẤấẦầẪẫẬậÊêẾếỂểỄễỆệÍíÓóÔôƠơÙùÚúỦủÝý]/.test(inputMaDeGiay.trim())) {
+        //     errorMaDeGiay.innerText = "Tên đế giày không được chứa ký tự đặc biệt.";
+        //     return false; // Ngăn form được gửi đi
+        // }
+        else {
             errorMaDeGiay.innerText = ""; // Xóa thông báo lỗi nếu có
         }
 // Kiểm tra trùng tên đế giày (không phân biệt chữ hoa chữ thường)
+        // Kiểm tra trùng tên đế giày (không phân biệt chữ hoa chữ thường và khoảng trắng)
         for (var i = 0; i < objectsFromControllerDeGiay.length; i++) {
             var obj = objectsFromControllerDeGiay[i];
-            if (inputMaDeGiay.trim().toLowerCase() === obj.ten.trim().toLowerCase()) {
+            // Loại bỏ khoảng trắng và chuyển đổi về chữ thường để so sánh
+            var normalizedInput = inputMaDeGiay.trim().replace(/\s+/g, ' ').toLowerCase();
+            var normalizedObjName = obj.ten.trim().replace(/\s+/g, ' ').toLowerCase();
+
+            if (normalizedInput === normalizedObjName) {
                 errorMaDeGiay.innerText = "Tên đế giày đã tồn tại!";
                 return false; // Ngăn form được gửi đi
             }
         }
+
         if (isMaValid) {
             errorMaDeGiay.innerText = "";
             themDeGiay();
@@ -1597,21 +1628,28 @@
         } else if (inputMaMauSac.trim().length > 20) {
             errorMaMauSac.innerText = "Tên màu sắc không được vượt quá 20 ký tự.";
             return false; // Ngăn form được gửi đi
-        } else if (/[^a-zA-Z\sĐđÊêÔôÁáÀàẢảÃãẤấẦầỄễẾếẸẹ]/.test(inputMaMauSac.trim())) {
-            errorMaMauSac.innerText = "Tên màu sắc không được chứa ký tự đặc biệt hoặc số.";
+        }
+        else if (specialCharPatternSo.test(inputMaMauSac.trim())) {
+            errorMaMauSac.innerText = "Tên màu sắc không được chứa ký tự đặc biệt và số.";
             return false; // Ngăn form được gửi đi
-        } else {
+        }
+        else {
             errorMaMauSac.innerText = ""; // Xóa thông báo lỗi nếu có
         }
 
-// Kiểm tra trùng tên màu sắc (không phân biệt chữ hoa chữ thường)
+// Kiểm tra trùng tên màu sắc (không phân biệt chữ hoa chữ thường và khoảng trắng)
         for (var i = 0; i < objectsFromControllerMauSac.length; i++) {
             var obj = objectsFromControllerMauSac[i];
-            if (inputMaMauSac.trim().toLowerCase() === obj.ten.trim().toLowerCase()) {
+            // Loại bỏ khoảng trắng và chuyển đổi về chữ thường để so sánh
+            var normalizedInput = inputMaMauSac.trim().replace(/\s+/g, ' ').toLowerCase();
+            var normalizedObjName = obj.ten.trim().replace(/\s+/g, ' ').toLowerCase();
+
+            if (normalizedInput === normalizedObjName) {
                 errorMaMauSac.innerText = "Tên màu sắc đã tồn tại!";
                 return false; // Ngăn form được gửi đi
             }
         }
+
 
         if (isMaValid) {
             errorMaMauSac.innerText = "";
@@ -1641,14 +1679,19 @@
         }
 
 
-// Kiểm tra trùng tên kích cỡ (không phân biệt chữ hoa chữ thường)
+// Kiểm tra trùng tên kích cỡ (không phân biệt chữ hoa chữ thường và khoảng trắng)
         for (var i = 0; i < objectsFromControllerKichCo.length; i++) {
             var obj = objectsFromControllerKichCo[i];
-            if (inputMaKichCo.trim().toLowerCase() === obj.ten.trim().toLowerCase()) {
+            // Loại bỏ khoảng trắng và chuyển đổi về chữ thường để so sánh
+            var normalizedInput = inputMaKichCo.trim().replace(/\s+/g, ' ').toLowerCase();
+            var normalizedObjName = obj.ten.trim().replace(/\s+/g, ' ').toLowerCase();
+
+            if (normalizedInput === normalizedObjName) {
                 errorMaKichCo.innerText = "Tên kích cỡ đã tồn tại!";
                 return false; // Ngăn form được gửi đi
             }
         }
+
 
         if (isMaValid) {
             errorMaKichCo.innerText = "";

@@ -9,6 +9,8 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,14 +24,13 @@ public class ThuongHieuController {
     @GetMapping("/listthuonghieu")
     public String hienthi(@RequestParam(defaultValue = "0") int p, @ModelAttribute("th") ThuocTinhInfo info, @ModelAttribute("thuonghieu") ThuongHieu thuongHieu, Model model) {
         List<ThuongHieu> list;
-
-        boolean isKeyEmpty = (info.getKey() == null || info.getKey().trim().isEmpty());
+        String trimmedKey = (info.getKey() != null) ? info.getKey().trim().replaceAll("\\s+", " ") : null;
+        boolean isKeyEmpty = (trimmedKey == null || trimmedKey.isEmpty());
         boolean isTrangthaiNull = (info.getTrangthai() == null);
-
         if (isKeyEmpty && isTrangthaiNull) {
-            list = thuongHieuRepository.getAll();
+            list = thuongHieuRepository.findAllByOrderByNgaytaoDesc();
         } else {
-            list = thuongHieuRepository.findThuongHieuByTenAndTrangThaiFalse(info.getKey());
+            list = thuongHieuRepository.getThuongHieuByTenOrTrangthai(trimmedKey,info.getTrangthai());
         }
         model.addAttribute("page", list);
         model.addAttribute("fillSearch", info.getKey());
@@ -37,11 +38,17 @@ public class ThuongHieuController {
         return "admin/qlthuonghieu";
     }
 
-    @PostMapping("/updateThuongHieu/{id}")
-    public String updateThuongHieu(@PathVariable Integer id) {
-        thuongHieuRepository.updateTrangThaiToFalseById(id);
+    @PostMapping("/thuonghieu/updateTrangThai/{id}")
+    public String updateTrangThaiThuongHieu(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        ThuongHieu existingThuongHieu = thuongHieuRepository.findById(id).orElse(null);
+        if (existingThuongHieu != null) {
+            existingThuongHieu.setTrangthai(!existingThuongHieu.getTrangthai());
+            thuongHieuRepository.save(existingThuongHieu);
+            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật trạng thái thành công!");
+        }
         return "redirect:/listthuonghieu";
     }
+
     @PostMapping("/addSaveThuongHieu")
     @CacheEvict(value = "thuonghieuCache", allEntries = true)
     public String addSave(@ModelAttribute("thuonghieu") ThuongHieu thuongHieu, @ModelAttribute("th") ThuocTinhInfo info, Model model) {
@@ -87,7 +94,6 @@ public class ThuongHieuController {
         thuongHieu.setNgaytao(currentTime);
         thuongHieu.setLancapnhatcuoi(currentTime);
         thuongHieuImp.add(thuongHieu);
-        // Chuyển hướng đến trang chi tiết sản phẩm với id của SanPhamChiTiet
         return "redirect:/updateCTSP/" + spctId;
     }
 
