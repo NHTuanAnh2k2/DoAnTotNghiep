@@ -44,7 +44,11 @@ public class ChatLieuController {
     }
     @PostMapping("/add")
     public String add(Model model, @ModelAttribute("chatlieu") ChatLieu chatLieu) {
+        String trimmedTenChatLieu = (chatLieu.getTen() != null)
+                ? chatLieu.getTen().trim().replaceAll("\\s+", " ")
+                : null;
         LocalDateTime currentTime = LocalDateTime.now();
+        chatLieu.setTen(trimmedTenChatLieu);
         chatLieu.setTrangthai(true);
         chatLieu.setNgaytao(currentTime);
         chatLieu.setLancapnhatcuoi(currentTime);
@@ -54,7 +58,11 @@ public class ChatLieuController {
 
     @PostMapping("/addChatLieuModal")
     public String addChatLieuModal(Model model, @ModelAttribute("chatlieu") ChatLieu chatLieu) {
+        String trimmedTenChatLieu = (chatLieu.getTen() != null)
+                ? chatLieu.getTen().trim().replaceAll("\\s+", " ")
+                : null;
         LocalDateTime currentTime = LocalDateTime.now();
+        chatLieu.setTen(trimmedTenChatLieu);
         chatLieu.setTrangthai(true);
         chatLieu.setNgaytao(currentTime);
         chatLieu.setLancapnhatcuoi(currentTime);
@@ -64,7 +72,11 @@ public class ChatLieuController {
 
     @PostMapping("/addChatLieuSua")
     public String addChatLieuSua(Model model, @ModelAttribute("chatlieu") ChatLieu chatLieu, @RequestParam("spctId") Integer spctId) {
+        String trimmedTenChatLieu = (chatLieu.getTen() != null)
+                ? chatLieu.getTen().trim().replaceAll("\\s+", " ")
+                : null;
         LocalDateTime currentTime = LocalDateTime.now();
+        chatLieu.setTen(trimmedTenChatLieu);
         chatLieu.setTrangthai(true);
         chatLieu.setNgaytao(currentTime);
         chatLieu.setLancapnhatcuoi(currentTime);

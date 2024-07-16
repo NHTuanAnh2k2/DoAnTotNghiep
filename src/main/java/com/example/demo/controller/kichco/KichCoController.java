@@ -45,7 +45,11 @@ public class KichCoController {
     @PostMapping("/addSaveKichCo")
     @CacheEvict(value = "kichcoCache", allEntries = true)
     public String addSave(@ModelAttribute("kichco") KichCo kichCo, @ModelAttribute("kc") ThuocTinhInfo info, Model model) {
+        String trimmedTenKichCo = (kichCo.getTen() != null)
+                ? kichCo.getTen().trim().replaceAll("\\s+", " ")
+                : null;
         LocalDateTime currentTime = LocalDateTime.now();
+        kichCo.setTen(trimmedTenKichCo);
         kichCo.setTrangthai(true);
         kichCo.setNgaytao(currentTime);
         kichCo.setLancapnhatcuoi(currentTime);
@@ -54,7 +58,11 @@ public class KichCoController {
     }
     @PostMapping("/addKichCoModal")
     public String addKichCoModal(@ModelAttribute("kichco") KichCo kichCo) {
+        String trimmedTenKichCo = (kichCo.getTen() != null)
+                ? kichCo.getTen().trim().replaceAll("\\s+", " ")
+                : null;
         LocalDateTime currentTime = LocalDateTime.now();
+        kichCo.setTen(trimmedTenKichCo);
         kichCo.setTrangthai(true);
         kichCo.setNgaytao(currentTime);
         kichCo.setLancapnhatcuoi(currentTime);
@@ -64,7 +72,11 @@ public class KichCoController {
 
     @PostMapping("/addKichCoSua")
     public String addKichCoSua(@ModelAttribute("kichco") KichCo kichCo, @RequestParam("spctId") Integer spctId) {
+        String trimmedTenKichCo = (kichCo.getTen() != null)
+                ? kichCo.getTen().trim().replaceAll("\\s+", " ")
+                : null;
         LocalDateTime currentTime = LocalDateTime.now();
+        kichCo.setTen(trimmedTenKichCo);
         kichCo.setTrangthai(true);
         kichCo.setNgaytao(currentTime);
         kichCo.setLancapnhatcuoi(currentTime);

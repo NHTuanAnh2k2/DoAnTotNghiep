@@ -49,7 +49,11 @@ public class ThuongHieuController {
             model.addAttribute("errThuongHieu", "Tên thương hiệu trùng!");
             return "admin/qlthuonghieu";
         }
+        String trimmedTenThuongHieu = (thuongHieu.getTen() != null)
+                ? thuongHieu.getTen().trim().replaceAll("\\s+", " ")
+                : null;
         LocalDateTime currentTime = LocalDateTime.now();
+        thuongHieu.setTen(trimmedTenThuongHieu);
         thuongHieu.setTrangthai(true);
         thuongHieu.setNgaytao(currentTime);
         thuongHieu.setLancapnhatcuoi(currentTime);
@@ -60,7 +64,11 @@ public class ThuongHieuController {
 
     @PostMapping("/addThuongHieuModal")
     public String addThuongHieuModal(@ModelAttribute("thuonghieu") ThuongHieu thuongHieu, @ModelAttribute("th") ThuocTinhInfo info) {
+        String trimmedTenThuongHieu = (thuongHieu.getTen() != null)
+                ? thuongHieu.getTen().trim().replaceAll("\\s+", " ")
+                : null;
         LocalDateTime currentTime = LocalDateTime.now();
+        thuongHieu.setTen(trimmedTenThuongHieu);
         thuongHieu.setTrangthai(true);
         thuongHieu.setNgaytao(currentTime);
         thuongHieu.setLancapnhatcuoi(currentTime);
@@ -70,7 +78,11 @@ public class ThuongHieuController {
 
     @PostMapping("/addThuongHieuSua")
     public String addThuongHieuSua(@ModelAttribute("thuonghieu") ThuongHieu thuongHieu, @ModelAttribute("th") ThuocTinhInfo info, @RequestParam("spctId") Integer spctId) {
+        String trimmedTenThuongHieu = (thuongHieu.getTen() != null)
+                ? thuongHieu.getTen().trim().replaceAll("\\s+", " ")
+                : null;
         LocalDateTime currentTime = LocalDateTime.now();
+        thuongHieu.setTen(trimmedTenThuongHieu);
         thuongHieu.setTrangthai(true);
         thuongHieu.setNgaytao(currentTime);
         thuongHieu.setLancapnhatcuoi(currentTime);
