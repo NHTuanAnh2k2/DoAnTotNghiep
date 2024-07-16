@@ -13,8 +13,14 @@ import java.util.List;
 
 @Repository
 public interface KhachHangRepostory extends JpaRepository<KhachHang, Integer> {
-    @Query("SELECT k FROM KhachHang k WHERE (k.nguoidung.hovaten LIKE %?1% OR k.nguoidung.sodienthoai LIKE %?1% OR k.makhachhang LIKE %?1%) AND k.trangthai = ?2")
-    List<KhachHang> findByTenSdtMa(@Param("tenSdtMa") String tenSdtMa, @Param("trangThai") boolean trangthai);
+    @Query("SELECT k FROM KhachHang k WHERE k.nguoidung.hovaten LIKE %?1% OR k.nguoidung.sodienthoai LIKE %?1% OR k.makhachhang LIKE %?1%")
+    List<KhachHang> findByTenSdtMa(String tenSdtMa);
+
+    @Query("SELECT k FROM KhachHang k WHERE (k.nguoidung.hovaten LIKE %?1% OR k.nguoidung.sodienthoai LIKE %?1% OR k.makhachhang LIKE %?1%) AND k.trangthai =?2")
+    List<KhachHang> findByTenSdtMaTrangThai(String tenSdtMa, Boolean trangthai);
+
+    @Query("SELECT k FROM KhachHang k WHERE k.trangthai = ?1")
+    List<KhachHang> findKhachHangByTrangThai(Boolean trangthai);
 
     //    @Query("SELECT K FROM KhachHang k where k.id=?1")
 //    KhachHang findKhachHangById(Integer id);

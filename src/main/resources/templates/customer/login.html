@@ -111,7 +111,7 @@
         </div>
         <p th:text="${error}" style="color: red"></p>
         <div class="mt-6 d-flex justify-content-start">
-            <button style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 46px; border-radius: 15px; border-color: rgb(249,72,42);">
+            <button type="submit" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 46px; border-radius: 15px; border-color: rgb(249,72,42);">
                 ĐĂNG NHẬP
             </button>
             <div id="abc">
@@ -178,18 +178,17 @@
 
 <div id="register" class="tabcontent">
     <!--    <h3>Form Đăng Ký</h3>-->
-    <form th:object="${nguoidung}" th:action="@{/dangky}" th:method="post">
+    <form th:object="${nguoidung}" th:action="@{/dangky}" th:method="post" id="formDangKy" name="formDangKy"
+          onsubmit="return validateNguoiDung();">
         <div class="form123 mt-3">
-            <input th:field="*{hovaten}" type="text" placeholder="Họ tên"/>
+            <input th:field="*{hovaten}" id="hovaten" type="text" placeholder="Họ tên"/>
             <label>Họ tên</label>
-            <p th:if="${#fields.hasErrors('hovaten')}"
-               th:errors="*{hovaten}" style="color: red;"></p>
+            <span id="tenError" style="color: red;"></span>
         </div>
         <div class="form123 mt-4">
             <input type="date" th:field="*{ngaysinh}"/>
             <label>Ngày sinh</label>
-            <p th:if="${#fields.hasErrors('ngaysinh')}"
-               th:errors="*{ngaysinh}" style="color: red;"></p>
+            <span id="ngaysinhError" style="color: red;"></span>
         </div>
         <div class="d-flex mt-4">
             <p style="font-size: 16px; font-weight: bold">Giới tính: </p>
@@ -209,31 +208,27 @@
         <div class="form123">
             <input type="text" placeholder="Tên đăng nhập" th:field="*{taikhoan}"/>
             <label>Tên đăng nhập</label>
-            <p th:if="${#fields.hasErrors('taikhoan')}"
-               th:errors="*{taikhoan}" style="color: red;"></p>
+            <span id="taikhoanError" style="color: red;"></span>
         </div>
         <div class="form123 mt-4">
             <input type="text" placeholder="Số điện thoại" th:field="*{sodienthoai}"/>
             <label>Số điện thoại</label>
-            <p th:if="${#fields.hasErrors('sodienthoai')}"
-               th:errors="*{sodienthoai}" style="color: red;"></p>
+            <span id="sdtError" style="color: red;"></span>
         </div>
         <div class="form123 mt-4">
             <input type="text" placeholder="Email" th:field="*{email}"/>
             <label>Email</label>
-            <p th:if="${#fields.hasErrors('email')}"
-               th:errors="*{email}" style="color: red;"></p>
+            <span id="emailError" style="color: red;"></span>
         </div>
         <div class="form123 mt-4">
             <input type="password" placeholder="Mật khẩu" th:field="*{matkhau}"/>
             <label>Mật khẩu</label>
-            <p th:if="${#fields.hasErrors('matkhau')}"
-               th:errors="*{matkhau}" style="color: red;"></p>
+            <span id="matkhauError" style="color: red;"></span>
         </div>
         <div class="form123 mt-4">
-            <input type="password" placeholder="Xác nhận mật khẩu" th:field="*{xacnhanmatkhau}"/>
+            <input type="password" id="xacnhanmatkhau" placeholder="Xác nhận mật khẩu"/>
             <label>Xác nhận mật khẩu</label>
-            <p style="color: red" th:text="${saiMatKhau}"></p>
+            <span id="xacnhanmkError" style="color: red;"></span>
         </div>
         <div class="mt-6 d-flex justify-content-start">
             <button type="submit"
@@ -247,9 +242,21 @@
         </div>
     </form>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr"></script>
+<script th:inline="javascript">
+    var lstEmailFromDb = /*[[${lstEmail}]]*/ [];
+    var lstSdtFromDb = /*[[${lstSdt}]]*/ [];
+    /*<![CDATA[*/
+    var opentab = /*[[${opentab}]]*/ false;
+    /*]]>*/
+</script>
 <script>
-    document.getElementById("defaultOpen").click();
+    if (opentab === true) {
+        document.getElementById("dangnhap").click();
+    } else {
+        document.getElementById("defaultOpen").click();
+    }
     document.getElementById("formKhoiPhuc").style.display = "none";
     document.getElementById("formXacNhan").style.display = "none";
     document.getElementById("formDoiMatKhau").style.display = "none";
@@ -277,12 +284,15 @@
         event.preventDefault();
         document.getElementById("defaultOpen").click();
     });
-
-    // Form điền email khôi phục mật khẩu
     document.getElementById("khoiphucmk").addEventListener("click", function (event) {
         event.preventDefault();
         document.getElementById("formDangNhap").style.display = "none";
         document.getElementById("formKhoiPhuc").style.display = "block";
+    });
+    document.getElementById("btnDoiMatKhau").addEventListener("click", function (event) {
+        event.preventDefault();
+        document.getElementById("formDoiMatKhau").style.display = "none";
+        document.getElementById("formDangNhap").style.display = "block";
     });
 
     document.getElementById("btnKhoiPhuc").addEventListener("click", function (event) {
@@ -347,12 +357,143 @@
                 alert(error.message); // Hiển thị thông báo lỗi
             });
     });
+</script>
+<script>
+    const specialCharPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+    const numberPattern = /\d/;
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    const phoneNumberPattern = /^0[0-9]{9}$/;
 
-    document.getElementById("btnDoiMatKhau").addEventListener("click", function (event) {
-        event.preventDefault();
-        document.getElementById("formDoiMatKhau").style.display = "none";
-        document.getElementById("formDangNhap").style.display = "block";
-    });
+    function validateDangKy() {
+        var tenInput = document.getElementById('hovaten').value.trim();
+        var ngaySinhInput = document.getElementById('ngaysinh');
+        var taikhoanInput = document.getElementById('taikhoan');
+        var emailInput = document.getElementById('email').value.trim();
+        var sdtInput = document.getElementById('sodienthoai').value.trim();
+        var matkhauInput = document.getElementById('matkhau').value.trim();
+        var matkhauxnInput = document.getElementById('xacnhanmatkhau').value.trim();
+
+        var ngaySinhValue = new Date(ngaySinhInput.value);
+        var today = new Date();
+
+        var ngaysinhError = document.getElementById('ngaysinhError');
+        var tenError = document.getElementById('tenError');
+        var emailError = document.getElementById('emailError');
+        var sdtError = document.getElementById('sdtError');
+        var taikhoanError = document.getElementById('taikhoanError');
+        var matkhauError = document.getElementById('matkhauError');
+        var xacnhanmkError = document.getElementById('xacnhanmkError');
+
+        var isValid = true;
+
+        ngaysinhError.innerText = '';
+        tenError.innerText = '';
+        emailError.innerText = '';
+        sdtError.innerText = '';
+        taikhoanError.innerText = '';
+        matkhauError.innerText = '';
+        xacnhanmkError.innerText = '';
+
+        var age = today.getFullYear() - ngaySinhValue.getFullYear();
+        var monthDiff = today.getMonth() - ngaySinhValue.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < ngaySinhValue.getDate())) {
+            age--;
+        }
+
+        if (ngaySinhInput.value === '') {
+            ngaysinhError.innerText = 'Ngày sinh không được trống';
+            isValid = false;
+        } else if (ngaySinhValue > today) {
+            ngaysinhError.innerText = 'Ngày sinh không được lớn hơn ngày hiện tại';
+            isValid = false;
+        } else if (age <= 16) {
+            ngaysinhError.innerText = 'Tuổi phải từ 16 trở lên';
+            isValid = false;
+        }
+        if (tenInput === '') {
+            tenError.innerText = 'Họ và tên không được trống';
+            isValid = false;
+        } else if (specialCharPattern.test(tenInput)) {
+            tenError.innerText = 'Họ và tên không được chứa ký tự đặc biệt';
+            isValid = false;
+        } else if (numberPattern.test(tenInput)) {
+            tenError.innerText = 'Họ và tên không được chứa số';
+            isValid = false;
+        } else if (tenInput.length > 50) {
+            tenError.innerText = 'Họ và tên không được quá 50 ký tự';
+            isValid = false;
+        }
+        if (emailInput === '') {
+            emailError.innerText = 'Email không được trống';
+            isValid = false;
+        } else if (!emailPattern.test(emailInput)) {
+            emailError.innerText = 'Email không hợp lệ';
+            isValid = false;
+        } else if (checkTrungEmail() === false) {
+            emailError.innerText = 'Email đã tồn tại';
+            isValid = false;
+        }
+        if (sdtInput === '') {
+            sdtError.innerText = 'Số điện thoại không được trống';
+            isValid = false;
+        } else if (!phoneNumberPattern.test(sdtInput)) {
+            sdtError.innerText = 'Số điện thoại không hợp lệ';
+            isValid = false;
+        } else if (checkTrungSdt() === false) {
+            sdtError.innerText = 'Số điện thoại đã tồn tại';
+            isValid = false;
+        }
+        if (taikhoanInput === '') {
+            taikhoanError.innerText = 'Tài khoản không được trống';
+            isValid = false;
+        } else if (specialCharPattern.test(tenInput)) {
+            taikhoanError.innerText = 'Tài khoản không được chứa ký tự đặc biệt';
+            isValid = false;
+        }
+        if (matkhauInput === '') {
+            matkhauError.innerText = 'Mật khẩu không được trống';
+            isValid = false;
+        }
+        if (matkhauxnInput !== matkhauInput) {
+            xacnhanmkError.innerText = 'Mật khẩu không khớp';
+            isValid = false;
+        }
+
+
+
+        if (isValid) {
+            return true;
+        } else {
+            return false; // Ngăn chặn form được gửi đi ngay lập tức
+        }
+    }
+
+    function checkTrungEmail() {
+        var emailInput = document.getElementById('email').value;
+        var isVaLid = true;
+        for (var i = 0; i < lstEmailFromDb.length; i++) {
+            if (emailInput === lstEmailFromDb[i]) {
+                isVaLid = false;
+                break;
+            }
+        }
+
+        return isVaLid;
+    }
+
+    function checkTrungSdt() {
+        var sdtInput = document.getElementById('sodienthoai').value;
+        var isVaLid = true;
+        for (var i = 0; i < lstSdtFromDb.length; i++) {
+            if (sdtInput === lstSdtFromDb[i]) {
+                isVaLid = false;
+                break;
+            }
+        }
+
+        return isVaLid;
+    }
+
 </script>
 
 </body>

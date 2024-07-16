@@ -25,20 +25,10 @@ public class NguoiDung {
     Integer id;
     String taikhoan;
     String matkhau;
-    @NotBlank(message = "Không được để trống email")
-    @Email(message = "Sai định dạng của email")
     String email;
-    @NotBlank(message = "Không được để trống họ và tên")
-//    @Pattern(regexp="^[\\\\p{L} '‘’]+$", message="Invalid name")
-
     String hovaten;
-//    @DateTimeFormat(pattern = "yyyy-MM-dd")
-//    @Temporal(TemporalType.DATE)
-    @NotNull(message = "Không được để trống ngày sinh")
     Date ngaysinh;
     String cccd;
-    @NotNull(message = "Không được để trống số điện thoại")
-    @Pattern(regexp="^0[0-9]{9}$", message="Sai định dạng số điện thoại")
     String sodienthoai;
     Boolean gioitinh;
     String anh;
