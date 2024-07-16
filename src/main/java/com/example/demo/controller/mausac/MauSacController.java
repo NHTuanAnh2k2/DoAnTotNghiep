@@ -46,7 +46,11 @@ public class MauSacController {
     @PostMapping("/addSaveMauSac")
     @CacheEvict(value = "mausacCache", allEntries = true)
     public String addSave(@ModelAttribute("mausac") MauSac mauSac, @ModelAttribute("ms") ThuocTinhInfo info, Model model) {
+        String trimmedTenMauSac = (mauSac.getTen() != null)
+                ? mauSac.getTen().trim().replaceAll("\\s+", " ")
+                : null;
         LocalDateTime currentTime = LocalDateTime.now();
+        mauSac.setTen(trimmedTenMauSac);
         mauSac.setTrangthai(true);
         mauSac.setNgaytao(currentTime);
         mauSac.setLancapnhatcuoi(currentTime);
@@ -58,7 +62,11 @@ public class MauSacController {
 
     @PostMapping("/addMauSacModal")
     public String addMauSacModal(@ModelAttribute("mausac") MauSac mauSac) {
+        String trimmedTenMauSac = (mauSac.getTen() != null)
+                ? mauSac.getTen().trim().replaceAll("\\s+", " ")
+                : null;
         LocalDateTime currentTime = LocalDateTime.now();
+        mauSac.setTen(trimmedTenMauSac);
         mauSac.setTrangthai(true);
         mauSac.setNgaytao(currentTime);
         mauSac.setLancapnhatcuoi(currentTime);
@@ -68,7 +76,11 @@ public class MauSacController {
 
     @PostMapping("/addMauSacSua")
     public String addMauSacSua(@ModelAttribute("mausac") MauSac mauSac, @RequestParam("spctId") Integer spctId) {
+        String trimmedTenMauSac = (mauSac.getTen() != null)
+                ? mauSac.getTen().trim().replaceAll("\\s+", " ")
+                : null;
         LocalDateTime currentTime = LocalDateTime.now();
+        mauSac.setTen(trimmedTenMauSac);
         mauSac.setTrangthai(true);
         mauSac.setNgaytao(currentTime);
         mauSac.setLancapnhatcuoi(currentTime);

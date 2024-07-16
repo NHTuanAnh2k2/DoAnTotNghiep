@@ -23,8 +23,10 @@ public class DeGiayRestController {
         if (existingDeGiay == null) {
             return ResponseEntity.notFound().build();
         }
-
-        existingDeGiay.setTen(updatedDeGiay.getTen());
+        String trimmedTenDeGiay = (updatedDeGiay.getTen() != null)
+                ? updatedDeGiay.getTen().trim().replaceAll("\\s+", " ")
+                : null;
+        existingDeGiay.setTen(trimmedTenDeGiay);
         deGiayRepository.save(existingDeGiay);
 
         // Trả về redirect

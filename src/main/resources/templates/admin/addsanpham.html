@@ -235,13 +235,18 @@
                                         <span style="color: red">* </span>Giới tính:
                                         <br>
                                         <div class="form-check d-inline-block" style="margin-left: 20px">
-                                            <input class="form-check-input" type="radio" name="gioitinh" id="gioitinhNam" value="true" th:checked="${gioitinh == null || gioitinh}" onchange="clearErrorMessageGioiTinh()">
+                                            <input class="form-check-input" type="radio" name="gioitinh"
+                                                   id="gioitinhNam" value="true"
+                                                   th:checked="${gioitinh == null || gioitinh}"
+                                                   onchange="clearErrorMessageGioiTinh()">
                                             <label for="gioitinhNam" style="font-size: 15px" class="form-check-label">
                                                 Nam
                                             </label>
                                         </div>
                                         <div class="form-check d-inline-block" style="margin-left: 20px;">
-                                            <input class="form-check-input" type="radio" name="gioitinh" id="gioitinhNu" value="false" th:checked="${gioitinh != null && !gioitinh}" onchange="clearErrorMessageGioiTinh()">
+                                            <input class="form-check-input" type="radio" name="gioitinh" id="gioitinhNu"
+                                                   value="false" th:checked="${gioitinh != null && !gioitinh}"
+                                                   onchange="clearErrorMessageGioiTinh()">
                                             <label for="gioitinhNu" style="font-size: 15px" class="form-check-label">
                                                 Nữ
                                             </label>
@@ -268,9 +273,11 @@
                                     <div class="d-flex">
                                         <p style="margin-left: 20px; font-weight: bold;">
                                             <span style="color: red;">* </span>Thương hiệu:
-                                            <select id="idThuongHieu" class="form-control" style="width: 500px;" name="idThuongHieu">
+                                            <select id="idThuongHieu" class="form-control" style="width: 500px;"
+                                                    name="idThuongHieu">
                                                 <option th:each="th : ${th}" th:value="${th.id}"
-                                                        th:text="${th.ten}" th:selected="${th.id == selectedThuongHieu}"></option>
+                                                        th:text="${th.ten}"
+                                                        th:selected="${th.id == selectedThuongHieu}"></option>
                                             </select>
 
                                         </p>
@@ -291,9 +298,11 @@
                                     <div class="d-flex">
                                         <p id="chatLieuLabel" style="margin-left: 20px; font-weight: bold;">
                                             <span style="color: red;">* </span>Chất liệu:
-                                            <select id="idChatLieu" class="form-control" style="width: 500px;" name="idChatLieu">
+                                            <select id="idChatLieu" class="form-control" style="width: 500px;"
+                                                    name="idChatLieu">
                                                 <option th:each="cl : ${cl}" th:value="${cl.id}"
-                                                        th:text="${cl.ten}" th:selected="${cl.id == selectedChatLieu}"></option>
+                                                        th:text="${cl.ten}"
+                                                        th:selected="${cl.id == selectedChatLieu}"></option>
                                             </select>
                                         </p>
                                         <span class="btn"
@@ -313,7 +322,8 @@
                                             <select id="idDeGiay" class="form-control" style="width: 500px;"
                                                     name="idDeGiay">
                                                 <option th:each="dg : ${dg}" th:value="${dg.id}"
-                                                        th:text="${dg.ten}" th:selected="${dg.id == selectedDeGiay}"></option>
+                                                        th:text="${dg.ten}"
+                                                        th:selected="${dg.id == selectedDeGiay}"></option>
                                             </select>
                                         </p>
                                         <span class="btn"
@@ -723,7 +733,7 @@
                                             <!--                                                       style="width: 150px; height: 30px;color: red;font-weight: bold"-->
                                             <!--                                                       class="form-control"-->
                                             <!--                                                       th:value="${#numbers.formatDecimal(spctt.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}">-->
-                                                            <!--                                            </td>-->
+                                            <!--                                            </td>-->
                                             <td>
     <span style="width: 150px; height: 30px; color: red; font-weight: bold; line-height: 30px;"
           th:text="${#numbers.formatDecimal(spctt.giatien, 0, 'COMMA', 0, 'POINT')} + '&#x20ab;'"></span>
@@ -1311,7 +1321,6 @@
     }
 
 
-
     function formatCurrency(elementId) {
         var input = document.getElementById(elementId);
         var rawInput = document.getElementById('giatienRawInput');
@@ -1428,25 +1437,25 @@
         if (inputMaTenSP.trim() === "") {
             errorMaTenSP.innerText = "Vui lòng nhập tên sản phẩm.";
             return false; // Ngăn form được gửi đi
+        } else if (inputMaTenSP.trim().length <= 3) {
+            errorMaTenSP.innerText = "Tên sản phẩm phải dài hơn 3 ký tự.";
+            return false; // Ngăn form được gửi đi
         } else if (inputMaTenSP.trim().length > 20) {
             errorMaTenSP.innerText = "Tên sản phẩm không được vượt quá 20 ký tự.";
             return false; // Ngăn form được gửi đi
-        } else if (/[^a-zA-Z0-9\s]/.test(inputMaTenSP.trim())) {
+        } else if (/[^a-zA-Z0-9\sĐđÊêÔôÁáÀàẢảÃãẤấẦầỄễẾếẸẹ]/.test(inputMaTenSP.trim())) {
             errorMaTenSP.innerText = "Tên sản phẩm không được chứa ký tự đặc biệt.";
             return false; // Ngăn form được gửi đi
         } else {
             errorMaTenSP.innerText = ""; // Xóa thông báo lỗi nếu có
         }
 
-
-
-        // Kiểm tra trùng tên sản phẩm
+// Kiểm tra trùng tên sản phẩm (không phân biệt chữ hoa chữ thường)
         for (var i = 0; i < objectsFromControllerTenSP.length; i++) {
             var obj = objectsFromControllerTenSP[i];
-            if (inputMaTenSP === obj.tensanpham) {
+            if (inputMaTenSP.trim().toLowerCase() === obj.tensanpham.trim().toLowerCase()) {
                 errorMaTenSP.innerText = "Tên sản phẩm đã tồn tại!";
-                isMaValid = false;
-                break;
+                return false; // Ngăn form được gửi đi
             }
         }
 
@@ -1464,24 +1473,32 @@
         var isMaValid = true;
 
 
-        // Kiểm tra xem trường "Tên đế giày" có trống không
+        // Kiểm tra xem trường "Tên thương hiệu" có trống không
         if (inputMaThuongHieu.trim() === "") {
             errorMaThuongHieu.innerText = "Vui lòng nhập tên thương hiệu.";
+            return false; // Ngăn form được gửi đi
+        } else if (inputMaThuongHieu.trim().length <= 3) {
+            errorMaThuongHieu.innerText = "Tên thương hiệu phải dài hơn 3 ký tự.";
+            return false; // Ngăn form được gửi đi
+        } else if (inputMaThuongHieu.trim().length > 20) {
+            errorMaThuongHieu.innerText = "Tên thương hiệu không được vượt quá 20 ký tự.";
+            return false; // Ngăn form được gửi đi
+        } else if (/[^a-zA-Z0-9\sĐđÊêÔôÁáÀàẢảÃãẤấẦầỄễẾếẸẹ]/.test(inputMaThuongHieu.trim())) {
+            errorMaThuongHieu.innerText = "Tên thương hiệu không được chứa ký tự đặc biệt.";
             return false; // Ngăn form được gửi đi
         } else {
             errorMaThuongHieu.innerText = ""; // Xóa thông báo lỗi nếu có
         }
-
-
-        // Kiểm tra trùng tên đế giày
+        // Kiểm tra trùng tên thương hiệu (không phân biệt chữ hoa chữ thường)
         for (var i = 0; i < objectsFromControllerThuongHieu.length; i++) {
             var obj = objectsFromControllerThuongHieu[i];
-            if (inputMaThuongHieu === obj.ten) {
+            if (inputMaThuongHieu.trim().toLowerCase() === obj.ten.trim().toLowerCase()) {
                 errorMaThuongHieu.innerText = "Tên thương hiệu đã tồn tại!";
-                isMaValid = false;
-                break;
+                isMaValid = false; // Đánh dấu không hợp lệ
+                return false; // Ngăn form được gửi đi
             }
         }
+
 
         if (isMaValid) {
             errorMaThuongHieu.innerText = "";
@@ -1497,22 +1514,29 @@
         var isMaValid = true;
 
 
-        // Kiểm tra xem trường "Tên đế giày" có trống không
+        // Kiểm tra xem trường "Tên chất liệu" có trống không
         if (inputMaChatLieu.trim() === "") {
             errorMaChatLieu.innerText = "Vui lòng nhập tên chất liệu.";
+            return false; // Ngăn form được gửi đi
+        } else if (inputMaChatLieu.trim().length <= 3) {
+            errorMaChatLieu.innerText = "Tên chất liệu phải dài hơn 3 ký tự.";
+            return false; // Ngăn form được gửi đi
+        } else if (inputMaChatLieu.trim().length > 20) {
+            errorMaChatLieu.innerText = "Tên chất liệu không được vượt quá 20 ký tự.";
+            return false; // Ngăn form được gửi đi
+        } else if (/[^a-zA-Z0-9\sĐđẸệÊêÍíÓóƠơỦủÀàÁáẠạẢảÃãẤấẦầẪẫẬậÊêẾếỂểỄễỆệÍíÓóÔôƠơÙùÚúỦủÝý]/.test(inputMaChatLieu.trim())) {
+            errorMaChatLieu.innerText = "Tên chất liệu không được chứa ký tự đặc biệt.";
             return false; // Ngăn form được gửi đi
         } else {
             errorMaChatLieu.innerText = ""; // Xóa thông báo lỗi nếu có
         }
 
-
-        // Kiểm tra trùng tên đế giày
+// Kiểm tra trùng tên chất liệu (không phân biệt chữ hoa chữ thường)
         for (var i = 0; i < objectsFromControllerChatLieu.length; i++) {
             var obj = objectsFromControllerChatLieu[i];
-            if (inputMaChatLieu === obj.ten) {
+            if (inputMaChatLieu.trim().toLowerCase() === obj.ten.trim().toLowerCase()) {
                 errorMaChatLieu.innerText = "Tên chất liệu đã tồn tại!";
-                isMaValid = false;
-                break;
+                return false; // Ngăn form được gửi đi
             }
         }
 
@@ -1529,26 +1553,30 @@
         var errorMaDeGiay = document.getElementById("errorTenDeGiay");
         var isMaValid = true;
 
-
         // Kiểm tra xem trường "Tên đế giày" có trống không
         if (inputMaDeGiay.trim() === "") {
             errorMaDeGiay.innerText = "Vui lòng nhập tên đế giày.";
             return false; // Ngăn form được gửi đi
+        } else if (inputMaDeGiay.trim().length <= 3) {
+            errorMaDeGiay.innerText = "Tên đế giày phải dài hơn 3 ký tự.";
+            return false; // Ngăn form được gửi đi
+        } else if (inputMaDeGiay.trim().length > 20) {
+            errorMaDeGiay.innerText = "Tên đế giày không được vượt quá 20 ký tự.";
+            return false; // Ngăn form được gửi đi
+        } else if (/[^a-zA-Z0-9\sĐđÊêÔôÁáÀàẢảÃãẤấẦầỄễẾếẸẹ]/.test(inputMaDeGiay.trim())) {
+            errorMaDeGiay.innerText = "Tên đế giày không được chứa ký tự đặc biệt.";
+            return false; // Ngăn form được gửi đi
         } else {
             errorMaDeGiay.innerText = ""; // Xóa thông báo lỗi nếu có
         }
-
-
-        // Kiểm tra trùng tên đế giày
+// Kiểm tra trùng tên đế giày (không phân biệt chữ hoa chữ thường)
         for (var i = 0; i < objectsFromControllerDeGiay.length; i++) {
             var obj = objectsFromControllerDeGiay[i];
-            if (inputMaDeGiay === obj.ten) {
+            if (inputMaDeGiay.trim().toLowerCase() === obj.ten.trim().toLowerCase()) {
                 errorMaDeGiay.innerText = "Tên đế giày đã tồn tại!";
-                isMaValid = false;
-                break;
+                return false; // Ngăn form được gửi đi
             }
         }
-
         if (isMaValid) {
             errorMaDeGiay.innerText = "";
             themDeGiay();
@@ -1561,23 +1589,27 @@
         var errorMaMauSac = document.getElementById("errorTenMauSac");
         var isMaValid = true;
 
-
-        // Kiểm tra xem trường "Tên đế giày" có trống không
+        // Kiểm tra xem trường "Tên màu sắc" có trống không
+        // Kiểm tra xem trường "Tên màu sắc" có trống không
         if (inputMaMauSac.trim() === "") {
             errorMaMauSac.innerText = "Vui lòng nhập tên màu sắc.";
+            return false; // Ngăn form được gửi đi
+        } else if (inputMaMauSac.trim().length > 20) {
+            errorMaMauSac.innerText = "Tên màu sắc không được vượt quá 20 ký tự.";
+            return false; // Ngăn form được gửi đi
+        } else if (/[^a-zA-Z\sĐđÊêÔôÁáÀàẢảÃãẤấẦầỄễẾếẸẹ]/.test(inputMaMauSac.trim())) {
+            errorMaMauSac.innerText = "Tên màu sắc không được chứa ký tự đặc biệt hoặc số.";
             return false; // Ngăn form được gửi đi
         } else {
             errorMaMauSac.innerText = ""; // Xóa thông báo lỗi nếu có
         }
 
-
-        // Kiểm tra trùng tên đế giày
+// Kiểm tra trùng tên màu sắc (không phân biệt chữ hoa chữ thường)
         for (var i = 0; i < objectsFromControllerMauSac.length; i++) {
             var obj = objectsFromControllerMauSac[i];
-            if (inputMaMauSac === obj.ten) {
+            if (inputMaMauSac.trim().toLowerCase() === obj.ten.trim().toLowerCase()) {
                 errorMaMauSac.innerText = "Tên màu sắc đã tồn tại!";
-                isMaValid = false;
-                break;
+                return false; // Ngăn form được gửi đi
             }
         }
 
@@ -1593,24 +1625,28 @@
         var inputMaKichCo = document.getElementById("tenInputKichCo").value;
         var errorMaKichCo = document.getElementById("errorTenKichCo");
         var isMaValid = true;
-
-
-        // Kiểm tra xem trường "Tên đế giày" có trống không
+        // Kiểm tra xem trường "Tên kích cỡ" có trống không
+        // Kiểm tra xem trường "Tên kích cỡ" có trống không
         if (inputMaKichCo.trim() === "") {
             errorMaKichCo.innerText = "Vui lòng nhập tên kích cỡ.";
+            return false; // Ngăn form được gửi đi
+        } else if (inputMaKichCo.trim().length > 20) {
+            errorMaKichCo.innerText = "Tên kích cỡ không được vượt quá 20 ký tự.";
+            return false; // Ngăn form được gửi đi
+        } else if (/[^0-9\s]/.test(inputMaKichCo.trim())) {
+            errorMaKichCo.innerText = "Tên kích cỡ chỉ được phép chứa số.";
             return false; // Ngăn form được gửi đi
         } else {
             errorMaKichCo.innerText = ""; // Xóa thông báo lỗi nếu có
         }
 
 
-        // Kiểm tra trùng tên đế giày
+// Kiểm tra trùng tên kích cỡ (không phân biệt chữ hoa chữ thường)
         for (var i = 0; i < objectsFromControllerKichCo.length; i++) {
             var obj = objectsFromControllerKichCo[i];
-            if (inputMaKichCo === obj.ten) {
+            if (inputMaKichCo.trim().toLowerCase() === obj.ten.trim().toLowerCase()) {
                 errorMaKichCo.innerText = "Tên kích cỡ đã tồn tại!";
-                isMaValid = false;
-                break;
+                return false; // Ngăn form được gửi đi
             }
         }
 
@@ -1812,6 +1848,7 @@
         });
         return false;
     }
+
     /*]]>*/
 </script>
 
@@ -1821,6 +1858,7 @@
         return hoantat();
 
     }
+
     function hoantat() {
         // Sử dụng SweetAlert2 thay vì hộp thoại confirm
         Swal.fire({

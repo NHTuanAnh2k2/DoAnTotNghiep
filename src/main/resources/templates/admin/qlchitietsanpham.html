@@ -204,7 +204,7 @@
                                         </div>
                                         <div class="modal-body">
                                             <p>Số lượng:
-                                                <input id="soluong" type="number" class="form-control" name="soluong" min="1">
+                                                <input id="soluong" type="number" class="form-control" name="soluong">
                                                 <span id="soluongError" style="color: red; font-style: italic"></span>
                                             </p>
                                             <p>Đơn giá:
@@ -397,15 +397,20 @@
         var giatienError = document.getElementById("giatienError");
 
         // Kiểm tra trường "Số lượng"
+        // Kiểm tra xem trường "Số lượng" có trống không
         if (soluong.trim() === "") {
-            soluongError.innerText = "Vui lòng nhập số lượng";
+            soluongError.innerText = "Vui lòng nhập số lượng.";
             return false; // Ngăn form được gửi đi
-        } else if (soluong < 0) {
-            soluongError.innerText = "Số lượng phải >= 0";
+        } else if (soluong <= 0) {
+            soluongError.innerText = "Số lượng phải lớn hơn 0.";
+            return false; // Ngăn form được gửi đi
+        } else if (soluong > 100) {
+            soluongError.innerText = "Số lượng không được vượt quá 100.";
             return false; // Ngăn form được gửi đi
         } else {
             soluongError.innerText = ""; // Xóa thông báo lỗi nếu có
         }
+
 
         // Kiểm tra trường "Giá tiền"
         if (giatien.trim() === "") {
@@ -449,15 +454,11 @@
                         toast.onmouseleave = Swal.resumeTimer;
                     }
                 });
-
-                Toast.fire({
-                    icon: "success",
-                    title: "Sửa thành công!"
-                });
-
                 setTimeout(function () {
+                    // Lưu thông báo vào sessionStorage
+                    sessionStorage.setItem('successMessageSuaGia', 'Sửa thành công!');
                     document.updateSLGT.submit();
-                }, 3000);
+                });
             }
         });
 
@@ -503,4 +504,30 @@
             input.value = '';
         }
     }
+</script>
+
+<!--thông báo sửa số lượng và giá thành công-->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const successMessage = sessionStorage.getItem('successMessageSuaGia');
+        if (successMessage) {
+            // Hiển thị thông báo ở góc bên phải màn hình
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: 'success',
+                title: successMessage
+            });
+            sessionStorage.removeItem('successMessageSuaGia');
+        }
+    });
 </script>

@@ -24,8 +24,10 @@ public class KichCoRestController {
         if (existingKichCo == null) {
             return ResponseEntity.notFound().build();
         }
-
-        existingKichCo.setTen(updatedKicCo.getTen());
+        String trimmedTenKichCo = (updatedKicCo.getTen() != null)
+                ? updatedKicCo.getTen().trim().replaceAll("\\s+", " ")
+                : null;
+        existingKichCo.setTen(trimmedTenKichCo);
         kichCoRepository.save(existingKichCo);
 
         // Trả về redirect

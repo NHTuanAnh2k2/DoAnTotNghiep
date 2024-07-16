@@ -23,10 +23,11 @@ public class MauSacRestController {
         if (existingMauSac == null) {
             return ResponseEntity.notFound().build();
         }
-
-        existingMauSac.setTen(updatedMauSac.getTen());
+        String trimmedTenMauSac = (updatedMauSac.getTen() != null)
+                ? updatedMauSac.getTen().trim().replaceAll("\\s+", " ")
+                : null;
+        existingMauSac.setTen(trimmedTenMauSac);
         mauSacRepository.save(existingMauSac);
-
         // Trả về redirect
         return ResponseEntity.ok("redirect:/listMauSac");
     }

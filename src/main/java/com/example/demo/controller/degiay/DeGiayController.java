@@ -76,9 +76,11 @@ public class DeGiayController {
 
     @PostMapping("/addSave")
     public String addSave(@ModelAttribute("degiay") DeGiay deGiay) {
+        String trimmedTenDeGiay = (deGiay.getTen() != null)
+                ? deGiay.getTen().trim().replaceAll("\\s+", " ")
+                : null;
         LocalDateTime currentTime = LocalDateTime.now();
-        String trimmedName = (deGiay.getTen() != null) ? deGiay.getTen().trim() : null;
-        deGiay.setTen(trimmedName);
+        deGiay.setTen(trimmedTenDeGiay);
         deGiay.setTrangthai(true);
         deGiay.setNgaytao(currentTime);
         deGiay.setLancapnhatcuoi(currentTime);
@@ -89,7 +91,11 @@ public class DeGiayController {
 
     @PostMapping("/addDeGiayModal")
     public String addDeGiayModal(@ModelAttribute("degiay") DeGiay deGiay) {
+        String trimmedTenDeGiay = (deGiay.getTen() != null)
+                ? deGiay.getTen().trim().replaceAll("\\s+", " ")
+                : null;
         LocalDateTime currentTime = LocalDateTime.now();
+        deGiay.setTen(trimmedTenDeGiay);
         deGiay.setTrangthai(true);
         deGiay.setNgaytao(currentTime);
         deGiay.setLancapnhatcuoi(currentTime);
@@ -99,7 +105,11 @@ public class DeGiayController {
 
     @PostMapping("/addDeGiaySua")
     public String addDeGiaySua(@ModelAttribute("degiay") DeGiay deGiay, @RequestParam("spctId") Integer spctId) {
+        String trimmedTenDeGiay = (deGiay.getTen() != null)
+                ? deGiay.getTen().trim().replaceAll("\\s+", " ")
+                : null;
         LocalDateTime currentTime = LocalDateTime.now();
+        deGiay.setTen(trimmedTenDeGiay);
         deGiay.setTrangthai(true);
         deGiay.setNgaytao(currentTime);
         deGiay.setLancapnhatcuoi(currentTime);
