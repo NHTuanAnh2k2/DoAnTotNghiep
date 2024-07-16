@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.SanPham;
+import com.example.demo.entity.ThuongHieu;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,6 +12,12 @@ import java.util.List;
 
 @Repository
 public interface SanPhamRepositoty extends JpaRepository<SanPham, Integer> {
+
+    @Query(nativeQuery = true, value = """
+            SELECT * FROM SanPham WHERE TrangThai=1
+               ORDER BY NgayTao DESC
+            """)
+    List<SanPham> getAllByNgayTao();
 
     // tìm id lớn nhất bên sp
     @Query(value = "SELECT MAX(s.id) FROM SanPham s")

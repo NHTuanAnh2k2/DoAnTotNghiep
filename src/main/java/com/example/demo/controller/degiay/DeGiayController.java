@@ -31,9 +31,9 @@ public class DeGiayController {
         boolean isTrangthaiNull = (info.getTrangthai() == null);
 
         if (isKeyEmpty && isTrangthaiNull) {
-            list = deGiayRepository.getAll();
+            list = deGiayRepository.findAllByOrderByNgaytaoDesc();
         } else {
-            list = deGiayImp.getDeGiayByTen(trimmedKey);
+            list = deGiayRepository.findDeGiayByTen(trimmedKey);
         }
 
         List<DeGiay> listAll = deGiayRepository.findAll();
@@ -45,11 +45,11 @@ public class DeGiayController {
     }
 
 
-    @PostMapping("/update/{id}")
-    public String update(@PathVariable Integer id) {
-        deGiayRepository.updateTrangThaiToFalseById(id);
-        return "redirect:/listdegiay";
-    }
+//    @PostMapping("/update/{id}")
+//    public String update(@PathVariable Integer id) {
+//        deGiayRepository.updateTrangThaiToFalseById(id);
+//        return "redirect:/listdegiay";
+//    }
 
 
 //    @GetMapping("/updateDeGiay/{id}")
@@ -59,17 +59,19 @@ public class DeGiayController {
 //        return "admin/qldegiay";
 //    }
 
-    @PostMapping("/updateDeGiay")
-    public String updateDeGiay(@ModelAttribute("degiay") DeGiay degiay) {
-        DeGiay existingDeGiay = deGiayRepository.findById(degiay.getId()).orElse(null);
+    @PostMapping("/degiay/updateTrangThai/{id}")
+    public String updateTrangThaiDeGiay(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        DeGiay existingDeGiay = deGiayRepository.findById(id).orElse(null);
         if (existingDeGiay != null) {
-            existingDeGiay.setTen(degiay.getTen());
-            existingDeGiay.setLancapnhatcuoi(LocalDateTime.now());
-            existingDeGiay.setNguoicapnhat("DuyNV");
+            // Chuyển đổi trạng thái
+            existingDeGiay.setTrangthai(!existingDeGiay.getTrangthai());
             deGiayRepository.save(existingDeGiay);
+            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật trạng thái thành công!");
         }
-        return "redirect:/admin/qldegiay";
+        return "redirect:/listdegiay";
     }
+
+
 
 
     @PostMapping("/addSave")

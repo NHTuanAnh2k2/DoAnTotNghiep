@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -78,6 +79,13 @@ public class SanPhamController {
         String chuoiNgauNhien = taoChuoiNgauNhien(7, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
         LocalDateTime currentTime = LocalDateTime.now();
         String maSanPham = "SP" + chuoiNgauNhien;
+
+        // Trim tên sản phẩm và thay thế nhiều khoảng trắng liên tiếp bằng một khoảng trắng
+        String trimmedTenSanPham = (sanPham.getTensanpham() != null)
+                ? sanPham.getTensanpham().trim().replaceAll("\\s+", " ")
+                : null;
+        sanPham.setTensanpham(trimmedTenSanPham);
+
         sanPham.setTrangthai(true);
         sanPham.setMasanpham(maSanPham);
         sanPham.setNgaytao(currentTime);
@@ -120,8 +128,8 @@ public class SanPhamController {
                             @ModelAttribute("sanpham") SanPham sanpham,
                             @ModelAttribute("tim") ThuocTinhInfo info
     ) {
-        List<SanPham> listSanPham = sanPhamImp.findAll();
-        List<SanPhamChiTiet> listSPCT = sanPhamChiTietImp.findAll();
+        List<SanPham> listSanPham = sanPhamRepositoty.getAllByNgayTao();
+        List<SanPhamChiTiet> listSPCT = sanPhamChiTietRepository.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuRepository.getAll();
         List<MauSac> listMauSac = mauSacRepository.getAll();
         List<KichCo> listKichCo = kichCoRepository.getAll();
@@ -152,9 +160,14 @@ public class SanPhamController {
                              @RequestParam DeGiay idDeGiay,
                              @RequestParam List<MauSac> idMauSac
     ) {
+        String trimmedMota = (mota != null) ? mota.trim().replaceAll("\\s+", " ") : null;
         model.addAttribute("selectedTensp", tensp);
         model.addAttribute("motas", mota);
         model.addAttribute("gioitinh", gioitinh);
+        model.addAttribute("selectedThuongHieu", idThuongHieu.getId());
+        model.addAttribute("selectedChatLieu", idChatLieu.getId());
+        model.addAttribute("gioitinh", gioitinh);
+        model.addAttribute("kichCoNames", kichCoNames);
         SanPham sanPham = sanPhamRepositoty.findById(tensp).orElse(null);
         if (sanPham == null) {
             return "redirect:/error";
@@ -177,7 +190,7 @@ public class SanPhamController {
                         spct.setSanpham(sanPham);
                         spct.setSoluong(1);
                         spct.setGiatien(BigDecimal.valueOf(100000.000));
-                        spct.setMota(mota);
+                        spct.setMota(trimmedMota);
                         spct.setThuonghieu(idThuongHieu);
                         spct.setChatlieu(idChatLieu);
                         spct.setGioitinh(gioitinh);
@@ -222,7 +235,7 @@ public class SanPhamController {
                             spct.setMasanphamchitiet(maSanPhamCT);
                             spct.setSoluong(1);
                             spct.setGiatien(BigDecimal.valueOf(100000.000));
-                            spct.setMota(mota);
+                            spct.setMota(trimmedMota);
                             spct.setThuonghieu(idThuongHieu);
                             spct.setChatlieu(idChatLieu);
                             spct.setGioitinh(gioitinh);
