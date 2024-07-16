@@ -16,21 +16,21 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class DangKyNDInfo {
     Integer id;
-    @NotBlank(message = "Không được để trống email")
-    @Email(message = "Sai định dạng của email")
+//    @NotBlank(message = "Không được để trống email")
+//    @Email(message = "Sai định dạng của email")
     String email;
-    @Pattern(regexp="^[\\p{L} '‘’-]+$", message="Tên không hợp lệ")
-    @NotBlank(message = "Không được để trống họ tên")
+//    @Pattern(regexp="^[\\p{L} '‘’-]+$", message="Tên không hợp lệ")
+//    @NotBlank(message = "Không được để trống họ tên")
     String hovaten;
-    @NotNull(message = "Không được để trống số điện thoại")
-    @Pattern(regexp="^0[0-9]{9}$", message="Sai định dạng số điện thoại")
+//    @NotNull(message = "Không được để trống số điện thoại")
+//    @Pattern(regexp="^0[0-9]{9}$", message="Sai định dạng số điện thoại")
     String sodienthoai;
-    @NotNull(message = "Không được để trống ngày sinh")
+//    @NotNull(message = "Không được để trống ngày sinh")
     Date ngaysinh;
     Boolean gioitinh;
-    @NotBlank(message = "Không được để trống tên đăng nhập")
+//    @NotBlank(message = "Không được để trống tên đăng nhập")
     String taikhoan;
-    @NotBlank(message = "Không được để trống mật khẩu")
+//    @NotBlank(message = "Không được để trống mật khẩu")
     String matkhau;
     String xacnhanmatkhau;
     Timestamp ngaytao;
