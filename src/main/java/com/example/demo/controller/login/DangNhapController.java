@@ -61,59 +61,78 @@ public class DangNhapController {
                            @RequestParam("username") String taikhoan,
                            @RequestParam("password") String matkhau,
                            @ModelAttribute("dangnhap") DangNhapNDInfo dangnhap,
-                           HttpServletRequest request,
                            RedirectAttributes redirectAttributes) {
-        try {
 
-            NguoiDung nd = khachHangService.findNguoiDungByTaikhoan(taikhoan);
-            UserDetails userDetails = customerUserDetailService.loadUserByUsername(taikhoan);
-            KhachHang kh = khachHangService.findKhachHangByIdNguoiDung(nd.getId());
+        if (taikhoan == "" && matkhau == "") {
+            redirectAttributes.addFlashAttribute("error", "Tài khoản và mật khẩu đang trống");
+            redirectAttributes.addFlashAttribute("opentab", true);
+            return "redirect:/account";
+        } else if (taikhoan == "") {
+            redirectAttributes.addFlashAttribute("error", "Tài khoản đang trống");
+            redirectAttributes.addFlashAttribute("opentab", true);
+            return "redirect:/account";
+        } else if (matkhau == "") {
+            redirectAttributes.addFlashAttribute("error", "Mật khẩu đang trống");
+            redirectAttributes.addFlashAttribute("opentab", true);
+            return "redirect:/account";
+        } else {
+            try {
+                NguoiDung nd = khachHangService.findNguoiDungByTaikhoan(taikhoan);
+                UserDetails userDetails = customerUserDetailService.loadUserByUsername(taikhoan);
+                KhachHang kh = khachHangService.findKhachHangByIdNguoiDung(nd.getId());
+                if (userDetails == null) {
+                    redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
+                    redirectAttributes.addFlashAttribute("opentab", true);
+                    return "redirect:/account";
+                }
+                if (kh == null) {
+                    redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
+                    redirectAttributes.addFlashAttribute("opentab", true);
+                    return "redirect:/account";
+                }
+                if (kh.getTrangthai() == false) {
+                    redirectAttributes.addFlashAttribute("error", "Tài khoản đã bị khóa");
+                    redirectAttributes.addFlashAttribute("opentab", true);
+                    return "redirect:/account";
+                }
 
-            if (userDetails == null) {
-                redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
-                return "redirect:/account";
-            }
-            if (kh == null) {
-                redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
-                return "redirect:/account";
-            }
-            if (kh.getTrangthai() == false) {
-                redirectAttributes.addFlashAttribute("error", "Tài khoản đã bị khóa");
-                return "redirect:/account";
-            }
-
-            if (passwordEncoder.matches(matkhau, userDetails.getPassword())) {
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                String token = jwtGenerator.generateToken(authentication);
-                Integer userId = nd.getId();
-                TaiKhoanTokenInfo taiKhoanTokenInfo = new TaiKhoanTokenInfo(userId, token);
-                // Lấy danh sách token từ session và thêm mới
+                if (passwordEncoder.matches(matkhau, userDetails.getPassword())) {
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    String token = jwtGenerator.generateToken(authentication);
+                    Integer userId = nd.getId();
+                    TaiKhoanTokenInfo taiKhoanTokenInfo = new TaiKhoanTokenInfo(userId, token);
+                    // Lấy danh sách token từ session và thêm mới
 //                List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
 //                if (taiKhoanTokenInfos == null) {
 //                    taiKhoanTokenInfos = new ArrayList<>();
 //                }
-                taiKhoanTokenInfos.add(taiKhoanTokenInfo);
-                session.setAttribute("taiKhoanTokenInfos", taiKhoanTokenInfos);
-                session.setAttribute("token", token);
-                userManager.addUser(userId, token);
-                session.setAttribute("userDangnhap", nd.getTaikhoan());
-                session.setAttribute("user", nd);
-                return "redirect:/customer/trangchu";
-            } else {
+                    taiKhoanTokenInfos.add(taiKhoanTokenInfo);
+                    session.setAttribute("taiKhoanTokenInfos", taiKhoanTokenInfos);
+                    session.setAttribute("token", token);
+                    userManager.addUser(userId, token);
+                    session.setAttribute("userDangnhap", nd.getTaikhoan());
+                    session.setAttribute("user", nd);
+                    return "redirect:/customer/trangchu";
+                } else {
+                    redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
+                    redirectAttributes.addFlashAttribute("opentab", true);
+                    return "redirect:/account";
+                }
+            } catch (UsernameNotFoundException e) {
                 redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
+                redirectAttributes.addFlashAttribute("opentab", true);
+                return "redirect:/account";
+            } catch (Exception e) {
+                redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
+                redirectAttributes.addFlashAttribute("opentab", true);
                 return "redirect:/account";
             }
-        } catch (UsernameNotFoundException e) {
-            redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
-            return "redirect:/account";
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Đã có lỗi xảy ra, vui lòng thử lại");
-            return "redirect:/account";
         }
-    }
 
+
+    }
 
 //    @PostMapping("/dangnhap")
 //    public String dangnhap(Model model,
@@ -178,21 +197,21 @@ public class DangNhapController {
 //        }
 //    }
 
-    @GetMapping("/dangxuat")
-    public String logout(HttpServletRequest request) {
-        // Xóa session của người dùng để đăng xuất
-        HttpSession session = request.getSession(false);
-        String userName = (String) session.getAttribute("userDangnhap");
-        NguoiDung nguoiDung = khachHangService.findNguoiDungByTaikhoan(userName);
-        Integer userId = nguoiDung.getId();
-        String token = userManager.getToken(userId);
-        if (session != null) {
-            session.invalidate();
-            userManager.logoutUser(userId, token);
-            System.out.println("Danh sách người dùng đang đăng nhập: " + userManager.getLoggedInUsers());
+        @GetMapping("/dangxuat")
+        public String logout (HttpServletRequest request){
+            // Xóa session của người dùng để đăng xuất
+            HttpSession session = request.getSession(false);
+            String userName = (String) session.getAttribute("userDangnhap");
+            NguoiDung nguoiDung = khachHangService.findNguoiDungByTaikhoan(userName);
+            Integer userId = nguoiDung.getId();
+            String token = userManager.getToken(userId);
+            if (session != null) {
+                session.invalidate();
+                userManager.logoutUser(userId, token);
+                System.out.println("Danh sách người dùng đang đăng nhập: " + userManager.getLoggedInUsers());
+            }
+            return "redirect:/customer/trangchu";
         }
-        return "redirect:/customer/trangchu";
+
+
     }
-
-
-}

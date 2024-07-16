@@ -265,8 +265,33 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
     }
 
     @Override
-    public List<KhachHangInfo> findByTenSdtMa(String tenSdtMa, boolean trangThai) {
-        List<KhachHang> lstKhachHang = khachHangRepostory.findByTenSdtMa(tenSdtMa, trangThai);
+    public List<KhachHangInfo> findByTenSdtMa(String tenSdtMa) {
+        List<KhachHang> lstKhachHang = khachHangRepostory.findByTenSdtMa(tenSdtMa);
+        Collections.sort(lstKhachHang, Comparator.comparing(KhachHang::getNgaytao).reversed());
+
+        List<KhachHangInfo> lstkhachhanginfo = new ArrayList<>();
+
+        // Lấy danh sách địa chỉ cho từng khách hàng
+        for (KhachHang khachHang : lstKhachHang) {
+            KhachHangInfo khachHangInfo = new KhachHangInfo();
+            int ndId = khachHang.getNguoidung().getId();
+            List<DiaChi> lstDiaChi = diaChiRepository.findDiaChiByIdNd(ndId);
+
+            // Kiểm tra xem số lượng địa chỉ và số lượng khách hàng có phù hợp không
+            if (lstDiaChi.size() >= 1) { // Kiểm tra ít nhất phải có một địa chỉ tương ứng
+                DiaChi diaChi = lstDiaChi.get(0); // Lấy địa chỉ tương ứng với khách hàng
+                khachHangInfo.setKhachhang(khachHang);
+                khachHangInfo.setDiachi(diaChi);
+                lstkhachhanginfo.add(khachHangInfo);
+            }
+        }
+
+        return lstkhachhanginfo;
+    }
+
+    @Override
+    public List<KhachHangInfo> findByTenSdtMaTrangThai(String tensdtma, Boolean trangthai) {
+        List<KhachHang> lstKhachHang = khachHangRepostory.findByTenSdtMaTrangThai(tensdtma, trangthai);
         Collections.sort(lstKhachHang, Comparator.comparing(KhachHang::getNgaytao).reversed());
 
         List<KhachHangInfo> lstkhachhanginfo = new ArrayList<>();

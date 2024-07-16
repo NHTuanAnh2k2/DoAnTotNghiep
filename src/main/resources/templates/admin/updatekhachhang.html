@@ -67,7 +67,7 @@
                                 <path fill-rule="evenodd"
                                       d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6 6a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z"/>
                             </svg>
-                            THÊM KHÁCH HÀNG
+                            SỬA KHÁCH HÀNG
                         </h1>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
                                                 </div>
                                                 <div>
                                                     <p style="margin-left: 20px">Ngày sinh:
-                                                        <input type="date" class="form-control"
+                                                        <input type="date" class="form-control" onkeydown="return false"
                                                                style="width: 550px" th:field="*{ngaysinh}" id="ngaysinh">
                                                     </p>
                                                     <span id="ngaysinhError"
@@ -188,7 +188,7 @@
                                                               style="color: red; padding-left: 20px"></span>
                                                     </div>
                                                 </div>
-                                                <button type="submit" class="btn btn-primary">Sửa khách hàng</button>
+                                                <button type="submit" class="btn btn-primary" id="btnUpdate" disabled>Sửa khách hàng</button>
                                                 <a th:href="@{/khachhang}" class="btn btn-danger">Thoát</a>
                                             </div>
                                     </section>
@@ -210,6 +210,11 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsqr"></script>
+<script th:inline="javascript">
+    var lstEmailFromDb = /*[[${lstEmail}]]*/ [];
+    var lstSdtFromDb = /*[[${lstSdt}]]*/ [];
+    var lstCccdFromDb = /*[[${lstCccd}]]*/ [];
+</script>
 <script>
     const specialCharPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
     const numberPattern = /\d/;
@@ -218,102 +223,212 @@
     const phoneNumberPattern = /^0[0-9]{9}$/;
 
     function validateNguoiDung() {
-        var ngaySinhInput = document.getElementById('ngaysinh');
-        var tenInput = document.getElementById('hovaten').value.trim();
-        var cccdInput = document.getElementById('cccd').value.trim();
-        var emailInput = document.getElementById('email').value.trim();
-        var sdtInput = document.getElementById('sodienthoai').value.trim();
-        var tinhthanhSelect = document.getElementById('city').value.trim();
-        var quanhuyenSelect = document.getElementById('district').value;
-        var xaphuongSelect = document.getElementById('ward').value.trim();
-        var tenduongInput = document.getElementById('tenduong').value.trim();
+        const tenInput = document.getElementById('hovaten').value.trim();
+        const ngaySinhInput = document.getElementById('ngaysinh').value.trim();
+        const cccdInput = document.getElementById('cccd').value.trim();
+        const emailInput = document.getElementById('email').value.trim();
+        const sdtInput = document.getElementById('sodienthoai').value.trim();
+        const tinhthanhSelect = document.getElementById('city').value.trim();
+        const quanhuyenSelect = document.getElementById('district').value.trim();
+        const xaphuongSelect = document.getElementById('ward').value.trim();
+        const tenduongInput = document.getElementById('tenduong').value.trim();
 
-        var ngaySinhValue = new Date(ngaySinhInput.value);
-        var today = new Date();
-
-        var ngaysinhError = document.getElementById('ngaysinhError');
-        var tenError = document.getElementById('tenError');
-        var cccdError = document.getElementById('cccdError');
-        var emailError = document.getElementById('emailError');
-        var sdtError = document.getElementById('sdtError');
-        var tinhthanhError = document.getElementById('tinhthanhError');
-        var quanhuyenError = document.getElementById('quanError');
-        var xaphuongError = document.getElementById('xaError');
-        var tenduongError = document.getElementById('tenduongError');
-
+        const errors = {
+            ngaysinhError: '',
+            tenError: '',
+            cccdError: '',
+            emailError: '',
+            sdtError: '',
+            tinhthanhError: '',
+            quanError: '',
+            xaError: '',
+            tenduongError: ''
+        };
         var isValid = true;
 
-        ngaysinhError.innerText = '';
-        tenError.innerText = '';
-        cccdError.innerText = '';
-        emailError.innerText = '';
-        sdtError.innerText = '';
-        tinhthanhError.innerText = '';
-        quanhuyenError.innerText = '';
-        xaphuongError.innerText = '';
-        tenduongError.innerText = '';
+        const today = new Date();
+        const ngaySinhValue = new Date(ngaySinhInput);
+        var age = today.getFullYear() - ngaySinhValue.getFullYear();
+        var monthDiff = today.getMonth() - ngaySinhValue.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < ngaySinhValue.getDate())) {
+            age--;
+        }
 
-        if (ngaySinhInput.value === '') {
-            ngaysinhError.innerText = 'Ngày sinh không được trống';
+        if (ngaySinhInput === '') {
+            errors.ngaysinhError = 'Ngày sinh không được trống';
             isValid = false;
         } else if (ngaySinhValue > today) {
-            ngaysinhError.innerText = 'Ngày sinh không được lớn hơn ngày hiện tại';
+            errors.ngaysinhError = 'Ngày sinh không được lớn hơn ngày hiện tại';
             isValid = false;
-        }
-        if (tenInput === '') {
-            tenError.innerText = 'Họ và tên không được trống';
-            isValid = false;
-        } else if (specialCharPattern.test(tenInput)) {
-            tenError.innerText = 'Họ và tên không được chứa ký tự đặc biệt';
-            isValid = false;
-        } else if (numberPattern.test(tenInput)) {
-            tenError.innerText = 'Họ và tên không được chứa số';
-            isValid = false;
-        }
-        if (cccdInput === '') {
-            cccdError.innerText = 'CCCD không được trống';
-            isValid = false;
-        } else if (!cccdPattern.test(cccdInput)) {
-            cccdError.innerText = 'CCCD không hợp lệ';
-            isValid = false;
-        }
-        if (emailInput === '') {
-            emailError.innerText = 'Email không được trống';
-            isValid = false;
-        } else if (!emailPattern.test(emailInput)) {
-            emailError.innerText = 'Email không hợp lệ';
-            isValid = false;
-        }
-        if (sdtInput === '') {
-            sdtError.innerText = 'Số điện thoại không được trống';
-            isValid = false;
-        } else if (!phoneNumberPattern.test(sdtInput)) {
-            sdtError.innerText = 'Số điện thoại không hợp lệ';
-            isValid = false;
-        }
-        if (tinhthanhSelect === '') {
-            tinhthanhError.innerText = 'Tỉnh thành chưa được chọn';
-            isValid = false;
-        }
-        if (quanhuyenSelect === '') {
-            quanhuyenError.innerText = 'Quận huyện chưa được chọn';
-            isValid = false;
-        }
-        if (xaphuongSelect === '') {
-            xaphuongError.innerText = 'Xã phường chưa được chọn';
-            isValid = false;
-        }
-        if (tenduongInput === '') {
-            tenduongError.innerText = 'Tên đường không được trống';
+        } else if (age <= 16) {
+            errors.ngaysinhError = 'Tuổi phải từ 16 trở lên';
             isValid = false;
         }
 
-        if (isValid) {
-            return saveDiaChi();
-        } else {
-            return false; // Ngăn chặn form được gửi đi ngay lập tức
+        if (tenInput === '') {
+            errors.tenError = 'Họ và tên không được trống';
+            isValid = false;
+        } else if (specialCharPattern.test(tenInput)) {
+            errors.tenError = 'Họ và tên không được chứa ký tự đặc biệt';
+            isValid = false;
+        } else if (numberPattern.test(tenInput)) {
+            errors.tenError = 'Họ và tên không được chứa số';
+            isValid = false;
         }
+
+        if (cccdInput === '') {
+            errors.cccdError = 'CCCD không được trống';
+            isValid = false;
+        } else if (!cccdPattern.test(cccdInput)) {
+            errors.cccdError = 'CCCD không hợp lệ';
+            isValid = false;
+        } else if (checkTrungCccd() === false) {
+            errors.cccdError = 'CCCD đã tồn tại';
+            isValid = false;
+        }
+
+        if (emailInput === '') {
+            errors.emailError = 'Email không được trống';
+            isValid = false;
+        } else if (!emailPattern.test(emailInput)) {
+            errors.emailError = 'Email không hợp lệ';
+            isValid = false;
+        } else if (checkTrungEmail() === false) {
+            errors.emailError = 'Email đã tồn tại';
+            isValid = false;
+        }
+
+        if (sdtInput === '') {
+            errors.sdtError = 'Số điện thoại không được trống';
+            isValid = false;
+        } else if (!phoneNumberPattern.test(sdtInput)) {
+            errors.sdtError = 'Số điện thoại không hợp lệ';
+            isValid = false;
+        } else if (checkTrungSdt() === false) {
+            errors.sdtError = 'Số điện thoại đã tồn tại';
+            isValid = false;
+        }
+
+        if (tinhthanhSelect === '') {
+            errors.tinhthanhError = 'Tỉnh thành chưa được chọn';
+            isValid = false;
+        }
+
+        if (quanhuyenSelect === '') {
+            errors.quanError = 'Quận huyện chưa được chọn';
+            isValid = false;
+        }
+
+        if (xaphuongSelect === '') {
+            errors.xaError = 'Xã phường chưa được chọn';
+            isValid = false;
+        }
+
+        if (tenduongInput === '') {
+            errors.tenduongError = 'Tên đường không được trống';
+            isValid = false;
+        }
+
+        for (const key in errors) {
+            document.getElementById(key).innerText = errors[key];
+        }
+
+        return isValid ? saveDiaChi() : false;
     }
+
+    var originalCccd = document.getElementById('cccd').value.trim();
+    function checkTrungCccd() {
+        var cccdInput = document.getElementById('cccd').value.trim();
+        var lstCccdFromDbCopy = lstCccdFromDb.slice();
+        var index = lstCccdFromDb.indexOf(originalCccd);
+        if (index !== -1) {
+            lstCccdFromDbCopy.splice(index, 1);
+        }
+        var isValid = true;
+        for (var i = 0; i < lstCccdFromDbCopy.length; i++) {
+            if (cccdInput === lstCccdFromDbCopy[i]) {
+                isValid = false;
+                break;
+            }
+        }
+        return isValid;
+    }
+
+    var originalEmail = document.getElementById('email').value.trim();
+    function checkTrungEmail() {
+        var emailInput = document.getElementById('email').value.trim();
+        var lstEmailFromDbCopy = lstEmailFromDb.slice();
+        var index = lstEmailFromDb.indexOf(originalEmail);
+        if (index !== -1) {
+            lstEmailFromDbCopy.splice(index, 1);
+        }
+        var isValid = true;
+        for (var i = 0; i < lstEmailFromDbCopy.length; i++) {
+            if (emailInput === lstEmailFromDbCopy[i]) {
+                isValid = false;
+                break;
+            }
+        }
+        return isValid;
+    }
+
+    var originalSdt = document.getElementById('sodienthoai').value.trim();
+    // Hàm để kiểm tra trùng số điện thoại
+    function checkTrungSdt() {
+        var sdtInput = document.getElementById('sodienthoai').value.trim();
+        // Tạo một bản sao của danh sách số điện thoại
+        var lstSdtFromDbCopy = lstSdtFromDb.slice();
+        // Xóa số điện thoại ban đầu khỏi danh sách kiểm tra
+        var index = lstSdtFromDbCopy.indexOf(originalSdt);
+        if (index !== -1) {
+            lstSdtFromDbCopy.splice(index, 1);
+        }
+        // Kiểm tra trùng số điện thoại
+        var isValid = true;
+        for (var i = 0; i < lstSdtFromDbCopy.length; i++) {
+            if (sdtInput === lstSdtFromDbCopy[i]) {
+                isValid = false;
+                break;
+            }
+        }
+        return isValid;
+    }
+
+    const defaultValues = {};
+    window.addEventListener('load', () => {
+        // Store default values when the page loads
+        defaultValues['hovaten'] = document.getElementById('hovaten').value.trim();
+        defaultValues['ngaysinh'] = document.getElementById('ngaysinh').value.trim();
+        defaultValues['cccd'] = document.getElementById('cccd').value.trim();
+        defaultValues['email'] = document.getElementById('email').value.trim();
+        defaultValues['sodienthoai'] = document.getElementById('sodienthoai').value.trim();
+        defaultValues['city'] = document.getElementById('city').value.trim();
+        defaultValues['district'] = document.getElementById('district').value.trim();
+        defaultValues['ward'] = document.getElementById('ward').value.trim();
+        defaultValues['tenduong'] = document.getElementById('tenduong').value.trim();
+
+        // Add event listeners to all inputs
+        document.querySelectorAll('input, select').forEach(element => {
+            element.addEventListener('input', checkChanges);
+        });
+    });
+
+    function checkChanges() {
+        const btnUpdate = document.getElementById('btnUpdate');
+        let hasChanged = false;
+
+        for (const key in defaultValues) {
+            if (document.getElementById(key).value.trim() !== defaultValues[key]) {
+                hasChanged = true;
+                break;
+            }
+        }
+
+        btnUpdate.disabled = !hasChanged;
+    }
+
+    // Thêm sự kiện cho input
+    document.getElementById('hovaten').addEventListener('input', checkChange);
 
     function saveDiaChi() {
         Swal.fire({
@@ -324,31 +439,9 @@
             cancelButtonText: 'Không'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 2000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.onmouseenter = Swal.stopTimer;
-                        toast.onmouseleave = Swal.resumeTimer;
-                    }
-                });
-
-                Toast.fire({
-                    icon: "success",
-                    title: "Sửa thành công!"
-                });
-
-                setTimeout(function () {
-                    document.updateCustomerForm.submit();
-                }, 2000);
+                document.updateCustomerForm.submit();
             }
         });
-
-        // Ngăn form được gửi đi ngay lập tức
         return false;
     }
 </script>

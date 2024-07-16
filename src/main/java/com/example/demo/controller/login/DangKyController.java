@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -37,9 +38,19 @@ public class DangKyController {
     @GetMapping("/account")
     public String view(@ModelAttribute("nguoidung") DangKyNDInfo nguoidung,
                        @ModelAttribute("khachhang") DangKyKHInfo khachhang,
-                       @ModelAttribute("dangnhap") DangNhapNDInfo dangnhap
+                       @ModelAttribute("dangnhap") DangNhapNDInfo dangnhap,
+                       Model model
                        ) {
+        List<KhachHang> lstKh = khachHangService.findAll();
+        List<String> lstEmail = new ArrayList<>();
+        List<String> lstSdt = new ArrayList<>();
+        for (KhachHang kh : lstKh) {
+            lstEmail.add(kh.getNguoidung().getEmail());
+            lstSdt.add(kh.getNguoidung().getSodienthoai());
+        }
 
+        model.addAttribute("lstEmail", lstEmail);
+        model.addAttribute("lstSdt", lstSdt);
         return "customer/login";
     }
 
@@ -54,19 +65,19 @@ public class DangKyController {
                          Model model
     ) {
 
-        if (ndBindingResult.hasErrors()) {
-            List<ObjectError> ndError = ndBindingResult.getAllErrors();
-            System.out.println(ndError);
-            return "customer/login";
-        } else if (khBindingResult.hasErrors()) {
-            List<ObjectError> khError = khBindingResult.getAllErrors();
-            System.out.println(khError);
-            return "customer/login";
-        } else if (dcBindingResult.hasErrors()) {
-            List<ObjectError> dcError = dcBindingResult.getAllErrors();
-            System.out.println(dcError);
-            return "customer/login";
-        }
+//        if (ndBindingResult.hasErrors()) {
+//            List<ObjectError> ndError = ndBindingResult.getAllErrors();
+//            System.out.println(ndError);
+//            return "customer/login";
+//        } else if (khBindingResult.hasErrors()) {
+//            List<ObjectError> khError = khBindingResult.getAllErrors();
+//            System.out.println(khError);
+//            return "customer/login";
+//        } else if (dcBindingResult.hasErrors()) {
+//            List<ObjectError> dcError = dcBindingResult.getAllErrors();
+//            System.out.println(dcError);
+//            return "customer/login";
+//        }
 
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = bCryptPasswordEncoder.encode(nguoidung.getMatkhau());

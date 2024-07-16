@@ -57,8 +57,22 @@
     <!--Nội dung -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
-        <h1>Thêm khách hàng</h1>
-        <video id="videoElement" autoplay playsinline style="width: 100px; max-width: 100px;"></video>
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-12">
+                        <h1>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                 class="bi bi-bookmark-dash-fill" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                      d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6 6a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z"/>
+                            </svg>
+                            THÊM KHÁCH HÀNG
+                        </h1>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
         <!---filter-->
         <form th:method="post" th:object="${nguoidung}" th:action="@{/khachhang/add}"
               name="addCustomerForm"
@@ -77,7 +91,7 @@
                                                 <div>
                                                     <p>Tên khách hàng:
                                                         <input placeholder="Tên khách hàng" class="form-control"
-                                                               id="hovaten" maxlength="50"
+                                                               maxlength="50"
                                                                style="width: 550px" th:field="*{hovaten}">
                                                     </p>
                                                     <span id="tenError" style="color: red;"></span>
@@ -85,7 +99,7 @@
                                                 <div>
                                                     <p style="margin-left: 20px">Ngày sinh:
                                                         <input type="date" class="form-control"
-                                                               style="width: 550px" id="ngaysinh"
+                                                               style="width: 550px" id="ngaysinh" onkeydown="return false"
                                                                th:field="*{ngaysinh}">
                                                     </p>
                                                     <span id="ngaysinhError"
@@ -204,13 +218,17 @@
 <!--script-->
 <nav th:replace="~{/layoutadmin/script.html}"></nav>
 <!--end-->
-
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Thiết lập radio button mặc định khi trang tải
+        document.querySelector('input[name="gioitinh"][value="1"]').checked = true;
+    });
+</script>
 <script th:inline="javascript">
     var lstEmailFromDb = /*[[${lstEmail}]]*/ [];
-    var lstSdtFromDb = /*[[${lstEmail}]]*/ [];
-    var lstCccdFromDb = /*[[${lstEmail}]]*/ [];
+    var lstSdtFromDb = /*[[${lstSdt}]]*/ [];
+    var lstCccdFromDb = /*[[${lstCccd}]]*/ [];
 </script>
-
 <script>
     const specialCharPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
     const numberPattern = /\d/;
@@ -254,11 +272,20 @@
         xaphuongError.innerText = '';
         tenduongError.innerText = '';
 
+        var age = today.getFullYear() - ngaySinhValue.getFullYear();
+        var monthDiff = today.getMonth() - ngaySinhValue.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < ngaySinhValue.getDate())) {
+            age--;
+        }
+
         if (ngaySinhInput.value === '') {
             ngaysinhError.innerText = 'Ngày sinh không được trống';
             isValid = false;
         } else if (ngaySinhValue > today) {
             ngaysinhError.innerText = 'Ngày sinh không được lớn hơn ngày hiện tại';
+            isValid = false;
+        } else if (age <= 16) {
+            ngaysinhError.innerText = 'Tuổi phải từ 16 trở lên';
             isValid = false;
         }
         if (tenInput === '') {
@@ -280,6 +307,9 @@
         } else if (!cccdPattern.test(cccdInput)) {
             cccdError.innerText = 'CCCD không hợp lệ';
             isValid = false;
+        } else if (checkTrungCccd() === false) {
+            cccdError.innerText = 'CCCD đã tồn tại';
+            isValid = false;
         }
         if (emailInput === '') {
             emailError.innerText = 'Email không được trống';
@@ -287,12 +317,18 @@
         } else if (!emailPattern.test(emailInput)) {
             emailError.innerText = 'Email không hợp lệ';
             isValid = false;
+        } else if (checkTrungEmail() === false) {
+            emailError.innerText = 'Email đã tồn tại';
+            isValid = false;
         }
         if (sdtInput === '') {
             sdtError.innerText = 'Số điện thoại không được trống';
             isValid = false;
         } else if (!phoneNumberPattern.test(sdtInput)) {
             sdtError.innerText = 'Số điện thoại không hợp lệ';
+            isValid = false;
+        } else if (checkTrungSdt() === false) {
+            sdtError.innerText = 'Số điện thoại đã tồn tại';
             isValid = false;
         }
         if (tinhthanhSelect === '') {
@@ -312,14 +348,54 @@
             isValid = false;
         }
 
+
         if (isValid) {
-            return saveDiaChi();
+            return saveCustomer();
         } else {
             return false; // Ngăn chặn form được gửi đi ngay lập tức
         }
     }
 
-    function saveDiaChi() {
+    function checkTrungCccd() {
+        var cccdInput = document.getElementById('cccd').value;
+        var isVaLid = true;
+        for (var i = 0; i < lstCccdFromDb.length; i++) {
+            if (cccdInput === lstCccdFromDb[i]) {
+                isVaLid = false;
+                break;
+            }
+        }
+
+        return isVaLid;
+    }
+
+    function checkTrungEmail() {
+        var emailInput = document.getElementById('email').value;
+        var isVaLid = true;
+        for (var i = 0; i < lstEmailFromDb.length; i++) {
+            if (emailInput === lstEmailFromDb[i]) {
+                isVaLid = false;
+                break;
+            }
+        }
+
+        return isVaLid;
+    }
+
+    function checkTrungSdt() {
+        var sdtInput = document.getElementById('sodienthoai').value;
+        var isVaLid = true;
+        for (var i = 0; i < lstSdtFromDb.length; i++) {
+            if (sdtInput === lstSdtFromDb[i]) {
+                isVaLid = false;
+                break;
+            }
+        }
+
+        return isVaLid;
+    }
+
+    function saveCustomer() {
         Swal.fire({
             title: 'Bạn có muốn thêm không?',
             icon: 'question',
@@ -328,31 +404,9 @@
             cancelButtonText: 'Không'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 2000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.onmouseenter = Swal.stopTimer;
-                        toast.onmouseleave = Swal.resumeTimer;
-                    }
-                });
-
-                Toast.fire({
-                    icon: "success",
-                    title: "Thêm thành công!"
-                });
-
-                setTimeout(function () {
-                    document.addCustomerForm.submit();
-                }, 2000);
+                document.addCustomerForm.submit();
             }
         });
-
-        // Ngăn form được gửi đi ngay lập tức
         return false;
     }
 </script>
