@@ -229,13 +229,13 @@
     </span>
                                     </div>
                                     <span id="tenspError"
-                                          style="color: red; font-style: italic; font-family: 'Bahnschrift';font-weight: bold"></span>
+                                          style="color: red; font-family: 'Bahnschrift';font-weight: bold"></span>
                                     <p></p>
                                     <h5 style="font-family: 'Bahnschrift'">
                                         <span style="color: red">* </span>Giới tính:
                                         <br>
                                         <div class="form-check d-inline-block" style="margin-left: 20px">
-                                            <input class="form-check-input" type="radio" name="gioitinh" id="gioitinhNam" value="true" th:checked="${gioitinh != null && gioitinh}" onchange="clearErrorMessageGioiTinh()">
+                                            <input class="form-check-input" type="radio" name="gioitinh" id="gioitinhNam" value="true" th:checked="${gioitinh == null || gioitinh}" onchange="clearErrorMessageGioiTinh()">
                                             <label for="gioitinhNam" style="font-size: 15px" class="form-check-label">
                                                 Nam
                                             </label>
@@ -246,9 +246,8 @@
                                                 Nữ
                                             </label>
                                         </div>
-
-
                                     </h5>
+
 
                                     <span id="gioitinhError"
                                           style="color: red;font-style: italic;font-family: 'Bahnschrift';font-weight: bold"></span>
@@ -259,7 +258,7 @@
                                                   oninput="clearErrorMessageMoTa()"></textarea>
                                     </h5>
                                     <span id="motaError"
-                                          style="color: red; font-style: italic;font-family: 'Bahnschrift';font-weight: bold"></span>
+                                          style="color: red;font-family: 'Bahnschrift';font-weight: bold"></span>
                                 </div>
                             </div>
 
@@ -269,11 +268,11 @@
                                     <div class="d-flex">
                                         <p style="margin-left: 20px; font-weight: bold;">
                                             <span style="color: red;">* </span>Thương hiệu:
-                                            <select id="idThuongHieu" class="form-control" style="width: 500px;"
-                                                    name="idThuongHieu">
+                                            <select id="idThuongHieu" class="form-control" style="width: 500px;" name="idThuongHieu">
                                                 <option th:each="th : ${th}" th:value="${th.id}"
-                                                        th:text="${th.ten}"></option>
+                                                        th:text="${th.ten}" th:selected="${th.id == selectedThuongHieu}"></option>
                                             </select>
+
                                         </p>
                                         <span class="btn"
                                               style="margin: 3%; background-color: white; color: black;border-color: black; padding: 7px 10px; cursor: pointer;"
@@ -292,10 +291,9 @@
                                     <div class="d-flex">
                                         <p id="chatLieuLabel" style="margin-left: 20px; font-weight: bold;">
                                             <span style="color: red;">* </span>Chất liệu:
-                                            <select id="idChatLieu" class="form-control" style="width: 500px;"
-                                                    name="idChatLieu">
+                                            <select id="idChatLieu" class="form-control" style="width: 500px;" name="idChatLieu">
                                                 <option th:each="cl : ${cl}" th:value="${cl.id}"
-                                                        th:text="${cl.ten}"></option>
+                                                        th:text="${cl.ten}" th:selected="${cl.id == selectedChatLieu}"></option>
                                             </select>
                                         </p>
                                         <span class="btn"
@@ -315,7 +313,7 @@
                                             <select id="idDeGiay" class="form-control" style="width: 500px;"
                                                     name="idDeGiay">
                                                 <option th:each="dg : ${dg}" th:value="${dg.id}"
-                                                        th:text="${dg.ten}"></option>
+                                                        th:text="${dg.ten}" th:selected="${dg.id == selectedDeGiay}"></option>
                                             </select>
                                         </p>
                                         <span class="btn"
@@ -341,7 +339,6 @@
                                                 <option th:each="ms : ${ms}" th:value="${ms.id}"
                                                         th:text="${ms.ten}"></option>
                                             </select>
-
                                         </p>
                                         <p>
                                         </p>
@@ -355,7 +352,7 @@
 </span>
                                     </div>
                                     <span id="mausacError"
-                                          style="color: red;font-style: italic;font-family: 'Bahnschrift';padding-left: 20px;font-weight: bold"></span>
+                                          style="color: red;font-family: 'Bahnschrift';padding-left: 20px;font-weight: bold"></span>
                                     <!--end-->
                                     <!--kích cỡ-->
                                     <div class="d-flex align-items-center" style="margin-left: 20px">
@@ -392,7 +389,7 @@
                                         </div>
                                     </div>
                                     <span id="kichcoError"
-                                          style="color: red;font-style: italic;margin-left: 20px;font-family: 'Bahnschrift';font-weight: bold"></span>
+                                          style="color: red;margin-left: 20px;font-family: 'Bahnschrift';font-weight: bold"></span>
                                     <!--end-->
                                     <button type="submit" class="btn"
                                             style="margin-left: 22px;margin-bottom: 20px;margin-top: 30px; width: 110px;background-color: white; color: black;border-color: black">
@@ -603,7 +600,7 @@
                                                 Tên sản phẩm:
                                                 <input id="tenInputTenSP" class="form-control"
                                                        th:field="*{tensanpham}"/>
-                                            <div style="color: red; font-weight: initial;font-style: italic"
+                                            <div style="color: red; font-weight: initial"
                                                  id="errorTenSP"></div>
                                             </p>
                                             <button id="submitButtonTenSP" class="btn"
@@ -1050,62 +1047,6 @@
     }
 
 </script>
-<!--thông báo thêm thành công-->
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const successMessage = sessionStorage.getItem('successMessage');
-        if (successMessage) {
-            // Hiển thị thông báo ở góc bên phải màn hình
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
-                }
-            });
-
-            Toast.fire({
-                icon: 'success',
-                title: successMessage
-            });
-
-            // Xóa thông báo khỏi sessionStorage sau khi hiển thị
-            sessionStorage.removeItem('successMessage');
-        }
-    });
-</script>
-<!--thông báo thêm TÊN SẢN PHẨM thành công-->
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const successMessage = sessionStorage.getItem('successMessageThemTenSP');
-        if (successMessage) {
-            // Hiển thị thông báo ở góc bên phải màn hình
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
-                }
-            });
-
-            Toast.fire({
-                icon: 'success',
-                title: successMessage
-            });
-
-            // Xóa thông báo khỏi sessionStorage sau khi hiển thị
-            sessionStorage.removeItem('successMessageThemTenSP');
-        }
-    });
-</script>
 
 <!--confirm khi xóa spct-->
 <script>
@@ -1130,6 +1071,7 @@
     }
 </script>
 
+<!--thông báo xóa-->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const successMessage = sessionStorage.getItem('successMessageXoa');
@@ -1145,7 +1087,6 @@
         }
     });
 </script>
-
 
 <!--dùng cho thêm size-->
 <script>
@@ -1335,27 +1276,41 @@
             }
         }
 
-        // Gọi hàm để hiển thị toast
-        const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
+        // Sử dụng SweetAlert2 để xác nhận trước khi gửi form
+        Swal.fire({
+            title: 'Bạn có muốn sửa không không?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Hiển thị thông báo thành công
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                // Submit form
+                setTimeout(function () {
+                    // Lưu thông báo vào sessionStorage
+                    sessionStorage.setItem('successMessageSuaGia', 'Sửa thành công!');
+                    document.getElementById("submitid").submit();
+                });
             }
         });
 
-        Toast.fire({
-            icon: "success",
-            title: "Cập nhật thành công"
-        });
-
-        // Submit form
-        document.getElementById("submitid").submit();
+        // Ngăn form được gửi đi ngay lập tức
+        return false;
     }
+
+
 
     function formatCurrency(elementId) {
         var input = document.getElementById(elementId);
@@ -1372,6 +1327,7 @@
         }
     }
 </script>
+
 <!--dùng ẩn hiện modal khi click vào checkBox-->
 <script>
     // Lắng nghe sự kiện khi checkbox được thay đổi
@@ -1468,13 +1424,20 @@
         var isMaValid = true;
 
 
-        // Kiểm tra xem trường "Tên đế giày" có trống không
+        // Kiểm tra xem trường "Tên sản phẩm" có trống không và không vượt quá 20 ký tự
         if (inputMaTenSP.trim() === "") {
-            errorMaTenSP.innerText = "Vui lòng nhập tên tên sản phẩm.";
+            errorMaTenSP.innerText = "Vui lòng nhập tên sản phẩm.";
+            return false; // Ngăn form được gửi đi
+        } else if (inputMaTenSP.trim().length > 20) {
+            errorMaTenSP.innerText = "Tên sản phẩm không được vượt quá 20 ký tự.";
+            return false; // Ngăn form được gửi đi
+        } else if (/[^a-zA-Z0-9\s]/.test(inputMaTenSP.trim())) {
+            errorMaTenSP.innerText = "Tên sản phẩm không được chứa ký tự đặc biệt.";
             return false; // Ngăn form được gửi đi
         } else {
             errorMaTenSP.innerText = ""; // Xóa thông báo lỗi nếu có
         }
+
 
 
         // Kiểm tra trùng tên sản phẩm
@@ -1715,15 +1678,10 @@
                         toast.onmouseleave = Swal.resumeTimer;
                     }
                 });
-
-                Toast.fire({
-                    icon: "success",
-                    title: "Thêm thành công!"
-                });
-
                 setTimeout(function () {
+                    sessionStorage.setItem('successMessageThemTenThuongHieu', 'Thêm thành công!');
                     document.addThuongHieu.submit();
-                }, 3000);
+                });
             }
         });
 
@@ -1753,19 +1711,12 @@
                         toast.onmouseleave = Swal.resumeTimer;
                     }
                 });
-
-                Toast.fire({
-                    icon: "success",
-                    title: "Thêm thành công!"
-                });
-
                 setTimeout(function () {
+                    sessionStorage.setItem('successMessageThemTenChatLieu', 'Thêm thành công!');
                     document.addChatLieu.submit();
-                }, 3000);
+                });
             }
         });
-
-        // Ngăn form được gửi đi ngay lập tức
         return false;
     }
 
@@ -1791,19 +1742,12 @@
                         toast.onmouseleave = Swal.resumeTimer;
                     }
                 });
-
-                Toast.fire({
-                    icon: "success",
-                    title: "Thêm thành công!"
-                });
-
                 setTimeout(function () {
+                    sessionStorage.setItem('successMessageThemTenDeGiay', 'Thêm thành công!');
                     document.addDeGiay.submit();
-                }, 3000);
+                });
             }
         });
-
-        // Ngăn form được gửi đi ngay lập tức
         return false;
     }
 
@@ -1829,19 +1773,12 @@
                         toast.onmouseleave = Swal.resumeTimer;
                     }
                 });
-
-                Toast.fire({
-                    icon: "success",
-                    title: "Thêm thành công!"
-                });
-
                 setTimeout(function () {
+                    sessionStorage.setItem('successMessageThemTenMauSac', 'Thêm thành công!');
                     document.addMauSac.submit();
-                }, 3000);
+                });
             }
         });
-
-        // Ngăn form được gửi đi ngay lập tức
         return false;
     }
 
@@ -1867,26 +1804,18 @@
                         toast.onmouseleave = Swal.resumeTimer;
                     }
                 });
-
-                Toast.fire({
-                    icon: "success",
-                    title: "Thêm thành công!"
-                });
-
                 setTimeout(function () {
+                    sessionStorage.setItem('successMessageThemTenKichCo', 'Thêm thành công!');
                     document.addKichCo.submit();
-                }, 3000);
+                });
             }
         });
-
-        // Ngăn form được gửi đi ngay lập tức
         return false;
     }
-
     /*]]>*/
 </script>
 
-
+<!--validate hoàn tất-->
 <script>
     function validateForm2() {
         return hoantat();
@@ -1925,4 +1854,232 @@
         // Ngăn form được gửi đi ngay lập tức
         return false;
     }
+</script>
+
+<!--thông báo thêm thành công-->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const successMessage = sessionStorage.getItem('successMessage');
+        if (successMessage) {
+            // Hiển thị thông báo ở góc bên phải màn hình
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: successMessage
+            });
+
+            // Xóa thông báo khỏi sessionStorage sau khi hiển thị
+            sessionStorage.removeItem('successMessage');
+        }
+    });
+</script>
+<!--thông báo thêm tên sản phẩm thành công-->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const successMessage = sessionStorage.getItem('successMessageThemTenSP');
+        if (successMessage) {
+            // Hiển thị thông báo ở góc bên phải màn hình
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: successMessage
+            });
+
+            // Xóa thông báo khỏi sessionStorage sau khi hiển thị
+            sessionStorage.removeItem('successMessageThemTenSP');
+        }
+    });
+</script>
+
+<!--thông báo thêm tên thương hiệu thành công-->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const successMessage = sessionStorage.getItem('successMessageThemTenThuongHieu');
+        if (successMessage) {
+            // Hiển thị thông báo ở góc bên phải màn hình
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: successMessage
+            });
+
+            // Xóa thông báo khỏi sessionStorage sau khi hiển thị
+            sessionStorage.removeItem('successMessageThemTenThuongHieu');
+        }
+    });
+</script>
+
+<!--thông báo thêm tên chất liệu thành công-->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const successMessage = sessionStorage.getItem('successMessageThemTenChatLieu');
+        if (successMessage) {
+            // Hiển thị thông báo ở góc bên phải màn hình
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: successMessage
+            });
+
+            // Xóa thông báo khỏi sessionStorage sau khi hiển thị
+            sessionStorage.removeItem('successMessageThemTenChatLieu');
+        }
+    });
+</script>
+
+<!--thông báo thêm tên đế giày thành công-->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const successMessage = sessionStorage.getItem('successMessageThemTenDeGiay');
+        if (successMessage) {
+            // Hiển thị thông báo ở góc bên phải màn hình
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: successMessage
+            });
+
+            // Xóa thông báo khỏi sessionStorage sau khi hiển thị
+            sessionStorage.removeItem('successMessageThemTenDeGiay');
+        }
+    });
+</script>
+
+<!--thông báo thêm tên màu sắc thành công-->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const successMessage = sessionStorage.getItem('successMessageThemTenMauSac');
+        if (successMessage) {
+            // Hiển thị thông báo ở góc bên phải màn hình
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: successMessage
+            });
+
+            // Xóa thông báo khỏi sessionStorage sau khi hiển thị
+            sessionStorage.removeItem('successMessageThemTenMauSac');
+        }
+    });
+</script>
+
+<!--thông báo thêm tên kích cỡ thành công-->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const successMessage = sessionStorage.getItem('successMessageThemTenKichCo');
+        if (successMessage) {
+            // Hiển thị thông báo ở góc bên phải màn hình
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: successMessage
+            });
+
+            // Xóa thông báo khỏi sessionStorage sau khi hiển thị
+            sessionStorage.removeItem('successMessageThemTenKichCo');
+        }
+    });
+</script>
+
+<!--thông báo sửa giá thành công-->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const successMessage = sessionStorage.getItem('successMessageSuaGia');
+        if (successMessage) {
+            // Hiển thị thông báo ở góc bên phải màn hình
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: 'success',
+                title: successMessage
+            });
+            sessionStorage.removeItem('successMessageSuaGia');
+        }
+    });
 </script>

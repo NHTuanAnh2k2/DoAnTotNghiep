@@ -13,6 +13,9 @@ import org.springframework.data.jpa.repository.Modifying;
 public interface DeGiayRepository extends JpaRepository<DeGiay, Integer> {
     List<DeGiay> findAllByOrderByNgaytaoDesc();
 
+    @Query("SELECT dg FROM DeGiay dg WHERE dg.ten = :ten")
+    List<DeGiay> findDeGiayByTen(@Param("ten") String ten);
+
     @Query("SELECT dg FROM DeGiay dg WHERE dg.ten = :ten AND dg.trangthai = true ")
     List<DeGiay> findDeGiayByTenAndTrangThaiFalse(@Param("ten") String ten);
 
