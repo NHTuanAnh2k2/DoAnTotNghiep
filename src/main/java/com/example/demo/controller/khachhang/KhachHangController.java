@@ -194,7 +194,7 @@ public class KhachHangController {
         kh.setLancapnhatcuoi(nd.getLancapnhatcuoi());
         khachHangService.addKhachHang(kh);
 
-//        khachHangService.sendEmail(nd.getEmail(), nd.getTaikhoan(), password, nd.getHovaten());
+        khachHangService.sendEmail(nd.getEmail(), nd.getTaikhoan(), password, nd.getHovaten());
 
         redirectAttributes.addFlashAttribute("success", true);
         return "redirect:/khachhang";
