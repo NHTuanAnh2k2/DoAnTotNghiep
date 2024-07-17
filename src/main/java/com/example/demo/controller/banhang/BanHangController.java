@@ -792,15 +792,17 @@ public class BanHangController {
             }
 
             daoHD.capNhatHD(hdset);
-            //tạo phiếu giảm giá chi tiết
-            phieugiamgiachtietset.setHoadon(hdset);
-            phieugiamgiachtietset.setPhieugiamgia(phieugiamsaoluu);
-            phieugiamgiachtietset.setGiasauapdung(hdset.getTongtien());
-            phieugiamgiachtietset.setGiabandau(tongtienhoadonhientai);
-            phieugiamgiachtietset.setTiengiam(sotiengiam);
             LocalDateTime currentDateTime = LocalDateTime.now();
-            phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
-            daoPGGCT.save(phieugiamgiachtietset);
+            //tạo phiếu giảm giá chi tiết
+            if(phieugiamsaoluu.getMacode()!=null){
+                phieugiamgiachtietset.setHoadon(hdset);
+                phieugiamgiachtietset.setPhieugiamgia(phieugiamsaoluu);
+                phieugiamgiachtietset.setGiasauapdung(hdset.getTongtien());
+                phieugiamgiachtietset.setGiabandau(tongtienhoadonhientai);
+                phieugiamgiachtietset.setTiengiam(sotiengiam);
+                phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
+                daoPGGCT.save(phieugiamgiachtietset);
+            }
             // lịch sử hóa đơn 0
             LichSuHoaDon lichSuHoaDon1 = new LichSuHoaDon();
             lichSuHoaDon1.setNhanvien(nvfake);
@@ -978,7 +980,6 @@ public class BanHangController {
             daoHD.capNhatHD(hdset1);
             phieugiamgiachtietset.setHoadon(hdset1);
             phieugiamgiachtietset.setPhieugiamgia(phieugiamsaoluu);
-            System.out.println("aaaaaaaaa");
             System.out.println(phieugiamsaoluu.getMacode());
             phieugiamgiachtietset.setGiasauapdung(hdset1.getTongtien());
             phieugiamgiachtietset.setGiabandau(tongtienhoadonhientai);
