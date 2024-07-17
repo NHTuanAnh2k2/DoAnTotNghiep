@@ -213,14 +213,13 @@
                                                     <label for="tenChatLieu" class="form-label">Tên chất liệu</label>
                                                     <input type="text" class="form-control" id="tenChatLieu">
                                                     <div id="error-message" class="text-danger" style="display: none;">
-                                                        Tên chất liệu không được để trống.
                                                     </div>
                                                     <div id="length-error-message" class="text-danger"
-                                                         style="display: none;">Tên chất liệu không được vượt quá 20 ký
+                                                         style="display: none;">
                                                         tự.
                                                     </div>
                                                     <div id="duplicate-error-message" class="text-danger"
-                                                         style="display: none;">Tên chất liệu đã tồn tại.
+                                                         style="display: none;">
                                                     </div>
                                                 </div>
                                             </div>
@@ -271,37 +270,48 @@
 
     /*<![CDATA[*/
     var objectsFromController = /*[[${lstChatLieu}]]*/ [];
-
+    const specialCharPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
     function validateTrung() {
         var inputMa = document.getElementById("tenInput").value;
         var errorMa = document.getElementById("errorTen");
         var isMaValid = true;
 
-        // Kiểm tra xem trường "Tên đế giày" có trống không
+        // Kiểm tra xem trường "Tên chất liệu" có trống không và không vượt quá 20 ký tự
         if (inputMa.trim() === "") {
             errorMa.innerText = "Vui lòng nhập tên chất liệu.";
+            return false; // Ngăn form được gửi đi
+        } else if (inputMa.trim().length <= 3) {
+            errorMa.innerText = "Tên chất liệu phải dài hơn 3 ký tự.";
+            return false; // Ngăn form được gửi đi
+        } else if (inputMa.trim().length > 20) {
+            errorMa.innerText = "Tên chất liệu không được vượt quá 20 ký tự.";
+            return false; // Ngăn form được gửi đi
+        } else if (specialCharPattern.test(inputMa.trim())) {
+            errorMa.innerText = "Tên chất liệu không được chứa ký tự đặc biệt.";
             return false; // Ngăn form được gửi đi
         } else {
             errorMa.innerText = ""; // Xóa thông báo lỗi nếu có
         }
 
-        // Kiểm tra trùng tên đế giày
+        // Kiểm tra trùng tên chất liệu (không phân biệt chữ hoa chữ thường và khoảng trắng)
         for (var i = 0; i < objectsFromController.length; i++) {
             var obj = objectsFromController[i];
-            if (inputMa === obj.ten) {
+            // Loại bỏ khoảng trắng và chuyển đổi về chữ thường để so sánh
+            var normalizedInput = inputMa.trim().replace(/\s+/g, ' ').toLowerCase();
+            var normalizedObjName = obj.ten.trim().replace(/\s+/g, ' ').toLowerCase();
+
+            if (normalizedInput === normalizedObjName) {
                 errorMa.innerText = "Tên chất liệu đã tồn tại!";
-                isMaValid = false;
-                break;
+                return false; // Ngăn form được gửi đi
             }
         }
-
         if (isMaValid) {
             errorMa.innerText = "";
             them();
         }
-
         return false;
     }
+
 
     function them() {
         // Sử dụng SweetAlert2 thay vì hộp thoại confirm
@@ -401,35 +411,46 @@
         const id = document.getElementById('chatLieuId').value;
         let ten = document.getElementById('tenChatLieu').value;
 
-        // Loại bỏ khoảng trắng ở đầu và cuối
-        ten = ten.trim();
+        // Loại bỏ khoảng trắng ở đầu và cuối và chỉ giữ lại một khoảng trắng giữa các từ
+        ten = ten.trim().replace(/\s+/g, ' ');
 
         const errorMessage = document.getElementById('error-message');
         const lengthErrorMessage = document.getElementById('length-error-message');
         const duplicateErrorMessage = document.getElementById('duplicate-error-message');
-
+        const specialCharPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
         // Reset thông báo lỗi
         errorMessage.style.display = 'none';
         lengthErrorMessage.style.display = 'none';
         duplicateErrorMessage.style.display = 'none';
 
-        // Kiểm tra tính hợp lệ
         if (!ten) {
             errorMessage.style.display = 'block';
+            errorMessage.innerText="Tên chất liệu không được để trống";
             return;
         }
 
-        if (ten.length > 20) {
+
+        if (ten.length < 3) {
             lengthErrorMessage.style.display = 'block';
+            lengthErrorMessage.innerText = 'Tên chất liệu phải dài hơn 3 ký tự.';
+            return;
+        } else if (ten.length > 20) {
+            lengthErrorMessage.style.display = 'block';
+            lengthErrorMessage.innerText = 'Tên chất liệu không được vượt quá 20 ký tự.';
             return;
         }
-
+        else if (specialCharPattern.test(ten)) {
+            lengthErrorMessage.style.display = 'block';
+            lengthErrorMessage.innerText = 'Tên chất liệu không được chứa ký tự đặc biệt.';
+            return;
+        }
         // Kiểm tra tên trùng
         fetch(`/checkTenChatLieu?ten=${encodeURIComponent(ten)}`)
             .then(response => response.json())
             .then(exists => {
                 if (exists) {
                     duplicateErrorMessage.style.display = 'block';
+                    duplicateErrorMessage.innerText='Tên chất liệu không được trùng!';
                     return;
                 }
 

@@ -222,14 +222,12 @@
                                                     <label for="tenThuongHieu" class="form-label">Tên thương hiệu</label>
                                                     <input type="text" class="form-control" id="tenThuongHieu">
                                                     <div id="error-message" class="text-danger" style="display: none;">
-                                                        Tên thương hiệu không được để trống.
                                                     </div>
                                                     <div id="length-error-message" class="text-danger"
-                                                         style="display: none;">Tên thương hiệu không được vượt quá 20 ký
-                                                        tự.
+                                                         style="display: none;">
                                                     </div>
                                                     <div id="duplicate-error-message" class="text-danger"
-                                                         style="display: none;">Tên thương hiệu đã tồn tại.
+                                                         style="display: none;">
                                                     </div>
                                                 </div>
                                             </div>
@@ -430,12 +428,12 @@
         let ten = document.getElementById('tenThuongHieu').value;
 
         // Loại bỏ khoảng trắng ở đầu và cuối
-        ten = ten.trim();
+        ten = ten.trim().replace(/\s+/g, ' ');
 
         const errorMessage = document.getElementById('error-message');
         const lengthErrorMessage = document.getElementById('length-error-message');
         const duplicateErrorMessage = document.getElementById('duplicate-error-message');
-
+        const specialCharPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
         // Reset thông báo lỗi
         errorMessage.style.display = 'none';
         lengthErrorMessage.style.display = 'none';
@@ -444,11 +442,21 @@
         // Kiểm tra tính hợp lệ
         if (!ten) {
             errorMessage.style.display = 'block';
+            errorMessage.innerText="Tên thương hiệu không được để trống";
             return;
         }
 
-        if (ten.length > 20) {
+        if (ten.length < 3) {
             lengthErrorMessage.style.display = 'block';
+            lengthErrorMessage.innerText = 'Tên thương hiệu phải dài hơn 3 ký tự.';
+            return;
+        } else if (ten.length > 20) {
+            lengthErrorMessage.style.display = 'block';
+            lengthErrorMessage.innerText = 'Tên thương hiệu không được vượt quá 20 ký tự.';
+            return;
+        }else if (specialCharPattern.test(ten)) {
+            lengthErrorMessage.style.display = 'block';
+            lengthErrorMessage.innerText = 'Tên thương hiệu không được chứa ký tự đặc biệt.';
             return;
         }
 
@@ -458,6 +466,7 @@
             .then(exists => {
                 if (exists) {
                     duplicateErrorMessage.style.display = 'block';
+                    duplicateErrorMessage.innerText='Tên thương hiệu không được trùng!';
                     return;
                 }
 

@@ -241,7 +241,6 @@
                                                     <label for="tenDeGiay" class="form-label">Tên đế giày</label>
                                                     <input type="text" class="form-control" id="tenDeGiay">
                                                     <div id="error-message" class="text-danger" style="display: none;">
-                                                        Tên đế giày không được để trống.
                                                     </div>
                                                     <div id="length-error-message" class="text-danger"
                                                          style="display: none;">
@@ -442,7 +441,7 @@
         const errorMessage = document.getElementById('error-message');
         const lengthErrorMessage = document.getElementById('length-error-message');
         const duplicateErrorMessage = document.getElementById('duplicate-error-message');
-
+        const specialCharPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
 // Reset thông báo lỗi
         errorMessage.style.display = 'none';
         lengthErrorMessage.style.display = 'none';
@@ -451,6 +450,7 @@
 // Kiểm tra tính hợp lệ
         if (!ten) {
             errorMessage.style.display = 'block';
+            errorMessage.innerText="Tên đế giày không được để trống";
             return;
         }
 
@@ -461,6 +461,10 @@
         } else if (ten.length > 20) {
             lengthErrorMessage.style.display = 'block';
             lengthErrorMessage.innerText = 'Tên đế giày không được vượt quá 20 ký tự.';
+            return;
+        } else if (specialCharPattern.test(ten)) {
+            lengthErrorMessage.style.display = 'block';
+            lengthErrorMessage.innerText = 'Tên đế giày không được chứa ký tự đặc biệt.';
             return;
         }
 
