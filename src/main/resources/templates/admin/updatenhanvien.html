@@ -76,9 +76,6 @@
                             </svg>
                             CẬP NHẬT NHÂN VIÊN
                         </h1>
-<!--                        <h1 class="text-center">-->
-<!--                            Ảnh đại diện-->
-<!--                        </h1>-->
                     </div>
                 </div>
             </div><!-- /.container-fluid -->
@@ -103,19 +100,13 @@
                                                 </div>
                                                 <div class=" d-flex justify-content-center align-items-center">
                                                     <div class="file-input-wrapper">
-<!--                                                        <div th:if="*{anh == null}">-->
-<!--                                                        <input type="file" id="fileInput" class="file-input" name="anh">-->
-<!--                                                        <label for="fileInput" class="file-input-label">-->
-<!--                                                            <span>+</span>-->
-<!--                                                            <span>Upload</span>-->
-<!--                                                        </label>-->
-<!--                                                        <img id="uploadedImage"  src="" alt="Uploaded Image" style="display: none;">-->
-<!--                                                        </div>-->
-                                                        <img id="uploadedImage1" th:if="*{anh != null}" th:src="@{'/upload' + *{anh.substring(anh.lastIndexOf('upload') + 6)}}">
+                                                        <input type="file" id="fileInput" class="file-input" name="anh">
+                                                        <label for="fileInput" class="file-input-label">
+                                                        </label>
+                                                        <img id="uploadedImage1" th:src="@{'/upload' + *{anh.substring(anh.lastIndexOf('upload') + 6)}}">
                                                     </div>
                                                 </div>
                                             </section>
-                                            <!--                                        <button id="openCamera"  class="btn btn-primary">Quét mã CCCD</button>-->
                                             <div class="modal"  id="cameraModal" th:width="200px" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
@@ -128,8 +119,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!--                                        <form id="addItemForm" th:object="${nd}">-->
-                                            <!--                                        <form th:method="post"  id="addForm" th:object="${nd}" th:action="@{/addnv}">-->
                                             <div class="d-flex">
                                                 <div class="align-items-center col-lg-6 col-md-6">
                                                     <div class="col-auto">
@@ -280,9 +269,6 @@
                                                             <input type="radio" value="true" id="radioVaitro"  th:field="*{vaitro}" style="margin-top: 10px"  checked>Quản lý
                                                             <input type="radio" value="false" th:field="*{vaitro}" style="margin-left: 10px;margin-top: 10px">Nhân viên
                                                         </div>
-                                                        <div class="col-auto">
-                                                            <!--                                                        <p th:if="${#fields.hasErrors('vaitro')}" class="error" th:errors="*{vaitro}" style="width: 500px; color: red"></p>-->
-                                                        </div>
                                                     </div>
                                                     <div class="align-items-center col-lg-6 col-md-6">
                                                         <div class="col-auto">
@@ -293,9 +279,6 @@
                                                                 <option value="1" selected>Làm việc</option>
                                                                 <option value="0">Nghỉ làm</option>
                                                             </select>
-                                                        </div>
-                                                        <div class="col-auto">
-                                                            <!--                                                        <p th:if="${#fields.hasErrors('trangthai')}" class="error" th:errors="*{trangthai}" style="width: 500px; color: red"></p>-->
                                                         </div>
                                                     </div>
                                                 </div>
@@ -349,9 +332,11 @@
             citis.options.add(opt);
         }
         citis.onchange = function () {
-            district.length = 1;
-            ward.length = 1;
-            if(this.options[this.selectedIndex].dataset.id != ""){
+            // Reset district and ward dropdowns by removing all options
+            removeAllOptions(districts, "Chọn quận/huyện");
+            removeAllOptions(wards, "Chọn xã/phường");
+
+            if (this.options[this.selectedIndex].dataset.id != "") {
                 const result = data.filter(n => n.Id === this.options[this.selectedIndex].dataset.id);
 
                 for (const k of result[0].Districts) {
@@ -364,7 +349,9 @@
             }
         };
         districts.onchange = function () {
-            wards.length = 1;
+            // Reset ward dropdown by removing all options
+            removeAllOptions(wards, "Chọn xã/phường");
+
             const dataCity = data.filter((n) => n.Id === citis.options[citis.selectedIndex].dataset.id);
             if (this.options[this.selectedIndex].dataset.id != "") {
                 const dataWards = dataCity[0].Districts.filter(n => n.Id === this.options[this.selectedIndex].dataset.id)[0].Wards;
@@ -379,7 +366,18 @@
             }
         };
     }
+
+    function removeAllOptions(selectElement, defaultOptionText) {
+        while (selectElement.options.length > 0) {
+            selectElement.remove(0);
+        }
+        var opt = document.createElement('option');
+        opt.text = defaultOptionText;
+        opt.value = "";
+        selectElement.add(opt);
+    }
 </script>
+
 <script>
     function goBack() {
         window.location.href = '/admin/qlnhanvien';
@@ -403,18 +401,11 @@
         reader.readAsDataURL(file);
     });
 </script>
+<script th:inline="javascript">
+    var list = /*[[${items2}]]*/ '[]';
+    console.log(list);
+</script>
 <script>
-    var list;
-    document.addEventListener("DOMContentLoaded", function() {
-        // Đặt giá trị radio button mặc định
-        // document.getElementById("radioGT").checked = true;
-        // document.getElementById("radioVaitro").checked = true;
-        list = /*[[${list}]]*/ '[]';
-    });
-    function checkNhieuKhoangTrang(str) {
-        // Sử dụng biểu thức chính quy để tìm các mẫu có ít nhất hai khoảng trắng liên tiếp giữa các từ
-        return /\s{2,}/.test(str.trim());
-    }
     function checkKhongPhaiChuCai(str) {
         // Biểu thức chính quy để kiểm tra bất kỳ ký tự nào không phải là chữ cái tiếng Việt có dấu hoặc chữ cái Latinh không dấu
         const regex = /[^a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚờợứừửữựỳỵỷỹỪừựÙúỦửỤụỴỳỵỷỹẠ-ỹ\s]/;
@@ -431,9 +422,23 @@
         return regex.test(str);
     }
     function checkDinhDangEmail(email) {
-        // Biểu thức chính quy kiểm tra định dạng email
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(email);
+        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        // Kiểm tra định dạng cơ bản
+        if (!regex.test(email)) {
+            return false;
+        }
+
+        // Tách phần tên người dùng và tên miền
+        const [localPart, domainPart] = email.split('@');
+
+        // Kiểm tra phần tên người dùng và tên miền không bắt đầu hoặc kết thúc bằng dấu chấm
+        if (localPart.includes('..') || domainPart.includes('..') || domainPart.startsWith('.') || domainPart.endsWith('.')) {
+            return false;
+        }
+
+        return true;
+
     }
     function checkDinhDangSDT(str) {
         // Biểu thức chính quy kiểm tra số điện thoại bắt đầu từ 0 và có 10 chữ số
@@ -457,8 +462,6 @@
     }
     function validate(event){
         event.preventDefault();
-        // const list = /*[[${items2}]]*/ '[]';
-        console.log("list", list );
         var inputTen=document.getElementById("inputTen").value;
         var errorTen=document.getElementById("errorTen");
         var isTenValid = true;
@@ -471,13 +474,6 @@
             errorTen.innerText = "Tên nhân viên không được quá 100 kí tự";
             document.getElementById("inputTen").style.border="1.2px solid red";
             isTenValid = false;
-        }
-        if(inputTen.trim().length > 0){
-            if(checkNhieuKhoangTrang(inputTen)){
-                errorTen.innerText = "Giữa các từ không được nhiều hơn 1 khoảng trắng!";
-                document.getElementById("inputTen").style.border="1.2px solid red";
-                isTenValid = false;
-            }
         }
         if(inputTen.trim().length > 0){
             if(checkKhongPhaiChuCai(inputTen) == true){
@@ -525,6 +521,15 @@
             errorCCCD.innerText = "Sai định dạng CCCD!";
             isCCCDValid = false;
         }
+        for (var i = 0; i < list.length; i++) {
+            var obj = list[i];
+            if(inputCCCD === obj.nguoidung.cccd){
+                document.getElementById("inputCCCD").style.border="1.2px solid red";
+                errorCCCD.innerText = "CCCD đã tồn tại!";
+                isCCCDValid = false;
+                break;
+            }
+        }
         if(isCCCDValid){
             document.getElementById("inputCCCD").style.border="";
             errorCCCD.innerText = "";
@@ -545,15 +550,15 @@
             errorEmail.innerText = "Email không được quá 50 kí tự!";
             isEmailValid = false;
         }
-        // for (var i = 0; i < list.length; i++) {
-        //     var obj = list[i];
-        //     if(inputEmail === obj.nguoidung.email){
-        //         errorEmail.innerText = "Email đã tồn tại!";
-        //         document.getElementById("inputEmail").style.border = "1.2px solid red";
-        //         isEmailValid = false;
-        //         break;
-        //     }
-        // }
+        for (var i = 0; i < list.length; i++) {
+            var obj = list[i];
+            if(inputEmail === obj.nguoidung.email){
+                errorEmail.innerText = "Email đã tồn tại!";
+                document.getElementById("inputEmail").style.border = "1.2px solid red";
+                isEmailValid = false;
+                break;
+            }
+        }
         if(isEmailValid){
             document.getElementById("inputEmail").style.border="";
             errorEmail.innerText = "";
@@ -570,15 +575,15 @@
             errorSdt.innerText = "Sai định dạng Sđt!";
             isSdtValid = false;
         }
-        // for (var i = 0; i < list.length; i++) {
-        //     var obj = list[i];
-        //     if(inputSdt.trim() === obj.nguoidung.SoDienThoai){
-        //         errorSdt.innerText = "Sđt đã tồn tại!";
-        //         document.getElementById("inputSdt").style.border = "1.2px solid red";
-        //         isSdtValid = false;
-        //         break;
-        //     }
-        // }
+        for (var i = 0; i < list.length; i++) {
+            var obj = list[i];
+            if(inputSdt.trim() === obj.nguoidung.sodienthoai){
+                errorSdt.innerText = "Sđt đã tồn tại!";
+                document.getElementById("inputSdt").style.border = "1.2px solid red";
+                isSdtValid = false;
+                break;
+            }
+        }
         if(isSdtValid){
             document.getElementById("inputSdt").style.border="";
             errorSdt.innerText = "";
@@ -636,17 +641,6 @@
             document.getElementById("inputDuong").style.border="";
             errorDuong.innerText = "";
         }
-        console.log("tên: ",inputTen)
-        console.log("ngày sinh: ",inputNgSinh)
-        console.log("cccd: ",inputCCCD)
-        // console.log("GT: ",inputTen)
-        console.log("email: ",inputEmail)
-        console.log("sđt: ",inputSdt)
-        console.log("tp: ",cbbTinh)
-        console.log("quận: ",cbbQuan)
-        console.log("xã: ",cbbHuyen)
-        console.log("dc: ",inputDuong)
-        console.log("role: ",inputTen)
         if(isTenValid && isNgSinhValid && isCCCDValid && isEmailValid && isSdtValid && isTinhValid && isQuanValid && isHuyenValid && isDuongValid){
             Swal.fire({
                 title: 'Bạn có chắc chắn muốn cập nhật nhân viên không?',

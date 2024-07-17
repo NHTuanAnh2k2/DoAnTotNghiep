@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.Async;
 
 import java.security.SecureRandom;
 import java.sql.Timestamp;
+import java.text.Normalizer;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -24,35 +25,33 @@ public class NguoiDungImpl1 implements NguoiDungService1 {
 
     @Autowired
     private JavaMailSender emailSender;
+    private static final String CHAR_LOWER = "abcdefghijklmnopqrstuvwxyz";
+    private static final String CHAR_UPPER = CHAR_LOWER.toUpperCase();
+    private static final String NUMBER = "0123456789";
+    private static final String PASSWORD_ALLOW_BASE = CHAR_LOWER + CHAR_UPPER + NUMBER;
+    private static final SecureRandom random = new SecureRandom();
     @Override
     public List<NguoiDung> getAll() {
         return nguoiDungRepository.getAllByOrderByIdDesc();
     }
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+";
 
-    public static String generatePassword(int length) {
-        Random random = new SecureRandom();
+    public String generateRandomPassword(int length) {
+        if (length < 4) throw new IllegalArgumentException("Length too short, minimum 4 characters required");
         StringBuilder password = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
-            int index = random.nextInt(CHARACTERS.length());
-            password.append(CHARACTERS.charAt(index));
+            password.append(PASSWORD_ALLOW_BASE.charAt(random.nextInt(PASSWORD_ALLOW_BASE.length())));
         }
         return password.toString();
-    }
-    public String tk(){
-        List<NguoiDung> l = nguoiDungRepository.getAllByOrderByIdDesc();
-        int s = l.size() + 1;
-        String tk = "NV" + s;
-        return tk;
     }
 
     @Override
     public NguoiDung add(NguoiDungNVInfo nguoiDung) {
         List<NguoiDung> l = nguoiDungRepository.getAllByOrderByIdDesc();
         NguoiDung nd = new NguoiDung();
-        nd.setTaikhoan(tk());
+        nd.setTaikhoan(nguoiDung.getTaikhoan());
         nd.setEmail(nguoiDung.getEmail());
-        nd.setMatkhau(generatePassword(8));
+        nd.setMatkhau(generateRandomPassword(10));
         nd.setHovaten(nguoiDung.getHovaten());
         nd.setNgaysinh(nguoiDung.getNgaysinh());
         nd.setCccd(nguoiDung.getCccd());
@@ -79,7 +78,11 @@ public class NguoiDungImpl1 implements NguoiDungService1 {
         nd.setAnh(nguoiDung.getAnh());
         nd.setNguoicapnhat("a");
         nd.setLancapnhatcuoi(new Timestamp(new Date().getTime()));
-        nd.setTrangthai(nguoiDung.getTrangthai());
+        return nguoiDungRepository.save(nd);
+    }
+
+    @Override
+    public NguoiDung updateS(NguoiDung nd) {
         return nguoiDungRepository.save(nd);
     }
 
@@ -98,6 +101,11 @@ public class NguoiDungImpl1 implements NguoiDungService1 {
     @Override
     public List<NguoiDung> searchND(String ten, Boolean trangThai, java.sql.Date batDau, java.sql.Date ketThuc) {
         return nguoiDungRepository.findByKey(ten,batDau,ketThuc,trangThai);
+    }
+
+    @Override
+    public List<NguoiDung> searchNDs(String ten, java.sql.Date batDau, java.sql.Date ketThuc) {
+        return nguoiDungRepository.findByKeys(ten,batDau,ketThuc);
     }
 
     @Override
