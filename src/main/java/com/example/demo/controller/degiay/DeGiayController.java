@@ -29,16 +29,16 @@ public class DeGiayController {
         if (isKeyEmpty && isTrangthaiNull) {
             list = deGiayRepository.findAllByOrderByNgaytaoDesc();
         } else {
-            list = deGiayRepository.getDeGiayByTenOrTrangthai(trimmedKey, info.getTrangthai());
+            list = deGiayRepository.findByTenAndTrangthai("%" + trimmedKey + "%", info.getTrangthai());
         }
         List<DeGiay> listAll = deGiayRepository.findAll();
         model.addAttribute("listAll", listAll);
+        //dùng listAll để validate
         model.addAttribute("list", list);
         model.addAttribute("fillSearch", trimmedKey);
         model.addAttribute("fillTrangThai", info.getTrangthai());
         return "admin/qldegiay";
     }
-
 
 
 //    @PostMapping("/update/{id}")
@@ -66,8 +66,6 @@ public class DeGiayController {
         }
         return "redirect:/listdegiay";
     }
-
-
 
 
     @PostMapping("/addSave")

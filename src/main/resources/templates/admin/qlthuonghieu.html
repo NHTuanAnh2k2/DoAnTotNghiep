@@ -281,27 +281,44 @@
 
     /*<![CDATA[*/
     var objectsFromController = /*[[${page}]]*/ [];
+    const specialCharPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+
 
     function validateTrung() {
         var inputMa = document.getElementById("tenInput").value;
         var errorMa = document.getElementById("errorTen");
         var isMaValid = true;
 
-        // Kiểm tra xem trường "Tên đế giày" có trống không
-        if (inputMa.trim() === "") {
+        // Loại bỏ khoảng trắng ở đầu và cuối và chỉ giữ lại một khoảng trắng giữa các từ
+        inputMa = inputMa.trim().replace(/\s+/g, ' ');
+
+        // Kiểm tra xem trường "Tên thương hiệu" có trống không và không vượt quá 20 ký tự
+        if (inputMa === "") {
             errorMa.innerText = "Vui lòng nhập tên thương hiệu.";
+            return false; // Ngăn form được gửi đi
+        } else if (inputMa.length < 3) {
+            errorMa.innerText = "Tên thương hiệu phải dài hơn 3 ký tự.";
+            return false; // Ngăn form được gửi đi
+        } else if (inputMa.length > 20) {
+            errorMa.innerText = "Tên thương hiệu không được vượt quá 20 ký tự.";
+            return false; // Ngăn form được gửi đi
+        } else if (specialCharPattern.test(inputMa)) {
+            errorMa.innerText = "Tên thương hiệu không được chứa ký tự đặc biệt.";
             return false; // Ngăn form được gửi đi
         } else {
             errorMa.innerText = ""; // Xóa thông báo lỗi nếu có
         }
 
-        // Kiểm tra trùng tên đế giày
+        // Kiểm tra trùng tên thương hiệu (không phân biệt chữ hoa chữ thường và khoảng trắng)
         for (var i = 0; i < objectsFromController.length; i++) {
             var obj = objectsFromController[i];
-            if (inputMa === obj.ten) {
+            // Loại bỏ khoảng trắng và chuyển đổi về chữ thường để so sánh
+            var normalizedInput = inputMa.toLowerCase();
+            var normalizedObjName = obj.ten.trim().replace(/\s+/g, ' ').toLowerCase();
+
+            if (normalizedInput === normalizedObjName) {
                 errorMa.innerText = "Tên thương hiệu đã tồn tại!";
-                isMaValid = false;
-                break;
+                return false; // Ngăn form được gửi đi
             }
         }
 
@@ -312,6 +329,7 @@
 
         return false;
     }
+
 
     function them() {
         // Sử dụng SweetAlert2 thay vì hộp thoại confirm

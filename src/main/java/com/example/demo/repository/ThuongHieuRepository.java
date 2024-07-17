@@ -12,7 +12,11 @@ import java.util.List;
 
 @Repository
 public interface ThuongHieuRepository extends JpaRepository<ThuongHieu, Integer> {
-//    Page<ThuongHieu> getAll(Pageable pageable);
+    //    Page<ThuongHieu> getAll(Pageable pageable);
+    @Query(value = """
+            SELECT th FROM ThuongHieu th WHERE (th.ten LIKE?1) AND (?2 IS NULL OR th.trangthai=?2)
+            """)
+    List<ThuongHieu> findByTenAndTrangthai(String ten, Boolean trangthai);
 
     List<ThuongHieu> getThuongHieuByTenOrTrangthai(String ten, Boolean trangthai);
 

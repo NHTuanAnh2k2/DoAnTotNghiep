@@ -1587,10 +1587,6 @@
             errorMaDeGiay.innerText = "Tên đế giày không được chứa ký tự đặc biệt.";
             return false; // Ngăn form được gửi đi
         }
-        // else if (/[^a-zA-Z0-9\sĐđẸệÊêÍíÓóòọƠơỦủÀàÁáẠạẢảÃãẤấẦầẪẫẬậÊêẾếỂểỄễỆệÍíÓóÔôƠơÙùÚúỦủÝý]/.test(inputMaDeGiay.trim())) {
-        //     errorMaDeGiay.innerText = "Tên đế giày không được chứa ký tự đặc biệt.";
-        //     return false; // Ngăn form được gửi đi
-        // }
         else {
             errorMaDeGiay.innerText = ""; // Xóa thông báo lỗi nếu có
         }
@@ -1903,40 +1899,20 @@
     }
 
     function hoantat() {
-        // Sử dụng SweetAlert2 thay vì hộp thoại confirm
         Swal.fire({
-            title: 'Bạn xác nhận không?',
+            title: 'Bạn có muốn xác nhận không?',
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: 'Có',
             cancelButtonText: 'Không'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.onmouseenter = Swal.stopTimer;
-                        toast.onmouseleave = Swal.resumeTimer;
-                    }
-                });
-                setTimeout(function () {
-                    // Lưu thông báo vào sessionStorage
-                    sessionStorage.setItem('successMessageHoanTat', 'Thêm thành công!');
-                    document.addImage.submit();
-                });
+                document.addImage.submit();
             }
         });
-
-        // Ngăn form được gửi đi ngay lập tức
         return false;
     }
 </script>
-
 <!--thông báo thêm thành công-->
 <script>
     document.addEventListener('DOMContentLoaded', () => {

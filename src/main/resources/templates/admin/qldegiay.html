@@ -9,8 +9,9 @@
         background-color: rgb(249, 72, 42) !important;
         color: white !important;
     }
+
     .custom-cancel-button {
-        background-color:black !important; /* Màu mặc định của nút "Không" nếu cần */
+        background-color: black !important; /* Màu mặc định của nút "Không" nếu cần */
         color: white !important;
     }
 </style>
@@ -193,8 +194,11 @@
                                         </td>
                                         <td th:text="${#temporals.format(dg.ngaytao, 'dd-MM-yyyy HH:mm:ss')}"></td>
                                         <td class="tdSameWidth">
-                                            <form name="updateTrangThaiForm" th:action="@{/degiay/updateTrangThai/{id}(id=${dg.id})}" method="post" onsubmit="return confirmUpdate(this);">
-                                                <button type="submit" style="width: 170px; background: none; border: none;"
+                                            <form name="updateTrangThaiForm"
+                                                  th:action="@{/degiay/updateTrangThai/{id}(id=${dg.id})}" method="post"
+                                                  onsubmit="return confirmUpdate(this);">
+                                                <button type="submit"
+                                                        style="width: 170px; background: none; border: none;"
                                                         th:classappend="${dg.trangthai == true ? 'btn-outline-success' : 'btn-outline-danger'}">
                                                     <span th:text="${dg.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></span>
                                                 </button>
@@ -240,11 +244,10 @@
                                                         Tên đế giày không được để trống.
                                                     </div>
                                                     <div id="length-error-message" class="text-danger"
-                                                         style="display: none;">Tên đế giày không được vượt quá 20 ký
-                                                        tự.
+                                                         style="display: none;">
                                                     </div>
                                                     <div id="duplicate-error-message" class="text-danger"
-                                                         style="display: none;">Tên đế giày đã tồn tại.
+                                                         style="display: none;">
                                                     </div>
                                                 </div>
                                             </div>
@@ -291,27 +294,40 @@
 
     /*<![CDATA[*/
     var objectsFromController = /*[[${listAll}]]*/ [];
+    const specialCharPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
 
     function validateTrung() {
         var inputMa = document.getElementById("tenInput").value;
         var errorMa = document.getElementById("errorTen");
         var isMaValid = true;
 
-        // Kiểm tra xem trường "Tên đế giày" có trống không
+        // Kiểm tra xem trường "Tên đế giày" có trống không và không vượt quá 20 ký tự
         if (inputMa.trim() === "") {
             errorMa.innerText = "Vui lòng nhập tên đế giày.";
+            return false; // Ngăn form được gửi đi
+        } else if (inputMa.trim().length <= 3) {
+            errorMa.innerText = "Tên đế giày phải dài hơn 3 ký tự.";
+            return false; // Ngăn form được gửi đi
+        } else if (inputMa.trim().length > 20) {
+            errorMa.innerText = "Tên đế giày không được vượt quá 20 ký tự.";
+            return false; // Ngăn form được gửi đi
+        } else if (specialCharPattern.test(inputMa.trim())) {
+            errorMa.innerText = "Tên đế giày không được chứa ký tự đặc biệt.";
             return false; // Ngăn form được gửi đi
         } else {
             errorMa.innerText = ""; // Xóa thông báo lỗi nếu có
         }
 
-        // Kiểm tra trùng tên đế giày
+        // Kiểm tra trùng tên đế giày (không phân biệt chữ hoa chữ thường và khoảng trắng)
         for (var i = 0; i < objectsFromController.length; i++) {
             var obj = objectsFromController[i];
-            if (inputMa === obj.ten) {
+            // Loại bỏ khoảng trắng và chuyển đổi về chữ thường để so sánh
+            var normalizedInput = inputMa.trim().replace(/\s+/g, ' ').toLowerCase();
+            var normalizedObjName = obj.ten.trim().replace(/\s+/g, ' ').toLowerCase();
+
+            if (normalizedInput === normalizedObjName) {
                 errorMa.innerText = "Tên đế giày đã tồn tại!";
-                isMaValid = false;
-                break;
+                return false; // Ngăn form được gửi đi
             }
         }
 
@@ -322,6 +338,7 @@
 
         return false;
     }
+
 
     function them() {
         // Sử dụng SweetAlert2 thay vì hộp thoại confirm
@@ -369,17 +386,7 @@
         document.getElementById('searchForm').submit(); // Gửi form khi có sự thay đổi
     });
 </script>
-<!--xóa-->
-<script>
-    function xoa() {
-        if (confirm("Ban co muon xoa khong")) {
-            alert("xoa thanh cong");
-            return true;
-        } else {
-            return false;
-        }
-    }
-</script>
+
 <!--cập nhật-->
 <script>
     let originalName = ''; // Biến toàn cục để lưu tên ban đầu
@@ -429,26 +436,31 @@
         const id = document.getElementById('deGiayId').value;
         let ten = document.getElementById('tenDeGiay').value;
 
-        // Loại bỏ khoảng trắng ở đầu và cuối
-        ten = ten.trim();
+// Loại bỏ khoảng trắng ở đầu và cuối và chỉ giữ lại một khoảng trắng giữa các từ
+        ten = ten.trim().replace(/\s+/g, ' ');
 
         const errorMessage = document.getElementById('error-message');
         const lengthErrorMessage = document.getElementById('length-error-message');
         const duplicateErrorMessage = document.getElementById('duplicate-error-message');
 
-        // Reset thông báo lỗi
+// Reset thông báo lỗi
         errorMessage.style.display = 'none';
         lengthErrorMessage.style.display = 'none';
         duplicateErrorMessage.style.display = 'none';
 
-        // Kiểm tra tính hợp lệ
+// Kiểm tra tính hợp lệ
         if (!ten) {
             errorMessage.style.display = 'block';
             return;
         }
 
-        if (ten.length > 20) {
+        if (ten.length < 3) {
             lengthErrorMessage.style.display = 'block';
+            lengthErrorMessage.innerText = 'Tên đế giày phải dài hơn 3 ký tự.';
+            return;
+        } else if (ten.length > 20) {
+            lengthErrorMessage.style.display = 'block';
+            lengthErrorMessage.innerText = 'Tên đế giày không được vượt quá 20 ký tự.';
             return;
         }
 
@@ -458,6 +470,7 @@
             .then(exists => {
                 if (exists) {
                     duplicateErrorMessage.style.display = 'block';
+                    duplicateErrorMessage.innerText='Tên đế giày không được trùng!';
                     return;
                 }
 
@@ -562,7 +575,7 @@
 </script>
 </body>
 </html>
-
+<!--câp nhật trạng thái-->
 <script>
     function confirmUpdate(form) {
         Swal.fire({
