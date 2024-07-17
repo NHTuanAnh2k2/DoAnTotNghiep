@@ -199,10 +199,11 @@ public interface ThongKeRepository extends JpaRepository<HoaDon, Integer> {
             "GROUP BY sct.MaSanPhamChiTiet, sp.TenSanPham + ' [' + kc.Ten + ' - ' + ms.Ten + ']', sct.GiaTien\n" +
             "ORDER BY COALESCE(SUM(ct.SoLuong), 0) DESC",nativeQuery = true)
     List<Object[]> soLuongDaBan();
-    @Query(value = "SELECT ct.sanphamchitiet.masanphamchitiet, ct.sanphamchitiet.sanpham.tensanpham || ' [' || ct.sanphamchitiet.kichco.ten || ' - ' || ct.sanphamchitiet.mausac.ten|| ']', ct.sanphamchitiet.giatien,ct.sanphamchitiet.soluong \n" +
-            "FROM HoaDonChiTiet ct \n " +
-            "WHERE ct.sanphamchitiet.soluong <= 10 \n" +
-            "ORDER BY ct.sanphamchitiet.soluong ASC")
+    @Query(value = "SELECT ct.masanphamchitiet, ct.sanpham.tensanpham || ' [' || ct.kichco.ten || ' - ' || ct.mausac.ten|| ']', ct.giatien, ct.soluong \n" +
+            "FROM SanPhamChiTiet ct \n " +
+            "WHERE ct.soluong <= 10 \n" +
+            "GROUP BY ct.masanphamchitiet, ct.sanpham.tensanpham || ' [' || ct.kichco.ten || ' - ' || ct.mausac.ten|| ']', ct.giatien, ct.soluong \n"+
+            "ORDER BY ct.soluong ASC")
     List<Object[]> soLuongTon();
     @Query(value = "WITH DateRange AS (\n" +
             "SELECT CAST(GETDATE() - 6 AS DATE) AS SaleDay\n" +

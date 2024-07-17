@@ -870,6 +870,7 @@ public class BanHangController {
             hdset1.setTennguoinhan(thongTin.getTen());
             hdset1.setSdt(thongTin.getSdt());
             hdset1.setEmail(thongTin.getEmail());
+            hdset1.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
 //            hdset1.setNgaygiaodukien();
             long unixTimestamp = Long.valueOf(thongTin.getNgaygiaodukien());
             // Convert Unix timestamp to milliseconds
@@ -956,10 +957,8 @@ public class BanHangController {
             hdset1.setTennguoinhan(thongTin.getTen());
             hdset1.setSdt(thongTin.getSdt());
             hdset1.setEmail(thongTin.getEmail());
+            hdset1.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
             //hdset1.setNgaygiaodukien();
-
-
-            System.out.println("abcabcabc");
             long unixTimestamp = Long.valueOf(thongTin.getNgaygiaodukien());
             // Convert Unix timestamp to milliseconds
             long milliseconds = unixTimestamp * 1000;
