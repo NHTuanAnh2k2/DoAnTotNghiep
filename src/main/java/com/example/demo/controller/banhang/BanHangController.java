@@ -471,6 +471,13 @@ public class BanHangController {
         }
         return ResponseEntity.ok(phieutim);
     }
+    //checkphieu
+    @GetMapping("check-phieu/{id}")
+    @ResponseBody
+    public ResponseEntity<?> checkphieu(@PathVariable("id") String id) {
+        PhieuGiamGia phieutim = daoPGG.findPhieuGiamGiaById(Integer.valueOf(id));
+        return ResponseEntity.ok(phieutim);
+    }
 //hiển thị all phiếu giảm
 
     @GetMapping("show-all-voucher")
