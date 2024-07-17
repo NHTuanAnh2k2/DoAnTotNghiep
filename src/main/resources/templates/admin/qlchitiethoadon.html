@@ -997,15 +997,33 @@
                                                 <h6 style="font-family: 'Times New Roman'; font-weight: bold">Phiếu giảm
                                                     giá
                                                     :</h6>
-                                                <p th:text="${phieuGiamCT.phieugiamgia.loaiphieu==false?#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiam, 0, 'COMMA', 0, 'POINT')+'&#x20ab;':phieuGiamCT.phieugiamgia.giatrigiam+' %, tối đa '+#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiamtoida, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
-                                                    style="font-family: 'Times New Roman'; font-size: 16px;">
-                                                </p>
+
+                                                <span th:if="${phieuGiamCT.id!=null}">
+                                                    <p th:text="${phieuGiamCT.phieugiamgia.loaiphieu==false?#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiam, 0, 'COMMA', 0, 'POINT')+'&#x20ab;':phieuGiamCT.phieugiamgia.giatrigiam+' %, tối đa '+#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiamtoida, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                        style="font-family: 'Times New Roman'; font-size: 16px;">
+                                                    </p>
+                                                </span>
+                                                <span th:if="${phieuGiamCT.id==null}">
+                                                    <span class="applied-reduction-code"
+                                                        style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px;">
+                                                        <svg width="16" height="15" xmlns="http://www.w3.org/2000/svg"
+                                                            class="applied-reduction-code-icon" fill="#CE4549">
+                                                            <path
+                                                                d="M14.476 0H8.76c-.404 0-.792.15-1.078.42L.446 7.207c-.595.558-.595 1.463 0 2.022l5.703 5.35c.296.28.687.42 1.076.42.39 0 .78-.14 1.077-.418l7.25-6.79c.286-.268.447-.632.447-1.01V1.43C16 .64 15.318 0 14.476 0zm-2.62 5.77c-.944 0-1.713-.777-1.713-1.732 0-.954.77-1.73 1.714-1.73.945 0 1.714.776 1.714 1.73 0 .955-.768 1.73-1.713 1.73z">
+                                                            </path>
+                                                        </svg>
+                                                        <span class="applied-reduction-code-information" 
+                                                            style="background-color: #D3D3D3;">Không áp dụng
+                                                            !</span>
+                                                    </span>
+                                                </span>
+
                                             </div>
                                             <div class="d-flex justify-content-between">
                                                 <h6 style="font-family: 'Times New Roman'; font-weight: bold">Tổng tiền
                                                     giảm
                                                     :</h6>
-                                                <p th:text="${#numbers.formatDecimal(phieuGiamCT.tiengiam, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                <p th:text="${phieuGiamCT.tiengiam!=null?#numbers.formatDecimal(phieuGiamCT.tiengiam, 0, 'COMMA', 0, 'POINT')+'&#x20ab;':#numbers.formatDecimal(0, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
                                                     style="font-family: 'Times New Roman'; font-size: 16px;">
                                                 </p>
                                             </div>

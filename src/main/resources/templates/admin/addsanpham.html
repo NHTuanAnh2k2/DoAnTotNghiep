@@ -4,6 +4,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<!--màu cho modal-->
 <style>
     /* CSS cho các tùy chọn được chọn và khi hover */
     .select2-container--default .select2-results__option--highlighted {
@@ -12,6 +14,7 @@
     }
 </style>
 
+<!--màu cho select2-->
 <style>
     .select2-container--default .select2-selection__choice {
         background-color: rgb(249, 72, 42) !important;
@@ -19,6 +22,8 @@
         border-color: rgb(249, 72, 42) !important;
     }
 </style>
+
+<!--màu cho checkbox-->
 <style>
     .size-button {
         background-color: transparent !important;
@@ -31,6 +36,7 @@
         color: white !important;
     }
 </style>
+
 <style>
     #idThuongHieu:hover {
         cursor: pointer; /* Đổi con trỏ chuột thành bàn tay khi hover vào select */
@@ -58,7 +64,7 @@
     tr {
     }
 </style>
-
+<!-- ảnh-->
 <style>
     .checkbox-red:checked {
         background-color: red;
@@ -669,29 +675,22 @@
                 </div>
             </form>
         </div>
-        <form th:action="@{/addImage}" name="addImage" method="post" enctype="multipart/form-data"
-              onsubmit="return validateForm2()">
-            <a id="editButton" class="btn disabled"
-               style="margin-left: 900px;margin-bottom: 15px;background-color:rgb(249,72,42);color: white"
-               data-bs-toggle="modal" data-bs-target="#chinhsuasoluongvagia">Chỉnh sửa số lượng và giá chung</a>
-            <button class="btn-sm btn-dark" style="margin-left: 10px; margin-bottom: 15px"
-                    type="submit"
-                    id="submitButton">Hoàn tất
-            </button>
+        <form th:action="@{/addImage}" name="addImage" method="post" enctype="multipart/form-data" onsubmit="return validateForm2()">
+            <div id="error-message" style="color: red;"></div> <!-- Thông báo lỗi -->
+            <a id="editButton" class="btn disabled" style="margin-left: 900px;margin-bottom: 15px;background-color:rgb(249,72,42);color: white" data-bs-toggle="modal" data-bs-target="#chinhsuasoluongvagia">Chỉnh sửa số lượng và giá chung</a>
+            <button class="btn-sm btn-dark" style="margin-left: 10px; margin-bottom: 15px" type="submit" id="submitButton">Hoàn tất</button>
+
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <table id="example2" style="width: 100%"
-                                           class="table-bordered table-hover text-center">
+                                    <table id="example2" style="width: 100%" class="table-bordered table-hover text-center">
                                         <thead style="background-color:rgb(249,72,42);height: 50px;color: white">
                                         <tr>
                                             <th style="padding-left: 30px">
-                                                <input type="checkbox" name="chontatcactsp" id="chontatcactsp"
-                                                       onchange="selectAll(this)"
-                                                       class="form-check-input checkbox checkbox-red">
+                                                <input type="checkbox" name="chontatcactsp" id="chontatcactsp" onchange="selectAll(this)" class="form-check-input checkbox checkbox-red">
                                             </th>
                                             <th>STT</th>
                                             <th>Tên sản phẩm</th>
@@ -702,47 +701,29 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr th:each="spctt,stt:${sanphamchitiet}" class="product-row">
+                                        <tr th:each="spctt, stt : ${sanphamchitiet}" class="product-row">
                                             <td>
-                                                <input type="checkbox" class="form-check-input checkbox checkbox-red"
-                                                       th:value="${spctt.id}" onchange="toggleRowHighlight(this)"
-                                                       name="chonspct">
+                                                <input type="checkbox" class="form-check-input checkbox checkbox-red" th:value="${spctt.id}" onchange="toggleRowHighlight(this)" name="chonspct">
                                             </td>
                                             <td>
-                                                <span style="margin-left: 7px" th:text="${stt.index+1}"></span>
+                                                <span style="margin-left: 7px" th:text="${stt.index + 1}"></span>
                                             </td>
-                                            <!--                                            <td th:text="${spctt.sanpham.tensanpham} +' '+ '[' + ${spctt.kichco.ten} + '-' + ${spctt.mausac.ten} + ']'"></td>-->
                                             <td>
-    <span th:if="${#strings.length(spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']') > 40}"
-          th:text="${#strings.substring(spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']', 0, 40)} + '...'">
-    </span>
+                                            <span th:if="${#strings.length(spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']') > 40}"
+                                                  th:text="${#strings.substring(spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']', 0, 40)} + '...'"></span>
                                                 <span th:unless="${#strings.length(spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']') > 40}"
-                                                      th:text="${spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']' }">
-    </span>
-                                            </td>
-                                            <!--                                            <td>-->
-                                            <!--                                                <input type="text" style="width: 70px; height: 30px"-->
-                                            <!--                                                       class="form-control" th:value="${spctt.soluong}">-->
-                                            <!--                                            </td>-->
-                                            <td>
-                                                <span style="width: 70px; height: 30px; line-height: 30px;"
-                                                      th:text="${spctt.soluong}"></span>
-                                            </td>
-                                            <!--                                            <td>-->
-                                            <!--                                                <input type="text"-->
-                                            <!--                                                       style="width: 150px; height: 30px;color: red;font-weight: bold"-->
-                                            <!--                                                       class="form-control"-->
-                                            <!--                                                       th:value="${#numbers.formatDecimal(spctt.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}">-->
-                                            <!--                                            </td>-->
-                                            <td>
-    <span style="width: 150px; height: 30px; color: red; font-weight: bold; line-height: 30px;"
-          th:text="${#numbers.formatDecimal(spctt.giatien, 0, 'COMMA', 0, 'POINT')} + '&#x20ab;'"></span>
+                                                      th:text="${spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']' }"></span>
                                             </td>
                                             <td>
-                                                <a th:href="@{/deleteCTSP/{id}(id=${spctt.id})}"
-                                                   style="color: rgb(249,72,42)" onclick="return xoa(event)">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
-                                                         fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                <span style="width: 70px; height: 30px; line-height: 30px;" th:text="${spctt.soluong}"></span>
+                                            </td>
+                                            <td>
+                                            <span style="width: 150px; height: 30px; color: red; font-weight: bold; line-height: 30px;"
+                                                  th:text="${#numbers.formatDecimal(spctt.giatien, 0, 'COMMA', 0, 'POINT')} + '&#x20ab;'"></span>
+                                            </td>
+                                            <td>
+                                                <a th:href="@{/deleteCTSP/{id}(id=${spctt.id})}" style="color: rgb(249,72,42)" onclick="return xoa(event)">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                                                         <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
                                                     </svg>
                                                 </a>
@@ -1082,14 +1063,26 @@
 </script>
 
 <!--thông báo xóa-->
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const successMessage = sessionStorage.getItem('successMessageXoa');
         if (successMessage) {
             // Hiển thị thông báo ở góc bên phải màn hình
-            toastr.info(successMessage, 'Thông báo', {
-                positionClass: 'toast-top-right',
-                timeOut: 1000
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: 'success',
+                title: successMessage
             });
 
             // Xóa thông báo khỏi sessionStorage sau khi hiển thị
@@ -1097,6 +1090,7 @@
         }
     });
 </script>
+
 
 <!--dùng cho thêm size-->
 <script>
@@ -1417,6 +1411,7 @@
 <script>
     var giaTriTuCheckbox = []; // Mảng lưu trữ giá trị từ checkbox
 </script>
+
 <!--validate thuộc tính sp trong modal-->
 <script th:inline="javascript">
     /*<![CDATA[*/
@@ -1426,13 +1421,12 @@
     var objectsFromControllerMauSac = /*[[${ms}]]*/ [];
     var objectsFromControllerKichCo = /*[[${kc}]]*/ [];
     var objectsFromControllerTenSP = /*[[${sp}]]*/ [];
-
+    const specialCharPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+    const specialCharPatternSo = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?0-9]/;
     function validateTrungTenSP() {
         var inputMaTenSP = document.getElementById("tenInputTenSP").value;
         var errorMaTenSP = document.getElementById("errorTenSP");
         var isMaValid = true;
-
-
         // Kiểm tra xem trường "Tên sản phẩm" có trống không và không vượt quá 20 ký tự
         if (inputMaTenSP.trim() === "") {
             errorMaTenSP.innerText = "Vui lòng nhập tên sản phẩm.";
@@ -1443,21 +1437,28 @@
         } else if (inputMaTenSP.trim().length > 20) {
             errorMaTenSP.innerText = "Tên sản phẩm không được vượt quá 20 ký tự.";
             return false; // Ngăn form được gửi đi
-        } else if (/[^a-zA-Z0-9\sĐđÊêÔôÁáÀàẢảÃãẤấẦầỄễẾếẸẹ]/.test(inputMaTenSP.trim())) {
+        }
+        else if (specialCharPattern.test(inputMaTenSP.trim())) {
             errorMaTenSP.innerText = "Tên sản phẩm không được chứa ký tự đặc biệt.";
             return false; // Ngăn form được gửi đi
-        } else {
+        }
+        else {
             errorMaTenSP.innerText = ""; // Xóa thông báo lỗi nếu có
         }
 
-// Kiểm tra trùng tên sản phẩm (không phân biệt chữ hoa chữ thường)
+// Kiểm tra trùng tên sản phẩm (không phân biệt chữ hoa chữ thường và khoảng trắng)
         for (var i = 0; i < objectsFromControllerTenSP.length; i++) {
             var obj = objectsFromControllerTenSP[i];
-            if (inputMaTenSP.trim().toLowerCase() === obj.tensanpham.trim().toLowerCase()) {
+            // Loại bỏ khoảng trắng và chuyển đổi về chữ thường để so sánh
+            var normalizedInput = inputMaTenSP.trim().replace(/\s+/g, ' ').toLowerCase();
+            var normalizedObjName = obj.tensanpham.trim().replace(/\s+/g, ' ').toLowerCase();
+
+            if (normalizedInput === normalizedObjName) {
                 errorMaTenSP.innerText = "Tên sản phẩm đã tồn tại!";
                 return false; // Ngăn form được gửi đi
             }
         }
+
 
         if (isMaValid) {
             errorMaTenSP.innerText = "";
@@ -1483,16 +1484,22 @@
         } else if (inputMaThuongHieu.trim().length > 20) {
             errorMaThuongHieu.innerText = "Tên thương hiệu không được vượt quá 20 ký tự.";
             return false; // Ngăn form được gửi đi
-        } else if (/[^a-zA-Z0-9\sĐđÊêÔôÁáÀàẢảÃãẤấẦầỄễẾếẸẹ]/.test(inputMaThuongHieu.trim())) {
+        }
+        else if (specialCharPattern.test(inputMaThuongHieu.trim())) {
             errorMaThuongHieu.innerText = "Tên thương hiệu không được chứa ký tự đặc biệt.";
             return false; // Ngăn form được gửi đi
-        } else {
+        }
+        else {
             errorMaThuongHieu.innerText = ""; // Xóa thông báo lỗi nếu có
         }
-        // Kiểm tra trùng tên thương hiệu (không phân biệt chữ hoa chữ thường)
+        // Kiểm tra trùng tên thương hiệu (không phân biệt chữ hoa chữ thường và khoảng trắng)
         for (var i = 0; i < objectsFromControllerThuongHieu.length; i++) {
             var obj = objectsFromControllerThuongHieu[i];
-            if (inputMaThuongHieu.trim().toLowerCase() === obj.ten.trim().toLowerCase()) {
+            // Loại bỏ khoảng trắng và chuyển đổi về chữ thường để so sánh
+            var normalizedInput = inputMaThuongHieu.trim().replace(/\s+/g, ' ').toLowerCase();
+            var normalizedObjName = obj.ten.trim().replace(/\s+/g, ' ').toLowerCase();
+
+            if (normalizedInput === normalizedObjName) {
                 errorMaThuongHieu.innerText = "Tên thương hiệu đã tồn tại!";
                 isMaValid = false; // Đánh dấu không hợp lệ
                 return false; // Ngăn form được gửi đi
@@ -1524,21 +1531,28 @@
         } else if (inputMaChatLieu.trim().length > 20) {
             errorMaChatLieu.innerText = "Tên chất liệu không được vượt quá 20 ký tự.";
             return false; // Ngăn form được gửi đi
-        } else if (/[^a-zA-Z0-9\sĐđẸệÊêÍíÓóƠơỦủÀàÁáẠạẢảÃãẤấẦầẪẫẬậÊêẾếỂểỄễỆệÍíÓóÔôƠơÙùÚúỦủÝý]/.test(inputMaChatLieu.trim())) {
+        }
+        else if (specialCharPattern.test(inputMaChatLieu.trim())) {
             errorMaChatLieu.innerText = "Tên chất liệu không được chứa ký tự đặc biệt.";
             return false; // Ngăn form được gửi đi
-        } else {
+        }
+        else {
             errorMaChatLieu.innerText = ""; // Xóa thông báo lỗi nếu có
         }
 
-// Kiểm tra trùng tên chất liệu (không phân biệt chữ hoa chữ thường)
+// Kiểm tra trùng tên chất liệu (không phân biệt chữ hoa chữ thường và khoảng trắng)
         for (var i = 0; i < objectsFromControllerChatLieu.length; i++) {
             var obj = objectsFromControllerChatLieu[i];
-            if (inputMaChatLieu.trim().toLowerCase() === obj.ten.trim().toLowerCase()) {
+            // Loại bỏ khoảng trắng và chuyển đổi về chữ thường để so sánh
+            var normalizedInput = inputMaChatLieu.trim().replace(/\s+/g, ' ').toLowerCase();
+            var normalizedObjName = obj.ten.trim().replace(/\s+/g, ' ').toLowerCase();
+
+            if (normalizedInput === normalizedObjName) {
                 errorMaChatLieu.innerText = "Tên chất liệu đã tồn tại!";
                 return false; // Ngăn form được gửi đi
             }
         }
+
 
         if (isMaValid) {
             errorMaChatLieu.innerText = "";
@@ -1563,20 +1577,28 @@
         } else if (inputMaDeGiay.trim().length > 20) {
             errorMaDeGiay.innerText = "Tên đế giày không được vượt quá 20 ký tự.";
             return false; // Ngăn form được gửi đi
-        } else if (/[^a-zA-Z0-9\sĐđÊêÔôÁáÀàẢảÃãẤấẦầỄễẾếẸẹ]/.test(inputMaDeGiay.trim())) {
+        }
+        else if (specialCharPattern.test(inputMaDeGiay.trim())) {
             errorMaDeGiay.innerText = "Tên đế giày không được chứa ký tự đặc biệt.";
             return false; // Ngăn form được gửi đi
-        } else {
+        }
+        else {
             errorMaDeGiay.innerText = ""; // Xóa thông báo lỗi nếu có
         }
 // Kiểm tra trùng tên đế giày (không phân biệt chữ hoa chữ thường)
+        // Kiểm tra trùng tên đế giày (không phân biệt chữ hoa chữ thường và khoảng trắng)
         for (var i = 0; i < objectsFromControllerDeGiay.length; i++) {
             var obj = objectsFromControllerDeGiay[i];
-            if (inputMaDeGiay.trim().toLowerCase() === obj.ten.trim().toLowerCase()) {
+            // Loại bỏ khoảng trắng và chuyển đổi về chữ thường để so sánh
+            var normalizedInput = inputMaDeGiay.trim().replace(/\s+/g, ' ').toLowerCase();
+            var normalizedObjName = obj.ten.trim().replace(/\s+/g, ' ').toLowerCase();
+
+            if (normalizedInput === normalizedObjName) {
                 errorMaDeGiay.innerText = "Tên đế giày đã tồn tại!";
                 return false; // Ngăn form được gửi đi
             }
         }
+
         if (isMaValid) {
             errorMaDeGiay.innerText = "";
             themDeGiay();
@@ -1597,21 +1619,28 @@
         } else if (inputMaMauSac.trim().length > 20) {
             errorMaMauSac.innerText = "Tên màu sắc không được vượt quá 20 ký tự.";
             return false; // Ngăn form được gửi đi
-        } else if (/[^a-zA-Z\sĐđÊêÔôÁáÀàẢảÃãẤấẦầỄễẾếẸẹ]/.test(inputMaMauSac.trim())) {
-            errorMaMauSac.innerText = "Tên màu sắc không được chứa ký tự đặc biệt hoặc số.";
+        }
+        else if (specialCharPatternSo.test(inputMaMauSac.trim())) {
+            errorMaMauSac.innerText = "Tên màu sắc không được chứa ký tự đặc biệt và số.";
             return false; // Ngăn form được gửi đi
-        } else {
+        }
+        else {
             errorMaMauSac.innerText = ""; // Xóa thông báo lỗi nếu có
         }
 
-// Kiểm tra trùng tên màu sắc (không phân biệt chữ hoa chữ thường)
+// Kiểm tra trùng tên màu sắc (không phân biệt chữ hoa chữ thường và khoảng trắng)
         for (var i = 0; i < objectsFromControllerMauSac.length; i++) {
             var obj = objectsFromControllerMauSac[i];
-            if (inputMaMauSac.trim().toLowerCase() === obj.ten.trim().toLowerCase()) {
+            // Loại bỏ khoảng trắng và chuyển đổi về chữ thường để so sánh
+            var normalizedInput = inputMaMauSac.trim().replace(/\s+/g, ' ').toLowerCase();
+            var normalizedObjName = obj.ten.trim().replace(/\s+/g, ' ').toLowerCase();
+
+            if (normalizedInput === normalizedObjName) {
                 errorMaMauSac.innerText = "Tên màu sắc đã tồn tại!";
                 return false; // Ngăn form được gửi đi
             }
         }
+
 
         if (isMaValid) {
             errorMaMauSac.innerText = "";
@@ -1641,14 +1670,19 @@
         }
 
 
-// Kiểm tra trùng tên kích cỡ (không phân biệt chữ hoa chữ thường)
+// Kiểm tra trùng tên kích cỡ (không phân biệt chữ hoa chữ thường và khoảng trắng)
         for (var i = 0; i < objectsFromControllerKichCo.length; i++) {
             var obj = objectsFromControllerKichCo[i];
-            if (inputMaKichCo.trim().toLowerCase() === obj.ten.trim().toLowerCase()) {
+            // Loại bỏ khoảng trắng và chuyển đổi về chữ thường để so sánh
+            var normalizedInput = inputMaKichCo.trim().replace(/\s+/g, ' ').toLowerCase();
+            var normalizedObjName = obj.ten.trim().replace(/\s+/g, ' ').toLowerCase();
+
+            if (normalizedInput === normalizedObjName) {
                 errorMaKichCo.innerText = "Tên kích cỡ đã tồn tại!";
                 return false; // Ngăn form được gửi đi
             }
         }
+
 
         if (isMaValid) {
             errorMaKichCo.innerText = "";
@@ -1855,24 +1889,20 @@
 <!--validate hoàn tất-->
 <script>
     function validateForm2() {
-        return hoantat();
+        const rows = document.querySelectorAll('.product-row');
+        let valid = true;
 
-    }
+        rows.forEach(row => {
+            const anh1 = row.querySelector('input[name="anh1"]').files.length;
+            const anh2 = row.querySelector('input[name="anh2"]').files.length;
+            const anh3 = row.querySelector('input[name="anh3"]').files.length;
 
-    function hoantat() {
-        // Sử dụng SweetAlert2 thay vì hộp thoại confirm
-        Swal.fire({
-            title: 'Bạn xác nhận không?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Có',
-            cancelButtonText: 'Không'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
+            // Kiểm tra nếu không có ảnh nào được chọn
+            if (anh1 === 0 && anh2 === 0 && anh3 === 0) {
+                valid = false;
                 const Toast = Swal.mixin({
                     toast: true,
-                    position: "top-end",
+                    position: 'top-end',
                     showConfirmButton: false,
                     timer: 3000,
                     timerProgressBar: true,
@@ -1881,16 +1911,31 @@
                         toast.onmouseleave = Swal.resumeTimer;
                     }
                 });
-                setTimeout(function () {
-                    // Lưu thông báo vào sessionStorage
-                    sessionStorage.setItem('successMessageHoanTat', 'Thêm thành công!');
-                    document.addImage.submit();
+                Toast.fire({
+                    icon: 'warning',
+                    title: 'Mỗi biến thể sản phẩm phải có ít nhất một ảnh.'
                 });
             }
         });
 
-        // Ngăn form được gửi đi ngay lập tức
-        return false;
+        // Nếu tất cả đều hợp lệ, gọi hàm xác nhận
+        if (!valid) return false; // Ngăn không cho gửi form
+        return hoantat();
+    }
+
+    function hoantat() {
+        Swal.fire({
+            title: 'Bạn có muốn xác nhận không?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.forms['addImage'].submit(); // Gửi biểu mẫu
+            }
+        });
+        return false; // Ngăn không cho gửi form ngay lập tức
     }
 </script>
 
@@ -1922,6 +1967,7 @@
         }
     });
 </script>
+
 <!--thông báo thêm tên sản phẩm thành công-->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -2114,7 +2160,7 @@
                 }
             });
             Toast.fire({
-                icon: 'success',
+                icon: 'error',
                 title: successMessage
             });
             sessionStorage.removeItem('successMessageSuaGia');

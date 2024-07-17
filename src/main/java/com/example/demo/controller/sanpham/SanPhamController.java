@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -99,16 +101,17 @@ public class SanPhamController {
 
 
     @GetMapping("/listsanpham")
-    public String hienthi(@RequestParam(defaultValue = "0") int p, @ModelAttribute("tim") SanPhamInfo info, Model model) {
-        List<Object[]> list = null;
+    public String hienthi(Model model, @ModelAttribute("tim") SanPhamInfo info) {
+        List<Object[]> list;
 
-        // Trim khoảng trắng ở đầu và cuối
-        String trimmedKey = (info.getKey() != null) ? info.getKey().trim() : null;
+        String trimmedKey = (info.getKey() != null) ? info.getKey().trim().replaceAll("\\s+", " ") : null;
+        boolean isKeyEmpty = (trimmedKey == null || trimmedKey.isEmpty());
+        boolean isTrangthaiNull = (info.getTrangthai() == null);
 
-        if (trimmedKey != null && !trimmedKey.isEmpty()) {
-            list = sanPhamRepositoty.findByMasanphamAndTenSanPhamAndTrangThai("%" + trimmedKey + "%", "%" + trimmedKey + "%", info.getTrangthai());
-        } else {
+        if (isKeyEmpty && isTrangthaiNull) {
             list = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc();
+        } else {
+            list = sanPhamRepositoty.findByMasanphamAndTenSanPhamAndTrangThai("%" + trimmedKey + "%", "%" + trimmedKey + "%", info.getTrangthai());
         }
 
         model.addAttribute("list", list);
@@ -182,7 +185,7 @@ public class SanPhamController {
                     KichCo kichCo = kichCoRepository.findByTen(sizeName);
                     if (kichCo != null) {
                         String chuoiNgauNhien = taoChuoiNgauNhien(7, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
-                        String maSanPhamCT= "SPCT" + chuoiNgauNhien;
+                        String maSanPhamCT = "SPCT" + chuoiNgauNhien;
                         nextId2++;
                         SanPhamChiTiet spct = new SanPhamChiTiet();
                         spct.setId(nextId2);
@@ -224,7 +227,7 @@ public class SanPhamController {
                         }
                         if (!found) {
                             String chuoiNgauNhien = taoChuoiNgauNhien(7, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
-                            String maSanPhamCT= "SPCT" + chuoiNgauNhien;
+                            String maSanPhamCT = "SPCT" + chuoiNgauNhien;
                             int lastIndex = sanPhamChiTietList.size() - 1;
                             SanPhamChiTiet lastItem = sanPhamChiTietList.get(lastIndex);
                             int count = lastItem.getId();
@@ -254,6 +257,15 @@ public class SanPhamController {
     }
 
 
+    @GetMapping("/detailsanpham/{id}")
+    public String detailsanpham(@PathVariable Integer id, Model model) {
+        SanPham sanPham = sanPhamRepositoty.findById(id).orElse(null);
+        model.addAttribute("sanpham", sanPham);
+        model.addAttribute("sanphamchitiet", sanPham.getSpct());
+        return "admin/qlchitietsanpham";
+    }
+
+
     @GetMapping("/deleteCTSP/{id}")
     public String deleteCTSP(@PathVariable Integer id, Model model) {
         for (Iterator<SanPhamChiTiet> iterator = sanPhamChiTietList.iterator(); iterator.hasNext(); ) {
@@ -270,16 +282,37 @@ public class SanPhamController {
 
     @PostMapping("/addImage")
     public String addImage(
-            Model model,
             @RequestParam(name = "anh1") List<MultipartFile> anhFiles1,
             @RequestParam(name = "anh2") List<MultipartFile> anhFiles2,
             @RequestParam(name = "anh3") List<MultipartFile> anhFiles3,
-            @RequestParam(name = "spctId") List<Integer> spctIds
+            @RequestParam(name = "spctId") List<Integer> spctIds,
+            RedirectAttributes redirectAttributes,
+            Model model
     ) {
 
-        for (SanPhamChiTiet spct : sanPhamChiTietList) {
-            sanPhamChiTietRepository.save(spct);
+        SanPham sanPham = sanPhamChiTietList.get(0).getSanpham();
+        List<SanPhamChiTiet> listsanPhamChiTietDB = sanPhamChiTietRepository.findBySanpham(sanPham);
+        if (listsanPhamChiTietDB == null || listsanPhamChiTietDB.isEmpty()) {
+            for (SanPhamChiTiet spct : sanPhamChiTietList) {
+                sanPhamChiTietRepository.save(spct);
+            }
+        } else {
+
+            Iterator<SanPhamChiTiet> iterator = sanPhamChiTietList.iterator();
+            while (iterator.hasNext()) {
+                SanPhamChiTiet spct = iterator.next();
+                for (SanPhamChiTiet spctDB : listsanPhamChiTietDB) {
+                    if (spct.getMausac().getId() == spctDB.getMausac().getId() && spct.getKichco().getTen().equals(spctDB.getKichco().getTen())) {
+                        spctDB.setSoluong(spct.getSoluong() + spctDB.getSoluong());
+                        iterator.remove();
+                    }
+                }
+            }
+            for (SanPhamChiTiet spct : sanPhamChiTietList) {
+                sanPhamChiTietRepository.save(spct);
+            }
         }
+
         sanPhamChiTietList.clear();
         if (anhFiles1.size() != anhFiles2.size() || anhFiles1.size() != anhFiles3.size() || anhFiles1.size() != spctIds.size()) {
             System.out.println("Số lượng phần tử của các danh sách không khớp");
@@ -297,6 +330,7 @@ public class SanPhamController {
                 addAnh(spct, anhFile3);
             }
         }
+        redirectAttributes.addFlashAttribute("success", true);
         return "redirect:/listsanpham";
     }
 
@@ -333,13 +367,6 @@ public class SanPhamController {
         }
     }
 
-    @GetMapping("/detailsanpham/{id}")
-    public String detailsanpham(@PathVariable Integer id, Model model) {
-        SanPham sanPham = sanPhamRepositoty.findById(id).orElse(null);
-        model.addAttribute("sanpham", sanPham);
-        model.addAttribute("sanphamchitiet", sanPham.getSpct());
-        return "admin/qlchitietsanpham";
-    }
 
     @PostMapping("/updateGiaAndSoLuong")
     public String updateGiaAndSoLuong(

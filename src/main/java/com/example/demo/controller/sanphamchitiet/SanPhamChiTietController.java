@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -121,42 +123,15 @@ public class SanPhamChiTietController {
                                  @ModelAttribute("tim") ThuocTinhInfo info
 
     ) {
-        List<DeGiay> listDG = null;
-        if (info.getKey() != null) {
-            listDG = deGiayImp.getDeGiayByTen(info.getKey());
-        } else {
-            listDG = deGiayRepository.getAll();
-        }
+        List<DeGiay> listDG = deGiayRepository.findAll();
         model.addAttribute("listDG", listDG);
-        List<ThuongHieu> listTH = null;
-        if (info.getKey() != null) {
-            listTH = thuongHieuImp.getThuongHieuByTenOrTrangthai(info.getKey(), info.getTrangthai());
-        } else {
-            listTH = thuongHieuRepository.findAllByOrderByNgaytaoDesc();
-        }
+        List<ThuongHieu> listTH = thuongHieuRepository.findAll();
         model.addAttribute("listTH", listTH);
-
-        List<ChatLieu> listCL = null;
-        if (info.getKey() != null) {
-            listCL = chatLieuRepository.getChatLieuByTenOrTrangthai(info.getKey(), info.getTrangthai());
-        } else {
-            listCL = chatLieuRepository.findAllByOrderByNgaytaoDesc();
-        }
+        List<ChatLieu> listCL = chatLieuRepository.findAll();
         model.addAttribute("listCL", listCL);
-        List<MauSac> listMS = null;
-        if (info.getKey() != null) {
-            listMS = mauSacRepository.getDeGiayByTenOrTrangthai(info.getKey(), info.getTrangthai());
-        } else {
-            listMS = mauSacRepository.findAllByOrderByNgaytaoDesc();
-        }
+        List<MauSac> listMS = mauSacRepository.findAll();
         model.addAttribute("listMS", listMS);
-
-        List<KichCo> listKC = null;
-        if (info.getKey() != null) {
-            listKC = kichCoRepository.getKichCoByTenOrTrangthai(info.getKey(), info.getTrangthai());
-        } else {
-            listKC = kichCoRepository.findAllByOrderByNgaytaoDesc();
-        }
+        List<KichCo> listKC = kichCoRepository.findAll();
         model.addAttribute("listKC", listKC);
 
         List<SanPham> listSanPham = sanPhamImp.findAll();
@@ -182,7 +157,8 @@ public class SanPhamChiTietController {
     @PostMapping("/updateCTSP/{id}")
     public String updateCTSP(@PathVariable Integer id, @ModelAttribute("hehe") SanPhamChiTiet sanPhamChiTiet,
                              @RequestParam(name = "anhs") List<MultipartFile> anhFiles,
-                             @RequestParam(name = "spctIds") Integer spctId
+                             @RequestParam(name = "spctIds") Integer spctId,
+                             RedirectAttributes redirectAttributes
     ) {
         int doDaiChuoi = 10;
         // Chuỗi chứa tất cả các ký tự có thể có trong chuỗi ngẫu nhiên
@@ -260,6 +236,7 @@ public class SanPhamChiTietController {
         }
 
         Integer firstProductId = sanPhamChiTiet.getSanpham().getId();
+        redirectAttributes.addFlashAttribute("success", true);
         return "redirect:/detailsanpham/" + firstProductId;
     }
 

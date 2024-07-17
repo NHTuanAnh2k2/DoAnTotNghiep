@@ -23,21 +23,17 @@ public class DeGiayController {
     @GetMapping("/listdegiay")
     public String listdegiay(Model model, @ModelAttribute("degiay") DeGiay deGiay, @ModelAttribute("tim") ThuocTinhInfo info) {
         List<DeGiay> list;
-
-        // Trim khoảng trắng ở đầu và cuối
-        String trimmedKey = (info.getKey() != null) ? info.getKey().trim() : null;
-
+        String trimmedKey = (info.getKey() != null) ? info.getKey().trim().replaceAll("\\s+", " ") : null;
         boolean isKeyEmpty = (trimmedKey == null || trimmedKey.isEmpty());
         boolean isTrangthaiNull = (info.getTrangthai() == null);
-
         if (isKeyEmpty && isTrangthaiNull) {
             list = deGiayRepository.findAllByOrderByNgaytaoDesc();
         } else {
-            list = deGiayRepository.findDeGiayByTen(trimmedKey);
+            list = deGiayRepository.findByTenAndTrangthai("%" + trimmedKey + "%", info.getTrangthai());
         }
-
         List<DeGiay> listAll = deGiayRepository.findAll();
         model.addAttribute("listAll", listAll);
+        //dùng listAll để validate
         model.addAttribute("list", list);
         model.addAttribute("fillSearch", trimmedKey);
         model.addAttribute("fillTrangThai", info.getTrangthai());
@@ -70,8 +66,6 @@ public class DeGiayController {
         }
         return "redirect:/listdegiay";
     }
-
-
 
 
     @PostMapping("/addSave")

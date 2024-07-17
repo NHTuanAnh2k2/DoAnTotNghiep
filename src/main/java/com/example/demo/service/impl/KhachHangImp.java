@@ -25,10 +25,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-
+import org.springframework.scheduling.annotation.Async;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -114,6 +115,7 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
         return password.toString();
     }
 
+    @Async
     public void sendEmail(String recipient, String username, String password, String name) {
         // Cấu hình thông tin email
         String host = "smtp.gmail.com";

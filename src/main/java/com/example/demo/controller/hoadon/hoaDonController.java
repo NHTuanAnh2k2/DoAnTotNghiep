@@ -665,7 +665,11 @@ public class hoaDonController {
         List<sanPhamIn> lstin = new ArrayList<>();
         BigDecimal tongTienSP = new BigDecimal("0");
         List<PhieuGiamGiaChiTiet> lstPGGCT = daoPGGCT.timListPhieuTheoHD(hdTT);
-        PhieuGiamGiaChiTiet phieuGiamCT = lstPGGCT.get(0);
+        PhieuGiamGiaChiTiet phieuGiamCT = new PhieuGiamGiaChiTiet();
+        phieuGiamCT.setTiengiam(new BigDecimal("0"));
+        if(lstPGGCT.size()>0){
+             phieuGiamCT = lstPGGCT.get(0);
+        }
         for (HoaDonChiTiet a : lstsp
         ) {
             tongTienSP = tongTienSP.add(a.getGiasanpham().multiply(new BigDecimal(a.getSoluong())));
@@ -877,11 +881,15 @@ public class hoaDonController {
     @GetMapping("delete-sp-hdct/{id}")
     public String deleteSPHDCT(@PathVariable("id") Integer id) {
         HoaDonChiTiet hdDelete = daoHDCT.findByID(id);
+        HoaDon hd = dao.timHDTheoMaHD(hdDelete.getHoadon().getMahoadon());
+
         int slHienTai = hdDelete.getSoluong();
         daoHDCT.deleteById(id);
-        SanPhamChiTiet spUpdateQuantity = hdDelete.getSanphamchitiet();
-        spUpdateQuantity.setSoluong(spUpdateQuantity.getSoluong() + slHienTai);
-        daoSPCT.addSPCT(spUpdateQuantity);
+        if (hd.getLoaihoadon() == false) {
+            SanPhamChiTiet spUpdateQuantity = hdDelete.getSanphamchitiet();
+            spUpdateQuantity.setSoluong(spUpdateQuantity.getSoluong() + slHienTai);
+            daoSPCT.addSPCT(spUpdateQuantity);
+        }
         return "redirect:/hoa-don/showDetail";
     }
 
@@ -890,14 +898,18 @@ public class hoaDonController {
     public String updateSPHDCT(@PathVariable("id") Integer id, @PathVariable("sl") Integer sl) {
         HoaDonChiTiet hdDelete = daoHDCT.findByID(id);
         SanPhamChiTiet spUpdateQuantity = hdDelete.getSanphamchitiet();
+        HoaDon hd = dao.timHDTheoMaHD(hdDelete.getHoadon().getMahoadon());
+
         if (hdDelete.getSoluong() == sl) {
             return "redirect:/hoa-don/showDetail";
         } else {
             if (hdDelete.getSoluong() < sl) {
                 //tăng sl
                 int sltang = sl - hdDelete.getSoluong();
-                spUpdateQuantity.setSoluong(spUpdateQuantity.getSoluong() - sltang);
-                daoSPCT.addSPCT(spUpdateQuantity);
+                if (hd.getLoaihoadon() == false) {
+                    spUpdateQuantity.setSoluong(spUpdateQuantity.getSoluong() - sltang);
+                    daoSPCT.addSPCT(spUpdateQuantity);
+                }
                 hdDelete.setSoluong(sl);
                 daoHDCT.capnhat(hdDelete);
                 return "redirect:/hoa-don/showDetail";
@@ -905,8 +917,10 @@ public class hoaDonController {
         }
         //sl giảm
         int slgiam = hdDelete.getSoluong() - sl;
-        spUpdateQuantity.setSoluong(spUpdateQuantity.getSoluong() + slgiam);
-        daoSPCT.addSPCT(spUpdateQuantity);
+        if (hd.getLoaihoadon() == false) {
+            spUpdateQuantity.setSoluong(spUpdateQuantity.getSoluong() + slgiam);
+            daoSPCT.addSPCT(spUpdateQuantity);
+        }
         hdDelete.setSoluong(sl);
         daoHDCT.capnhat(hdDelete);
         return "redirect:/hoa-don/showDetail";

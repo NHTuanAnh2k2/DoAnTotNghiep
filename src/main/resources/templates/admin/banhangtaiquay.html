@@ -874,14 +874,16 @@
                             <!-- <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white; padding-top: 10px;"
                                 id="maGiamFill">Chưa có mã giảm phù hợp!</p> -->
 
-                            <span class="applied-reduction-code" style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; padding: 3px 15px 3px 15px; padding-top: 10px;">
-                                <svg width="16" height="15" xmlns="http://www.w3.org/2000/svg" 
+                            <span class="applied-reduction-code"
+                                style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; padding: 3px 15px 3px 15px; padding-top: 10px;">
+                                <svg width="16" height="15" xmlns="http://www.w3.org/2000/svg"
                                     class="applied-reduction-code-icon" fill="#CE4549">
                                     <path
                                         d="M14.476 0H8.76c-.404 0-.792.15-1.078.42L.446 7.207c-.595.558-.595 1.463 0 2.022l5.703 5.35c.296.28.687.42 1.076.42.39 0 .78-.14 1.077-.418l7.25-6.79c.286-.268.447-.632.447-1.01V1.43C16 .64 15.318 0 14.476 0zm-2.62 5.77c-.944 0-1.713-.777-1.713-1.732 0-.954.77-1.73 1.714-1.73.945 0 1.714.776 1.714 1.73 0 .955-.768 1.73-1.713 1.73z">
                                     </path>
                                 </svg>
-                                <span class="applied-reduction-code-information"  id="maGiamFill" style="background-color: #D3D3D3;">Chưa có mã giảm phù hợp!</span>
+                                <span class="applied-reduction-code-information" id="maGiamFill"
+                                    style="background-color: #D3D3D3;">Chưa có mã giảm phù hợp!</span>
                             </span>
 
                             <button class="btn btn-light" style="margin-bottom: 20px;" data-bs-toggle="modal"
@@ -3255,10 +3257,11 @@ tabindex="0">
                                             <img src="../dist/img/no_product.png" width="300px" height="300px">
                                             <h3 class="text text-danger"><i>Không tìm thấy voucher phù hợp!! <i class="bi bi-emoji-tear"></i>!</i></h3>
                                         </div>`;
-                    }
-                    var htmlvoucher = '';
-                    for (const hd of b) {
-                        htmlvoucher += `
+                    } else {
+                        if (b.length > 0) {
+                            var htmlvoucher = '';
+                            for (const hd of b) {
+                                htmlvoucher += `
                         <div class="ma_giam_gia">
                                 <div class="ma-item-left">
                                     <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
@@ -3285,49 +3288,71 @@ tabindex="0">
                             </div>
                         
                         `;
+                            }
+                            document.getElementById('showvoucher').innerHTML = htmlvoucher;
+                            // 
+                        } else {
+                            document.getElementById('showvoucher').innerHTML = `<div class="tab-pane fade show active text-center fw-bold" id="tatCaHoaDon-tab-pane" role="tabpanel" aria-labelledby="tatCaHoaDon-tab" tabindex="0">
+                                            <br>
+                                            <img src="../dist/img/no_product.png" width="300px" height="300px">
+                                            <h3 class="text text-danger"><i>Không tìm thấy voucher phù hợp!! <i class="bi bi-emoji-tear"></i>!</i></h3>
+                                        </div>`;
+                        }
                     }
-                    document.getElementById('showvoucher').innerHTML = htmlvoucher;
-                    // 
+
                 })
         }
         //sự kiện áp dụng mã giảm 
         function apdungvoucher(inputs) {
-            fetch(inputs)
+            var urlcheckapp = "http://localhost:8080/ban-hang-tai-quay/check-phieu/" + inputs.split('/').pop();
+            fetch(urlcheckapp)
                 .then(function (a) {
                     return a.json();
                 })
                 .then(function (b) {
                     if (tongTienDon >= b.dontoithieu) {
-                        if (b.id != null) {
-                            if (b.loaiphieu == true) {
-                                // phiếu %
-                                if (b.giatrigiam * (tongTienDon / 100) > b.giatrigiamtoida) {
-                                    TienGiamDon = b.giatrigiamtoida;
+                        fetch(inputs)
+                            .then(function (a) {
+                                return a.json();
+                            })
+                            .then(function (b) {
+
+                                if (b.id != null) {
+                                    if (b.loaiphieu == true) {
+                                        // phiếu %
+                                        if (b.giatrigiam * (tongTienDon / 100) > b.giatrigiamtoida) {
+                                            TienGiamDon = b.giatrigiamtoida;
+                                        } else {
+                                            TienGiamDon = b.giatrigiam * (tongTienDon / 100);
+                                        }
+
+                                    } else {
+                                        // phiếu vnđ
+                                        TienGiamDon = b.giatrigiam;
+                                    }
+                                    tienkhachthanhtoan = tongTienDon - TienGiamDon + shipToanCuc;
                                 } else {
-                                    TienGiamDon = b.giatrigiam * (tongTienDon / 100);
+                                    tienkhachthanhtoan = tongTienDon + shipToanCuc;
                                 }
+                                // console.log("tiền tệ")
+                                // console.log('tiền ban đầu:' + tongTienDon)
+                                // console.log('tiền giảm :' + TienGiamDon)
+                                // console.log('tiền tổng thanh toán:' + tienkhachthanhtoan)
+                                thongbao('Áp dụng thành công', 'success')
+                                document.getElementById('maGiamFill').innerHTML = b.macode;
+                                document.getElementById('giamgia').innerHTML = TienGiamDon.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                                document.getElementById('tongThanhToan').innerHTML = (tienkhachthanhtoan - shipToanCuc).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 
-                            } else {
-                                // phiếu vnđ
-                                TienGiamDon = b.giatrigiam;
-                            }
-                            tienkhachthanhtoan = tongTienDon - TienGiamDon + shipToanCuc;
-                        } else {
-                            tienkhachthanhtoan = tongTienDon + shipToanCuc;
-                        }
-                        // console.log("tiền tệ")
-                        // console.log('tiền ban đầu:' + tongTienDon)
-                        // console.log('tiền giảm :' + TienGiamDon)
-                        // console.log('tiền tổng thanh toán:' + tienkhachthanhtoan)
-                        thongbao('Áp dụng thành công', 'success')
-                        document.getElementById('maGiamFill').innerHTML = b.macode;
-                        document.getElementById('giamgia').innerHTML = TienGiamDon.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-                        document.getElementById('tongThanhToan').innerHTML = (tienkhachthanhtoan - shipToanCuc).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 
+                            })
                     } else {
                         thongbao('Hóa đơn chưa đạt đủ số tiền tối thiểu!', 'warning');
                     }
+
                 })
+
+
+
 
         }
     </script>

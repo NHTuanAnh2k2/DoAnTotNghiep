@@ -1,6 +1,7 @@
 package com.example.demo.controller.chatlieu;
 
 import com.example.demo.entity.ChatLieu;
+import com.example.demo.entity.ThuongHieu;
 import com.example.demo.info.ThuocTinhInfo;
 import com.example.demo.repository.ChatLieuRepository;
 import com.example.demo.service.ChatLieuService;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,14 +24,14 @@ public class ChatLieuController {
     @GetMapping("/chatlieu")
     public String display(@ModelAttribute("search") ThuocTinhInfo info, @ModelAttribute("chatlieu") ChatLieu chatLieu, Model model) {
         List<ChatLieu> list;
-
-        boolean isKeyEmpty = (info.getKey() == null || info.getKey().trim().isEmpty());
+        String trimmedKey = (info.getKey() != null) ? info.getKey().trim().replaceAll("\\s+", " ") : null;
+        boolean isKeyEmpty = (trimmedKey == null || trimmedKey.trim().isEmpty());
         boolean isTrangthaiNull = (info.getTrangthai() == null);
 
         if (isKeyEmpty && isTrangthaiNull) {
-            list = chatLieuRepository.getAll();
+            list = chatLieuRepository.findAllByOrderByNgaytaoDesc();
         } else {
-            list = chatLieuRepository.findChatLieuByTenAndTrangThaiFalse(info.getKey());
+            list = chatLieuRepository.findByTenAndTrangthai("%" + trimmedKey + "%", info.getTrangthai());
         }
 
         model.addAttribute("fillSearch", info.getKey());
@@ -37,11 +40,24 @@ public class ChatLieuController {
         return "admin/qlchatlieu";
     }
 
+    @PostMapping("/chatlieu/updateTrangThai/{id}")
+    public String updateTrangThaiChatLieu(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        ChatLieu existingChatLieu = chatLieuRepository.findById(id).orElse(null);
+        if (existingChatLieu != null) {
+            existingChatLieu.setTrangthai(!existingChatLieu.getTrangthai());
+            chatLieuRepository.save(existingChatLieu);
+            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật trạng thái thành công!");
+        }
+        return "redirect:/chatlieu";
+    }
+
+
     @PostMapping("/updateChatLieu/{id}")
     public String updateChatLieu(@PathVariable Integer id) {
         chatLieuRepository.updateTrangThaiToFalseById(id);
         return "redirect:/chatlieu";
     }
+
     @PostMapping("/add")
     public String add(Model model, @ModelAttribute("chatlieu") ChatLieu chatLieu) {
         String trimmedTenChatLieu = (chatLieu.getTen() != null)

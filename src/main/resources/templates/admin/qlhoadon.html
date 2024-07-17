@@ -341,7 +341,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr th:each="a:${lst}">
+                                                        <tr th:each="a:${lst}" th:if= "${a.tongtien!=null}">
                                                             <td th:text="${aStat.index+1}"></td>
                                                             <td th:text="${a.mahoadon}"></td>
                                                             <td th:text="${a.nhanvien.manhanvien}"></td>
