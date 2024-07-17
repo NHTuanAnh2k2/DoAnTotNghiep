@@ -471,6 +471,7 @@ public class BanHangController {
         }
         return ResponseEntity.ok(phieutim);
     }
+
     //checkphieu
     @GetMapping("check-phieu/{id}")
     @ResponseBody
@@ -801,7 +802,7 @@ public class BanHangController {
             daoHD.capNhatHD(hdset);
             LocalDateTime currentDateTime = LocalDateTime.now();
             //tạo phiếu giảm giá chi tiết
-            if(phieugiamsaoluu.getMacode()!=null){
+            if (phieugiamsaoluu.getMacode() != null) {
                 phieugiamgiachtietset.setHoadon(hdset);
                 phieugiamgiachtietset.setPhieugiamgia(phieugiamsaoluu);
                 phieugiamgiachtietset.setGiasauapdung(hdset.getTongtien());
@@ -899,13 +900,17 @@ public class BanHangController {
             }
             hoaDonCheckBill = hdset1;
             daoHD.capNhatHD(hdset1);
-            phieugiamgiachtietset.setHoadon(hdset1);
-            phieugiamgiachtietset.setPhieugiamgia(phieugiamsaoluu);
-            phieugiamgiachtietset.setGiasauapdung(hdset1.getTongtien());
-            phieugiamgiachtietset.setGiabandau(tongtienhoadonhientai);
-            phieugiamgiachtietset.setTiengiam(sotiengiam);
             LocalDateTime currentDateTime = LocalDateTime.now();
-            phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
+            if (phieugiamsaoluu.getMacode() != null) {
+                phieugiamgiachtietset.setHoadon(hdset1);
+                phieugiamgiachtietset.setPhieugiamgia(phieugiamsaoluu);
+                phieugiamgiachtietset.setGiasauapdung(hdset1.getTongtien());
+                phieugiamgiachtietset.setGiabandau(tongtienhoadonhientai);
+                phieugiamgiachtietset.setTiengiam(sotiengiam);
+
+                phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
+            }
+
             //trả sau thì cần  fake luôn lịch sử đã xác nhận
             LichSuHoaDon lichSuHoaDon = new LichSuHoaDon();
             //fake nhân viên
@@ -985,15 +990,18 @@ public class BanHangController {
                 hdset1.setHoatoc(false);
             }
             daoHD.capNhatHD(hdset1);
-            phieugiamgiachtietset.setHoadon(hdset1);
-            phieugiamgiachtietset.setPhieugiamgia(phieugiamsaoluu);
-            System.out.println(phieugiamsaoluu.getMacode());
-            phieugiamgiachtietset.setGiasauapdung(hdset1.getTongtien());
-            phieugiamgiachtietset.setGiabandau(tongtienhoadonhientai);
-            phieugiamgiachtietset.setTiengiam(sotiengiam);
             LocalDateTime currentDateTime = LocalDateTime.now();
-            phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
-            daoPGGCT.save(phieugiamgiachtietset);
+            if (phieugiamsaoluu.getMacode() != null) {
+                phieugiamgiachtietset.setHoadon(hdset1);
+                phieugiamgiachtietset.setPhieugiamgia(phieugiamsaoluu);
+                phieugiamgiachtietset.setGiasauapdung(hdset1.getTongtien());
+                phieugiamgiachtietset.setGiabandau(tongtienhoadonhientai);
+                phieugiamgiachtietset.setTiengiam(sotiengiam);
+                phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
+                daoPGGCT.save(phieugiamgiachtietset);
+            }
+
+
             LichSuHoaDon lichSuHoaDon = new LichSuHoaDon();
             //fake nhân viên
             NhanVien nvfake = new NhanVien();
