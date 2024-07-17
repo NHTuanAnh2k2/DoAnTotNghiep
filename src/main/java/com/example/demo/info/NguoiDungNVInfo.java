@@ -39,6 +39,7 @@ public class NguoiDungNVInfo {
 //    @NotNull(message = "Vui lòng chọn giới tính")
     Boolean gioitinh;
     String anh;
+    String taikhoan;
     Timestamp ngaytao;
     String nguoitao;
     Timestamp lancapnhatcuoi;

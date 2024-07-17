@@ -16,8 +16,10 @@ public interface NhanVienService {
     List<NhanVien> getAll();
     public NhanVien add(NhanVienInfo nhanVien);
     public NhanVien update(NhanVienInfo nhanVien, Integer id);
+    public  NhanVien updateS(NhanVien nv);
     NhanVien search(Integer id);
     List<NhanVien> searchND(String ten, Boolean trangThai, Date batDau, Date ketThuc);
+    List<NhanVien> searchNDs(String ten, Date batDau, Date ketThuc);
     List<NhanVien> searchKey(NhanVienSearch nhanVienSearch);
     List<NhanVien> searchStart(String ten, Boolean trangThai, Date batDau);
     List<NhanVien> searchEnd(String ten, Boolean trangThai, Date ketThuc);

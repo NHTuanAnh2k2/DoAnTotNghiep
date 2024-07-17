@@ -56,7 +56,11 @@ public class DiaChiImpl implements DiaChiService {
         dc.setTinhthanhpho(diaChi.getTinhthanhpho());
         dc.setNguoicapnhat("");
         dc.setLancapnhatcuoi(new Timestamp(new Date().getTime()));
-        dc.setTrangthai(true);
+        return diaChiRepository.save(dc);
+    }
+
+    @Override
+    public DiaChi updateS(DiaChi dc) {
         return diaChiRepository.save(dc);
     }
 
@@ -68,6 +72,11 @@ public class DiaChiImpl implements DiaChiService {
     @Override
     public List<DiaChi> searchND(String ten, Boolean trangThai, java.sql.Date batDau, java.sql.Date ketThuc) {
         return diaChiRepository.findByKey(ten,batDau,ketThuc,trangThai);
+    }
+
+    @Override
+    public List<DiaChi> searchNDs(String ten, java.sql.Date batDau, java.sql.Date ketThuc) {
+        return diaChiRepository.findByKeys(ten,batDau,ketThuc);
     }
 
     @Override

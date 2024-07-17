@@ -403,167 +403,17 @@
     function goBack() {
         window.location.href = 'qlnhanvien';
     }
-    // function decodeUTF8(text) {
-    //     // Chuyển đổi các ký tự không hợp lệ
-    //     var decodedText = text.replace(/Ã¹/g, "ù")
-    //         .replace(/á»/g, "ị")
-    //         .replace(/á»/g, "ỉ")
-    //         .replace(/á»/g, "ệ")
-    //         .replace(/á»/g, "ộ")
-    //         .replace(/á»‹/g, "ị")
-    //         .replace(/á»ˆ/g, "Ẹ")
-    //         .replace(/á»/g, "Ệ")
-    //         .replace(/á»”/g, "Ọ")
-    //         .replace(/á»–/g, "Ộ")
-    //         .replace(/á»’/g, "Ớ")
-    //         .replace(/á»œ/g, "Ờ")
-    //         .replace(/á»ž/g, "Ợ")
-    //         .replace(/á»˜/g, "Ờ")
-    //         .replace(/á»´/g, "Ỵ")
-    //         .replace(/á»ª/g, "Ừ")
-    //         .replace(/á»¦/g, "Ử")
-    //         .replace(/á»¨/g, "Ữ")
-    //         .replace(/á»¬/g, "Ự")
-    //         .replace(/á»´/g, "Ỵ")
-    //         .replace(/áº/g, "ấ")
-    //         .replace(/áºƒ/g, "ầ")
-    //         .replace(/áº…/g, "ẩ")
-    //         .replace(/áº‡/g, "ậ")
-    //         .replace(/áº/g, "ẩ")
-    //         .replace(/áº‹/g, "ẻ")
-    //         .replace(/áº/g, "ẽ")
-    //         .replace(/áº/g, "ế")
-    //         .replace(/áº“/g, "ề")
-    //         .replace(/áº—/g, "ệ")
-    //         .replace(/áº™/g, "ể")
-    //         .replace(/áº›/g, "ễ")
-    //         .replace(/áº¡/g, "ạ")
-    //         .replace(/áºš/g, "Ạ")
-    //         .replace(/áº¥/g, "ấ")
-    //         .replace(/áº§/g, "ầ")
-    //         .replace(/áº©/g, "ẩ")
-    //         .replace(/áº«/g, "ậ")
-    //         .replace(/áº­/g, "ặ")
-    //         .replace(/áº±/g, "ẹ")
-    //         .replace(/áºµ/g, "ẻ")
-    //         .replace(/áº¹/g, "ị")
-    //         .replace(/áº½/g, "ọ")
-    //         .replace(/áº¿/g, "ỏ")
-    //         .replace(/á»/g, "ấ")
-    //         .replace(/á»ƒ/g, "ầ")
-    //         .replace(/á»…/g, "ẩ")
-    //         .replace(/á»‡/g, "ậ")
-    //         .replace(/á»‰/g, "ẻ")
-    //         .replace(/á»‹/g, "ị")
-    //         .replace(/á»/g, "ọ")
-    //         .replace(/á»/g, "ỏ")
-    //         .replace(/á»/g, "ồ")
-    //         .replace(/á»’/g, "ố")
-    //         .replace(/á»”/g, "ộ")
-    //         .replace(/á»–/g, "ớ")
-    //         .replace(/á»˜/g, "ờ")
-    //         .replace(/á»š/g, "ợ")
-    //         .replace(/á»ž/g, "ợ")
-    //         .replace(/á» /g, "ụ")
-    //         .replace(/á»¦/g, "ủ")
-    //         .replace(/á»¨/g, "ứ")
-    //         .replace(/á»ª/g, "ừ")
-    //         .replace(/á»¬/g, "ử")
-    //         .replace(/á»®/g, "ự")
-    //         .replace(/á»°/g, "ự")
-    //         .replace(/á»´/g, "ự")
-    //         .replace(/á»¶/g, "ự")
-    //         .replace(/á»¸/g, "ự")
-    //         .replace(/á»¹/g, "ỷ")
-    //         .replace(/á»½/g, "ỵ")
-    //         .replace(/á»¿/g, "ỹ")
-    //         .replace(/á»±/g, "ỳ");
-    //     return decodedText;
-    // }
-    // function scan() {
-    //     let scanner = new Instascan.Scanner({ video: document.getElementById('cameraStream') });
-    //     // var modal = document.getElementById('staticBackdrop');
-    //     // var o = document.getElementById('op');
-    //     scanner.addListener('scan', function (content) {
-    //         let info = content.split("|");
-    //         document.getElementById('citizenID').value = info[0];
-    //         // document.getElementById('name').innerText = info[2];
-    //         scanner.stop();
-    //         // modal.style.display = 'none';
-    //         // o.disabled = false;
-    //     });
-    //     Instascan.Camera.getCameras().then(function (cameras) {
-    //         if (cameras.length > 0) {
-    //             scanner.start(cameras[0]);
-    //         } else {
-    //             console.error('No cameras found.');
-    //         }
-    //     }).catch(function (e) {
-    //         console.error(e);
-    //     });
-    // }
-    // scanAndFillForm();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/quagga"></script>
-<!--<script>-->
-<!--    // Lấy phần tử modal và nút mở modal-->
-<!--    var cameraModal = document.getElementById('cameraModal');-->
-<!--    var openCameraButton = document.getElementById('openCamera');-->
-<!--    var closeButton = document.getElementsByClassName('close')[0];-->
-
-<!--    // Khi người dùng nhấp vào nút mở modal, hiển thị modal và mở camera-->
-<!--    openCameraButton.addEventListener('click', function() {-->
-<!--        // Hiển thị modal-->
-<!--        cameraModal.style.display = 'block';-->
-<!--        // Truy cập vào camera và hiển thị luồng video trong modal-->
-<!--        navigator.mediaDevices.getUserMedia({ video: true })-->
-<!--            .then(function(stream) {-->
-<!--                var videoElement = document.getElementById('cameraStream');-->
-<!--                videoElement.srcObject = stream;-->
-<!--                videoElement.play();-->
-<!--                let info = stream.split("|");-->
-<!--                document.getElementById('citizenID').value = info[0];-->
-<!--                // document.getElementById('name').innerText = info[2];-->
-<!--                videoElement.stop();-->
-<!--            })-->
-<!--            .catch(function(error) {-->
-<!--                console.error('Lỗi khi truy cập camera: ' + error);-->
-<!--            });-->
-<!--    });-->
-
-<!--    // Khi người dùng nhấp vào nút đóng modal, đóng modal và dừng luồng video-->
-<!--    closeButton.addEventListener('click', function() {-->
-<!--        cameraModal.style.display = 'none';-->
-<!--        var videoElement = document.getElementById('cameraStream');-->
-<!--        var stream = videoElement.srcObject;-->
-<!--        var tracks = stream.getTracks();-->
-
-<!--        tracks.forEach(function(track) {-->
-<!--            track.stop();-->
-<!--        });-->
-<!--    });-->
-
-<!--    // Khi người dùng nhấp vào bất kỳ vị trí nào bên ngoài modal, đóng modal-->
-<!--    window.addEventListener('click', function(event) {-->
-<!--        if (event.target == cameraModal) {-->
-<!--            cameraModal.style.display = 'none';-->
-<!--            var videoElement = document.getElementById('cameraStream');-->
-<!--            var stream = videoElement.srcObject;-->
-<!--            var tracks = stream.getTracks();-->
-
-<!--            tracks.forEach(function(track) {-->
-<!--              track.stop();-->
-<!--            });-->
-<!--        }-->
-<!--    });-->
-<!--</script>-->
+<script th:inline="javascript">
+    var list = /*[[${items2}]]*/ '[]';
+    console.log(list);
+</script>
 <script>
-    var list;
     document.addEventListener("DOMContentLoaded", function() {
         // Đặt giá trị radio button mặc định
         document.getElementById("radioGT").checked = true;
         document.getElementById("radioVaitro").checked = true;
-        list = /*[[${list}]]*/ '[]';
     });
     function checkNhieuKhoangTrang(str) {
         // Sử dụng biểu thức chính quy để tìm các mẫu có ít nhất hai khoảng trắng liên tiếp giữa các từ
@@ -585,9 +435,23 @@
         return regex.test(str);
     }
     function checkDinhDangEmail(email) {
-        // Biểu thức chính quy kiểm tra định dạng email
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(email);
+        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        // Kiểm tra định dạng cơ bản
+        if (!regex.test(email)) {
+            return false;
+        }
+
+        // Tách phần tên người dùng và tên miền
+        const [localPart, domainPart] = email.split('@');
+
+        // Kiểm tra phần tên người dùng và tên miền không bắt đầu hoặc kết thúc bằng dấu chấm
+        if (localPart.includes('..') || domainPart.includes('..') || domainPart.startsWith('.') || domainPart.endsWith('.')) {
+            return false;
+        }
+
+        return true;
+
     }
     function checkDinhDangSDT(str) {
         // Biểu thức chính quy kiểm tra số điện thoại bắt đầu từ 0 và có 10 chữ số
@@ -611,8 +475,6 @@
     }
     function validate(event){
         event.preventDefault();
-        // const list = /*[[${items2}]]*/ '[]';
-        console.log("list", list );
         var inputTen=document.getElementById("inputTen").value;
         var errorTen=document.getElementById("errorTen");
         var isTenValid = true;
@@ -625,13 +487,6 @@
             errorTen.innerText = "Tên nhân viên không được quá 100 kí tự";
             document.getElementById("inputTen").style.border="1.2px solid red";
             isTenValid = false;
-        }
-        if(inputTen.trim().length > 0){
-            if(checkNhieuKhoangTrang(inputTen)){
-                errorTen.innerText = "Giữa các từ không được nhiều hơn 1 khoảng trắng!";
-                document.getElementById("inputTen").style.border="1.2px solid red";
-                isTenValid = false;
-            }
         }
         if(inputTen.trim().length > 0){
             if(checkKhongPhaiChuCai(inputTen) == true){
@@ -679,6 +534,15 @@
             errorCCCD.innerText = "Sai định dạng CCCD!";
             isCCCDValid = false;
         }
+        for (var i = 0; i < list.length; i++) {
+            var obj = list[i];
+            if(inputCCCD === obj.nguoidung.cccd){
+                document.getElementById("inputCCCD").style.border="1.2px solid red";
+                errorCCCD.innerText = "CCCD đã tồn tại!";
+                isCCCDValid = false;
+                break;
+            }
+        }
         if(isCCCDValid){
             document.getElementById("inputCCCD").style.border="";
             errorCCCD.innerText = "";
@@ -699,15 +563,15 @@
             errorEmail.innerText = "Email không được quá 50 kí tự!";
             isEmailValid = false;
         }
-        // for (var i = 0; i < list.length; i++) {
-        //     var obj = list[i];
-        //     if(inputEmail === obj.nguoidung.email){
-        //         errorEmail.innerText = "Email đã tồn tại!";
-        //         document.getElementById("inputEmail").style.border = "1.2px solid red";
-        //         isEmailValid = false;
-        //         break;
-        //     }
-        // }
+        for (var i = 0; i < list.length; i++) {
+            var obj = list[i];
+            if(inputEmail === obj.nguoidung.email){
+                errorEmail.innerText = "Email đã tồn tại!";
+                document.getElementById("inputEmail").style.border = "1.2px solid red";
+                isEmailValid = false;
+                break;
+            }
+        }
         if(isEmailValid){
             document.getElementById("inputEmail").style.border="";
             errorEmail.innerText = "";
@@ -724,15 +588,15 @@
             errorSdt.innerText = "Sai định dạng Sđt!";
             isSdtValid = false;
         }
-        // for (var i = 0; i < list.length; i++) {
-        //     var obj = list[i];
-        //     if(inputSdt.trim() === obj.nguoidung.SoDienThoai){
-        //         errorSdt.innerText = "Sđt đã tồn tại!";
-        //         document.getElementById("inputSdt").style.border = "1.2px solid red";
-        //         isSdtValid = false;
-        //         break;
-        //     }
-        // }
+        for (var i = 0; i < list.length; i++) {
+            var obj = list[i];
+            if(inputSdt.trim() === obj.nguoidung.sodienthoai){
+                errorSdt.innerText = "Sđt đã tồn tại!";
+                document.getElementById("inputSdt").style.border = "1.2px solid red";
+                isSdtValid = false;
+                break;
+            }
+        }
         if(isSdtValid){
             document.getElementById("inputSdt").style.border="";
             errorSdt.innerText = "";
@@ -790,17 +654,6 @@
             document.getElementById("inputDuong").style.border="";
             errorDuong.innerText = "";
         }
-        console.log("tên: ",inputTen)
-        console.log("ngày sinh: ",inputNgSinh)
-        console.log("cccd: ",inputCCCD)
-        // console.log("GT: ",inputTen)
-        console.log("email: ",inputEmail)
-        console.log("sđt: ",inputSdt)
-        console.log("tp: ",cbbTinh)
-        console.log("quận: ",cbbQuan)
-        console.log("xã: ",cbbHuyen)
-        console.log("dc: ",inputDuong)
-        console.log("role: ",inputTen)
         if(isTenValid && isNgSinhValid && isCCCDValid && isEmailValid && isSdtValid && isTinhValid && isQuanValid && isHuyenValid && isDuongValid){
             Swal.fire({
                 title: 'Bạn có chắc chắn muốn thêm nhân viên mới không?',
