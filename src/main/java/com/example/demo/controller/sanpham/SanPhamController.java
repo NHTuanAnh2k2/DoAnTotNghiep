@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.IOException;
@@ -118,7 +119,6 @@ public class SanPhamController {
         model.addAttribute("fillTrangThai", info.getTrangthai());
         return "admin/qlsanpham";
     }
-
 
 
     @RequestMapping(value = {"/viewaddSPGET", "/viewaddSPPOST"}, method = {RequestMethod.GET, RequestMethod.POST})
@@ -282,11 +282,12 @@ public class SanPhamController {
 
     @PostMapping("/addImage")
     public String addImage(
-            Model model,
             @RequestParam(name = "anh1") List<MultipartFile> anhFiles1,
             @RequestParam(name = "anh2") List<MultipartFile> anhFiles2,
             @RequestParam(name = "anh3") List<MultipartFile> anhFiles3,
-            @RequestParam(name = "spctId") List<Integer> spctIds
+            @RequestParam(name = "spctId") List<Integer> spctIds,
+            RedirectAttributes redirectAttributes,
+            Model model
     ) {
 
         SanPham sanPham = sanPhamChiTietList.get(0).getSanpham();
@@ -329,6 +330,7 @@ public class SanPhamController {
                 addAnh(spct, anhFile3);
             }
         }
+        redirectAttributes.addFlashAttribute("success", true);
         return "redirect:/listsanpham";
     }
 
