@@ -4,6 +4,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<!--màu cho modal-->
 <style>
     /* CSS cho các tùy chọn được chọn và khi hover */
     .select2-container--default .select2-results__option--highlighted {
@@ -12,6 +14,7 @@
     }
 </style>
 
+<!--màu cho select2-->
 <style>
     .select2-container--default .select2-selection__choice {
         background-color: rgb(249, 72, 42) !important;
@@ -19,6 +22,8 @@
         border-color: rgb(249, 72, 42) !important;
     }
 </style>
+
+<!--màu cho checkbox-->
 <style>
     .size-button {
         background-color: transparent !important;
@@ -31,6 +36,7 @@
         color: white !important;
     }
 </style>
+
 <style>
     #idThuongHieu:hover {
         cursor: pointer; /* Đổi con trỏ chuột thành bàn tay khi hover vào select */
@@ -58,7 +64,7 @@
     tr {
     }
 </style>
-
+<!-- ảnh-->
 <style>
     .checkbox-red:checked {
         background-color: red;
@@ -669,29 +675,22 @@
                 </div>
             </form>
         </div>
-        <form th:action="@{/addImage}" name="addImage" method="post" enctype="multipart/form-data"
-              onsubmit="return validateForm2()">
-            <a id="editButton" class="btn disabled"
-               style="margin-left: 900px;margin-bottom: 15px;background-color:rgb(249,72,42);color: white"
-               data-bs-toggle="modal" data-bs-target="#chinhsuasoluongvagia">Chỉnh sửa số lượng và giá chung</a>
-            <button class="btn-sm btn-dark" style="margin-left: 10px; margin-bottom: 15px"
-                    type="submit"
-                    id="submitButton">Hoàn tất
-            </button>
+        <form th:action="@{/addImage}" name="addImage" method="post" enctype="multipart/form-data" onsubmit="return validateForm2()">
+            <div id="error-message" style="color: red;"></div> <!-- Thông báo lỗi -->
+            <a id="editButton" class="btn disabled" style="margin-left: 900px;margin-bottom: 15px;background-color:rgb(249,72,42);color: white" data-bs-toggle="modal" data-bs-target="#chinhsuasoluongvagia">Chỉnh sửa số lượng và giá chung</a>
+            <button class="btn-sm btn-dark" style="margin-left: 10px; margin-bottom: 15px" type="submit" id="submitButton">Hoàn tất</button>
+
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <table id="example2" style="width: 100%"
-                                           class="table-bordered table-hover text-center">
+                                    <table id="example2" style="width: 100%" class="table-bordered table-hover text-center">
                                         <thead style="background-color:rgb(249,72,42);height: 50px;color: white">
                                         <tr>
                                             <th style="padding-left: 30px">
-                                                <input type="checkbox" name="chontatcactsp" id="chontatcactsp"
-                                                       onchange="selectAll(this)"
-                                                       class="form-check-input checkbox checkbox-red">
+                                                <input type="checkbox" name="chontatcactsp" id="chontatcactsp" onchange="selectAll(this)" class="form-check-input checkbox checkbox-red">
                                             </th>
                                             <th>STT</th>
                                             <th>Tên sản phẩm</th>
@@ -702,47 +701,29 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr th:each="spctt,stt:${sanphamchitiet}" class="product-row">
+                                        <tr th:each="spctt, stt : ${sanphamchitiet}" class="product-row">
                                             <td>
-                                                <input type="checkbox" class="form-check-input checkbox checkbox-red"
-                                                       th:value="${spctt.id}" onchange="toggleRowHighlight(this)"
-                                                       name="chonspct">
+                                                <input type="checkbox" class="form-check-input checkbox checkbox-red" th:value="${spctt.id}" onchange="toggleRowHighlight(this)" name="chonspct">
                                             </td>
                                             <td>
-                                                <span style="margin-left: 7px" th:text="${stt.index+1}"></span>
+                                                <span style="margin-left: 7px" th:text="${stt.index + 1}"></span>
                                             </td>
-                                            <!--                                            <td th:text="${spctt.sanpham.tensanpham} +' '+ '[' + ${spctt.kichco.ten} + '-' + ${spctt.mausac.ten} + ']'"></td>-->
                                             <td>
-    <span th:if="${#strings.length(spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']') > 40}"
-          th:text="${#strings.substring(spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']', 0, 40)} + '...'">
-    </span>
+                                            <span th:if="${#strings.length(spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']') > 40}"
+                                                  th:text="${#strings.substring(spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']', 0, 40)} + '...'"></span>
                                                 <span th:unless="${#strings.length(spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']') > 40}"
-                                                      th:text="${spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']' }">
-    </span>
-                                            </td>
-                                            <!--                                            <td>-->
-                                            <!--                                                <input type="text" style="width: 70px; height: 30px"-->
-                                            <!--                                                       class="form-control" th:value="${spctt.soluong}">-->
-                                            <!--                                            </td>-->
-                                            <td>
-                                                <span style="width: 70px; height: 30px; line-height: 30px;"
-                                                      th:text="${spctt.soluong}"></span>
-                                            </td>
-                                            <!--                                            <td>-->
-                                            <!--                                                <input type="text"-->
-                                            <!--                                                       style="width: 150px; height: 30px;color: red;font-weight: bold"-->
-                                            <!--                                                       class="form-control"-->
-                                            <!--                                                       th:value="${#numbers.formatDecimal(spctt.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}">-->
-                                            <!--                                            </td>-->
-                                            <td>
-    <span style="width: 150px; height: 30px; color: red; font-weight: bold; line-height: 30px;"
-          th:text="${#numbers.formatDecimal(spctt.giatien, 0, 'COMMA', 0, 'POINT')} + '&#x20ab;'"></span>
+                                                      th:text="${spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']' }"></span>
                                             </td>
                                             <td>
-                                                <a th:href="@{/deleteCTSP/{id}(id=${spctt.id})}"
-                                                   style="color: rgb(249,72,42)" onclick="return xoa(event)">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
-                                                         fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                <span style="width: 70px; height: 30px; line-height: 30px;" th:text="${spctt.soluong}"></span>
+                                            </td>
+                                            <td>
+                                            <span style="width: 150px; height: 30px; color: red; font-weight: bold; line-height: 30px;"
+                                                  th:text="${#numbers.formatDecimal(spctt.giatien, 0, 'COMMA', 0, 'POINT')} + '&#x20ab;'"></span>
+                                            </td>
+                                            <td>
+                                                <a th:href="@{/deleteCTSP/{id}(id=${spctt.id})}" style="color: rgb(249,72,42)" onclick="return xoa(event)">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                                                         <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
                                                     </svg>
                                                 </a>
@@ -1082,14 +1063,26 @@
 </script>
 
 <!--thông báo xóa-->
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const successMessage = sessionStorage.getItem('successMessageXoa');
         if (successMessage) {
             // Hiển thị thông báo ở góc bên phải màn hình
-            toastr.info(successMessage, 'Thông báo', {
-                positionClass: 'toast-top-right',
-                timeOut: 1000
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: 'success',
+                title: successMessage
             });
 
             // Xóa thông báo khỏi sessionStorage sau khi hiển thị
@@ -1097,6 +1090,7 @@
         }
     });
 </script>
+
 
 <!--dùng cho thêm size-->
 <script>
@@ -1417,6 +1411,7 @@
 <script>
     var giaTriTuCheckbox = []; // Mảng lưu trữ giá trị từ checkbox
 </script>
+
 <!--validate thuộc tính sp trong modal-->
 <script th:inline="javascript">
     /*<![CDATA[*/
@@ -1894,8 +1889,38 @@
 <!--validate hoàn tất-->
 <script>
     function validateForm2() {
-        return hoantat();
+        const rows = document.querySelectorAll('.product-row');
+        let valid = true;
 
+        rows.forEach(row => {
+            const anh1 = row.querySelector('input[name="anh1"]').files.length;
+            const anh2 = row.querySelector('input[name="anh2"]').files.length;
+            const anh3 = row.querySelector('input[name="anh3"]').files.length;
+
+            // Kiểm tra nếu không có ảnh nào được chọn
+            if (anh1 === 0 && anh2 === 0 && anh3 === 0) {
+                valid = false;
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: 'warning',
+                    title: 'Mỗi biến thể sản phẩm phải có ít nhất một ảnh.'
+                });
+            }
+        });
+
+        // Nếu tất cả đều hợp lệ, gọi hàm xác nhận
+        if (!valid) return false; // Ngăn không cho gửi form
+        return hoantat();
     }
 
     function hoantat() {
@@ -1907,12 +1932,13 @@
             cancelButtonText: 'Không'
         }).then((result) => {
             if (result.isConfirmed) {
-                document.addImage.submit();
+                document.forms['addImage'].submit(); // Gửi biểu mẫu
             }
         });
-        return false;
+        return false; // Ngăn không cho gửi form ngay lập tức
     }
 </script>
+
 <!--thông báo thêm thành công-->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -1941,6 +1967,7 @@
         }
     });
 </script>
+
 <!--thông báo thêm tên sản phẩm thành công-->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -2133,7 +2160,7 @@
                 }
             });
             Toast.fire({
-                icon: 'success',
+                icon: 'error',
                 title: successMessage
             });
             sessionStorage.removeItem('successMessageSuaGia');
