@@ -23,6 +23,8 @@ public interface NhanVienRepository extends JpaRepository<NhanVien, Integer> {
 
     @Query("SELECT n FROM NhanVien n ORDER BY n.lancapnhatcuoi DESC ")
     List<NhanVien> getAll();
+    @Query("SELECT n FROM NhanVien n WHERE n.nguoidung.id <> ?1 ORDER BY n.lancapnhatcuoi DESC ")
+    List<NhanVien> getAll1(Integer id);
 
     @Query("SELECT c FROM NhanVien c  WHERE c.nguoidung.id = ?1")
     NhanVien TimIdNguoiDung(Integer id);

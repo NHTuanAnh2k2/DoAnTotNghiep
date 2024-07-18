@@ -14,6 +14,7 @@ import java.util.List;
 public interface NhanVienService {
     List<NhanVien> getNhanVienByTrangThai(Boolean trangThai);
     List<NhanVien> getAll();
+    List<NhanVien> getAll1(Integer id);
     public NhanVien add(NhanVienInfo nhanVien);
     public NhanVien update(NhanVienInfo nhanVien, Integer id);
     public  NhanVien updateS(NhanVien nv);
