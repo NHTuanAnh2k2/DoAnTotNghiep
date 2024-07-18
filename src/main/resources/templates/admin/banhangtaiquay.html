@@ -3873,7 +3873,19 @@ tabindex="0">
                 document.getElementById('regexTen').innerHTML = 'Họ tên không được trống!';
                 error = true;
             } else {
-                document.getElementById('regexTen').innerHTML = '';
+
+                var regex = /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯăâêôơÁÀẢÃẠÁẦẪẨẬẮẰẲẴẶẸẺẼỀỀỂỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪỬỮỰỶỸýỳỷỹọỏọốồộổỗớờởỡợ\s]+$/;
+
+                // Kiểm tra chiều dài và ký tự đặc biệt
+                if (hoVaTen.length < 5 || hoVaTen.length > 20) {
+                    document.getElementById('regexTen').innerHTML = 'Họ tên phải có từ 5 đến 20 ký tự!';
+                    error = true;
+                } else if (checkKhongPhaiChuCai(hoVaTen) == true) {
+                    document.getElementById('regexTen').innerHTML = 'Họ tên không được chứa ký tự đặc biệt!';
+                    error = true;
+                } else {
+                    document.getElementById('regexTen').innerHTML = '';
+                }
             }
 
             // Kiểm tra số điện thoại
@@ -3901,13 +3913,18 @@ tabindex="0">
                 error = true;
             } else {
                 // Kiểm tra định dạng email
-                var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,4}(?:\.[a-zA-Z]{2,4})?$/;
                 if (!emailPattern.test(email)) {
                     // alert("Email không hợp lệ");
                     document.getElementById('regexemail').innerHTML = 'Email sai định dạng!';
                     error = true;
                 } else {
-                    document.getElementById('regexemail').innerHTML = '';
+                    if (email.length < 5 || email.length > 254) {
+                        document.getElementById('regexemail').innerHTML = 'Email phải có độ dài từ 5-254 theo chuẩn RFC 5321';
+                        error = true;
+                    } else {
+                        document.getElementById('regexemail').innerHTML = '';
+                    }
                 }
             }
 
@@ -3917,7 +3934,12 @@ tabindex="0">
                 document.getElementById('regexdiachi').innerHTML = 'Địa chỉ không được trống!';
                 error = true;
             } else {
-                document.getElementById('regexdiachi').innerHTML = '';
+                if (diaChi.length < 1 || diaChi.length > 20) {
+                    document.getElementById('regexdiachi').innerHTML = 'Địa chỉ phải đạt từ 1-20 kí tự!';
+                    error = true;
+                } else {
+                    document.getElementById('regexdiachi').innerHTML = '';
+                }
             }
 
             // Kiểm tra chọn tỉnh
@@ -3973,7 +3995,7 @@ tabindex="0">
             const regex = /[^a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚờợứừửữựỳỵỷỹỪừựÙúỦửỤụỴỳỵỷỹẠ-ỹ\s]/;
             return regex.test(str);
         }
-        
+
         //validate form thông tin thêm nhanh khách hàng
         function validateForms() {
             // Lấy các giá trị từ các input
@@ -4001,7 +4023,7 @@ tabindex="0">
                 if (hoVaTen.length < 5 || hoVaTen.length > 20) {
                     document.getElementById('TTTK_ten_regex').innerHTML = 'Họ tên phải có từ 5 đến 20 ký tự!';
                     error = true;
-                } else  if(checkKhongPhaiChuCai(hoVaTen) == true){
+                } else if (checkKhongPhaiChuCai(hoVaTen) == true) {
                     document.getElementById('TTTK_ten_regex').innerHTML = 'Họ tên không được chứa ký tự đặc biệt!';
                     error = true;
                 } else {
@@ -4049,9 +4071,7 @@ tabindex="0">
                 error = true;
             } else {
                 // Kiểm tra định dạng email
-                var emailPattern  = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,4}(?:\.[a-zA-Z]{2,4})?$/;
-
-
+                var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,4}(?:\.[a-zA-Z]{2,4})?$/;
                 if (!emailPattern.test(email)) {
                     // alert("Email không hợp lệ");
                     document.getElementById('TTTK_email_regex').innerHTML = 'Email sai định dạng!';
@@ -4068,11 +4088,16 @@ tabindex="0">
                                 error = true;
 
                             } else {
-                                document.getElementById('TTTK_email_regex').innerHTML = '';
+                                if (email.length < 5 || email.length > 254) {
+                                    document.getElementById('TTTK_email_regex').innerHTML = 'Email phải có độ dài từ 5-254 theo chuẩn RFC 5321';
+                                    error = true;
+                                } else {
+                                    document.getElementById('TTTK_email_regex').innerHTML = '';
+                                }
+
                             }
 
                         })
-                    document.getElementById('TTTK_email_regex').innerHTML = '';
                 }
             }
 
@@ -4082,7 +4107,13 @@ tabindex="0">
                 document.getElementById('TTTK_diachi_regex').innerHTML = 'Địa chỉ không được trống!';
                 error = true;
             } else {
-                document.getElementById('TTTK_diachi_regex').innerHTML = '';
+                if (diaChi.length < 1 || diaChi.length > 20) {
+                    document.getElementById('TTTK_diachi_regex').innerHTML = 'Địa chỉ phải đạt từ 1-20 kí tự!';
+                    error = true;
+                } else {
+                    document.getElementById('TTTK_diachi_regex').innerHTML = '';
+                }
+
             }
 
             // Kiểm tra chọn tỉnh
