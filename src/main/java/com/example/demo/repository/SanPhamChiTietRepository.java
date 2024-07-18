@@ -17,6 +17,20 @@ import java.util.Optional;
 @Repository
 public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, Integer> {
 
+    List<SanPhamChiTiet> findByMausacAndKichcoAndThuonghieuAndChatlieuAndDegiayAndSanpham
+            (MauSac mauSac, KichCo kichCo, ThuongHieu thuongHieu, ChatLieu chatLieu, DeGiay deGiay, SanPham sanPham);
+
+
+    @Query(value = """
+
+            SELECT s FROM SanPhamChiTiet s WHERE  s.mausac=?1 AND s.kichco=?2 AND s.thuonghieu=?3 AND 
+            s.chatlieu=?4 AND  s.degiay=?5 AND  s.sanpham=?6
+            """)
+    SanPhamChiTiet findSPCT(MauSac mauSac, KichCo kichCo, ThuongHieu thuongHieu, ChatLieu chatLieu, DeGiay deGiay, SanPham sanPham);
+
+
+    boolean existsByMausacAndKichco(MauSac mauSac, KichCo kichCo);
+
     List<SanPhamChiTiet> findBySanpham(SanPham sanPham);
 
     Boolean existsByMasanphamchitiet(String ma);
@@ -25,8 +39,8 @@ public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, 
     List<SanPhamChiTiet> searchSPCTtheoMa(String masp);
 
     @Query(value = """
-                    SELECT s FROM SanPhamChiTiet s WHERE  s.id=:Id
-                    """)
+            SELECT s FROM SanPhamChiTiet s WHERE  s.id=:Id
+            """)
     SanPhamChiTiet findByIdSPCT(Integer Id);
 
 

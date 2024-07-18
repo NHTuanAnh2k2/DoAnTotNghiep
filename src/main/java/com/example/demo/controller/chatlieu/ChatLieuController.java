@@ -1,7 +1,6 @@
 package com.example.demo.controller.chatlieu;
 
 import com.example.demo.entity.ChatLieu;
-import com.example.demo.entity.ThuongHieu;
 import com.example.demo.info.ThuocTinhInfo;
 import com.example.demo.repository.ChatLieuRepository;
 import com.example.demo.service.ChatLieuService;

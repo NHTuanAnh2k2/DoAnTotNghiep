@@ -1,7 +1,6 @@
 package com.example.demo.controller.mausac;
 
 import com.example.demo.entity.MauSac;
-import com.example.demo.entity.ThuongHieu;
 import com.example.demo.info.ThuocTinhInfo;
 import com.example.demo.repository.MauSacRepository;
 import com.example.demo.service.impl.MauSacImp;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,7 +32,6 @@ public class MauSacController {
         } else {
             page = mauSacRepository.findByTenAndTrangthai("%" + trimmedKey + "%", info.getTrangthai());
         }
-
         model.addAttribute("fillSearch", info.getKey());
         model.addAttribute("fillTrangThai", info.getTrangthai());
         model.addAttribute("list", page);
@@ -52,13 +49,6 @@ public class MauSacController {
         return "redirect:/listMauSac";
     }
 
-
-//    @PostMapping("/updateMauSac/{id}")
-//    public String updateMauSac(@PathVariable Integer id) {
-//        mauSacRepository.updateTrangThaiToFalseById(id);
-//        return "redirect:/listMauSac";
-//    }
-
     @PostMapping("/addSaveMauSac")
     @CacheEvict(value = "mausacCache", allEntries = true)
     public String addSave(@ModelAttribute("mausac") MauSac mauSac, @ModelAttribute("ms") ThuocTinhInfo info, Model model) {
@@ -73,8 +63,6 @@ public class MauSacController {
         mauSacRepository.save(mauSac);
         return "redirect:/listMauSac";
     }
-
-
 
     @PostMapping("/addMauSacModal")
     public String addMauSacModal(@ModelAttribute("mausac") MauSac mauSac) {
@@ -103,5 +91,4 @@ public class MauSacController {
         mauSacImp.addMauSac(mauSac);
         return "redirect:/updateCTSP/" + spctId;
     }
-
 }

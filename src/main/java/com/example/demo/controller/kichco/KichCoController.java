@@ -1,7 +1,6 @@
 package com.example.demo.controller.kichco;
 
 import com.example.demo.entity.KichCo;
-import com.example.demo.entity.ThuongHieu;
 import com.example.demo.info.ThuocTinhInfo;
 import com.example.demo.repository.KichCoRepository;
 import com.example.demo.service.impl.KichCoImp;
