@@ -384,9 +384,9 @@ public class BanHangController {
         }
         LocalDateTime currentDateTime = LocalDateTime.now();
         NguoiDung nguoidung = new NguoiDung();
-        nguoidung.setHovaten(kh.getTen());
-        nguoidung.setSodienthoai(kh.getSdt());
-        nguoidung.setEmail(kh.getEmail());
+        nguoidung.setHovaten(kh.getTen().trim().replaceAll("\\s+", " "));
+        nguoidung.setSodienthoai(kh.getSdt().trim());
+        nguoidung.setEmail(kh.getEmail().trim());
         nguoidung.setGioitinh(true);
         nguoidung.setNgaysinh(Date.valueOf("2020-06-06"));
         nguoidung.setNgaytao(Timestamp.valueOf(currentDateTime));
@@ -394,7 +394,7 @@ public class BanHangController {
         //fake nhân viên
         nguoidung.setNguoitao("nhân viên");
         String to = kh.getEmail();
-        String taikhoan = processName(kh.getTen());
+        String taikhoan = processName(kh.getTen().trim());
         String matkhau = "12345";
         String subject = "Chúc mừng bạn đã đăng kí thành công tài khoản T&T shop";
         String mailType = "";
@@ -402,17 +402,18 @@ public class BanHangController {
         nguoidung.setTaikhoan(taikhoan);
         nguoidung.setMatkhau(passwordEncoder.encode(matkhau));
         daoNguoiDung.save(nguoidung);
-        NguoiDung nguoidungtim = daoNguoiDung.findByEmail(kh.getEmail());
+        NguoiDung nguoidungtim = daoNguoiDung.findByEmail(kh.getEmail().trim());
         DiaChi diachi = new DiaChi();
-        diachi.setTenduong(kh.getDiachi());
+        diachi.setTenduong(kh.getDiachi().trim().replaceAll("\\s+", " "));
         diachi.setXaphuong(kh.getXa());
         diachi.setQuanhuyen(kh.getHuyen());
         diachi.setTinhthanhpho(kh.getTinh());
+        diachi.setSdtnguoinhan(kh.getSdt().trim());
+        diachi.setHotennguoinhan(kh.getTen().trim().replaceAll("\\s+", " "));
+        diachi.setNgaytao(Timestamp.valueOf(currentDateTime));
         diachi.setNguoidung(nguoidungtim);
         diachi.setTrangthai(true);
         daoDiaChi.save(diachi);
-        KhachHang newkhGanNhat = daoKH.findKHGanNhat().get(0);
-        Integer maSoKHCu = Integer.valueOf(newkhGanNhat.getMakhachhang().substring(2)) + 1;
         String newMaKH = "KH" + taoChuoiNgauNhien(7, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
         KhachHang khAdd = new KhachHang();
         khAdd.setMakhachhang(newMaKH);
@@ -876,10 +877,11 @@ public class BanHangController {
             hdset1.setPhivanchuyen(new BigDecimal(convertCurrency(thongTin.getPhivanchuyen())));
             hdset1.setTongtien((tienTong.add(hdset1.getPhivanchuyen())).subtract(sotiengiam));
             //set địa chỉ
-            hdset1.setDiachi(thongTin.getDiachi() + ", " + thongTin.getXa() + ", " + thongTin.getHuyen() + ", " + thongTin.getTinh());
-            hdset1.setTennguoinhan(thongTin.getTen());
-            hdset1.setSdt(thongTin.getSdt());
-            hdset1.setEmail(thongTin.getEmail());
+            hdset1.setDiachi(thongTin.getDiachi().trim().replaceAll("\\s+", " ") + ", " + thongTin.getXa() + ", " + thongTin.getHuyen() + ", " + thongTin.getTinh());
+            hdset1.setTennguoinhan(thongTin.getTen().trim().replaceAll("\\s+", " "));
+            hdset1.setSdt(thongTin.getSdt().trim());
+            hdset1.setNgayxacnhan(Timestamp.valueOf(LocalDateTime.now()));
+            hdset1.setEmail(thongTin.getEmail().trim());
             hdset1.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
 //            hdset1.setNgaygiaodukien();
             long unixTimestamp = Long.valueOf(thongTin.getNgaygiaodukien());
@@ -967,10 +969,11 @@ public class BanHangController {
             //set phí vận chuyển
             hdset1.setPhivanchuyen(new BigDecimal(convertCurrency(thongTin.getPhivanchuyen())));
             //set địa chỉ
-            hdset1.setDiachi(thongTin.getDiachi() + ", " + thongTin.getXa() + ", " + thongTin.getHuyen() + ", " + thongTin.getTinh());
-            hdset1.setTennguoinhan(thongTin.getTen());
-            hdset1.setSdt(thongTin.getSdt());
-            hdset1.setEmail(thongTin.getEmail());
+            hdset1.setDiachi(thongTin.getDiachi().trim().replaceAll("\\s+", " ") + ", " + thongTin.getXa() + ", " + thongTin.getHuyen() + ", " + thongTin.getTinh());
+            hdset1.setTennguoinhan(thongTin.getTen().trim().replaceAll("\\s+", " "));
+            hdset1.setSdt(thongTin.getSdt().trim());
+            hdset1.setEmail(thongTin.getEmail().trim());
+            hdset1.setNgayxacnhan(Timestamp.valueOf(LocalDateTime.now()));
             hdset1.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
             //hdset1.setNgaygiaodukien();
             long unixTimestamp = Long.valueOf(thongTin.getNgaygiaodukien());
