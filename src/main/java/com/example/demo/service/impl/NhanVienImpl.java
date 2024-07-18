@@ -33,6 +33,12 @@ public class NhanVienImpl implements NhanVienService {
     public List<NhanVien> getAll() {
         return nhanVienRepository.getAll();
     }
+
+    @Override
+    public List<NhanVien> getAll1(Integer id) {
+        return nhanVienRepository.getAll1(id);
+    }
+
     private String taoChuoiNgauNhien(int doDaiChuoi, String kiTu) {
         Random random = new Random();
         StringBuilder chuoiNgauNhien = new StringBuilder(doDaiChuoi);

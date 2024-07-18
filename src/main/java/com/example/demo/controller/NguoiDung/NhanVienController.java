@@ -122,10 +122,8 @@ public class NhanVienController {
                           Model model, RedirectAttributes redirectAttributes) {
         List<DiaChi> page = diaChi.getAll();
         List<NhanVien> listnv = nhanVien.getAll();
-        List<NguoiDung> listND = nguoiDung.getAll();
         model.addAttribute("items1", page);
         model.addAttribute("items2", listnv);
-        model.addAttribute("list", listND);
         return "admin/addnhanvien";
     }
     @PostMapping("/admin/addnv")
@@ -176,7 +174,7 @@ public class NhanVienController {
         nd.setTaikhoan(tenCuoi);
         nguoiDung.add(nd);
 
-        NguoiDung n = nguoiDung.search(nd.getSodienthoai());
+        NguoiDung n = nguoiDung.search(nd.getTaikhoan());
         nv.setIdnguoidung(n);
         nhanVien.add(nv);
         dc.setIdnguoidung(n);
@@ -217,11 +215,9 @@ public class NhanVienController {
         model.addAttribute("dc",diaChi.search(id));
         model.addAttribute("nv",nhanVien.search(id));
         List<DiaChi> page = diaChi.getAll();
-        List<NhanVien> listnv = nhanVien.getAll();
-        List<NguoiDung> listND = nguoiDung.getAll();
+        List<NhanVien> listnv = nhanVien.getAll1(id);
         model.addAttribute("items1", page);
         model.addAttribute("items2", listnv);
-        model.addAttribute("list", listND);
         return "admin/updatenhanvien";
     }
     @PostMapping("/updateNhanVien/{id}")
@@ -231,8 +227,8 @@ public class NhanVienController {
                          @Valid  @ModelAttribute("dc") DiaChiNVInfo dc,
                          BindingResult dcBindingResult,
                          @ModelAttribute("nv") NhanVienInfo nv,
-                         BindingResult nvBindingResult, HttpSession session) {
-//                         @RequestParam(name = "anh") MultipartFile anh) {
+                         BindingResult nvBindingResult, HttpSession session,
+                         @RequestParam(name = "anh") MultipartFile anh) {
         Integer checkcapnhat=0;
         String trimmedTenSanPham = (nd.getHovaten() != null)
                 ? nd.getHovaten().trim().replaceAll("\\s+", " ")
@@ -245,12 +241,8 @@ public class NhanVienController {
                 ? dc.getTenduong().trim().replaceAll("\\s+", " ")
                 : null;
         dc.setTenduong(trimmedTenDuong);
-//        System.out.println(anh);
-//        if(nd.getAnh() == null){
-//            if(anh != null){
-//                String file = saveImage(anh);
-//                nd.setAnh(file);
-//        }}
+        String file = saveImage(anh);
+        nd.setAnh(file);
         nd.setTrangthai(nv.getTrangthai());
         dc.setTrangthai(nv.getTrangthai());
         nguoiDung.update(nd,id);

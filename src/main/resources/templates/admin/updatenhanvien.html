@@ -103,7 +103,8 @@
                                                         <input type="file" id="fileInput" class="file-input" name="anh">
                                                         <label for="fileInput" class="file-input-label">
                                                         </label>
-                                                        <img id="uploadedImage1" th:src="@{'/upload' + *{anh.substring(anh.lastIndexOf('upload') + 6)}}">
+                                                        <img id="uploadedImage"  src="" alt="Uploaded Image" style="display: none;">
+                                                        <img id="uploadedImage1" th:if="*{anh != null}" th:src="@{'/upload' + *{anh.substring(anh.lastIndexOf('upload') + 6)}}">
                                                     </div>
                                                 </div>
                                             </section>
@@ -396,6 +397,11 @@
             imgElement.style.display = 'block'; // Hiển thị hình ảnh
             var labelElement = document.querySelector('.file-input-label');
             labelElement.style.display = 'none'; // Ẩn phần label
+            var imgElement1 = document.getElementById('uploadedImage1');
+            imgElement1.src = e.target.result;
+            imgElement1.style.display = 'block'; // Hiển thị hình ảnh
+            var labelElement1 = document.querySelector('.file-input-label');
+            labelElement1.style.display = 'none'; // Ẩn phần label
         };
 
         reader.readAsDataURL(file);
