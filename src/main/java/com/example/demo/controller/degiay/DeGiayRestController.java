@@ -28,8 +28,6 @@ public class DeGiayRestController {
                 : null;
         existingDeGiay.setTen(trimmedTenDeGiay);
         deGiayRepository.save(existingDeGiay);
-
-        // Trả về redirect
         return ResponseEntity.ok("redirect:/listdegiay");
     }
 

@@ -54,12 +54,6 @@
                             QUẢN LÝ THƯƠNG HIỆU
                         </h1>
                     </div>
-<!--                    <div class="col-sm-6">-->
-<!--                        <ol class="breadcrumb float-sm-right">-->
-<!--                            <li class="breadcrumb-item"><a href="#">Home</a></li>-->
-<!--                            <li class="breadcrumb-item active">QUẢN LÝ THƯƠNG HIỆU</li>-->
-<!--                        </ol>-->
-<!--                    </div>-->
                 </div>
             </div><!-- /.container-fluid -->
         </section>
@@ -92,18 +86,11 @@
                                             <option value="false" th:selected="${fillTrangThai != null && !fillTrangThai}">Ngừng kinh doanh</option>
                                         </select>
                                     </h3>
-
-<!--                                    <button type="submit" style="margin-left: 100px;background-color:rgb(249,72,42);color: white" class="btn">Tìm kiếm-->
-<!--                                    </button>-->
-<!--                                    <input type="button" class="btn btn-dark" value="Làm mới bộ lọc"-->
-<!--                                           onclick="clearSearch()"/>-->
                                 </form>
                             </div>
 
                         </div>
                         <!-- /.card -->
-
-
                     </div>
                     <!-- /.col -->
                 </div>
@@ -133,7 +120,6 @@
                                     </svg>Thêm thương hiệu
                                 </a>
                             </div>
-
                             <!-- Modal -->
                             <div class="modal fade" id="themthuonghieu" tabindex="-1"
                                  aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -154,12 +140,10 @@
                                                 </p>
                                                 <button id="submitButton" class="btn" style="margin-left: 400px;background-color:rgb(249,72,42);color: white">Thêm</button>
                                             </form>
-
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <table id="example2" style="width: 100%" class="table-bordered table-hover text-center">
@@ -189,19 +173,10 @@
                                                 </button>
                                             </form>
                                         </td>
-
-
                                         <td>
                                             <a style="color: rgb(249,72,42); font-size: 25px;" th:data-id="${th.id}" data-bs-toggle="modal" data-bs-target="#capnhatthuonghieu" onclick="fillShoeSoleNameThuongHieu(this)">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
-<!--                                            <form th:action="@{/updateThuongHieu/{id}(id=${th.id})}" method="post" style="display: inline;">-->
-<!--                                                <button type="submit" style="background: none; border: none; color: rgb(249,72,42); padding-left: 10px" onclick="return confirm('Bạn có muốn xóa không?')">-->
-<!--                                                    <a style="color: rgb(249,72,42); font-size: 25px;"> &lt;!&ndash; Thay đổi giá trị font-size theo ý muốn &ndash;&gt;-->
-<!--                                                        <i class="bi bi-trash3-fill"></i>-->
-<!--                                                    </a>-->
-<!--                                                </button>-->
-<!--                                            </form>-->
                                         </td>
                                     </tr>
                                     </tfoot>

@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @Controller
@@ -103,7 +102,6 @@ public class SanPhamController {
     @GetMapping("/listsanpham")
     public String hienthi(Model model, @ModelAttribute("tim") SanPhamInfo info) {
         List<Object[]> list;
-
         String trimmedKey = (info.getKey() != null) ? info.getKey().trim().replaceAll("\\s+", " ") : null;
         boolean isKeyEmpty = (trimmedKey == null || trimmedKey.isEmpty());
         boolean isTrangthaiNull = (info.getTrangthai() == null);
@@ -113,7 +111,6 @@ public class SanPhamController {
         } else {
             list = sanPhamRepositoty.findByMasanphamAndTenSanPhamAndTrangThai("%" + trimmedKey + "%", "%" + trimmedKey + "%", info.getTrangthai());
         }
-
         model.addAttribute("list", list);
         model.addAttribute("fillSearch", trimmedKey);
         model.addAttribute("fillTrangThai", info.getTrangthai());
@@ -152,6 +149,7 @@ public class SanPhamController {
 
     List<SanPhamChiTiet> sanPhamChiTietList = new ArrayList<>();
 
+
     @PostMapping("/addProduct")
     public String addProduct(@RequestParam(defaultValue = "0") int p, Model model,
                              @RequestParam Integer tensp,
@@ -179,7 +177,7 @@ public class SanPhamController {
         if (nextId2 == null) {
             return "redirect:/error";
         }
-        if (sanPhamChiTietList == null || sanPhamChiTietList.isEmpty()) {
+        if (sanPhamChiTietList.size() <= 0) {
             for (MauSac colorId : idMauSac) {
                 for (String sizeName : kichCoNames) {
                     KichCo kichCo = kichCoRepository.findByTen(sizeName);
@@ -202,6 +200,7 @@ public class SanPhamController {
                         spct.setDegiay(idDeGiay);
                         spct.setMausac(colorId);
                         sanPhamChiTietList.add(spct);
+
                         for (SanPhamChiTiet spcts : sanPhamChiTietList) {
                             System.out.println("idspct:" + spcts.getId());
                             System.out.println("mausac:" + spcts.getKichco().getTen());
@@ -210,7 +209,9 @@ public class SanPhamController {
                     }
                 }
             }
+
         } else {
+
             for (MauSac colorId : idMauSac) {
                 for (String sizeName : kichCoNames) {
                     KichCo kichCo = kichCoRepository.findByTen(sizeName);
@@ -247,12 +248,15 @@ public class SanPhamController {
                             spct.setDegiay(idDeGiay);
                             spct.setMausac(colorId);
                             sanPhamChiTietList.add(spct);
+
                         }
                     }
                 }
             }
+
         }
         model.addAttribute("sanphamchitiet", sanPhamChiTietList);
+
         return "forward:/viewaddSPPOST";
     }
 
@@ -292,31 +296,25 @@ public class SanPhamController {
 
         SanPham sanPham = sanPhamChiTietList.get(0).getSanpham();
         List<SanPhamChiTiet> listsanPhamChiTietDB = sanPhamChiTietRepository.findBySanpham(sanPham);
-        if (listsanPhamChiTietDB == null || listsanPhamChiTietDB.isEmpty()) {
+        if (listsanPhamChiTietDB.size() <= 0) {
             for (SanPhamChiTiet spct : sanPhamChiTietList) {
                 sanPhamChiTietRepository.save(spct);
             }
+            sanPhamChiTietList.clear();
         } else {
 
-            Iterator<SanPhamChiTiet> iterator = sanPhamChiTietList.iterator();
-            while (iterator.hasNext()) {
-                SanPhamChiTiet spct = iterator.next();
-                for (SanPhamChiTiet spctDB : listsanPhamChiTietDB) {
-                    if (spct.getMausac().getId() == spctDB.getMausac().getId() && spct.getKichco().getTen().equals(spctDB.getKichco().getTen())) {
-                        spctDB.setSoluong(spct.getSoluong() + spctDB.getSoluong());
-                        iterator.remove();
-                    }
+            for (SanPhamChiTiet spctList : sanPhamChiTietList) {
+                SanPhamChiTiet spctTim = sanPhamChiTietRepository.findSPCT
+                        (spctList.getMausac(), spctList.getKichco(), spctList.getThuonghieu(), spctList.getChatlieu(), spctList.getDegiay()
+                                , spctList.getSanpham());
+                if (spctTim != null) {
+                    spctTim.setSoluong(spctTim.getSoluong() + spctList.getSoluong());
+                    sanPhamChiTietRepository.save(spctTim);
+                } else {
+                    sanPhamChiTietRepository.save(spctList);
                 }
             }
-            for (SanPhamChiTiet spct : sanPhamChiTietList) {
-                sanPhamChiTietRepository.save(spct);
-            }
-        }
-
-        sanPhamChiTietList.clear();
-        if (anhFiles1.size() != anhFiles2.size() || anhFiles1.size() != anhFiles3.size() || anhFiles1.size() != spctIds.size()) {
-            System.out.println("Số lượng phần tử của các danh sách không khớp");
-            return "redirect:/error";
+            sanPhamChiTietList.clear();
         }
         for (int i = 0; i < spctIds.size(); i++) {
             Integer spctId = spctIds.get(i);

@@ -28,7 +28,6 @@ public class ThuongHieuRestController {
                 : null;
         existingThuongHieu.setTen(trimmedTenThuongHieu);
         thuongHieuRepository.save(existingThuongHieu);
-        // Trả về redirect
         return ResponseEntity.ok("redirect:/listthuonghieu");
     }
 
