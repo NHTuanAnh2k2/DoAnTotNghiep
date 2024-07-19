@@ -149,14 +149,14 @@ public class DangKyController {
         return "redirect:/account";
     }
 
-    @PostMapping("/doimatkhau")
-    public String quenmatkhau(@RequestParam("emailResetPassword") String emailResetPassword,
-                              RedirectAttributes redirectAttributes,
-                              Model model) {
-        NguoiDung nd = khachHangService.findByEmail(emailResetPassword);
-        khachHangService.sendPasswordResetCode(emailResetPassword, nd.getHovaten());
-        return "redirect:/account";
-    }
+//    @PostMapping("/doimatkhau")
+//    public String quenmatkhau(@RequestParam("emailResetPassword") String emailResetPassword,
+//                              RedirectAttributes redirectAttributes,
+//                              Model model) {
+//        NguoiDung nd = khachHangService.findByEmail(emailResetPassword);
+//        khachHangService.sendPasswordResetCode(emailResetPassword, nd.getHovaten());
+//        return "redirect:/account";
+//    }
 
 
 }
