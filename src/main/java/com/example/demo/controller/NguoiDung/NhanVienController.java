@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,6 +41,8 @@ public class NhanVienController {
     DiaChiImpl diaChi;
     @Autowired
     NguoiDungImpl1 nguoiDung;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
 
     @GetMapping("/admin/qlnhanvien")
@@ -172,17 +175,15 @@ public class NhanVienController {
         int s = l.size() + 1;
         tenCuoi = tenCuoi + chuoiMoi.toString().toLowerCase() + s;
         nd.setTaikhoan(tenCuoi);
-        nguoiDung.add(nd);
-
-        NguoiDung n = nguoiDung.search(nd.getTaikhoan());
-        nv.setIdnguoidung(n);
+        NguoiDung a = nguoiDung.add(nd);
+        nv.setIdnguoidung(a);
         nhanVien.add(nv);
-        dc.setIdnguoidung(n);
+        dc.setIdnguoidung(a);
         diaChi.add(dc);
-        String to = n.getEmail();
+        String to = a.getEmail();
         String subject = "Chúc mừng đã trở thành nhân viên của T&T shop";
         String mailType = "";
-        String mailContent = "Tài khoản của bạn là: " + n.getTaikhoan() +"\nMật khẩu của bạn là: "+ n.getMatkhau();
+        String mailContent = "Tài khoản của bạn là: " + a.getTaikhoan() +"\nMật khẩu của bạn là: "+ a.getMatkhau();
         nguoiDung.sendEmail(to, subject, mailType, mailContent);
         checkthem=1;
         session.setAttribute("themthanhcong",checkthem);
@@ -229,6 +230,7 @@ public class NhanVienController {
                          @ModelAttribute("nv") NhanVienInfo nv,
                          BindingResult nvBindingResult, HttpSession session,
                          @RequestParam(name = "anh") MultipartFile anh) {
+
         Integer checkcapnhat=0;
         String trimmedTenSanPham = (nd.getHovaten() != null)
                 ? nd.getHovaten().trim().replaceAll("\\s+", " ")
@@ -241,8 +243,13 @@ public class NhanVienController {
                 ? dc.getTenduong().trim().replaceAll("\\s+", " ")
                 : null;
         dc.setTenduong(trimmedTenDuong);
+        NguoiDung ndTim = nguoiDung.findById(id);
         String file = saveImage(anh);
-        nd.setAnh(file);
+        if(file != null) {
+            nd.setAnh(file);
+        }else {
+            nd.setAnh(ndTim.getAnh());
+        }
         nd.setTrangthai(nv.getTrangthai());
         dc.setTrangthai(nv.getTrangthai());
         nguoiDung.update(nd,id);

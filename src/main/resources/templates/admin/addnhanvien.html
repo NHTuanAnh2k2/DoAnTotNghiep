@@ -435,7 +435,7 @@
         return regex.test(str);
     }
     function checkDinhDangEmail(email) {
-        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,4}(?:\.[a-zA-Z]{2,4})?$/;
 
         // Kiểm tra định dạng cơ bản
         if (!regex.test(email)) {

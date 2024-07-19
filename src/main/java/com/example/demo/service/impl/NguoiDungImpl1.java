@@ -8,6 +8,7 @@ import com.example.demo.service.NguoiDungService1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.scheduling.annotation.Async;
 
@@ -25,6 +26,8 @@ public class NguoiDungImpl1 implements NguoiDungService1 {
 
     @Autowired
     private JavaMailSender emailSender;
+    @Autowired
+    PasswordEncoder passwordEncoder;
     private static final String CHAR_LOWER = "abcdefghijklmnopqrstuvwxyz";
     private static final String CHAR_UPPER = CHAR_LOWER.toUpperCase();
     private static final String NUMBER = "0123456789";
@@ -51,7 +54,7 @@ public class NguoiDungImpl1 implements NguoiDungService1 {
         NguoiDung nd = new NguoiDung();
         nd.setTaikhoan(nguoiDung.getTaikhoan());
         nd.setEmail(nguoiDung.getEmail());
-        nd.setMatkhau(generateRandomPassword(10));
+        nd.setMatkhau(passwordEncoder.encode(generateRandomPassword(10)));
         nd.setHovaten(nguoiDung.getHovaten());
         nd.setNgaysinh(nguoiDung.getNgaysinh());
         nd.setCccd(nguoiDung.getCccd());
