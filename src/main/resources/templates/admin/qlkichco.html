@@ -155,6 +155,7 @@
                                             <form id="addForm" name="addKichCo" th:method="post" th:object="${kichco}"
                                                   th:action="@{/addSaveKichCo}" onsubmit="return validateTrung()">
                                                 <p>
+                                                    <span style="color: red">* </span>
                                                     Tên kích cỡ:
                                                     <input id="tenInput" class="form-control" th:field="*{ten}"/>
                                                 <div style="color: red; font-weight: initial;font-style: italic"
@@ -234,7 +235,8 @@
                                             <div class="modal-body">
                                                 <input type="hidden" id="kichCoId">
                                                 <div class="mb-3">
-                                                    <label for="tenKichCo" class="form-label">Tên kích cỡ</label>
+                                                    <span style="color: red">* </span>
+                                                    <label for="tenKichCo" class="form-label">Tên kích cỡ:</label>
                                                     <input type="text" class="form-control" id="tenKichCo">
                                                     <div id="error-message" class="text-danger" style="display: none;">
                                                     </div>

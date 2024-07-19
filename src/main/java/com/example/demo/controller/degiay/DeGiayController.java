@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -40,26 +39,10 @@ public class DeGiayController {
         return "admin/qldegiay";
     }
 
-
-//    @PostMapping("/update/{id}")
-//    public String update(@PathVariable Integer id) {
-//        deGiayRepository.updateTrangThaiToFalseById(id);
-//        return "redirect:/listdegiay";
-//    }
-
-
-//    @GetMapping("/updateDeGiay/{id}")
-//    public String delete(@PathVariable Integer id, Model model) {
-//        DeGiay degiay = deGiayRepository.findById(id).orElse(null);
-//        model.addAttribute("degiay", degiay);
-//        return "admin/qldegiay";
-//    }
-
     @PostMapping("/degiay/updateTrangThai/{id}")
     public String updateTrangThaiDeGiay(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         DeGiay existingDeGiay = deGiayRepository.findById(id).orElse(null);
         if (existingDeGiay != null) {
-            // Chuyển đổi trạng thái
             existingDeGiay.setTrangthai(!existingDeGiay.getTrangthai());
             deGiayRepository.save(existingDeGiay);
             redirectAttributes.addFlashAttribute("successMessage", "Cập nhật trạng thái thành công!");
@@ -115,6 +98,4 @@ public class DeGiayController {
     public List<DeGiay> getDS() {
         return deGiayImp.findAll();
     }
-
-
 }

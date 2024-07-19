@@ -234,7 +234,7 @@
     const specialCharPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
     const numberPattern = /\d/;
     const cccdPattern = /^0[0-9]{11}$/;
-    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,4}(?:\.[a-zA-Z]{2,4})?$/;
     const phoneNumberPattern = /^0[0-9]{9}$/;
 
     function validateNguoiDung() {
@@ -244,7 +244,7 @@
         var emailInput = document.getElementById('email').value.trim();
         var sdtInput = document.getElementById('sodienthoai').value.trim();
         var tinhthanhSelect = document.getElementById('city').value.trim();
-        var quanhuyenSelect = document.getElementById('district').value;
+        var quanhuyenSelect = document.getElementById('district').value.trim();
         var xaphuongSelect = document.getElementById('ward').value.trim();
         var tenduongInput = document.getElementById('tenduong').value.trim();
 
@@ -288,7 +288,11 @@
         } else if (age <= 16) {
             ngaysinhError.innerText = 'Tuổi phải từ 16 trở lên';
             isValid = false;
+        } else if (age > 70) {
+            ngaysinhError.innerText = 'Tuổi phải từ 70 trở xuống';
+            isValid = false;
         }
+
         if (tenInput === '') {
             tenError.innerText = 'Họ và tên không được trống';
             isValid = false;
@@ -302,6 +306,7 @@
             tenError.innerText = 'Họ và tên không được quá 50 ký tự';
             isValid = false;
         }
+
         if (cccdInput === '') {
             cccdError.innerText = 'CCCD không được trống';
             isValid = false;
@@ -349,7 +354,6 @@
             isValid = false;
         }
 
-
         if (isValid) {
             return saveCustomer();
         } else {
@@ -374,7 +378,7 @@
         var emailInput = document.getElementById('email').value;
         var isVaLid = true;
         for (var i = 0; i < lstEmailFromDb.length; i++) {
-            if (emailInput === lstEmailFromDb[i]) {
+            if (emailInput.toLowerCase() === lstEmailFromDb[i]) {
                 isVaLid = false;
                 break;
             }
@@ -483,8 +487,6 @@
         };
     }
 </script>
-
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsqr"></script>
 </body>

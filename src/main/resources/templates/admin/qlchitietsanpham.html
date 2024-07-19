@@ -7,8 +7,6 @@
         opacity: 1 !important;
         background-color: rgba(249, 72, 42, 0.1); /* Optional: Adding a slight background color for better visibility */
     }
-    tr {
-    }
 </style>
 <style>
     #editButton.disabled {
@@ -54,12 +52,6 @@
                             QUẢN LÝ CHI TIẾT SẢN PHẨM
                         </h1>
                     </div>
-<!--                    <div class="col-sm-6">-->
-<!--                        <ol class="breadcrumb float-sm-right">-->
-<!--                            <li class="breadcrumb-item"><a href="#">Home</a></li>-->
-<!--                            <li class="breadcrumb-item active">QUẢN LÝ CHI TIẾT SẢN PHẨM</li>-->
-<!--                        </ol>-->
-<!--                    </div>-->
                 </div>
             </div><!-- /.container-fluid -->
         </section>
@@ -184,8 +176,8 @@
                         <form th:method="post" th:action="@{/updateGiaAndSoLuongCTSP}" id="submitid"
                               onsubmit="return validateForm()" name="updateSLGT">
                             <div class="d-flex">
-                                <a th:href="@{/allSPCT}" style="margin-left: 850px;margin-bottom: 10px"
-                                   class="btn btn-dark">Tất cả</a>
+                                <a th:href="@{/allSPCT}" style="margin-left: 850px; margin-bottom: 10px; height: 37px; line-height: 25px;" class="btn btn-dark">Tất cả</a>
+
                                 <a id="editButton" class="btn disabled" style="margin-left: 10px;margin-bottom: 15px;background-color:rgb(249,72,42);color: white"
                                    data-bs-toggle="modal" data-bs-target="#chinhsuasoluongvagia">Chỉnh sửa số lượng và giá
                                     chung</a>
@@ -311,7 +303,6 @@
                                     </tr>
                                     </tbody>
                                 </table>
-
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -549,11 +540,9 @@
                 toast.onmouseleave = Swal.resumeTimer;
             }
         });
-
         Toast.fire({
             icon: "success",
             title: "Sửa thành công!"
         });
     }
-
 </script>

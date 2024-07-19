@@ -160,6 +160,7 @@
                                             <form id="addForm" th:method="post" name="addMauSac" th:object="${mausac}"
                                                   th:action="@{/addSaveMauSac}" onsubmit="return validateTrung()">
                                                 <p>
+                                                    <span style="color: red">* </span>
                                                     Tên màu sắc:
                                                     <input id="tenInput" class="form-control" th:field="*{ten}"/>
                                                 <div style="color: red; font-weight: initial;font-style: italic"
@@ -239,7 +240,8 @@
                                             <div class="modal-body">
                                                 <input type="hidden" id="mauSacId">
                                                 <div class="mb-3">
-                                                    <label for="tenMauSac" class="form-label">Tên màu sắc</label>
+                                                    <span style="color: red">* </span>
+                                                    <label for="tenMauSac" class="form-label">Tên màu sắc:</label>
                                                     <input type="text" class="form-control" id="tenMauSac">
                                                     <div id="error-message" class="text-danger" style="display: none;">
                                                     </div>

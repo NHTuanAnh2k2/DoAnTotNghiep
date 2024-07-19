@@ -28,7 +28,6 @@ public class MauSacRestController {
                 : null;
         existingMauSac.setTen(trimmedTenMauSac);
         mauSacRepository.save(existingMauSac);
-        // Trả về redirect
         return ResponseEntity.ok("redirect:/listMauSac");
     }
 
@@ -37,6 +36,4 @@ public class MauSacRestController {
         boolean exists = mauSacRepository.existsByTen(ten);
         return ResponseEntity.ok(exists);
     }
-
-
 }
