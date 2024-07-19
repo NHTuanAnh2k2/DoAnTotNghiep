@@ -596,7 +596,7 @@
         var emailInput = document.getElementById('email').value;
         var isVaLid = true;
         for (var i = 0; i < lstEmailFromDb.length; i++) {
-            if (emailInput.toLowerCase() === lstEmailFromDb[i]) {
+            if (emailInput.toLowerCase().trim() === lstEmailFromDb[i]) {
                 isVaLid = false;
                 break;
             }
@@ -608,7 +608,7 @@
         var sdtInput = document.getElementById('sodienthoai').value;
         var isVaLid = true;
         for (var i = 0; i < lstSdtFromDb.length; i++) {
-            if (sdtInput === lstSdtFromDb[i]) {
+            if (sdtInput.trim() === lstSdtFromDb[i]) {
                 isVaLid = false;
                 break;
             }
@@ -620,7 +620,7 @@
         var taikhoanInput = document.getElementById('taikhoan').value;
         var isVaLid = true;
         for (var i = 0; i < lstTaiKhoanFromDb.length; i++) {
-            if (taikhoanInput.toLowerCase() === lstTaiKhoanFromDb[i]) {
+            if (taikhoanInput.toLowerCase().trim() === lstTaiKhoanFromDb[i]) {
                 isVaLid = false;
                 break;
             }
