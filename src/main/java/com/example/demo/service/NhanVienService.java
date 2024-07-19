@@ -12,7 +12,6 @@ import java.util.List;
 
 @Service
 public interface NhanVienService {
-    List<NhanVien> getNhanVienByTrangThai(Boolean trangThai);
     List<NhanVien> getAll();
     List<NhanVien> getAll1(Integer id);
     public NhanVien add(NhanVienInfo nhanVien);
@@ -21,9 +20,4 @@ public interface NhanVienService {
     NhanVien search(Integer id);
     List<NhanVien> searchND(String ten, Boolean trangThai, Date batDau, Date ketThuc);
     List<NhanVien> searchNDs(String ten, Date batDau, Date ketThuc);
-    List<NhanVien> searchKey(NhanVienSearch nhanVienSearch);
-    List<NhanVien> searchStart(String ten, Boolean trangThai, Date batDau);
-    List<NhanVien> searchEnd(String ten, Boolean trangThai, Date ketThuc);
-    List<NhanVien> timSDT(String sdt);
-    List<NhanVien> timEmail(String email);
 }

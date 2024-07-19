@@ -11,10 +11,6 @@ import com.example.demo.service.impl.NhanVienImpl;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,8 +24,6 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.Normalizer;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -41,8 +35,6 @@ public class NhanVienController {
     DiaChiImpl diaChi;
     @Autowired
     NguoiDungImpl1 nguoiDung;
-    @Autowired
-    PasswordEncoder passwordEncoder;
 
 
     @GetMapping("/admin/qlnhanvien")
@@ -114,7 +106,7 @@ public class NhanVienController {
         model.addAttribute("searchInput", tenSdt);
         model.addAttribute("searchOption", tt);
         model.addAttribute("batdau", batdau);
-        model.addAttribute("kethuc", ketthuc);
+        model.addAttribute("ketthuc", ketthuc);
         return "admin/qlnhanvien";
     }
     @GetMapping("/admin/addnhanvien")

@@ -109,43 +109,26 @@
                                             </div>
                                             </div>
                                         </section>
-<!--                                        <button id="openCamera"  class="btn btn-primary">Quét mã CCCD</button>-->
-                                        <div class="modal"  id="cameraModal" th:width="200px" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button class="close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <video id="cameraStream" autoplay width="100%"></video>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-<!--                                        <form id="addItemForm" th:object="${nd}">-->
-<!--                                        <form th:method="post"  id="addForm" th:object="${nd}" th:action="@{/addnv}">-->
                                         <div class="d-flex">
                                             <div class="align-items-center col-lg-6 col-md-6">
                                                 <div class="col-auto">
-                                                    <label class="col-form-label">Tên nhân viên:</label>
+                                                    <label class="col-form-label"><span style="color: red">* </span>Tên nhân viên:</label>
                                                 </div>
                                                 <div class="col-auto">
                                                     <input placeholder="Tên nhân viên" id="inputTen" name="name" th:field="*{hovaten}" th:errorclass="is-invalid" class="form-control">
                                                 </div>
                                                 <div class="col-auto">
-<!--                                                    <p th:if="${#fields.hasErrors('hovaten')}" class="error" th:errors="*{hovaten}" style="width: 500px; color: red"></p>-->
                                                     <p style="color: red; font-weight: initial;" id="errorTen"></p>
                                                 </div>
                                             </div>
                                             <div class="align-items-center col-lg-6 col-md-6">
                                                 <div class="col-auto">
-                                                    <label class="col-form-label">Ngày sinh:</label>
+                                                    <label class="col-form-label"><span style="color: red">* </span>Ngày sinh:</label>
                                                 </div>
                                                 <div class="col-auto">
                                                     <input class="form-control" id="inputNgSinh"  onkeydown="return false" type="date" th:field="*{ngaysinh}"  placeholder="dd/MM/yyyy" th:errorclass="is-invalid">
                                                 </div>
                                                 <div class="col-auto">
-<!--                                                    <p th:if="${#fields.hasErrors('ngaysinh')}" class="error" th:errors="*{ngaysinh}" style="width: 500px; color: red"></p>-->
                                                     <p style="color: red; font-weight: initial;" id="errorNgSinh"></p>
                                                 </div>
                                             </div>
@@ -153,51 +136,45 @@
                                         <div class="d-flex">
                                             <div class="align-items-center col-lg-6 col-md-6">
                                                 <div class="col-auto">
-                                                    <label class="col-form-label">Căn cước công dân:</label>
+                                                    <label class="col-form-label"><span style="color: red">* </span>Căn cước công dân:</label>
                                                 </div>
                                                 <div class="col-auto">
                                                     <input class="form-control" placeholder="Căn cước công dân" id="inputCCCD" name="citizenID" th:field="*{cccd}" th:errorclass="is-invalid">
                                                 </div>
                                                 <div class="col-auto">
-<!--                                                    <p th:if="${#fields.hasErrors('cccd')}" class="error" th:errors="*{cccd}" style="width: 500px; color: red"></p>-->
                                                     <p style="color: red; font-weight: initial;" id="errorCCCD"></p>
                                                 </div>
                                             </div>
                                             <div class="align-items-center col-lg-6 col-md-6">
                                                 <div class="col-auto">
-                                                    <label class="col-form-label">Giới tính:</label>
+                                                    <label class="col-form-label"><span style="color: red">* </span>Giới tính:</label>
                                                 </div>
                                                 <div class="col-auto">
                                                     <input type="radio" value="true" id="radioGT" th:field="*{gioitinh}" style="margin-top: 10px">Nam
                                                     <input type="radio" value="false" th:field="*{gioitinh}" style="margin-left: 10px;margin-top: 10px">Nữ
-                                                </div>
-                                                <div class="col-auto">
-                                                    <p th:if="${#fields.hasErrors('gioitinh')}" class="error" th:errors="*{gioitinh}" style="width: 500px; color: red"></p>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="d-flex">
                                             <div class="align-items-center col-lg-6 col-md-6">
                                                 <div class="col-auto">
-                                                    <label class="col-form-label">Email:</label>
+                                                    <label class="col-form-label"><span style="color: red">* </span>Email:</label>
                                                 </div>
                                                 <div class="col-auto">
                                                     <input class="form-control" id="inputEmail" placeholder="Email" th:field="*{email}" th:errorclass="is-invalid">
                                                 </div>
                                                 <div class="col-auto">
-<!--                                                    <p th:if="${#fields.hasErrors('email')}" class="error" th:errors="*{email}" style="width: 500px; color: red"></p>-->
                                                         <p style="color: red; font-weight: initial;" id="errorEmail"></p>
                                                 </div>
                                             </div>
                                             <div class="align-items-center col-lg-6 col-md-6">
                                                 <div class="col-auto">
-                                                    <label class="col-form-label">Số điện thoại:</label>
+                                                    <label class="col-form-label"><span style="color: red">* </span>Số điện thoại:</label>
                                                 </div>
                                                 <div class="col-auto">
                                                     <input class="form-control" id="inputSdt" placeholder="Số điện thoại" th:field="*{sodienthoai}" th:errorclass="is-invalid">
                                                 </div>
                                                 <div class="col-auto">
-<!--                                                    <p th:if="${#fields.hasErrors('sodienthoai')}" class="error" th:errors="*{sodienthoai}" style="width: 500px; color: red"></p>-->
                                                     <p style="color: red; font-weight: initial;" id="errorSdt"></p>
                                                 </div>
                                             </div>
@@ -206,7 +183,7 @@
                                             <div class="d-flex">
                                             <div class="align-items-center col-lg-6 col-md-6">
                                                 <div class="col-auto">
-                                                    <label class="col-form-label">Tỉnh/Thành phố:</label>
+                                                    <label class="col-form-label"><span style="color: red">* </span>Tỉnh/Thành phố:</label>
                                                 </div>
                                                 <div class="col-auto">
                                                     <select class="form-control form-select form-select-sm mb-3" id="city" th:field="*{tinhthanhpho}"  aria-label=".form-select-sm">
@@ -215,12 +192,11 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <p style="color: red; font-weight: initial;" id="errorTinh"></p>
-<!--                                                    <p th:if="${#fields.hasErrors('tinhthanhpho')}" class="error" th:errors="*{tinhthanhpho}" style="width: 500px; color: red"></p>-->
                                                 </div>
                                             </div>
                                             <div class="align-items-center col-lg-6 col-md-6">
                                                 <div class="col-auto">
-                                                    <label class="col-form-label">Quận/Huyện:</label>
+                                                    <label class="col-form-label"><span style="color: red">* </span>Quận/Huyện:</label>
                                                 </div>
                                                 <div class="col-auto">
                                                     <select class="form-control form-select form-select-sm mb-3" id="district"  th:field="*{quanhuyen}" aria-label=".form-select-sm">
@@ -229,7 +205,6 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <p style="color: red; font-weight: initial;" id="errorQuan"></p>
-<!--                                                    <p th:if="${#fields.hasErrors('quanhuyen')}" class="error" th:errors="*{quanhuyen}" style="width: 500px; color: red"></p>-->
                                                 </div>
                                             </div>
                                         </div>
@@ -237,7 +212,7 @@
                                             <div class="d-flex">
                                             <div class="align-items-center col-lg-6 col-md-6">
                                                 <div class="col-auto">
-                                                    <label class="col-form-label">Xã/Phường:</label>
+                                                    <label class="col-form-label"><span style="color: red">* </span>Xã/Phường:</label>
                                                 </div>
                                                 <div class="col-auto">
                                                     <select class="form-control form-select form-select-sm" id="ward"  th:field="*{xaphuong}" aria-label=".form-select-sm">
@@ -246,19 +221,17 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <p style="color: red; font-weight: initial;" id="errorPhuong"></p>
-<!--                                                    <p th:if="${#fields.hasErrors('xaphuong')}" class="error" th:errors="*{xaphuong}" style="width: 500px; color: red"></p>-->
                                                 </div>
                                             </div>
                                             <div class="align-items-center col-lg-6 col-md-6">
                                                 <div class="col-auto">
-                                                    <label class="col-form-label">Địa chỉ cụ thể:</label>
+                                                    <label class="col-form-label"><span style="color: red">* </span>Địa chỉ cụ thể:</label>
                                                 </div>
                                                 <div class="col-auto">
                                                     <input class="form-control" th:field="*{tenduong}" id="inputDuong" placeholder="Tên Đường" th:errorclass="is-invalid">
                                                 </div>
                                                 <div class="col-auto">
                                                     <p style="color: red; font-weight: initial;" id="errorDuong"></p>
-<!--                                                    <p th:if="${#fields.hasErrors('tenduong')}" class="error" th:errors="*{tenduong}" style="width: 500px; color: red"></p>-->
                                                 </div>
                                             </div>
                                         </div>
@@ -268,14 +241,11 @@
                                         <div class="d-flex">
                                                 <div class="align-items-center col-lg-6 col-md-6">
                                                     <div class="col-auto">
-                                                        <label class="col-form-label">Vai trò:</label>
+                                                        <label class="col-form-label"><span style="color: red">* </span>Vai trò:</label>
                                                     </div>
                                                     <div class="col-auto">
                                                         <input type="radio" value="true" id="radioVaitro"  th:field="*{vaitro}" style="margin-top: 10px"  checked>Quản lý
                                                         <input type="radio" value="false" th:field="*{vaitro}" style="margin-left: 10px;margin-top: 10px">Nhân viên
-                                                    </div>
-                                                    <div class="col-auto">
-<!--                                                        <p th:if="${#fields.hasErrors('vaitro')}" class="error" th:errors="*{vaitro}" style="width: 500px; color: red"></p>-->
                                                     </div>
                                                 </div>
                                                 <div class="align-items-center col-lg-6 col-md-6">
@@ -288,14 +258,11 @@
                                                             <option value="0">Nghỉ làm</option>
                                                         </select>
                                                     </div>
-                                                    <div class="col-auto">
-<!--                                                        <p th:if="${#fields.hasErrors('trangthai')}" class="error" th:errors="*{trangthai}" style="width: 500px; color: red"></p>-->
-                                                    </div>
                                                 </div>
                                             </div>
                                             </div>
-                                        <button class="btn btn-primary" style="margin-top: 20px"  >Thêm nhân viên</button>
-                                        <button class="btn btn-danger" style="margin-top: 20px"  onclick="goBack()">Thoát</button>
+                                        <button type="submit" class="btn btn-primary" style="margin-top: 20px"  >Thêm nhân viên</button>
+                                        <button type="button" class="btn btn-danger" style="margin-top: 20px"  onclick="goBack()">Thoát</button>
                                         </form>
                                     </div>
                                 </section>
@@ -415,18 +382,9 @@
         document.getElementById("radioGT").checked = true;
         document.getElementById("radioVaitro").checked = true;
     });
-    function checkNhieuKhoangTrang(str) {
-        // Sử dụng biểu thức chính quy để tìm các mẫu có ít nhất hai khoảng trắng liên tiếp giữa các từ
-        return /\s{2,}/.test(str.trim());
-    }
     function checkKhongPhaiChuCai(str) {
         // Biểu thức chính quy để kiểm tra bất kỳ ký tự nào không phải là chữ cái tiếng Việt có dấu hoặc chữ cái Latinh không dấu
         const regex = /[^a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚờợứừửữựỳỵỷỹỪừựÙúỦửỤụỴỳỵỷỹẠ-ỹ\s]/;
-        return regex.test(str);
-    }
-    function checkDinhDangNgayThang(str) {
-        // Biểu thức chính quy kiểm tra định dạng DD/MM/YYYY với năm có đúng 4 chữ số
-        const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
         return regex.test(str);
     }
     function checkDinhDangCCCD(str) {
@@ -483,6 +441,11 @@
             document.getElementById("inputTen").style.border="1.2px solid red";
             isTenValid = false;
         }
+        if(inputTen.trim().length < 2){
+            errorTen.innerText = "Tên nhân viên tối thiểu 2 kí tự";
+            document.getElementById("inputTen").style.border="1.2px solid red";
+            isTenValid = false;
+        }
         if(inputTen.trim().length > 100){
             errorTen.innerText = "Tên nhân viên không được quá 100 kí tự";
             document.getElementById("inputTen").style.border="1.2px solid red";
@@ -536,7 +499,7 @@
         }
         for (var i = 0; i < list.length; i++) {
             var obj = list[i];
-            if(inputCCCD === obj.nguoidung.cccd){
+            if(inputCCCD.toLowerCase() === obj.nguoidung.cccd.toLowerCase()){
                 document.getElementById("inputCCCD").style.border="1.2px solid red";
                 errorCCCD.innerText = "CCCD đã tồn tại!";
                 isCCCDValid = false;
@@ -565,7 +528,7 @@
         }
         for (var i = 0; i < list.length; i++) {
             var obj = list[i];
-            if(inputEmail === obj.nguoidung.email){
+            if(inputEmail.trim().toLowerCase() === obj.nguoidung.email.toLowerCase()){
                 errorEmail.innerText = "Email đã tồn tại!";
                 document.getElementById("inputEmail").style.border = "1.2px solid red";
                 isEmailValid = false;
@@ -675,11 +638,6 @@
                             toast.onmouseleave = Swal.resumeTimer;
                         }
                     });
-
-                    // Toast.fire({
-                    //     icon: "success",
-                    //     title: "Thêm thành công!"
-                    // });
 
                     setTimeout(function () {
                         document.getElementById("addForm").submit();

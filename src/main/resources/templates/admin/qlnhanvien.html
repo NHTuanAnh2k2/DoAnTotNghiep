@@ -46,7 +46,6 @@
                                 </h3>
                                 <br>
                                     <hr class="border border-danger border-2 opacity-50">
-<!--                                    <form th:action="@{loc}" method="get" th:object="${hdcustom}">-->
                                         <div class="row g-3">
                                             <div class=" align-items-center col-lg-6 col-md-6">
                                                 <div class="col-auto">
@@ -83,7 +82,6 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <input id="ketthuc" name="ketthuc" type="date" onkeydown="return false" class="form-control" th:value="${ketthuc}">
-<!--                                                    <p th:if="${#fields.hasErrors('ketthuc')}" th:errors="*{ketthuc}" style="width: 500px; color: red"></p>-->
                                                 </div>
                                             </div>
                                         </div>
@@ -134,7 +132,7 @@
                                         <th style="white-space: nowrap;">Tên nhân viên</th>
                                         <th style="white-space: nowrap;">Số điện thoại</th>
                                         <th style="white-space: nowrap;">Ngày sinh</th>
-                                        <th style="white-space: nowrap;">Giới tính</th>
+<!--                                        <th style="white-space: nowrap;">Giới tính</th>-->
                                         <th style="white-space: nowrap;">Địa chỉ</th>
                                         <th>Vai trò</th>
                                         <th style="white-space: nowrap;">Trạng thái</th>
@@ -151,15 +149,9 @@
                                         <td style="white-space: nowrap;" th:text="${items2[i].nguoidung.hovaten}"></td>
                                         <td style="white-space: nowrap;" th:text="${items2[i].nguoidung.sodienthoai}"></td>
                                         <td style="white-space: nowrap;" th:text="${#dates.format(items2[i].nguoidung.ngaysinh, 'dd-MM-yyyy')}"></td>
-                                        <td style="white-space: nowrap;" th:text="${items2[i].nguoidung.gioitinh ? 'Nam' : 'Nữ'}"></td>
-<!--                                        <td th:text="${items1[i].tenduong + ' ' + items1[i].xaphuong + ' ' + items1[i].quanhuyen + ' ' + items1[i].tinhthanhpho}"></td>-->
-                                        <td><span th:if="${#strings.length(items1[i].tenduong + ' ' + items1[i].xaphuong + ' ' + items1[i].quanhuyen + ' ' + items1[i].tinhthanhpho) > 30}" th:text="${#strings.substring(items1[i].tenduong + ' ' + items1[i].xaphuong + ' ' + items1[i].quanhuyen + ' ' + items1[i].tinhthanhpho, 0, 30)} + '...'"></span>
-                                            <span th:unless="${#strings.length(items1[i].tenduong + ' ' + items1[i].xaphuong + ' ' + items1[i].quanhuyen + ' ' + items1[i].tinhthanhpho) > 30}" th:text="${items1[i].tenduong + ' ' + items1[i].xaphuong + ' ' + items1[i].quanhuyen + ' ' + items1[i].tinhthanhpho}"></span></td>
-<!--                                        <td><button style="border-radius: 50px"-->
-<!--                                                    class="btn btn-xs custom-button no-border-button"-->
-<!--                                                    th:classappend="${items2[i].vaitro ? 'btn-custom-info' : 'btn-custom-warning'}"-->
-<!--                                                    th:text="${items2[i].vaitro ? 'Quản lý' : 'Nhân viên'}"></button>-->
-<!--                                        </td>-->
+<!--                                        <td style="white-space: nowrap;" th:text="${items2[i].nguoidung.gioitinh ? 'Nam' : 'Nữ'}"></td>-->
+                                        <td><span th:if="${#strings.length(items1[i].tenduong + ' ' + items1[i].xaphuong + ' ' + items1[i].quanhuyen + ' ' + items1[i].tinhthanhpho) > 20}" th:text="${#strings.substring(items1[i].tenduong + ' ' + items1[i].xaphuong + ' ' + items1[i].quanhuyen + ' ' + items1[i].tinhthanhpho, 0, 20)} + '...'"></span>
+                                            <span th:unless="${#strings.length(items1[i].tenduong + ' ' + items1[i].xaphuong + ' ' + items1[i].quanhuyen + ' ' + items1[i].tinhthanhpho) > 20}" th:text="${items1[i].tenduong + ' ' + items1[i].xaphuong + ' ' + items1[i].quanhuyen + ' ' + items1[i].tinhthanhpho}"></span></td>
                                         <td th:if="${items2[i].vaitro == true}" style="white-space: nowrap;">
                                             <b class="btn btn-success">Quản lý</b>
                                         </td>
@@ -215,26 +207,6 @@
         // Lấy ra form theo id
         window.location.href = 'qlnhanvien';
     }
-    // function validate(event) {
-    //     event.preventDefault();
-    //     var inputTen = document.getElementById("searchInput").value;
-    //     inputTen = inputTen.trim();
-    //     inputTen = inputTen.replace(/\s+/g, ' ');
-    // }
-    // document.addEventListener("DOMContentLoaded", function() {
-    //     document.getElementById("trangthai").value = 'true';
-    // });
-    // document.getElementById('searchForm').addEventListener('change', function () {
-    //     var inputSearch = document.getElementById('searchInput');
-    //     inputSearch.value = inputSearch.value.trim();
-    //     var optionSearch = document.getElementById('searchOption');
-    //     optionSearch.value = optionSearch.value.trim();
-    //     var inputBD = document.getElementById('batdau');
-    //     inputBD.value = inputBD.value.trim();
-    //     var inputKT = document.getElementById('ketthuc');
-    //     inputKT.value = inputKT.value.trim();
-    //     document.getElementById('searchForm').submit();
-    // });
 </script>
 <script th:inline="javascript">
     /*<![CDATA[*/
@@ -255,7 +227,7 @@
 
         Toast.fire({
             icon: "success",
-            title: "Sửa thành công!"
+            title: "Cập nhật thành công!"
         });
     }
 

@@ -24,10 +24,6 @@ public class NhanVienImpl implements NhanVienService {
 
     @Autowired
     NguoiDungRepository1 ndRepo;
-    @Override
-    public List<NhanVien> getNhanVienByTrangThai(Boolean trangThai) {
-        return nhanVienRepository.getNhanVienByTrangthai(trangThai);
-    }
 
     @Override
     public List<NhanVien> getAll() {
@@ -92,31 +88,6 @@ public class NhanVienImpl implements NhanVienService {
     @Override
     public List<NhanVien> searchNDs(String ten, java.sql.Date batDau, java.sql.Date ketThuc) {
         return nhanVienRepository.findByKe(ten,batDau,ketThuc);
-    }
-
-    @Override
-    public List<NhanVien> searchKey(NhanVienSearch nhanVienSearch) {
-        return nhanVienRepository.findByKeys(nhanVienSearch.getKey(),nhanVienSearch.isTrangThai());
-    }
-
-    @Override
-    public List<NhanVien> searchStart(String ten, Boolean trangThai, java.sql.Date batDau) {
-        return nhanVienRepository.findByStart(ten,batDau,trangThai);
-    }
-
-    @Override
-    public List<NhanVien> searchEnd(String ten, Boolean trangThai, java.sql.Date ketThuc) {
-        return nhanVienRepository.findByEnd(ten,ketThuc,trangThai);
-    }
-
-    @Override
-    public List<NhanVien> timSDT(String sdt) {
-        return nhanVienRepository.timSDT(sdt);
-    }
-
-    @Override
-    public List<NhanVien> timEmail(String email) {
-        return nhanVienRepository.timEmail(email);
     }
 
 }

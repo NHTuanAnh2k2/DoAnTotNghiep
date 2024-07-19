@@ -10,14 +10,10 @@ import java.util.List;
 public interface DiaChiService {
     List<DiaChi> getAll();
     List<DiaChi> get(String ht, String sdt);
-    List<DiaChi> getTT(Boolean tt);
     public DiaChi add(DiaChiNVInfo diaChi);
     public DiaChi update(DiaChiNVInfo diaChi, Integer id);
     public DiaChi updateS(DiaChi dc);
     DiaChi search(Integer id);
     List<DiaChi> searchND(String ten, Boolean trangThai, Date batDau, Date ketThuc);
     List<DiaChi> searchNDs(String ten, Date batDau, Date ketThuc);
-    List<DiaChi> searchkey(NhanVienSearch nhanVienSearch);
-    List<DiaChi> searchStart(String ten, Boolean trangThai, Date batDau);
-    List<DiaChi> searchEnd(String ten, Boolean trangThai, Date ketThuc);
 }
