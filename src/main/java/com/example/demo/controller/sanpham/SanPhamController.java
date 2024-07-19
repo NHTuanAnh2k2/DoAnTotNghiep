@@ -7,18 +7,17 @@ import com.example.demo.repository.*;
 import com.example.demo.service.impl.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @Controller
@@ -103,7 +102,6 @@ public class SanPhamController {
     @GetMapping("/listsanpham")
     public String hienthi(Model model, @ModelAttribute("tim") SanPhamInfo info) {
         List<Object[]> list;
-
         String trimmedKey = (info.getKey() != null) ? info.getKey().trim().replaceAll("\\s+", " ") : null;
         boolean isKeyEmpty = (trimmedKey == null || trimmedKey.isEmpty());
         boolean isTrangthaiNull = (info.getTrangthai() == null);
@@ -113,7 +111,6 @@ public class SanPhamController {
         } else {
             list = sanPhamRepositoty.findByMasanphamAndTenSanPhamAndTrangThai("%" + trimmedKey + "%", "%" + trimmedKey + "%", info.getTrangthai());
         }
-
         model.addAttribute("list", list);
         model.addAttribute("fillSearch", trimmedKey);
         model.addAttribute("fillTrangThai", info.getTrangthai());
@@ -152,6 +149,7 @@ public class SanPhamController {
 
     List<SanPhamChiTiet> sanPhamChiTietList = new ArrayList<>();
 
+
     @PostMapping("/addProduct")
     public String addProduct(@RequestParam(defaultValue = "0") int p, Model model,
                              @RequestParam Integer tensp,
@@ -179,7 +177,7 @@ public class SanPhamController {
         if (nextId2 == null) {
             return "redirect:/error";
         }
-        if (sanPhamChiTietList == null || sanPhamChiTietList.isEmpty()) {
+        if (sanPhamChiTietList.size() <= 0) {
             for (MauSac colorId : idMauSac) {
                 for (String sizeName : kichCoNames) {
                     KichCo kichCo = kichCoRepository.findByTen(sizeName);
@@ -202,6 +200,7 @@ public class SanPhamController {
                         spct.setDegiay(idDeGiay);
                         spct.setMausac(colorId);
                         sanPhamChiTietList.add(spct);
+
                         for (SanPhamChiTiet spcts : sanPhamChiTietList) {
                             System.out.println("idspct:" + spcts.getId());
                             System.out.println("mausac:" + spcts.getKichco().getTen());
@@ -210,6 +209,7 @@ public class SanPhamController {
                     }
                 }
             }
+
         } else {
             for (MauSac colorId : idMauSac) {
                 for (String sizeName : kichCoNames) {
@@ -251,6 +251,7 @@ public class SanPhamController {
                     }
                 }
             }
+
         }
         model.addAttribute("sanphamchitiet", sanPhamChiTietList);
         return "forward:/viewaddSPPOST";
@@ -289,35 +290,31 @@ public class SanPhamController {
             RedirectAttributes redirectAttributes,
             Model model
     ) {
-
         SanPham sanPham = sanPhamChiTietList.get(0).getSanpham();
         List<SanPhamChiTiet> listsanPhamChiTietDB = sanPhamChiTietRepository.findBySanpham(sanPham);
-        if (listsanPhamChiTietDB == null || listsanPhamChiTietDB.isEmpty()) {
+
+        if (listsanPhamChiTietDB.isEmpty()) {
             for (SanPhamChiTiet spct : sanPhamChiTietList) {
                 sanPhamChiTietRepository.save(spct);
             }
         } else {
-
-            Iterator<SanPhamChiTiet> iterator = sanPhamChiTietList.iterator();
-            while (iterator.hasNext()) {
-                SanPhamChiTiet spct = iterator.next();
-                for (SanPhamChiTiet spctDB : listsanPhamChiTietDB) {
-                    if (spct.getMausac().getId() == spctDB.getMausac().getId() && spct.getKichco().getTen().equals(spctDB.getKichco().getTen())) {
-                        spctDB.setSoluong(spct.getSoluong() + spctDB.getSoluong());
-                        iterator.remove();
+            for (SanPhamChiTiet spctList : sanPhamChiTietList) {
+                SanPhamChiTiet spctTim = sanPhamChiTietRepository.findSPCT(
+                        spctList.getMausac(), spctList.getKichco(), spctList.getThuonghieu(),
+                        spctList.getChatlieu(), spctList.getDegiay(), spctList.getSanpham());
+                if (spctTim != null) {
+                    spctTim.setSoluong(spctTim.getSoluong() + spctList.getSoluong());
+                    for (Anh anh : spctList.getAnh()) {
+                        anh.setSanphamchitiet(spctTim);
+                        anhRepository.save(anh);
                     }
+                    sanPhamChiTietRepository.save(spctTim);
+                } else {
+                    sanPhamChiTietRepository.save(spctList);
                 }
             }
-            for (SanPhamChiTiet spct : sanPhamChiTietList) {
-                sanPhamChiTietRepository.save(spct);
-            }
         }
-
         sanPhamChiTietList.clear();
-        if (anhFiles1.size() != anhFiles2.size() || anhFiles1.size() != anhFiles3.size() || anhFiles1.size() != spctIds.size()) {
-            System.out.println("Số lượng phần tử của các danh sách không khớp");
-            return "redirect:/error";
-        }
         for (int i = 0; i < spctIds.size(); i++) {
             Integer spctId = spctIds.get(i);
             SanPhamChiTiet spct = sanPhamChiTietRepository.findById(spctId).orElse(null);
@@ -392,5 +389,20 @@ public class SanPhamController {
         }
         model.addAttribute("sanphamchitiet", sanPhamChiTietList);
         return "forward:/viewaddSPPOST";
+    }
+
+
+    @GetMapping("timaddImage")
+    @ResponseBody
+    public ResponseEntity<?> timaddImage(@RequestParam("image") List<String> listData
+    ) {
+        Anh anh = new Anh();
+        String url = "G:\\Ki7\\DATN\\DATN\\src\\main\\resources\\static\\upload\\" + listData.get(1);
+        anh.setTenanh(url);
+        List<Anh> list =sanPhamChiTietList.get(Integer.valueOf(listData.get(0)) - 1).getAnh()==null?new ArrayList<>():sanPhamChiTietList.get(Integer.valueOf(listData.get(0)) - 1).getAnh();
+        list.add(anh);
+        System.out.println("KKKKKKKKKKKKKK" + list.size());
+        sanPhamChiTietList.get(Integer.valueOf(listData.get(0)) - 1).setAnh(list);
+        return ResponseEntity.ok(true);
     }
 }

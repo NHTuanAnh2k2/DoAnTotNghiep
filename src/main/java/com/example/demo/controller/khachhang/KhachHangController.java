@@ -67,11 +67,12 @@ public class KhachHangController {
                          Model model
     ) {
         List<KhachHangInfo> lstKhachHang = new ArrayList<>();
+
         if (tenSdtMa != null) {
+            String tenSdtMaTrimmed = tenSdtMa.trim().replaceAll("\\s+", "");
             if (trangThai == null) {
                 lstKhachHang = khachHangService.findByTenSdtMa(tenSdtMa);
             } else {
-                // Nếu trangThai không null, tìm kiếm theo giá trị trangThai
                 lstKhachHang = khachHangService.findByTenSdtMaTrangThai(tenSdtMa, trangThai);
             }
         }
@@ -196,7 +197,7 @@ public class KhachHangController {
 
         khachHangService.sendEmail(nd.getEmail(), nd.getTaikhoan(), password, nd.getHovaten());
 
-        redirectAttributes.addFlashAttribute("success", true);
+        redirectAttributes.addFlashAttribute("successAdd", true);
         return "redirect:/khachhang";
     }
 
@@ -215,6 +216,7 @@ public class KhachHangController {
         kh.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
         kh.setTrangthai(!kh.getTrangthai());
         khachHangService.updateKhachHang(kh);
+
 
         redirectAttributes.addFlashAttribute("success", true);
         return "redirect:/khachhang";
@@ -286,7 +288,7 @@ public class KhachHangController {
         khachHangService.updateKhachHang(kh);
 
         model.addAttribute("lstKhachHang", khachHangService.displayKhachHang());
-        redirectAttributes.addFlashAttribute("success", true);
+        redirectAttributes.addFlashAttribute("successUpdate", true);
         return "redirect:/khachhang";
     }
 

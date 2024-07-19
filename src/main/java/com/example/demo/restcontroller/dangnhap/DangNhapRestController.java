@@ -39,14 +39,14 @@ import java.util.List;
         @Autowired
         CustomerUserDetailService customerUserDetailService;
         @PostMapping("/dangnhap")
-        public JwtResponseDTO dangnhap(@RequestBody AuthRequestDTO authRequestDTO) {
+        public String dangnhap(@RequestBody AuthRequestDTO authRequestDTO) {
             UserDetails userDetails = customerUserDetailService.loadUserByUsername(authRequestDTO.getUsername());
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
             if (authentication.isAuthenticated()) {
-                System.out.println("thành công");
-                return JwtResponseDTO.builder().accessToken(jwtGenerator.generateToken(authentication)).build();
+                JwtResponseDTO.builder().accessToken(jwtGenerator.generateToken(authentication)).build();
+                return "redirect:/khachhang";
             } else {
                 throw new UsernameNotFoundException("Người dùng không hợp lệ");
             }

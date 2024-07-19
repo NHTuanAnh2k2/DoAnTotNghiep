@@ -1,5 +1,4 @@
 package com.example.demo.controller.sanphamchitiet;
-
 import com.example.demo.entity.*;
 import com.example.demo.info.SanPhamChiTietInfo;
 import com.example.demo.info.ThuocTinhInfo;
@@ -11,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -64,19 +62,33 @@ public class SanPhamChiTietController {
 
     @GetMapping("/allSPCT")
     public String allSPCT(Model model, @ModelAttribute("search") SanPhamChiTietInfo info) {
-        List<SanPhamChiTiet> list = null;
-        if (info.getKey() == null && info.getIdChatLieu() == null && info.getIdDeGiay() == null && info.getIdKichCo() == null
-                && info.getIdMauSac() == null && info.getIdThuongHieu() == null && info.getGioitinh() == null) {
+        List<SanPhamChiTiet> list;
+        String trimmedKey = (info.getKey() != null) ? info.getKey().trim().replaceAll("\\s+", " ") : null;
+        boolean isKeyEmpty = (trimmedKey == null || trimmedKey.isEmpty());
+        boolean isAllFiltersNull = (
+                isKeyEmpty &&
+                        info.getIdChatLieu() == null &&
+                        info.getIdDeGiay() == null &&
+                        info.getIdKichCo() == null &&
+                        info.getIdMauSac() == null &&
+                        info.getIdThuongHieu() == null &&
+                        info.getGioitinh() == null &&
+                        info.getTrangthai() == null
+        );
+        if (isAllFiltersNull) {
             list = sanPhamChiTietRepository.findAll();
         } else {
             list = sanPhamChiTietRepository.search(
-                    "%" + info.getKey() + "%",
+                    "%" + trimmedKey + "%",
+                    "%" + trimmedKey + "%",
                     info.getIdThuongHieu(),
                     info.getIdDeGiay(),
                     info.getIdKichCo(),
                     info.getIdMauSac(),
                     info.getIdChatLieu(),
-                    info.getGioitinh());
+                    info.getGioitinh(),
+                    info.getTrangthai()
+            );
         }
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuRepository.getAll();
@@ -93,24 +105,16 @@ public class SanPhamChiTietController {
         model.addAttribute("cl", listChatLieu);
         model.addAttribute("spct", listSanPhamChiTiet);
         model.addAttribute("listAllCTSP", list);
+        model.addAttribute("fillSearch", trimmedKey);
+        model.addAttribute("fillThuongHieu", info.getIdThuongHieu());
+        model.addAttribute("fillDeGiay", info.getIdDeGiay());
+        model.addAttribute("fillKichCo", info.getIdKichCo());
+        model.addAttribute("fillMauSac", info.getIdMauSac());
+        model.addAttribute("fillChatLieu", info.getIdChatLieu());
+        model.addAttribute("fillGioiTinh", info.getGioitinh());
+        model.addAttribute("fillTrangThai", info.getTrangthai());
         return "admin/allchitietsanpham";
     }
-
-//    @GetMapping("/deleteCTSP/{id}")
-//    public String deleteCTSP(@PathVariable Integer id, Model model) {
-//        sanPhamChiTietImp.deleteSPCT(id);
-//        // Cập nhật lại danh sách sản phẩm chi tiết
-////        List<SanPhamChiTiet> sanPhamChiTiets = sanPhamChiTietRepository.findAll();
-////        model.addAttribute("sanphamchitiet", sanPhamChiTiets);
-////        SanPham sanPham=new SanPham();
-////        List<SanPhamChiTiet> sanPhamChiTiets = sanPhamChiTietRepository.findBySanPhamId(sanPham.getId());
-////        model.addAttribute("sanphamchitiet", sanPhamChiTiets);
-//        SanPham sanPham = sanPhamRepositoty.findFirstByOrderByNgaytaoDesc();
-//        List<SanPhamChiTiet> listSPCT = sanPhamChiTietRepository.findBySanPhamId(sanPham.getId());
-//        model.addAttribute("sanphamchitiet", listSPCT);
-//        return "forward:/viewaddSPPOST";
-////        return "admin/addsanpham";
-//    }
 
 
     @GetMapping("/updateCTSP/{id}")
@@ -123,6 +127,7 @@ public class SanPhamChiTietController {
                                  @ModelAttribute("tim") ThuocTinhInfo info
 
     ) {
+        //dùng cho validate
         List<DeGiay> listDG = deGiayRepository.findAll();
         model.addAttribute("listDG", listDG);
         List<ThuongHieu> listTH = thuongHieuRepository.findAll();
@@ -158,69 +163,52 @@ public class SanPhamChiTietController {
     public String updateCTSP(@PathVariable Integer id, @ModelAttribute("hehe") SanPhamChiTiet sanPhamChiTiet,
                              @RequestParam(name = "anhs") List<MultipartFile> anhFiles,
                              @RequestParam(name = "spctIds") Integer spctId,
-                             RedirectAttributes redirectAttributes
-    ) {
+                             RedirectAttributes redirectAttributes) {
         int doDaiChuoi = 10;
-        // Chuỗi chứa tất cả các ký tự có thể có trong chuỗi ngẫu nhiên
         String kiTu = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        // Tạo đối tượng Random
         Random random = new Random();
-        // StringBuilder để xây dựng chuỗi ngẫu nhiên
         StringBuilder chuoiNgauNhien = new StringBuilder(doDaiChuoi);
-        // Lặp để thêm ký tự ngẫu nhiên vào chuỗi
         for (int i = 0; i < doDaiChuoi; i++) {
-            // Lấy một ký tự ngẫu nhiên từ chuỗi kiTu và thêm vào chuỗi ngẫu nhiên
             chuoiNgauNhien.append(kiTu.charAt(random.nextInt(kiTu.length())));
         }
         LocalDateTime currentTime = LocalDateTime.now();
+
+        // Lấy các thực thể từ cơ sở dữ liệu dựa trên ID từ view
+        ThuongHieu thuongHieu = thuongHieuRepository.findById(sanPhamChiTiet.getThuonghieu().getId())
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy thương hiệu"));
+        ChatLieu chatLieu = chatLieuRepository.findById(sanPhamChiTiet.getChatlieu().getId())
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy chất liệu"));
+        DeGiay deGiay = deGiayRepository.findById(sanPhamChiTiet.getDegiay().getId())
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy đế giày"));
+        MauSac mauSac = mauSacRepository.findById(sanPhamChiTiet.getMausac().getId())
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy màu sắc"));
+        KichCo kichCo = kichCoRepository.findById(sanPhamChiTiet.getKichco().getId())
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy kích cỡ"));
+
+        // Gán các thực thể này vào sanPhamChiTiet
+        sanPhamChiTiet.setThuonghieu(thuongHieu);
+        sanPhamChiTiet.setChatlieu(chatLieu);
+        sanPhamChiTiet.setDegiay(deGiay);
+        sanPhamChiTiet.setMausac(mauSac);
+        sanPhamChiTiet.setKichco(kichCo);
+
+        // Lưu thực thể SanPham nếu nó chưa được lưu
+        SanPham sanPham = sanPhamChiTiet.getSanpham();
+        if (sanPham.getId() == null) {
+            sanPham.setMasanpham(chuoiNgauNhien.toString());
+            sanPham.setTrangthai(true);
+            sanPham.setNgaytao(currentTime);
+            sanPham.setLancapnhatcuoi(currentTime);
+            sanPhamRepositoty.save(sanPham);
+        }
+
         sanPhamChiTiet.setId(id);
         sanPhamChiTiet.setMasanphamchitiet(chuoiNgauNhien.toString());
         sanPhamChiTiet.setNgaytao(currentTime);
         sanPhamChiTiet.setLancapnhatcuoi(currentTime);
-        SanPham sanPham = sanPhamChiTiet.getSanpham();
-        sanPham.setId(id);
-        sanPham.setMasanpham(chuoiNgauNhien.toString());
-        sanPham.setTrangthai(true);
-        sanPham.setNgaytao(currentTime);
-        sanPham.setLancapnhatcuoi(currentTime);
-        sanPham.setTensanpham(sanPhamChiTiet.getSanpham().getTensanpham());
-        sanPhamRepositoty.save(sanPham);
-        ThuongHieu thuongHieu = sanPhamChiTiet.getThuonghieu();
-        thuongHieu.setId(id);
-        thuongHieu.setTrangthai(true);
-        thuongHieu.setNgaytao(currentTime);
-        thuongHieu.setLancapnhatcuoi(currentTime);
-        thuongHieu.setTen(sanPhamChiTiet.getThuonghieu().getTen());
-        thuongHieuRepository.save(thuongHieu);
-        ChatLieu chatLieu = sanPhamChiTiet.getChatlieu();
-        chatLieu.setId(id);
-        chatLieu.setTrangthai(true);
-        chatLieu.setNgaytao(currentTime);
-        chatLieu.setLancapnhatcuoi(currentTime);
-        chatLieu.setTen(sanPhamChiTiet.getChatlieu().getTen());
-        chatLieuRepository.save(chatLieu);
-        DeGiay deGiay = sanPhamChiTiet.getDegiay();
-        deGiay.setId(id);
-        deGiay.setTrangthai(true);
-        deGiay.setNgaytao(currentTime);
-        deGiay.setLancapnhatcuoi(currentTime);
-        deGiay.setTen(sanPhamChiTiet.getDegiay().getTen());
-        deGiayRepository.save(deGiay);
-        MauSac mauSac = sanPhamChiTiet.getMausac();
-        mauSac.setId(id);
-        mauSac.setTrangthai(true);
-        mauSac.setNgaytao(currentTime);
-        mauSac.setLancapnhatcuoi(currentTime);
-        mauSac.setTen(sanPhamChiTiet.getMausac().getTen());
-        mauSacRepository.save(mauSac);
-        KichCo kichCo = sanPhamChiTiet.getKichco();
-        kichCo.setId(id);
-        kichCo.setTrangthai(true);
-        kichCo.setNgaytao(currentTime);
-        kichCo.setLancapnhatcuoi(currentTime);
-        kichCo.setTen(sanPhamChiTiet.getKichco().getTen());
-        kichCoRepository.save(kichCo);
+
         sanPhamChiTietRepository.save(sanPhamChiTiet);
+
         SanPhamChiTiet spct = sanPhamChiTietRepository.findById(spctId).orElse(null);
         if (spct != null) {
             for (MultipartFile anhFile : anhFiles) {
@@ -239,6 +227,7 @@ public class SanPhamChiTietController {
         redirectAttributes.addFlashAttribute("success", true);
         return "redirect:/detailsanpham/" + firstProductId;
     }
+
 
     private String saveImage(MultipartFile file) {
         String uploadDir = "G:\\Ki7\\DATN\\DATN\\src\\main\\resources\\static\\upload";

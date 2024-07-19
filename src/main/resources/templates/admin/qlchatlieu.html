@@ -142,6 +142,7 @@
                                         <div class="modal-body">
                                             <form id="addForm" name="addChatLieu" th:method="post" th:action="@{/add}" th:object="${chatlieu}" onsubmit="return validateTrung()">
                                                 <p>
+                                                    <span style="color: red">* </span>
                                                     Tên chất liệu:
                                                     <input id="tenInput" th:field="*{ten}" class="form-control">
                                                 <div style="color: red; font-weight: initial;font-style: italic" id="errorTen"></div>
@@ -210,7 +211,8 @@
                                             <div class="modal-body">
                                                 <input type="hidden" id="chatLieuId">
                                                 <div class="mb-3">
-                                                    <label for="tenChatLieu" class="form-label">Tên chất liệu</label>
+                                                    <span style="color: red">* </span>
+                                                    <label for="tenChatLieu" class="form-label">Tên chất liệu:</label>
                                                     <input type="text" class="form-control" id="tenChatLieu">
                                                     <div id="error-message" class="text-danger" style="display: none;">
                                                     </div>

@@ -12,6 +12,9 @@ import java.util.Optional;
 
 @Repository
 public interface DiaChiRepository extends JpaRepository<DiaChi, Integer> {
+    @Query("SELECT c FROM DiaChi c WHERE c.hotennguoinhan = ?1 and c.sdtnguoinhan =?2 and c.tenduong = ?3 and c.tinhthanhpho = ?4 and c.quanhuyen =?5 and c.xaphuong = ?6")
+    DiaChi findDiaChiByDetails(String ten, String sdt, String tenduong, String tinhthanh, String quanhuyen, String xaphong);
+    List<DiaChi> getDiaChiByTrangthai(Boolean trangThai);
     @Query("SELECT c FROM DiaChi c JOIN NhanVien n on n.nguoidung.id = c.nguoidung.id Order by c.nguoidung.lancapnhatcuoi desc")
     List<DiaChi> getAll();
     @Query("SELECT c FROM DiaChi c  WHERE c.nguoidung.id = ?1 and c.trangthai=true")
