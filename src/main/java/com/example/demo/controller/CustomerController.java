@@ -324,4 +324,5 @@ public class CustomerController {
 
         return "redirect:/hosokhachhang/{username}";
     }
+
 }

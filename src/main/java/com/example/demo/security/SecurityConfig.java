@@ -25,6 +25,7 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -35,6 +36,8 @@ public class SecurityConfig {
 
     @Autowired
     private CustomerUserDetailService userDetailService;
+    @Autowired
+    JwtAuthEntryPoint jwtAuthEntryPoint;
 
     private static final String[] NHANVIEN_LINK = {
             "/hoa-don/ban-hang"
@@ -58,7 +61,7 @@ public class SecurityConfig {
                )
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(getProvider())
-                .exceptionHandling(Customizer.withDefaults())
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthEntryPoint))
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class).build();
 
     }

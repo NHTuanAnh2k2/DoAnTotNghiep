@@ -4,6 +4,7 @@ import com.example.demo.entity.DiaChi;
 import com.example.demo.entity.KhachHang;
 import com.example.demo.entity.NguoiDung;
 import com.example.demo.info.*;
+import com.example.demo.info.token.UserManager;
 import com.example.demo.repository.DiaChiRepository;
 import com.example.demo.repository.NguoiDungRepository;
 import com.example.demo.restcontroller.khachhang.KhachHangRestController;
@@ -16,6 +17,7 @@ import com.google.zxing.MultiFormatReader;
 import com.google.zxing.Result;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.eclipse.tags.shaded.org.apache.regexp.RE;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +56,8 @@ public class KhachHangController {
     NguoiDungRepository nguoiDungRepository;
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    UserManager userManager;
 
     @GetMapping
     public String display(Model model, @ModelAttribute("khachhang") KhachHang khachHang) {
@@ -172,6 +176,10 @@ public class KhachHangController {
         nd.setLancapnhatcuoi(Timestamp.valueOf(currentDate));
         nd.setTrangthai(true);
         khachHangService.addNguoiDung(nd);
+        Integer id = nd.getId();
+        String usernameWithId = username + id;
+        nd.setTaikhoan(usernameWithId);
+        khachHangService.updateNguoiDung(nd);
 
         DiaChi dc = new DiaChi();
         dc.setTinhthanhpho(diachi.getTinhthanhpho());
@@ -204,7 +212,8 @@ public class KhachHangController {
     @GetMapping("/updatetrangthai/{id}")
     public String updateTrangThai(Model model,
                                   @PathVariable("id") Integer id,
-                                  RedirectAttributes redirectAttributes) {
+                                  RedirectAttributes redirectAttributes,
+                                  HttpSession session) {
         DiaChi dc = khachHangService.findDiaChiById(id);
         NguoiDung nd = khachHangService.findNguoiDungById(dc.getNguoidung().getId());
         KhachHang kh = khachHangService.findKhachHangByIdNguoiDung(nd.getId());
@@ -217,6 +226,16 @@ public class KhachHangController {
         kh.setTrangthai(!kh.getTrangthai());
         khachHangService.updateKhachHang(kh);
 
+        String userName = (String) session.getAttribute("userDangnhap");
+        if (userName != null) {
+            NguoiDung nguoiDung = khachHangService.findNguoiDungByTaikhoan(userName);
+            Integer userId = nguoiDung.getId();
+            String token = userManager.getToken(userId);
+            session.invalidate();
+            userManager.logoutUser(userId, token);
+            redirectAttributes.addFlashAttribute("success", true);
+            return "redirect:/khachhang";
+        }
 
         redirectAttributes.addFlashAttribute("success", true);
         return "redirect:/khachhang";

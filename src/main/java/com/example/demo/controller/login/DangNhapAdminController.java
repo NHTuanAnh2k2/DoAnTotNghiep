@@ -5,6 +5,7 @@ import com.example.demo.entity.NguoiDung;
 import com.example.demo.entity.NhanVien;
 import com.example.demo.info.DangNhapNDInfo;
 import com.example.demo.info.TaiKhoanTokenInfo;
+import com.example.demo.info.token.AdminManager;
 import com.example.demo.info.token.AuthRequestDTO;
 import com.example.demo.info.token.JwtResponseDTO;
 import com.example.demo.info.token.UserManager;
@@ -56,7 +57,7 @@ public class DangNhapAdminController {
     @Autowired
     private JWTGenerator jwtGenerator;
     @Autowired
-    public UserManager userManager;
+    public AdminManager adminManager;
     @Autowired
     JwtResponseDTO jwtResponseDTO;
 
@@ -95,11 +96,7 @@ public class DangNhapAdminController {
                         userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 String token = jwtGenerator.generateToken(authentication);
-                HttpHeaders headers = new HttpHeaders();
-                headers.add("Authorization", "Bearer " + token);
-                System.out.println(headers);
-//                userManager.addUser(nd.getId(), token);
-                jwtResponseDTO.setAccessToken(token);
+                adminManager.addUser(nd.getId(), token);
                 session.setAttribute("tokenAdmin", token);
                 session.setAttribute("adminDangnhap", nd.getTaikhoan());
                 model.addAttribute("tokenAdmin", token);
@@ -115,5 +112,19 @@ public class DangNhapAdminController {
             redirectAttributes.addFlashAttribute("error", "Đã có lỗi xảy ra, vui lòng thử lại");
             return "redirect:/admin/account";
         }
+    }
+    @GetMapping("/dangxuat")
+    public String logout (HttpServletRequest request){
+        // Xóa session của người dùng để đăng xuất
+        HttpSession session = request.getSession(false);
+        String userName = (String) session.getAttribute("adminDangnhap");
+        NguoiDung nguoiDung = khachHangService.findNguoiDungByTaikhoan(userName);
+        Integer adminId = nguoiDung.getId();
+        String token = adminManager.getToken(adminId);
+        if (session != null) {
+            session.invalidate();
+            adminManager.logoutUser(adminId, token);
+        }
+        return "redirect:/admin/account";
     }
 }

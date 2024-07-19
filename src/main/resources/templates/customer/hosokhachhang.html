@@ -209,7 +209,7 @@
                                             </div>
                                             <div class="form-floating mb-3">
                                                 <input type="date" class="form-control" th:field="*{ngaysinh}"
-                                                       id="ngaysinh"
+                                                       id="ngaysinh" onkeydown="return false"
                                                        placeholder="Ngày sinh">
                                                 <label>Ngày sinh</label>
                                                 <span id="ngaysinhNdError" style="color: red"></span>
@@ -376,7 +376,7 @@
                                                    style="color: #808080; text-decoration: none; text-transform: none; margin-right: 50px; font-weight: 550; ">Hủy</a>
                                                 <button type="submit" id="btnThemDiaChi"
                                                         style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 40%; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">
-                                                    CẬP NHẬT THÔNG TIN
+                                                    THÊM THÔNG TIN
                                                 </button>
                                             </div>
                                         </form>
@@ -503,10 +503,9 @@
                             </div>
                             <!--end-->
 
-                            <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" style="max-width: 1000px"
+                            <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" style="width: 113%"
                                  aria-labelledby="v-pills-messages-tab" tabindex="0">
                                 <h3>Đơn hàng của tôi</h3>
-
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <li class="nav-item" role="presentation">
                                         <button class="nav-link active" id="home-tab"
@@ -585,7 +584,7 @@
                                     <div class="tab-pane fade show active" id="home-tab-pane"
                                          role="tabpanel"
                                          aria-labelledby="home-tab" tabindex="0">
-                                        <table id="example2" class="table table-bordered table-hover text-center dataTables_wrapper dt-bootstrap4 no-footer">
+                                            <table id="example2" class="table table-bordered table-hover text-center dataTables_wrapper dt-bootstrap4 no-footer">
                                             <thead class="table table-danger">
                                             <tr>
                                                 <th>STT</th>
@@ -683,7 +682,7 @@
                                                     </a>
                                                 </td>
                                                 <td style="width: 100px">
-                                                    <a class="btn"
+                                                    <a class="btn" th:data-id="${hd.id}"  onclick="huyDonHang(this)" id="huydonhang"
                                                        style="background-color: rgb(249,72,42);color: white">
                                                         Huỷ đơn hàng
                                                     </a>
@@ -1010,6 +1009,7 @@
     var lstEmailFromDb = /*[[${lstEmail}]]*/ [];
     var lstSdtFromDb = /*[[${lstSdt}]]*/ [];
     var lstCccdFromDb = /*[[${lstCccd}]]*/ [];
+    var userDangnhap = /*[[${session.userDangnhap}]]*/ [];
 
     var opentabDiaChi = /*[[${addDiaChiSuccess}]]*/ false;
     var success = /*[[${success}]]*/ false;
@@ -1454,7 +1454,6 @@
     }
 
     var originalSdt = document.getElementById('sodienthoai').value.trim();
-
     function checkTrungSdtUpdate() {
         var sdtInput = document.getElementById('sodienthoai').value.trim();
         var lstSdtFromDbCopy = lstSdtFromDb.slice();
@@ -1495,6 +1494,31 @@
             sessionStorage.removeItem('activeTab');
         }
     });
+
+    function huyDonHang(element) {
+        const id = element.getAttribute('data-id');
+
+        if (confirm("Bạn có chắc chắn muốn huỷ đơn hàng này không?")) {
+            fetch(`/api/huydonhang/${id}`, {
+                method: 'GET',
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.text();
+                    }
+                    throw new Error('Có lỗi xảy ra');
+                })
+                .then(data => {
+                    alert(data);
+                    sessionStorage.setItem('activeTab', 'v-pills-messages');
+                    window.location.href = `/hosokhachhang/${userDangnhap}`
+                    // Cập nhật giao diện hoặc thực hiện các hành động khác sau khi hủy thành công
+                })
+                .catch(error => {
+                    alert(error);
+                });
+        }
+    }
 </script>
 
 
