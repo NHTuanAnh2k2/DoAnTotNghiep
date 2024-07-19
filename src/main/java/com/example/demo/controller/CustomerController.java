@@ -238,9 +238,9 @@ public class CustomerController {
         dc.setTinhthanhpho(diachi.getTinhthanhpho());
         dc.setQuanhuyen(diachi.getQuanhuyen());
         dc.setXaphuong(diachi.getXaphuong());
-        dc.setTenduong(diachi.getTenduong());
+        dc.setTenduong(diachi.getTenduong().trim().replaceAll("\\s+", " "));
         dc.setSdtnguoinhan(diachi.getSdtnguoinhan());
-        dc.setHotennguoinhan(diachi.getHotennguoinhan());
+        dc.setHotennguoinhan(diachi.getHotennguoinhan().trim().replaceAll("\\s+", " "));
         dc.setNguoicapnhat("CUSTOMER");
         dc.setNguoitao("CUSTOMER");
         dc.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));

@@ -6,6 +6,7 @@ import com.example.demo.service.KhachHangService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +17,8 @@ public class DangKyRestController {
     KhachHangService khachHangService;
     @Autowired
     NguoiDungRepository nguoiDungRepository;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @PostMapping("/send-code")
     public ResponseEntity<String> sendPasswordResetCode(@RequestParam("emailResetPassword") String emailResetPassword) {
@@ -53,7 +56,7 @@ public class DangKyRestController {
         NguoiDung nguoiDung = nguoiDungRepository.findNguoiDungByEmail(emailResetPassword);
 
         if (nguoiDung != null) {
-            nguoiDung.setMatkhau(newPassword); // Giả sử mật khẩu được lưu dưới dạng plain text, nên bạn cần mã hóa mật khẩu trước khi lưu.
+            nguoiDung.setMatkhau(passwordEncoder.encode(newPassword));
             nguoiDungRepository.save(nguoiDung);
             return ResponseEntity.ok("Đổi mật khẩu thành công.");
         } else {

@@ -146,7 +146,8 @@
                                             </p>
                                             <p>
                                                 <span style="color: #808080;min-width: 115px;display: inline-block;">CCCD: </span>
-                                                <span th:text="${nguoidung.cccd}"></span>
+                                                <span th:if="${#strings.isEmpty(nguoidung.cccd)}" th:text="'Chưa có căn cước công dân'"></span>
+                                                <span th:unless="${#strings.isEmpty(nguoidung.cccd)}" th:text="${nguoidung.cccd}"></span>
                                             </p>
                                         </div>
                                         <div class="col-lg-3 mt-2" style="right: 0;">
@@ -256,10 +257,14 @@
                                                         <strong th:text="${lstDiaChi.hotennguoinhan}">Đỗ Quốc
                                                             Thịnh</strong> <span
                                                             th:text="${lstDiaChi.sdtnguoinhan}">(+84) 866511075</span>
-                                                        <p th:text="${lstDiaChi.tenduong}">ố 24 liên kề 31 khu đô
+                                                        <p th:if="${#strings.isEmpty(lstDiaChi.tenduong)}" th:text="'Chưa có địa chỉ'">ố 24 liên kề 31 khu đô
                                                             thị
                                                             mới vân canh</p>
-                                                        <p th:text="${lstDiaChi.xaphuong + ', ' + lstDiaChi.quanhuyen + ', ' + lstDiaChi.tinhthanhpho}">
+                                                        <p th:unless="${#strings.isEmpty(lstDiaChi.tenduong)}" th:text="${lstDiaChi.tenduong}">ố 24 liên kề 31 khu đô
+                                                            thị
+                                                            mới vân canh</p>
+                                                        <p th:if="${#strings.isEmpty(lstDiaChi.tinhthanhpho)}" th:text="'Chưa có địa chỉ'"></p>
+                                                        <p th:unless="${#strings.isEmpty(lstDiaChi.tinhthanhpho)}" th:text="${lstDiaChi.xaphuong + ', ' + lstDiaChi.quanhuyen + ', ' + lstDiaChi.tinhthanhpho}">
                                                             Xã Vân Canh, Huyện Hoài Đức, Hà Nội</p>
                                                     </div>
                                                     <div>
