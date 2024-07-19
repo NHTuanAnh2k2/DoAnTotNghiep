@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -211,7 +210,6 @@ public class SanPhamController {
             }
 
         } else {
-
             for (MauSac colorId : idMauSac) {
                 for (String sizeName : kichCoNames) {
                     KichCo kichCo = kichCoRepository.findByTen(sizeName);
@@ -248,7 +246,6 @@ public class SanPhamController {
                             spct.setDegiay(idDeGiay);
                             spct.setMausac(colorId);
                             sanPhamChiTietList.add(spct);
-
                         }
                     }
                 }
@@ -256,7 +253,6 @@ public class SanPhamController {
 
         }
         model.addAttribute("sanphamchitiet", sanPhamChiTietList);
-
         return "forward:/viewaddSPPOST";
     }
 
@@ -293,45 +289,50 @@ public class SanPhamController {
             RedirectAttributes redirectAttributes,
             Model model
     ) {
-
         SanPham sanPham = sanPhamChiTietList.get(0).getSanpham();
         List<SanPhamChiTiet> listsanPhamChiTietDB = sanPhamChiTietRepository.findBySanpham(sanPham);
-        if (listsanPhamChiTietDB.size() <= 0) {
+
+        if (listsanPhamChiTietDB.isEmpty()) {
             for (SanPhamChiTiet spct : sanPhamChiTietList) {
                 sanPhamChiTietRepository.save(spct);
             }
-            sanPhamChiTietList.clear();
         } else {
-
             for (SanPhamChiTiet spctList : sanPhamChiTietList) {
-                SanPhamChiTiet spctTim = sanPhamChiTietRepository.findSPCT
-                        (spctList.getMausac(), spctList.getKichco(), spctList.getThuonghieu(), spctList.getChatlieu(), spctList.getDegiay()
-                                , spctList.getSanpham());
+                SanPhamChiTiet spctTim = sanPhamChiTietRepository.findSPCT(
+                        spctList.getMausac(), spctList.getKichco(), spctList.getThuonghieu(),
+                        spctList.getChatlieu(), spctList.getDegiay(), spctList.getSanpham());
+
                 if (spctTim != null) {
                     spctTim.setSoluong(spctTim.getSoluong() + spctList.getSoluong());
                     sanPhamChiTietRepository.save(spctTim);
+                    addImagesToExistingProductDetail(spctTim, anhFiles1, anhFiles2, anhFiles3);
                 } else {
                     sanPhamChiTietRepository.save(spctList);
+                    addImagesToNewProductDetail(spctList, anhFiles1, anhFiles2, anhFiles3);
                 }
             }
-            sanPhamChiTietList.clear();
         }
-        for (int i = 0; i < spctIds.size(); i++) {
-            Integer spctId = spctIds.get(i);
-            SanPhamChiTiet spct = sanPhamChiTietRepository.findById(spctId).orElse(null);
-            if (spct != null) {
-                MultipartFile anhFile1 = anhFiles1.get(i);
-                addAnh(spct, anhFile1);
-                MultipartFile anhFile2 = anhFiles2.get(i);
-                addAnh(spct, anhFile2);
-                MultipartFile anhFile3 = anhFiles3.get(i);
-                addAnh(spct, anhFile3);
-            }
-        }
+
+        sanPhamChiTietList.clear();
         redirectAttributes.addFlashAttribute("success", true);
         return "redirect:/listsanpham";
     }
 
+    private void addImagesToExistingProductDetail(SanPhamChiTiet spct, List<MultipartFile> anhFiles1, List<MultipartFile> anhFiles2, List<MultipartFile> anhFiles3) {
+        for (int i = 0; i < anhFiles1.size(); i++) {
+            addAnh(spct, anhFiles1.get(i));
+            addAnh(spct, anhFiles2.get(i));
+            addAnh(spct, anhFiles3.get(i));
+        }
+    }
+
+    private void addImagesToNewProductDetail(SanPhamChiTiet spct, List<MultipartFile> anhFiles1, List<MultipartFile> anhFiles2, List<MultipartFile> anhFiles3) {
+        for (int i = 0; i < anhFiles1.size(); i++) {
+            addAnh(spct, anhFiles1.get(i));
+            addAnh(spct, anhFiles2.get(i));
+            addAnh(spct, anhFiles3.get(i));
+        }
+    }
 
     private void addAnh(SanPhamChiTiet spct, MultipartFile anhFile) {
         if (!anhFile.isEmpty()) {
@@ -364,6 +365,7 @@ public class SanPhamController {
             return null;
         }
     }
+
 
 
     @PostMapping("/updateGiaAndSoLuong")

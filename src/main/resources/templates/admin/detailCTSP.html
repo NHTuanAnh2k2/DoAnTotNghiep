@@ -457,6 +457,44 @@
 </body>
 </html>
 
+<!--Ảnh-->
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const input = document.querySelector('input[type="file"]');
+        const preview = document.querySelector('.image-preview');
+        const uploadButton = document.getElementById('uploadButton');
+
+        input.addEventListener('change', function () {
+            const totalImages = preview.querySelectorAll('img').length;
+            const totalFiles = this.files.length;
+
+            if (totalImages + totalFiles > 8) {
+                alert("Bạn chỉ có thể tải lên tối đa 8 ảnh.");
+                return;
+            }
+
+            [...this.files].forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = new Image();
+                    img.src = e.target.result;
+                    img.style.width = '100px';
+                    img.style.height = '100px';
+                    img.style.objectFit = 'cover';
+                    preview.appendChild(img);
+                    // Ẩn hoặc hiển thị nút tải lên dựa trên số lượng ảnh đã hiển thị
+                    if (totalImages + preview.querySelectorAll('img').length >= 8) {
+                        uploadButton.style.display = 'none';
+                    } else {
+                        uploadButton.style.display = 'inline-block';
+                    }
+                }
+                reader.readAsDataURL(file);
+            });
+        });
+    });
+</script>
+<!--validate form-->
 <script>
     function validateForm() {
         var tensanpham = document.forms["updateProduct"]["sanpham.tensanpham"].value;
@@ -554,8 +592,6 @@
         return false;
     }
 </script>
-
-
 <!--validate modal-->
 <script th:inline="javascript">
 
@@ -954,8 +990,6 @@
 
     /*]]>*/
 </script>
-
-
 <!--thông báo thêm tên thương hiệu thành công-->
 <script>
     document.addEventListener('DOMContentLoaded', () => {

@@ -555,6 +555,7 @@
                                               onsubmit="return validateTrungKichCo()"
                                               method="post" th:action="@{/addKichCoModal}" th:object="${kichco}">
                                             <p>
+                                                <span style="color: red">* </span>
                                                 Tên kích cỡ:
                                                 <input id="tenInputKichCo" class="form-control" th:field="*{ten}"/>
                                             <div style="color: red; font-weight: initial;font-style: italic"

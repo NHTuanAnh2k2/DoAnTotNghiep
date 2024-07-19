@@ -134,6 +134,7 @@
                                             <form id="addForm" name="addThuongHieu" th:method="post" th:object="${thuonghieu}"
                                                   th:action="@{/addSaveThuongHieu}" onsubmit="return validateTrung()">
                                                 <p>
+                                                    <span style="color: red">* </span>
                                                     Tên thương hiệu:
                                                     <input id="tenInput" class="form-control" th:field="*{ten}"/>
                                                 <div style="color: red; font-weight: initial;font-style: italic" id="errorTen"></div>
@@ -194,7 +195,8 @@
                                             <div class="modal-body">
                                                 <input type="hidden" id="thuongHieuId">
                                                 <div class="mb-3">
-                                                    <label for="tenThuongHieu" class="form-label">Tên thương hiệu</label>
+                                                    <span style="color: red">* </span>
+                                                    <label for="tenThuongHieu" class="form-label">Tên thương hiệu:</label>
                                                     <input type="text" class="form-control" id="tenThuongHieu">
                                                     <div id="error-message" class="text-danger" style="display: none;">
                                                     </div>

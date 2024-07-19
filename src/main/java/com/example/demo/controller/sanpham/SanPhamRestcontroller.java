@@ -69,7 +69,7 @@ public class SanPhamRestcontroller {
 
     @GetMapping("/updateSanPham/{id}")
     public ResponseEntity<Object[]> getSanPham(@PathVariable Integer id) {
-        List<Object[]> sanPhamList = sanPhamRepositoty.findById2(id);
+        List<Object[]> sanPhamList = sanPhamRepositoty.findByIdUpdatTenSP(id);
         if (!sanPhamList.isEmpty()) {
             Object[] sanPham = sanPhamList.get(0);
             return ResponseEntity.ok(sanPham);

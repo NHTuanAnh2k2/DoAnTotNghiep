@@ -156,6 +156,7 @@
                                             <form id="addForm" name="addDeGiay" th:method="post" th:object="${degiay}"
                                                   th:action="@{/addSave}" onsubmit="return validateTrung()">
                                                 <p>
+                                                    <span style="color: red">* </span>
                                                     Tên đế giày:
                                                     <input id="tenInput" class="form-control" th:field="*{ten}"/>
                                                 <div style="color: red; font-weight: initial;font-style: italic"
@@ -238,7 +239,8 @@
                                             <div class="modal-body">
                                                 <input type="hidden" id="deGiayId">
                                                 <div class="mb-3">
-                                                    <label for="tenDeGiay" class="form-label">Tên đế giày</label>
+                                                    <span style="color: red">* </span>
+                                                    <label for="tenDeGiay" class="form-label">Tên đế giày:</label>
                                                     <input type="text" class="form-control" id="tenDeGiay">
                                                     <div id="error-message" class="text-danger" style="display: none;">
                                                     </div>

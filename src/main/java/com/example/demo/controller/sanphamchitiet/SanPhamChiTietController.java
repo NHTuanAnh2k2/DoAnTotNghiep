@@ -1,5 +1,4 @@
 package com.example.demo.controller.sanphamchitiet;
-
 import com.example.demo.entity.*;
 import com.example.demo.info.SanPhamChiTietInfo;
 import com.example.demo.info.ThuocTinhInfo;
@@ -11,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -64,19 +62,33 @@ public class SanPhamChiTietController {
 
     @GetMapping("/allSPCT")
     public String allSPCT(Model model, @ModelAttribute("search") SanPhamChiTietInfo info) {
-        List<SanPhamChiTiet> list = null;
-        if (info.getKey() == null && info.getIdChatLieu() == null && info.getIdDeGiay() == null && info.getIdKichCo() == null
-                && info.getIdMauSac() == null && info.getIdThuongHieu() == null && info.getGioitinh() == null) {
+        List<SanPhamChiTiet> list;
+        String trimmedKey = (info.getKey() != null) ? info.getKey().trim().replaceAll("\\s+", " ") : null;
+        boolean isKeyEmpty = (trimmedKey == null || trimmedKey.isEmpty());
+        boolean isAllFiltersNull = (
+                isKeyEmpty &&
+                        info.getIdChatLieu() == null &&
+                        info.getIdDeGiay() == null &&
+                        info.getIdKichCo() == null &&
+                        info.getIdMauSac() == null &&
+                        info.getIdThuongHieu() == null &&
+                        info.getGioitinh() == null &&
+                        info.getTrangthai() == null
+        );
+        if (isAllFiltersNull) {
             list = sanPhamChiTietRepository.findAll();
         } else {
             list = sanPhamChiTietRepository.search(
-                    "%" + info.getKey() + "%",
+                    "%" + trimmedKey + "%",
+                    "%" + trimmedKey + "%",
                     info.getIdThuongHieu(),
                     info.getIdDeGiay(),
                     info.getIdKichCo(),
                     info.getIdMauSac(),
                     info.getIdChatLieu(),
-                    info.getGioitinh());
+                    info.getGioitinh(),
+                    info.getTrangthai()
+            );
         }
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuRepository.getAll();
@@ -93,24 +105,16 @@ public class SanPhamChiTietController {
         model.addAttribute("cl", listChatLieu);
         model.addAttribute("spct", listSanPhamChiTiet);
         model.addAttribute("listAllCTSP", list);
+        model.addAttribute("fillSearch", trimmedKey);
+        model.addAttribute("fillThuongHieu", info.getIdThuongHieu());
+        model.addAttribute("fillDeGiay", info.getIdDeGiay());
+        model.addAttribute("fillKichCo", info.getIdKichCo());
+        model.addAttribute("fillMauSac", info.getIdMauSac());
+        model.addAttribute("fillChatLieu", info.getIdChatLieu());
+        model.addAttribute("fillGioiTinh", info.getGioitinh());
+        model.addAttribute("fillTrangThai", info.getTrangthai());
         return "admin/allchitietsanpham";
     }
-
-//    @GetMapping("/deleteCTSP/{id}")
-//    public String deleteCTSP(@PathVariable Integer id, Model model) {
-//        sanPhamChiTietImp.deleteSPCT(id);
-//        // Cập nhật lại danh sách sản phẩm chi tiết
-////        List<SanPhamChiTiet> sanPhamChiTiets = sanPhamChiTietRepository.findAll();
-////        model.addAttribute("sanphamchitiet", sanPhamChiTiets);
-////        SanPham sanPham=new SanPham();
-////        List<SanPhamChiTiet> sanPhamChiTiets = sanPhamChiTietRepository.findBySanPhamId(sanPham.getId());
-////        model.addAttribute("sanphamchitiet", sanPhamChiTiets);
-//        SanPham sanPham = sanPhamRepositoty.findFirstByOrderByNgaytaoDesc();
-//        List<SanPhamChiTiet> listSPCT = sanPhamChiTietRepository.findBySanPhamId(sanPham.getId());
-//        model.addAttribute("sanphamchitiet", listSPCT);
-//        return "forward:/viewaddSPPOST";
-////        return "admin/addsanpham";
-//    }
 
 
     @GetMapping("/updateCTSP/{id}")
@@ -123,6 +127,7 @@ public class SanPhamChiTietController {
                                  @ModelAttribute("tim") ThuocTinhInfo info
 
     ) {
+        //dùng cho validate
         List<DeGiay> listDG = deGiayRepository.findAll();
         model.addAttribute("listDG", listDG);
         List<ThuongHieu> listTH = thuongHieuRepository.findAll();
@@ -153,6 +158,7 @@ public class SanPhamChiTietController {
         model.addAttribute("hehe", sanPhamChiTietImp.findById(id));
         return "admin/detailCTSP";
     }
+
     @PostMapping("/updateCTSP/{id}")
     public String updateCTSP(@PathVariable Integer id, @ModelAttribute("hehe") SanPhamChiTiet sanPhamChiTiet,
                              @RequestParam(name = "anhs") List<MultipartFile> anhFiles,
@@ -221,7 +227,6 @@ public class SanPhamChiTietController {
         redirectAttributes.addFlashAttribute("success", true);
         return "redirect:/detailsanpham/" + firstProductId;
     }
-
 
 
     private String saveImage(MultipartFile file) {
