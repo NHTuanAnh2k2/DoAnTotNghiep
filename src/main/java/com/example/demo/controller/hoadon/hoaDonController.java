@@ -544,7 +544,7 @@ public class hoaDonController {
         String tinh = diachiLst.get(3);
         ThayDoiTTHoaDon_KHInfo formChangesTTKH = new ThayDoiTTHoaDon_KHInfo(
                 hoaDonXem.getTennguoinhan(), hoaDonXem.getSdt(),
-                tinh, huyen, xa, diachiCT, hoaDonXem.getPhivanchuyen(), hoaDonXem.getGhichu()
+                tinh, huyen, xa, diachiCT, hoaDonXem.getPhivanchuyen() + "", hoaDonXem.getGhichu()
         );
         //gửi địa chỉ giao
         lstdiachigiao = new ArrayList<>();
@@ -583,6 +583,12 @@ public class hoaDonController {
         hoaDonXem.setNgaygiaodukien(timestamp);
         dao.capNhatHD(hoaDonXem);
 
+    }
+
+    public static String convertCurrency(String formattedAmount) {
+        // Xóa ký hiệu "₫" và các dấu phân cách
+        String numericAmount = formattedAmount.replaceAll("[^\\d]", "");
+        return numericAmount;
     }
 
     //xác nhận đơn
@@ -667,8 +673,8 @@ public class hoaDonController {
         List<PhieuGiamGiaChiTiet> lstPGGCT = daoPGGCT.timListPhieuTheoHD(hdTT);
         PhieuGiamGiaChiTiet phieuGiamCT = new PhieuGiamGiaChiTiet();
         phieuGiamCT.setTiengiam(new BigDecimal("0"));
-        if(lstPGGCT.size()>0){
-             phieuGiamCT = lstPGGCT.get(0);
+        if (lstPGGCT.size() > 0) {
+            phieuGiamCT = lstPGGCT.get(0);
         }
         for (HoaDonChiTiet a : lstsp
         ) {
@@ -797,17 +803,17 @@ public class hoaDonController {
 
     //thay đổi tt khách tại hdct
     @PostMapping("ChangesTTHD")
-    public String changesTTDH(Model model, @ModelAttribute("thayDoiTT") ThayDoiTTHoaDon_KHInfo TTChanges) {
+    public String changesTTDH(Model model, @ModelAttribute("thayDoiTT") ThayDoiTTHoaDon_KHInfo TTChanges,RedirectAttributes redirectAttributes) {
         List<HoaDon> hd = dao.timTheoID(idhdshowdetail);
         HoaDon hdset = hd.get(0);
-        hdset.setTennguoinhan(TTChanges.getTen());
-        hdset.setSdt(TTChanges.getSdt());
+        hdset.setTennguoinhan(TTChanges.getTen().trim().replaceAll("\\s+", " "));
+        hdset.setSdt(TTChanges.getSdt().trim());
         String diachi = TTChanges.getTinh() + ", " + TTChanges.getHuyen() + ", " + TTChanges.getXa() + ", " + TTChanges.getDiachiCT();
-        hdset.setDiachi(diachi.trim());
-        hdset.setPhivanchuyen(TTChanges.getPhigiao());
-        hdset.setGhichu(TTChanges.getGhichu());
+        hdset.setDiachi(diachi.trim().replaceAll("\\s+", " "));
+        hdset.setPhivanchuyen(BigDecimal.valueOf(Double.valueOf(convertCurrency(TTChanges.getPhigiao()))));
+        hdset.setGhichu(TTChanges.getGhichu().trim().replaceAll("\\s+", " "));
         dao.capNhatHD(hdset);
-
+        redirectAttributes.addFlashAttribute("chagesTTHDSucsess", true);
         return "redirect:/hoa-don/showDetail";
     }
 
