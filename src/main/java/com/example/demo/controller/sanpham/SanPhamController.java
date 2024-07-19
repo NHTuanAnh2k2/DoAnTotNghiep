@@ -7,6 +7,7 @@ import com.example.demo.repository.*;
 import com.example.demo.service.impl.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -301,38 +302,35 @@ public class SanPhamController {
                 SanPhamChiTiet spctTim = sanPhamChiTietRepository.findSPCT(
                         spctList.getMausac(), spctList.getKichco(), spctList.getThuonghieu(),
                         spctList.getChatlieu(), spctList.getDegiay(), spctList.getSanpham());
-
                 if (spctTim != null) {
                     spctTim.setSoluong(spctTim.getSoluong() + spctList.getSoluong());
+                    for (Anh anh : spctList.getAnh()) {
+                        anh.setSanphamchitiet(spctTim);
+                        anhRepository.save(anh);
+                    }
                     sanPhamChiTietRepository.save(spctTim);
-                    addImagesToExistingProductDetail(spctTim, anhFiles1, anhFiles2, anhFiles3);
                 } else {
                     sanPhamChiTietRepository.save(spctList);
-                    addImagesToNewProductDetail(spctList, anhFiles1, anhFiles2, anhFiles3);
                 }
             }
         }
-
         sanPhamChiTietList.clear();
+        for (int i = 0; i < spctIds.size(); i++) {
+            Integer spctId = spctIds.get(i);
+            SanPhamChiTiet spct = sanPhamChiTietRepository.findById(spctId).orElse(null);
+            if (spct != null) {
+                MultipartFile anhFile1 = anhFiles1.get(i);
+                addAnh(spct, anhFile1);
+                MultipartFile anhFile2 = anhFiles2.get(i);
+                addAnh(spct, anhFile2);
+                MultipartFile anhFile3 = anhFiles3.get(i);
+                addAnh(spct, anhFile3);
+            }
+        }
         redirectAttributes.addFlashAttribute("success", true);
         return "redirect:/listsanpham";
     }
 
-    private void addImagesToExistingProductDetail(SanPhamChiTiet spct, List<MultipartFile> anhFiles1, List<MultipartFile> anhFiles2, List<MultipartFile> anhFiles3) {
-        for (int i = 0; i < anhFiles1.size(); i++) {
-            addAnh(spct, anhFiles1.get(i));
-            addAnh(spct, anhFiles2.get(i));
-            addAnh(spct, anhFiles3.get(i));
-        }
-    }
-
-    private void addImagesToNewProductDetail(SanPhamChiTiet spct, List<MultipartFile> anhFiles1, List<MultipartFile> anhFiles2, List<MultipartFile> anhFiles3) {
-        for (int i = 0; i < anhFiles1.size(); i++) {
-            addAnh(spct, anhFiles1.get(i));
-            addAnh(spct, anhFiles2.get(i));
-            addAnh(spct, anhFiles3.get(i));
-        }
-    }
 
     private void addAnh(SanPhamChiTiet spct, MultipartFile anhFile) {
         if (!anhFile.isEmpty()) {
@@ -367,7 +365,6 @@ public class SanPhamController {
     }
 
 
-
     @PostMapping("/updateGiaAndSoLuong")
     public String updateGiaAndSoLuong(
             Model model,
@@ -392,5 +389,20 @@ public class SanPhamController {
         }
         model.addAttribute("sanphamchitiet", sanPhamChiTietList);
         return "forward:/viewaddSPPOST";
+    }
+
+
+    @GetMapping("timaddImage")
+    @ResponseBody
+    public ResponseEntity<?> timaddImage(@RequestParam("image") List<String> listData
+    ) {
+        Anh anh = new Anh();
+        String url = "G:\\Ki7\\DATN\\DATN\\src\\main\\resources\\static\\upload\\" + listData.get(1);
+        anh.setTenanh(url);
+        List<Anh> list =sanPhamChiTietList.get(Integer.valueOf(listData.get(0)) - 1).getAnh()==null?new ArrayList<>():sanPhamChiTietList.get(Integer.valueOf(listData.get(0)) - 1).getAnh();
+        list.add(anh);
+        System.out.println("KKKKKKKKKKKKKK" + list.size());
+        sanPhamChiTietList.get(Integer.valueOf(listData.get(0)) - 1).setAnh(list);
+        return ResponseEntity.ok(true);
     }
 }
