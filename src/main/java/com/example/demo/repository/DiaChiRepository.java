@@ -17,15 +17,12 @@ public interface DiaChiRepository extends JpaRepository<DiaChi, Integer> {
     List<DiaChi> getDiaChiByTrangthai(Boolean trangThai);
     @Query("SELECT c FROM DiaChi c JOIN NhanVien n on n.nguoidung.id = c.nguoidung.id Order by c.nguoidung.lancapnhatcuoi desc")
     List<DiaChi> getAll();
-    List<DiaChi> getAllByOrderByIdDesc();
     @Query("SELECT c FROM DiaChi c  WHERE c.nguoidung.id = ?1 and c.trangthai=true")
     DiaChi TimIdNguoiDungMacDinh(Integer id);
     @Query("SELECT c FROM DiaChi c  WHERE c.nguoidung.id = ?1")
     DiaChi TimIdNguoiDung(Integer id);
     @Query("SELECT c FROM DiaChi c  WHERE c.nguoidung.hovaten = ?1 OR c.nguoidung.sodienthoai = ?1")
     List<DiaChi> TimhoTenHoacSdt(String ht, String sdt);
-    @Query("SELECT c FROM DiaChi c  WHERE c.nguoidung.trangthai = ?1")
-    List<DiaChi> TimTrangThai(Boolean tt);
     @Query("SELECT u FROM DiaChi u WHERE " +
             "(:name is null or u.nguoidung.hovaten LIKE %:name% or u.nguoidung.sodienthoai LIKE %:name%) and " +
             "(:startDate is null or u.nguoidung.ngaysinh >= :startDate) and " +
@@ -42,25 +39,6 @@ public interface DiaChiRepository extends JpaRepository<DiaChi, Integer> {
     List<DiaChi> findByKeys(@Param("name") String name,
                            @Param("startDate") Date startDate,
                            @Param("endDate") Date endDate);
-    @Query("SELECT u FROM DiaChi u WHERE " +
-            "(:name is null or u.nguoidung.hovaten LIKE %:name% or u.nguoidung.sodienthoai LIKE %:name%) and " +
-            "(:status is null or u.nguoidung.trangthai = :status)")
-    List<DiaChi> findByKeys(@Param("name") String name,
-                           @Param("status") boolean status);
-    @Query("SELECT u FROM DiaChi u WHERE " +
-            "(:name is null or u.nguoidung.hovaten LIKE %:name% or u.nguoidung.sodienthoai LIKE %:name%) and " +
-            "(:startDate is null or u.nguoidung.ngaysinh >= :startDate) and " +
-            "(:status is null or u.nguoidung.trangthai = :status)")
-    List<DiaChi> findByStart(@Param("name") String name,
-                           @Param("startDate") Date startDate,
-                           @Param("status") boolean status);
-    @Query("SELECT u FROM DiaChi u WHERE " +
-            "(:name is null or u.nguoidung.hovaten LIKE %:name% or u.nguoidung.sodienthoai LIKE %:name%) and " +
-            "(:endDate is null or u.nguoidung.ngaysinh <= :endDate) and " +
-            "(:status is null or u.nguoidung.trangthai = :status)")
-    List<DiaChi> findByEnd(@Param("name") String name,
-                           @Param("endDate") Date endDate,
-                           @Param("status") boolean status);
 
     @Query("SELECT d FROM DiaChi d WHERE d.tinhthanhpho LIKE %?1%")
     List<DiaChi> findDiaChiByTinhthanhpho(@Param("tinhthanhpho") String tinhthanhpho);

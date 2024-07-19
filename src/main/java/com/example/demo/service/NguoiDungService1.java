@@ -17,9 +17,4 @@ public interface NguoiDungService1 {
     NguoiDung search(String id);
     NguoiDung findById(Integer id);
     public void sendEmail(String to, String subject, String mailType, String mailContent);
-    List<NguoiDung> searchND(String ten, Boolean trangThai, Date batDau, Date ketThuc);
-    List<NguoiDung> searchNDs(String ten, Date batDau, Date ketThuc);
-    List<NguoiDung> searchkey(NhanVienSearch nhanVienSearch);
-    List<NguoiDung> searchStart(String ten, Boolean trangThai, Date batDau);
-    List<NguoiDung> searchEnd(String ten, Boolean trangThai, Date ketThuc);
 }

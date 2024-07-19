@@ -102,31 +102,6 @@ public class NguoiDungImpl1 implements NguoiDungService1 {
     }
 
     @Override
-    public List<NguoiDung> searchND(String ten, Boolean trangThai, java.sql.Date batDau, java.sql.Date ketThuc) {
-        return nguoiDungRepository.findByKey(ten,batDau,ketThuc,trangThai);
-    }
-
-    @Override
-    public List<NguoiDung> searchNDs(String ten, java.sql.Date batDau, java.sql.Date ketThuc) {
-        return nguoiDungRepository.findByKeys(ten,batDau,ketThuc);
-    }
-
-    @Override
-    public List<NguoiDung> searchkey(NhanVienSearch nhanVienSearch) {
-        return nguoiDungRepository.findByKeys(nhanVienSearch.getKey(),nhanVienSearch.isTrangThai());
-    }
-
-    @Override
-    public List<NguoiDung> searchStart(String ten, Boolean trangThai, java.sql.Date batDau) {
-        return nguoiDungRepository.findByStart(ten,batDau,trangThai);
-    }
-
-    @Override
-    public List<NguoiDung> searchEnd(String ten, Boolean trangThai, java.sql.Date ketThuc) {
-        return nguoiDungRepository.findByEnd(ten,ketThuc,trangThai);
-    }
-
-    @Override
     public NguoiDung search(String id) {
         return nguoiDungRepository.searchEmail(id);
     }

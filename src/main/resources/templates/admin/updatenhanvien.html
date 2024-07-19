@@ -108,18 +108,6 @@
                                                     </div>
                                                 </div>
                                             </section>
-                                            <div class="modal"  id="cameraModal" th:width="200px" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <button class="close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <video id="cameraStream" autoplay width="100%"></video>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
                                             <div class="d-flex">
                                                 <div class="align-items-center col-lg-6 col-md-6">
                                                     <div class="col-auto">
@@ -129,7 +117,6 @@
                                                         <input placeholder="Tên nhân viên" id="inputTen" name="name" th:field="*{hovaten}" th:errorclass="is-invalid" class="form-control">
                                                     </div>
                                                     <div class="col-auto">
-                                                        <!--                                                    <p th:if="${#fields.hasErrors('hovaten')}" class="error" th:errors="*{hovaten}" style="width: 500px; color: red"></p>-->
                                                         <p style="color: red; font-weight: initial;" id="errorTen"></p>
                                                     </div>
                                                 </div>
@@ -141,7 +128,6 @@
                                                         <input class="form-control" id="inputNgSinh"  onkeydown="return false" type="date" th:field="*{ngaysinh}"  placeholder="dd/MM/yyyy" th:errorclass="is-invalid">
                                                     </div>
                                                     <div class="col-auto">
-                                                        <!--                                                    <p th:if="${#fields.hasErrors('ngaysinh')}" class="error" th:errors="*{ngaysinh}" style="width: 500px; color: red"></p>-->
                                                         <p style="color: red; font-weight: initial;" id="errorNgSinh"></p>
                                                     </div>
                                                 </div>
@@ -155,7 +141,6 @@
                                                         <input class="form-control" placeholder="Căn cước công dân" id="inputCCCD" name="citizenID" th:field="*{cccd}" th:errorclass="is-invalid">
                                                     </div>
                                                     <div class="col-auto">
-                                                        <!--                                                    <p th:if="${#fields.hasErrors('cccd')}" class="error" th:errors="*{cccd}" style="width: 500px; color: red"></p>-->
                                                         <p style="color: red; font-weight: initial;" id="errorCCCD"></p>
                                                     </div>
                                                 </div>
@@ -181,7 +166,6 @@
                                                         <input class="form-control" id="inputEmail" placeholder="Email" th:field="*{email}" th:errorclass="is-invalid">
                                                     </div>
                                                     <div class="col-auto">
-                                                        <!--                                                    <p th:if="${#fields.hasErrors('email')}" class="error" th:errors="*{email}" style="width: 500px; color: red"></p>-->
                                                         <p style="color: red; font-weight: initial;" id="errorEmail"></p>
                                                     </div>
                                                 </div>
@@ -193,7 +177,6 @@
                                                         <input class="form-control" id="inputSdt" placeholder="Số điện thoại" th:field="*{sodienthoai}" th:errorclass="is-invalid">
                                                     </div>
                                                     <div class="col-auto">
-                                                        <!--                                                    <p th:if="${#fields.hasErrors('sodienthoai')}" class="error" th:errors="*{sodienthoai}" style="width: 500px; color: red"></p>-->
                                                         <p style="color: red; font-weight: initial;" id="errorSdt"></p>
                                                     </div>
                                                 </div>
@@ -211,7 +194,6 @@
                                                         </div>
                                                         <div class="col-auto">
                                                             <p style="color: red; font-weight: initial;" id="errorTinh"></p>
-                                                            <!--                                                    <p th:if="${#fields.hasErrors('tinhthanhpho')}" class="error" th:errors="*{tinhthanhpho}" style="width: 500px; color: red"></p>-->
                                                         </div>
                                                     </div>
                                                     <div class="align-items-center col-lg-6 col-md-6">
@@ -225,7 +207,6 @@
                                                         </div>
                                                         <div class="col-auto">
                                                             <p style="color: red; font-weight: initial;" id="errorQuan"></p>
-                                                            <!--                                                    <p th:if="${#fields.hasErrors('quanhuyen')}" class="error" th:errors="*{quanhuyen}" style="width: 500px; color: red"></p>-->
                                                         </div>
                                                     </div>
                                                 </div>
@@ -242,7 +223,6 @@
                                                         </div>
                                                         <div class="col-auto">
                                                             <p style="color: red; font-weight: initial;" id="errorPhuong"></p>
-                                                            <!--                                                    <p th:if="${#fields.hasErrors('xaphuong')}" class="error" th:errors="*{xaphuong}" style="width: 500px; color: red"></p>-->
                                                         </div>
                                                     </div>
                                                     <div class="align-items-center col-lg-6 col-md-6">
@@ -254,7 +234,6 @@
                                                         </div>
                                                         <div class="col-auto">
                                                             <p style="color: red; font-weight: initial;" id="errorDuong"></p>
-                                                            <!--                                                    <p th:if="${#fields.hasErrors('tenduong')}" class="error" th:errors="*{tenduong}" style="width: 500px; color: red"></p>-->
                                                         </div>
                                                     </div>
                                                 </div>
@@ -268,7 +247,7 @@
                                                         </div>
                                                         <div class="col-auto">
                                                             <input type="radio" value="true" id="radioVaitro"  th:field="*{vaitro}" style="margin-top: 10px"  checked>Quản lý
-                                                            <input type="radio" value="false" th:field="*{vaitro}" style="margin-left: 10px;margin-top: 10px">Nhân viên
+                                                            <input type="radio" value="false" id="radioVaitro1" th:field="*{vaitro}" style="margin-left: 10px;margin-top: 10px">Nhân viên
                                                         </div>
                                                     </div>
                                                     <div class="align-items-center col-lg-6 col-md-6">
@@ -284,8 +263,8 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button class="btn btn-primary" style="margin-top: 20px"  >Cập nhật nhân viên</button>
-                                            <button class="btn btn-danger" style="margin-top: 20px"  onclick="goBack()">Thoát</button>
+                                            <button type="submit" class="btn btn-primary" style="margin-top: 20px"  >Cập nhật nhân viên</button>
+                                            <button type="button" class="btn btn-danger" style="margin-top: 20px"  onclick="goBack()">Thoát</button>
                                         </form>
                                     </div>
                                 </section>
@@ -412,14 +391,17 @@
     console.log(list);
 </script>
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Đặt giá trị radio button mặc định
+        var i = document.getElementById("radioVaitro").checked;
+        if(i){
+            document.getElementById("radioVaitro").disabled = true;
+            document.getElementById("radioVaitro1").disabled = true;
+        }
+    });
     function checkKhongPhaiChuCai(str) {
         // Biểu thức chính quy để kiểm tra bất kỳ ký tự nào không phải là chữ cái tiếng Việt có dấu hoặc chữ cái Latinh không dấu
         const regex = /[^a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚờợứừửữựỳỵỷỹỪừựÙúỦửỤụỴỳỵỷỹẠ-ỹ\s]/;
-        return regex.test(str);
-    }
-    function checkDinhDangNgayThang(str) {
-        // Biểu thức chính quy kiểm tra định dạng DD/MM/YYYY với năm có đúng 4 chữ số
-        const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
         return regex.test(str);
     }
     function checkDinhDangCCCD(str) {
@@ -669,10 +651,6 @@
                         }
                     });
 
-                    // Toast.fire({
-                    //     icon: "success",
-                    //     title: "Thêm thành công!"
-                    // });
 
                     setTimeout(function () {
                         document.getElementById("addForm").submit();
