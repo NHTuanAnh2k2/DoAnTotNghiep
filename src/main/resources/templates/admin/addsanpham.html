@@ -676,10 +676,15 @@
                 </div>
             </form>
         </div>
-        <form th:action="@{/addImage}" name="addImage" method="post" enctype="multipart/form-data" onsubmit="return validateForm2()">
+        <form th:action="@{/addImage}" name="addImage" method="post" enctype="multipart/form-data"
+              onsubmit="return validateForm2()">
             <div id="error-message" style="color: red;"></div> <!-- Thông báo lỗi -->
-            <a id="editButton" class="btn disabled" style="margin-left: 900px;margin-bottom: 15px;background-color:rgb(249,72,42);color: white" data-bs-toggle="modal" data-bs-target="#chinhsuasoluongvagia">Chỉnh sửa số lượng và giá chung</a>
-            <button class="btn-sm btn-dark" style="margin-left: 10px; margin-bottom: 15px" type="submit" id="submitButton">Hoàn tất</button>
+            <a id="editButton" class="btn disabled"
+               style="margin-left: 900px;margin-bottom: 15px;background-color:rgb(249,72,42);color: white"
+               data-bs-toggle="modal" data-bs-target="#chinhsuasoluongvagia">Chỉnh sửa số lượng và giá chung</a>
+            <button class="btn-sm btn-dark" style="margin-left: 10px; margin-bottom: 15px" type="submit"
+                    id="submitButton">Hoàn tất
+            </button>
 
             <section class="content">
                 <div class="container-fluid">
@@ -687,11 +692,14 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <table id="example2" style="width: 100%" class="table-bordered table-hover text-center">
+                                    <table id="example2" style="width: 100%"
+                                           class="table-bordered table-hover text-center">
                                         <thead style="background-color:rgb(249,72,42);height: 50px;color: white">
                                         <tr>
                                             <th style="padding-left: 30px">
-                                                <input type="checkbox" name="chontatcactsp" id="chontatcactsp" onchange="selectAll(this)" class="form-check-input checkbox checkbox-red">
+                                                <input type="checkbox" name="chontatcactsp" id="chontatcactsp"
+                                                       onchange="selectAll(this)"
+                                                       class="form-check-input checkbox checkbox-red">
                                             </th>
                                             <th>STT</th>
                                             <th>Tên sản phẩm</th>
@@ -704,7 +712,9 @@
                                         <tbody>
                                         <tr th:each="spctt, stt : ${sanphamchitiet}" class="product-row">
                                             <td>
-                                                <input type="checkbox" class="form-check-input checkbox checkbox-red" th:value="${spctt.id}" onchange="toggleRowHighlight(this)" name="chonspct">
+                                                <input type="checkbox" class="form-check-input checkbox checkbox-red"
+                                                       th:value="${spctt.id}" onchange="toggleRowHighlight(this)"
+                                                       name="chonspct">
                                             </td>
                                             <td>
                                                 <span style="margin-left: 7px" th:text="${stt.index + 1}"></span>
@@ -716,15 +726,18 @@
                                                       th:text="${spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']' }"></span>
                                             </td>
                                             <td>
-                                                <span style="width: 70px; height: 30px; line-height: 30px;" th:text="${spctt.soluong}"></span>
+                                                <span style="width: 70px; height: 30px; line-height: 30px;"
+                                                      th:text="${spctt.soluong}"></span>
                                             </td>
                                             <td>
                                             <span style="width: 150px; height: 30px; color: red; font-weight: bold; line-height: 30px;"
                                                   th:text="${#numbers.formatDecimal(spctt.giatien, 0, 'COMMA', 0, 'POINT')} + '&#x20ab;'"></span>
                                             </td>
                                             <td>
-                                                <a th:href="@{/deleteCTSP/{id}(id=${spctt.id})}" style="color: rgb(249,72,42)" onclick="return xoa(event)">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                <a th:href="@{/deleteCTSP/{id}(id=${spctt.id})}"
+                                                   style="color: rgb(249,72,42)" onclick="return xoa(event)">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                                                         fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                                                         <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
                                                     </svg>
                                                 </a>
@@ -732,15 +745,19 @@
                                             <td>
                                                 <input type="hidden" name="spctId" th:value="${spctt.id}">
                                                 <label for="file-input-1-${stt.index}">
-                                                    <input type="file" id="file-input-1-${stt.index}" name="anh1">
+                                                    <input type="file" id="file-input-1-${stt.index}" name="anh1"
+                                                           onchange="showFileInfo(event)">
                                                 </label>
                                                 <label for="file-input-2-${stt.index}">
-                                                    <input type="file" id="file-input-2-${stt.index}" name="anh2">
+                                                    <input type="file" id="file-input-2-${stt.index}" name="anh2"
+                                                           onchange="showFileInfo(event)">
                                                 </label>
                                                 <label for="file-input-3-${stt.index}">
-                                                    <input type="file" id="file-input-3-${stt.index}" name="anh3">
+                                                    <input type="file" id="file-input-3-${stt.index}" name="anh3"
+                                                           onchange="showFileInfo(event)">
                                                 </label>
                                             </td>
+
                                         </tr>
                                         </tbody>
                                     </table>
@@ -1424,6 +1441,7 @@
     var objectsFromControllerTenSP = /*[[${sp}]]*/ [];
     const specialCharPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
     const specialCharPatternSo = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?0-9]/;
+
     function validateTrungTenSP() {
         var inputMaTenSP = document.getElementById("tenInputTenSP").value;
         var errorMaTenSP = document.getElementById("errorTenSP");
@@ -1438,12 +1456,10 @@
         } else if (inputMaTenSP.trim().length > 20) {
             errorMaTenSP.innerText = "Tên sản phẩm không được vượt quá 20 ký tự.";
             return false; // Ngăn form được gửi đi
-        }
-        else if (specialCharPattern.test(inputMaTenSP.trim())) {
+        } else if (specialCharPattern.test(inputMaTenSP.trim())) {
             errorMaTenSP.innerText = "Tên sản phẩm không được chứa ký tự đặc biệt.";
             return false; // Ngăn form được gửi đi
-        }
-        else {
+        } else {
             errorMaTenSP.innerText = ""; // Xóa thông báo lỗi nếu có
         }
 
@@ -1485,12 +1501,10 @@
         } else if (inputMaThuongHieu.trim().length > 20) {
             errorMaThuongHieu.innerText = "Tên thương hiệu không được vượt quá 20 ký tự.";
             return false; // Ngăn form được gửi đi
-        }
-        else if (specialCharPattern.test(inputMaThuongHieu.trim())) {
+        } else if (specialCharPattern.test(inputMaThuongHieu.trim())) {
             errorMaThuongHieu.innerText = "Tên thương hiệu không được chứa ký tự đặc biệt.";
             return false; // Ngăn form được gửi đi
-        }
-        else {
+        } else {
             errorMaThuongHieu.innerText = ""; // Xóa thông báo lỗi nếu có
         }
         // Kiểm tra trùng tên thương hiệu (không phân biệt chữ hoa chữ thường và khoảng trắng)
@@ -1532,12 +1546,10 @@
         } else if (inputMaChatLieu.trim().length > 20) {
             errorMaChatLieu.innerText = "Tên chất liệu không được vượt quá 20 ký tự.";
             return false; // Ngăn form được gửi đi
-        }
-        else if (specialCharPattern.test(inputMaChatLieu.trim())) {
+        } else if (specialCharPattern.test(inputMaChatLieu.trim())) {
             errorMaChatLieu.innerText = "Tên chất liệu không được chứa ký tự đặc biệt.";
             return false; // Ngăn form được gửi đi
-        }
-        else {
+        } else {
             errorMaChatLieu.innerText = ""; // Xóa thông báo lỗi nếu có
         }
 
@@ -1578,12 +1590,10 @@
         } else if (inputMaDeGiay.trim().length > 20) {
             errorMaDeGiay.innerText = "Tên đế giày không được vượt quá 20 ký tự.";
             return false; // Ngăn form được gửi đi
-        }
-        else if (specialCharPattern.test(inputMaDeGiay.trim())) {
+        } else if (specialCharPattern.test(inputMaDeGiay.trim())) {
             errorMaDeGiay.innerText = "Tên đế giày không được chứa ký tự đặc biệt.";
             return false; // Ngăn form được gửi đi
-        }
-        else {
+        } else {
             errorMaDeGiay.innerText = ""; // Xóa thông báo lỗi nếu có
         }
 // Kiểm tra trùng tên đế giày (không phân biệt chữ hoa chữ thường)
@@ -1620,12 +1630,10 @@
         } else if (inputMaMauSac.trim().length > 20) {
             errorMaMauSac.innerText = "Tên màu sắc không được vượt quá 20 ký tự.";
             return false; // Ngăn form được gửi đi
-        }
-        else if (specialCharPatternSo.test(inputMaMauSac.trim())) {
+        } else if (specialCharPatternSo.test(inputMaMauSac.trim())) {
             errorMaMauSac.innerText = "Tên màu sắc không được chứa ký tự đặc biệt và số.";
             return false; // Ngăn form được gửi đi
-        }
-        else {
+        } else {
             errorMaMauSac.innerText = ""; // Xóa thông báo lỗi nếu có
         }
 
@@ -2168,3 +2176,37 @@
         }
     });
 </script>
+
+<script>
+    function showFileInfo(event) {
+
+        // Lấy thẻ <input> từ event
+        var input = event.target;
+
+        // Lấy thẻ <tr> bao quanh thẻ <input>
+        var tr = input.closest('tr');
+
+        // Lấy vị trí của <tr> trong bảng
+        var table = document.getElementById('example2');
+        var rows = Array.from(table.rows);
+        var rowIndex = rows.indexOf(tr);
+
+        // Hiển thị vị trí và tên tệp
+        if (input.files && input.files[0]) {
+            // alert(`Vị trí: ${rowIndex}, Tên tệp: ${input.files[0].name}`);
+
+            var list = [
+                rowIndex,
+                input.files[0].name
+            ]
+            const urlGetImage = `http://localhost:8080/timaddImage?image=${list}`;
+            fetch(urlGetImage)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                })
+        }
+    }
+</script>
+
