@@ -68,7 +68,6 @@ public class NhanVienImpl implements NhanVienService {
     public NhanVien update(NhanVienInfo nhanVien, Integer id) {
         NhanVien nv = nhanVienRepository.TimIdNguoiDung(id);
         nv.setVaitro(nhanVien.getVaitro());
-        nv.setManhanvien(nhanVien.getManhanvien());
         nv.setLancapnhatcuoi(new Timestamp(new Date().getTime()));
         nv.setNguoicapnhat("");
         nv.setTrangthai(nhanVien.getTrangthai());
