@@ -6,6 +6,7 @@ import com.example.demo.entity.NhanVien;
 import com.example.demo.info.DangNhapNDInfo;
 import com.example.demo.info.TaiKhoanTokenInfo;
 import com.example.demo.info.token.AuthRequestDTO;
+import com.example.demo.info.token.JwtResponseDTO;
 import com.example.demo.info.token.UserManager;
 import com.example.demo.repository.NguoiDungRepository;
 import com.example.demo.repository.NhanVienRepository;
@@ -56,6 +57,8 @@ public class DangNhapAdminController {
     private JWTGenerator jwtGenerator;
     @Autowired
     public UserManager userManager;
+    @Autowired
+    JwtResponseDTO jwtResponseDTO;
 
     @GetMapping("/account")
     public String displaydangnhap(Model model) {
@@ -91,9 +94,15 @@ public class DangNhapAdminController {
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                String token = "Bearer " + jwtGenerator.generateToken(authentication);
-                userManager.addUser(nd.getId(), token);
+                String token = jwtGenerator.generateToken(authentication);
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Authorization", "Bearer " + token);
+                System.out.println(headers);
+//                userManager.addUser(nd.getId(), token);
+                jwtResponseDTO.setAccessToken(token);
                 session.setAttribute("tokenAdmin", token);
+                session.setAttribute("adminDangnhap", nd.getTaikhoan());
+                model.addAttribute("tokenAdmin", token);
                 return "redirect:/hoa-don/ban-hang";
             } else {
                 redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");

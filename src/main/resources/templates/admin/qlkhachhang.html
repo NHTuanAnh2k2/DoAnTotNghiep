@@ -85,10 +85,10 @@
                                                                 value="">Tất cả
                                                         </option>
                                                         <option th:selected="${searchOption == true ? 'true' : 'false'}"
-                                                                value="true">Hoạt động
+                                                                value="true">Đang Hoạt động
                                                         </option>
                                                         <option th:selected="${searchOption == false ? 'true' : 'false'}"
-                                                                value="false">Dừng hoạt động
+                                                                value="false">Ngừng hoạt động
                                                         </option>
                                                     </select>
                                                 </div>
@@ -210,9 +210,28 @@
 <script src="https://cdn.jsdelivr.net/npm/jsqr"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
-    var success = /*[[${success}]]*/ false;
+    var successAdd = /*[[${successAdd}]]*/ false;
+    var successUpdate = /*[[${successUpdate}]]*/ false;
     /*]]>*/
-    if (success === true) {
+    if (successAdd === true) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+
+        Toast.fire({
+            icon: "success",
+            title: "Thêm thành công!"
+        });
+    }
+    if (successUpdate === true) {
         const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -261,6 +280,7 @@
         });
     }
 </script>
+<script src="dangnhap/token.js"></script>
 <!--script-->
 <nav th:replace="~{/layoutadmin/script.html}"></nav>
 <!--end-->

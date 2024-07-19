@@ -219,7 +219,7 @@
     const specialCharPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
     const numberPattern = /\d/;
     const cccdPattern = /^0[0-9]{11}$/;
-    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,4}(?:\.[a-zA-Z]{2,4})?$/;
     const phoneNumberPattern = /^0[0-9]{9}$/;
 
     function validateNguoiDung() {
@@ -263,6 +263,9 @@
         } else if (age <= 16) {
             errors.ngaysinhError = 'Tuổi phải từ 16 trở lên';
             isValid = false;
+        } else if (age > 70) {
+            errors.ngaysinhError = 'Tuổi phải từ 70 trở xuống';
+            isValid = false;
         }
 
         if (tenInput === '') {
@@ -273,6 +276,9 @@
             isValid = false;
         } else if (numberPattern.test(tenInput)) {
             errors.tenError = 'Họ và tên không được chứa số';
+            isValid = false;
+        } else if (tenInput.length > 50) {
+            errors.tenError = 'Họ và tên không được quá 50 ký tự';
             isValid = false;
         }
 
@@ -329,9 +335,9 @@
             isValid = false;
         }
 
-        for (const key in errors) {
-            document.getElementById(key).innerText = errors[key];
-        }
+        // for (const key in errors) {
+        //     document.getElementById(key).innerText = errors[key];
+        // }
 
         return isValid ? saveDiaChi() : false;
     }
@@ -364,7 +370,7 @@
         }
         var isValid = true;
         for (var i = 0; i < lstEmailFromDbCopy.length; i++) {
-            if (emailInput === lstEmailFromDbCopy[i]) {
+            if (emailInput.toLowerCase() === lstEmailFromDbCopy[i]) {
                 isValid = false;
                 break;
             }
