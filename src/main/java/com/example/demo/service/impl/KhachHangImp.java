@@ -259,8 +259,6 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
     }
 
 
-
-
     @Override
     public KhachHang findKhachHangByIdNguoiDung(Integer id) {
         return khachHangRepostory.findByNguoiDung(id);

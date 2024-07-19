@@ -52,6 +52,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/khachhang").hasAuthority("ROLE_QUANLY")
                         .anyRequest().permitAll()
                 )
+               .formLogin(form -> form
+                       .loginPage("/admin/account")
+                       .permitAll()
+               )
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(getProvider())
                 .exceptionHandling(Customizer.withDefaults())

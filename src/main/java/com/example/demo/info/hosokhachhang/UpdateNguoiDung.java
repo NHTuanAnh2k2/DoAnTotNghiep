@@ -22,6 +22,7 @@ public class UpdateNguoiDung {
     @Pattern(regexp="^[\\p{L} '‘’-]+$", message="Tên không hợp lệ")
     @NotBlank(message = "Không được để trống họ tên")
     String hovaten;
+    String cccd;
     @NotNull(message = "Không được để trống số điện thoại")
     @Pattern(regexp="^0[0-9]{9}$", message="Sai định dạng số điện thoại")
     String sodienthoai;

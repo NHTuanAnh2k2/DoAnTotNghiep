@@ -11,12 +11,11 @@
         font-weight: 550;
     }
 
-    .action_link {
-        vertical-align: middle;
-        height: 100%;
-        line-height: 100%;
-        width: 50px;
-        text-align: center;
+    th {
+        white-space: nowrap;
+    }
+    td {
+        white-space: nowrap;
     }
 
     /*.thongtindiachi p {*/
@@ -48,7 +47,7 @@
                     <img src="../dist/img/bong2.jpg" class="rounded-circle" width="120" height="120">
                 </div>
                 <p class="d-flex justify-content-center mb-4" style="font-size: 18px;">Xin chào <span
-                        style="color: #0a58ca; padding-left: 7px;" th:text="${nguoidung.hovaten}">Nguyễn Văn Duy</span>
+                        style="color: #0a58ca; padding-left: 7px;" th:text="${hovatenHoSo}">Nguyễn Văn Duy</span>
                 </p>
                 <div class="card-body" style="height: 407px">
                     <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist"
@@ -98,7 +97,6 @@
                             <span style="margin-left: 7px;">Quản lý đơn hàng</span>
                         </button>
                     </div>
-
                 </div>
                 <!-- /.card -->
             </div>
@@ -122,20 +120,33 @@
                                                 <span th:text="${nguoidung.hovaten}"></span>
                                             </p>
                                             <p>
+                                                <span style="color: #808080;min-width: 115px;display: inline-block;">Giới tính: </span>
+                                                <span th:text="${nguoidung.gioitinh == true ? 'Nam' : ''}"></span>
+                                                <span th:text="${nguoidung.gioitinh == false ? 'Nữ' : ''}"></span>
+                                                <span th:text="${nguoidung.gioitinh == null ? 'Chưa có giới tính' : ''}"></span>
+                                            </p>
+                                            <p>
                                                 <span style="color: #808080;min-width: 115px;display: inline-block;">Email: </span>
                                                 <span th:text="${nguoidung.email}"></span>
                                             </p>
                                             <p>
                                                 <span style="color: #808080;min-width: 115px;display: inline-block;">Địa chỉ: </span>
-                                                <span th:text="${diachi.tenduong + ', ' + diachi.xaphuong + ', ' + diachi.quanhuyen + ', ' + diachi.tinhthanhpho}"></span>
+                                                <span th:if="${#strings.isEmpty(diachi.tenduong) and #strings.isEmpty(diachi.xaphuong) and #strings.isEmpty(diachi.quanhuyen) and #strings.isEmpty(diachi.tinhthanhpho)}"
+                                                      th:text="'Chưa có địa chỉ'"></span>
+                                                <span th:unless="${#strings.isEmpty(diachi.tenduong) and #strings.isEmpty(diachi.xaphuong) and #strings.isEmpty(diachi.quanhuyen) and #strings.isEmpty(diachi.tinhthanhpho)}"
+                                                      th:text="${diachi.tenduong + ', ' + diachi.xaphuong + ', ' + diachi.quanhuyen + ', ' + diachi.tinhthanhpho}"></span>
                                             </p>
                                             <p>
                                                 <span style="color: #808080;min-width: 115px;display: inline-block;">Ngày sinh: </span>
-                                                <span th:text="${nguoidung.ngaysinh}"></span>
+                                                <span th:text="${#dates.format(nguoidung.ngaysinh, 'dd/MM/yyyy')}"></span>
                                             </p>
                                             <p>
                                                 <span style="color: #808080;min-width: 115px;display: inline-block;">Điện thoại: </span>
                                                 <span th:text="${nguoidung.sodienthoai}"></span>
+                                            </p>
+                                            <p>
+                                                <span style="color: #808080;min-width: 115px;display: inline-block;">CCCD: </span>
+                                                <span th:text="${nguoidung.cccd}"></span>
                                             </p>
                                         </div>
                                         <div class="col-lg-3 mt-2" style="right: 0;">
@@ -155,18 +166,34 @@
                                     <div style="width: 70%;" class="d-flex justify-content-center container">
                                         <form th:object="${nguoidung}" th:method="post" name="updateThongTinNguoiDung"
                                               th:action="@{/capnhattaikhoan/{username}(username=${userDangnhap})}"
-                                              onsubmit="return updateThongTin()"
+                                              onsubmit="return validateNguoiDung()"
                                               style="width: 100%">
                                             <div class="form-floating mb-3">
                                                 <input type="text" class="form-control" th:field="*{hovaten}"
-                                                       id="hovaten" oninput="validateNguoiDung()"
+                                                       maxlength="50"
+                                                       id="hovaten"
                                                        placeholder="Họ và tên">
                                                 <label>Họ và tên</label>
                                                 <span id="hovatenNdError" style="color: red"></span>
                                             </div>
                                             <div class="form-floating mb-3">
-                                                <input type="email" class="form-control" th:field="*{email}" id="email"
-                                                       oninput="validateNguoiDung()"
+                                                <select class="form-select" th:field="*{gioitinh}"
+                                                        aria-label="Floating label select example"
+                                                        style="width: 100px">
+                                                    <option value="1" selected>Nam</option>
+                                                    <option value="0">Nữ</option>
+                                                </select>
+                                                <label>Giới tính</label>
+                                            </div>
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" th:field="*{cccd}"
+                                                       placeholder="Căn cước công dân">
+                                                <label>Căn cước công dân</label>
+                                                <span id="cccdError" style="color: red"></span>
+                                            </div>
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" th:field="*{email}" id="email"
+
                                                        placeholder="name@example.com">
                                                 <label>Email</label>
                                                 <span id="emailNdError" style="color: red"></span>
@@ -174,7 +201,7 @@
                                             <div class="form-floating mb-3">
                                                 <input type="text" class="form-control" th:field="*{sodienthoai}"
                                                        id="sodienthoai"
-                                                       oninput="validateNguoiDung()"
+
                                                        placeholder="Số điện thoại">
                                                 <label>Số điện thoại</label>
                                                 <span id="sdtNdError" style="color: red"></span>
@@ -182,7 +209,6 @@
                                             <div class="form-floating mb-3">
                                                 <input type="date" class="form-control" th:field="*{ngaysinh}"
                                                        id="ngaysinh"
-                                                       oninput="validateNguoiDung()"
                                                        placeholder="Ngày sinh">
                                                 <label>Ngày sinh</label>
                                                 <span id="ngaysinhNdError" style="color: red"></span>
@@ -219,12 +245,19 @@
                                     <!-- List địa chỉ-->
                                     <div id="thongtindiachi">
                                         <div th:each="lstDiaChi:${lstDiaChi}">
+                                            <!--                                            <div class="d-flex justify-content-center align-items-center" th:if="${#strings.isEmpty(lstDiaChi.tenduong)}">-->
+                                            <!--                                                <img style="width: 300px"-->
+                                            <!--                                                        src="https://img.freepik.com/premium-vector/pirate-map-icon-vector-image-can-be-used-pirate_120816-91695.jpg?w=740" alt="">-->
+                                            <!--                                            </div>-->
+                                            <!--                                            <div th:unless="${#strings.isEmpty(lstDiaChi.tenduong)}">-->
                                             <div class="address-item mb-3" th:if="${lstDiaChi.trangthai == true}">
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <div>
                                                         <strong th:text="${lstDiaChi.hotennguoinhan}">Đỗ Quốc
-                                                            Thịnh</strong> <span th:text="${lstDiaChi.sdtnguoinhan}">(+84) 866511075</span>
-                                                        <p th:text="${lstDiaChi.tenduong}">ố 24 liên kề 31 khu đô thị
+                                                            Thịnh</strong> <span
+                                                            th:text="${lstDiaChi.sdtnguoinhan}">(+84) 866511075</span>
+                                                        <p th:text="${lstDiaChi.tenduong}">ố 24 liên kề 31 khu đô
+                                                            thị
                                                             mới vân canh</p>
                                                         <p th:text="${lstDiaChi.xaphuong + ', ' + lstDiaChi.quanhuyen + ', ' + lstDiaChi.tinhthanhpho}">
                                                             Xã Vân Canh, Huyện Hoài Đức, Hà Nội</p>
@@ -241,21 +274,24 @@
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <div>
                                                         <strong th:text="${lstDiaChi.hotennguoinhan}">Đỗ Quốc
-                                                            Thịnh</strong> <span th:text="${lstDiaChi.sdtnguoinhan}">(+84) 866511075</span>
+                                                            Thịnh</strong> <span
+                                                            th:text="${lstDiaChi.sdtnguoinhan}">(+84) 866511075</span>
                                                         <p th:text="${lstDiaChi.tenduong}">Abcd Lương Văn Can TP Nam
                                                             Định</p>
                                                         <p th:text="${lstDiaChi.xaphuong + ', ' + lstDiaChi.quanhuyen + ', ' + lstDiaChi.tinhthanhpho}">
                                                             Phường Hạ Long, Thành Phố Nam Định, Nam Định</p>
                                                     </div>
                                                     <div>
-                                                        <a th:href="@{/xoadiachi/username(username=${lstDiaChi.nguoidung.taikhoan}, id=${lstDiaChi.id})}"
-                                                           class="btn btn-link">Xóa</a>
-                                                        <a th:href="@{/thietlapmacdinh/username(username=${lstDiaChi.nguoidung.taikhoan}, id=${lstDiaChi.id})}"
-                                                           class="btn btn-link">Thiết lập mặc định</a>
+                                                        <a th:href="@{/xoadiachi(id=${lstDiaChi.id})}"
+                                                           class="btn btn-link" id="btnXoaDiaChi">Xóa</a>
+                                                        <a th:href="@{/thietlapmacdinh(id=${lstDiaChi.id})}"
+                                                           class="btn btn-link btnUpDateTrangThai">Thiết lập mặc
+                                                            định</a>
                                                     </div>
                                                 </div>
                                                 <hr>
                                             </div>
+                                            <!--                                            </div>-->
                                         </div>
                                     </div>
                                 </div>
@@ -267,14 +303,14 @@
                                     <div id="themdiachi" style="width: 70%;"
                                          class="d-flex justify-content-center container">
                                         <form th:object="${addDiaChi}" th:method="post" id="frmAddDiaChi"
+                                              name="frmAddDiaChi"
                                               th:action="@{/themdiachi/{username}(username=${userDangnhap})}"
-                                              onsubmit="return addDiaChi()"
+                                              onsubmit="return validateThemDiaChi()"
                                               style="width: 100%">
                                             <div>
                                                 <div class="form-floating mb-3">
                                                     <input type="text" class="form-control" th:field="*{hotennguoinhan}"
                                                            id="hotennguoinhan"
-                                                           oninput="validateThemDiaChi()"
                                                            placeholder="Họ và tên">
                                                     <label>Họ và tên</label>
                                                     <span id="hotennguoinhanError" style="color: red"></span>
@@ -282,7 +318,6 @@
                                                 <div class="form-floating mb-3">
                                                     <input type="text" class="form-control" th:field="*{sdtnguoinhan}"
                                                            id="sdtnguoinhan"
-                                                           oninput="validateThemDiaChi()"
                                                            placeholder="Số điện thoại">
                                                     <label>Số điện thoại</label>
                                                     <span id="sdtnguoinhanError" style="color: red"></span>
@@ -291,9 +326,8 @@
                                             <div class="form-floating mb-3">
                                                 <input type="text" class="form-control" id="tenduong"
                                                        th:field="*{tenduong}"
-                                                       oninput="validateThemDiaChi()"
                                                        placeholder="Địa chỉ">
-                                                <label for="tenduong2">Địa chỉ</label>
+                                                <label>Địa chỉ</label>
                                                 <span id="tenduongError" style="color: red"></span>
                                             </div>
                                             <div class="d-flex justify-content-between mb-4">
@@ -306,6 +340,7 @@
                                                         </option>
                                                     </select>
                                                     <label>Tỉnh/thành phố</label>
+                                                    <span id="tinhthanhError" style="color: red"></span>
                                                 </div>
                                                 <div class="form-floating">
                                                     <select class="form-select" id="district"
@@ -317,6 +352,7 @@
                                                         </option>
                                                     </select>
                                                     <label>Quận/huyện</label>
+                                                    <span id="quanhuyenError" style="color: red"></span>
                                                 </div>
                                                 <div class="form-floating">
                                                     <select class="form-select" id="ward" th:field="*{xaphuong}"
@@ -327,12 +363,13 @@
                                                         </option>
                                                     </select>
                                                     <label>Phường/xã</label>
+                                                    <span id="xaphuongError" style="color: red"></span>
                                                 </div>
                                             </div>
                                             <div class="d-flex justify-content-center align-items-center mb-4">
                                                 <a id="huycapnhatdiachi" href="#"
                                                    style="color: #808080; text-decoration: none; text-transform: none; margin-right: 50px; font-weight: 550; ">Hủy</a>
-                                                <button type="submit"
+                                                <button type="submit" id="btnThemDiaChi"
                                                         style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 40%; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">
                                                     CẬP NHẬT THÔNG TIN
                                                 </button>
@@ -347,23 +384,24 @@
                                     <hr class="border border-danger border opacity-50">
                                     <div id="themdiachi2" style="width: 70%;"
                                          class="d-flex justify-content-center container">
-                                        <form th:object="${updateDiaChi}" th:method="post"
+                                        <form th:object="${updateDiaChi}" th:method="post" name="frmUpdateDiaChi"
                                               th:action="@{/suadiachi/{username}(username=${userDangnhap})}"
+                                              onsubmit="return validateSuaDiaChi()"
                                               style="width: 100%">
                                             <div>
                                                 <div class="form-floating mb-3">
                                                     <input type="text" class="form-control" th:field="*{hotennguoinhan}"
+                                                           id="hotennguoinhan2"
                                                            placeholder="Họ và tên">
                                                     <label>Họ và tên</label>
-                                                    <p th:if="${#fields.hasErrors('hotennguoinhan')}"
-                                                       th:errors="*{hotennguoinhan}" style="color: red;"></p>
+                                                    <span id="hotennguoinhanError2" style="color: red"></span>
                                                 </div>
                                                 <div class="form-floating mb-3">
                                                     <input type="text" class="form-control" th:field="*{sdtnguoinhan}"
+                                                           id="sdtnguoinhan2"
                                                            placeholder="Số điện thoại">
                                                     <label>Số điện thoại</label>
-                                                    <p th:if="${#fields.hasErrors('sdtnguoinhan')}"
-                                                       th:errors="*{sdtnguoinhan}" style="color: red;"></p>
+                                                    <span id="sdtnguoinhanError2" style="color: red"></span>
                                                 </div>
                                             </div>
                                             <div class="form-floating mb-3">
@@ -371,6 +409,7 @@
                                                        th:field="*{tenduong}"
                                                        placeholder="Địa chỉ">
                                                 <label for="tenduong2">Địa chỉ</label>
+                                                <span id="tenduongError2" style="color: red"></span>
                                             </div>
                                             <div class="d-flex justify-content-between mb-4">
                                                 <div class="form-floating">
@@ -382,6 +421,7 @@
                                                         </option>
                                                     </select>
                                                     <label>Tỉnh/thành phố</label>
+                                                    <span id="tinhthanhError2" style="color: red"></span>
                                                 </div>
                                                 <div class="form-floating">
                                                     <select class="form-select" id="district2"
@@ -393,6 +433,7 @@
                                                         </option>
                                                     </select>
                                                     <label>Quận/huyện</label>
+                                                    <span id="quanhuyenError2" style="color: red"></span>
                                                 </div>
                                                 <div class="form-floating">
                                                     <select class="form-select" id="ward2" th:field="*{xaphuong}"
@@ -403,12 +444,13 @@
                                                         </option>
                                                     </select>
                                                     <label>Phường/xã</label>
+                                                    <span id="xaphuongError2" style="color: red"></span>
                                                 </div>
                                             </div>
                                             <div class="d-flex justify-content-center align-items-center mb-4">
                                                 <a id="huycapnhatdiachi2" href="#"
                                                    style="color: #808080; text-decoration: none; text-transform: none; margin-right: 50px; font-weight: 550; ">Hủy</a>
-                                                <button type="submit"
+                                                <button type="submit" id="btnCapNhatDiaChi"
                                                         style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 40%; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">
                                                     CẬP NHẬT ĐỊA CHỈ
                                                 </button>
@@ -423,7 +465,7 @@
                             <!--đổi mật khẩu-->
                             <div class="tab-pane fade" id="v-pills-disabled" role="tabpanel"
                                  aria-labelledby="v-pills-disabled-tab" tabindex="0">
-                                <form th:object="${nguoidungdoimatkhau}" th:method="post"
+                                <form th:object="${nguoidungdoimatkhau}" th:method="post" onsubmit="return doimatkhau()"
                                       th:action="@{/doimatkhau/{username}(username=${userDangnhap})}">
                                     <h3>Đổi mật khẩu</h3>
                                     <h6 style="color: red;font-style: italic">Để bảo mật tài khoản,
@@ -433,16 +475,21 @@
                                     <hr class="border border-danger border opacity-50">
                                     <p><span style="color: red">(*)</span> Mật khẩu hiện tại:
                                         <input type="password" class="form-control" th:field="*{matkhau}">
+                                        <span id="maukhaucuError" style="color: red"></span>
                                     </p>
+                                    <span th:text="${error1}" class="mb-3" style="color: red;"></span>
                                     <p><span style="color: red">(*)</span> Mật khẩu mới:
                                         <input type="password" class="form-control" th:field="*{matkhaumoi}">
+                                        <span id="maukhaumoiError" style="color: red"></span>
                                     </p>
                                     <p><span style="color: red">(*)</span> Xác nhận mật khẩu mới:
                                         <input type="password" class="form-control" name="xacnhanmatkhau"
                                                th:field="*{xacnhanmatkhau}">
+                                        <span id="maukhauxnError" style="color: red"></span>
                                     </p>
+                                    <span th:text="${error2}" class="mb-3" style="color: red;"></span>
                                     <p>
-                                        <button type="submit" class="btn"
+                                        <button type="submit" class="btn" id="btnDoiMatKhau"
                                                 style="background-color: rgb(249,72,42);color: white">
                                             Đổi mật khẩu
                                         </button>
@@ -451,7 +498,7 @@
                             </div>
                             <!--end-->
 
-                            <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
+                            <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" style="max-width: 1000px"
                                  aria-labelledby="v-pills-messages-tab" tabindex="0">
                                 <h3>Đơn hàng của tôi</h3>
 
@@ -471,8 +518,7 @@
                                                 data-bs-target="#profile-tab-pane" type="button"
                                                 role="tab"
                                                 aria-controls="profile-tab-pane"
-                                                aria-selected="false">Chờ thanh
-                                            toán
+                                                aria-selected="false">Chờ xác nhận
                                         </button>
                                     </li>
                                     <li class="nav-item" role="presentation">
@@ -481,36 +527,51 @@
                                                 data-bs-target="#contact-tab-pane" type="button"
                                                 role="tab"
                                                 aria-controls="contact-tab-pane"
-                                                aria-selected="false">Vận
-                                            chuyển
+                                                aria-selected="false"> Đã xác nhận
                                         </button>
                                     </li>
                                     <li class="nav-item" role="presentation">
                                         <button class="nav-link" id="disabled-tab1"
                                                 data-bs-toggle="tab"
-                                                data-bs-target="#disabled-tab-pane" type="button"
+                                                data-bs-target="#disabled-tab-pane1" type="button"
                                                 role="tab"
-                                                aria-controls="disabled-tab-pane"
-                                                aria-selected="false">Chờ giao
-                                            hàng
+                                                aria-controls="disabled-tab-pane1"
+                                                aria-selected="false">Chờ giao hàng
                                         </button>
                                     </li>
                                     <li class="nav-item" role="presentation">
                                         <button class="nav-link" id="disabled-tab2"
                                                 data-bs-toggle="tab"
-                                                data-bs-target="#disabled-tab-pane" type="button"
+                                                data-bs-target="#disabled-tab-pane2" type="button"
                                                 role="tab"
-                                                aria-controls="disabled-tab-pane"
-                                                aria-selected="false">Hoàn
-                                            thành
+                                                aria-controls="disabled-tab-pane2"
+                                                aria-selected="false">Đang giao hàng
                                         </button>
                                     </li>
                                     <li class="nav-item" role="presentation">
                                         <button class="nav-link" id="disabled-tab3"
                                                 data-bs-toggle="tab"
-                                                data-bs-target="#disabled-tab-pane" type="button"
+                                                data-bs-target="#disabled-tab-pane3" type="button"
                                                 role="tab"
-                                                aria-controls="disabled-tab-pane"
+                                                aria-controls="disabled-tab-pane3"
+                                                aria-selected="false">Đã thanh toán
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="disabled-tab4"
+                                                data-bs-toggle="tab"
+                                                data-bs-target="#disabled-tab-pane4" type="button"
+                                                role="tab"
+                                                aria-controls="disabled-tab-pane4"
+                                                aria-selected="false">Đã hoàn thành
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="disabled-tab5"
+                                                data-bs-toggle="tab"
+                                                data-bs-target="#disabled-tab-pane5" type="button"
+                                                role="tab"
+                                                aria-controls="disabled-tab-pane5"
                                                 aria-selected="false">Đã hủy
                                         </button>
                                     </li>
@@ -519,109 +580,414 @@
                                     <div class="tab-pane fade show active" id="home-tab-pane"
                                          role="tabpanel"
                                          aria-labelledby="home-tab" tabindex="0">
-                                        <table class="table">
+                                        <table id="example2" class="table table-bordered table-hover text-center dataTables_wrapper dt-bootstrap4 no-footer">
+                                            <thead class="table table-danger">
                                             <tr>
-                                                <th>Tỉnh/Thành phố</th>
-                                                <th>Quận/Huyện</th>
-                                                <th>Xã/Phường</th>
-                                                <th>Địa chỉ cụ thể</th>
-                                                <th>Action</th>
+                                                <th>STT</th>
+                                                <th>Mã hóa đơn</th>
+                                                <th>Tên khách hàng</th>
+                                                <th>Số điện thoại</th>
+                                                <th>Tổng tiền</th>
+                                                <th style="white-space: nowrap;">Ngày giao dự kiến</th>
+                                                <th>Trạng thái</th>
+                                                <th>Hành động</th>
                                             </tr>
-                                            <tr>
-                                                <td>Hà Nội</td>
-                                                <td>Hà Nội</td>
-                                                <td>Hà Nội</td>
-                                                <td>Hà Nội</td>
-                                                <td>
-                                                    <a href="#" class="btn btn-danger">Xóa</a>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="hd,stt:${lstHoaDon}">
+                                                <td th:text="${stt.index+1}"></td>
+                                                <td th:text="${hd.mahoadon}"></td>
+                                                <td th:text="${hd.khachhang.nguoidung.hovaten}"></td>
+                                                <td th:text="${hd.sdt}"></td>
+                                                <td th:text="${#numbers.formatDecimal(hd.tongtien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"></td>
+                                                <td th:text="${hd.ngaygiaodukien}"></td>
+                                                <td th:if="${hd.trangthai == 0}">Chờ xác nhận</td>
+                                                <td th:if="${hd.trangthai == 1}">Đã xác nhận</td>
+                                                <td th:if="${hd.trangthai == 2}">Chờ giao hàng</td>
+                                                <td th:if="${hd.trangthai == 3}">Đang giao hàng</td>
+                                                <td th:if="${hd.trangthai == 4}">Đã thanh toán</td>
+                                                <td th:if="${hd.trangthai == 5}">Đã hoàn thành</td>
+                                                <td th:if="${hd.trangthai == 6}">Đã hủy</td>
+                                                <td th:if="${hd.trangthai == 5 or hd.trangthai == 6}"
+                                                    style="width: 100px">
+                                                    <a class="btn"
+                                                       style="background-color: rgb(249,72,42);color: white">
+                                                        Mua lại
+                                                    </a>
                                                 </td>
                                             </tr>
+                                            </tbody>
                                         </table>
-                                        <button class="btn"
-                                                style="background-color: rgb(249,72,42);color: white">
-                                            Mua lại
-                                        </button>
-                                        <button class="btn btn-dark">Đánh giá</button>
+<!--                                        <div class="d-flex flex-row-reverse">-->
+<!--                                            <nav aria-label="Page navigation example"-->
+<!--                                                 th:if="${lstHoaDon.totalPages>1}">-->
+<!--                                                <ul class="pagination">-->
+<!--                                                    <li class="page-item" th:if="${lstHoaDon.number>0}"><a-->
+<!--                                                            class="page-link phantrang"-->
+<!--                                                            th:href="@{'?page='+${lstHoaDon.number-1}}">Trước</a>-->
+<!--                                                    </li>-->
+<!--                                                    <li class="page-item"-->
+<!--                                                        th:each="i:${#numbers.sequence(1,lstHoaDon.totalPages)}"-->
+<!--                                                        th:classappend="${pageNo==i-1?'active':''}"><a-->
+<!--                                                            class="page-link phantrang" th:href="@{'?page='+${i-1}}"-->
+<!--                                                            th:text="${i}"></a></li>-->
+<!--                                                    <li class="page-item"-->
+<!--                                                        th:if="${lstHoaDon.number<lstHoaDon.totalPages-1}"><a-->
+<!--                                                            class="page-link phantrang"-->
+<!--                                                            th:href="@{'?page='+${lstHoaDon.number+1}}">Sau</a>-->
+<!--                                                    </li>-->
+<!--                                                </ul>-->
+<!--                                            </nav>-->
+<!--                                        </div>-->
                                     </div>
                                     <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel"
                                          aria-labelledby="profile-tab" tabindex="0">
-                                        <table class="table">
+                                        <table  class="table table-bordered table-hover text-center">
+                                            <thead class="table table-danger">
                                             <tr>
-                                                <th>Tỉnh/Thành phố</th>
-                                                <th>Quận/Huyện</th>
-                                                <th>Xã/Phường</th>
-                                                <th>Địa chỉ cụ thể</th>
-                                                <th>Action</th>
+                                                <th>STT</th>
+                                                <th>Mã hóa đơn</th>
+                                                <th>Tên khách hàng</th>
+                                                <th>Số điện thoại</th>
+                                                <th>Tổng tiền</th>
+                                                <th style="white-space: nowrap;">Ngày giao dự kiến</th>
+                                                <th>Trạng thái</th>
+                                                <th>Hành động</th>
                                             </tr>
-                                            <tr>
-                                                <td>Hà Nội</td>
-                                                <td>Hà Nội</td>
-                                                <td>Hà Nội</td>
-                                                <td>Hà Nội</td>
-                                                <td>
-                                                    <a href="#" class="btn btn-danger">Xóa</a>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="hd,stt:${lstHoaDon0}">
+                                                <td th:text="${stt.index+1}"></td>
+                                                <td th:text="${hd.mahoadon}"></td>
+                                                <td th:text="${hd.khachhang.nguoidung.hovaten}"></td>
+                                                <td th:text="${hd.sdt}"></td>
+                                                <td th:text="${#numbers.formatDecimal(hd.tongtien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"></td>
+                                                <td th:text="${#dates.format(hd.ngaygiaodukien, 'dd/MM/yyyy')}"></td>
+                                                <td th:if="${hd.trangthai == 0}">Chờ xác nhận</td>
+                                                <td th:if="${hd.trangthai == 1}">Đã xác nhận</td>
+                                                <td th:if="${hd.trangthai == 2}">Chờ giao hàng</td>
+                                                <td th:if="${hd.trangthai == 3}">Đang giao hàng</td>
+                                                <td th:if="${hd.trangthai == 4}">Đã thanh toán</td>
+                                                <td th:if="${hd.trangthai == 5}">Đã hoàn thành</td>
+                                                <td th:if="${hd.trangthai == 6}">Đã hủy</td>
+                                                <td th:if="${hd.trangthai == 5 or hd.trangthai == 6}"
+                                                    style="width: 100px">
+                                                    <a class="btn"
+                                                       style="background-color: rgb(249,72,42);color: white">
+                                                        Mua lại
+                                                    </a>
+                                                </td>
+                                                <td style="width: 100px">
+                                                    <a class="btn"
+                                                       style="background-color: rgb(249,72,42);color: white">
+                                                        Huỷ đơn hàng
+                                                    </a>
                                                 </td>
                                             </tr>
+                                            </tbody>
                                         </table>
-                                        <button class="btn"
-                                                style="background-color: rgb(249,72,42);color: white">
-                                            Mua lại
-                                        </button>
-                                        <button class="btn btn-dark">Đánh giá</button>
                                     </div>
                                     <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel"
                                          aria-labelledby="contact-tab" tabindex="0">
-                                        <table class="table">
+                                        <table  class="table table-bordered table-hover text-center">
+                                            <thead class="table table-danger">
                                             <tr>
-                                                <th>Tỉnh/Thành phố</th>
-                                                <th>Quận/Huyện</th>
-                                                <th>Xã/Phường</th>
-                                                <th>Địa chỉ cụ thể</th>
-                                                <th>Action</th>
+                                                <th>STT</th>
+                                                <th>Mã hóa đơn</th>
+                                                <th>Tên khách hàng</th>
+                                                <th>Số điện thoại</th>
+                                                <th>Tổng tiền</th>
+                                                <th style="white-space: nowrap;">Ngày giao dự kiến</th>
+                                                <th>Trạng thái</th>
+                                                <th>Hành động</th>
                                             </tr>
-                                            <tr>
-                                                <td>Hà Nội</td>
-                                                <td>Hà Nội</td>
-                                                <td>Hà Nội</td>
-                                                <td>Hà Nội</td>
-                                                <td>
-                                                    <a href="#" class="btn btn-danger">Xóa</a>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="hd,stt:${lstHoaDon1}">
+                                                <td th:text="${stt.index+1}"></td>
+                                                <td th:text="${hd.mahoadon}"></td>
+                                                <td th:text="${hd.khachhang.nguoidung.hovaten}"></td>
+                                                <td th:text="${hd.sdt}"></td>
+                                                <td th:text="${#numbers.formatDecimal(hd.tongtien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"></td>
+                                                <td th:text="${#dates.format(hd.ngaygiaodukien, 'dd/MM/yyyy')}"></td>
+                                                <td th:if="${hd.trangthai == 0}">Chờ xác nhận</td>
+                                                <td th:if="${hd.trangthai == 1}">Đã xác nhận</td>
+                                                <td th:if="${hd.trangthai == 2}">Chờ giao hàng</td>
+                                                <td th:if="${hd.trangthai == 3}">Đang giao hàng</td>
+                                                <td th:if="${hd.trangthai == 4}">Đã thanh toán</td>
+                                                <td th:if="${hd.trangthai == 5}">Đã hoàn thành</td>
+                                                <td th:if="${hd.trangthai == 6}">Đã hủy</td>
+                                                <td th:if="${hd.trangthai == 5 or hd.trangthai == 6}"
+                                                    style="width: 100px">
+                                                    <a class="btn"
+                                                       style="background-color: rgb(249,72,42);color: white">
+                                                        Mua lại
+                                                    </a>
                                                 </td>
                                             </tr>
+                                            </tbody>
                                         </table>
-                                        <button class="btn"
-                                                style="background-color: rgb(249,72,42);color: white">
-                                            Mua lại
-                                        </button>
-                                        <button class="btn btn-dark">Đánh giá</button>
                                     </div>
-                                    <div class="tab-pane fade" id="disabled-tab-pane"
+                                    <div class="tab-pane fade" id="disabled-tab-pane1"
                                          role="tabpanel"
                                          aria-labelledby="disabled-tab" tabindex="0">
-                                        <table class="table">
+                                        <table  class="table table-bordered table-hover text-center">
+                                            <thead class="table table-danger">
                                             <tr>
-                                                <th>Tỉnh/Thành phố</th>
-                                                <th>Quận/Huyện</th>
-                                                <th>Xã/Phường</th>
-                                                <th>Địa chỉ cụ thể</th>
-                                                <th>Action</th>
+                                                <th>STT</th>
+                                                <th>Mã hóa đơn</th>
+                                                <th>Tên khách hàng</th>
+                                                <th>Số điện thoại</th>
+                                                <th>Tổng tiền</th>
+                                                <th style="white-space: nowrap;">Ngày giao dự kiến</th>
+                                                <th>Trạng thái</th>
+                                                <th>Hành động</th>
                                             </tr>
-                                            <tr>
-                                                <td>Hà Nội</td>
-                                                <td>Hà Nội</td>
-                                                <td>Hà Nội</td>
-                                                <td>Hà Nội</td>
-                                                <td>
-                                                    <a href="#" class="btn btn-danger">Xóa</a>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="hd,stt:${lstHoaDon2}">
+                                                <td th:text="${stt.index+1}"></td>
+                                                <td th:text="${hd.mahoadon}"></td>
+                                                <td th:text="${hd.khachhang.nguoidung.hovaten}"></td>
+                                                <td th:text="${hd.sdt}"></td>
+                                                <td th:text="${#numbers.formatDecimal(hd.tongtien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"></td>
+                                                <td th:text="${#dates.format(hd.ngaygiaodukien, 'dd/MM/yyyy')}"></td>
+                                                <td th:if="${hd.trangthai == 0}">Chờ xác nhận</td>
+                                                <td th:if="${hd.trangthai == 1}">Đã xác nhận</td>
+                                                <td th:if="${hd.trangthai == 2}">Chờ giao hàng</td>
+                                                <td th:if="${hd.trangthai == 3}">Đang giao hàng</td>
+                                                <td th:if="${hd.trangthai == 4}">Đã thanh toán</td>
+                                                <td th:if="${hd.trangthai == 5}">Đã hoàn thành</td>
+                                                <td th:if="${hd.trangthai == 6}">Đã hủy</td>
+                                                <td th:if="${hd.trangthai == 5 or hd.trangthai == 6}"
+                                                    style="width: 100px">
+                                                    <a class="btn"
+                                                       style="background-color: rgb(249,72,42);color: white">
+                                                        Mua lại
+                                                    </a>
                                                 </td>
                                             </tr>
+                                            </tbody>
                                         </table>
-                                        <button class="btn"
-                                                style="background-color: rgb(249,72,42);color: white">
-                                            Mua lại
-                                        </button>
-                                        <button class="btn btn-dark">Đánh giá</button>
                                     </div>
+                                    <div class="tab-pane fade" id="disabled-tab-pane2"
+                                         role="tabpanel"
+                                         aria-labelledby="disabled-tab" tabindex="0">
+                                        <table  class="table table-bordered table-hover text-center">
+                                            <thead class="table table-danger">
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>Mã hóa đơn</th>
+                                                <th>Tên khách hàng</th>
+                                                <th>Số điện thoại</th>
+                                                <th>Tổng tiền</th>
+                                                <th style="white-space: nowrap;">Ngày giao dự kiến</th>
+                                                <th>Trạng thái</th>
+                                                <th>Hành động</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="hd,stt:${lstHoaDon3}">
+                                                <td th:text="${stt.index+1}"></td>
+                                                <td th:text="${hd.mahoadon}"></td>
+                                                <td th:text="${hd.khachhang.nguoidung.hovaten}"></td>
+                                                <td th:text="${hd.sdt}"></td>
+                                                <td th:text="${#numbers.formatDecimal(hd.tongtien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"></td>
+                                                <td th:text="${#dates.format(hd.ngaygiaodukien, 'dd/MM/yyyy')}"></td>
+                                                <td th:if="${hd.trangthai == 0}">Chờ xác nhận</td>
+                                                <td th:if="${hd.trangthai == 1}">Đã xác nhận</td>
+                                                <td th:if="${hd.trangthai == 2}">Chờ giao hàng</td>
+                                                <td th:if="${hd.trangthai == 3}">Đang giao hàng</td>
+                                                <td th:if="${hd.trangthai == 4}">Đã thanh toán</td>
+                                                <td th:if="${hd.trangthai == 5}">Đã hoàn thành</td>
+                                                <td th:if="${hd.trangthai == 6}">Đã hủy</td>
+                                                <td th:if="${hd.trangthai == 5 or hd.trangthai == 6}"
+                                                    style="width: 100px">
+                                                    <a class="btn"
+                                                       style="background-color: rgb(249,72,42);color: white">
+                                                        Mua lại
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane fade" id="disabled-tab-pane3"
+                                         role="tabpanel"
+                                         aria-labelledby="disabled-tab" tabindex="0">
+                                        <table  class="table table-bordered table-hover text-center">
+                                            <thead class="table table-danger">
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>Mã hóa đơn</th>
+                                                <th>Tên khách hàng</th>
+                                                <th>Số điện thoại</th>
+                                                <th>Tổng tiền</th>
+                                                <th style="white-space: nowrap;">Ngày giao dự kiến</th>
+                                                <th>Trạng thái</th>
+                                                <th>Hành động</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="hd,stt:${lstHoaDon4}">
+                                                <td th:text="${stt.index+1}"></td>
+                                                <td th:text="${hd.mahoadon}"></td>
+                                                <td th:text="${hd.khachhang.nguoidung.hovaten}"></td>
+                                                <td th:text="${hd.sdt}"></td>
+                                                <td th:text="${#numbers.formatDecimal(hd.tongtien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"></td>
+                                                <td th:text="${#dates.format(hd.ngaygiaodukien, 'dd/MM/yyyy')}"></td>
+                                                <td th:if="${hd.trangthai == 0}">Chờ xác nhận</td>
+                                                <td th:if="${hd.trangthai == 1}">Đã xác nhận</td>
+                                                <td th:if="${hd.trangthai == 2}">Chờ giao hàng</td>
+                                                <td th:if="${hd.trangthai == 3}">Đang giao hàng</td>
+                                                <td th:if="${hd.trangthai == 4}">Đã thanh toán</td>
+                                                <td th:if="${hd.trangthai == 5}">Đã hoàn thành</td>
+                                                <td th:if="${hd.trangthai == 6}">Đã hủy</td>
+                                                <td th:if="${hd.trangthai == 5 or hd.trangthai == 6}"
+                                                    style="width: 100px">
+                                                    <a class="btn"
+                                                       style="background-color: rgb(249,72,42);color: white">
+                                                        Mua lại
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane fade" id="disabled-tab-pane4"
+                                         role="tabpanel"
+                                         aria-labelledby="disabled-tab" tabindex="0">
+                                        <table  class="table table-bordered table-hover text-center">
+                                            <thead class="table table-danger">
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>Mã hóa đơn</th>
+                                                <th>Tên khách hàng</th>
+                                                <th>Số điện thoại</th>
+                                                <th>Tổng tiền</th>
+                                                <th style="white-space: nowrap;">Ngày giao dự kiến</th>
+                                                <th>Trạng thái</th>
+                                                <th>Hành động</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="hd,stt:${lstHoaDon5}">
+                                                <td th:text="${stt.index+1}"></td>
+                                                <td th:text="${hd.mahoadon}"></td>
+                                                <td th:text="${hd.khachhang.nguoidung.hovaten}"></td>
+                                                <td th:text="${hd.sdt}"></td>
+                                                <td th:text="${#numbers.formatDecimal(hd.tongtien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"></td>
+                                                <td th:text="${#dates.format(hd.ngaygiaodukien, 'dd/MM/yyyy')}"></td>
+                                                <td th:if="${hd.trangthai == 0}">Chờ xác nhận</td>
+                                                <td th:if="${hd.trangthai == 1}">Đã xác nhận</td>
+                                                <td th:if="${hd.trangthai == 2}">Chờ giao hàng</td>
+                                                <td th:if="${hd.trangthai == 3}">Đang giao hàng</td>
+                                                <td th:if="${hd.trangthai == 4}">Đã thanh toán</td>
+                                                <td th:if="${hd.trangthai == 5}">Đã hoàn thành</td>
+                                                <td th:if="${hd.trangthai == 6}">Đã hủy</td>
+                                                <td th:if="${hd.trangthai == 5 or hd.trangthai == 6}"
+                                                    style="width: 100px">
+                                                    <a class="btn"
+                                                       style="background-color: rgb(249,72,42);color: white">
+                                                        Mua lại
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane fade" id="disabled-tab-pane5"
+                                         role="tabpanel"
+                                         aria-labelledby="disabled-tab" tabindex="0">
+                                        <table  class="table table-bordered table-hover text-center">
+                                            <thead class="table table-danger">
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>Mã hóa đơn</th>
+                                                <th>Tên khách hàng</th>
+                                                <th>Số điện thoại</th>
+                                                <th>Tổng tiền</th>
+                                                <th style="white-space: nowrap;">Ngày giao dự kiến</th>
+                                                <th>Trạng thái</th>
+                                                <th>Hành động</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="hd,stt:${lstHoaDon6}">
+                                                <td th:text="${stt.index+1}"></td>
+                                                <td th:text="${hd.mahoadon}"></td>
+                                                <td th:text="${hd.khachhang.nguoidung.hovaten}"></td>
+                                                <td th:text="${hd.sdt}"></td>
+                                                <td th:text="${#numbers.formatDecimal(hd.tongtien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"></td>
+                                                <td th:text="${#dates.format(hd.ngaygiaodukien, 'dd/MM/yyyy')}"></td>
+                                                <td th:if="${hd.trangthai == 0}">Chờ xác nhận</td>
+                                                <td th:if="${hd.trangthai == 1}">Đã xác nhận</td>
+                                                <td th:if="${hd.trangthai == 2}">Chờ giao hàng</td>
+                                                <td th:if="${hd.trangthai == 3}">Đang giao hàng</td>
+                                                <td th:if="${hd.trangthai == 4}">Đã thanh toán</td>
+                                                <td th:if="${hd.trangthai == 5}">Đã hoàn thành</td>
+                                                <td th:if="${hd.trangthai == 6}">Đã hủy</td>
+                                                <td th:if="${hd.trangthai == 5 or hd.trangthai == 6}"
+                                                    style="width: 100px">
+                                                    <a class="btn"
+                                                       style="background-color: rgb(249,72,42);color: white">
+                                                        Mua lại
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!--                                    <div class="tab-pane fade" id="disabled-tab-pane2"-->
+                                    <!--                                         role="tabpanel"-->
+                                    <!--                                         aria-labelledby="disabled-tab" tabindex="0">-->
+                                    <!--                                        <div>-->
+                                    <!--                                            <div th:each="lstHoaDon5:${lstHoaDon5}">-->
+                                    <!--                                                <div class="container">-->
+                                    <!--                                                    <div class="item-card row">-->
+                                    <!--                                                        <div class="col-md-2">-->
+                                    <!--                                                            <img alt="Item Image"-->
+                                    <!--                                                                 class="item-image img-fluid">-->
+                                    <!--                                                        </div>-->
+                                    <!--                                                        <div class="col-md-7">-->
+                                    <!--                                                            <h5 th:text="${lstHoaDon5.sanphamchitiet.sanpham.tensanpham}"></h5>-->
+                                    <!--                                                            <p>Phân loại hàng:-->
+                                    <!--                                                                <span th:text="${lstHoaDon5.sanphamchitiet.mausac.ten + ', '}">Đen</span>-->
+                                    <!--                                                                <span th:text="${lstHoaDon5.sanphamchitiet.kichco.ten}">Đen</span>-->
+                                    <!--                                                            </p>-->
+                                    <!--                                                            <p>x <span th:text="${lstHoaDon5.soluong}"></span></p>-->
+                                    <!--                                                            &lt;!&ndash; <button class="btn btn-outline-success btn-sm">Trả hàng miễn phí 15 ngày</button> &ndash;&gt;-->
+                                    <!--                                                        </div>-->
+                                    <!--                                                        <div class="col-md-3 text-right">-->
+                                    <!--                                                            <p class="font-weight-bold text-danger">Thành tiền:-->
+                                    <!--                                                                <span th:text="${#numbers.formatDecimal(lstHoaDon5.hoadon.tongtien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"></span>-->
+                                    <!--                                                            </p>-->
+                                    <!--                                                            <button class="btn btn-rebuy btn-block">Mua Lại</button>-->
+                                    <!--                                                        </div>-->
+                                    <!--                                                    </div>-->
+                                    <!--                                                </div>-->
+                                    <!--                                            </div>-->
+                                    <!--                                            <nav aria-label="Page navigation example"-->
+                                    <!--                                                 th:if="${lstHoaDon5.totalPages>1}">-->
+                                    <!--                                                <ul class="pagination">-->
+                                    <!--                                                    <li class="page-item" th:if="${lstHoaDon5.number>0}"><a-->
+                                    <!--                                                            class="page-link chuyentrang"-->
+                                    <!--                                                            th:href="@{'?page='+${lstHoaDon5.number-1}}">Trước</a>-->
+                                    <!--                                                    </li>-->
+                                    <!--                                                    <li class="page-item"-->
+                                    <!--                                                        th:each="i:${#numbers.sequence(1,lstHoaDon5.totalPages)}"-->
+                                    <!--                                                        th:classappend="${pageNo==i-1?'active':''}"><a-->
+                                    <!--                                                            class="page-link chuyentrang" th:href="@{'?page='+${i-1}}"-->
+                                    <!--                                                            th:text="${i}"></a></li>-->
+                                    <!--                                                    <li class="page-item"-->
+                                    <!--                                                        th:if="${lstHoaDon5.number<lstHoaDon5.totalPages-1}"><a-->
+                                    <!--                                                            class="page-link chuyentrang"-->
+                                    <!--                                                            th:href="@{'?page='+${lstHoaDon5.number+1}}">Sau</a>-->
+                                    <!--                                                    </li>-->
+                                    <!--                                                </ul>-->
+                                    <!--                                            </nav>-->
+                                    <!--                                        </div>-->
+                                    <!--                                    </div>-->
                                 </div>
                             </div>
                             <!-- /.card -->
@@ -635,7 +1001,36 @@
 <!-- cart page content section end -->
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script th:inline="javascript">
+    var lstEmailFromDb = /*[[${lstEmail}]]*/ [];
+    var lstSdtFromDb = /*[[${lstSdt}]]*/ [];
+    var lstCccdFromDb = /*[[${lstCccd}]]*/ [];
+
+    var opentabDiaChi = /*[[${addDiaChiSuccess}]]*/ false;
+    var success = /*[[${success}]]*/ false;
+    if (success === true) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+
+        Toast.fire({
+            icon: "success",
+            title: "Lưu thành công!"
+        });
+    }
+</script>
 <script>
+    if (opentabDiaChi === true) {
+        document.getElementById('xemthongtindiachi').style.display = 'block';
+    }
     document.getElementById("capnhatthongtintaikhoan").style.display = "none";
     document.getElementById("capnhatdiachi").style.display = "none";
     document.getElementById("capnhatdiachi2").style.display = "none";
@@ -675,6 +1070,27 @@
         document.getElementById("capnhatdiachi2").style.display = "none";
         document.getElementById("xemthongtindiachi").style.display = "block";
     });
+
+    document.getElementById('btnXoaDiaChi').addEventListener('click', function () {
+        sessionStorage.setItem('activeTab', 'v-pills-profile');
+    })
+    var btnUpDateTrangThai = document.getElementsByClassName('btnUpDateTrangThai');
+    Array.from(btnUpDateTrangThai).forEach(function (element) {
+        element.addEventListener('click', function () {
+            sessionStorage.setItem('activeTab', 'v-pills-profile');
+        })
+    })
+    document.getElementById('btnThemDiaChi').addEventListener('click', function () {
+        sessionStorage.setItem('activeTab', 'v-pills-profile');
+    })
+    document.getElementById('btnCapNhatDiaChi').addEventListener('click', function () {
+        sessionStorage.setItem('activeTab', 'v-pills-profile');
+    })
+    document.getElementById('btnDoiMatKhau').addEventListener('click', function () {
+        sessionStorage.setItem('activeTab', 'v-pills-disabled');
+    })
+
+
 
     // document.getElementById("chuyenthemdiachi").addEventListener("click", function (event) {
     //     event.preventDefault();
@@ -726,23 +1142,30 @@
 <!--        }-->
 <!--    }-->
 <!--</script>-->
-
+<script src="https://cdn.jsdelivr.net/npm/jsqr"></script>
 <script>
     const specialCharPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
     const numberPattern = /\d/;
-    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,4}(?:\.[a-zA-Z]{2,4})?$/;
     const phoneNumberPattern = /^0[0-9]{9}$/;
+    const cccdPattern = /^0[0-9]{11}$/;
     const currentDate = new Date();
 
     function validateNguoiDung() {
         var inputTenNd = document.getElementById("hovaten").value.trim();
         var inputEmail = document.getElementById("email").value.trim();
         var inputSdt = document.getElementById("sodienthoai").value.trim();
-        var inputNgaySinh = new Date(document.getElementById("ngaysinh").value.trim());
+        var inputNgaySinh = document.getElementById('ngaysinh');
+        var inputCccd = document.getElementById("cccd").value.trim();
+
+        const today = new Date();
+        const ngaySinhValue = new Date(inputNgaySinh.value);
+
         var tenError = document.getElementById("hovatenNdError");
         var emailError = document.getElementById("emailNdError");
         var sdtError = document.getElementById("sdtNdError");
         var ngaysinhError = document.getElementById("ngaysinhNdError");
+        var cccdError = document.getElementById("cccdError");
 
         var isValid = true;
 
@@ -750,6 +1173,27 @@
         emailError.innerText = "";
         sdtError.innerText = "";
         ngaysinhError.innerText = "";
+        cccdError.innerText = "";
+
+        var age = today.getFullYear() - ngaySinhValue.getFullYear();
+        var monthDiff = today.getMonth() - ngaySinhValue.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < ngaySinhValue.getDate())) {
+            age--;
+        }
+
+        if (inputNgaySinh.value === '') {
+            ngaysinhError.innerText = 'Ngày sinh không được trống';
+            isValid = false;
+        } else if (ngaySinhValue > today) {
+            ngaysinhError.innerText = 'Ngày sinh không được lớn hơn ngày hiện tại';
+            isValid = false;
+        } else if (age <= 16) {
+            ngaysinhError.innerText = 'Tuổi phải từ 16 trở lên';
+            isValid = false;
+        } else if (age > 70) {
+            ngaysinhError.innerText = 'Tuổi phải từ 70 trở xuống';
+            isValid = false;
+        }
 
         if (inputTenNd === "") {
             tenError.innerText = "Họ và tên không được trống";
@@ -760,6 +1204,20 @@
         } else if (numberPattern.test(inputTenNd)) {
             tenError.innerText = "Họ và tên không được chứa số";
             isValid = false;
+        } else if (inputTenNd.length > 50) {
+            tenError.innerText = 'Họ và tên không được quá 50 ký tự';
+            isValid = false;
+        }
+
+        if (inputCccd === '') {
+            cccdError.innerText = 'CCCD không được trống';
+            isValid = false;
+        } else if (!cccdPattern.test(inputCccd)) {
+            cccdError.innerText = 'CCCD không hợp lệ';
+            isValid = false;
+        } else if (checkTrungCccdUpdate() === false) {
+            cccdError.innerText = 'CCCD đã tồn tại';
+            isValid =  false;
         }
 
         if (inputEmail === "") {
@@ -767,6 +1225,9 @@
             isValid = false;
         } else if (!emailPattern.test(inputEmail)) {
             emailError.innerText = "Email không hợp lệ";
+            isValid = false;
+        } else if (checkTrungEmailUpdate() === false) {
+            emailError.innerText = 'Email đã tồn tại';
             isValid = false;
         }
 
@@ -776,23 +1237,32 @@
         } else if (!phoneNumberPattern.test(inputSdt)) {
             sdtError.innerText = "Số điện thoại không hợp lệ";
             isValid = false;
-        }
-
-        if (inputNgaySinh === "" || inputNgaySinh > currentDate) {
-            ngaysinhError.innerText = "Ngày sinh không hợp lệ";
+        } else if (checkTrungSdtUpdate() === false) {
+            sdtError.innerText = 'Số điện thoại đã tồn tại';
             isValid = false;
         }
 
-        return isValid;
+        if (!isValid) {
+            return false; // Ngăn chặn submit form
+        }
+
+        return true;
     }
 
     function validateThemDiaChi() {
         var inputHoten = document.getElementById("hotennguoinhan").value.trim();
-        var inputSdt= document.getElementById("sdtnguoinhan").value.trim();
+        var inputSdt = document.getElementById("sdtnguoinhan").value.trim();
         var inputTenDuong = document.getElementById("tenduong").value.trim();
+        var tinhthanhSelect = document.getElementById('city').value.trim();
+        var quanhuyenSelect = document.getElementById('district').value.trim();
+        var xaphuongSelect = document.getElementById('ward').value.trim();
+
         var tennguoinhanError = document.getElementById("hotennguoinhanError");
         var sdtError = document.getElementById("sdtnguoinhanError");
         var tenduongError = document.getElementById("tenduongError");
+        var tinhthanhError = document.getElementById('tinhthanhError');
+        var quanhuyenError = document.getElementById('quanError');
+        var xaphuongError = document.getElementById('xaError');
 
         var isValid = true;
 
@@ -811,11 +1281,6 @@
             isValid = false;
         }
 
-        if (inputTenDuong === "") {
-            tenduongError.innerText = "Không được để trống tên đường";
-            isValid = false;
-        }
-
         if (inputSdt === "") {
             sdtError.innerText = "Số điện thoại không được trống";
             isValid = false;
@@ -824,17 +1289,207 @@
             isValid = false;
         }
 
+        if (inputTenDuong === "") {
+            tenduongError.innerText = "Không được để trống tên đường";
+            isValid = false;
+        }
+
+        if (tinhthanhSelect === '' || quanhuyenSelect === '' || xaphuongSelect === '') {
+            tinhthanhError.innerText = 'Hãy chọn địa chỉ';
+            isValid = false;
+        } else {
+            tinhthanhError.innerText = '';
+        }
+        sessionStorage.setItem('activeTab', 'v-pills-profile');
         return isValid;
     }
 
-    function updateThongTin() {
-        return validateNguoiDung();
+    function validateSuaDiaChi() {
+        var inputHoten2 = document.getElementById("hotennguoinhan2").value.trim();
+        var inputSdt2 = document.getElementById("sdtnguoinhan2").value.trim();
+        var inputTenDuong2 = document.getElementById("tenduong2").value.trim();
+        var tennguoinhanError2 = document.getElementById("hotennguoinhanError2");
+        var sdtError2 = document.getElementById("sdtnguoinhanError2");
+        var tenduongError2 = document.getElementById("tenduongError2");
+
+        var isValid = true;
+
+        tennguoinhanError2.innerText = "";
+        sdtError2.innerText = "";
+        tenduongError2.innerText = "";
+
+        if (inputHoten2 === "") {
+            tennguoinhanError2.innerText = "Họ và tên không được trống";
+            isValid = false;
+        } else if (specialCharPattern.test(inputHoten2)) {
+            tennguoinhanError2.innerText = "Họ và tên không được chứa ký tự đặc biệt";
+            isValid = false;
+        } else if (numberPattern.test(inputHoten2)) {
+            tennguoinhanError2.innerText = "Họ và tên không được chứa số";
+            isValid = false;
+        }
+        if (inputTenDuong2 === "") {
+            tenduongError2.innerText = "Không được để trống tên đường";
+            isValid = false;
+        }
+        if (inputSdt2 === "") {
+            sdtError2.innerText = "Số điện thoại không được trống";
+            isValid = false;
+        } else if (!phoneNumberPattern.test(inputSdt2)) {
+            sdtError2.innerText = "Số điện thoại không hợp lệ";
+            isValid = false;
+        }
+        sessionStorage.setItem('activeTab', 'v-pills-profile');
+        return isValid;
     }
-    function addDiaChi() {
-        return validateThemDiaChi();
+
+    function validateDoiMatKhau() {
+        var inputMatKhau = document.getElementById("matkhau").value.trim();
+        var inputMatKhauMoi = document.getElementById("matkhaumoi").value.trim();
+        var inputMatKhauXn = document.getElementById("xacnhanmatkhau").value.trim();
+
+        var matkhauError = document.getElementById("matkhauError");
+        var maukhaucu = document.getElementById("maukhaucuError");
+        var xacnhanmkError = document.getElementById("xacnhanmkError");
+
+        var isValid = true;
+
+        matkhauError.innerText = "";
+        maukhaucu.innerText = "";
+        xacnhanmkError.innerText = "";
+
+        if (inputMatKhau === "") {
+            matkhauError.innerText = "Không được để trống mật khẩu";
+            isValid = false;
+        }
+        if (inputMatKhauMoi === "") {
+            inputMatKhauMoi.innerText = "Không được để trống mật khẩu mới";
+            isValid = false;
+        }
+        if (inputMatKhauXn === "") {
+            xacnhanmkError.innerText = "Không được để trống xác nhận mật khẩu";
+            isValid = false;
+        }
+        sessionStorage.setItem('activeTab', 'v-pills-disabled-tab');
+        return isValid;
+    }
+
+    function checkTrungCccd() {
+        var cccdInput = document.getElementById('cccd').value;
+        var isVaLid = true;
+        for (var i = 0; i < lstCccdFromDb.length; i++) {
+            if (cccdInput === lstCccdFromDb[i]) {
+                isVaLid = false;
+                break;
+            }
+        }
+
+        return isVaLid;
+    }
+
+    var originalCccd = document.getElementById('cccd').value.trim();
+    function checkTrungCccdUpdate() {
+        var cccdInput = document.getElementById('cccd').value.trim();
+        var lstCccdFromDbCopy = lstCccdFromDb.slice();
+        var index = lstCccdFromDb.indexOf(originalCccd);
+        if (index !== -1) {
+            lstCccdFromDbCopy.splice(index, 1);
+        }
+        var isValid = true;
+        for (var i = 0; i < lstCccdFromDbCopy.length; i++) {
+            if (cccdInput === lstCccdFromDbCopy[i]) {
+                isValid = false;
+                break;
+            }
+        }
+        return isValid;
+    }
+
+    function checkTrungEmail() {
+        var emailInput = document.getElementById('email').value;
+        var isVaLid = true;
+        for (var i = 0; i < lstEmailFromDb.length; i++) {
+            if (emailInput.toLowerCase() === lstEmailFromDb[i]) {
+                isVaLid = false;
+                break;
+            }
+        }
+        return isVaLid;
+    }
+
+    var originalEmail = document.getElementById('email').value.trim();
+
+    function checkTrungEmailUpdate() {
+        var emailInput = document.getElementById('email').value.trim();
+        var lstEmailFromDbCopy = lstEmailFromDb.slice();
+        var index = lstEmailFromDb.indexOf(originalEmail);
+        if (index !== -1) {
+            lstEmailFromDbCopy.splice(index, 1);
+        }
+        var isValid = true;
+        for (var i = 0; i < lstEmailFromDbCopy.length; i++) {
+            if (emailInput.toLowerCase() === lstEmailFromDbCopy[i]) {
+                isValid = false;
+                break;
+            }
+        }
+        return isValid;
+    }
+
+    function checkTrungSdt() {
+        var sdtInput = document.getElementById('sodienthoai').value;
+        var isVaLid = true;
+        for (var i = 0; i < lstSdtFromDb.length; i++) {
+            if (sdtInput === lstSdtFromDb[i]) {
+                isVaLid = false;
+                break;
+            }
+        }
+        return isVaLid;
+    }
+
+    var originalSdt = document.getElementById('sodienthoai').value.trim();
+
+    function checkTrungSdtUpdate() {
+        var sdtInput = document.getElementById('sodienthoai').value.trim();
+        var lstSdtFromDbCopy = lstSdtFromDb.slice();
+        var index = lstSdtFromDb.indexOf(originalSdt);
+        if (index !== -1) {
+            lstSdtFromDbCopy.splice(index, 1);
+        }
+        var isValid = true;
+        for (var i = 0; i < lstSdtFromDbCopy.length; i++) {
+            if (sdtInput === lstSdtFromDbCopy[i]) {
+                isValid = false;
+                break;
+            }
+        }
+        return isValid;
     }
 
 
+    document.addEventListener('DOMContentLoaded', function () {
+        var activeTab = sessionStorage.getItem('activeTab');
+
+        if (activeTab) {
+            var tabButton = document.getElementById(activeTab + '-tab');
+            var tabPane = document.getElementById(activeTab);
+
+            document.querySelectorAll('.nav-link').forEach(function (tab) {
+                tab.classList.remove('active');
+            });
+            tabButton.classList.add('active');
+
+            // Chuyển đổi trạng thái của các tab pane
+            document.querySelectorAll('.tab-pane').forEach(function (pane) {
+                pane.classList.remove('show', 'active');
+            });
+            tabPane.classList.add('show', 'active');
+
+            // Xóa trạng thái tab khỏi sessionStorage
+            sessionStorage.removeItem('activeTab');
+        }
+    });
 </script>
 
 
@@ -948,7 +1603,6 @@
     }
 
 </script>
-
 <!-- footer section start -->
 <nav th:replace="~{/layout/footer.html}"></nav>
 <!-- footer section end -->
