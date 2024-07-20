@@ -803,12 +803,12 @@ public class hoaDonController {
 
     //thay đổi tt khách tại hdct
     @PostMapping("ChangesTTHD")
-    public String changesTTDH(Model model, @ModelAttribute("thayDoiTT") ThayDoiTTHoaDon_KHInfo TTChanges,RedirectAttributes redirectAttributes) {
+    public String changesTTDH(Model model, @ModelAttribute("thayDoiTT") ThayDoiTTHoaDon_KHInfo TTChanges, RedirectAttributes redirectAttributes) {
         List<HoaDon> hd = dao.timTheoID(idhdshowdetail);
         HoaDon hdset = hd.get(0);
         hdset.setTennguoinhan(TTChanges.getTen().trim().replaceAll("\\s+", " "));
         hdset.setSdt(TTChanges.getSdt().trim());
-        String diachi = TTChanges.getTinh() + ", " + TTChanges.getHuyen() + ", " + TTChanges.getXa() + ", " + TTChanges.getDiachiCT();
+        String diachi = TTChanges.getDiachiCT() + ", " + TTChanges.getXa() + ", " + TTChanges.getHuyen() + ", " + TTChanges.getTinh();
         hdset.setDiachi(diachi.trim().replaceAll("\\s+", " "));
         hdset.setPhivanchuyen(BigDecimal.valueOf(Double.valueOf(convertCurrency(TTChanges.getPhigiao()))));
         hdset.setGhichu(TTChanges.getGhichu().trim().replaceAll("\\s+", " "));
@@ -833,9 +833,13 @@ public class hoaDonController {
     public String choseSP(@PathVariable("id") Integer id) {
         SanPhamChiTiet spct = daoSPCT.findById(id);
         SanPhamChiTiet spctCapNhatSL = spct;
-        spctCapNhatSL.setSoluong(spctCapNhatSL.getSoluong() - 1);
+
+
         List<HoaDon> hd = dao.timTheoID(idhdshowdetail);
         HoaDon hdset = hd.get(0);
+        if (hdset.getLoaihoadon() == false) {
+            spctCapNhatSL.setSoluong(spctCapNhatSL.getSoluong() - 1);
+        }
         Boolean result = daoHDCT.checkHDCT(hdset, spct);
 
         if (result == true) {
