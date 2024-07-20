@@ -28,7 +28,6 @@ public class ChatLieuRestController {
                 : null;
         existingChatLieu.setTen(trimmedTenChatLieu);
         chatLieuRepository.save(existingChatLieu);
-        // Trả về redirect
         return ResponseEntity.ok("redirect:/chatlieu");
     }
 
