@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.DiaChi;
+import com.example.demo.entity.KhachHang;
 import com.example.demo.entity.NhanVien;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,6 +14,8 @@ import java.util.Optional;
 
 @Controller
 public interface NhanVienRepository extends JpaRepository<NhanVien, Integer> {
+    @Query("SELECT k FROM NhanVien k WHERE k.nguoidung.email = ?1")
+    NhanVien findNhanVienByEmail(@Param("emailResetPassword") String emailResetPassword);
     @Query("SELECT N FROM NhanVien N WHERE N.manhanvien like %?1%")
     List<NhanVien> timNVTheoMa(String ten);
 

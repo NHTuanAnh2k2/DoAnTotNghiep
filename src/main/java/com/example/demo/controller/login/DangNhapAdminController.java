@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -70,58 +71,74 @@ public class DangNhapAdminController {
 
     @PostMapping("/dangnhap")
     public String dangnhap(Model model,
-                           HttpSession session,
                            @RequestParam("username") String taikhoan,
                            @RequestParam("password") String matkhau,
                            @ModelAttribute("dangnhap") AuthRequestDTO dangnhap,
-                           RedirectAttributes redirectAttributes
+                           RedirectAttributes redirectAttributes,
+                           HttpServletRequest request
                            ) {
-        try {
-
-            NguoiDung nd = khachHangService.findNguoiDungByTaikhoan(taikhoan);
-            UserDetails userDetails = customerUserDetailService.loadUserByUsername(taikhoan);
-            NhanVien nv = nhanVienRepository.findNhanVienByIdNd(nd.getId());
-
-            if (userDetails == null) {
-                redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
-                return "redirect:/admin/account";
-            }
-            if (nv == null) {
-                redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
-                return "redirect:/admin/account";
-            }
-
-            if (passwordEncoder.matches(matkhau, userDetails.getPassword())) {
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                String token = jwtGenerator.generateToken(authentication);
-                adminManager.addUser(nd.getId(), token);
-                session.setAttribute("tokenAdmin", token);
-                session.setAttribute("adminDangnhap", nd.getTaikhoan());
-                model.addAttribute("tokenAdmin", token);
-                return "redirect:/hoa-don/ban-hang";
-            } else {
-                redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
-                return "redirect:/admin/account";
-            }
-        } catch (UsernameNotFoundException e) {
-            redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
+        if (taikhoan == "" && matkhau == "") {
+            redirectAttributes.addFlashAttribute("error", "Tài khoản và mật khẩu đang trống");
             return "redirect:/admin/account";
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Đã có lỗi xảy ra, vui lòng thử lại");
+        } else if (taikhoan == "") {
+            redirectAttributes.addFlashAttribute("error", "Tài khoản đang trống");
             return "redirect:/admin/account";
+        } else if (matkhau == "") {
+            redirectAttributes.addFlashAttribute("error", "Mật khẩu đang trống");
+            return "redirect:/admin/account";
+        } else {
+            try {
+                NguoiDung nd = khachHangService.findNguoiDungByTaikhoan(taikhoan);
+                UserDetails userDetails = customerUserDetailService.loadUserByUsername(taikhoan);
+                NhanVien nv = nhanVienRepository.findNhanVienByIdNd(nd.getId());
+
+                if (userDetails == null) {
+                    redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
+                    return "redirect:/admin/account";
+                }
+                if (nv == null) {
+                    redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
+                    return "redirect:/admin/account";
+                }
+                if (nv.getTrangthai() == false) {
+                    redirectAttributes.addFlashAttribute("error", "Tài khoản đã bị khóa");
+                    return "redirect:/admin/account";
+                }
+
+                if (passwordEncoder.matches(matkhau, userDetails.getPassword())) {
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    String token = jwtGenerator.generateToken(authentication);
+                    String tokenAdmin = "Bearer " + token;
+                    adminManager.addUser(nd.getId(), token);
+                    HttpSession session = request.getSession();
+                    session.setAttribute("tokenAdmin", tokenAdmin);
+                    session.setAttribute("adminDangnhap", nd.getTaikhoan());
+                    return "redirect:/hoa-don/ban-hang";
+                } else {
+                    redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
+                    return "redirect:/admin/account";
+                }
+            } catch (UsernameNotFoundException e) {
+                redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
+                return "redirect:/admin/account";
+            } catch (Exception e) {
+                redirectAttributes.addFlashAttribute("error", "Đã có lỗi xảy ra, vui lòng thử lại");
+                return "redirect:/admin/account";
+            }
         }
     }
     @GetMapping("/dangxuat")
-    public String logout (HttpServletRequest request){
+    public String logout (HttpServletRequest request, HttpSession session){
         // Xóa session của người dùng để đăng xuất
-        HttpSession session = request.getSession(false);
-        String userName = (String) session.getAttribute("adminDangnhap");
-        NguoiDung nguoiDung = khachHangService.findNguoiDungByTaikhoan(userName);
-        Integer adminId = nguoiDung.getId();
-        String token = adminManager.getToken(adminId);
+//        HttpSession session = request.getSession(false);
+
         if (session != null) {
+            String userName = (String) session.getAttribute("adminDangnhap");
+            NguoiDung nguoiDung = khachHangService.findNguoiDungByTaikhoan(userName);
+            Integer adminId = nguoiDung.getId();
+            String token = adminManager.getToken(adminId);
             session.invalidate();
             adminManager.logoutUser(adminId, token);
         }

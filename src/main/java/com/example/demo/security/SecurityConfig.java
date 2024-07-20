@@ -38,6 +38,8 @@ public class SecurityConfig {
     private CustomerUserDetailService userDetailService;
     @Autowired
     JwtAuthEntryPoint jwtAuthEntryPoint;
+    @Autowired
+    SuccessHandler successHandler;
 
     private static final String[] NHANVIEN_LINK = {
             "/hoa-don/ban-hang"
@@ -57,6 +59,7 @@ public class SecurityConfig {
                 )
                .formLogin(form -> form
                        .loginPage("/admin/account")
+                       .successHandler(successHandler)
                        .permitAll()
                )
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

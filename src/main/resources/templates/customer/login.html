@@ -150,16 +150,19 @@
         <div class="form123 mt-3">
             <input type="text" placeholder="Vui lòng nhập mã xác nhận" name="codeReset"/>
             <label>Mã xác nhận</label>
+            <input type="hidden" id="userId" name="userId" th:value="${session.userIdKhachHang}">
         </div>
         <span class="mt-3" id="codeResetError" style="color: red"></span>
         <p class="mt-3" id="thongbaoCode" style="color: red; font-size: medium">Mã đặt lại mật khẩu đã được gửi đến email của bạn, hết hạn trong:
         <span id="countdownTimer">60 giây</span>
+        <p id="thongBaoResendCode" style="color: green; display: none">Mã khôi phục mật khẩu đã được gửi lại</p>
         </p>
         <div class="mt-6 d-flex justify-content-start">
             <button id="btnXacNhan" type="button"
                     style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 46px; border-radius: 15px; border-color: rgb(249,72,42);">
                 XÁC NHẬN
             </button>
+            <a id="btnResendCode" class="btn btn-link" style="display: none">Gửi lại mã</a>
         </div>
     </form>
     <!--FORM ĐỔI MẬT KHẨU-->
@@ -329,6 +332,7 @@
 
         var email = document.querySelector("#formKhoiPhuc input[name='emailResetPassword']").value;
         var emailResetError = document.getElementById("emailResetError");
+        var btnResendCode = document.getElementById('btnResendCode');
 
         emailResetError.innerText = '';
 
@@ -368,6 +372,7 @@
                     if (seconds <= 0) {
                         clearInterval(countdownInterval);
                         countdownTimer.innerText = 'Hết thời gian';
+                        btnResendCode.style.display = 'block';
                     }
                 }, 1000);
             })
@@ -381,6 +386,7 @@
 
         var email = document.querySelector("#formKhoiPhuc input[name='emailResetPassword']").value;
         var code = document.querySelector("#formXacNhan input[name='codeReset']").value;
+        var id = document.querySelector("#formXacNhan input[name='userId']").value;
         var codeResetError = document.getElementById('codeResetError');
 
         // Xóa thông báo lỗi cũ
@@ -394,7 +400,7 @@
         fetch(`/api/validate-code`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams({ emailResetPassword: email, codeReset: code })
+            body: new URLSearchParams({ emailResetPassword: email, codeReset: code, userId: id })
         })
             .then(response => {
                 if (!response.ok) {
@@ -468,6 +474,46 @@
                 alert(error.message);
             });
     });
+
+    document.getElementById("btnResendCode").addEventListener("click", function (event) {
+        event.preventDefault();
+
+        var email = document.querySelector("#formKhoiPhuc input[name='emailResetPassword']").value;
+        var btnResendCode = document.getElementById('btnResendCode');
+        var thongBaoResendCode = document.getElementById('thongBaoResendCode');
+        btnResendCode.style.display = 'none';
+        thongBaoResendCode.style.display = 'block'
+
+        const urlSendCode = `http://localhost:8080/api/send-code?emailResetPassword=${email}`;
+
+        fetch(urlSendCode, { method: 'POST' })
+            .then(response => {
+                if (!response.ok) {
+                    // Xử lý lỗi dựa trên mã trạng thái HTTP
+                    if (response.status === 400) {
+                        return response.text().then(text => { throw new Error(text); });
+                    }
+                    throw new Error('Đã xảy ra lỗi khi gửi mã khôi phục.');
+                }
+                return response.text();
+            })
+            .then(data => {
+                var countdownTimer = document.getElementById("countdownTimer");
+                let seconds = 60;
+                countdownTimer.innerText = `60 giây`;
+                let countdownInterval = setInterval(function() {
+                    seconds--;
+                    countdownTimer.innerText = `${seconds} giây`;
+                    if (seconds <= 0) {
+                        clearInterval(countdownInterval);
+                        countdownTimer.innerText = 'Hết thời gian';
+                        btnResendCode.style.display = 'block';
+                        thongBaoResendCode.style.display = 'none';
+                    }
+                }, 1000);
+            })
+
+    })
 
 </script>
 <script>

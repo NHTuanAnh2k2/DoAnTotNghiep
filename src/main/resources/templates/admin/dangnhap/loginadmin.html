@@ -20,6 +20,13 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         height: 90%;
     }
+    .frmBackGround {
+        padding: 30px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 430px;
+    }
 
     .login-form h1 {
         font-size: 32px;
@@ -38,16 +45,49 @@
         color: white;
     }
 
-    .btn-custom-create {
-        background-color: rgb(240, 240, 36);
-        border-color: rgb(240, 240, 36);
-        color: black;
+    .form123 {
+        position: relative;
+        margin-bottom: 15px;
     }
 
-    .btn-custom-create:hover {
-        background-color: rgb(199, 199, 7);
-        border-color: rgb(199, 199, 7);
+    .form123 label {
+        position: absolute;
+        top: 50%;
+        left: 5px;
+        transform: translateY(-50%);
+        font-size: 16px;
         color: black;
+        font-weight: bold;
+        padding: 0 5px;
+        pointer-events: none;
+        transition: .5s;
+    }
+
+    .form123 input {
+        width: 100%;
+        height: 45px;
+        font-size: 16px;
+        color: black;
+        padding: 0 10px;
+        background: transparent;
+        outline: none;
+        border-radius: 5px;
+    }
+
+    .form123 input ~ label {
+        top: 0;
+        font-size: 12px;
+        background: white;
+    }
+    .tabcontent {
+        display: block;
+        padding: 6px 12px;
+        margin-left: 350px;
+        position: absolute;
+        left: 40%;
+        transform: translateX(-50%);
+        width: 430px; /* Độ rộng của tab content */
+        text-align: center; /* Căn giữa nội dung tab content */
     }
 
     img {
@@ -65,26 +105,299 @@
             <h1 id="fsport">FSPORT</h1>
             <img src="../../dist/img/logo_bong2.jpg" alt="">
         </div>
-        <div class="col-md-6">
-            <div class="login-form">
-                <form th:object="${dangnhap}" th:action="@{/admin/dangnhap}" method="post" id="frmLogin">
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="username" name="username" th:field="*{username}"  placeholder="Tài khoản">
+        <div class="col-md-6 tabcontent">
+            <div class="login-form" id="divDangNhap">
+                <form th:object="${dangnhap}" th:action="@{/admin/dangnhap}" method="post" id="formDangNhap">
+                    <div class="form-group form123">
+                        <input type="text" class="form-control" id="username" name="username" th:field="*{username}"
+                               placeholder="Tài khoản">
                     </div>
-                    <div class="form-group">
-                        <input type="password" class="form-control" id="password" name="password" th:field="*{password}"  placeholder="Mật khẩu">
+                    <div class="form-group form123">
+                        <input type="password" class="form-control" id="password" name="password" th:field="*{password}"
+                               placeholder="Mật khẩu">
                     </div>
+                    <p class="d-flex justify-content-center" style="color: red" th:text="${error}"></p>
                     <button type="submit" class="btn btn-custom-login btn-block">ĐĂNG NHẬP</button>
                     <div class="text-center mt-3">
-                        <a href="#">Quên mật khẩu?</a>
+                        <a href="#" id="khoiphucmk">Quên mật khẩu?</a>
                     </div>
                     <hr>
                 </form>
             </div>
+
+            <div class="col-md-6">
+                <div class="frmBackGround" id="divKhoiPhuc">
+                <!--FORM KHOI PHUC MAT KHAU-->
+                <form id="formKhoiPhuc">
+                    <h4 class="mt-3 d-flex justify-content-start">Khôi phục mật khẩu</h4>
+                    <div class="form123">
+                        <input type="text" placeholder="Vui lòng nhập email" name="emailResetPassword"/>
+                        <label>Email</label>
+                    </div>
+                    <span class="mt-3" id="emailResetError" style="color: red"></span>
+                    <div class="mt-6 d-flex justify-content-start">
+                        <button id="btnKhoiPhuc" type="submit"
+                                style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 46px; border-radius: 15px; border-color: rgb(249,72,42);">
+                            GỬI
+                        </button>
+                    </div>
+                </form>
+                </div>
+            </div>
+            <div class="col-md-6" id="divXacNhan">
+                <div class="frmBackGround">
+                <!--FORM XAC NHAN TAI KHOAN-->
+                <form id="formXacNhan">
+                    <h4 class="mt-3 d-flex justify-content-start">Xác nhân tài khoản</h4>
+                    <div class="form123 mt-3">
+                        <input type="text" placeholder="Vui lòng nhập mã xác nhận" name="codeReset"/>
+                        <label>Mã xác nhận</label>
+                        <input type="hidden" id="userId" name="userId" th:value="${session.userIdNhanVien}">
+                    </div>
+                    <span class="mt-3" id="codeResetError" style="color: red"></span>
+                    <p class="mt-3" id="thongbaoCode" style="color: red; font-size: medium">Mã đặt lại mật khẩu đã được
+                        gửi
+                        đến email của bạn, hết hạn trong:
+                        <span id="countdownTimer">60 giây</span>
+                        <p id="thongBaoResendCode" style="color: green; display: none">Mã khôi phục mật khẩu đã được gửi lại</p>
+                    </p>
+                    <div class="mt-6 d-flex justify-content-start">
+                        <button id="btnXacNhan" type="button"
+                                style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 46px; border-radius: 15px; border-color: rgb(249,72,42);">
+                            XÁC NHẬN
+                        </button>
+                        <a id="btnResendCode" class="btn btn-link" style="display: none">Gửi lại mã</a>
+                    </div>
+                </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="frmBackGround" id="divDoiMk">
+                <!--FORM ĐỔI MẬT KHẨU-->
+                <form id="formDoiMatKhau">
+                    <h4 class="mt-3 d-flex justify-content-start">Thiết lập mật khẩu mới</h4>
+                    <div class="form123 mt-3">
+                        <input type="text" placeholder="Vui lòng nhập mật khẩu mới" id="matkhaumoi"/>
+                        <label>Mật khẩu mới</label>
+                        <span class="mt-3" id="maukhaummoiError" style="color: red"></span>
+                    </div>
+                    <div class="form123 mt-3">
+                        <input type="text" placeholder="Vui lòng xác nhận mật khẩu" id="confirmmatkhau"/>
+                        <label>Xác nhận mật khẩu</label>
+                        <span class="mt-3" id="confirmError" style="color: red"></span>
+                    </div>
+                    <div class="mt-6 d-flex justify-content-start">
+                        <button id="btnDoiMatKhau" type="submit"
+                                style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 150px; height: 46px; border-radius: 15px; border-color: rgb(249,72,42);">
+                            ĐỔI MẬT KHẨU
+                        </button>
+                    </div>
+                </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+<script>
+    document.getElementById("divKhoiPhuc").style.display = "none";
+    document.getElementById("divXacNhan").style.display = "none";
+    document.getElementById("divDoiMk").style.display = "none";
+    document.getElementById("khoiphucmk").addEventListener("click", function (event) {
+        event.preventDefault();
+        document.getElementById("divDangNhap").style.display = "none";
+        document.getElementById("divKhoiPhuc").style.display = "block";
+    });
 
+    document.getElementById("btnKhoiPhuc").addEventListener("click", function (event) {
+        event.preventDefault();
+
+        var email = document.querySelector("#formKhoiPhuc input[name='emailResetPassword']").value;
+        var emailResetError = document.getElementById("emailResetError");
+        var btnResendCode = document.getElementById('btnResendCode');
+        emailResetError.innerText = '';
+
+        if (email.trim() === '') {
+            emailResetError.innerText = 'Vui lòng nhập email';
+            return;
+        }
+        if (/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email) === false) {
+            emailResetError.innerText = 'Email không hợp lệ';
+            return;
+        }
+
+        const urlSendCode = `http://localhost:8080/api/send-code-admin?emailResetPassword=${email}`;
+
+        fetch(urlSendCode, { method: 'POST' })
+            .then(response => {
+                if (!response.ok) {
+                    // Xử lý lỗi dựa trên mã trạng thái HTTP
+                    if (response.status === 400) {
+                        return response.text().then(text => { throw new Error(text); });
+                    }
+                    throw new Error('Đã xảy ra lỗi khi gửi mã khôi phục.');
+                }
+                return response.text();
+            })
+            .then(data => {
+                emailResetError.innerText = ''; // Xóa thông báo lỗi cũ
+                emailResetError.innerText = data; // Hiển thị thông báo thành công
+                document.getElementById("divKhoiPhuc").style.display = "none";
+                document.getElementById("divXacNhan").style.display = "block";
+                var countdownTimer = document.getElementById("countdownTimer");
+                let seconds = 60;
+                countdownTimer.innerText = `60 giây`;
+                let countdownInterval = setInterval(function() {
+                    seconds--;
+                    countdownTimer.innerText = `${seconds} giây`;
+                    if (seconds <= 0) {
+                        clearInterval(countdownInterval);
+                        countdownTimer.innerText = 'Hết thời gian';
+                        btnResendCode.style.display = 'block';
+                    }
+                }, 1000);
+            })
+            .catch(error => {
+                emailResetError.innerText = error.message; // Hiển thị thông báo lỗi cho người dùng
+            });
+    });
+
+    document.getElementById("btnXacNhan").addEventListener("click", function (event) {
+        event.preventDefault();
+
+        var email = document.querySelector("#formKhoiPhuc input[name='emailResetPassword']").value;
+        var code = document.querySelector("#formXacNhan input[name='codeReset']").value;
+        var id = document.querySelector("#formXacNhan input[name='userId']").value;
+        var codeResetError = document.getElementById('codeResetError');
+
+        // Xóa thông báo lỗi cũ
+        codeResetError.innerText = '';
+
+        if (code.trim() === '') {
+            codeResetError.innerText = 'Vui lòng nhập mã xác nhận';
+            return;
+        }
+
+        fetch(`/api/validate-code`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({ emailResetPassword: email, codeReset: code, userId: id })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Mã xác nhận không hợp lệ.');
+                }
+                return response.text();
+            })
+            .then(data => {
+                // Xóa thông báo lỗi cũ
+                codeResetError.innerText = '';
+                document.getElementById("divXacNhan").style.display = "none";
+                document.getElementById("divDoiMk").style.display = "block";
+            })
+            .catch(error => {
+                // Hiển thị thông báo lỗi cho người dùng
+                codeResetError.innerText = error.message;
+            });
+    });
+    document.getElementById("btnDoiMatKhau").addEventListener("click", function (event) {
+        event.preventDefault();
+
+        var email = document.querySelector("#formKhoiPhuc input[name='emailResetPassword']").value;
+        var newPassword = document.getElementById("matkhaumoi").value;
+        var confirmPassword = document.getElementById("confirmmatkhau").value;
+        var maukhaummoiError = document.getElementById('maukhaummoiError');
+        var confirmError = document.getElementById('confirmError');
+
+        maukhaummoiError.innerText = '';
+        confirmError.innerText = '';
+
+        if (newPassword.trim() === '') {
+            maukhaummoiError.innerText = 'Vui lòng nhập mật khẩu mới';
+            return;
+        }
+
+        if (newPassword.length < 8) {
+            maukhaummoiError.innerText = 'Mật khẩu mới phải có ít nhất 8 ký tự';
+            return;
+        }
+
+        if (/\s/.test(newPassword)) {
+            maukhaummoiError.innerText = 'Mật khẩu không được chứa khoảng trắng';
+            return;
+        }
+
+
+        if (newPassword !== confirmPassword) {
+            confirmError.innerText = 'Mật khẩu xác nhận không khớp';
+            return;
+        }
+
+
+        fetch(`/api/change-password-admin`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: new URLSearchParams({emailResetPassword: email, newPassword: newPassword})
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(text);
+                    });
+                }
+                return response.text();
+            })
+            .then(data => {
+                alert(data);
+                // document.getElementById("formDoiMatKhau").style.display = "none";
+                window.location.href = '/admin/account'
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert(error.message);
+            });
+    })
+
+    document.getElementById("btnResendCode").addEventListener("click", function (event) {
+        event.preventDefault();
+
+        var email = document.querySelector("#formKhoiPhuc input[name='emailResetPassword']").value;
+        var btnResendCode = document.getElementById('btnResendCode');
+        var thongBaoResendCode = document.getElementById('thongBaoResendCode');
+        btnResendCode.style.display = 'none';
+        thongBaoResendCode.style.display = 'block'
+
+        const urlSendCode = `http://localhost:8080/api/send-code-admin?emailResetPassword=${email}`;
+
+        fetch(urlSendCode, { method: 'POST' })
+            .then(response => {
+                if (!response.ok) {
+                    // Xử lý lỗi dựa trên mã trạng thái HTTP
+                    if (response.status === 400) {
+                        return response.text().then(text => { throw new Error(text); });
+                    }
+                    throw new Error('Đã xảy ra lỗi khi gửi mã khôi phục.');
+                }
+                return response.text();
+            })
+            .then(data => {
+                var countdownTimer = document.getElementById("countdownTimer");
+                let seconds = 60;
+                countdownTimer.innerText = `60 giây`;
+                let countdownInterval = setInterval(function() {
+                    seconds--;
+                    countdownTimer.innerText = `${seconds} giây`;
+                    if (seconds <= 0) {
+                        clearInterval(countdownInterval);
+                        countdownTimer.innerText = 'Hết thời gian';
+                        btnResendCode.style.display = 'block';
+                        thongBaoResendCode.style.display = 'none';
+                    }
+                }, 1000);
+            })
+    })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

@@ -49,7 +49,7 @@ public interface KhachHangService {
     String readQRCode(File qrCodeImage) throws IOException;
     List<KhachHang> findKHGanNhat();
 
-    boolean sendPasswordResetCode(String email, String name);
-    boolean validateResetCode(String email, String code);
+    boolean sendPasswordResetCode(String email, String name, Integer userId);
+    boolean validateResetCode(String email, String code, Integer userId);
 
 }
