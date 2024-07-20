@@ -2178,22 +2178,17 @@
 
 <script>
     function showFileInfo(event) {
-
         // Lấy thẻ <input> từ event
         var input = event.target;
-
         // Lấy thẻ <tr> bao quanh thẻ <input>
         var tr = input.closest('tr');
-
         // Lấy vị trí của <tr> trong bảng
         var table = document.getElementById('example2');
         var rows = Array.from(table.rows);
         var rowIndex = rows.indexOf(tr);
-
         // Hiển thị vị trí và tên tệp
         if (input.files && input.files[0]) {
             // alert(`Vị trí: ${rowIndex}, Tên tệp: ${input.files[0].name}`);
-
             var list = [
                 rowIndex,
                 input.files[0].name
@@ -2206,6 +2201,87 @@
                 .then(function (b) {
                 })
         }
+
+
+        // validate ảnh
+        if (input.files && input.files[0]) {
+            var file = input.files[0];
+            var fileName = file.name;
+            var fileExtension = fileName.split('.').pop().toLowerCase();
+            var fileSizeMB = file.size / (1024 * 1024); // Kích thước tệp tính bằng MB
+
+            // Kiểm tra định dạng file
+            if (fileExtension !== 'jpg' && fileExtension !== 'png') {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Sai định dạng ảnh. Vui lòng tải ảnh định dạng jpg hoặc png.'
+                });
+                input.value = ''; // Xóa giá trị của input để không lưu ảnh sai định dạng
+                return;
+            }
+
+            // Kiểm tra kích thước tệp
+            if (fileSizeMB > 1) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Kích thước ảnh không được lớn hơn 1MB.'
+                });
+                input.value = ''; // Xóa giá trị của input để không lưu ảnh quá lớn
+                return;
+            }
+
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var img = new Image();
+                img.onload = function () {
+                    // Kiểm tra kích thước ảnh
+                    // if (img.width < 1280 || img.height < 1280 || img.width > 1280 || img.height > 1280) {
+                    //     const Toast = Swal.mixin({
+                    //         toast: true,
+                    //         position: 'top-end',
+                    //         showConfirmButton: false,
+                    //         timer: 3000,
+                    //         timerProgressBar: true,
+                    //         didOpen: (toast) => {
+                    //             toast.onmouseenter = Swal.stopTimer;
+                    //             toast.onmouseleave = Swal.resumeTimer;
+                    //         }
+                    //     });
+                    //     Toast.fire({
+                    //         icon: 'error',
+                    //         title: 'Kích thước ảnh phải là 1280x1280 pixels.'
+                    //     });
+                    //     input.value = ''; // Xóa giá trị của input để không lưu ảnh sai kích thước
+                    //     return;
+                    // }
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
     }
 </script>
+
 
