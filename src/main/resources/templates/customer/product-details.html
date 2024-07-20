@@ -963,19 +963,34 @@
     }
 </script>
 <!--validate soluong-->
-<!--<script th:inline="javascript">-->
-<!--    /*<![CDATA[*/-->
-<!--    document.getElementById('addToCartForm').addEventListener('submit', function (event) {-->
-<!--        var selectedQuantity = parseInt(document.getElementById('quantityInput').value);-->
-<!--        var availableQuantity = parseInt(document.getElementById('product-quantity').innerText); // Lấy số lượng có sẵn từ thẻ span-->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    document.getElementById('addToCartForm').addEventListener('submit', function (event) {
+        var selectedQuantity = parseInt(document.getElementById('quantityInput').value);
+        var availableQuantity = parseInt(document.getElementById('product-quantity').innerText); // Lấy số lượng có sẵn từ thẻ span
 
-<!--        if (selectedQuantity > availableQuantity) {-->
-<!--            alert('Số lượng nhập vào vượt quá số lượng có sẵn trong kho (' + availableQuantity + ')');-->
-<!--            event.preventDefault(); // Ngăn không gửi form nếu số lượng vượt quá-->
-<!--        }-->
-<!--    });-->
-<!--    /*]]>*/-->
-<!--</script>-->
+        if (selectedQuantity > availableQuantity) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: 'warning',
+                title: 'Số lượng nhập vào vượt quá số lượng có sẵn trong kho (' + availableQuantity + ')'
+            });
+            event.preventDefault(); // Ngăn không gửi form nếu số lượng vượt quá
+        }
+    });
+    /*]]>*/
+</script>
+
 <!--dùng cho mã coupont coupon cố định-->
 <script>
     // JavaScript để giữ coupon-noti ở vị trí cố định khi scroll
