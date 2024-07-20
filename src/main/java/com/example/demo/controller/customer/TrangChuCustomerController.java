@@ -265,8 +265,7 @@ public class TrangChuCustomerController {
     @GetMapping("/search-trangchu")
     public String searchTrangChu(Model model,
                                  @ModelAttribute("search") SanPhamCustomerInfo info,
-                                 HttpSession session
-    ) {
+                                 HttpSession session) {
         List<GioHangChiTiet> cartItems = new ArrayList<>();
         String token = (String) session.getAttribute("token");
         NguoiDung nguoiDung = null;
@@ -313,19 +312,20 @@ public class TrangChuCustomerController {
             totalAmount = totalAmount.add(giatien.multiply(BigDecimal.valueOf(item.getSoluong())));
         }
         // Thêm các thông tin vào model
-        model.addAttribute("token", token);
+
         model.addAttribute("totalAmount", totalAmount);
         model.addAttribute("totalQuantity", totalQuantity);
         model.addAttribute("cartItems", cartItems);
 
         List<Object[]> list = null;
-        if (info.getKey() == null) {
+        String trimmedKey = (info.getKey() != null) ? info.getKey().trim().replaceAll("\\s+", " ") : null;
+        if (trimmedKey == null || trimmedKey.isEmpty()) {
             list = trangChuRepository.searchAll();
         } else {
-            list = trangChuRepository.searchTrangChu("%" + info.getKey() + "%", "%" + info.getKey() + "%");
+            list = trangChuRepository.searchTrangChu("%" + trimmedKey + "%", "%" + trimmedKey + "%");
         }
         model.addAttribute("list", list);
-        model.addAttribute("fillSearch", info.getKey());
+        model.addAttribute("fillSearch", trimmedKey);
         return "customer/search-trangchu";
     }
 

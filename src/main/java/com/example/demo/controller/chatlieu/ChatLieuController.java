@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,13 +25,11 @@ public class ChatLieuController {
         String trimmedKey = (info.getKey() != null) ? info.getKey().trim().replaceAll("\\s+", " ") : null;
         boolean isKeyEmpty = (trimmedKey == null || trimmedKey.trim().isEmpty());
         boolean isTrangthaiNull = (info.getTrangthai() == null);
-
         if (isKeyEmpty && isTrangthaiNull) {
             list = chatLieuRepository.findAllByOrderByNgaytaoDesc();
         } else {
             list = chatLieuRepository.findByTenAndTrangthai("%" + trimmedKey + "%", info.getTrangthai());
         }
-
         model.addAttribute("fillSearch", info.getKey());
         model.addAttribute("fillTrangThai", info.getTrangthai());
         model.addAttribute("lstChatLieu", list);
