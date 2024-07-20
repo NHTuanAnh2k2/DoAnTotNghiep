@@ -29,7 +29,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         String token = getJWTFromRequest(request);
-        System.out.println("TokenJWT: " + token);
+//        System.out.println("TokenJWT: " + token);
         if (StringUtils.hasText(token) && tokenGenerator.validateToken(token)) {
             String username = tokenGenerator.getUsernameFromJWT(token);
 
@@ -43,10 +43,10 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String getJWTFromRequest(HttpServletRequest request) {
-        String adminDangnhap = (String) request.getSession().getAttribute("adminDangnhap");
+        String adminDangnhap = (String) request.getSession().getAttribute("tokenAdmin1");
         if (adminDangnhap != null) {
             String bearerToken = adminDangnhap;
-            System.out.println("Authorization:" + bearerToken);
+//            System.out.println("Authorization: " + bearerToken);
             if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
                 return bearerToken.substring(7, bearerToken.length());
             }

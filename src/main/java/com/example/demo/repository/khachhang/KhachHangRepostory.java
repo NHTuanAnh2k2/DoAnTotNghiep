@@ -1,6 +1,7 @@
 package com.example.demo.repository.khachhang;
 
 import com.example.demo.entity.KhachHang;
+import com.example.demo.entity.NguoiDung;
 import com.example.demo.entity.NhanVien;
 import com.example.demo.info.KhachHangInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,6 +14,8 @@ import java.util.List;
 
 @Repository
 public interface KhachHangRepostory extends JpaRepository<KhachHang, Integer> {
+    @Query("SELECT k FROM KhachHang k WHERE k.nguoidung.email = ?1")
+    KhachHang findKhachHangByEmail(@Param("emailResetPassword") String emailResetPassword);
     @Query("SELECT k FROM KhachHang k WHERE k.nguoidung.hovaten LIKE %?1% OR k.nguoidung.sodienthoai LIKE %?1% OR k.makhachhang LIKE %?1%")
     List<KhachHang> findByTenSdtMa(String tenSdtMa);
 
