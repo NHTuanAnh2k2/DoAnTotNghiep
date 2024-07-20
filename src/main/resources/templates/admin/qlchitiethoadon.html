@@ -759,12 +759,16 @@
                                                                             oninput="showcasst('phigiaoHang')"
                                                                             id="phigiaoHang" th:field="*{phigiao}"
                                                                             th:value="${phigiao}">
+                                                                        <i style="color: red;"
+                                                                            id="TTTK_phigiao_regex"></i>
 
                                                                     </div>
                                                                     <div class="col-12">
                                                                         <label class="form-label">Ghi chú:</label>
-                                                                        <textarea class="form-control"
+                                                                        <textarea class="form-control" id="ghichus"
                                                                             th:field="*{ghichu}" rows="3"></textarea>
+                                                                        <i style="color: red;"
+                                                                            id="TTTK_ghichus_regex"></i>
                                                                     </div>
                                                                     <button onclick="return validateForm()"
                                                                         type="submit" class="btn btn-primary">Xác
@@ -2708,6 +2712,9 @@
             var diaChi = document.getElementById("TTTK_diachi").value.trim();
             var huyen = document.getElementById("district").value;
             var xa = document.getElementById("ward").value;
+            var ghichus = document.getElementById("ghichus").value;
+            var tienships = document.getElementById("phigiaoHang").value;
+          
             // Biến để kiểm tra nếu có lỗi
             var error = false;
 
@@ -2755,7 +2762,22 @@
 
                 }
             }
+            //kiểm tra ghi chú k đc >50
+            if (ghichus.length > 50) {
+                document.getElementById('TTTK_ghichus_regex').innerHTML = 'Ghi chú không được quá 50 kí tự!';
+                error = true;
+            } else {
+                document.getElementById('TTTK_ghichus_regex').innerHTML = '';
+            }
 
+            //check phí giao=đ
+            if (tienships.trim() === "₫") {
+                // alert("Địa chỉ không được để trống");
+                document.getElementById('TTTK_phigiao_regex').innerHTML = 'Nếu miễn ship hãy nhập 0.0 ₫!';
+                error = true;
+            }else{
+                document.getElementById('TTTK_phigiao_regex').innerHTML = '';
+            }
             // Kiểm tra địa chỉ
             if (diaChi === "") {
                 // alert("Địa chỉ không được để trống");
@@ -2791,7 +2813,7 @@
 
             // Nếu có lỗi, ngăn chặn form không submit
             if (error) {
-                thongbao('Dữ liệu nhập sai!!','warning')
+                thongbao('Dữ liệu nhập sai!!', 'warning')
             }
             return !error;
         }
@@ -2836,8 +2858,8 @@
     </script>
     <script th:inline="javascript">
         /*<![CDATA[*/
-        var sendmail = /*[[${sendmail}]]*/ false; 
-        var chagesTTHDSucsess = /*[[${chagesTTHDSucsess}]]*/ false; 
+        var sendmail = /*[[${sendmail}]]*/ false;
+        var chagesTTHDSucsess = /*[[${chagesTTHDSucsess}]]*/ false;
         /*]]>*/
         if (sendmail == true) {
             thongbao('In hóa đơn thành công!', 'success')
