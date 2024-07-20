@@ -347,7 +347,8 @@ public class SanPhamController {
     }
 
     private String saveImage(MultipartFile file) {
-        String uploadDir = "G:\\Ki7\\DATN\\DATN\\src\\main\\resources\\static\\upload";
+        String uploadDir = "D:\\DATN\\src\\main\\resources\\static\\upload";
+        String dbUploadDir = "/upload";
         try {
             File directory = new File(uploadDir);
             if (!directory.exists()) {
@@ -357,12 +358,13 @@ public class SanPhamController {
             String filePath = uploadDir + File.separator + originalFileName;
             File dest = new File(filePath);
             file.transferTo(dest);
-            return filePath;
+            return dbUploadDir + "/" + originalFileName;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
     }
+
 
 
     @PostMapping("/updateGiaAndSoLuong")
@@ -397,7 +399,7 @@ public class SanPhamController {
     public ResponseEntity<?> timaddImage(@RequestParam("image") List<String> listData
     ) {
         Anh anh = new Anh();
-        String url = "G:\\Ki7\\DATN\\DATN\\src\\main\\resources\\static\\upload\\" + listData.get(1);
+        String url = "D:\\DATN\\src\\main\\resources\\static\\upload\\" + listData.get(1);
         anh.setTenanh(url);
         List<Anh> list =sanPhamChiTietList.get(Integer.valueOf(listData.get(0)) - 1).getAnh()==null?new ArrayList<>():sanPhamChiTietList.get(Integer.valueOf(listData.get(0)) - 1).getAnh();
         list.add(anh);
