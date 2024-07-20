@@ -3977,7 +3977,14 @@ tabindex="0">
                 document.getElementById('regexship').innerHTML = 'Chưa có tiền ship';
                 error = true;
             } else {
-                document.getElementById('regexship').innerHTML = '';
+                if (tienShip.trim() === "₫") {
+                    // alert("Địa chỉ không được để trống");
+                    document.getElementById('regexship').innerHTML = 'Nếu miễn ship hãy nhập 0.0 ₫!';
+                    error = true;
+                } else {
+                    document.getElementById('regexship').innerHTML = '';
+                }
+
             }
 
             // Nếu có lỗi, ngăn chặn form không submit
