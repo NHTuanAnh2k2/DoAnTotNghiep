@@ -1,6 +1,7 @@
 package com.example.demo.controller.sanpham;
 
 import com.example.demo.entity.*;
+import com.example.demo.info.SanPhamChiTietInfo;
 import com.example.demo.info.SanPhamInfo;
 import com.example.demo.info.ThuocTinhInfo;
 import com.example.demo.repository.*;
@@ -259,12 +260,67 @@ public class SanPhamController {
 
 
     @GetMapping("/detailsanpham/{id}")
-    public String detailsanpham(@PathVariable Integer id, Model model) {
+    public String detailsanpham(@PathVariable Integer id, Model model, @ModelAttribute("search") SanPhamChiTietInfo info) {
         SanPham sanPham = sanPhamRepositoty.findById(id).orElse(null);
+
+        if (sanPham == null) {
+            // Xử lý trường hợp sản phẩm không tồn tại
+            return "redirect:/error"; // Hoặc một trang thông báo lỗi nào đó
+        }
+
+        String trimmedKey = (info.getKey() != null) ? info.getKey().trim().replaceAll("\\s+", " ") : null;
+        boolean isKeyEmpty = (trimmedKey == null || trimmedKey.isEmpty());
+        boolean isAllFiltersNull = (
+                isKeyEmpty &&
+                        info.getIdChatLieu() == null &&
+                        info.getIdDeGiay() == null &&
+                        info.getIdKichCo() == null &&
+                        info.getIdMauSac() == null &&
+                        info.getIdThuongHieu() == null &&
+                        info.getGioitinh() == null &&
+                        info.getTrangthai() == null
+        );
+        List<SanPhamChiTiet> listSanPhamChiTiet;
+        if (isAllFiltersNull) {
+            listSanPhamChiTiet = sanPham.getSpct();
+        } else {
+            listSanPhamChiTiet = sanPhamChiTietRepository.searchBySanPham(
+                    sanPham,
+                    "%" + trimmedKey + "%",
+                    info.getIdThuongHieu(),
+                    info.getIdDeGiay(),
+                    info.getIdKichCo(),
+                    info.getIdMauSac(),
+                    info.getIdChatLieu(),
+                    info.getGioitinh(),
+                    info.getTrangthai()
+            );
+        }
+        List<SanPham> listSanPham = sanPhamImp.findAll();
+        List<ThuongHieu> listThuongHieu = thuongHieuRepository.getAll();
+        List<MauSac> listMauSac = mauSacRepository.getAll();
+        List<KichCo> listKichCo = kichCoRepository.getAll();
+        List<DeGiay> listDeGiay = deGiayRepository.getAll();
+        List<ChatLieu> listChatLieu = chatLieuRepository.getAll();
         model.addAttribute("sanpham", sanPham);
-        model.addAttribute("sanphamchitiet", sanPham.getSpct());
+        model.addAttribute("sanphamchitiet", listSanPhamChiTiet);
+        model.addAttribute("sp", listSanPham);
+        model.addAttribute("th", listThuongHieu);
+        model.addAttribute("ms", listMauSac);
+        model.addAttribute("kc", listKichCo);
+        model.addAttribute("dg", listDeGiay);
+        model.addAttribute("cl", listChatLieu);
+        model.addAttribute("fillSearch", trimmedKey);
+        model.addAttribute("fillThuongHieu", info.getIdThuongHieu());
+        model.addAttribute("fillDeGiay", info.getIdDeGiay());
+        model.addAttribute("fillKichCo", info.getIdKichCo());
+        model.addAttribute("fillMauSac", info.getIdMauSac());
+        model.addAttribute("fillChatLieu", info.getIdChatLieu());
+        model.addAttribute("fillGioiTinh", info.getGioitinh());
+        model.addAttribute("fillTrangThai", info.getTrangthai());
         return "admin/qlchitietsanpham";
     }
+
 
 
     @GetMapping("/deleteCTSP/{id}")
