@@ -1,6 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <nav th:replace="~{/layoutadmin/head.html}"></nav>
+<style>
+    .tdSameWidth {
+        /*max-width: 50%;*/
+        /*white-space: nowrap;*/
+        /*overflow: hidden;*/
+        /*text-overflow: ellipsis;*/
+    }
+
+    .tdDiaChi {
+        max-width: 270px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    th {
+        white-space: nowrap;
+    }
+</style>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
     <!-- Navbar -->
@@ -27,12 +45,6 @@
                             QUẢN LÝ TÀI KHOẢN KHÁCH HÀNG
                         </h1>
                     </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">QUẢN LÝ TÀI KHOẢN KHÁCH HÀNG</li>
-                        </ol>
-                    </div>
                 </div>
             </div><!-- /.container-fluid -->
         </section>
@@ -40,77 +52,60 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                                         class="bi bi-funnel" viewBox="0 0 16 16">
-                                        <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
-                                    </svg>
-                                    Bộ lọc
-                                </h3>
-                                <br>
-                                <form th:action="@{/khachhang/timkiem}" th:method="get">
-                                    <div class="row">
-                                        <div class="mb-3 col-12">
-                                            <h3 class="card-title" style="width: 80%">Tên, mã hoặc số điện thoại:
-                                                <input type="text" th:name="tenSdtMa" placeholder="Tìm kiếm tên, mã hoặc số điện thoại"
-                                                       class="form-control">
-                                            </h3>
-                                        </div>
-                                    </div>
-<!--                                    <div class="row" style="margin-left: 74px">-->
-<!--                                        <div class="mb-3 col-5">-->
-<!--                                            <h3 class="card-title" style="width: 80%">CCCD:-->
-<!--                                                <input type="text" th:name="ten" placeholder="Tìm kiếm cccd"-->
-<!--                                                       class="form-control">-->
-<!--                                            </h3>-->
-<!--                                        </div>-->
-<!--                                        <div class="mb-3 col-5">-->
-<!--                                            <h3 class="card-title" style="width: 80%">Tỉnh/Thành phố:-->
-<!--                                                <input type="text" th:name="sdt" placeholder="Tìm kiếm SĐT"-->
-<!--                                                       class="form-control">-->
-<!--                                            </h3>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <div class="row" style="margin-left: 74px">-->
-<!--                                        <div class="mb-3 col-5">-->
-<!--                                            <h3 class="card-title" style="width: 80%">Ngày sinh:-->
-<!--                                                <input type="date" th:name="ngaysinh" class="form-control"-->
-<!--                                                       style="width: 300px">-->
-<!--                                            </h3>-->
-<!--                                        </div>-->
-<!--                                        <div class="mb-3 col-5">-->
-<!--                                            <h3 class="card-title" style="width: 80%">Ngày sinh:-->
-<!--                                                <input type="date" th:name="ngaysinh" class="form-control"-->
-<!--                                                       style="width: 300px">-->
-<!--                                            </h3>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-                                    <div class="row">
-                                        <div class="col-3">
-                                            <button type="submit" style="margin-left: 83px; width: 200px"
-                                                    class="btn btn-primary">Tìm kiếm
-                                            </button>
-                                        </div>
-                                        <div class="col-3">
-                                            <a class="btn btn-danger" href="/khachhang"
-                                                    style="width: 200px; margin-left: 300px">Reset
-                                            </a>
-                                        </div>
-                                    </div>
-                                </form>
+                    <div>
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <form th:action="@{/khachhang/timkiem}" id="searchForm" method="get">
+                                        <h3 class="card-title">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                                                 fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
+                                                <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
+                                            </svg>
+                                            Bộ lọc
+                                        </h3>
+                                        <br>
+                                        <hr class="border border-danger border-2 opacity-50">
+                                        <div class="row g-3">
+                                            <div class=" align-items-center col-lg-6 col-md-6">
+                                                <div class="col-auto">
+                                                    <label class="col-form-label">Tìm kiếm:</label>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <input th:value="${searchInput}" name="searchInput" id="searchInput"
+                                                           type="text" class="form-control"
+                                                           placeholder="Nhập tên, mã hoặc số điện thoại">
+                                                </div>
+                                            </div>
+                                            <div class="align-items-center col-lg-6 col-md-6">
+                                                <div class="col-auto">
+                                                    <label class="col-form-label">Trạng thái khách hàng:</label>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <select class="form-select" th:value="${searchOption}"
+                                                            name="searchOption" id="searchOption" style="width: 200px">
+                                                        <option th:selected="${searchOption == '' ? 'true' : 'false'}"
+                                                                value="">Tất cả
+                                                        </option>
+                                                        <option th:selected="${searchOption == true ? 'true' : 'false'}"
+                                                                value="true">Đang Hoạt động
+                                                        </option>
+                                                        <option th:selected="${searchOption == false ? 'true' : 'false'}"
+                                                                value="false">Ngừng hoạt động
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                    </form>
+                                </div>
                             </div>
-
+                            <!-- /.card -->
                         </div>
-                        <!-- /.card -->
+                        <!-- /.col -->
                     </div>
-                    <!-- /.col -->
+                    <!-- /.row -->
                 </div>
-                <!-- /.row -->
-            </div>
-            <!-- /.container-fluid -->
+                <!-- /.container-fluid -->
         </section>
         <!-- Main content -->
         <section class="content">
@@ -138,35 +133,61 @@
                                     <tr>
                                         <th>STT</th>
                                         <th>Mã khách hàng</th>
-                                        <th>Tên khách hàng</th>
-                                        <th>CCCD</th>
+                                        <th style="max-width: 100px">Tên khách hàng</th>
                                         <th>SĐT</th>
                                         <th>Ngày sinh</th>
                                         <th>Địa chỉ</th>
+                                        <th>Trạng thái</th>
                                         <th>Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr th:each="kh,stt:${lstKhachHang}">
-                                        <td th:text="${stt.index+1}"></td>
-                                        <td th:text="${kh.khachhang.makhachhang}"></td>
-                                        <td th:text="${kh.khachhang.nguoidung.hovaten}"></td>
-                                        <td th:text="${kh.khachhang.nguoidung.cccd}"></td>
-                                        <td th:text="${kh.khachhang.nguoidung.sodienthoai}"></td>
-                                        <td th:text="${kh.khachhang.nguoidung.ngaysinh}"></td>
-                                        <td th:text="${kh.diachi.tenduong + ', ' + kh.diachi.xaphuong + ', ' + kh.diachi.quanhuyen + ', ' + kh.diachi.tinhthanhpho}"></td>
-                                        <td class="row">
-                                            <a th:href="@{/khachhang/detail/{id}(id=${kh.diachi.id})}" class="btn btn-outline-danger col">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                        <td class="tdSameWidth" th:text="${stt.index+1}"></td>
+                                        <td class="tdSameWidth" th:text="${kh.khachhang.makhachhang}"></td>
+                                        <td class="tdSameWidth" style="width: 150px" th:text="${kh.khachhang.nguoidung.hovaten}"></td>
+                                        <td class="tdSameWidth" th:text="${kh.khachhang.nguoidung.sodienthoai}"></td>
+                                        <td class="tdSameWidth"
+                                            th:text="${#dates.format(kh.khachhang.nguoidung.ngaysinh, 'dd/MM/yyyy')}"></td>
+                                        <td th:if="${#strings.isEmpty(kh.diachi.tenduong) and #strings.isEmpty(kh.diachi.xaphuong) and #strings.isEmpty(kh.diachi.quanhuyen) and #strings.isEmpty(kh.diachi.tinhthanhpho)}"
+                                            class="tdDiaChi"
+                                            th:text="'Chưa có địa chỉ'"></td>
+                                        <td th:unless="${#strings.isEmpty(kh.diachi.tenduong) and #strings.isEmpty(kh.diachi.xaphuong) and #strings.isEmpty(kh.diachi.quanhuyen) and #strings.isEmpty(kh.diachi.tinhthanhpho)}"
+                                            class="tdDiaChi"
+                                            th:text="${kh.diachi.tenduong + ', ' + kh.diachi.xaphuong + ', ' + kh.diachi.quanhuyen + ', ' + kh.diachi.tinhthanhpho}"></td>
+                                        <td th:if="${kh.khachhang.trangthai == true}" class="tdSameWidth">
+                                            <a th:href="@{/khachhang/updatetrangthai/{id}(id=${kh.diachi.id})}"
+                                               style="width: 170px" class="btn btn-outline-success updateTrangThai">Đang hoạt động</a>
+                                        </td>
+                                        <td th:unless="${kh.khachhang.trangthai}" class="tdSameWidth">
+                                            <a th:href="@{/khachhang/updatetrangthai/{id}(id=${kh.diachi.id})}"
+                                               style="width: 170px" class="btn btn-outline-danger updateTrangThai">Ngừng hoạt động</a>
+                                        </td>
+                                        <td>
+                                            <!--                                            <a th:href="@{/khachhang/detail/{id}(id=${kh.diachi.id})}" class="btn btn-outline-danger col">-->
+                                            <!--                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"-->
+                                            <!--                                                     fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">-->
+                                            <!--                                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>-->
+                                            <!--                                                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>-->
+                                            <!--                                                </svg>-->
+                                            <!--                                            </a>-->
+<!--                                            <a th:href="@{/khachhang/updatetrangthai/{id}(id=${kh.diachi.id})}"-->
+<!--                                               class="btn btn-outline-info updateTrangThai">-->
+<!--                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"-->
+<!--                                                     fill="currentColor" class="bi bi-vector-pen" viewBox="0 0 16 16">-->
+<!--                                                    <path fill-rule="evenodd"-->
+<!--                                                          d="M10.646.646a.5.5 0 0 1 .708 0l4 4a.5.5 0 0 1 0 .708l-1.902 1.902-.829 3.313a1.5 1.5 0 0 1-1.024 1.073L1.254 14.746 4.358 4.4A1.5 1.5 0 0 1 5.43 3.377l3.313-.828zm-1.8 2.908-3.173.793a.5.5 0 0 0-.358.342l-2.57 8.565 8.567-2.57a.5.5 0 0 0 .34-.357l.794-3.174-3.6-3.6z"/>-->
+<!--                                                    <path fill-rule="evenodd"-->
+<!--                                                          d="M2.832 13.228 8 9a1 1 0 1 0-1-1l-4.228 5.168-.026.086z"/>-->
+<!--                                                </svg>-->
+<!--                                            </a>-->
+
+                                            <a th:href="@{/khachhang/update/{id}(id=${kh.diachi.id})}" id=""
+                                               style="color:rgb(249,72,42)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
                                                      fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
                                                     <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
-                                                </svg>
-                                            </a>
-                                            <a th:href="@{/khachhang/update/{id}(id=${kh.diachi.id})}" class="btn btn-outline-info col">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-vector-pen" viewBox="0 0 16 16">
-                                                    <path fill-rule="evenodd" d="M10.646.646a.5.5 0 0 1 .708 0l4 4a.5.5 0 0 1 0 .708l-1.902 1.902-.829 3.313a1.5 1.5 0 0 1-1.024 1.073L1.254 14.746 4.358 4.4A1.5 1.5 0 0 1 5.43 3.377l3.313-.828zm-1.8 2.908-3.173.793a.5.5 0 0 0-.358.342l-2.57 8.565 8.567-2.57a.5.5 0 0 0 .34-.357l.794-3.174-3.6-3.6z"/>
-                                                    <path fill-rule="evenodd" d="M2.832 13.228 8 9a1 1 0 1 0-1-1l-4.228 5.168-.026.086z"/>
                                                 </svg>
                                             </a>
                                         </td>
@@ -188,6 +209,100 @@
     <!--end-->
     <nav th:replace="~{/layoutadmin/footer.html}"></nav>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var success = /*[[${success}]]*/ false;
+    var successAdd = /*[[${successAdd}]]*/ false;
+    var successUpdate = /*[[${successUpdate}]]*/ false;
+    /*]]>*/
+    if (successAdd === true) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+
+        Toast.fire({
+            icon: "success",
+            title: "Thêm thành công!"
+        });
+    }
+    if (successUpdate === true) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+
+        Toast.fire({
+            icon: "success",
+            title: "Sửa thành công!"
+        });
+    }
+    if (success === true) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+
+        Toast.fire({
+            icon: "success",
+            title: "Sửa thành công!"
+        });
+    }
+
+</script>
+<script>
+    document.getElementById('searchForm').addEventListener('change', function () {
+        var inputSearch = document.getElementById('searchInput');
+        inputSearch.value = inputSearch.value.trim();
+        var optionSearch = document.getElementById('searchOption');
+        optionSearch.value = optionSearch.value.trim();
+        document.getElementById('searchForm').submit();
+    });
+</script>
+<script>
+    var updateTrangThai = document.getElementsByClassName('updateTrangThai');
+    for (let i = 0; i < updateTrangThai.length; i++) {
+        updateTrangThai[i].addEventListener('click', function (event) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Bạn có muốn thay đổi trạng thái không?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Có',
+                cancelButtonText: 'Không'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = event.target.href;
+                }
+            });
+            return false;
+        });
+    }
+</script>
+<script src="dangnhap/token.js"></script>
 <!--script-->
 <nav th:replace="~{/layoutadmin/script.html}"></nav>
 <!--end-->

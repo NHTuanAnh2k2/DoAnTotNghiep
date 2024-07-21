@@ -33,7 +33,10 @@
         <!--end -->
         <!--avata -->
         <li class="nav-item dropdown">
+
             <a class="nav-link dropdown-toggle" href="#" id="avatarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               <span style="margin-left: 5px;" th:if="${adminDangnhap}"
+                     th:text="${adminDangnhap}">Xin chào</span>
                 <img src="../../dist/img/bong1.jpg" class="img-circle" height="30px" width="30px">
             </a>
             <div class="dropdown-menu" aria-labelledby="avatarDropdown">

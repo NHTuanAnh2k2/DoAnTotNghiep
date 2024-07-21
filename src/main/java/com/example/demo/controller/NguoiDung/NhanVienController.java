@@ -8,21 +8,23 @@ import com.example.demo.info.NhanVienSearch;
 import com.example.demo.service.impl.DiaChiImpl;
 import com.example.demo.service.impl.NguoiDungImpl1;
 import com.example.demo.service.impl.NhanVienImpl;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.sql.Timestamp;
+import java.text.Normalizer;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Controller
@@ -43,103 +45,158 @@ public class NhanVienController {
         model.addAttribute("items2", listnv);
         return "admin/qlnhanvien";
     }
-    @GetMapping("/timkiem")
-    public String list(Model model,@Valid @ModelAttribute("nds") NhanVienSearch nd,BindingResult ndBindingResult) {
-        if(nd.getBatdau() == "" && nd.getKetthuc() == ""){
-            List<DiaChi> page = diaChi.searchkey(nd);
-            List<NhanVien> listnv = nhanVien.searchKey(nd);
-            model.addAttribute("items1", page);
-            model.addAttribute("items2", listnv);
-            return "admin/qlnhanvien";
-        }else if (nd.getBatdau() != "" && nd.getKetthuc() == ""){
-            List<DiaChi> page = diaChi.searchStart(nd.getKey(),nd.isTrangThai(),Date.valueOf(nd.getBatdau()));
-            List<NhanVien> listnv = nhanVien.searchStart(nd.getKey(),nd.isTrangThai(),Date.valueOf(nd.getBatdau()));
-            model.addAttribute("items1", page);
-            model.addAttribute("items2", listnv);
-            return "admin/qlnhanvien";
-        }else if (nd.getKetthuc() != "" && nd.getBatdau() == ""){
-            List<DiaChi> page = diaChi.searchEnd(nd.getKey(),nd.isTrangThai(),Date.valueOf(nd.getKetthuc()));
-            List<NhanVien> listnv = nhanVien.searchEnd(nd.getKey(),nd.isTrangThai(),Date.valueOf(nd.getKetthuc()));
-            model.addAttribute("items1", page);
-            model.addAttribute("items2", listnv);
-            return "admin/qlnhanvien";
-        }else if (nd.getKetthuc() != "" && nd.getBatdau() != "") {
-            Date a = Date.valueOf(nd.getBatdau());
-            Date b = Date.valueOf(nd.getKetthuc());
-            if (!a.before(b)){
-                ndBindingResult.rejectValue("ketthuc", "error.ketthuc", "Khoảng ngày không hợp lệ");
-            }
-            List<DiaChi> page = diaChi.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
-            List<NhanVien> listnv = nhanVien.searchND(nd.getKey(),nd.isTrangThai(), Date.valueOf(nd.getBatdau()), Date.valueOf(nd.getKetthuc()));
-            model.addAttribute("items1", page);
-            model.addAttribute("items2", listnv);
-            return "admin/qlnhanvien";
+    @GetMapping("/admin/timkiem")
+    public String list(@RequestParam(value = "searchInput", required = false) String tenSdt,
+                       @RequestParam(value = "searchOption", required = false) String trangThai,
+                       @RequestParam(value = "batdau", required = false) String batdau,
+                       @RequestParam(value = "ketthuc", required = false) String ketthuc,
+                       Model model) {
+        List<DiaChi> page = new ArrayList<>();
+        List<NhanVien> listnv = new ArrayList<>();
+        String trimmedTen = (tenSdt != null)
+                ? tenSdt.trim().replaceAll("\\s+", " ")
+                : null;
+        tenSdt = trimmedTen;
+        if (tenSdt != null) {
+            tenSdt = tenSdt.trim();
         }
+        Boolean tt;
+        if((trangThai != null && trangThai.equals("true")) || (trangThai != null && trangThai.equals("false"))){
+            tt= Boolean.valueOf(trangThai);
+        }else{
+            tt = null;
+        }
+
+        if(batdau != "" && ketthuc != ""){
+            if (tt == null){
+                page = diaChi.searchNDs(tenSdt,Date.valueOf(batdau), Date.valueOf(ketthuc));
+                listnv = nhanVien.searchNDs(tenSdt,Date.valueOf(batdau), Date.valueOf(ketthuc));
+            }else {
+                page = diaChi.searchND(tenSdt, tt, Date.valueOf(batdau), Date.valueOf(ketthuc));
+                listnv = nhanVien.searchND(tenSdt, tt, Date.valueOf(batdau), Date.valueOf(ketthuc));
+            }
+        }else if(batdau == "" && ketthuc != ""){
+            if (tt == null){
+                page = diaChi.searchNDs(tenSdt,null, Date.valueOf(ketthuc));
+                listnv = nhanVien.searchNDs(tenSdt,null, Date.valueOf(ketthuc));
+            }else {
+                page = diaChi.searchND(tenSdt, tt, null, Date.valueOf(ketthuc));
+                listnv = nhanVien.searchND(tenSdt, tt, null, Date.valueOf(ketthuc));
+            }
+
+        }else if(batdau != "" && ketthuc == ""){
+            if (tt == null){
+                page = diaChi.searchNDs(tenSdt,Date.valueOf(batdau), null);
+                listnv = nhanVien.searchNDs(tenSdt,Date.valueOf(batdau), null);
+            }else {
+                page = diaChi.searchND(tenSdt, tt, Date.valueOf(batdau), null);
+                listnv = nhanVien.searchND(tenSdt, tt, Date.valueOf(batdau), null);
+            }
+        }else if(batdau == "" && ketthuc == ""){
+            if (tt == null){
+                page = diaChi.searchNDs(tenSdt,null, null);
+                listnv = nhanVien.searchNDs(tenSdt,null, null);
+            }else {
+                page = diaChi.searchND(tenSdt, tt, null, null);
+                listnv = nhanVien.searchND(tenSdt, tt, null, null);
+            }
+        }
+        model.addAttribute("items1", page);
+        model.addAttribute("items2", listnv);
+        model.addAttribute("searchInput", tenSdt);
+        model.addAttribute("searchOption", tt);
+        model.addAttribute("batdau", batdau);
+        model.addAttribute("ketthuc", ketthuc);
         return "admin/qlnhanvien";
     }
     @GetMapping("/admin/addnhanvien")
     public String viewAdd(
                           @ModelAttribute("nd") NguoiDungNVInfo nd,
                           @ModelAttribute("dc") DiaChiNVInfo dc,
+                          @ModelAttribute("nv") NhanVienInfo nv,
                           Model model, RedirectAttributes redirectAttributes) {
-
+        List<DiaChi> page = diaChi.getAll();
+        List<NhanVien> listnv = nhanVien.getAll();
+        model.addAttribute("items1", page);
+        model.addAttribute("items2", listnv);
         return "admin/addnhanvien";
     }
-    @PostMapping("/addnv")
+    @PostMapping("/admin/addnv")
     public String addSave(
             @Valid  @ModelAttribute("nd") NguoiDungNVInfo nd,
             BindingResult ndBindingResult,
+            @Valid  @ModelAttribute("nv") NhanVienInfo nv,
+            BindingResult nvBindingResult,
             @Valid  @ModelAttribute("dc") DiaChiNVInfo dc,
             BindingResult dcBindingResult,
-                          Model model, BindingResult result, Errors errors) {
-        nd.setHovaten(nd.getHovaten().trim().replaceAll("\\s+", " "));
+            @RequestParam(name = "anh") MultipartFile anh,
+            Model model, BindingResult result, Errors errors, HttpSession session) {
+        Integer checkthem=0;
+        String trimmedTenSanPham = (nd.getHovaten() != null)
+                ? nd.getHovaten().trim().replaceAll("\\s+", " ")
+                : null;
+        nd.setHovaten(trimmedTenSanPham);
         nd.setEmail(nd.getEmail().trim().replaceAll("\\s+", ""));
         nd.setCccd(nd.getCccd().trim().replaceAll("\\s+", ""));
         nd.setSodienthoai(nd.getSodienthoai().trim().replaceAll("\\s+", ""));
         dc.setTenduong(dc.getTenduong().trim().replaceAll("\\s+", " "));
-
-        List<NhanVien> timsdt = nhanVien.timSDT(nd.getSodienthoai());
-        List<NhanVien> timEm = nhanVien.timEmail(nd.getEmail());
-        if (!timsdt.isEmpty()) {
-            // Nếu tồn tại, trả về lỗi
-            ndBindingResult.rejectValue("sodienthoai", "error.sodienthoai", "Số điện thoại đã tồn tại");
+        String trimmedTenDuong = (dc.getTenduong() != null)
+                ? dc.getTenduong().trim().replaceAll("\\s+", " ")
+                : null;
+        dc.setTenduong(trimmedTenDuong);
+        String file = saveImage(anh);
+        if(file != null){
+            nd.setAnh(file);
         }
-        if (!timEm.isEmpty()) {
-            // Nếu tồn tại, trả về lỗi
-            ndBindingResult.rejectValue("email", "error.email", "Email đã tồn tại");
+        List<NguoiDung> l = nguoiDung.getAll();
+        String ten = trimmedTenSanPham;
+        String[] cacTu = ten.split("\\s+");
+        for (int i = 0; i < cacTu.length; i++) {
+            cacTu[i] = Normalizer.normalize(cacTu[i], Normalizer.Form.NFD)
+                    .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+            cacTu[i] = cacTu[i].toLowerCase();
         }
-        if(nd.getNgaysinh() == null){
-            ndBindingResult.rejectValue("ngaysinh", "error.ngaysinh", "Không được để trống ngày sinh");
-            return "/admin/addnhanvien";
-        }
-        if(nd.getNgaysinh() != null){
-            Calendar dob = Calendar.getInstance();
-            dob.setTime(nd.getNgaysinh());
-            Calendar today = Calendar.getInstance();
-            int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
-            if (dob.after(today)) {
-                ndBindingResult.rejectValue("ngaysinh", "error.ngaysinh", "Ngày sinh không được lớn hơn ngày hiện tại");
-            }else if(age < 18 || age > 40){
-                ndBindingResult.rejectValue("ngaysinh", "error.ngaysinh", "Nhân viên phải trên 18 tuổi");
+        String tenCuoi = cacTu[cacTu.length - 1];
+        String[] parts = ten.split("\\s+");
+        StringBuilder chuoiMoi = new StringBuilder();
+        for (int i = 0; i < parts.length - 1; i++) {
+            if (!parts[i].isEmpty()) {
+                chuoiMoi.append(parts[i].charAt(0));
             }
         }
-
-        if (ndBindingResult.hasErrors() || dcBindingResult.hasErrors()) {
-            return "/admin/addnhanvien";
-        }
-        nguoiDung.add(nd);
-        NguoiDung n = nguoiDung.search(nd.getEmail());
-        NhanVienInfo nv = new NhanVienInfo();
-        nv.setIdnguoidung(n);
+        int s = l.size() + 1;
+        tenCuoi = tenCuoi + chuoiMoi.toString().toLowerCase() + s;
+        nd.setTaikhoan(tenCuoi);
+        NguoiDung a = nguoiDung.add(nd);
+        nv.setIdnguoidung(a);
         nhanVien.add(nv);
-        dc.setIdnguoidung(n);
+        dc.setIdnguoidung(a);
         diaChi.add(dc);
-        String to = n.getEmail();
+        String to = a.getEmail();
         String subject = "Chúc mừng đã trở thành nhân viên của T&T shop";
         String mailType = "";
-        String mailContent = "Tài khoản của bạn là: " + n.getTaikhoan() +"\nMật khẩu của bạn là: "+ n.getMatkhau();
+        String mailContent = "Tài khoản của bạn là: " + a.getTaikhoan() +"\nMật khẩu của bạn là: "+ a.getMatkhau();
         nguoiDung.sendEmail(to, subject, mailType, mailContent);
+        checkthem=1;
+        session.setAttribute("themthanhcong",checkthem);
         return "redirect:/admin/qlnhanvien";
+    }
+    private String saveImage(MultipartFile file) {
+        String uploadDir = "D:\\DATN\\src\\main\\resources\\static\\upload";
+        try {
+            File directory = new File(uploadDir);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+            String originalFileName = file.getOriginalFilename();
+            String filePath = uploadDir + File.separator + originalFileName;
+            File dest = new File(filePath);
+            file.transferTo(dest);
+            return filePath;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     @GetMapping("/updateNhanVien/{id}")
     public String viewUpdate(@PathVariable Integer id, Model model,
@@ -149,6 +206,11 @@ public class NhanVienController {
                              ) {
         model.addAttribute("nd", nguoiDung.findById(id));
         model.addAttribute("dc",diaChi.search(id));
+        model.addAttribute("nv",nhanVien.search(id));
+        List<DiaChi> page = diaChi.getAll();
+        List<NhanVien> listnv = nhanVien.getAll1(id);
+        model.addAttribute("items1", page);
+        model.addAttribute("items2", listnv);
         return "admin/updatenhanvien";
     }
     @PostMapping("/updateNhanVien/{id}")
@@ -158,28 +220,81 @@ public class NhanVienController {
                          @Valid  @ModelAttribute("dc") DiaChiNVInfo dc,
                          BindingResult dcBindingResult,
                          @ModelAttribute("nv") NhanVienInfo nv,
-                         BindingResult nvBindingResult) {
-        if(nd.getNgaysinh() == null){
-            ndBindingResult.rejectValue("ngaysinh", "error.ngaysinh", "Không được để trống ngày sinh");
-            return "/admin/addnhanvien";
+                         BindingResult nvBindingResult, HttpSession session,
+                         @RequestParam(name = "anh") MultipartFile anh) {
+
+        Integer checkcapnhat=0;
+        String trimmedTenSanPham = (nd.getHovaten() != null)
+                ? nd.getHovaten().trim().replaceAll("\\s+", " ")
+                : null;
+        nd.setHovaten(trimmedTenSanPham);
+        nd.setEmail(nd.getEmail().trim().replaceAll("\\s+", ""));
+        nd.setCccd(nd.getCccd().trim().replaceAll("\\s+", ""));
+        nd.setSodienthoai(nd.getSodienthoai().trim().replaceAll("\\s+", ""));
+        String trimmedTenDuong = (dc.getTenduong() != null)
+                ? dc.getTenduong().trim().replaceAll("\\s+", " ")
+                : null;
+        dc.setTenduong(trimmedTenDuong);
+        NguoiDung ndTim = nguoiDung.findById(id);
+        String file = saveImage(anh);
+        if(file != null) {
+            nd.setAnh(file);
+        }else {
+            nd.setAnh(ndTim.getAnh());
         }
-        if(nd.getNgaysinh() != null){
-            Calendar dob = Calendar.getInstance();
-            dob.setTime(nd.getNgaysinh());
-            Calendar today = Calendar.getInstance();
-            int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
-            if (dob.after(today)) {
-                ndBindingResult.rejectValue("ngaysinh", "error.ngaysinh", "Ngày sinh không được lớn hơn ngày hiện tại");
-            }else if(age < 18 || age > 40){
-                ndBindingResult.rejectValue("ngaysinh", "error.ngaysinh", "Nhân viên phải trên 18 tuổi");
-            }
-        }
-        if (ndBindingResult.hasErrors() || dcBindingResult.hasErrors() || nvBindingResult.hasErrors()) {
-            return "admin/updatenhanvien";
-        }
+        nd.setTrangthai(nv.getTrangthai());
+        dc.setTrangthai(nv.getTrangthai());
         nguoiDung.update(nd,id);
         nhanVien.update(nv,id);
         diaChi.update(dc,id);
+        checkcapnhat=1;
+        session.setAttribute("capnhatthanhcong",checkcapnhat);
+        return "redirect:/admin/qlnhanvien";
+    }
+    @GetMapping("/updatetrangthai/{id}")
+    public String updateTrangThai(Model model,
+                                  @PathVariable("id") Integer id,
+                                  RedirectAttributes redirectAttributes) {
+        DiaChi dc = diaChi.search(id);
+        NguoiDung nd = nguoiDung.findById(id);
+        NhanVien nv = nhanVien.search(id);
+        nd.setNguoicapnhat("ADMIN");
+        nd.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
+        nd.setTrangthai(!nd.getTrangthai());
+        nguoiDung.updateS(nd);
+        nv.setNguoicapnhat("ADMIN");
+        nv.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
+        nv.setTrangthai(!nv.getTrangthai());
+        nhanVien.updateS(nv);
+        dc.setNguoicapnhat("ADMIN");
+        dc.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
+        dc.setTrangthai(!nv.getTrangthai());
+        diaChi.updateS(dc);
+
+        redirectAttributes.addFlashAttribute("success", true);
+        return "redirect:/admin/qlnhanvien";
+    }
+    @GetMapping("/updatevaitro/{id}")
+    public String updateVaiTro(Model model,
+                                  @PathVariable("id") Integer id,
+                                  RedirectAttributes redirectAttributes) {
+        DiaChi dc = diaChi.search(id);
+        NguoiDung nd = nguoiDung.findById(id);
+        NhanVien nv = nhanVien.search(id);
+        nd.setNguoicapnhat("ADMIN");
+        nd.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
+        nd.setTrangthai(true);
+        nguoiDung.updateS(nd);
+        nv.setNguoicapnhat("ADMIN");
+        nv.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
+        nv.setTrangthai(true);
+        nv.setVaitro(true);
+        nhanVien.updateS(nv);
+        dc.setNguoicapnhat("ADMIN");
+        dc.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
+        dc.setTrangthai(true);
+        diaChi.updateS(dc);
+        redirectAttributes.addFlashAttribute("success", true);
         return "redirect:/admin/qlnhanvien";
     }
 }

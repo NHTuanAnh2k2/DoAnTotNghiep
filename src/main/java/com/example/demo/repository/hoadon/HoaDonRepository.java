@@ -12,6 +12,12 @@ import java.util.List;
 
 @Repository
 public interface HoaDonRepository extends JpaRepository<HoaDon, Integer> {
+    @Query("SELECT h FROM HoaDon h where h.id =?1")
+    HoaDon findHoaDonById(Integer id);
+    @Query("SELECT h FROM HoaDon h where h.khachhang.id =?1 ORDER BY h.id DESC")
+    List<HoaDon> findAllByKhachHang(Integer id);
+    @Query("SELECT h FROM HoaDon h where h.trangthai =?1 AND h.khachhang.id =?2 ORDER BY h.id DESC")
+    List<HoaDon> findHoaDonByTrangThaiAndKhachhang(Integer trangthai, Integer id);
     Page<HoaDon> findAllByTrangthaiAndLoaihoadonAndNgaytaoGreaterThanEqualAndNgaytaoLessThanEqual(Integer trangThai, Boolean loaihd, Date tu, Date den, Pageable p);
 
     @Query("SELECT h FROM HoaDon h ORDER BY h.id DESC")

@@ -696,65 +696,82 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <form class="row g-3" th:action="@{ChangesTTHD}"
-                                                                    method="post" th:object="${thayDoiTT}"
-                                                                    onsubmit="return run()">
+                                                                    method="post" th:object="${thayDoiTT}">
                                                                     <div class="col-md-12">
                                                                         <label class="form-label">Tên khách
                                                                             hàng:</label>
-                                                                        <input type="text" class="form-control" required
-                                                                            th:field="*{ten}">
+                                                                        <input type="text" class="form-control"
+                                                                            id="TTTK_ten" th:field="*{ten}">
+                                                                        <i style="color: red; size: 1px;"
+                                                                            id="TTTK_ten_regex"></i>
 
                                                                     </div>
                                                                     <div class="col-md-12">
                                                                         <label class="form-label">Số điện thoại:</label>
-                                                                        <input type="text" class="form-control" required
-                                                                            th:field="*{sdt}">
-
+                                                                        <input type="text" class="form-control"
+                                                                            id="TTTK_sdt" th:field="*{sdt}">
+                                                                        <i style="color: red;" id="TTTK_sdt_regex"></i>
                                                                     </div>
                                                                     <div class="col-md-4">
                                                                         <label class="form-label">Tỉnh/Thành
                                                                             Phố:</label>
                                                                         <select class="form-select form-select-sm mb-3"
                                                                             id="city" th:field="*{tinh}">
-                                                                            <option value="" th:text="*{tinh}" selected>
+                                                                            <option th:value="*{tinh}" th:text="*{tinh}"
+                                                                                selected>
                                                                                 Chọn tỉnh thành</option>
                                                                         </select>
+
 
                                                                     </div>
                                                                     <div class="col-md-4">
                                                                         <label class="form-label">Quận/Huyện:</label>
-                                                                        <select class="form-select form-select-sm mb-3"
+                                                                        <select class="form-select form-select-sm"
                                                                             id="district" th:field="*{huyen}">
-                                                                            <option value="" th:text="*{huyen}"
-                                                                                selected>Chọn quận huyện</option>
+                                                                            <option th:value="*{huyen}"
+                                                                                th:text="*{huyen}" selected>Chọn quận
+                                                                                huyện</option>
                                                                         </select>
+                                                                        <i style="color: red;"
+                                                                            id="TTTK_district_regex"></i>
                                                                     </div>
                                                                     <div class="col-md-4">
                                                                         <label class="form-label">Phường/Xã: </label>
                                                                         <select class="form-select form-select-sm"
                                                                             id="ward" th:field="*{xa}">
-                                                                            <option value="" th:text="*{xa}" selected>
+                                                                            <option th:value="*{xa}" th:text="*{xa}"
+                                                                                selected>
                                                                                 Chọn phường xã</option>
                                                                         </select>
+                                                                        <i style="color: red;" id="TTTK_ward_regex"></i>
                                                                     </div>
                                                                     <div class="col-12">
                                                                         <label class="form-label">Địa chỉ cụ
                                                                             thể:</label>
                                                                         <input type="text" class="form-control"
-                                                                            th:field="*{diachiCT}">
+                                                                            id="TTTK_diachi" th:field="*{diachiCT}">
+                                                                        <i style="color: red;"
+                                                                            id="TTTK_diachi_regex"></i>
                                                                     </div>
                                                                     <div class="col-12">
                                                                         <label class="form-label">Phí giao hàng:</label>
-                                                                        <input type="text" class="form-control" required
-                                                                            th:field="*{phigiao}">
+                                                                        <input type="text" class="form-control"
+                                                                            oninput="showcasst('phigiaoHang')"
+                                                                            id="phigiaoHang" th:field="*{phigiao}"
+                                                                            th:value="${phigiao}">
+                                                                        <i style="color: red;"
+                                                                            id="TTTK_phigiao_regex"></i>
 
                                                                     </div>
                                                                     <div class="col-12">
                                                                         <label class="form-label">Ghi chú:</label>
-                                                                        <textarea class="form-control"
+                                                                        <textarea class="form-control" id="ghichus"
                                                                             th:field="*{ghichu}" rows="3"></textarea>
+                                                                        <i style="color: red;"
+                                                                            id="TTTK_ghichus_regex"></i>
                                                                     </div>
-                                                                    <button type="submit" class="btn btn-primary">Xác
+                                                                    <button onclick="return validateForm()"
+                                                                        type="submit" class="btn btn-primary">Xác
                                                                         nhận</button>
                                                                 </form>
                                                             </div>
@@ -997,15 +1014,33 @@
                                                 <h6 style="font-family: 'Times New Roman'; font-weight: bold">Phiếu giảm
                                                     giá
                                                     :</h6>
-                                                <p th:text="${phieuGiamCT.phieugiamgia.loaiphieu==false?#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiam, 0, 'COMMA', 0, 'POINT')+'&#x20ab;':phieuGiamCT.phieugiamgia.giatrigiam+' %, tối đa '+#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiamtoida, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
-                                                    style="font-family: 'Times New Roman'; font-size: 16px;">
-                                                </p>
+
+                                                <span th:if="${phieuGiamCT.id!=null}">
+                                                    <p th:text="${phieuGiamCT.phieugiamgia.loaiphieu==false?#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiam, 0, 'COMMA', 0, 'POINT')+'&#x20ab;':phieuGiamCT.phieugiamgia.giatrigiam+' %, tối đa '+#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiamtoida, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                        style="font-family: 'Times New Roman'; font-size: 16px;">
+                                                    </p>
+                                                </span>
+                                                <span th:if="${phieuGiamCT.id==null}">
+                                                    <span class="applied-reduction-code"
+                                                        style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px;">
+                                                        <svg width="16" height="15" xmlns="http://www.w3.org/2000/svg"
+                                                            class="applied-reduction-code-icon" fill="#CE4549">
+                                                            <path
+                                                                d="M14.476 0H8.76c-.404 0-.792.15-1.078.42L.446 7.207c-.595.558-.595 1.463 0 2.022l5.703 5.35c.296.28.687.42 1.076.42.39 0 .78-.14 1.077-.418l7.25-6.79c.286-.268.447-.632.447-1.01V1.43C16 .64 15.318 0 14.476 0zm-2.62 5.77c-.944 0-1.713-.777-1.713-1.732 0-.954.77-1.73 1.714-1.73.945 0 1.714.776 1.714 1.73 0 .955-.768 1.73-1.713 1.73z">
+                                                            </path>
+                                                        </svg>
+                                                        <span class="applied-reduction-code-information"
+                                                            style="background-color: #D3D3D3;">Không áp dụng
+                                                            !</span>
+                                                    </span>
+                                                </span>
+
                                             </div>
                                             <div class="d-flex justify-content-between">
                                                 <h6 style="font-family: 'Times New Roman'; font-weight: bold">Tổng tiền
                                                     giảm
                                                     :</h6>
-                                                <p th:text="${#numbers.formatDecimal(phieuGiamCT.tiengiam, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                <p th:text="${phieuGiamCT.tiengiam!=null?#numbers.formatDecimal(phieuGiamCT.tiengiam, 0, 'COMMA', 0, 'POINT')+'&#x20ab;':#numbers.formatDecimal(0, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
                                                     style="font-family: 'Times New Roman'; font-size: 16px;">
                                                 </p>
                                             </div>
@@ -1538,7 +1573,16 @@
                 ward.length = 1;
                 if (this.options[this.selectedIndex].dataset.id != "") {
                     const result = data.filter(n => n.Id === this.options[this.selectedIndex].dataset.id);
-
+                    district.innerHTML = '';
+                    var optionchange = document.createElement('option');
+                    optionchange.value = "Chọn huyện";
+                    optionchange.text = "Chọn huyện";
+                    district.options.add(optionchange);
+                    wards.innerHTML = '';
+                    var optionchanges = document.createElement('option');
+                    optionchanges.value = "Chọn xã";
+                    optionchanges.text = "Chọn xã";
+                    wards.options.add(optionchanges);
                     for (const k of result[0].Districts) {
                         var opt = document.createElement('option');
                         opt.value = k.Name;
@@ -1553,7 +1597,11 @@
                 const dataCity = data.filter((n) => n.Id === citis.options[citis.selectedIndex].dataset.id);
                 if (this.options[this.selectedIndex].dataset.id != "") {
                     const dataWards = dataCity[0].Districts.filter(n => n.Id === this.options[this.selectedIndex].dataset.id)[0].Wards;
-
+                    wards.innerHTML = '';
+                    var optionchanges = document.createElement('option');
+                    optionchanges.value = "Chọn xã";
+                    optionchanges.text = "Chọn xã";
+                    wards.options.add(optionchanges);
                     for (const w of dataWards) {
                         var opt = document.createElement('option');
                         opt.value = w.Name;
@@ -2405,9 +2453,37 @@
                 if (numericValue < 1 || isNaN(numericValue)) {
                     numericValue = 1;
                     thongbao('Số lượng phải lớn hơn 0', 'warning');
-                } else if (numericValue - slSpTrongDon > slSpCon) {
-                    numericValue = slSpCon + slSpTrongDon;
-                    thongbao('Số lượng đang vượt quá số lượng hàng hiện có', 'warning');
+                } else {
+                    if (data.hoadon.loaihoadon == false) {
+                        if (slSpCon <= 10) {
+                            if (numericValue - slSpTrongDon > slSpCon) {
+                                numericValue = slSpCon + slSpTrongDon;
+                                thongbao('Số lượng đang vượt quá số lượng hàng hiện có', 'warning');
+
+                            }
+                        } else {
+                            if (numericValue > 10) {
+                                thongbao('Chỉ được chọn tối đa 10 sản phẩm', 'warning');
+                                numericValue = 10;
+                            }
+                        }
+                    } else {
+
+                        if (slSpCon <= 10) {
+                            if (numericValue > slSpCon) {
+                                numericValue = slSpCon;
+                                thongbao('Số lượng đang vượt quá số lượng hàng hiện có', 'warning');
+
+                            }
+                        } else {
+                            if (numericValue > 10) {
+                                thongbao('Chỉ được chọn tối đa 10 sản phẩm', 'warning');
+                                numericValue = 10;
+                            }
+                        }
+
+
+                    }
 
                 }
 
@@ -2624,6 +2700,136 @@
                 })
 
         }
+        function checkKhongPhaiChuCai(str) {
+            // Biểu thức chính quy để kiểm tra bất kỳ ký tự nào không phải là chữ cái tiếng Việt có dấu hoặc chữ cái Latinh không dấu
+            const regex = /[^a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚờợứừửữựỳỵỷỹỪừựÙúỦửỤụỴỳỵỷỹẠ-ỹ\s]/;
+            return regex.test(str);
+        }
+        function validateForm() {
+            // Lấy các giá trị từ các input
+            var hoVaTen = document.getElementById("TTTK_ten").value.trim();
+            var soDienThoai = document.getElementById("TTTK_sdt").value.trim();
+            var diaChi = document.getElementById("TTTK_diachi").value.trim();
+            var huyen = document.getElementById("district").value;
+            var xa = document.getElementById("ward").value;
+            var ghichus = document.getElementById("ghichus").value;
+            var tienships = document.getElementById("phigiaoHang").value;
+          
+            // Biến để kiểm tra nếu có lỗi
+            var error = false;
+
+
+
+            // Kiểm tra họ và tên
+            if (hoVaTen === "") {
+                document.getElementById('TTTK_ten_regex').innerHTML = 'Họ tên không được trống!';
+                error = true;
+            } else {
+
+                var regex = /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯăâêôơÁÀẢÃẠÁẦẪẨẬẮẰẲẴẶẸẺẼỀỀỂỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪỬỮỰỶỸýỳỷỹọỏọốồộổỗớờởỡợ\s]+$/;
+
+                // Kiểm tra chiều dài và ký tự đặc biệt
+                if (hoVaTen.length < 5 || hoVaTen.length > 20) {
+                    document.getElementById('TTTK_ten_regex').innerHTML = 'Họ tên phải có từ 5 đến 20 ký tự!';
+                    error = true;
+                } else {
+                    if (checkKhongPhaiChuCai(hoVaTen) == true) {
+                        document.getElementById('TTTK_ten_regex').innerHTML = 'Họ tên không được chứa ký tự đặc biệt!';
+                        error = true;
+                    } else {
+                        document.getElementById('TTTK_ten_regex').innerHTML = '';
+                    }
+                }
+            }
+
+            // Kiểm tra số điện thoại
+            if (soDienThoai === "") {
+                // alert("Số điện thoại không được để trống");
+                document.getElementById('TTTK_sdt_regex').innerHTML = 'Số điện thoại không được trống!';
+
+                error = true;
+            } else {
+                // Kiểm tra định dạng email
+                var sdtPattern = /^0\d{9}$/;
+                if (!sdtPattern.test(soDienThoai)) {
+                    // alert("Email không hợp lệ");
+                    document.getElementById('TTTK_sdt_regex').innerHTML = 'Số điện thoại phải bắt đầu bằng 0, độ dài 10 số!';
+                    error = true;
+                } else {
+
+                    document.getElementById('TTTK_sdt_regex').innerHTML = '';
+
+
+                }
+            }
+            //kiểm tra ghi chú k đc >50
+            if (ghichus.length > 50) {
+                document.getElementById('TTTK_ghichus_regex').innerHTML = 'Ghi chú không được quá 50 kí tự!';
+                error = true;
+            } else {
+                document.getElementById('TTTK_ghichus_regex').innerHTML = '';
+            }
+
+            //check phí giao=đ
+            if (tienships.trim() === "₫") {
+                // alert("Địa chỉ không được để trống");
+                document.getElementById('TTTK_phigiao_regex').innerHTML = 'Nếu miễn ship hãy nhập 0.0 ₫!';
+                error = true;
+            }else{
+                document.getElementById('TTTK_phigiao_regex').innerHTML = '';
+            }
+            // Kiểm tra địa chỉ
+            if (diaChi === "") {
+                // alert("Địa chỉ không được để trống");
+                document.getElementById('TTTK_diachi_regex').innerHTML = 'Địa chỉ không được trống!';
+                error = true;
+            } else {
+                if (diaChi.length < 1 || diaChi.length > 20) {
+                    document.getElementById('TTTK_diachi_regex').innerHTML = 'Địa chỉ phải đạt từ 1-20 kí tự!';
+                    error = true;
+                } else {
+                    document.getElementById('TTTK_diachi_regex').innerHTML = '';
+                }
+
+            }
+            // Kiểm tra chọn huyện
+            if (huyen === "Chọn huyện" || huyen.length === 4) {
+                // alert("Bạn phải chọn huyện");
+                document.getElementById('TTTK_district_regex').innerHTML = 'Chưa chọn huyện!';
+                error = true;
+            } else {
+                document.getElementById('TTTK_district_regex').innerHTML = '';
+            }
+
+
+            // Kiểm tra chọn xã
+            if (xa === "Chọn xã" || xa.length === 4) {
+                // alert("Bạn phải chọn xã");
+                document.getElementById('TTTK_ward_regex').innerHTML = 'Chưa chọn xã!';
+                error = true;
+            } else {
+                document.getElementById('TTTK_ward_regex').innerHTML = '';
+            }
+
+            // Nếu có lỗi, ngăn chặn form không submit
+            if (error) {
+                thongbao('Dữ liệu nhập sai!!', 'warning')
+            }
+            return !error;
+        }
+
+        function showcasst(elementId) {
+            $('#' + elementId).keyup(function (event) {
+                $(this).val(function (index, value) {
+                    return value
+                        .replace(/\D/g, "")
+                        .replace(/([0-9])([0-9]{})$/, '$1.$2')
+                        .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".")
+                        + ' ₫';
+                });
+            });
+
+        }
         //test thử
         function xacnhanngaygiao() {
 
@@ -2641,14 +2847,25 @@
         function callController(url) {
             fetch(url)
         }
+        document.addEventListener('DOMContentLoaded', function () {
+            var input = document.getElementById('phigiaoHang');
+            var value = parseFloat(input.value);
 
+            if (!isNaN(value)) {
+                input.value = value.toLocaleString('vi-VN') + ' ₫';
+            }
+        });
     </script>
     <script th:inline="javascript">
         /*<![CDATA[*/
         var sendmail = /*[[${sendmail}]]*/ false;
+        var chagesTTHDSucsess = /*[[${chagesTTHDSucsess}]]*/ false;
         /*]]>*/
         if (sendmail == true) {
             thongbao('In hóa đơn thành công!', 'success')
+        }
+        if (chagesTTHDSucsess == true) {
+            thongbao('Thay đổi thông tin thành công!', 'success')
         }
     </script>
 

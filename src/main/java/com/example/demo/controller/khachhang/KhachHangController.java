@@ -4,6 +4,7 @@ import com.example.demo.entity.DiaChi;
 import com.example.demo.entity.KhachHang;
 import com.example.demo.entity.NguoiDung;
 import com.example.demo.info.*;
+import com.example.demo.info.token.UserManager;
 import com.example.demo.repository.DiaChiRepository;
 import com.example.demo.repository.NguoiDungRepository;
 import com.example.demo.restcontroller.khachhang.KhachHangRestController;
@@ -16,8 +17,11 @@ import com.google.zxing.MultiFormatReader;
 import com.google.zxing.Result;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.eclipse.tags.shaded.org.apache.regexp.RE;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,6 +29,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -32,6 +37,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.Normalizer;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -48,6 +54,10 @@ public class KhachHangController {
     DiaChiService diaChiService;
     @Autowired
     NguoiDungRepository nguoiDungRepository;
+    @Autowired
+    PasswordEncoder passwordEncoder;
+    @Autowired
+    UserManager userManager;
 
     @GetMapping
     public String display(Model model, @ModelAttribute("khachhang") KhachHang khachHang) {
@@ -56,14 +66,23 @@ public class KhachHangController {
     }
 
     @GetMapping("/timkiem")
-    public String search(@RequestParam(value = "tenSdtMa", required = false) String tenSdtMa,
+    public String search(@RequestParam(value = "searchInput", required = false) String tenSdtMa,
+                         @RequestParam(value = "searchOption", required = false) Boolean trangThai,
                          Model model
     ) {
         List<KhachHangInfo> lstKhachHang = new ArrayList<>();
+
         if (tenSdtMa != null) {
-            lstKhachHang = khachHangService.findByTenSdtMa(tenSdtMa);
+            String tenSdtMaTrimmed = tenSdtMa.trim().replaceAll("\\s+", "");
+            if (trangThai == null) {
+                lstKhachHang = khachHangService.findByTenSdtMa(tenSdtMa);
+            } else {
+                lstKhachHang = khachHangService.findByTenSdtMaTrangThai(tenSdtMa, trangThai);
+            }
         }
         model.addAttribute("lstKhachHang", lstKhachHang);
+        model.addAttribute("searchInput", tenSdtMa);
+        model.addAttribute("searchOption", trangThai);
         return "admin/qlkhachhang";
     }
 
@@ -72,58 +91,101 @@ public class KhachHangController {
                        @ModelAttribute("diachi") DiaChiKHInfo diachi,
                        Model model
     ) {
-        List<Province> cities = khachHangService.getCities();
-        model.addAttribute("cities", cities);
+        List<KhachHang> lstKh = khachHangService.findAll();
+        List<String> lstEmail = new ArrayList<>();
+        List<String> lstSdt = new ArrayList<>();
+        List<String> lstCccd = new ArrayList<>();
+        for (KhachHang kh : lstKh) {
+            lstEmail.add(kh.getNguoidung().getEmail());
+            lstSdt.add(kh.getNguoidung().getSodienthoai());
+            lstCccd.add(kh.getNguoidung().getCccd());
+        }
+
+        model.addAttribute("lstEmail", lstEmail);
+        model.addAttribute("lstSdt", lstSdt);
+        model.addAttribute("lstCccd", lstCccd);
         return "admin/addkhachhang";
     }
 
-    @PostMapping("/add")
-    public String add(@Valid @ModelAttribute("khachhang") KhachHang khachhang,
-                      BindingResult khBindingResult,
-                      @Valid @ModelAttribute("nguoidung") NguoiDungKHInfo nguoidung,
-                      BindingResult ndBindingResult,
-                      @Valid @ModelAttribute("diachi") DiaChiKHInfo diachi,
-                      BindingResult dcBindingResult,
-                      Model model
-    ) throws IOException {
-        List<Province> cities = khachHangService.getCities();
-        if (khBindingResult.hasErrors()) {
-            model.addAttribute("cities", cities);
-            return "admin/addkhachhang";
-        } else if (ndBindingResult.hasErrors()) {
-            model.addAttribute("cities", cities);
-            return "admin/addkhachhang";
-        } else if (dcBindingResult.hasErrors()) {
-            model.addAttribute("cities", cities);
-            return "admin/addkhachhang";
+    private String taoChuoiNgauNhien(int doDaiChuoi, String kiTu) {
+        Random random = new Random();
+        StringBuilder chuoiNgauNhien = new StringBuilder(doDaiChuoi);
+        for (int i = 0; i < doDaiChuoi; i++) {
+            chuoiNgauNhien.append(kiTu.charAt(random.nextInt(kiTu.length())));
+        }
+        return chuoiNgauNhien.toString();
+    }
+
+    public String generateUsername(String fullname) {
+        // Chuyển đổi họ tên thành username theo quy ước
+        String[] parts = fullname.trim().split("\\s+");
+        StringBuilder username = new StringBuilder();
+
+        // Lặp qua từng phần của họ tên từ phần cuối cùng đến phần đầu tiên
+        for (int i = parts.length - 1; i >= 0; i--) {
+            String part = parts[i];
+            if (part.length() > 0) {
+                // Lấy chữ cái đầu của từ và chuyển thành chữ thường
+                if (i == parts.length - 1) {
+                    // Nếu là từ cuối cùng, giữ nguyên
+                    username.append(removeAccents(part.toLowerCase()));
+                } else {
+                    // Nếu là từ đầu tiên hoặc từ trung gian, lấy chữ cái đầu
+                    username.append(part.substring(0, 1).toLowerCase());
+                }
+            }
         }
 
+        return username.toString();
+    }
+
+    // Hàm xóa dấu tiếng Việt
+    public static String removeAccents(String str) {
+        String temp = Normalizer.normalize(str, Normalizer.Form.NFD);
+        return temp.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+    }
+
+
+    @PostMapping("/add")
+    public String add(@ModelAttribute("khachhang") KhachHang khachhang,
+                      @ModelAttribute("nguoidung") NguoiDungKHInfo nguoidung,
+                      @ModelAttribute("diachi") DiaChiKHInfo diachi,
+                      RedirectAttributes redirectAttributes,
+                      Model model
+    ) throws IOException {
         LocalDateTime currentDate = LocalDateTime.now();
-        int usernameLength = 8;
         int passwordLength = 10;
-        String username = khachHangService.generateRandomPassword(usernameLength);
+        String username = generateUsername(nguoidung.getHovaten());
         String password = khachHangService.generateRandomPassword(passwordLength);
 
+        String trimmedTenNguoiDung = (nguoidung.getHovaten() != null)
+                ? nguoidung.getHovaten().trim().replaceAll("\\s+", " ")
+                : null;
+
         NguoiDung nd = new NguoiDung();
-        nd.setEmail(nguoidung.getEmail());
-        nd.setHovaten(nguoidung.getHovaten());
+        nd.setEmail(nguoidung.getEmail().trim());
+        nd.setHovaten(trimmedTenNguoiDung);
         nd.setNgaysinh(nguoidung.getNgaysinh());
-        nd.setCccd(nguoidung.getCccd());
-        nd.setSodienthoai(nguoidung.getSodienthoai());
+        nd.setCccd(nguoidung.getCccd().trim());
+        nd.setSodienthoai(nguoidung.getSodienthoai().trim());
         nd.setGioitinh(nguoidung.getGioitinh());
         nd.setLancapnhatcuoi(Timestamp.valueOf(currentDate));
         nd.setTaikhoan(username);
-        nd.setMatkhau(password);
+        nd.setMatkhau(passwordEncoder.encode(password));
         nd.setNgaytao(Timestamp.valueOf(currentDate));
         nd.setLancapnhatcuoi(Timestamp.valueOf(currentDate));
         nd.setTrangthai(true);
         khachHangService.addNguoiDung(nd);
+        Integer id = nd.getId();
+        String usernameWithId = username + id;
+        nd.setTaikhoan(usernameWithId);
+        khachHangService.updateNguoiDung(nd);
 
         DiaChi dc = new DiaChi();
         dc.setTinhthanhpho(diachi.getTinhthanhpho());
         dc.setQuanhuyen(diachi.getQuanhuyen());
         dc.setXaphuong(diachi.getXaphuong());
-        dc.setTenduong(diachi.getTenduong());
+        dc.setTenduong(diachi.getTenduong().trim());
         dc.setNguoidung(nd);
         dc.setHotennguoinhan(nd.getHovaten());
         dc.setSdtnguoinhan(nd.getSodienthoai());
@@ -133,9 +195,7 @@ public class KhachHangController {
         khachHangService.addDiaChi(dc);
 
         KhachHang kh = new KhachHang();
-        List<KhachHang> lstKhachHang = khachHangService.findAllKhachHang();
-        int total = lstKhachHang.size();
-        String maKH = "KH" + (total + 1);
+        String maKH = "KH" + taoChuoiNgauNhien(7, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
         kh.setMakhachhang(maKH);
         kh.setNguoidung(nd);
         kh.setTrangthai(nd.getTrangthai());
@@ -143,10 +203,42 @@ public class KhachHangController {
         kh.setLancapnhatcuoi(nd.getLancapnhatcuoi());
         khachHangService.addKhachHang(kh);
 
-        khachHangService.sendEmail(nd.getEmail(), nd.getTaikhoan(), nd.getMatkhau(), nd.getHovaten());
+        khachHangService.sendEmail(nd.getEmail(), nd.getTaikhoan(), password, nd.getHovaten());
 
-        model.addAttribute("cities", cities);
-        return "redirect:/khachhang/add";
+        redirectAttributes.addFlashAttribute("successAdd", true);
+        return "redirect:/khachhang";
+    }
+
+    @GetMapping("/updatetrangthai/{id}")
+    public String updateTrangThai(Model model,
+                                  @PathVariable("id") Integer id,
+                                  RedirectAttributes redirectAttributes,
+                                  HttpSession session) {
+        DiaChi dc = khachHangService.findDiaChiById(id);
+        NguoiDung nd = khachHangService.findNguoiDungById(dc.getNguoidung().getId());
+        KhachHang kh = khachHangService.findKhachHangByIdNguoiDung(nd.getId());
+        nd.setNguoicapnhat("ADMIN");
+        nd.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
+        nd.setTrangthai(!nd.getTrangthai());
+        khachHangService.updateNguoiDung(nd);
+        kh.setNguoicapnhat("ADMIN");
+        kh.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
+        kh.setTrangthai(!kh.getTrangthai());
+        khachHangService.updateKhachHang(kh);
+
+        String userName = (String) session.getAttribute("userDangnhap");
+        if (userName != null) {
+            NguoiDung nguoiDung = khachHangService.findNguoiDungByTaikhoan(userName);
+            Integer userId = nguoiDung.getId();
+            String token = userManager.getToken(userId);
+            session.invalidate();
+            userManager.logoutUser(userId, token);
+            redirectAttributes.addFlashAttribute("success", true);
+            return "redirect:/khachhang";
+        }
+
+        redirectAttributes.addFlashAttribute("success", true);
+        return "redirect:/khachhang";
     }
 
     @GetMapping("/update/{id}")
@@ -157,59 +249,65 @@ public class KhachHangController {
 
         DiaChi diaChiSelect = khachHangService.findDiaChiById(id);
         NguoiDung nguoiDungSelect = khachHangService.findNguoiDungById(diaChiSelect.getNguoidung().getId());
-        List<Province> cities = khachHangService.getCities();
-        model.addAttribute("cities", cities);
+
+        List<KhachHang> lstKh = khachHangService.findAll();
+        List<String> lstEmail = new ArrayList<>();
+        List<String> lstSdt = new ArrayList<>();
+        List<String> lstCccd = new ArrayList<>();
+        for (KhachHang kh : lstKh) {
+            lstEmail.add(kh.getNguoidung().getEmail());
+            lstSdt.add(kh.getNguoidung().getSodienthoai());
+            lstCccd.add(kh.getNguoidung().getCccd());
+        }
+
         model.addAttribute("diachi", diaChiSelect);
         model.addAttribute("nguoidung", nguoiDungSelect);
+        model.addAttribute("lstEmail", lstEmail);
+        model.addAttribute("lstSdt", lstSdt);
+        model.addAttribute("lstCccd", lstCccd);
 
         return "admin/updatekhachhang";
     }
 
     @PostMapping("/update/{id}")
-    public String update(@Valid @ModelAttribute("nguoidung") NguoiDungKHInfo nguoidung,
-                         BindingResult ndBindingResult,
-                         @Valid @ModelAttribute("diachi") DiaChiKHInfo diachi,
-                         BindingResult dcBindingResult,
+    public String update(@ModelAttribute("nguoidung") NguoiDungKHInfo nguoidung,
+                         @ModelAttribute("diachi") DiaChiKHInfo diachi,
                          @PathVariable("id") Integer id,
+                         RedirectAttributes redirectAttributes,
                          Model model
     ) {
-        List<Province> cities = khachHangService.getCities();
-        if (ndBindingResult.hasErrors()) {
-            List<ObjectError> lst = ndBindingResult.getAllErrors();
-            System.out.println(lst);
-            model.addAttribute("cities", cities);
-            return "admin/updatekhachhang";
-        } else if (dcBindingResult.hasErrors()) {
-            List<ObjectError> lst = dcBindingResult.getAllErrors();
-            System.out.println(lst);
-            model.addAttribute("cities", cities);
-            return "admin/updatekhachhang";
-        }
+
+        String trimmedTenNguoiDung = (nguoidung.getHovaten() != null)
+                ? nguoidung.getHovaten().trim().replaceAll("\\s+", " ")
+                : null;
+        String trimmedTenDuong = (diachi.getTenduong() != null)
+                ? diachi.getTenduong().trim().replaceAll("\\s+", " ")
+                : null;
 
         DiaChi dc = khachHangService.findDiaChiById(id);
         dc.setTinhthanhpho(diachi.getTinhthanhpho());
         dc.setQuanhuyen(diachi.getQuanhuyen());
         dc.setXaphuong(diachi.getXaphuong());
-        dc.setTenduong(diachi.getTenduong());
+        dc.setTenduong(trimmedTenDuong);
         dc.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
         khachHangService.updateDiaChi(dc);
 
         NguoiDung nd = khachHangService.findNguoiDungById(dc.getNguoidung().getId());
-        nd.setEmail(nguoidung.getEmail());
-        nd.setHovaten(nguoidung.getHovaten());
+        nd.setEmail(nguoidung.getEmail().trim());
+        nd.setHovaten(trimmedTenNguoiDung);
         nd.setNgaysinh(nguoidung.getNgaysinh());
-        nd.setCccd(nguoidung.getCccd());
-        nd.setSodienthoai(nguoidung.getSodienthoai());
+        nd.setCccd(nguoidung.getCccd().trim());
+        nd.setSodienthoai(nguoidung.getSodienthoai().trim());
         nd.setGioitinh(nguoidung.getGioitinh());
         nd.setLancapnhatcuoi(dc.getLancapnhatcuoi());
         khachHangService.updateNguoiDung(nd);
 
         KhachHang kh = khachHangService.findKhachHangByIdNguoiDung(nd.getId());
-        System.out.println(kh);
         kh.setLancapnhatcuoi(dc.getLancapnhatcuoi());
         khachHangService.updateKhachHang(kh);
 
         model.addAttribute("lstKhachHang", khachHangService.displayKhachHang());
+        redirectAttributes.addFlashAttribute("successUpdate", true);
         return "redirect:/khachhang";
     }
 
@@ -219,7 +317,7 @@ public class KhachHangController {
                          @ModelAttribute("khachhang") KhachHangKHInfo khachhang,
                          @ModelAttribute("diachi") DiaChiKHInfo diachi,
                          Model model
-                         ) {
+    ) {
         DiaChi diachiSelect = khachHangService.findDiaChiById(id);
         NguoiDung nguoidungSelect = khachHangService.findNguoiDungById(diachiSelect.getNguoidung().getId());
         KhachHang khachhangSelect = khachHangService.findKhachHangByIdNguoiDung(nguoidungSelect.getId());

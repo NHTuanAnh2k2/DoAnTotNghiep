@@ -40,21 +40,38 @@
         font-weight: bolder;
         text-align: center;
     }
-    .dataTables_paginate .pagination .page-link {
-        color: #007bff; /* Màu chữ khi không hover */
-        background-color: #fff; /* Màu nền khi không hover */
-        border: 1px solid #dee2e6; /* Viền */
+    /* Override the active pagination button style */
+    .dataTables_wrapper .dataTables_paginate .paginate_button.active {
+        background-color: #007bff !important; /* Change to your desired color */
+        border-color: #007bff !important; /* Change to your desired border color */
+        color: white !important; /* Change to your desired text color */
+        box-shadow: none !important; /* Remove any box-shadow */
+        margin: 0 !important; /* Set margin to zero */
+        padding: 0 !important; /* Set padding to zero */
     }
-    .dataTables_paginate .pagination .page-link:hover {
-        color: #fff; /* Màu chữ khi hover */
-        background-color: #007bff; /* Màu nền khi hover */
-        border: 1px solid #007bff; /* Viền khi hover */
+
+    /* Override the other pagination buttons */
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        margin: 0 !important; /* Set margin to zero */
+        padding: 0 !important; /* Set padding to zero */
+        border: none !important; /* Remove border */
     }
-    .dataTables_paginate .pagination .page-item.active .page-link {
-        color: #fff; /* Màu chữ của trang hiện tại */
-        background-color: #007bff; /* Màu nền của trang hiện tại */
-        border: 1px solid #007bff; /* Viền của trang hiện tại */
+
+    /* Remove border on hover */
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        border: none !important; /* Remove border on hover */
+        background-color: transparent !important; /* Optional: Make the background transparent */
     }
+
+    /* Additional styling to ensure consistency */
+    .dataTables_wrapper .dataTables_paginate .paginate_button.active:hover {
+        background-color: #0056b3 !important; /* Change to your desired hover color */
+        border-color: #0056b3 !important; /* Change to your desired border color */
+        color: white !important; /* Ensure text color remains consistent */
+        border: none !important; /* Remove border on hover for active button */
+    }
+
+
 </style>
 <nav th:replace="~{/layoutadmin/head.html}"></nav>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -102,8 +119,7 @@
                         <div class="small-box bg-white">
                             <div class="inner">
                                 <h4>Doanh số tháng này</h4>
-
-                                <p style="color: #c87f0a;"><span th:text="${slhdtt}"></span> đơn hàng / <span th:text="${ttt}"></span> VND</p>
+                                <p style="color: #c87f0a;"><span th:text="${slhdtt}"></span> đơn hàng / <span th:text="${#numbers.formatDecimal(ttt, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"></span> </p>
                             </div>
                         </div>
                     </div>
@@ -113,37 +129,27 @@
                         <div class="small-box bg-white">
                             <div class="inner">
                                 <h4>Doanh số hôm nay</h4>
-
-                                <p style="color: #c87f0a;"><span th:text="${slhdtn}"></span> đơn hàng / <span th:text="${ttn}"></span> VND</p>
+                                <p style="color: #c87f0a;"><span th:text="${slhdtn}"></span> đơn hàng / <span th:text="${#numbers.formatDecimal(ttn, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"></span> </p>
                             </div>
-<!--                            <div class="icon">-->
-<!--                                <i class="ion ion-stats-bars"></i>-->
-<!--                            </div>-->
-<!--                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>-->
                         </div>
                     </div>
                     <!-- ./col -->
-                    <div class="col-lg-3 col-6">
+                    <div class="col-lg-4 col-6">
                         <!-- small box -->
                         <div class="small-box bg-white">
                             <div class="inner">
                                 <h4>Hàng bán được tháng này</h4>
-
                                 <p style="color: #c87f0a;"><span th:text="${sptt}"></span> sản phẩm</p>
                             </div>
-<!--                            <div class="icon">-->
-<!--                                <i class="ion ion-person-add"></i>-->
-<!--                            </div>-->
-<!--                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>-->
                         </div>
                     </div>
                     <!-- ./col -->
                 </div>
                 <div class="row" style="margin-bottom: 20px">
-                    <div class="col-lg-6 col-6"></div>
-                    <div class="col-lg-6 col-6">
+                    <div class="col-lg-4 col-6"></div>
+                    <div class="col-lg-8 col-6">
                         <button type="button" class="btn active  btn-lg" id="excel">Xuất Excel</button>
-                        <button type="button" class="btn active btn-lg">Bộ lọc</button>
+<!--                        <button type="button" class="btn active btn-lg">Bộ lọc</button>-->
                         <button type="button" class="btn active btn-lg" id="7day">7 ngày trước</button>
                         <button type="button" class="btn active btn-lg" id="thang">Tháng</button>
                         <button type="button" class="btn active btn-lg" id="nam">Năm</button>
@@ -151,7 +157,7 @@
                     </div>
                 </div>
                 <div class="row"></div>
-                <div class="chartCard"  style="margin-bottom: 20px">
+                <div class="chartCard">
                     <div class="chartBox">
                         <p class="ten">Biểu đồ thống kê hóa đơn và sản phẩm</p>
                         <canvas id="myChart"></canvas>
@@ -161,28 +167,24 @@
                     <div class="col-lg-6 col-6" >
                         <div class="col-lg-12 col-6 bg-white">
                             <p class="ten" style="margin-top: 10px">Top sản phẩm bán chạy tháng này</p>
-                            <table id="example4" class="table table-bordered table-hover text-center">
+                            <table id="example3" class="table table-bordered table-hover text-center">
                                 <thead class="table table-danger">
                                 <tr>
                                     <th>STT</th>
-                                    <th>Mã sản phẩm</th>
-                                    <th>Tên sản phẩm</th>
+                                    <th>Mã SP</th>
+                                    <th>Tên SP</th>
                                     <th>Giá bán</th>
-                                    <th>Số lượng đã bán</th>
+                                    <th>Số lượng</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-<!--                                <tr th:if="${#lists.isEmpty(sp)}">-->
-<!--                                    <td colspan="5" class="text-center">Không có dữ liệu</td>-->
-<!--                                </tr>-->
-                                <tr th:each="data,stt : ${slt}">
-                                    <td th:text="${stt.index + 1}"></td>
-                                    <td th:text="${data[0]}"></td>
+                                <tr th:each="data,stt : ${sp}">
+                                    <td style="white-space: nowrap;" th:text="${stt.index + 1}"></td>
+                                    <td style="white-space: nowrap;" th:text="${data[0]}"></td>
                                     <td th:text="${data[1]}"></td>
-                                    <td th:text="${data[2]}"></td>
-                                    <td th:text="${data[3]}"></td>
+                                    <td style="white-space: nowrap;" th:text="${#numbers.formatDecimal(data[2], 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"></td>
+                                    <td style="white-space: nowrap;" th:text="${data[3]}"></td>
                                 </tr>
-
                                 </tbody>
                                 <tfoot>
                                 </tfoot>
@@ -190,12 +192,12 @@
                         </div>
                         <div class="col-lg-12 col-6 bg-white">
                         <p class="ten" style="margin-top: 10px">Sản phẩm sắp hết hàng</p>
-                        <table id="example3" class="table table-bordered table-hover text-center">
+                        <table id="example4" class="table table-bordered table-hover text-center">
                             <thead class="table table-danger">
                             <tr>
                                 <th>STT</th>
-                                <th>Mã sản phẩm</th>
-                                <th>Tên sản phẩm</th>
+                                <th>Mã SP</th>
+                                <th>Tên SP</th>
                                 <th>Giá bán</th>
                                 <th>Số lượng</th>
                             </tr>
@@ -203,10 +205,10 @@
                             <tbody>
                             <tr th:each="data,stt : ${slt}">
                                 <td th:text="${stt.index + 1}"></td>
-                                <td th:text="${data[0]}"></td>
+                                <td style="white-space: nowrap;" th:text="${data[0]}"></td>
                                 <td th:text="${data[1]}"></td>
-                                <td th:text="${data[2]}"></td>
-                                <td th:text="${data[3]}"></td>
+                                <td style="white-space: nowrap;" th:text="${#numbers.formatDecimal(data[2], 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"></td>
+                                <td style="white-space: nowrap;" th:text="${data[3]}"></td>
                             </tr>
                             </tbody>
                             <tfoot>
@@ -228,66 +230,66 @@
                             <p class="ten" style="margin-top: 10px">Tốc độ tăng trưởng của cửa hàng</p>
                             <div class="small-box bg-dark" style="padding: 5px; margin-top: 5px">
                                 <div class="row" style="margin-top: 10px">
-                                    <p class="col-lg-4"><svg style="margin-right: 15px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event-fill" viewBox="0 0 16 16">
+                                    <p class="col-lg-5"><svg style="margin-right: 15px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event-fill" viewBox="0 0 16 16">
                                         <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2m-3.5-7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5"/>
                                     </svg>Doanh thu ngày</p>
-                                    <p  class="col-lg-5"><span th:text="${ttdsn}"></span> VND</p>
-                                    <p class="col-lg-2"><svg style="margin-right: 10px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
+                                    <p  class="col-lg-4"><span th:text="${#numbers.formatDecimal(ttdsn, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"></span></p>
+                                    <p class="col-lg-3"><svg style="margin-right: 10px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07"/>
                                     </svg>  <span th:text="${ptdsn}"></span> %</p>
                                 </div>
                             </div>
                             <div class="small-box bg-dark" style="padding: 5px;">
                                 <div class="row" style="margin-top: 10px">
-                                    <p class="col-lg-4"><svg style="margin-right: 15px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event-fill" viewBox="0 0 16 16">
+                                    <p class="col-lg-5"><svg style="margin-right: 15px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event-fill" viewBox="0 0 16 16">
                                         <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2m-3.5-7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5"/>
                                     </svg>Doanh thu tháng</p>
-                                    <p  class="col-lg-5"><span th:text="${ttdst}"></span> VND</p>
-                                    <p class="col-lg-2"><svg style="margin-right: 10px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
+                                    <p  class="col-lg-4"><span th:text="${#numbers.formatDecimal(ttdst, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"></span></p>
+                                    <p class="col-lg-3"><svg style="margin-right: 10px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07"/>
                                     </svg> <span th:text="${ptdst}"></span> %</p>
                                 </div>
                             </div>
                             <div class="small-box bg-dark" style="padding: 5px;">
                                 <div class="row" style="margin-top: 10px">
-                                    <p class="col-lg-4"><svg style="margin-right: 15px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event-fill" viewBox="0 0 16 16">
+                                    <p class="col-lg-5"><svg style="margin-right: 15px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event-fill" viewBox="0 0 16 16">
                                         <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2m-3.5-7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5"/>
                                     </svg>Sản phẩm ngày</p>
-                                    <p  class="col-lg-5"><span th:text="${ttspn}"></span> sản phẩm</p>
-                                    <p class="col-lg-2"><svg style="margin-right: 10px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
+                                    <p  class="col-lg-4"><span th:text="${ttspn}"></span> sản phẩm</p>
+                                    <p class="col-lg-3"><svg style="margin-right: 10px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07"/>
                                     </svg>  <span th:text="${ptspn}"></span> %</p>
                                 </div>
                             </div>
                             <div class="small-box bg-dark" style="padding: 5px;">
                                 <div class="row" style="margin-top: 10px">
-                                    <p class="col-lg-4"><svg style="margin-right: 15px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event-fill" viewBox="0 0 16 16">
+                                    <p class="col-lg-5"><svg style="margin-right: 15px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event-fill" viewBox="0 0 16 16">
                                         <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2m-3.5-7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5"/>
                                     </svg>Sản phẩm tháng</p>
-                                    <p  class="col-lg-5"><span th:text="${ttspt}"></span> sản phẩm</p>
-                                    <p class="col-lg-2"><svg style="margin-right: 10px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
+                                    <p  class="col-lg-4"><span th:text="${ttspt}"></span> sản phẩm</p>
+                                    <p class="col-lg-3"><svg style="margin-right: 10px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07"/>
                                     </svg> <span th:text="${ptspt}"></span> %</p>
                                 </div>
                             </div>
                             <div class="small-box bg-dark" style="padding: 5px;">
                                 <div class="row" style="margin-top: 10px">
-                                    <p class="col-lg-4"><svg style="margin-right: 15px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event-fill" viewBox="0 0 16 16">
+                                    <p class="col-lg-5"><svg style="margin-right: 15px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event-fill" viewBox="0 0 16 16">
                                         <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2m-3.5-7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5"/>
                                     </svg>Hóa đơn ngày</p>
-                                    <p  class="col-lg-5"><span th:text="${tthdn}"></span> hóa đơn</p>
-                                    <p class="col-lg-2"><svg style="margin-right: 10px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
+                                    <p  class="col-lg-4"><span th:text="${tthdn}"></span> hóa đơn</p>
+                                    <p class="col-lg-3"><svg style="margin-right: 10px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07"/>
                                     </svg>  <span th:text="${pthdn}"></span> %</p>
                                 </div>
                             </div>
                             <div class="small-box bg-dark" style="padding: 5px;">
                                 <div class="row" style="margin-top: 10px">
-                                    <p class="col-lg-4"><svg style="margin-right: 15px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event-fill" viewBox="0 0 16 16">
+                                    <p class="col-lg-5"><svg style="margin-right: 15px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event-fill" viewBox="0 0 16 16">
                                         <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2m-3.5-7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5"/>
                                     </svg>Hóa đơn tháng</p>
-                                    <p  class="col-lg-5"><span th:text="${tthdt}"></span> hóa đơn</p>
-                                    <p class="col-lg-2"><svg style="margin-right: 10px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
+                                    <p  class="col-lg-4"><span th:text="${tthdt}"></span> hóa đơn</p>
+                                    <p class="col-lg-3"><svg style="margin-right: 10px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07"/>
                                     </svg>  <span th:text="${pthdt}"></span> %</p>
                                 </div>
@@ -313,7 +315,10 @@
                                     <label class="col-form-label">Từ:</label>
                                 </div>
                                 <div class="col-auto">
-                                    <input type="date" name="startDate" class="form-control">
+                                    <input type="date" onkeydown="return false" name="startDate" id="startDate" class="form-control">
+                                </div>
+                                <div class="col-auto">
+                                    <p style="color: red; font-weight: initial;" id="errorStart"></p>
                                 </div>
                             </div>
                             <div class="align-items-center col-lg-12 col-md-12">
@@ -321,11 +326,14 @@
                                     <label class="col-form-label">Đến:</label>
                                 </div>
                                 <div class="col-auto">
-                                    <input type="date" name="endDate" class="form-control">
+                                    <input type="date" onkeydown="return false" name="endDate" id="endDate" class="form-control">
+                                </div>
+                                <div class="col-auto">
+                                    <p style="color: red; font-weight: initial;" id="errorEnd"></p>
                                 </div>
                             </div>
                             <div>
-                                <button type="submit" class="btn btn-primary">Lọc</button>
+                                <button type="submit" style="margin-top: 10px" class="btn btn-primary">Lọc</button>
                             </div>
                         </form>
                     </div>
@@ -350,7 +358,9 @@
     const dayData = /*[[${dayData}]]*/ '[]';
     const thangData = /*[[${thangData}]]*/ '[]';
     const namData = /*[[${namData}]]*/ '[]';
-    const knData = /*[[${knData}]]*/ '[]';
+
+    console.log('hihi')
+    // console.log(kData)
     const tenBD = dayData.map(function (item) {
         return item.label;
     });
@@ -475,20 +485,6 @@
             console.error('Invalid newData:', newData);
             // Xử lý khi không có dữ liệu hợp lệ
         }
-        // const ten = newData.map(function (item) {
-        //     return item.label;
-        // });
-        //
-        // const sp = newData.map(function (item) {
-        //     return item.sp;
-        // });
-        // const hd = newData.map(function (item) {
-        //     return item.hd;
-        // });
-        // myChart.data.datasets[0].data = sp;
-        // myChart.data.datasets[1].data = hd;
-        // myChart.data.labels = ten;
-        // myChart.update();
     }
 
     // Event listeners for buttons
@@ -503,45 +499,67 @@
     document.getElementById('nam').addEventListener('click', () => {
         updateChart(namData);
     });
+    function validateForm() {
+        var startDate = document.getElementById("startDate").value;
+        var errorS=document.getElementById("errorStart");
+        var isSValid = true;
+        var endDate = document.getElementById("endDate").value;
+        var errorE=document.getElementById("errorEnd");
+        var isEValid = true;
 
-    // document.getElementById('dateRangeForm').addEventListener('submit', function(event) {
-    //     event.preventDefault();
-    //
-    //     const formData = new FormData(this);
-    //     const startDate = formData.get('startDate');
-    //     const endDate = formData.get('endDate');
-    //
-    //     console.log('Submitting form with startDate:', startDate, 'endDate:', endDate);
-    //
-    //     fetch(`/admin/qlthongke?startDate=${startDate}&endDate=${endDate}`)
-    //         .then(response => {
-    //             console.log('Received response:', response);
-    //             if (!response.ok) {
-    //                 throw new Error('Network response was not ok: ' + response.statusText);
-    //             }
-    //             return response.json();
-    //         })
-    //         .then(data => {
-    //             updateChart(data);
-    //         })
-    //         .catch(error => {
-    //             console.error('Fetch error:', error);
-    //         });
-    // });
+        // if (startDate === "" || endDate === "") {
+        //     // alert('Vui lòng điền đầy đủ thông tin ngày tháng.');
+        //     errorS.innerText = "Không được để trống ngày";
+        //     document.getElementById("startDate").style.border="1.2px solid red";
+        //     isSValid = false;
+        //     errorE.innerText = "Không được để trống ngày";
+        //     document.getElementById("endDate").style.border="1.2px solid red";
+        //     isEValid = false;
+        //     return false;
+        // }else
+            if (startDate === "") {
+            errorS.innerText = "Không được để trống ngày";
+            isSValid = false;
+            return false;
+        }
+            if(endDate === ""){
+            errorE.innerText = "Không được để trống ngày";
+            isEValid = false;
+            return false;
+        }
+        if(startDate && endDate){
+            if(startDate > endDate){
+            errorE.innerText = "Khoảng ngày không hợp lệ";
+            isSValid = false;
+            isEValid = false;
+            return false;
+        }}
+        if(isSValid){
+            document.getElementById("startDate").style.border="";
+            errorS.innerText = "";
+        }
+        if(isEValid){
+            document.getElementById("endDate").style.border="";
+            errorE.innerText = "";
+        }
+
+        return true;
+    }
+
     $('#dateRangeForm').on('submit', function(event) {
         event.preventDefault();
-
+        if (!validateForm()) {
+            return; // Nếu form không hợp lệ, không thực hiện AJAX request
+        }
         const formData = $(this).serialize();  // Serialize form data
-        const url = '/admin/qlthongke?' + formData;
+        const url = '/admin/qlthongkee?' + formData;
 
         $.ajax({
             type: 'GET',
             url: url,
             success: function(data) {
-                // Replace the old data with the new data embedded in the response
-                const kData = /*[[${knData}]]*/ '[]';
-                console.log('Received data:', kData);
-                //updateChart(JSON.parse(kData));  // Ensure data is parsed as JSON
+                console.log('Received data:', data.knData);
+                updateChart(data.knData);  // Update chart with received data
                 $('#exKhoangNgay').modal('hide');  // Close modal using jQuery
             },
             error: function(xhr, status, error) {
@@ -549,21 +567,9 @@
             }
         });
     });
-</script>
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    const kData = /*[[${knData}]]*/ '[]';
-    /*]]>*/
-
-    console.log('đây là knData')
-    console.log(kData)
-    // gọi hàm
-    // if(knData==null){
-    //
-    // }
-
 
 </script>
+<!--</script>-->
 <script th:inline="javascript">
     const chartData = /*[[${bdTron}]]*/ '[]';
     console.log(chartData);

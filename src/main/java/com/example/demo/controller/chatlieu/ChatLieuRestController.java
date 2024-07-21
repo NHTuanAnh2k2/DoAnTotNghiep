@@ -1,7 +1,6 @@
 package com.example.demo.controller.chatlieu;
 
 import com.example.demo.entity.ChatLieu;
-import com.example.demo.entity.ThuongHieu;
 import com.example.demo.repository.ChatLieuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +23,11 @@ public class ChatLieuRestController {
         if (updatedChatLieu == null) {
             return ResponseEntity.notFound().build();
         }
-        existingChatLieu.setTen(updatedChatLieu.getTen());
+        String trimmedTenChatLieu = (updatedChatLieu.getTen() != null)
+                ? updatedChatLieu.getTen().trim().replaceAll("\\s+", " ")
+                : null;
+        existingChatLieu.setTen(trimmedTenChatLieu);
         chatLieuRepository.save(existingChatLieu);
-        // Trả về redirect
         return ResponseEntity.ok("redirect:/chatlieu");
     }
 

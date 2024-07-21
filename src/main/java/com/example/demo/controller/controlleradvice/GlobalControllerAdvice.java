@@ -17,12 +17,38 @@ public class GlobalControllerAdvice {
     @ModelAttribute
     public void addAttributes(Model model, HttpSession session) {
         String userDangnhap = (String) session.getAttribute("userDangnhap");
+        String adminDangnhap = (String) session.getAttribute("adminDangnhap");
         NguoiDung nd = khachHangService.findNguoiDungByTaikhoan(userDangnhap);
         if (userDangnhap != null) {
             model.addAttribute("userDangnhap", userDangnhap);
         }
+        if (adminDangnhap != null) {
+            model.addAttribute("adminDangnhap", adminDangnhap);
+        }
         if (nd != null) {
-            model.addAttribute("userHeader", nd.getHovaten());
+            String fullName = nd.getHovaten();
+            if (fullName.length() > 8) {
+                // Tách tên thành các phần riêng biệt
+                String[] parts = fullName.split("\\s+");
+                // Lấy phần tên cuối cùng
+                String lastName = parts[parts.length - 1];
+                //nếu tên mà > 11 thì cắt lấy 11 kí tự
+                if (lastName.length() > 8) {
+                    lastName = lastName.substring(0, 8);
+                }
+                // Kiểm tra nếu phần tên đệm cộng với phần tên cuối cùng nhỏ hơn 11 ký tự
+                if (parts.length > 1) {
+                    String middleName = parts[parts.length - 2];
+                    if ((middleName + " " + lastName).length() <= 11) {
+                        fullName = middleName + " " + lastName;
+                    } else {
+                        fullName = lastName;
+                    }
+                }
+            }
+            model.addAttribute("userHeader", fullName);
+            model.addAttribute("hovatenHoSo", fullName);
         }
     }
+
 }

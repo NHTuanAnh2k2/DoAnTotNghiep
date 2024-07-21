@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<nav th:replace="~{/layoutadmin/head.html}"></nav>
+<style>
+    .error-container {
+        margin-top: 100px;
+    }
+
+    .error-message {
+        font-size: 18px;
+        color: #fd7e14;
+        /* Màu đỏ để thông báo lỗi */
+    }
+
+    .btn-custom {
+        background-color: #fd7e14;
+        /* Màu cam */
+        color: #fff;
+        /* Chữ màu trắng */
+        border: none;
+    }
+
+    .btn-custom:hover {
+        background-color: #e36c00;
+        /* Màu cam đậm khi hover */
+    }
+
+    .btn-secondary-custom {
+        background-color: #fff;
+        /* Màu trắng */
+        color: #fd7e14;
+        /* Chữ màu cam */
+        border: 1px solid #fd7e14;
+    }
+
+    .btn-secondary-custom:hover {
+        background-color: #f8f9fa;
+        /* Màu trắng khi hover */
+        color: #e36c00;
+        /* Chữ màu cam đậm khi hover */
+    }
+</style>
+<body class="hold-transition sidebar-mini">
+<nav th:replace="~{/layoutadmin/navbar.html}"></nav>
+<nav th:replace="~{/layoutadmin/menu.html}"></nav>
+<div class="row" style="height: 500px; margin-left: 300px;; margin-top: 100px">
+    <div class="container error-container col">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="alert alert-danger text-center"
+                     style="background-color: #fff3cd; border-color: #ffeeba;">
+                    <div class="error-message">
+                        Tài khoản này không có quyền truy cập.
+                    </div>
+                </div>
+                <div class="text-center mt-3">
+                    <a href="javascript:history.back()" class="btn btn-secondary-custom" style="width: 50%">Quay lại</a>
+                    <a th:href="@{/admin/dangxuat}" class="btn btn-custom" style="margin-top: 10px">Đăng xuất và vào tài khoản khác</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <img width="300px" src="https://th.bing.com/th/id/OIP.tTeXvJO4sqa61zBdQQsYGwHaHa?rs=1&pid=ImgDetMain" alt="">
+    </div>
+</div>
+<nav th:replace="~{/layoutadmin/footer.html}"></nav>
+<nav th:replace="~{/layoutadmin/script.html}"></nav>
+<!--end-->
+</body>
+</html>

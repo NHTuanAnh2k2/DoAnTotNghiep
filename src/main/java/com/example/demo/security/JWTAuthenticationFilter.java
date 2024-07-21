@@ -27,19 +27,9 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+
         String token = getJWTFromRequest(request);
-
-//        String path = request.getRequestURI();
-//        String method = request.getMethod();
-//        // Các endpoint cần bỏ qua
-//        if (("/dangky".equals(path) && HttpMethod.POST.matches(method)) ||
-//                ("/doimatkhau".equals(path) && HttpMethod.POST.matches(method)) ||  // Bỏ qua endpoint đổi mật khẩu
-//                ("/quenmatkhau".equals(path) && HttpMethod.POST.matches(method))) {  // Bỏ qua endpoint quên mật khẩu
-//            logger.info("Skipping filter for specific endpoints");
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
-
+//        System.out.println("TokenJWT: " + token);
         if (StringUtils.hasText(token) && tokenGenerator.validateToken(token)) {
             String username = tokenGenerator.getUsernameFromJWT(token);
 
@@ -53,10 +43,15 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String getJWTFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7, bearerToken.length());
+        String adminDangnhap = (String) request.getSession().getAttribute("tokenAdmin1");
+        if (adminDangnhap != null) {
+            String bearerToken = adminDangnhap;
+//            System.out.println("Authorization: " + bearerToken);
+            if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+                return bearerToken.substring(7, bearerToken.length());
+            }
         }
         return null;
+
     }
 }

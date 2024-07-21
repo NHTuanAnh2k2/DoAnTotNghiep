@@ -473,7 +473,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <p style="color: #AAAAAA; font-size: 18px;">Tạm tính</p>
             <div style="display: flex; align-items: center;">
-                <h5 id="tamTinh">900,000 ₫</h5>
+                <h5 id="tamTinh" th:text="${#numbers.formatDecimal(totalAmount, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></h5>
             </div>
         </div>
         <div id="fillMaGiam">

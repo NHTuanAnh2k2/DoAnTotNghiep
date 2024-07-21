@@ -1,6 +1,5 @@
 package com.example.demo.controller.kichco;
 
-import com.example.demo.entity.DeGiay;
 import com.example.demo.entity.KichCo;
 import com.example.demo.repository.KichCoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +23,11 @@ public class KichCoRestController {
         if (existingKichCo == null) {
             return ResponseEntity.notFound().build();
         }
-
-        existingKichCo.setTen(updatedKicCo.getTen());
+        String trimmedTenKichCo = (updatedKicCo.getTen() != null)
+                ? updatedKicCo.getTen().trim().replaceAll("\\s+", " ")
+                : null;
+        existingKichCo.setTen(trimmedTenKichCo);
         kichCoRepository.save(existingKichCo);
-
-        // Trả về redirect
         return ResponseEntity.ok("redirect:/listKichCo");
     }
 
@@ -37,5 +36,4 @@ public class KichCoRestController {
         boolean exists = kichCoRepository.existsByTen(ten);
         return ResponseEntity.ok(exists);
     }
-
 }

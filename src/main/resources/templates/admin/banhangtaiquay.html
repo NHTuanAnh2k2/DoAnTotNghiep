@@ -812,7 +812,7 @@
                                 </div>
                                 <p>
                                     <input type="text" class="form-control" placeholder="Phí vận chuyển" readonly
-                                        oninput="showcasst('phigiaohang')" id="phigiaohang" th:field="*{phivanchuyen}">
+                                        oninput="showcassts('phigiaohang')" id="phigiaohang" th:field="*{phivanchuyen}">
                                     <i style="color: red;" id="regexship"></i>
                                 </p>
                                 <p>
@@ -829,8 +829,8 @@
                                 <div class="d-flex justify-content-between ms-1">
                                     <p>Hỏa tốc:</p>
                                     <p class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch" th:field="*{giaohoatoc}"
-                                            onchange="hoatoc(event)">
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                            th:field="*{giaohoatoc}" onchange="hoatoc(event)">
                                     </p>
                                 </div>
                                 <div class="d-flex justify-content-between ms-1">
@@ -869,9 +869,22 @@
                             <p></p>
                         </div>
                         <div class="d-flex justify-content-between mb-1">
+
                             <p style="font-weight: bold; margin-top: 10px;"> Mã giảm giá:</p>
-                            <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white; padding-top: 10px;"
-                                id="maGiamFill">Chưa có mã giảm phù hợp!</p>
+                            <!-- <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white; padding-top: 10px;"
+                                id="maGiamFill">Chưa có mã giảm phù hợp!</p> -->
+
+                            <span class="applied-reduction-code"
+                                style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; padding: 3px 15px 3px 15px; padding-top: 10px;">
+                                <svg width="16" height="15" xmlns="http://www.w3.org/2000/svg"
+                                    class="applied-reduction-code-icon" fill="#CE4549">
+                                    <path
+                                        d="M14.476 0H8.76c-.404 0-.792.15-1.078.42L.446 7.207c-.595.558-.595 1.463 0 2.022l5.703 5.35c.296.28.687.42 1.076.42.39 0 .78-.14 1.077-.418l7.25-6.79c.286-.268.447-.632.447-1.01V1.43C16 .64 15.318 0 14.476 0zm-2.62 5.77c-.944 0-1.713-.777-1.713-1.732 0-.954.77-1.73 1.714-1.73.945 0 1.714.776 1.714 1.73 0 .955-.768 1.73-1.713 1.73z">
+                                    </path>
+                                </svg>
+                                <span class="applied-reduction-code-information" id="maGiamFill"
+                                    style="background-color: #D3D3D3;">Chưa có mã giảm phù hợp!</span>
+                            </span>
 
                             <button class="btn btn-light" style="margin-bottom: 20px;" data-bs-toggle="modal"
                                 id="chonMaGiam" data-bs-target="#staticBackdrop" onclick="showmagiam()">
@@ -2660,7 +2673,6 @@ tabindex="0">
                             })
                             .then(function (b) {
                                 var htmlpt = '';
-                                console.log(b)
                                 if (b.length > 0) {
                                     var stt = 0;
                                     var tiendathanhtoan = 0;
@@ -2755,6 +2767,27 @@ tabindex="0">
                         + ' ₫';
                 });
             });
+            // var numberString = document.getElementById('phigiaohang').value.replace(/[^0-9.]/g, '');
+            // // Chuyển đổi tiền ship nhập tay
+            // var number = parseFloat(numberString.replace(/\./g, ''));
+            // shipToanCuc = number;
+            // //lấy tiền đã áp voucher
+            // var tiensaukhicovucher = document.getElementById('tongThanhToan').textContent.replace(/[^0-9.]/g, '');
+            // // Chuyển đổi tiền đã apvoucher thành số nguyên
+            // var tienChuaShip = parseFloat(tiensaukhicovucher.replace(/\./g, ''));
+            // tienkhachthanhtoan = tienChuaShip + number;
+
+        }
+        function showcassts(elementId) {
+            $('#' + elementId).keyup(function (event) {
+                $(this).val(function (index, value) {
+                    return value
+                        .replace(/\D/g, "")
+                        .replace(/([0-9])([0-9]{})$/, '$1.$2')
+                        .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".")
+                        + ' ₫';
+                });
+            });
             var numberString = document.getElementById('phigiaohang').value.replace(/[^0-9.]/g, '');
             // Chuyển đổi tiền ship nhập tay
             var number = parseFloat(numberString.replace(/\./g, ''));
@@ -2776,7 +2809,7 @@ tabindex="0">
                     return a.json();
                 })
                 .then(function (b) {
-
+                    console.log(b)
                     var htmlphuongthuc = '';
                     if (b.length > 0) {
                         //xác nhận phương thức
@@ -2816,6 +2849,7 @@ tabindex="0">
                             if (checktienmat == 1) {
                                 document.getElementById('tienmat').disabled = true;
                             }
+
                             var tienthieuconlai = tienkhachthanhtoan - tiendathanhtoan;
 
                             document.getElementById('showpt').innerHTML = htmlphuongthuc;
@@ -3223,10 +3257,11 @@ tabindex="0">
                                             <img src="../dist/img/no_product.png" width="300px" height="300px">
                                             <h3 class="text text-danger"><i>Không tìm thấy voucher phù hợp!! <i class="bi bi-emoji-tear"></i>!</i></h3>
                                         </div>`;
-                    }
-                    var htmlvoucher = '';
-                    for (const hd of b) {
-                        htmlvoucher += `
+                    } else {
+                        if (b.length > 0) {
+                            var htmlvoucher = '';
+                            for (const hd of b) {
+                                htmlvoucher += `
                         <div class="ma_giam_gia">
                                 <div class="ma-item-left">
                                     <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
@@ -3253,49 +3288,71 @@ tabindex="0">
                             </div>
                         
                         `;
+                            }
+                            document.getElementById('showvoucher').innerHTML = htmlvoucher;
+                            // 
+                        } else {
+                            document.getElementById('showvoucher').innerHTML = `<div class="tab-pane fade show active text-center fw-bold" id="tatCaHoaDon-tab-pane" role="tabpanel" aria-labelledby="tatCaHoaDon-tab" tabindex="0">
+                                            <br>
+                                            <img src="../dist/img/no_product.png" width="300px" height="300px">
+                                            <h3 class="text text-danger"><i>Không tìm thấy voucher phù hợp!! <i class="bi bi-emoji-tear"></i>!</i></h3>
+                                        </div>`;
+                        }
                     }
-                    document.getElementById('showvoucher').innerHTML = htmlvoucher;
-                    // 
+
                 })
         }
         //sự kiện áp dụng mã giảm 
         function apdungvoucher(inputs) {
-            fetch(inputs)
+            var urlcheckapp = "http://localhost:8080/ban-hang-tai-quay/check-phieu/" + inputs.split('/').pop();
+            fetch(urlcheckapp)
                 .then(function (a) {
                     return a.json();
                 })
                 .then(function (b) {
                     if (tongTienDon >= b.dontoithieu) {
-                        if (b.id != null) {
-                            if (b.loaiphieu == true) {
-                                // phiếu %
-                                if (b.giatrigiam * (tongTienDon / 100) > b.giatrigiamtoida) {
-                                    TienGiamDon = b.giatrigiamtoida;
+                        fetch(inputs)
+                            .then(function (a) {
+                                return a.json();
+                            })
+                            .then(function (b) {
+
+                                if (b.id != null) {
+                                    if (b.loaiphieu == true) {
+                                        // phiếu %
+                                        if (b.giatrigiam * (tongTienDon / 100) > b.giatrigiamtoida) {
+                                            TienGiamDon = b.giatrigiamtoida;
+                                        } else {
+                                            TienGiamDon = b.giatrigiam * (tongTienDon / 100);
+                                        }
+
+                                    } else {
+                                        // phiếu vnđ
+                                        TienGiamDon = b.giatrigiam;
+                                    }
+                                    tienkhachthanhtoan = tongTienDon - TienGiamDon + shipToanCuc;
                                 } else {
-                                    TienGiamDon = b.giatrigiam * (tongTienDon / 100);
+                                    tienkhachthanhtoan = tongTienDon + shipToanCuc;
                                 }
+                                // console.log("tiền tệ")
+                                // console.log('tiền ban đầu:' + tongTienDon)
+                                // console.log('tiền giảm :' + TienGiamDon)
+                                // console.log('tiền tổng thanh toán:' + tienkhachthanhtoan)
+                                thongbao('Áp dụng thành công', 'success')
+                                document.getElementById('maGiamFill').innerHTML = b.macode;
+                                document.getElementById('giamgia').innerHTML = TienGiamDon.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                                document.getElementById('tongThanhToan').innerHTML = (tienkhachthanhtoan - shipToanCuc).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 
-                            } else {
-                                // phiếu vnđ
-                                TienGiamDon = b.giatrigiam;
-                            }
-                            tienkhachthanhtoan = tongTienDon - TienGiamDon + shipToanCuc;
-                        } else {
-                            tienkhachthanhtoan = tongTienDon + shipToanCuc;
-                        }
-                        // console.log("tiền tệ")
-                        // console.log('tiền ban đầu:' + tongTienDon)
-                        // console.log('tiền giảm :' + TienGiamDon)
-                        // console.log('tiền tổng thanh toán:' + tienkhachthanhtoan)
-                        thongbao('Áp dụng thành công', 'success')
-                        document.getElementById('maGiamFill').innerHTML = b.macode;
-                        document.getElementById('giamgia').innerHTML = TienGiamDon.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-                        document.getElementById('tongThanhToan').innerHTML = (tienkhachthanhtoan - shipToanCuc).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 
+                            })
                     } else {
                         thongbao('Hóa đơn chưa đạt đủ số tiền tối thiểu!', 'warning');
                     }
+
                 })
+
+
+
 
         }
     </script>
@@ -3317,6 +3374,37 @@ tabindex="0">
             thongbao('Hóa đơn đã được xóa!', 'success');
         }
     </script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var checkChoseSp = /*[[${checkChoseSp}]]*/ false;
+        var choseSPsucsess = /*[[${choseSPsucsess}]]*/ false;
+        var choseUpdate = /*[[${choseUpdate}]]*/ false;
+        var checkChoseKH = /*[[${checkChoseKH}]]*/ false;
+        var checkaddKH = /*[[${checkaddKH}]]*/ false;
+        var checkaddKHSucsses = /*[[${checkaddKHSucsses}]]*/ false;
+
+        /*]]>*/
+        if (checkChoseSp == true) {
+            thongbao('Chưa có hóa đơn nào được chọn', 'warning')
+        }
+        if (choseUpdate == true) {
+            thongbao('Sản phẩm đã tồn tại, số lượng sản phẩm đã tăng thêm 1', 'success')
+        }
+        if (choseSPsucsess == true) {
+            thongbao('Thêm sản phẩm thành công', 'success')
+        }
+        if (checkChoseKH == true) {
+            thongbao('Chưa có hóa đơn nào được chọn', 'warning')
+        }
+        if (checkaddKH == true) {
+            thongbao('Chưa có hóa đơn nào được chọn', 'warning')
+        }
+        if (checkaddKHSucsses == true) {
+            thongbao('Thêm khách hàng thành công', 'success')
+        }
+
+    </script>
+
     <script th:inline="javascript">
         /*<![CDATA[*/
         var orderSuccess = /*[[${orderSuccess}]]*/ false;
@@ -3785,7 +3873,19 @@ tabindex="0">
                 document.getElementById('regexTen').innerHTML = 'Họ tên không được trống!';
                 error = true;
             } else {
-                document.getElementById('regexTen').innerHTML = '';
+
+                var regex = /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯăâêôơÁÀẢÃẠÁẦẪẨẬẮẰẲẴẶẸẺẼỀỀỂỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪỬỮỰỶỸýỳỷỹọỏọốồộổỗớờởỡợ\s]+$/;
+
+                // Kiểm tra chiều dài và ký tự đặc biệt
+                if (hoVaTen.length < 5 || hoVaTen.length > 20) {
+                    document.getElementById('regexTen').innerHTML = 'Họ tên phải có từ 5 đến 20 ký tự!';
+                    error = true;
+                } else if (checkKhongPhaiChuCai(hoVaTen) == true) {
+                    document.getElementById('regexTen').innerHTML = 'Họ tên không được chứa ký tự đặc biệt!';
+                    error = true;
+                } else {
+                    document.getElementById('regexTen').innerHTML = '';
+                }
             }
 
             // Kiểm tra số điện thoại
@@ -3813,13 +3913,18 @@ tabindex="0">
                 error = true;
             } else {
                 // Kiểm tra định dạng email
-                var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,4}(?:\.[a-zA-Z]{2,4})?$/;
                 if (!emailPattern.test(email)) {
                     // alert("Email không hợp lệ");
                     document.getElementById('regexemail').innerHTML = 'Email sai định dạng!';
                     error = true;
                 } else {
-                    document.getElementById('regexemail').innerHTML = '';
+                    if (email.length < 5 || email.length > 254) {
+                        document.getElementById('regexemail').innerHTML = 'Email phải có độ dài từ 5-254 theo chuẩn RFC 5321';
+                        error = true;
+                    } else {
+                        document.getElementById('regexemail').innerHTML = '';
+                    }
                 }
             }
 
@@ -3829,7 +3934,12 @@ tabindex="0">
                 document.getElementById('regexdiachi').innerHTML = 'Địa chỉ không được trống!';
                 error = true;
             } else {
-                document.getElementById('regexdiachi').innerHTML = '';
+                if (diaChi.length < 1 || diaChi.length > 20) {
+                    document.getElementById('regexdiachi').innerHTML = 'Địa chỉ phải đạt từ 1-20 kí tự!';
+                    error = true;
+                } else {
+                    document.getElementById('regexdiachi').innerHTML = '';
+                }
             }
 
             // Kiểm tra chọn tỉnh
@@ -3867,7 +3977,14 @@ tabindex="0">
                 document.getElementById('regexship').innerHTML = 'Chưa có tiền ship';
                 error = true;
             } else {
-                document.getElementById('regexship').innerHTML = '';
+                if (tienShip.trim() === "₫") {
+                    // alert("Địa chỉ không được để trống");
+                    document.getElementById('regexship').innerHTML = 'Nếu miễn ship hãy nhập 0.0 ₫!';
+                    error = true;
+                } else {
+                    document.getElementById('regexship').innerHTML = '';
+                }
+
             }
 
             // Nếu có lỗi, ngăn chặn form không submit
@@ -3878,6 +3995,14 @@ tabindex="0">
             // Nếu không có lỗi, cho phép form submit
             return true;
         }
+
+        //check tên kí tự đặc biệt
+        function checkKhongPhaiChuCai(str) {
+            // Biểu thức chính quy để kiểm tra bất kỳ ký tự nào không phải là chữ cái tiếng Việt có dấu hoặc chữ cái Latinh không dấu
+            const regex = /[^a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚờợứừửữựỳỵỷỹỪừựÙúỦửỤụỴỳỵỷỹẠ-ỹ\s]/;
+            return regex.test(str);
+        }
+
         //validate form thông tin thêm nhanh khách hàng
         function validateForms() {
             // Lấy các giá trị từ các input
@@ -3898,7 +4023,19 @@ tabindex="0">
                 document.getElementById('TTTK_ten_regex').innerHTML = 'Họ tên không được trống!';
                 error = true;
             } else {
-                document.getElementById('TTTK_ten_regex').innerHTML = '';
+
+                var regex = /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯăâêôơÁÀẢÃẠÁẦẪẨẬẮẰẲẴẶẸẺẼỀỀỂỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪỬỮỰỶỸýỳỷỹọỏọốồộổỗớờởỡợ\s]+$/;
+
+                // Kiểm tra chiều dài và ký tự đặc biệt
+                if (hoVaTen.length < 5 || hoVaTen.length > 20) {
+                    document.getElementById('TTTK_ten_regex').innerHTML = 'Họ tên phải có từ 5 đến 20 ký tự!';
+                    error = true;
+                } else if (checkKhongPhaiChuCai(hoVaTen) == true) {
+                    document.getElementById('TTTK_ten_regex').innerHTML = 'Họ tên không được chứa ký tự đặc biệt!';
+                    error = true;
+                } else {
+                    document.getElementById('TTTK_ten_regex').innerHTML = '';
+                }
             }
 
             // Kiểm tra số điện thoại
@@ -3941,7 +4078,7 @@ tabindex="0">
                 error = true;
             } else {
                 // Kiểm tra định dạng email
-                var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,4}(?:\.[a-zA-Z]{2,4})?$/;
                 if (!emailPattern.test(email)) {
                     // alert("Email không hợp lệ");
                     document.getElementById('TTTK_email_regex').innerHTML = 'Email sai định dạng!';
@@ -3958,11 +4095,16 @@ tabindex="0">
                                 error = true;
 
                             } else {
-                                document.getElementById('TTTK_email_regex').innerHTML = '';
+                                if (email.length < 5 || email.length > 254) {
+                                    document.getElementById('TTTK_email_regex').innerHTML = 'Email phải có độ dài từ 5-254 theo chuẩn RFC 5321';
+                                    error = true;
+                                } else {
+                                    document.getElementById('TTTK_email_regex').innerHTML = '';
+                                }
+
                             }
 
                         })
-                    document.getElementById('TTTK_email_regex').innerHTML = '';
                 }
             }
 
@@ -3972,7 +4114,13 @@ tabindex="0">
                 document.getElementById('TTTK_diachi_regex').innerHTML = 'Địa chỉ không được trống!';
                 error = true;
             } else {
-                document.getElementById('TTTK_diachi_regex').innerHTML = '';
+                if (diaChi.length < 1 || diaChi.length > 20) {
+                    document.getElementById('TTTK_diachi_regex').innerHTML = 'Địa chỉ phải đạt từ 1-20 kí tự!';
+                    error = true;
+                } else {
+                    document.getElementById('TTTK_diachi_regex').innerHTML = '';
+                }
+
             }
 
             // Kiểm tra chọn tỉnh
@@ -4009,8 +4157,6 @@ tabindex="0">
                 return false;
             }
 
-            // Nếu không có lỗi, cho phép form submit
-            thongbao('Thêm thành công!', 'success')
             return true;
         }
 

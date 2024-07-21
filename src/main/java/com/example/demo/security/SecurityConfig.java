@@ -25,6 +25,7 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -36,36 +37,51 @@ public class SecurityConfig {
     @Autowired
     private CustomerUserDetailService userDetailService;
     @Autowired
-    private JwtAuthEntryPoint authEntryPoint;
+    JwtAuthEntryPoint jwtAuthEntryPoint;
+    @Autowired
+    SuccessHandler successHandler;
+
+    private static final String[] NHANVIEN_LINK = {
+            "/hoa-don/ban-hang"
+    };
+    private static final String[] QUANLY_LINK = {
+            "/khachhang"
+    };
 
     @Bean
-    public SecurityFilterChain clientFilterChain(HttpSecurity http) throws Exception {
-        http
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+       return http
                 .csrf(csrf -> csrf.disable())
-                .exceptionHandling((exception) -> exception.authenticationEntryPoint(authEntryPoint))
+                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers(QUANLY_LINK).hasAuthority("ROLE_QUANLY")
+                        .requestMatchers("/api/khachhang").hasAuthority("ROLE_QUANLY")
+                        .anyRequest().permitAll()
+                )
+               .formLogin(form -> form
+                       .loginPage("/admin/account")
+                       .successHandler(successHandler)
+                       .permitAll()
+               )
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeRequests()
-                .requestMatchers("/khachhang/**").permitAll()
-                .anyRequest().permitAll()
-                .and()
-                .httpBasic(Customizer.withDefaults());
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .authenticationProvider(getProvider())
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthEntryPoint))
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class).build();
 
-        return http.build();
     }
+
 
 //    @Bean
 //    public SecurityFilterChain adminFilterChain(HttpSecurity http) throws Exception {
 //        http
 //                .csrf(csrf -> csrf.disable())
-//                .exceptionHandling((exception) -> exception.authenticationEntryPoint(authEntryPoint))
+////                .exceptionHandling((exception) -> exception.authenticationEntryPoint(authEntryPoint))
 //                .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 //                .authorizeRequests()
 //                .requestMatchers("/khachhang").authenticated()
 //                .anyRequest().permitAll()
 //                .and()
 //                .formLogin(form -> form
-//                        .loginPage("/admin/account")
+//                        .loginPage("/account")
 //                        .permitAll()
 //                )
 //                .httpBasic(Customizer.withDefaults());

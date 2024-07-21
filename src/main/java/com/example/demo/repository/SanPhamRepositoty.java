@@ -5,12 +5,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
 
 @Repository
 public interface SanPhamRepositoty extends JpaRepository<SanPham, Integer> {
+
+    @Query(nativeQuery = true, value = """
+            SELECT * FROM SanPham WHERE TrangThai=1
+               ORDER BY NgayTao DESC
+            """)
+    List<SanPham> getAllByNgayTao();
 
     // tìm id lớn nhất bên sp
     @Query(value = "SELECT MAX(s.id) FROM SanPham s")
@@ -38,7 +43,6 @@ public interface SanPhamRepositoty extends JpaRepository<SanPham, Integer> {
 
     //lấy id và tên sản phẩm
     @Query("SELECT sp.id, sp.tensanpham FROM SanPham sp WHERE sp.id = :id")
-    List<Object[]> findById2(@Param("id") Integer id);
-
+    List<Object[]> findByIdUpdatTenSP(@Param("id") Integer id);
 
 }

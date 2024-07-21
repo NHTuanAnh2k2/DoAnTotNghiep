@@ -10,6 +10,11 @@ import java.util.List;
 
 public interface KichCoRepository extends JpaRepository<KichCo,Integer> {
 
+    @Query( value = """
+            SELECT kc FROM KichCo kc WHERE (kc.ten LIKE?1) AND (?2 IS NULL OR kc.trangthai=?2)
+            """)
+    List<KichCo> findByTenAndTrangthai(String ten, Boolean trangthai);
+
     boolean existsByTen(String ten);
 
     List<KichCo> getKichCoByTenOrTrangthai(String ten, Boolean trangthai);

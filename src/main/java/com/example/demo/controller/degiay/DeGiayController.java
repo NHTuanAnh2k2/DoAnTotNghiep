@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,60 +22,42 @@ public class DeGiayController {
     @GetMapping("/listdegiay")
     public String listdegiay(Model model, @ModelAttribute("degiay") DeGiay deGiay, @ModelAttribute("tim") ThuocTinhInfo info) {
         List<DeGiay> list;
-
-        // Trim khoảng trắng ở đầu và cuối
-        String trimmedKey = (info.getKey() != null) ? info.getKey().trim() : null;
-
+        String trimmedKey = (info.getKey() != null) ? info.getKey().trim().replaceAll("\\s+", " ") : null;
         boolean isKeyEmpty = (trimmedKey == null || trimmedKey.isEmpty());
         boolean isTrangthaiNull = (info.getTrangthai() == null);
-
         if (isKeyEmpty && isTrangthaiNull) {
-            list = deGiayRepository.getAll();
+            list = deGiayRepository.findAllByOrderByNgaytaoDesc();
         } else {
-            list = deGiayImp.getDeGiayByTen(trimmedKey);
+            list = deGiayRepository.findByTenAndTrangthai("%" + trimmedKey + "%", info.getTrangthai());
         }
-
         List<DeGiay> listAll = deGiayRepository.findAll();
         model.addAttribute("listAll", listAll);
+        //dùng listAll để validate
         model.addAttribute("list", list);
         model.addAttribute("fillSearch", trimmedKey);
         model.addAttribute("fillTrangThai", info.getTrangthai());
         return "admin/qldegiay";
     }
 
-
-    @PostMapping("/update/{id}")
-    public String update(@PathVariable Integer id) {
-        deGiayRepository.updateTrangThaiToFalseById(id);
+    @PostMapping("/degiay/updateTrangThai/{id}")
+    public String updateTrangThaiDeGiay(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        DeGiay existingDeGiay = deGiayRepository.findById(id).orElse(null);
+        if (existingDeGiay != null) {
+            existingDeGiay.setTrangthai(!existingDeGiay.getTrangthai());
+            deGiayRepository.save(existingDeGiay);
+            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật trạng thái thành công!");
+        }
         return "redirect:/listdegiay";
     }
 
 
-//    @GetMapping("/updateDeGiay/{id}")
-//    public String delete(@PathVariable Integer id, Model model) {
-//        DeGiay degiay = deGiayRepository.findById(id).orElse(null);
-//        model.addAttribute("degiay", degiay);
-//        return "admin/qldegiay";
-//    }
-
-    @PostMapping("/updateDeGiay")
-    public String updateDeGiay(@ModelAttribute("degiay") DeGiay degiay) {
-        DeGiay existingDeGiay = deGiayRepository.findById(degiay.getId()).orElse(null);
-        if (existingDeGiay != null) {
-            existingDeGiay.setTen(degiay.getTen());
-            existingDeGiay.setLancapnhatcuoi(LocalDateTime.now());
-            existingDeGiay.setNguoicapnhat("DuyNV");
-            deGiayRepository.save(existingDeGiay);
-        }
-        return "redirect:/admin/qldegiay";
-    }
-
-
     @PostMapping("/addSave")
-    public String addSave(@ModelAttribute("degiay") DeGiay deGiay, RedirectAttributes redirectAttributes) {
+    public String addSave(@ModelAttribute("degiay") DeGiay deGiay) {
+        String trimmedTenDeGiay = (deGiay.getTen() != null)
+                ? deGiay.getTen().trim().replaceAll("\\s+", " ")
+                : null;
         LocalDateTime currentTime = LocalDateTime.now();
-        String trimmedName = (deGiay.getTen() != null) ? deGiay.getTen().trim() : null;
-        deGiay.setTen(trimmedName);
+        deGiay.setTen(trimmedTenDeGiay);
         deGiay.setTrangthai(true);
         deGiay.setNgaytao(currentTime);
         deGiay.setLancapnhatcuoi(currentTime);
@@ -87,7 +68,11 @@ public class DeGiayController {
 
     @PostMapping("/addDeGiayModal")
     public String addDeGiayModal(@ModelAttribute("degiay") DeGiay deGiay) {
+        String trimmedTenDeGiay = (deGiay.getTen() != null)
+                ? deGiay.getTen().trim().replaceAll("\\s+", " ")
+                : null;
         LocalDateTime currentTime = LocalDateTime.now();
+        deGiay.setTen(trimmedTenDeGiay);
         deGiay.setTrangthai(true);
         deGiay.setNgaytao(currentTime);
         deGiay.setLancapnhatcuoi(currentTime);
@@ -97,7 +82,11 @@ public class DeGiayController {
 
     @PostMapping("/addDeGiaySua")
     public String addDeGiaySua(@ModelAttribute("degiay") DeGiay deGiay, @RequestParam("spctId") Integer spctId) {
+        String trimmedTenDeGiay = (deGiay.getTen() != null)
+                ? deGiay.getTen().trim().replaceAll("\\s+", " ")
+                : null;
         LocalDateTime currentTime = LocalDateTime.now();
+        deGiay.setTen(trimmedTenDeGiay);
         deGiay.setTrangthai(true);
         deGiay.setNgaytao(currentTime);
         deGiay.setLancapnhatcuoi(currentTime);
@@ -109,6 +98,4 @@ public class DeGiayController {
     public List<DeGiay> getDS() {
         return deGiayImp.findAll();
     }
-
-
 }

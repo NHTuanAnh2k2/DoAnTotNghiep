@@ -20,18 +20,12 @@ import java.util.function.Function;
 @Component
 @AllArgsConstructor
 public class JWTGenerator {
-    //    private static final Key key = new SecretKeySpec(Base64.getDecoder().decode(SecurityConstants.JWT_SECRET), SignatureAlgorithm.HS512.getJcaName());
-    private final String signInKey = "7A25432A462D4A614E645266556A586E3272357538782F413F4428472B4B6250";
-    public static final long JWT_EXPIRATION = 3600 * 1000;
-
-    private SecretKey getSignInKey() {
-        byte[] key = Base64.getDecoder().decode(signInKey);
-        return Keys.hmacShaKeyFor(key);
-    }
+//        private static final Key key = new SecretKeySpec(Base64.getDecoder().decode(SecurityConstants.JWT_SECRET), SignatureAlgorithm.HS512.getJcaName());
+    private final Key signInKey = new SecretKeySpec(Base64.getDecoder().decode(SecurityConstants.JWT_SECRET), SignatureAlgorithm.HS512.getJcaName());
 
     private Claims getClaims(String token) {
         return Jwts.parser()
-                .setSigningKey(getSignInKey())
+                .setSigningKey(SecurityConstants.JWT_SECRET)
                 .build()
                 .parseSignedClaims(token)
                 .getBody();
@@ -61,8 +55,7 @@ public class JWTGenerator {
         System.out.println(token);
         return token;
     }
-
-
+    
     public boolean validateToken(String token) {
         try {
             Jwts.parser()

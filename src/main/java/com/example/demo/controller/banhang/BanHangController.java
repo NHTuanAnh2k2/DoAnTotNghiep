@@ -21,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -68,6 +69,8 @@ public class BanHangController {
 
     @Autowired
     HoaDonService daoHD;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Autowired
     HoaDonChiTietService daoHDCT;
@@ -118,6 +121,11 @@ public class BanHangController {
         hoadonCho.setNgaytao(Timestamp.valueOf(currentDateTime));
         daoHD.capNhatHD(hoadonCho);
         List<HoaDon> lst = daoHD.timTheoTrangThaiVaLoai(0, false);
+        if (lst.size() > 0) {
+            hdHienTai = lst.get(0);
+        } else {
+            hdHienTai = new HoaDon();
+        }
         return ResponseEntity.ok(lst);
     }
 
@@ -150,7 +158,11 @@ public class BanHangController {
 
     // lựa chọn khách hàng tại hóa đơn tại quầy khi khách hàng cung cấp thông tin
     @GetMapping("ChoseKH/{id}")
-    public String choseNV(@PathVariable("id") Integer id, Model model) {
+    public String choseNV(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
+        if (this.hdHienTai == null) {
+            redirectAttributes.addFlashAttribute("checkChoseKH", true);
+            return "redirect:/hoa-don/ban-hang";
+        }
         HoaDon hdset = hdHienTai;
         Optional<KhachHang> kh = daoKH.findById(id);
         KhachHang khach = kh.get();
@@ -200,7 +212,11 @@ public class BanHangController {
 
     // thêm sản phẩm tại hdct
     @GetMapping("ChoseSP/{id}")
-    public String choseSP(@PathVariable("id") Integer id) {
+    public String choseSP(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
+        if (this.hdHienTai == null) {
+            redirectAttributes.addFlashAttribute("checkChoseSp", true);
+            return "redirect:/hoa-don/ban-hang";
+        }
         SanPhamChiTiet spct = daoSPCT.findById(id);
         SanPhamChiTiet spctCapNhatSL = spct;
         spctCapNhatSL.setSoluong(spctCapNhatSL.getSoluong() - 1);
@@ -215,6 +231,7 @@ public class BanHangController {
             hdct.setSoluong(sl);
             daoSPCT.addSPCT(spctCapNhatSL);
             daoHDCT.capnhat(hdct);
+            redirectAttributes.addFlashAttribute("choseUpdate", true);
             return "redirect:/hoa-don/ban-hang";
         }
         HoaDonChiTiet hdctNew = new HoaDonChiTiet();
@@ -225,12 +242,17 @@ public class BanHangController {
         hdctNew.setGiasanpham(spct.getGiatien());
         daoSPCT.addSPCT(spctCapNhatSL);
         daoHDCT.capnhat(hdctNew);
+        redirectAttributes.addFlashAttribute("choseSPsucsess", true);
         return "redirect:/hoa-don/ban-hang";
     }
 
     //chọn sản phẩm bằng QR
     @GetMapping("ChoseSPQR/{id}")
-    public String choseSPQR(@PathVariable("id") String id) {
+    public String choseSPQR(@PathVariable("id") String id, RedirectAttributes redirectAttributes) {
+        if (this.hdHienTai == null) {
+            redirectAttributes.addFlashAttribute("checkChoseSp", true);
+            return "redirect:/hoa-don/ban-hang";
+        }
         SanPhamChiTiet spct = daoSPCT.findBySanPhambyMa(id).get(0);
         SanPhamChiTiet spctCapNhatSL = spct;
         spctCapNhatSL.setSoluong(spctCapNhatSL.getSoluong() - 1);
@@ -245,6 +267,7 @@ public class BanHangController {
             hdct.setSoluong(sl);
             daoSPCT.addSPCT(spctCapNhatSL);
             daoHDCT.capnhat(hdct);
+            redirectAttributes.addFlashAttribute("choseUpdate", true);
             return "redirect:/hoa-don/ban-hang";
         }
         HoaDonChiTiet hdctNew = new HoaDonChiTiet();
@@ -255,6 +278,7 @@ public class BanHangController {
         hdctNew.setGiasanpham(spct.getGiatien());
         daoSPCT.addSPCT(spctCapNhatSL);
         daoHDCT.capnhat(hdctNew);
+        redirectAttributes.addFlashAttribute("choseSPsucsess", true);
         return "redirect:/hoa-don/ban-hang";
     }
 
@@ -279,6 +303,12 @@ public class BanHangController {
         }
         if (result) {
             redirectAttributes.addFlashAttribute("checkdeleteHD", true);
+        }
+        List<HoaDon> lst = daoHD.timTheoTrangThaiVaLoai(0, false);
+        if (lst.size() > 0) {
+            hdHienTai = lst.get(0);
+        } else {
+            hdHienTai = null;
         }
         return "redirect:/hoa-don/ban-hang";
     }
@@ -345,12 +375,18 @@ public class BanHangController {
     }
 
     @PostMapping("add-nhanh")
-    public String changesTTDH(Model model, @ModelAttribute("AddKHNhanh") AddKHNhanhFormBanHang kh) {
+    public String changesTTDH(Model model, @ModelAttribute("AddKHNhanh") AddKHNhanhFormBanHang kh, RedirectAttributes redirectAttributes) {
+        if (kh.getCheck() == true) {
+            if (this.hdHienTai == null) {
+                redirectAttributes.addFlashAttribute("checkaddKH", true);
+                return "redirect:/hoa-don/ban-hang";
+            }
+        }
         LocalDateTime currentDateTime = LocalDateTime.now();
         NguoiDung nguoidung = new NguoiDung();
-        nguoidung.setHovaten(kh.getTen());
-        nguoidung.setSodienthoai(kh.getSdt());
-        nguoidung.setEmail(kh.getEmail());
+        nguoidung.setHovaten(kh.getTen().trim().replaceAll("\\s+", " "));
+        nguoidung.setSodienthoai(kh.getSdt().trim());
+        nguoidung.setEmail(kh.getEmail().trim());
         nguoidung.setGioitinh(true);
         nguoidung.setNgaysinh(Date.valueOf("2020-06-06"));
         nguoidung.setNgaytao(Timestamp.valueOf(currentDateTime));
@@ -358,26 +394,27 @@ public class BanHangController {
         //fake nhân viên
         nguoidung.setNguoitao("nhân viên");
         String to = kh.getEmail();
-        String taikhoan = processName(kh.getTen());
+        String taikhoan = processName(kh.getTen().trim());
         String matkhau = "12345";
         String subject = "Chúc mừng bạn đã đăng kí thành công tài khoản T&T shop";
         String mailType = "";
         String mailContent = "Tài khoản của bạn là: " + taikhoan + "\nMật khẩu của bạn là: " + matkhau;
         nguoidung.setTaikhoan(taikhoan);
-        nguoidung.setMatkhau(matkhau);
+        nguoidung.setMatkhau(passwordEncoder.encode(matkhau));
         daoNguoiDung.save(nguoidung);
-        NguoiDung nguoidungtim = daoNguoiDung.findByEmail(kh.getEmail());
+        NguoiDung nguoidungtim = daoNguoiDung.findByEmail(kh.getEmail().trim());
         DiaChi diachi = new DiaChi();
-        diachi.setTenduong(kh.getDiachi());
+        diachi.setTenduong(kh.getDiachi().trim().replaceAll("\\s+", " "));
         diachi.setXaphuong(kh.getXa());
         diachi.setQuanhuyen(kh.getHuyen());
         diachi.setTinhthanhpho(kh.getTinh());
+        diachi.setSdtnguoinhan(kh.getSdt().trim());
+        diachi.setHotennguoinhan(kh.getTen().trim().replaceAll("\\s+", " "));
+        diachi.setNgaytao(Timestamp.valueOf(currentDateTime));
         diachi.setNguoidung(nguoidungtim);
         diachi.setTrangthai(true);
         daoDiaChi.save(diachi);
-        KhachHang newkhGanNhat = daoKH.findKHGanNhat().get(0);
-        Integer maSoKHCu = Integer.valueOf(newkhGanNhat.getMakhachhang().substring(2)) + 1;
-        String newMaKH = "KH" + maSoKHCu;
+        String newMaKH = "KH" + taoChuoiNgauNhien(7, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
         KhachHang khAdd = new KhachHang();
         khAdd.setMakhachhang(newMaKH);
         khAdd.setNguoidung(nguoidungtim);
@@ -389,11 +426,11 @@ public class BanHangController {
         daoKH.save(khAdd);
         KhachHang khTim = daoKH.findByNguoiDung(nguoidungtim.getId());
         String diaChiHD = kh.getDiachi() + ", " + kh.getXa() + ", " + kh.getHuyen() + ", " + kh.getTinh();
-        hdHienTai.setDiachi(diaChiHD);
-        hdHienTai.setTennguoinhan(kh.getTen());
-        hdHienTai.setSdt(kh.getSdt());
-        hdHienTai.setEmail(kh.getEmail());
-        daoHD.capNhatHD(hdHienTai);
+//        hdHienTai.setDiachi(diaChiHD);
+//        hdHienTai.setTennguoinhan(kh.getTen());
+//        hdHienTai.setSdt(kh.getSdt());
+//        hdHienTai.setEmail(kh.getEmail());
+//        daoHD.capNhatHD(hdHienTai);
 
 
         if (kh.getCheck()) {
@@ -404,9 +441,10 @@ public class BanHangController {
             hdHienTai.setEmail(kh.getEmail());
             daoHD.capNhatHD(hdHienTai);
             nguoiDung.sendEmail(to, subject, mailType, mailContent);
+            redirectAttributes.addFlashAttribute("checkaddKHSucsses", true);
             return "redirect:/hoa-don/ban-hang";
         }
-
+        redirectAttributes.addFlashAttribute("checkaddKHSucsses", true);
         nguoiDung.sendEmail(to, subject, mailType, mailContent);
         return "redirect:/hoa-don/ban-hang";
     }
@@ -432,6 +470,14 @@ public class BanHangController {
             // phiếu vnđ
             sotiengiam = new BigDecimal(phieugiamsaoluu.getGiatrigiam());
         }
+        return ResponseEntity.ok(phieutim);
+    }
+
+    //checkphieu
+    @GetMapping("check-phieu/{id}")
+    @ResponseBody
+    public ResponseEntity<?> checkphieu(@PathVariable("id") String id) {
+        PhieuGiamGia phieutim = daoPGG.findPhieuGiamGiaById(Integer.valueOf(id));
         return ResponseEntity.ok(phieutim);
     }
 //hiển thị all phiếu giảm
@@ -745,6 +791,7 @@ public class BanHangController {
             hdset.setTongtien(tienTong);
             hdset.setPhivanchuyen(new BigDecimal("0.00"));
             hdset.setDiachi("ngõ 11, Phường Phương Canh, Quận Nam Từ Liêm, Thành phố Hà Nội");
+            hdset.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
             if (hdset.getKhachhang() != null) {
                 hdset.setTennguoinhan(hdset.getKhachhang().getNguoidung().getHovaten());
                 hdset.setSdt(hdset.getKhachhang().getNguoidung().getSodienthoai());
@@ -754,15 +801,17 @@ public class BanHangController {
             }
 
             daoHD.capNhatHD(hdset);
-            //tạo phiếu giảm giá chi tiết
-            phieugiamgiachtietset.setHoadon(hdset);
-            phieugiamgiachtietset.setPhieugiamgia(phieugiamsaoluu);
-            phieugiamgiachtietset.setGiasauapdung(hdset.getTongtien());
-            phieugiamgiachtietset.setGiabandau(tongtienhoadonhientai);
-            phieugiamgiachtietset.setTiengiam(sotiengiam);
             LocalDateTime currentDateTime = LocalDateTime.now();
-            phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
-            daoPGGCT.save(phieugiamgiachtietset);
+            //tạo phiếu giảm giá chi tiết
+            if (phieugiamsaoluu.getMacode() != null) {
+                phieugiamgiachtietset.setHoadon(hdset);
+                phieugiamgiachtietset.setPhieugiamgia(phieugiamsaoluu);
+                phieugiamgiachtietset.setGiasauapdung(hdset.getTongtien());
+                phieugiamgiachtietset.setGiabandau(tongtienhoadonhientai);
+                phieugiamgiachtietset.setTiengiam(sotiengiam);
+                phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
+                daoPGGCT.save(phieugiamgiachtietset);
+            }
             // lịch sử hóa đơn 0
             LichSuHoaDon lichSuHoaDon1 = new LichSuHoaDon();
             lichSuHoaDon1.setNhanvien(nvfake);
@@ -828,10 +877,12 @@ public class BanHangController {
             hdset1.setPhivanchuyen(new BigDecimal(convertCurrency(thongTin.getPhivanchuyen())));
             hdset1.setTongtien((tienTong.add(hdset1.getPhivanchuyen())).subtract(sotiengiam));
             //set địa chỉ
-            hdset1.setDiachi(thongTin.getDiachi() + ", " + thongTin.getXa() + ", " + thongTin.getHuyen() + ", " + thongTin.getTinh());
-            hdset1.setTennguoinhan(thongTin.getTen());
-            hdset1.setSdt(thongTin.getSdt());
-            hdset1.setEmail(thongTin.getEmail());
+            hdset1.setDiachi(thongTin.getDiachi().trim().replaceAll("\\s+", " ") + ", " + thongTin.getXa() + ", " + thongTin.getHuyen() + ", " + thongTin.getTinh());
+            hdset1.setTennguoinhan(thongTin.getTen().trim().replaceAll("\\s+", " "));
+            hdset1.setSdt(thongTin.getSdt().trim());
+            hdset1.setNgayxacnhan(Timestamp.valueOf(LocalDateTime.now()));
+            hdset1.setEmail(thongTin.getEmail().trim());
+            hdset1.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
 //            hdset1.setNgaygiaodukien();
             long unixTimestamp = Long.valueOf(thongTin.getNgaygiaodukien());
             // Convert Unix timestamp to milliseconds
@@ -851,13 +902,17 @@ public class BanHangController {
             }
             hoaDonCheckBill = hdset1;
             daoHD.capNhatHD(hdset1);
-            phieugiamgiachtietset.setHoadon(hdset1);
-            phieugiamgiachtietset.setPhieugiamgia(phieugiamsaoluu);
-            phieugiamgiachtietset.setGiasauapdung(hdset1.getTongtien());
-            phieugiamgiachtietset.setGiabandau(tongtienhoadonhientai);
-            phieugiamgiachtietset.setTiengiam(sotiengiam);
             LocalDateTime currentDateTime = LocalDateTime.now();
-            phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
+            if (phieugiamsaoluu.getMacode() != null) {
+                phieugiamgiachtietset.setHoadon(hdset1);
+                phieugiamgiachtietset.setPhieugiamgia(phieugiamsaoluu);
+                phieugiamgiachtietset.setGiasauapdung(hdset1.getTongtien());
+                phieugiamgiachtietset.setGiabandau(tongtienhoadonhientai);
+                phieugiamgiachtietset.setTiengiam(sotiengiam);
+
+                phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
+            }
+
             //trả sau thì cần  fake luôn lịch sử đã xác nhận
             LichSuHoaDon lichSuHoaDon = new LichSuHoaDon();
             //fake nhân viên
@@ -914,14 +969,13 @@ public class BanHangController {
             //set phí vận chuyển
             hdset1.setPhivanchuyen(new BigDecimal(convertCurrency(thongTin.getPhivanchuyen())));
             //set địa chỉ
-            hdset1.setDiachi(thongTin.getDiachi() + ", " + thongTin.getXa() + ", " + thongTin.getHuyen() + ", " + thongTin.getTinh());
-            hdset1.setTennguoinhan(thongTin.getTen());
-            hdset1.setSdt(thongTin.getSdt());
-            hdset1.setEmail(thongTin.getEmail());
+            hdset1.setDiachi(thongTin.getDiachi().trim().replaceAll("\\s+", " ") + ", " + thongTin.getXa() + ", " + thongTin.getHuyen() + ", " + thongTin.getTinh());
+            hdset1.setTennguoinhan(thongTin.getTen().trim().replaceAll("\\s+", " "));
+            hdset1.setSdt(thongTin.getSdt().trim());
+            hdset1.setEmail(thongTin.getEmail().trim());
+            hdset1.setNgayxacnhan(Timestamp.valueOf(LocalDateTime.now()));
+            hdset1.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
             //hdset1.setNgaygiaodukien();
-
-
-            System.out.println("abcabcabc");
             long unixTimestamp = Long.valueOf(thongTin.getNgaygiaodukien());
             // Convert Unix timestamp to milliseconds
             long milliseconds = unixTimestamp * 1000;
@@ -939,16 +993,18 @@ public class BanHangController {
                 hdset1.setHoatoc(false);
             }
             daoHD.capNhatHD(hdset1);
-            phieugiamgiachtietset.setHoadon(hdset1);
-            phieugiamgiachtietset.setPhieugiamgia(phieugiamsaoluu);
-            System.out.println("aaaaaaaaa");
-            System.out.println(phieugiamsaoluu.getMacode());
-            phieugiamgiachtietset.setGiasauapdung(hdset1.getTongtien());
-            phieugiamgiachtietset.setGiabandau(tongtienhoadonhientai);
-            phieugiamgiachtietset.setTiengiam(sotiengiam);
             LocalDateTime currentDateTime = LocalDateTime.now();
-            phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
-            daoPGGCT.save(phieugiamgiachtietset);
+            if (phieugiamsaoluu.getMacode() != null) {
+                phieugiamgiachtietset.setHoadon(hdset1);
+                phieugiamgiachtietset.setPhieugiamgia(phieugiamsaoluu);
+                phieugiamgiachtietset.setGiasauapdung(hdset1.getTongtien());
+                phieugiamgiachtietset.setGiabandau(tongtienhoadonhientai);
+                phieugiamgiachtietset.setTiengiam(sotiengiam);
+                phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
+                daoPGGCT.save(phieugiamgiachtietset);
+            }
+
+
             LichSuHoaDon lichSuHoaDon = new LichSuHoaDon();
             //fake nhân viên
             NhanVien nvfake = new NhanVien();
@@ -1078,6 +1134,15 @@ public class BanHangController {
     ) {
         HoaDonChiTiet hdct = daoHDCT.findByID(Integer.valueOf(id));
         return ResponseEntity.ok(hdct);
+    }
+
+    private String taoChuoiNgauNhien(int doDaiChuoi, String kiTu) {
+        Random random = new Random();
+        StringBuilder chuoiNgauNhien = new StringBuilder(doDaiChuoi);
+        for (int i = 0; i < doDaiChuoi; i++) {
+            chuoiNgauNhien.append(kiTu.charAt(random.nextInt(kiTu.length())));
+        }
+        return chuoiNgauNhien.toString();
     }
 
     @GetMapping("in-don-tai-quay")

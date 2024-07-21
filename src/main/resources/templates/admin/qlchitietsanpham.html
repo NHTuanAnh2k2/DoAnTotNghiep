@@ -7,14 +7,13 @@
         opacity: 1 !important;
         background-color: rgba(249, 72, 42, 0.1); /* Optional: Adding a slight background color for better visibility */
     }
-    tr {
-    }
 </style>
 <style>
     #editButton.disabled {
         pointer-events: none;
         opacity: 0.5;
     }
+
     .carousel-img {
         width: 100px; /* Thiết lập chiều rộng là 100% */
         height: 70px; /* Tự động tính toán chiều cao dựa trên tỷ lệ của ảnh */
@@ -54,12 +53,6 @@
                             QUẢN LÝ CHI TIẾT SẢN PHẨM
                         </h1>
                     </div>
-<!--                    <div class="col-sm-6">-->
-<!--                        <ol class="breadcrumb float-sm-right">-->
-<!--                            <li class="breadcrumb-item"><a href="#">Home</a></li>-->
-<!--                            <li class="breadcrumb-item active">QUẢN LÝ CHI TIẾT SẢN PHẨM</li>-->
-<!--                        </ol>-->
-<!--                    </div>-->
                 </div>
             </div><!-- /.container-fluid -->
         </section>
@@ -184,10 +177,14 @@
                         <form th:method="post" th:action="@{/updateGiaAndSoLuongCTSP}" id="submitid"
                               onsubmit="return validateForm()" name="updateSLGT">
                             <div class="d-flex">
-                                <a th:href="@{/allSPCT}" style="margin-left: 850px;margin-bottom: 10px"
+                                <a th:href="@{/allSPCT}"
+                                   style="margin-left: 850px; margin-bottom: 10px; height: 37px; line-height: 25px;"
                                    class="btn btn-dark">Tất cả</a>
-                                <a id="editButton" class="btn disabled" style="margin-left: 10px;margin-bottom: 15px;background-color:rgb(249,72,42);color: white"
-                                   data-bs-toggle="modal" data-bs-target="#chinhsuasoluongvagia">Chỉnh sửa số lượng và giá
+
+                                <a id="editButton" class="btn disabled"
+                                   style="margin-left: 10px;margin-bottom: 15px;background-color:rgb(249,72,42);color: white"
+                                   data-bs-toggle="modal" data-bs-target="#chinhsuasoluongvagia">Chỉnh sửa số lượng và
+                                    giá
                                     chung</a>
                             </div>
                             <input type="hidden" name="choncheckbox" value="-1">
@@ -204,17 +201,19 @@
                                         </div>
                                         <div class="modal-body">
                                             <p>Số lượng:
-                                                <input id="soluong" type="number" class="form-control" name="soluong" min="1">
+                                                <input id="soluong" type="number" class="form-control" name="soluong">
                                                 <span id="soluongError" style="color: red; font-style: italic"></span>
                                             </p>
                                             <p>Đơn giá:
-                                                <input id="giatien" class="form-control" name="giatienDisplay" onkeyup="formatCurrency('giatien')">
+                                                <input id="giatien" class="form-control" name="giatienDisplay"
+                                                       onkeyup="formatCurrency('giatien')">
                                                 <input type="hidden" name="giatien" id="giatienRawInput">
                                                 <span id="giatienError" style="color: red; font-style: italic"></span>
                                             </p>
                                         </div>
                                         <p style="margin-left: 400px">
-                                            <button class="btn" style="background-color:rgb(249,72,42);color: white" onclick="layGiaTri2()"
+                                            <button class="btn" style="background-color:rgb(249,72,42);color: white"
+                                                    onclick="layGiaTri2()"
                                                     type="submit">Cập nhật
                                             </button>
                                         </p>
@@ -240,7 +239,9 @@
                                     <thead style="background-color:rgb(249,72,42);height: 50px;color: white">
                                     <tr>
                                         <th style="padding-left: 30px">
-                                            <input type="checkbox" name="chontatcactsp" id="chontatcactsp" onchange="selectAll(this)" class="form-check-input checkbox checkbox-red">
+                                            <input type="checkbox" name="chontatcactsp" id="chontatcactsp"
+                                                   onchange="selectAll(this)"
+                                                   class="form-check-input checkbox checkbox-red">
                                         </th>
                                         <th>STT</th>
                                         <th>Mã</th>
@@ -259,7 +260,8 @@
                                     <tr th:each="spct, stt : ${sanphamchitiet}">
                                         <td>
                                             <input type="checkbox" class="form-check-input checkbox checkbox-red"
-                                                   th:value="${spct.id}" onchange="toggleRowHighlight(this)" name="chonspct">
+                                                   th:value="${spct.id}" onchange="toggleRowHighlight(this)"
+                                                   name="chonspct">
                                         </td>
                                         <td>
                                             <span style="margin-left: 7px" th:text="${stt.index+1}"></span>
@@ -270,6 +272,9 @@
                                                 <div class="carousel-inner">
                                                     <th:block th:each="anhs, index : ${spct.anh}">
                                                         <div th:classappend="${index.index == 0} ? 'carousel-item active' : 'carousel-item'">
+                                                            <!--                                                            <img th:if="${anhs.tenanh != null}"-->
+                                                            <!--                                                                 th:src="@{${anhs.tenanh}}"-->
+                                                            <!--                                                                 class="d-block w-100 carousel-img rounded-3" alt="Ảnh">-->
                                                             <img th:if="${anhs.tenanh != null}"
                                                                  th:src="@{'/upload' + ${anhs.tenanh.substring(anhs.tenanh.lastIndexOf('upload') + 6)}}"
                                                                  class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
@@ -300,7 +305,8 @@
                                         <td th:text="${spct.kichco.ten}"></td>
                                         <td th:text="${spct.mausac.ten}"></td>
                                         <td>
-                                            <a th:href="@{/updateCTSP/{id}(id=${spct.id})}" style="color:rgb(249,72,42)">
+                                            <a th:href="@{/updateCTSP/{id}(id=${spct.id})}"
+                                               style="color:rgb(249,72,42)">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
                                                      fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
@@ -311,7 +317,6 @@
                                     </tr>
                                     </tbody>
                                 </table>
-
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -397,24 +402,29 @@
         var giatienError = document.getElementById("giatienError");
 
         // Kiểm tra trường "Số lượng"
+        // Kiểm tra xem trường "Số lượng" có trống không
         if (soluong.trim() === "") {
-            soluongError.innerText = "Vui lòng nhập số lượng";
+            soluongError.innerText = "Vui lòng nhập số lượng.";
             return false; // Ngăn form được gửi đi
-        } else if (soluong < 0) {
-            soluongError.innerText = "Số lượng phải >= 0";
+        } else if (soluong <= 0) {
+            soluongError.innerText = "Số lượng phải lớn hơn 0.";
+            return false; // Ngăn form được gửi đi
+        } else if (soluong > 100) {
+            soluongError.innerText = "Số lượng không được vượt quá 100.";
             return false; // Ngăn form được gửi đi
         } else {
             soluongError.innerText = ""; // Xóa thông báo lỗi nếu có
         }
+
 
         // Kiểm tra trường "Giá tiền"
         if (giatien.trim() === "") {
             giatienError.innerText = "Vui lòng nhập giá tiền";
             return false; // Ngăn form được gửi đi
         }
-        // else if (!(/^\d+$/.test(giatien))) {
-        //     giatienError.innerText = "Giá tiền chỉ được chứa số";
-        //     return false; // Ngăn form được gửi đi
+            // else if (!(/^\d+$/.test(giatien))) {
+            //     giatienError.innerText = "Giá tiền chỉ được chứa số";
+            //     return false; // Ngăn form được gửi đi
         // }
         else if (giatien < 0) {
             giatienError.innerText = "Giá tiền phải >= 0";
@@ -449,15 +459,11 @@
                         toast.onmouseleave = Swal.resumeTimer;
                     }
                 });
-
-                Toast.fire({
-                    icon: "success",
-                    title: "Sửa thành công!"
-                });
-
                 setTimeout(function () {
+                    // Lưu thông báo vào sessionStorage
+                    sessionStorage.setItem('successMessageSuaGia', 'Sửa thành công!');
                     document.updateSLGT.submit();
-                }, 3000);
+                });
             }
         });
 
@@ -502,5 +508,55 @@
             rawInput.value = ''; // Đảm bảo input ẩn được xóa nếu không có giá trị hợp lệ
             input.value = '';
         }
+    }
+</script>
+
+<!--thông báo sửa số lượng và giá thành công-->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const successMessage = sessionStorage.getItem('successMessageSuaGia');
+        if (successMessage) {
+            // Hiển thị thông báo ở góc bên phải màn hình
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: 'success',
+                title: successMessage
+            });
+            sessionStorage.removeItem('successMessageSuaGia');
+        }
+    });
+</script>
+
+<!--thông báo xác nhận-->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var success = /*[[${success}]]*/ false;
+    /*]]>*/
+    if (success === true) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: "success",
+            title: "Sửa thành công!"
+        });
     }
 </script>

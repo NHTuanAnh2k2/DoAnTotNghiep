@@ -23,9 +23,11 @@ public class ThuongHieuRestController {
         if (updatedThuongHieu == null) {
             return ResponseEntity.notFound().build();
         }
-        existingThuongHieu.setTen(updatedThuongHieu.getTen());
+        String trimmedTenThuongHieu = (updatedThuongHieu.getTen() != null)
+                ? updatedThuongHieu.getTen().trim().replaceAll("\\s+", " ")
+                : null;
+        existingThuongHieu.setTen(trimmedTenThuongHieu);
         thuongHieuRepository.save(existingThuongHieu);
-        // Trả về redirect
         return ResponseEntity.ok("redirect:/listthuonghieu");
     }
 

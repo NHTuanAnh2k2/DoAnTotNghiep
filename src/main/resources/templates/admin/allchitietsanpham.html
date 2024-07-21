@@ -49,15 +49,9 @@
                                 <path fill-rule="evenodd"
                                       d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6 6a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z"/>
                             </svg>
-                            QUẢN LÝ CHI TIẾT SẢN PHẨM
+                            QUẢN LÝ SẢN PHẨM CHI TIẾT
                         </h1>
                     </div>
-<!--                    <div class="col-sm-6">-->
-<!--                        <ol class="breadcrumb float-sm-right">-->
-<!--                            <li class="breadcrumb-item"><a href="#">Home</a></li>-->
-<!--                            <li class="breadcrumb-item active">QUẢN LÝ CHI TIẾT SẢN PHẨM</li>-->
-<!--                        </ol>-->
-<!--                    </div>-->
                 </div>
             </div><!-- /.container-fluid -->
         </section>
@@ -78,16 +72,17 @@
                                 <br>
                                 <hr class="border border-danger border opacity-50">
                                 <form th:method="get" th:object="${search}">
-                                    <h3 class="card-title" style="width: 500px;font-weight: bold">Tìm kiếm:
-                                        <input type="text" placeholder="Tìm kiếm tên sản phẩm" class="form-control"
-                                               name="key">
+                                    <h3 class="card-title" style="width: 1195px;font-weight: bold">
+                                        <input type="text" placeholder="Tìm kiếm tên sản phẩm hoặc mã sản phẩm chi tiết " class="form-control"
+                                               name="key" th:value="${fillSearch}">
                                     </h3>
-                                    <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Thương hiệu:
+                                    <h3 class="card-title" style="margin-left: 10px;font-weight: bold">Thương hiệu:
                                         <select class="form-control" name="idThuongHieu"
                                                 style="color: rgb(249,72,42); font-weight: bold;width: 150px">
-                                            <option value="">-----</option>
+                                            <option value="" th:selected="${fillThuongHieu == null}">Tất cả</option>
                                             <option th:each="thuonghieu : ${th}"
                                                     th:value="${thuonghieu.id}"
+                                                    th:selected="${thuonghieu.id == fillThuongHieu}"
                                                     th:text="${thuonghieu.ten}">
                                             </option>
                                         </select>
@@ -95,9 +90,10 @@
                                     <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Đế giày:
                                         <select class="form-control" name="idDeGiay"
                                                 style="color: rgb(249,72,42); font-weight: bold;width: 150px">
-                                            <option value="">-----</option>
+                                            <option value="" th:selected="${fillDeGiay == null}">Tất cả</option>
                                             <option th:each="degiay : ${dg}"
                                                     th:value="${degiay.id}"
+                                                    th:selected="${degiay.id == fillDeGiay}"
                                                     th:text="${degiay.ten}">
                                             </option>
                                         </select>
@@ -105,9 +101,10 @@
                                     <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Kích cỡ:
                                         <select class="form-control" name="idKichCo"
                                                 style="color: rgb(249,72,42); font-weight: bold;width: 150px">
-                                            <option value="">-----</option>
+                                            <option value="" th:selected="${fillKichCo == null}">Tất cả</option>
                                             <option th:each="kichco : ${kc}"
                                                     th:value="${kichco.id}"
+                                                    th:selected="${kichco.id == fillKichCo}"
                                                     th:text="${kichco.ten}">
                                             </option>
                                         </select>
@@ -115,27 +112,21 @@
                                     <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Màu sắc:
                                         <select class="form-control" name="idMauSac"
                                                 style="color: rgb(249,72,42); font-weight: bold;width: 150px">
-                                            <option value="">-----</option>
+                                            <option value="" th:selected="${fillMauSac == null}">Tất cả</option>
                                             <option th:each="mausac : ${ms}"
                                                     th:value="${mausac.id}"
+                                                    th:selected="${mausac.id == fillMauSac}"
                                                     th:text="${mausac.ten}">
                                             </option>
                                         </select>
                                     </h3>
-                                    <h3 class="card-title" style="margin-left: 5px;font-weight: bold">
-                                        Khoảng giá: <span id="priceRangeValue">50</span>
-                                        <div class="slidecontainer" style="width: 495px;">
-                                            <input type="range" min="1" max="100" value="50" style="width: 100%;"
-                                                   id="priceRange">
-                                        </div>
-                                    </h3>
-
                                     <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Chất liệu:
                                         <select class="form-control" name="idChatLieu"
-                                                style="color: rgb(249,72,42); font-weight: bold;width: 150px">
-                                            <option value="">-----</option>
+                                                style="color: rgb(249,72,42); font-weight: bold; width: 150px">
+                                            <option value="" th:selected="${fillChatLieu == null}">Tất cả</option>
                                             <option th:each="chatlieu : ${cl}"
                                                     th:value="${chatlieu.id}"
+                                                    th:selected="${chatlieu.id == fillChatLieu}"
                                                     th:text="${chatlieu.ten}">
                                             </option>
                                         </select>
@@ -143,27 +134,26 @@
                                     <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Giới tính:
                                         <select id="statusSelect" class="form-control" name="gioitinh"
                                                 style="color: rgb(249,72,42); font-weight: bold;width: 150px">
-                                            <option value="">-----</option>
-                                            <option value="1">Nam</option>
-                                            <option value="0">Nữ</option>
+                                            <option value="" th:selected="${fillGioiTinh == null}">Tất cả</option>
+                                            <option value="true" th:selected="${fillGioiTinh != null && fillGioiTinh}">Nam</option>
+                                            <option value="false" th:selected="${fillGioiTinh != null && !fillGioiTinh}">Nữ</option>
                                         </select>
                                     </h3>
                                     <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Trạng thái:
-                                        <select id="" class="form-control" name="gioitinh"
+                                        <select id="" class="form-control" name="trangthai"
                                                 style="color: rgb(249,72,42); font-weight: bold;width: 150px">
-                                            <option value="">-----</option>
-                                            <option value="1">Đang kinh doanh</option>
-                                            <option value="0">Ngừng kinh doanh</option>
+                                            <option value="" th:selected="${fillTrangThai == null}">Tất cả</option>
+                                            <option value="true" th:selected="${fillTrangThai != null && fillTrangThai}">Đang kinh doanh</option>
+                                            <option value="false" th:selected="${fillTrangThai != null && !fillTrangThai}">Ngừng kinh doanh</option>
                                         </select>
                                     </h3>
                                     <h3 class="card-title">
                                         <button style="margin-left: 100px;background-color: rgb(249,72,42);color: white" class="btn">Tìm kiếm</button>
-                                        <button class="btn btn-dark">Làm mới bộ lọc</button>
+                                        <a href="/allSPCT" class="btn btn-dark">Làm mới bộ lọc</a>
                                     </h3>
                                     <br>
                                     <br>
                                     <br>
-
                                 </form>
                             </div>
                         </div>
@@ -236,8 +226,6 @@
                                                 </button>
                                             </div>
                                         </td>
-
-
                                         <td th:text="${spct.soluong}"></td>
                                         <td style="color: red;font-weight: bold"
                                             th:text="${#numbers.formatDecimal(spct.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></td>
@@ -280,14 +268,3 @@
 <!--end-->
 </body>
 </html>
-<script>
-    // Lấy phần tử thanh trượt và phần tử hiển thị giá trị
-    var priceRange = document.getElementById("priceRange");
-    var priceRangeValue = document.getElementById("priceRangeValue");
-
-    // Lắng nghe sự kiện khi người dùng thay đổi giá trị thanh trượt
-    priceRange.oninput = function () {
-        // Cập nhật giá trị hiển thị
-        priceRangeValue.innerText = this.value;
-    };
-</script>

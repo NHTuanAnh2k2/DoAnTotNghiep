@@ -5,16 +5,27 @@
 <link rel="stylesheet" type="text/css" href="../sweetalert2/dist/sweetalert2.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <style>
+    .custom-confirm-button {
+        background-color: rgb(249, 72, 42) !important;
+        color: white !important;
+    }
+
+    .custom-cancel-button {
+        background-color: black !important; /* Màu mặc định của nút "Không" nếu cần */
+        color: white !important;
+    }
+</style>
+<style>
     .btn-custom-warning {
-        background-color:rgb(222,255,206);
-        color:rgb(255,33,4);
-        border-color:rgb(255,33,4) ;
+        background-color: rgb(222, 255, 206);
+        color: rgb(255, 33, 4);
+        border-color: rgb(255, 33, 4);
     }
 
     .btn-custom-info {
-        background-color:rgb(222,255,206);
-        color:rgb(7,50,255);
-        border-color:rgb(7,50,255) ;
+        background-color: rgb(222, 255, 206);
+        color: rgb(7, 50, 255);
+        border-color: rgb(7, 50, 255);
     }
 </style>
 <script src="../sweetalert2/dist/sweetalert2.min.js/"></script>
@@ -46,12 +57,12 @@
                             QUẢN LÝ KÍCH CỠ
                         </h1>
                     </div>
-<!--                    <div class="col-sm-6">-->
-<!--                        <ol class="breadcrumb float-sm-right">-->
-<!--                            <li class="breadcrumb-item"><a href="#">Home</a></li>-->
-<!--                            <li class="breadcrumb-item active">QUẢN LÝ KÍCH CỠ</li>-->
-<!--                        </ol>-->
-<!--                    </div>-->
+                    <!--                    <div class="col-sm-6">-->
+                    <!--                        <ol class="breadcrumb float-sm-right">-->
+                    <!--                            <li class="breadcrumb-item"><a href="#">Home</a></li>-->
+                    <!--                            <li class="breadcrumb-item active">QUẢN LÝ KÍCH CỠ</li>-->
+                    <!--                        </ol>-->
+                    <!--                    </div>-->
                 </div>
             </div><!-- /.container-fluid -->
         </section>
@@ -73,27 +84,31 @@
                                 <hr class="border border-danger border opacity-50">
                                 <form id="searchForm" method="get" th:object="${tim}">
                                     <h3 class="card-title">
-                                        <input type="text" id="searchInput"  placeholder="Tìm kiếm kích cỡ" class="form-control" name="key" style="width: 1200px" th:value="${fillSearch}">
+                                        <input type="text" id="searchInput" placeholder="Tìm kiếm kích cỡ"
+                                               class="form-control" name="key" style="width: 980px"
+                                               th:value="${fillSearch}">
                                     </h3>
 
-<!--                                    <h3 class="card-title" style="margin-left: 50px;font-weight: bold">Trạng thái:-->
-<!--                                        <select id="statusSelect" class="form-control" name="trangthai" style="color: rgb(249,72,42); font-weight: bold; width: 150px">-->
-<!--                                            <option value="" th:selected="${fillTrangThai == null}">Tất cả</option>-->
-<!--                                            <option value="true" th:selected="${fillTrangThai != null && fillTrangThai}">Đang kinh doanh</option>-->
-<!--                                            <option value="false" th:selected="${fillTrangThai != null && !fillTrangThai}">Ngừng kinh doanh</option>-->
-<!--                                        </select>-->
-<!--                                    </h3>-->
-<!--                                    <button type="submit" style="margin-left: 100px;background-color:rgb(249,72,42);color: white" class="btn">Tìm kiếm</button>-->
-<!--                                    <input type="button" class="btn btn-dark" value="Làm mới bộ lọc" onclick="clearSearch()" />-->
+                                    <h3 class="card-title" style="margin-left: 50px;font-weight: bold">
+                                        <select id="statusSelect" class="form-control" name="trangthai"
+                                                style="color: rgb(249,72,42); font-weight: bold; width: 150px">
+                                            <option value="" th:selected="${fillTrangThai == null}">Tất cả</option>
+                                            <option value="true"
+                                                    th:selected="${fillTrangThai != null && fillTrangThai}">Đang kinh
+                                                doanh
+                                            </option>
+                                            <option value="false"
+                                                    th:selected="${fillTrangThai != null && !fillTrangThai}">Ngừng kinh
+                                                doanh
+                                            </option>
+                                        </select>
+                                    </h3>
+                                    <!--                                    <button type="submit" style="margin-left: 100px;background-color:rgb(249,72,42);color: white" class="btn">Tìm kiếm</button>-->
+                                    <!--                                    <input type="button" class="btn btn-dark" value="Làm mới bộ lọc" onclick="clearSearch()" />-->
                                 </form>
-
-
                             </div>
-
                         </div>
                         <!-- /.card -->
-
-
                     </div>
                     <!-- /.col -->
                 </div>
@@ -117,8 +132,10 @@
                                     Danh sách kích cỡ
                                 </h3>
                                 <a href="/admin/addsanpham" class="btn"
-                                   style="margin-left: 850px;background-color:rgb(249,72,42);color: white" data-bs-toggle="modal" data-bs-target="#themdegiay">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                   style="margin-left: 850px;background-color:rgb(249,72,42);color: white"
+                                   data-bs-toggle="modal" data-bs-target="#themdegiay">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                         class="bi bi-plus" viewBox="0 0 16 16">
                                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
                                     </svg>
                                     Thêm kích cỡ</a>
@@ -135,13 +152,19 @@
                                                     aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form id="addForm" name="addKichCo" th:method="post" th:object="${kichco}" th:action="@{/addSaveKichCo}" onsubmit="return validateTrung()">
+                                            <form id="addForm" name="addKichCo" th:method="post" th:object="${kichco}"
+                                                  th:action="@{/addSaveKichCo}" onsubmit="return validateTrung()">
                                                 <p>
+                                                    <span style="color: red">* </span>
                                                     Tên kích cỡ:
                                                     <input id="tenInput" class="form-control" th:field="*{ten}"/>
-                                                <div style="color: red; font-weight: initial;font-style: italic" id="errorTen"></div>
+                                                <div style="color: red; font-weight: initial;font-style: italic"
+                                                     id="errorTen"></div>
                                                 </p>
-                                                <button id="submitButton" class="btn" style="margin-left: 400px;background-color:rgb(249,72,42);color: white">Thêm</button>
+                                                <button id="submitButton" class="btn"
+                                                        style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
+                                                    Thêm
+                                                </button>
                                             </form>
                                         </div>
                                     </div>
@@ -156,7 +179,7 @@
                                         <th>STT</th>
                                         <th>Tên kích cỡ</th>
                                         <th>Ngày tạo</th>
-<!--                                        <th>Trạng thái</th>-->
+                                        <th>Trạng thái</th>
                                         <th>Thao tác</th>
                                     </tr>
                                     </thead>
@@ -164,29 +187,36 @@
                                     <tr th:each="kc,stt:${list}">
                                         <td th:text="${stt.index+1}"></td>
                                         <td>
-                                            <span th:if="${#strings.length(kc.ten) > 20}" th:text="${#strings.substring(kc.ten, 0, 20)} + '...'"></span>
-                                            <span th:unless="${#strings.length(kc.ten) > 20}" th:text="${kc.ten}"></span>
+                                            <span th:if="${#strings.length(kc.ten) > 20}"
+                                                  th:text="${#strings.substring(kc.ten, 0, 20)} + '...'"></span>
+                                            <span th:unless="${#strings.length(kc.ten) > 20}"
+                                                  th:text="${kc.ten}"></span>
                                         </td>
                                         <td th:text="${#temporals.format(kc.ngaytao, 'dd-MM-yyyy HH:mm:ss')}"></td>
-<!--                                        <td>-->
-<!--                                            <button style="border-radius: 5px"-->
-<!--                                                    class="btn-xs"-->
-<!--                                                    th:classappend="${kc.trangthai ? 'btn-custom-info' : 'btn-custom-warning'}"-->
-<!--                                                    th:text="${kc.trangthai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>-->
-<!--                                        </td>-->
+                                        <td class="tdSameWidth">
+                                            <form name="updateTrangThaiForm"
+                                                  th:action="@{/kichco/updateTrangThai/{id}(id=${kc.id})}" method="post"
+                                                  onsubmit="return confirmUpdateKichCo(this);">
+                                                <button type="submit"
+                                                        style="width: 170px; background: none; border: none;"
+                                                        th:classappend="${kc.trangthai == true ? 'btn-outline-success' : 'btn-outline-danger'}">
+                                                    <span th:text="${kc.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></span>
+                                                </button>
+                                            </form>
+                                        </td>
                                         <td>
                                             <a style="color: rgb(249,72,42); font-size: 25px;" th:data-id="${kc.id}"
                                                data-bs-toggle="modal" data-bs-target="#capnhatkichco"
                                                onclick="fillShoeSoleNameKichCo(this)">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
-                                            <form th:action="@{/updateKichCo/{id}(id=${kc.id})}" method="post" style="display: inline;">
-                                                <button type="submit" style="background: none; border: none; color: rgb(249,72,42); padding-left: 10px" onclick="return confirm('Bạn có muốn xóa không?')">
-                                                    <a style="color: rgb(249,72,42); font-size: 25px;"> <!-- Thay đổi giá trị font-size theo ý muốn -->
-                                                        <i class="bi bi-trash3-fill"></i>
-                                                    </a>
-                                                </button>
-                                            </form>
+                                            <!--                                            <form th:action="@{/updateKichCo/{id}(id=${kc.id})}" method="post" style="display: inline;">-->
+                                            <!--                                                <button type="submit" style="background: none; border: none; color: rgb(249,72,42); padding-left: 10px" onclick="return confirm('Bạn có muốn xóa không?')">-->
+                                            <!--                                                    <a style="color: rgb(249,72,42); font-size: 25px;"> &lt;!&ndash; Thay đổi giá trị font-size theo ý muốn &ndash;&gt;-->
+                                            <!--                                                        <i class="bi bi-trash3-fill"></i>-->
+                                            <!--                                                    </a>-->
+                                            <!--                                                </button>-->
+                                            <!--                                            </form>-->
                                         </td>
                                     </tr>
                                     </tbody>
@@ -205,17 +235,16 @@
                                             <div class="modal-body">
                                                 <input type="hidden" id="kichCoId">
                                                 <div class="mb-3">
-                                                    <label for="tenKichCo" class="form-label">Tên kích cỡ</label>
+                                                    <span style="color: red">* </span>
+                                                    <label for="tenKichCo" class="form-label">Tên kích cỡ:</label>
                                                     <input type="text" class="form-control" id="tenKichCo">
                                                     <div id="error-message" class="text-danger" style="display: none;">
-                                                        Tên kích cỡ không được để trống.
                                                     </div>
                                                     <div id="length-error-message" class="text-danger"
-                                                         style="display: none;">Tên kích cỡ không được vượt quá 20 ký
-                                                        tự.
+                                                         style="display: none;">
                                                     </div>
                                                     <div id="duplicate-error-message" class="text-danger"
-                                                         style="display: none;">Tên kích cỡ đã tồn tại.
+                                                         style="display: none;">
                                                     </div>
                                                 </div>
                                             </div>
@@ -261,27 +290,37 @@
 
     /*<![CDATA[*/
     var objectsFromController = /*[[${list}]]*/ [];
+    const specialCharPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
 
     function validateTrung() {
         var inputMa = document.getElementById("tenInput").value;
         var errorMa = document.getElementById("errorTen");
         var isMaValid = true;
 
-        // Kiểm tra xem trường "Tên đế giày" có trống không
+        // Kiểm tra xem trường "Tên kích cỡ" có trống không và không vượt quá 20 ký tự
         if (inputMa.trim() === "") {
             errorMa.innerText = "Vui lòng nhập tên kích cỡ.";
+            return false; // Ngăn form được gửi đi
+        } else if (inputMa.trim().length > 20) {
+            errorMa.innerText = "Tên kích cỡ không được vượt quá 20 ký tự.";
+            return false; // Ngăn form được gửi đi
+        } else if (/[^0-9\s]/.test(inputMa.trim())) {
+            errorMa.innerText = "Tên kích cỡ chỉ được phép chứa chữ.";
             return false; // Ngăn form được gửi đi
         } else {
             errorMa.innerText = ""; // Xóa thông báo lỗi nếu có
         }
 
-        // Kiểm tra trùng tên đế giày
+        // Kiểm tra trùng tên kích cỡ (không phân biệt chữ hoa chữ thường và khoảng trắng)
         for (var i = 0; i < objectsFromController.length; i++) {
             var obj = objectsFromController[i];
-            if (inputMa === obj.ten) {
+            // Loại bỏ khoảng trắng và chuyển đổi về chữ thường để so sánh
+            var normalizedInput = inputMa.trim().replace(/\s+/g, ' ').toLowerCase();
+            var normalizedObjName = obj.ten.trim().replace(/\s+/g, ' ').toLowerCase();
+
+            if (normalizedInput === normalizedObjName) {
                 errorMa.innerText = "Tên kích cỡ đã tồn tại!";
-                isMaValid = false;
-                break;
+                return false; // Ngăn form được gửi đi
             }
         }
 
@@ -289,7 +328,6 @@
             errorMa.innerText = "";
             them();
         }
-
         return false;
     }
 
@@ -315,21 +353,17 @@
                         toast.onmouseleave = Swal.resumeTimer;
                     }
                 });
-
-                Toast.fire({
-                    icon: "success",
-                    title: "Thêm thành công!"
-                });
-
                 setTimeout(function () {
+                    sessionStorage.setItem('successMessage', 'Thêm thành công!');
                     document.addKichCo.submit();
-                }, 3000);
+                });
             }
         });
 
         // Ngăn form được gửi đi ngay lập tức
         return false;
     }
+
     /*]]>*/
 </script>
 </body>
@@ -338,10 +372,10 @@
 <!--tìm-->
 <script>
     // Lắng nghe sự kiện change trong các trường input
-    document.getElementById('searchInput').addEventListener('change', function() {
+    document.getElementById('searchInput').addEventListener('change', function () {
         document.getElementById('searchForm').submit(); // Gửi form khi có sự thay đổi
     });
-    document.getElementById('statusSelect').addEventListener('change', function() {
+    document.getElementById('statusSelect').addEventListener('change', function () {
         document.getElementById('searchForm').submit(); // Gửi form khi có sự thay đổi
     });
 </script>
@@ -395,8 +429,8 @@
         const id = document.getElementById('kichCoId').value;
         let ten = document.getElementById('tenKichCo').value;
 
-        // Loại bỏ khoảng trắng ở đầu và cuối
-        ten = ten.trim();
+        // Loại bỏ khoảng trắng ở đầu và cuối và chỉ giữ lại một khoảng trắng giữa các từ
+        ten = ten.trim().replace(/\s+/g, ' ');
 
         const errorMessage = document.getElementById('error-message');
         const lengthErrorMessage = document.getElementById('length-error-message');
@@ -410,20 +444,26 @@
         // Kiểm tra tính hợp lệ
         if (!ten) {
             errorMessage.style.display = 'block';
+            errorMessage.innerText = "Tên kích cỡ không được để trống";
             return;
         }
 
         if (ten.length > 20) {
             lengthErrorMessage.style.display = 'block';
+            lengthErrorMessage.innerText = 'Tên kích cỡ không được vượt quá 20 ký tự.';
+            return;
+        } else if (/[^0-9\s]/.test(ten.trim())) {
+            lengthErrorMessage.style.display = 'block';
+            lengthErrorMessage.innerText = 'Tên kích cỡ không được chứa chữ.';
             return;
         }
-
         // Kiểm tra tên trùng
         fetch(`/checkTenKichCo?ten=${encodeURIComponent(ten)}`)
             .then(response => response.json())
             .then(exists => {
                 if (exists) {
                     duplicateErrorMessage.style.display = 'block';
+                    duplicateErrorMessage.innerText='Tên kích cỡ không được trùng!';
                     return;
                 }
 
@@ -498,3 +538,45 @@
         }
     });
 </script>
+
+<script>
+    function confirmUpdateKichCo(form) {
+        Swal.fire({
+            title: 'Bạn có muốn cập nhật không?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không',
+            // width: '500px',
+            customClass: {
+                confirmButton: 'custom-confirm-button', // Thêm lớp tùy chỉnh cho nút "Có"
+                cancelButton: 'custom-cancel-button'    // Thêm lớp tùy chỉnh cho nút "Không" nếu cần
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và submit form sau một khoảng thời gian
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                setTimeout(function () {
+                    // Lưu thông báo vào sessionStorage
+                    sessionStorage.setItem('successMessage', 'Cập nhật trạng thái thành công!');
+                    // Submit form cụ thể
+                    form.submit();
+                }, 500); // Điều chỉnh thời gian delay nếu cần
+            }
+        });
+
+        // Ngăn form được gửi đi ngay lập tức
+        return false;
+    }
+</script>
+

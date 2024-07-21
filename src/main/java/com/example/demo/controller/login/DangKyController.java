@@ -3,27 +3,28 @@ package com.example.demo.controller.login;
 import com.example.demo.entity.DiaChi;
 import com.example.demo.entity.KhachHang;
 import com.example.demo.entity.NguoiDung;
-import com.example.demo.info.DangKyDCInfo;
-import com.example.demo.info.DangKyKHInfo;
-import com.example.demo.info.DangKyNDInfo;
-import com.example.demo.info.DangNhapNDInfo;
+import com.example.demo.info.*;
 import com.example.demo.security.CustomerUserDetailService;
 import com.example.demo.service.DiaChiService;
 import com.example.demo.service.KhachHangService;
 import com.example.demo.service.NguoiDungService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Controller
 public class DangKyController {
@@ -37,36 +38,59 @@ public class DangKyController {
     @GetMapping("/account")
     public String view(@ModelAttribute("nguoidung") DangKyNDInfo nguoidung,
                        @ModelAttribute("khachhang") DangKyKHInfo khachhang,
-                       @ModelAttribute("dangnhap") DangNhapNDInfo dangnhap
-                       ) {
+                       @ModelAttribute("dangnhap") DangNhapNDInfo dangnhap,
+                       Model model
+    ) {
+        List<KhachHang> lstKh = khachHangService.findAll();
+        List<String> lstEmail = new ArrayList<>();
+        List<String> lstSdt = new ArrayList<>();
+        List<String> lstTaikhoan = new ArrayList<>();
+        for (KhachHang kh : lstKh) {
+            lstEmail.add(kh.getNguoidung().getEmail());
+            lstSdt.add(kh.getNguoidung().getSodienthoai());
+            lstTaikhoan.add(kh.getNguoidung().getTaikhoan());
+        }
 
+        model.addAttribute("lstEmail", lstEmail);
+        model.addAttribute("lstSdt", lstSdt);
+        model.addAttribute("lstTaiKhoan", lstTaikhoan);
         return "customer/login";
     }
 
+    private String taoChuoiNgauNhien(int doDaiChuoi, String kiTu) {
+        Random random = new Random();
+        StringBuilder chuoiNgauNhien = new StringBuilder(doDaiChuoi);
+        for (int i = 0; i < doDaiChuoi; i++) {
+            chuoiNgauNhien.append(kiTu.charAt(random.nextInt(kiTu.length())));
+        }
+        return chuoiNgauNhien.toString();
+    }
+
     @PostMapping("/dangky")
-    public String dangky(@Valid @ModelAttribute("nguoidung") DangKyNDInfo nguoidung,
-                         BindingResult ndBindingResult,
-                         @Valid @ModelAttribute("khachhang") DangKyKHInfo khachhang,
-                         BindingResult khBindingResult,
-                         @Valid @ModelAttribute("diachi") DangKyDCInfo diachi,
-                         @Valid @ModelAttribute("dangnhap") DangNhapNDInfo dangnhap,
-                         BindingResult dcBindingResult,
-                         Model model
+    public String dangky(@ModelAttribute("nguoidung") DangKyNDInfo nguoidung,
+                         @ModelAttribute("khachhang") DangKyKHInfo khachhang,
+                         @ModelAttribute("diachi") DangKyDCInfo diachi,
+                         @ModelAttribute("dangnhap") DangNhapNDInfo dangnhap,
+                         Model model,
+                         RedirectAttributes redirectAttributes
     ) {
 
-        if (ndBindingResult.hasErrors()) {
-            List<ObjectError> ndError = ndBindingResult.getAllErrors();
-            System.out.println(ndError);
-            return "customer/login";
-        } else if (khBindingResult.hasErrors()) {
-            List<ObjectError> khError = khBindingResult.getAllErrors();
-            System.out.println(khError);
-            return "customer/login";
-        } else if (dcBindingResult.hasErrors()) {
-            List<ObjectError> dcError = dcBindingResult.getAllErrors();
-            System.out.println(dcError);
-            return "customer/login";
-        }
+//        if (ndBindingResult.hasErrors()) {
+//            List<ObjectError> ndError = ndBindingResult.getAllErrors();
+//            System.out.println(ndError);
+//            return "customer/login";
+//        } else if (khBindingResult.hasErrors()) {
+//            List<ObjectError> khError = khBindingResult.getAllErrors();
+//            System.out.println(khError);
+//            return "customer/login";
+//        } else if (dcBindingResult.hasErrors()) {
+//            List<ObjectError> dcError = dcBindingResult.getAllErrors();
+//            System.out.println(dcError);
+//            return "customer/login";
+//        }
+        String trimmedTenNguoiDung = (nguoidung.getHovaten() != null)
+                ? nguoidung.getHovaten().trim().replaceAll("\\s+", " ")
+                : null;
 
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = bCryptPasswordEncoder.encode(nguoidung.getMatkhau());
@@ -75,14 +99,13 @@ public class DangKyController {
         //nguoi dung
         LocalDateTime currentDate = LocalDateTime.now();
 
-        System.out.println("AAA");
         System.out.println(nguoidung.getTaikhoan());
         NguoiDung nd = new NguoiDung();
-        nd.setHovaten(nguoidung.getHovaten());
+        nd.setHovaten(trimmedTenNguoiDung);
         nd.setNgaysinh(nguoidung.getNgaysinh());
         nd.setGioitinh(nguoidung.getGioitinh());
-        nd.setEmail(nguoidung.getEmail());
-        nd.setSodienthoai(nguoidung.getSodienthoai());
+        nd.setEmail(nguoidung.getEmail().trim().replaceAll("\\s+", ""));
+        nd.setSodienthoai(nguoidung.getSodienthoai().trim());
         nd.setNgaytao(Timestamp.valueOf(currentDate));
         nd.setLancapnhatcuoi(Timestamp.valueOf(currentDate));
         nd.setTaikhoan(nguoidung.getTaikhoan());
@@ -94,9 +117,7 @@ public class DangKyController {
 
         //Khach hang
         KhachHang kh = new KhachHang();
-        List<KhachHang> lstKhachHang = khachHangService.findAllKhachHang();
-        int total = lstKhachHang.size();
-        String maKH = "KH" + (total + 1);
+        String maKH = "KH" + taoChuoiNgauNhien(7, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
         kh.setMakhachhang(maKH);
         kh.setNguoitao(nd.getNguoitao());
         kh.setNguoicapnhat(nd.getNguoicapnhat());
@@ -107,40 +128,34 @@ public class DangKyController {
         khachHangService.addKhachHang(kh);
 
         DiaChi dc = new DiaChi();
-        dc.setTenduong("");
-        dc.setTinhthanhpho("");
+        dc.setTenduong(" ");
+        dc.setTinhthanhpho(" ");
         dc.setHotennguoinhan(nd.getHovaten());
-        dc.setQuanhuyen("");
-        dc.setXaphuong("");
+        dc.setQuanhuyen(" ");
+        dc.setXaphuong(" ");
         dc.setNguoidung(nd);
         dc.setLancapnhatcuoi(nd.getLancapnhatcuoi());
         dc.setNgaytao(nd.getNgaytao());
         dc.setNguoitao(nd.getNguoitao());
         dc.setNguoicapnhat(nd.getNguoicapnhat());
         dc.setSdtnguoinhan(nd.getSodienthoai());
-        dc.setTrangthai(nd.getTrangthai());
+        dc.setTrangthai(true);
         khachHangService.addDiaChi(dc);
+
+        redirectAttributes.addFlashAttribute("dangkySuccess", true);
 
 //        khachHangService.sendEmail(nd.getEmail(), nd.getTaikhoan(), nd.getMatkhau(), hoten);
 
         return "redirect:/account";
     }
 
-//    @PostMapping("/quenmatkhau")
-//    public String quenmatkhau(@RequestParam("email") String email, Model model) {
-//        NguoiDung nd = khachHangService.findByEmail(email);
-//        SecureRandom random = new SecureRandom();
-//        int CODE_LENGTH = 6;
-//        if (nd != null) {
-//            int code = random.nextInt((int) Math.pow(10, CODE_LENGTH));
-//            khachHangService.sendEmailQuenMatKhau(email, nd.getHovaten(), String.valueOf(code));
-//            model.addAttribute("dangnhap", true);
-//            return "same/quenmatkhau";
-//        } else {
-//            model.addAttribute("message", "Email không tồn tại trong hệ thống.");
-//            model.addAttribute("dangnhap", false);
-//            return "same/quenmatkhau";
-//        }
+//    @PostMapping("/doimatkhau")
+//    public String quenmatkhau(@RequestParam("emailResetPassword") String emailResetPassword,
+//                              RedirectAttributes redirectAttributes,
+//                              Model model) {
+//        NguoiDung nd = khachHangService.findByEmail(emailResetPassword);
+//        khachHangService.sendPasswordResetCode(emailResetPassword, nd.getHovaten());
+//        return "redirect:/account";
 //    }
 
 

@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DangNhapNDInfo {
-    private String taikhoan;
-    private String matkhau;
+    private String username;
+    private String password;
 }

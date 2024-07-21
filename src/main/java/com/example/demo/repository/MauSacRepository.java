@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.entity.DeGiay;
 import com.example.demo.entity.MauSac;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -10,9 +11,13 @@ import java.util.List;
 
 public interface MauSacRepository extends JpaRepository<MauSac, Integer> {
 
+    @Query( value = """
+            SELECT ms FROM MauSac ms WHERE (ms.ten LIKE?1) AND (?2 IS NULL OR ms.trangthai=?2)
+            """)
+    List<MauSac> findByTenAndTrangthai(String ten, Boolean trangthai);
+
     boolean existsByTen(String ten);
 
-    List<MauSac> getDeGiayByTenOrTrangthai(String ten, Boolean trangthai);
 
     List<MauSac> findAllByOrderByNgaytaoDesc();
 

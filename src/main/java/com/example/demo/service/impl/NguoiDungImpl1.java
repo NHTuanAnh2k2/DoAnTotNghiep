@@ -8,10 +8,13 @@ import com.example.demo.service.NguoiDungService1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.scheduling.annotation.Async;
 
 import java.security.SecureRandom;
 import java.sql.Timestamp;
+import java.text.Normalizer;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -23,35 +26,35 @@ public class NguoiDungImpl1 implements NguoiDungService1 {
 
     @Autowired
     private JavaMailSender emailSender;
+    @Autowired
+    PasswordEncoder passwordEncoder;
+    private static final String CHAR_LOWER = "abcdefghijklmnopqrstuvwxyz";
+    private static final String CHAR_UPPER = CHAR_LOWER.toUpperCase();
+    private static final String NUMBER = "0123456789";
+    private static final String PASSWORD_ALLOW_BASE = CHAR_LOWER + CHAR_UPPER + NUMBER;
+    private static final SecureRandom random = new SecureRandom();
     @Override
     public List<NguoiDung> getAll() {
         return nguoiDungRepository.getAllByOrderByIdDesc();
     }
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+";
 
-    public static String generatePassword(int length) {
-        Random random = new SecureRandom();
+    public String generateRandomPassword(int length) {
+        if (length < 4) throw new IllegalArgumentException("Length too short, minimum 4 characters required");
         StringBuilder password = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
-            int index = random.nextInt(CHARACTERS.length());
-            password.append(CHARACTERS.charAt(index));
+            password.append(PASSWORD_ALLOW_BASE.charAt(random.nextInt(PASSWORD_ALLOW_BASE.length())));
         }
         return password.toString();
-    }
-    public String tk(){
-        List<NguoiDung> l = nguoiDungRepository.getAllByOrderByIdDesc();
-        int s = l.size() + 1;
-        String tk = "NV" + s;
-        return tk;
     }
 
     @Override
     public NguoiDung add(NguoiDungNVInfo nguoiDung) {
         List<NguoiDung> l = nguoiDungRepository.getAllByOrderByIdDesc();
         NguoiDung nd = new NguoiDung();
-        nd.setTaikhoan(tk());
+        nd.setTaikhoan(nguoiDung.getTaikhoan());
         nd.setEmail(nguoiDung.getEmail());
-        nd.setMatkhau(generatePassword(8));
+        nd.setMatkhau(passwordEncoder.encode(generateRandomPassword(10)));
         nd.setHovaten(nguoiDung.getHovaten());
         nd.setNgaysinh(nguoiDung.getNgaysinh());
         nd.setCccd(nguoiDung.getCccd());
@@ -78,10 +81,15 @@ public class NguoiDungImpl1 implements NguoiDungService1 {
         nd.setAnh(nguoiDung.getAnh());
         nd.setNguoicapnhat("a");
         nd.setLancapnhatcuoi(new Timestamp(new Date().getTime()));
-        nd.setTrangthai(true);
         return nguoiDungRepository.save(nd);
     }
 
+    @Override
+    public NguoiDung updateS(NguoiDung nd) {
+        return nguoiDungRepository.save(nd);
+    }
+
+    @Async
     @Override
     public void sendEmail(String to, String subject, String mailType, String mailContent) {
         SimpleMailMessage message = new SimpleMailMessage();
@@ -91,26 +99,6 @@ public class NguoiDungImpl1 implements NguoiDungService1 {
         message.setText(mailContent);
 //        message.setText(a);
         emailSender.send(message);
-    }
-
-    @Override
-    public List<NguoiDung> searchND(String ten, Boolean trangThai, java.sql.Date batDau, java.sql.Date ketThuc) {
-        return nguoiDungRepository.findByKey(ten,batDau,ketThuc,trangThai);
-    }
-
-    @Override
-    public List<NguoiDung> searchkey(NhanVienSearch nhanVienSearch) {
-        return nguoiDungRepository.findByKeys(nhanVienSearch.getKey(),nhanVienSearch.isTrangThai());
-    }
-
-    @Override
-    public List<NguoiDung> searchStart(String ten, Boolean trangThai, java.sql.Date batDau) {
-        return nguoiDungRepository.findByStart(ten,batDau,trangThai);
-    }
-
-    @Override
-    public List<NguoiDung> searchEnd(String ten, Boolean trangThai, java.sql.Date ketThuc) {
-        return nguoiDungRepository.findByEnd(ten,ketThuc,trangThai);
     }
 
     @Override

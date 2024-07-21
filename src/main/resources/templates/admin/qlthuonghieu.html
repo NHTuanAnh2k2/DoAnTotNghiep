@@ -2,6 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <nav th:replace="~{/layoutadmin/head.html}"></nav>
 <style>
+    .custom-confirm-button {
+        background-color: rgb(249, 72, 42) !important;
+        color: white !important;
+    }
+    .custom-cancel-button {
+        background-color:black !important; /* Màu mặc định của nút "Không" nếu cần */
+        color: white !important;
+    }
+</style>
+<style>
 
     .btn-custom-warning {
         background-color:rgb(222,255,206);
@@ -44,12 +54,6 @@
                             QUẢN LÝ THƯƠNG HIỆU
                         </h1>
                     </div>
-<!--                    <div class="col-sm-6">-->
-<!--                        <ol class="breadcrumb float-sm-right">-->
-<!--                            <li class="breadcrumb-item"><a href="#">Home</a></li>-->
-<!--                            <li class="breadcrumb-item active">QUẢN LÝ THƯƠNG HIỆU</li>-->
-<!--                        </ol>-->
-<!--                    </div>-->
                 </div>
             </div><!-- /.container-fluid -->
         </section>
@@ -72,28 +76,21 @@
                                 <form id="searchForm" method="get" th:object="${tim}">
                                     <h3 class="card-title">
                                         <input type="text" id="searchInput" placeholder="Tìm kiếm thương hiệu"
-                                               class="form-control" name="key" style="width: 1200px" th:value="${fillSearch}">
+                                               class="form-control" name="key" style="width: 980px" th:value="${fillSearch}">
                                     </h3>
 
-<!--                                    <h3 class="card-title" style="margin-left: 50px;font-weight: bold">Trạng thái:-->
-<!--                                        <select id="statusSelect" class="form-control" name="trangthai" style="color: rgb(249,72,42); font-weight: bold; width: 150px">-->
-<!--                                            <option value="" th:selected="${fillTrangThai == null}">Tất cả</option>-->
-<!--                                            <option value="true" th:selected="${fillTrangThai != null && fillTrangThai}">Đang kinh doanh</option>-->
-<!--                                            <option value="false" th:selected="${fillTrangThai != null && !fillTrangThai}">Ngừng kinh doanh</option>-->
-<!--                                        </select>-->
-<!--                                    </h3>-->
-
-<!--                                    <button type="submit" style="margin-left: 100px;background-color:rgb(249,72,42);color: white" class="btn">Tìm kiếm-->
-<!--                                    </button>-->
-<!--                                    <input type="button" class="btn btn-dark" value="Làm mới bộ lọc"-->
-<!--                                           onclick="clearSearch()"/>-->
+                                    <h3 class="card-title" style="margin-left: 50px;font-weight: bold">
+                                        <select id="statusSelect" class="form-control" name="trangthai" style="color: rgb(249,72,42); font-weight: bold; width: 150px">
+                                            <option value="" th:selected="${fillTrangThai == null}">Tất cả</option>
+                                            <option value="true" th:selected="${fillTrangThai != null && fillTrangThai}">Đang kinh doanh</option>
+                                            <option value="false" th:selected="${fillTrangThai != null && !fillTrangThai}">Ngừng kinh doanh</option>
+                                        </select>
+                                    </h3>
                                 </form>
                             </div>
 
                         </div>
                         <!-- /.card -->
-
-
                     </div>
                     <!-- /.col -->
                 </div>
@@ -123,7 +120,6 @@
                                     </svg>Thêm thương hiệu
                                 </a>
                             </div>
-
                             <!-- Modal -->
                             <div class="modal fade" id="themthuonghieu" tabindex="-1"
                                  aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -138,18 +134,17 @@
                                             <form id="addForm" name="addThuongHieu" th:method="post" th:object="${thuonghieu}"
                                                   th:action="@{/addSaveThuongHieu}" onsubmit="return validateTrung()">
                                                 <p>
+                                                    <span style="color: red">* </span>
                                                     Tên thương hiệu:
                                                     <input id="tenInput" class="form-control" th:field="*{ten}"/>
                                                 <div style="color: red; font-weight: initial;font-style: italic" id="errorTen"></div>
                                                 </p>
                                                 <button id="submitButton" class="btn" style="margin-left: 400px;background-color:rgb(249,72,42);color: white">Thêm</button>
                                             </form>
-
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <table id="example2" style="width: 100%" class="table-bordered table-hover text-center">
@@ -158,7 +153,7 @@
                                         <th>STT</th>
                                         <th>Tên thương hiệu</th>
                                         <th>Ngày tạo</th>
-<!--                                        <th>Trạng thái</th>-->
+                                        <th>Trạng thái</th>
                                         <th>Thao tác</th>
                                     </tr>
                                     </thead>
@@ -171,25 +166,18 @@
                                         </td>
                                         <td th:text="${#temporals.format(th.ngaytao, 'dd-MM-yyyy HH:mm:ss')}"></td>
 
-<!--                                        <td>-->
-<!--                                            <button style="border-radius: 5px"-->
-<!--                                                    class="btn-xs"-->
-<!--                                                    th:classappend="${th.trangthai ? 'btn-custom-info' : 'btn-custom-warning'}"-->
-<!--                                                    th:text="${th.trangthai ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>-->
-<!--                                        </td>-->
-
-
+                                        <td class="tdSameWidth">
+                                            <form name="updateTrangThaiForm" th:action="@{/thuonghieu/updateTrangThai/{id}(id=${th.id})}" method="post" onsubmit="return confirmUpdateThuongHieu(this);">
+                                                <button type="submit" style="width: 170px; background: none; border: none;"
+                                                        th:classappend="${th.trangthai == true ? 'btn-outline-success' : 'btn-outline-danger'}">
+                                                    <span th:text="${th.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></span>
+                                                </button>
+                                            </form>
+                                        </td>
                                         <td>
                                             <a style="color: rgb(249,72,42); font-size: 25px;" th:data-id="${th.id}" data-bs-toggle="modal" data-bs-target="#capnhatthuonghieu" onclick="fillShoeSoleNameThuongHieu(this)">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
-                                            <form th:action="@{/updateThuongHieu/{id}(id=${th.id})}" method="post" style="display: inline;">
-                                                <button type="submit" style="background: none; border: none; color: rgb(249,72,42); padding-left: 10px" onclick="return confirm('Bạn có muốn xóa không?')">
-                                                    <a style="color: rgb(249,72,42); font-size: 25px;"> <!-- Thay đổi giá trị font-size theo ý muốn -->
-                                                        <i class="bi bi-trash3-fill"></i>
-                                                    </a>
-                                                </button>
-                                            </form>
                                         </td>
                                     </tr>
                                     </tfoot>
@@ -207,17 +195,16 @@
                                             <div class="modal-body">
                                                 <input type="hidden" id="thuongHieuId">
                                                 <div class="mb-3">
-                                                    <label for="tenThuongHieu" class="form-label">Tên thương hiệu</label>
+                                                    <span style="color: red">* </span>
+                                                    <label for="tenThuongHieu" class="form-label">Tên thương hiệu:</label>
                                                     <input type="text" class="form-control" id="tenThuongHieu">
                                                     <div id="error-message" class="text-danger" style="display: none;">
-                                                        Tên thương hiệu không được để trống.
                                                     </div>
                                                     <div id="length-error-message" class="text-danger"
-                                                         style="display: none;">Tên thương hiệu không được vượt quá 20 ký
-                                                        tự.
+                                                         style="display: none;">
                                                     </div>
                                                     <div id="duplicate-error-message" class="text-danger"
-                                                         style="display: none;">Tên thương hiệu đã tồn tại.
+                                                         style="display: none;">
                                                     </div>
                                                 </div>
                                             </div>
@@ -269,27 +256,44 @@
 
     /*<![CDATA[*/
     var objectsFromController = /*[[${page}]]*/ [];
+    const specialCharPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+
 
     function validateTrung() {
         var inputMa = document.getElementById("tenInput").value;
         var errorMa = document.getElementById("errorTen");
         var isMaValid = true;
 
-        // Kiểm tra xem trường "Tên đế giày" có trống không
-        if (inputMa.trim() === "") {
+        // Loại bỏ khoảng trắng ở đầu và cuối và chỉ giữ lại một khoảng trắng giữa các từ
+        inputMa = inputMa.trim().replace(/\s+/g, ' ');
+
+        // Kiểm tra xem trường "Tên thương hiệu" có trống không và không vượt quá 20 ký tự
+        if (inputMa === "") {
             errorMa.innerText = "Vui lòng nhập tên thương hiệu.";
+            return false; // Ngăn form được gửi đi
+        } else if (inputMa.length < 3) {
+            errorMa.innerText = "Tên thương hiệu phải dài hơn 3 ký tự.";
+            return false; // Ngăn form được gửi đi
+        } else if (inputMa.length > 20) {
+            errorMa.innerText = "Tên thương hiệu không được vượt quá 20 ký tự.";
+            return false; // Ngăn form được gửi đi
+        } else if (specialCharPattern.test(inputMa)) {
+            errorMa.innerText = "Tên thương hiệu không được chứa ký tự đặc biệt.";
             return false; // Ngăn form được gửi đi
         } else {
             errorMa.innerText = ""; // Xóa thông báo lỗi nếu có
         }
 
-        // Kiểm tra trùng tên đế giày
+        // Kiểm tra trùng tên thương hiệu (không phân biệt chữ hoa chữ thường và khoảng trắng)
         for (var i = 0; i < objectsFromController.length; i++) {
             var obj = objectsFromController[i];
-            if (inputMa === obj.ten) {
+            // Loại bỏ khoảng trắng và chuyển đổi về chữ thường để so sánh
+            var normalizedInput = inputMa.toLowerCase();
+            var normalizedObjName = obj.ten.trim().replace(/\s+/g, ' ').toLowerCase();
+
+            if (normalizedInput === normalizedObjName) {
                 errorMa.innerText = "Tên thương hiệu đã tồn tại!";
-                isMaValid = false;
-                break;
+                return false; // Ngăn form được gửi đi
             }
         }
 
@@ -300,6 +304,7 @@
 
         return false;
     }
+
 
     function them() {
         // Sử dụng SweetAlert2 thay vì hộp thoại confirm
@@ -400,12 +405,12 @@
         let ten = document.getElementById('tenThuongHieu').value;
 
         // Loại bỏ khoảng trắng ở đầu và cuối
-        ten = ten.trim();
+        ten = ten.trim().replace(/\s+/g, ' ');
 
         const errorMessage = document.getElementById('error-message');
         const lengthErrorMessage = document.getElementById('length-error-message');
         const duplicateErrorMessage = document.getElementById('duplicate-error-message');
-
+        const specialCharPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
         // Reset thông báo lỗi
         errorMessage.style.display = 'none';
         lengthErrorMessage.style.display = 'none';
@@ -414,11 +419,21 @@
         // Kiểm tra tính hợp lệ
         if (!ten) {
             errorMessage.style.display = 'block';
+            errorMessage.innerText="Tên thương hiệu không được để trống";
             return;
         }
 
-        if (ten.length > 20) {
+        if (ten.length < 3) {
             lengthErrorMessage.style.display = 'block';
+            lengthErrorMessage.innerText = 'Tên thương hiệu phải dài hơn 3 ký tự.';
+            return;
+        } else if (ten.length > 20) {
+            lengthErrorMessage.style.display = 'block';
+            lengthErrorMessage.innerText = 'Tên thương hiệu không được vượt quá 20 ký tự.';
+            return;
+        }else if (specialCharPattern.test(ten)) {
+            lengthErrorMessage.style.display = 'block';
+            lengthErrorMessage.innerText = 'Tên thương hiệu không được chứa ký tự đặc biệt.';
             return;
         }
 
@@ -428,6 +443,7 @@
             .then(exists => {
                 if (exists) {
                     duplicateErrorMessage.style.display = 'block';
+                    duplicateErrorMessage.innerText='Tên thương hiệu không được trùng!';
                     return;
                 }
 
@@ -501,4 +517,45 @@
             sessionStorage.removeItem('successMessage');
         }
     });
+</script>
+
+<script>
+    function confirmUpdateThuongHieu(form) {
+        Swal.fire({
+            title: 'Bạn có muốn cập nhật không?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không',
+            // width: '500px',
+            customClass: {
+                confirmButton: 'custom-confirm-button', // Thêm lớp tùy chỉnh cho nút "Có"
+                cancelButton: 'custom-cancel-button'    // Thêm lớp tùy chỉnh cho nút "Không" nếu cần
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và submit form sau một khoảng thời gian
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                setTimeout(function () {
+                    // Lưu thông báo vào sessionStorage
+                    sessionStorage.setItem('successMessage', 'Cập nhật trạng thái thành công!');
+                    // Submit form cụ thể
+                    form.submit();
+                }, 500); // Điều chỉnh thời gian delay nếu cần
+            }
+        });
+
+        // Ngăn form được gửi đi ngay lập tức
+        return false;
+    }
 </script>

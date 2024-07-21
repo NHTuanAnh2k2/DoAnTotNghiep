@@ -25,10 +25,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-
+import org.springframework.scheduling.annotation.Async;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -39,6 +40,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 @Service
 public class KhachHangImp implements KhachHangService, NguoiDungService {
@@ -53,8 +55,8 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
     private static final String NUMBER = "0123456789";
     private static final String PASSWORD_ALLOW_BASE = CHAR_LOWER + CHAR_UPPER + NUMBER;
     private static final SecureRandom random = new SecureRandom();
-    private static final Map<String, String> codes = new ConcurrentHashMap<>();
-    private static final Map<String, Long> codeExpiryTimes = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, ConcurrentMap<Integer, String>> codes = new ConcurrentHashMap<>();
+    private static final Map<String, ConcurrentMap<Integer, Long>> codeExpiryTimes = new ConcurrentHashMap<>();
 
     @Override
     public List<KhachHang> findAllKhachHang() {
@@ -114,6 +116,7 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
         return password.toString();
     }
 
+    @Async
     public void sendEmail(String recipient, String username, String password, String name) {
         // Cấu hình thông tin email
         String host = "smtp.gmail.com";
@@ -167,7 +170,7 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
     }
 
     @Override
-    public boolean sendPasswordResetCode(String email, String name) {
+    public boolean sendPasswordResetCode(String email, String name, Integer userId) {
         // Cấu hình thông tin email
         String host = "smtp.gmail.com";
         String port = "587";
@@ -184,8 +187,8 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
         //Tạo code reset password
         Random random = new Random();
         String code = String.valueOf(100000 + random.nextInt(900000)); // Mã 6 chữ số ngẫu nhiên
-        codes.put(email, code);
-        codeExpiryTimes.put(email, System.currentTimeMillis() + 60 * 1000);
+        codes.computeIfAbsent(email, k -> new ConcurrentHashMap<>()).put(userId, code);
+        codeExpiryTimes.computeIfAbsent(email, k -> new ConcurrentHashMap<>()).put(userId, System.currentTimeMillis() + 60 * 1000);
 
         // Tạo phiên gửi email
         Session session = Session.getInstance(properties, new Authenticator() {
@@ -220,14 +223,15 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
     }
 
     @Override
-    public boolean validateResetCode(String email, String code) {
-        if (codes.containsKey(email) && codes.get(email).equals(code)) {
-            long expiryTime = codeExpiryTimes.get(email);
+    public boolean validateResetCode(String email, String code, Integer userId) {
+        if (codes.containsKey(email) && codes.get(email).containsKey(userId) && codes.get(email).get(userId).equals(code)) {
+            long expiryTime = codeExpiryTimes.get(email).get(userId);
             if (System.currentTimeMillis() <= expiryTime) {
                 return true;
             } else {
-                codes.remove(email);
-                codeExpiryTimes.remove(email);
+                // Mã đã hết hạn, không xóa ngay lập tức để tránh xóa mã còn hiệu lực
+                codes.get(email).remove(userId);
+                codeExpiryTimes.get(email).remove(userId);
             }
         }
         return false;
@@ -242,7 +246,7 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
 
         for (KhachHang khachHang : lstKhachHang) {
             int idNguoiDung = khachHang.getNguoidung().getId();
-            List<DiaChi> lstDiaChi = diaChiRepository.findDiaChiByIdNd(idNguoiDung);
+            List<DiaChi> lstDiaChi = diaChiRepository.findLstDiaChiByTrangthai(idNguoiDung, true);
             Collections.sort(lstDiaChi, Comparator.comparing(DiaChi::getNgaytao).reversed());
 
             if (!lstDiaChi.isEmpty()) {
@@ -257,8 +261,6 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
     }
 
 
-
-
     @Override
     public KhachHang findKhachHangByIdNguoiDung(Integer id) {
         return khachHangRepostory.findByNguoiDung(id);
@@ -267,6 +269,31 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
     @Override
     public List<KhachHangInfo> findByTenSdtMa(String tenSdtMa) {
         List<KhachHang> lstKhachHang = khachHangRepostory.findByTenSdtMa(tenSdtMa);
+        Collections.sort(lstKhachHang, Comparator.comparing(KhachHang::getNgaytao).reversed());
+
+        List<KhachHangInfo> lstkhachhanginfo = new ArrayList<>();
+
+        // Lấy danh sách địa chỉ cho từng khách hàng
+        for (KhachHang khachHang : lstKhachHang) {
+            KhachHangInfo khachHangInfo = new KhachHangInfo();
+            int ndId = khachHang.getNguoidung().getId();
+            List<DiaChi> lstDiaChi = diaChiRepository.findDiaChiByIdNd(ndId);
+
+            // Kiểm tra xem số lượng địa chỉ và số lượng khách hàng có phù hợp không
+            if (lstDiaChi.size() >= 1) { // Kiểm tra ít nhất phải có một địa chỉ tương ứng
+                DiaChi diaChi = lstDiaChi.get(0); // Lấy địa chỉ tương ứng với khách hàng
+                khachHangInfo.setKhachhang(khachHang);
+                khachHangInfo.setDiachi(diaChi);
+                lstkhachhanginfo.add(khachHangInfo);
+            }
+        }
+
+        return lstkhachhanginfo;
+    }
+
+    @Override
+    public List<KhachHangInfo> findByTenSdtMaTrangThai(String tensdtma, Boolean trangthai) {
+        List<KhachHang> lstKhachHang = khachHangRepostory.findByTenSdtMaTrangThai(tensdtma, trangthai);
         Collections.sort(lstKhachHang, Comparator.comparing(KhachHang::getNgaytao).reversed());
 
         List<KhachHangInfo> lstkhachhanginfo = new ArrayList<>();

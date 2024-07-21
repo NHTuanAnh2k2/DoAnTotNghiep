@@ -1,10 +1,17 @@
 package com.example.demo.restcontroller.dangnhap;
 
+import com.example.demo.entity.KhachHang;
 import com.example.demo.entity.NguoiDung;
+import com.example.demo.entity.NhanVien;
 import com.example.demo.repository.NguoiDungRepository;
+import com.example.demo.repository.NhanVienRepository;
+import com.example.demo.repository.khachhang.KhachHangRepostory;
 import com.example.demo.service.KhachHangService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,16 +21,23 @@ public class DangKyRestController {
     @Autowired
     KhachHangService khachHangService;
     @Autowired
+    KhachHangRepostory khachHangRepostory;
+    @Autowired
     NguoiDungRepository nguoiDungRepository;
+    @Autowired
+    NhanVienRepository nhanVienRepository;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @PostMapping("/send-code")
-        public ResponseEntity<String> sendPasswordResetCode(@RequestParam("emailResetPassword") String emailResetPassword) {
+    public ResponseEntity<String> sendPasswordResetCode(@RequestParam("emailResetPassword") String emailResetPassword,
+                                                        HttpSession session) {
 
-        NguoiDung nguoiDung = nguoiDungRepository.findNguoiDungByEmail(emailResetPassword);
-
-        if (nguoiDung != null) {
-            System.out.println("NguoiDung: " + nguoiDung.getHovaten());
-            boolean success = khachHangService.sendPasswordResetCode(emailResetPassword, nguoiDung.getHovaten());
+        KhachHang khachHang = khachHangRepostory.findKhachHangByEmail(emailResetPassword);
+        Integer userId = khachHang.getNguoidung().getId();
+        if (khachHang != null) {
+            session.setAttribute("userIdKhachHang", userId);
+            boolean success = khachHangService.sendPasswordResetCode(emailResetPassword, khachHang.getNguoidung().getHovaten(), userId);
             if (success) {
                 System.out.println("Đã gửi mã đến mail");
                 return ResponseEntity.ok("Mã khôi phục mật khẩu đã được gửi đến email của bạn.");
@@ -31,14 +45,16 @@ public class DangKyRestController {
                 return ResponseEntity.badRequest().body("Email không tồn tại.");
             }
         } else {
-            return ResponseEntity.badRequest().body("Không tìm thấy nd");
+            return ResponseEntity.badRequest().body("Không tìm thấy email");
         }
     }
 
     @PostMapping("/validate-code")
     public ResponseEntity<String> validateResetCode(@RequestParam("emailResetPassword") String emailResetPassword,
-                                                    @RequestParam("codeReset") String code) {
-        boolean valid = khachHangService.validateResetCode(emailResetPassword, code);
+                                                    @RequestParam("codeReset") String code,
+                                                    @RequestParam("userId") Integer userId
+                                                    ) {
+        boolean valid = khachHangService.validateResetCode(emailResetPassword, code, userId);
         if (valid) {
             return ResponseEntity.ok("Mã xác nhận hợp lệ.");
         } else {
@@ -46,13 +62,53 @@ public class DangKyRestController {
         }
     }
 
-//    @PostMapping("/reset-password")
-//    public ResponseEntity<String> resetPassword(@RequestParam String newPassword, @RequestParam String confirmPassword) {
-//        // Xử lý logic đặt lại mật khẩu mới
-//        if (!newPassword.equals(confirmPassword)) {
-//            return ResponseEntity.badRequest().body("Mật khẩu xác nhận không khớp.");
-//        }
-////        khachHangService.updateNguoiDung();
-//        return ResponseEntity.ok("Mật khẩu đã được thay đổi thành công.");
-//    }
+    @PostMapping("/change-password")
+    public ResponseEntity<String> changePassword(@RequestParam("emailResetPassword") String emailResetPassword,
+                                                 @RequestParam("newPassword") String newPassword) {
+        KhachHang khachHang = khachHangRepostory.findKhachHangByEmail(emailResetPassword);
+
+        if (khachHang != null) {
+            khachHang.getNguoidung().setMatkhau(passwordEncoder.encode(newPassword));
+            khachHangRepostory.save(khachHang);
+            return ResponseEntity.ok("Đổi mật khẩu thành công.");
+        } else {
+            return ResponseEntity.badRequest().body("Không tìm thấy email");
+        }
+    }
+
+    @PostMapping("/send-code-admin")
+    public ResponseEntity<String> sendPasswordResetCodeAdmin(@RequestParam("emailResetPassword") String emailResetPassword,
+                                                             HttpSession session) {
+
+        NhanVien nhanVien = nhanVienRepository.findNhanVienByEmail(emailResetPassword);
+        Integer userId = nhanVien.getNguoidung().getId();
+
+        if (nhanVien != null) {
+            session.setAttribute("userIdNhanVien", userId);
+            boolean success = khachHangService.sendPasswordResetCode(emailResetPassword, nhanVien.getNguoidung().getHovaten(), userId);
+            if (success) {
+                System.out.println("Đã gửi mã đến mail");
+                return ResponseEntity.ok("Mã khôi phục mật khẩu đã được gửi đến email của bạn.");
+            } else {
+                return ResponseEntity.badRequest().body("Email không tồn tại.");
+            }
+        } else {
+            return ResponseEntity.badRequest().body("Không tìm thấy email");
+        }
+    }
+
+    @PostMapping("/change-password-admin")
+    public ResponseEntity<String> changePasswordAdmin(@RequestParam("emailResetPassword") String emailResetPassword,
+                                                      @RequestParam("newPassword") String newPassword) {
+        NhanVien nhanVien = nhanVienRepository.findNhanVienByEmail(emailResetPassword);
+
+        if (nhanVien != null) {
+            nhanVien.getNguoidung().setMatkhau(passwordEncoder.encode(newPassword));
+            nhanVienRepository.save(nhanVien);
+            return ResponseEntity.ok("Đổi mật khẩu thành công.");
+        } else {
+            return ResponseEntity.badRequest().body("Không tìm thấy email");
+        }
+    }
+
 }

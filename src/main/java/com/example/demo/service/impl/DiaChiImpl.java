@@ -27,11 +27,6 @@ public class DiaChiImpl implements DiaChiService {
     }
 
     @Override
-    public List<DiaChi> getTT(Boolean tt) {
-        return diaChiRepository.TimTrangThai(tt);
-    }
-
-    @Override
     public DiaChi add(DiaChiNVInfo diaChi) {
         DiaChi dc = new DiaChi();
         dc.setTenduong(diaChi.getTenduong());
@@ -56,7 +51,11 @@ public class DiaChiImpl implements DiaChiService {
         dc.setTinhthanhpho(diaChi.getTinhthanhpho());
         dc.setNguoicapnhat("");
         dc.setLancapnhatcuoi(new Timestamp(new Date().getTime()));
-        dc.setTrangthai(true);
+        return diaChiRepository.save(dc);
+    }
+
+    @Override
+    public DiaChi updateS(DiaChi dc) {
         return diaChiRepository.save(dc);
     }
 
@@ -71,18 +70,9 @@ public class DiaChiImpl implements DiaChiService {
     }
 
     @Override
-    public List<DiaChi> searchkey(NhanVienSearch nhanVienSearch) {
-        return diaChiRepository.findByKeys(nhanVienSearch.getKey(),nhanVienSearch.isTrangThai());
+    public List<DiaChi> searchNDs(String ten, java.sql.Date batDau, java.sql.Date ketThuc) {
+        return diaChiRepository.findByKeys(ten,batDau,ketThuc);
     }
 
-    @Override
-    public List<DiaChi> searchStart(String ten, Boolean trangThai, java.sql.Date batDau) {
-        return diaChiRepository.findByStart(ten,batDau,trangThai);
-    }
-
-    @Override
-    public List<DiaChi> searchEnd(String ten, Boolean trangThai, java.sql.Date ketThuc) {
-        return diaChiRepository.findByEnd(ten,ketThuc,trangThai);
-    }
 
 }
