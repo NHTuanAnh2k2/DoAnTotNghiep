@@ -37,5 +37,4 @@ public class ThuongHieuRestController {
         return ResponseEntity.ok(exists);
     }
 
-
 }
