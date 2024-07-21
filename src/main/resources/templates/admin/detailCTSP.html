@@ -419,11 +419,10 @@
                                                       onsubmit="return validateTrungMauSac()">
                                                     <p>
                                                         <span style="color: red">* </span>
-                                                        Tên màu sắc:
-                                                        <input id="tenInputMauSac" class="form-control"
+                                                        Mã màu sắc:
+                                                        <input type="color" id="tenInputMauSac" style="width: 100%"
+                                                               class="form-control"
                                                                th:field="*{ten}"/>
-                                                    <div style="color: red; font-weight: initial;font-style: italic"
-                                                         id="errorTenMauSac"></div>
                                                     </p>
                                                     <input type="hidden" name="spctId" th:value="${hehe.id}">
                                                     <button id="submitButtonMauSac" class="btn"
@@ -621,12 +620,10 @@
         } else if (inputMaThuongHieu.trim().length > 20) {
             errorMaThuongHieu.innerText = "Tên thương hiệu không được vượt quá 20 ký tự.";
             return false; // Ngăn form được gửi đi
-        }
-        else if (specialCharPattern.test(inputMaThuongHieu.trim())) {
+        } else if (specialCharPattern.test(inputMaThuongHieu.trim())) {
             errorMaThuongHieu.innerText = "Tên thương hiệu không được chứa ký tự đặc biệt.";
             return false; // Ngăn form được gửi đi
-        }
-        else {
+        } else {
             errorMaThuongHieu.innerText = ""; // Xóa thông báo lỗi nếu có
         }
         // Kiểm tra trùng tên thương hiệu (không phân biệt chữ hoa chữ thường và khoảng trắng)
@@ -669,12 +666,10 @@
         } else if (inputMaChatLieu.trim().length > 20) {
             errorMaChatLieu.innerText = "Tên chất liệu không được vượt quá 20 ký tự.";
             return false; // Ngăn form được gửi đi
-        }
-        else if (specialCharPattern.test(inputMaChatLieu.trim())) {
+        } else if (specialCharPattern.test(inputMaChatLieu.trim())) {
             errorMaChatLieu.innerText = "Tên chất liệu không được chứa ký tự đặc biệt.";
             return false; // Ngăn form được gửi đi
-        }
-        else {
+        } else {
             errorMaChatLieu.innerText = ""; // Xóa thông báo lỗi nếu có
         }
 
@@ -715,12 +710,10 @@
         } else if (inputMaDeGiay.trim().length > 20) {
             errorMaDeGiay.innerText = "Tên đế giày không được vượt quá 20 ký tự.";
             return false; // Ngăn form được gửi đi
-        }
-        else if (specialCharPattern.test(inputMaDeGiay.trim())) {
+        } else if (specialCharPattern.test(inputMaDeGiay.trim())) {
             errorMaDeGiay.innerText = "Tên đế giày không được chứa ký tự đặc biệt.";
             return false; // Ngăn form được gửi đi
-        }
-        else {
+        } else {
             errorMaDeGiay.innerText = ""; // Xóa thông báo lỗi nếu có
         }
 // Kiểm tra trùng tên đế giày (không phân biệt chữ hoa chữ thường)
@@ -746,25 +739,19 @@
 
     function validateTrungMauSac() {
         var inputMaMauSac = document.getElementById("tenInputMauSac").value;
-        var errorMaMauSac = document.getElementById("errorTenMauSac");
         var isMaValid = true;
-
-        // Kiểm tra xem trường "Tên màu sắc" có trống không
-        // Kiểm tra xem trường "Tên màu sắc" có trống không
-        if (inputMaMauSac.trim() === "") {
-            errorMaMauSac.innerText = "Vui lòng nhập tên màu sắc.";
-            return false; // Ngăn form được gửi đi
-        } else if (inputMaMauSac.trim().length > 20) {
-            errorMaMauSac.innerText = "Tên màu sắc không được vượt quá 20 ký tự.";
-            return false; // Ngăn form được gửi đi
-        }
-        else if (specialCharPatternSo.test(inputMaMauSac.trim())) {
-            errorMaMauSac.innerText = "Tên màu sắc không được chứa ký tự đặc biệt và số.";
-            return false; // Ngăn form được gửi đi
-        }
-        else {
-            errorMaMauSac.innerText = ""; // Xóa thông báo lỗi nếu có
-        }
+        // Khai báo và cấu hình Toast của SweetAlert2
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
 
 // Kiểm tra trùng tên màu sắc (không phân biệt chữ hoa chữ thường và khoảng trắng)
         for (var i = 0; i < objectsFromControllerMauSac.length; i++) {
@@ -774,17 +761,17 @@
             var normalizedObjName = obj.ten.trim().replace(/\s+/g, ' ').toLowerCase();
 
             if (normalizedInput === normalizedObjName) {
-                errorMaMauSac.innerText = "Tên màu sắc đã tồn tại!";
+                // Hiển thị thông báo toast khi mã màu đã tồn tại
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Mã màu sắc đã tồn tại'
+                });
                 return false; // Ngăn form được gửi đi
             }
         }
-
-
         if (isMaValid) {
-            errorMaMauSac.innerText = "";
             themMauSac();
         }
-
         return false;
     }
 
