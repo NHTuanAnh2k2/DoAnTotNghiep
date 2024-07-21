@@ -4,24 +4,32 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
-<!--màu cho modal-->
+<!--css cho tên màu sắc trong table-->
 <style>
-    /* CSS cho các tùy chọn được chọn và khi hover */
-    .select2-container--default .select2-results__option--highlighted {
-        background-color: rgb(249, 72, 42) !important;
-        color: white !important;
+    .highlight-color {
+        color: white; /* Màu chữ cho tên màu sắc */
+        padding: 2px 5px; /* Khoảng cách bên trong */
+        border-radius: 3px; /* Bo góc */
     }
 </style>
 
-<!--màu cho select2-->
-<style>
-    .select2-container--default .select2-selection__choice {
-        background-color: rgb(249, 72, 42) !important;
-        color: white !important;
-        border-color: rgb(249, 72, 42) !important;
-    }
-</style>
+<!--&lt;!&ndash;màu cho modal&ndash;&gt;-->
+<!--<style>-->
+<!--    /* CSS cho các tùy chọn được chọn và khi hover */-->
+<!--    .select2-container&#45;&#45;default .select2-results__option&#45;&#45;highlighted {-->
+<!--        background-color: rgb(249, 72, 42) !important;-->
+<!--        color: white !important;-->
+<!--    }-->
+<!--</style>-->
+
+<!--&lt;!&ndash;màu cho select2&ndash;&gt;-->
+<!--<style>-->
+<!--    .select2-container&#45;&#45;default .select2-selection__choice {-->
+<!--        background-color: rgb(249, 72, 42) !important;-->
+<!--        color: white !important;-->
+<!--        border-color: rgb(249, 72, 42) !important;-->
+<!--    }-->
+<!--</style>-->
 
 <!--màu cho checkbox-->
 <style>
@@ -348,12 +356,13 @@
                                     <div class="d-flex">
                                         <p style="margin-left: 20px;font-weight: bold"><span
                                                 style="color: red">* </span>Màu sắc:
-                                            <select class="select2" multiple="multiple" data-placeholder="Màu sắc"
-                                                    style="width: 500px;" name="idMauSac"
+                                            <select id="colorSelect" class="select2" multiple="multiple"
+                                                    data-placeholder="Màu sắc" style="width: 500px;" name="idMauSac"
                                                     onchange="clearErrorMessageMauSac()">
-                                                <option th:each="ms : ${ms}" th:value="${ms.id}"
-                                                        th:text="${ms.ten}"></option>
+                                                <option th:each="ms : ${ms}" th:value="${ms.id}" th:text="${ms.ten}"
+                                                        th:data-color="${ms.ten}"></option>
                                             </select>
+
                                         </p>
                                         <p>
                                         </p>
@@ -584,10 +593,9 @@
                                               th:action="@{/addMauSacModal}" onsubmit="return validateTrungMauSac()">
                                             <p>
                                                 <span style="color: red">* </span>
-                                                Tên màu sắc:
-                                                <input id="tenInputMauSac" class="form-control" th:field="*{ten}"/>
-                                            <div style="color: red; font-weight: initial;font-style: italic"
-                                                 id="errorTenMauSac"></div>
+                                                Mã màu sắc:
+                                                <input type="color" id="tenInputMauSac" th:field="*{ten}"
+                                                       style="width: 100%" class="form-control"/>
                                             </p>
                                             <button id="submitButtonMauSac" class="btn"
                                                     style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
@@ -719,10 +727,24 @@
                                                 <span style="margin-left: 7px" th:text="${stt.index + 1}"></span>
                                             </td>
                                             <td>
-                                            <span th:if="${#strings.length(spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']') > 40}"
-                                                  th:text="${#strings.substring(spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']', 0, 40)} + '...'"></span>
-                                                <span th:unless="${#strings.length(spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']') > 40}"
-                                                      th:text="${spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']' }"></span>
+                                                <!--                                            <span th:if="${#strings.length(spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']') > 40}"-->
+                                                <!--                                                  th:text="${#strings.substring(spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']', 0, 40)} + '...'"></span>-->
+                                                <!--                                                <span th:unless="${#strings.length(spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']') > 40}"-->
+                                                <!--                                                      th:text="${spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']' }"></span>-->
+                                                <span th:if="${#strings.length(spctt.sanpham.tensanpham + spctt.kichco.ten + ' -' + spctt.mausac.ten) > 40}">
+    <span th:text="${#strings.substring(spctt.sanpham.tensanpham  + spctt.kichco.ten + ' -' + spctt.mausac.ten, 0, 40)} + '...'"></span>
+    <span th:text="${spctt.kichco.ten} + ' -'"
+          th:style="'background-color:' + ${spctt.kichco.ten} + '; color: black; padding: 2px 5px; border-radius: 3px;'"></span>
+    <span th:text="${spctt.mausac.ten}"
+          th:style="'background-color:' + ${spctt.mausac.ten} + '; color: white; padding: 2px 5px; border-radius: 3px;'"></span>
+</span>
+                                                <span th:unless="${#strings.length(spctt.sanpham.tensanpham + spctt.kichco.ten + ' -' + spctt.mausac.ten) > 40}">
+    <span th:text="${spctt.sanpham.tensanpham}"></span>
+    <span th:text="${spctt.kichco.ten} + ' -'"
+          th:style="'background-color:' + ${spctt.kichco.ten} + '; color: black; padding: 2px 5px; border-radius: 3px;'"></span>
+    <span th:text="${spctt.mausac.ten}"
+          th:style="'background-color:' + ${spctt.mausac.ten} + '; color: white; padding: 2px 5px; border-radius: 3px;'"></span>
+</span>
                                             </td>
                                             <td>
                                                 <span style="width: 70px; height: 30px; line-height: 30px;"
@@ -1107,7 +1129,6 @@
         }
     });
 </script>
-
 
 <!--dùng cho thêm size-->
 <script>
@@ -1617,25 +1638,21 @@
     }
 
     function validateTrungMauSac() {
+        // Khai báo và cấu hình Toast của SweetAlert2
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+
         var inputMaMauSac = document.getElementById("tenInputMauSac").value;
-        var errorMaMauSac = document.getElementById("errorTenMauSac");
         var isMaValid = true;
-
-        // Kiểm tra xem trường "Tên màu sắc" có trống không
-        // Kiểm tra xem trường "Tên màu sắc" có trống không
-        if (inputMaMauSac.trim() === "") {
-            errorMaMauSac.innerText = "Vui lòng nhập tên màu sắc.";
-            return false; // Ngăn form được gửi đi
-        } else if (inputMaMauSac.trim().length > 20) {
-            errorMaMauSac.innerText = "Tên màu sắc không được vượt quá 20 ký tự.";
-            return false; // Ngăn form được gửi đi
-        } else if (specialCharPatternSo.test(inputMaMauSac.trim())) {
-            errorMaMauSac.innerText = "Tên màu sắc không được chứa ký tự đặc biệt và số.";
-            return false; // Ngăn form được gửi đi
-        } else {
-            errorMaMauSac.innerText = ""; // Xóa thông báo lỗi nếu có
-        }
-
 // Kiểm tra trùng tên màu sắc (không phân biệt chữ hoa chữ thường và khoảng trắng)
         for (var i = 0; i < objectsFromControllerMauSac.length; i++) {
             var obj = objectsFromControllerMauSac[i];
@@ -1644,17 +1661,17 @@
             var normalizedObjName = obj.ten.trim().replace(/\s+/g, ' ').toLowerCase();
 
             if (normalizedInput === normalizedObjName) {
-                errorMaMauSac.innerText = "Tên màu sắc đã tồn tại!";
+                // Hiển thị thông báo toast khi mã màu đã tồn tại
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Mã màu sắc đã tồn tại'
+                });
                 return false; // Ngăn form được gửi đi
             }
         }
-
-
         if (isMaValid) {
-            errorMaMauSac.innerText = "";
             themMauSac();
         }
-
         return false;
     }
 
@@ -2284,4 +2301,41 @@
     }
 </script>
 
+<!--hiển thị background theo giá trị màu sắc-->
+<script>
+    $(function () {
+        // Initialize Select2 Elements
+        $('.select2').select2();
 
+        // Cập nhật màu sắc cho các tùy chọn
+        $('.select2').on('select2:open', function () {
+            // Duyệt qua tất cả các tùy chọn trong select2
+            $('#colorSelect .select2-results__option').each(function () {
+                // Lấy mã màu từ thuộc tính data-color
+                var color = $(this).data('color');
+                // Áp dụng màu nền và màu biên
+                $(this).css({
+                    'background-color': color,
+                    'color': 'white'
+                });
+            });
+        });
+
+        // Đảm bảo rằng các tùy chọn được hiển thị đúng màu ngay cả khi trang được tải lại
+        $('#colorSelect').select2({
+            templateResult: formatState,
+            templateSelection: formatState
+        });
+
+        function formatState(state) {
+            if (!state.id) {
+                return state.text;
+            }
+            var color = $(state.element).data('color');
+            var $state = $(
+                '<span style="background-color:' + color + '; color: white;">' + state.text + '</span>'
+            );
+            return $state;
+        }
+    });
+</script>

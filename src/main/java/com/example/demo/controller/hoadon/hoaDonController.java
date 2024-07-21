@@ -754,6 +754,16 @@ public class hoaDonController {
         List<HoaDon> lstSaveHD = dao.timTheoID(idhdshowdetail);
         HoaDon hdTT = lstSaveHD.get(0);
         Integer trangthaiset = hdTT.getTrangthai() - 1;
+        //check đơn online ở trạng thái đã xác nhận về chờ xác nhận
+        if(hdTT.getTrangthai()==1){
+            List<HoaDonChiTiet> lsdthdctdownSL = daoHDCT.getListSPHD(hdTT);
+            for (HoaDonChiTiet a : lsdthdctdownSL
+            ) {
+                SanPhamChiTiet sanPhamChiTietUd = daoSPCT.findById(a.getSanphamchitiet().getId());
+                sanPhamChiTietUd.setSoluong(sanPhamChiTietUd.getSoluong() + a.getSoluong());
+                daoSPCT.addSPCT(sanPhamChiTietUd);
+            }
+        }
         LocalDateTime currentDateTime = LocalDateTime.now();
         hdTT.setLancapnhatcuoi(Timestamp.valueOf(currentDateTime));
         //set người cập nhật theo id đã login
@@ -882,9 +892,14 @@ public class hoaDonController {
                 sotiengiam = new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam());
             }
         }
+//set lại tổng tiền ở phương thức thanh toán
+
 
 
         BigDecimal tongTT = (tongTienSP.add(hdset.getPhivanchuyen())).subtract(sotiengiam);
+        PhuongThucThanhToan ptttTim=daoPT.timTheoHoaDon(hdset).get(0);
+        ptttTim.setTongtien(tongTT);
+        daoPT.add_update(ptttTim);
         hdset.setTongtien(tongTT);
         dao.capNhatHD(hdset);
         return "redirect:/hoa-don/showDetail";
@@ -954,6 +969,9 @@ public class hoaDonController {
 
 
         BigDecimal tongTT = (tongTienSP.add(hd.getPhivanchuyen())).subtract(sotiengiam);
+        PhuongThucThanhToan ptttTim=daoPT.timTheoHoaDon(hd).get(0);
+        ptttTim.setTongtien(tongTT);
+        daoPT.add_update(ptttTim);
         hd.setTongtien(tongTT);
         dao.capNhatHD(hd);
         return "redirect:/hoa-don/showDetail";
@@ -1004,6 +1022,9 @@ public class hoaDonController {
 
 
                 BigDecimal tongTT = (tongTienSP.add(hd.getPhivanchuyen())).subtract(sotiengiam);
+                PhuongThucThanhToan ptttTim=daoPT.timTheoHoaDon(hd).get(0);
+                ptttTim.setTongtien(tongTT);
+                daoPT.add_update(ptttTim);
                 daoHDCT.capnhat(hdDelete);
                 hd.setTongtien(tongTT);
                 dao.capNhatHD(hd);
@@ -1040,6 +1061,9 @@ public class hoaDonController {
 
 
         BigDecimal tongTT = (tongTienSP.add(hd.getPhivanchuyen())).subtract(sotiengiam);
+        PhuongThucThanhToan ptttTim=daoPT.timTheoHoaDon(hd).get(0);
+        ptttTim.setTongtien(tongTT);
+        daoPT.add_update(ptttTim);
         hdDelete.setSoluong(sl);
         daoHDCT.capnhat(hdDelete);
         hd.setTongtien(tongTT);
