@@ -81,6 +81,69 @@
         background-color: #7CFC00;
         /* Màu xanh lá */
     }
+
+    /* css cho modal mã giảm giá */
+
+
+    .ma_giam_gia {
+        width: 100%;
+        margin-bottom: 15px;
+        padding: 5px 10px;
+        background: #fff;
+        display: flex;
+        border-radius: 15px;
+    }
+
+    .ma-item-left {
+        width: 30%;
+        padding-right: 10px;
+        display: flex;
+        align-items: center;
+        border-right: 1px dashed #ccc;
+    }
+
+    .anh_ma {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+    }
+
+    .ma-item-right {
+        padding-left: 10px;
+        position: relative;
+        width: 70%;
+    }
+
+    .ma-item-des {
+        display: flex;
+        justify-content: space-between;
+        align-items: self-end;
+        font-size: 10px;
+    }
+
+    .right_magiam {
+        font-weight: 700;
+        padding: 5px 7px;
+        background: rgb(249, 72, 42);
+        color: white;
+        border-radius: 15px;
+        cursor: pointer;
+        margin-bottom: 26px;
+    }
+
+    .right_magiam:hover {
+        font-weight: 700;
+        padding: 5px 7px;
+        background: rgb(249, 72, 42);
+        color: white;
+        border-radius: 15px;
+        cursor: pointer;
+        margin-bottom: 26px;
+        border: 0.5px solid rgb(77, 70, 70);
+        /* Hiển thị viền khi hover */
+        transform: scale(1.01);
+        /* Tăng kích thước một chút khi hover */
+    }
 </style>
 
 <body class="hold-transition sidebar-mini layout-fixed" style="font-family: 'Bahnschrift'">
@@ -528,7 +591,30 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <!-- modal xem mã giảm -->
+                                                    <div class="modal fade" id="staticBackdrop"
+                                                        data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                                        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered"
+                                                            style="width: 430px;">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header"
+                                                                    style="background-color: #EEEEEE;">
+                                                                    <h1 class="modal-title fs-5"
+                                                                        id="staticBackdropLabel">Danh sách phiếu khuyến
+                                                                        mãi:</h1>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body"
+                                                                    style="background-color: #e6f2f4;" id="showvoucher">
 
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
                                                     <div class="modal fade" id="hoanthanh" tabindex="-1"
                                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -1010,16 +1096,17 @@
                                                     style="font-family: 'Times New Roman'; font-size: 16px;">
                                                 </p>
                                             </div>
-                                            <div class="d-flex justify-content-between">
+                                            <div class="d-flex justify-content-between align-items-center">
                                                 <h6 style="font-family: 'Times New Roman'; font-weight: bold">Phiếu giảm
                                                     giá
                                                     :</h6>
 
                                                 <span th:if="${phieuGiamCT.id!=null}">
                                                     <p th:text="${phieuGiamCT.phieugiamgia.loaiphieu==false?#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiam, 0, 'COMMA', 0, 'POINT')+'&#x20ab;':phieuGiamCT.phieugiamgia.giatrigiam+' %, tối đa '+#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiamtoida, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
-                                                        style="font-family: 'Times New Roman'; font-size: 16px;">
+                                                        style="font-family: 'Times New Roman'; font-size: 16px; margin-top: 10px;">
                                                     </p>
                                                 </span>
+
                                                 <span th:if="${phieuGiamCT.id==null}">
                                                     <span class="applied-reduction-code"
                                                         style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px;">
@@ -1034,7 +1121,10 @@
                                                             !</span>
                                                     </span>
                                                 </span>
-
+                                                <button class="btn btn-light" style="margin-bottom: 0px;"
+                                                    data-bs-toggle="modal" id="chonMaGiam"
+                                                    data-bs-target="#staticBackdrop" onclick="showmagiam()">
+                                                    Chọn mã</button>
                                             </div>
                                             <div class="d-flex justify-content-between">
                                                 <h6 style="font-family: 'Times New Roman'; font-weight: bold">Tổng tiền
@@ -2714,7 +2804,7 @@
             var xa = document.getElementById("ward").value;
             var ghichus = document.getElementById("ghichus").value;
             var tienships = document.getElementById("phigiaoHang").value;
-          
+
             // Biến để kiểm tra nếu có lỗi
             var error = false;
 
@@ -2775,7 +2865,7 @@
                 // alert("Địa chỉ không được để trống");
                 document.getElementById('TTTK_phigiao_regex').innerHTML = 'Nếu miễn ship hãy nhập 0.0 ₫!';
                 error = true;
-            }else{
+            } else {
                 document.getElementById('TTTK_phigiao_regex').innerHTML = '';
             }
             // Kiểm tra địa chỉ
@@ -2855,6 +2945,72 @@
                 input.value = value.toLocaleString('vi-VN') + ' ₫';
             }
         });
+
+        function showmagiam() {
+            const urlVoucher = `http://localhost:8080/hoa-don/show-all-voucher`;
+            fetch(urlVoucher)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    if (b === false) {
+                        document.getElementById('showvoucher').innerHTML = `<div class="tab-pane fade show active text-center fw-bold" id="tatCaHoaDon-tab-pane" role="tabpanel" aria-labelledby="tatCaHoaDon-tab" tabindex="0">
+                                            <br>
+                                            <img src="../dist/img/no_product.png" width="300px" height="300px">
+                                            <h3 class="text text-danger"><i>Không tìm thấy voucher phù hợp!! <i class="bi bi-emoji-tear"></i>!</i></h3>
+                                        </div>`;
+                    } else {
+                        if (b.length > 0) {
+                            var htmlvoucher = '';
+                            for (const hd of b) {
+                                htmlvoucher += `
+                        <div class="ma_giam_gia">
+                                <div class="ma-item-left">
+                                    <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
+                                </div>
+                                <div class="ma-item-right">
+                                    <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;" >${hd.loaiphieu == true ? 'Giảm ' + hd.giatrigiam + ' %' + ', tối đa ' + formatCurrency(hd.giatrigiamtoida) : 'Giảm ' + formatCurrency(hd.giatrigiam)}
+                                    </h4>
+                                    
+                                    <p style="font-size: 14px; margin: 0; padding: 0; color: black">${'Đơn hàng từ ' + formatCurrency(hd.dontoithieu) + ' trở lên'}
+                                        </p>
+                                    <div class="ma-item-des">
+                                        <div class="left_magiam">
+                                            <p style="margin: 0; white-space: nowrap;">Mã: <b
+                                                    class="code">${hd.macode}</b></p>
+                                            <p>${'HSD: ' + hd.ngayketthuc}</p>
+                                        </div>
+                                        <div class="right_magiam">
+                                        <a onclick="apdungvoucher('http://localhost:8080/ban-hang-tai-quay/ap-dung-voucher/${hd.id}')" data-bs-dismiss="modal" >
+                                            Áp dụng
+                                                          </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        `;
+                            }
+                            
+                            document.getElementById('showvoucher').innerHTML = htmlvoucher;
+                            
+                            
+                        } else {
+                            document.getElementById('showvoucher').innerHTML = `<div class="tab-pane fade show active text-center fw-bold" id="tatCaHoaDon-tab-pane" role="tabpanel" aria-labelledby="tatCaHoaDon-tab" tabindex="0">
+                                            <br>
+                                            <img src="../dist/img/no_product.png" width="300px" height="300px">
+                                            <h3 class="text text-danger"><i>Không tìm thấy voucher phù hợp!! <i class="bi bi-emoji-tear"></i>!</i></h3>
+                                        </div>`;
+                        }
+                    }
+
+                })
+        }
+
+        function formatCurrency(amount) {
+            return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+        }
+
     </script>
     <script th:inline="javascript">
         /*<![CDATA[*/

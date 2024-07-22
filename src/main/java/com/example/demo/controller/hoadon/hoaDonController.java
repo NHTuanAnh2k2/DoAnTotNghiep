@@ -45,6 +45,10 @@ import java.util.*;
 @RequestMapping("hoa-don")
 public class hoaDonController {
     @Autowired
+    PhieuGiamGiaRepository daoPGG;
+    @Autowired
+    KhachHangPhieuGiamRepository daoKHPG;
+    @Autowired
     SpringTemplateEngine dao1;
     @Autowired
     ChatLieuRepository daoChatLieu;
@@ -775,6 +779,44 @@ public class hoaDonController {
         daoLS.add(lshd);
         return "redirect:/hoa-don/showDetail";
     }
+    @GetMapping("show-all-voucher")
+    @ResponseBody
+    public ResponseEntity<?> showAllMa() {
+        List<HoaDon> lstSaveHD = dao.timTheoID(idhdshowdetail);
+        HoaDon hdHienTai=lstSaveHD.get(0);
+        if (hdHienTai == null) {
+            return ResponseEntity.ok(false);
+        }
+        KhachHang kh = hdHienTai.getKhachhang();
+        List<KhachHangPhieuGiam> lst = new ArrayList<>();
+        if (kh != null) {
+            lst = daoKHPG.findAllByKhachhang(kh);
+        }
+        List<HoaDonChiTiet> lsthdct = daoHDCT.getListSPHD(hdHienTai);
+
+        //lst phiếu giảm cá nhân đang kích hoạt trạng thái là 1
+        List<PhieuGiamGia> lstPhieuGiamCaNhan = new ArrayList<>();
+        if (lst.size() > 0) {
+            for (KhachHangPhieuGiam a : lst
+            ) {
+                if (a.getPhieugiamgia().getTrangthai() == 1) {
+                    lstPhieuGiamCaNhan.add(a.getPhieugiamgia());
+                }
+            }
+        }
+        List<PhieuGiamGia> lstphieuPublic = daoPGG.findAllByKieuphieuaAndTrangthais(false, 1);
+        // add phiếu cá nhân và phiếu công khai về cùng 1 lst cá nhân
+        for (PhieuGiamGia a : lstphieuPublic
+        ) {
+            lstPhieuGiamCaNhan.add(a);
+        }
+
+        List<PhieuGiamGia> lstThoaMan = lstPhieuGiamCaNhan;
+
+
+        return ResponseEntity.ok(lstThoaMan);
+    }
+
 
     //xác nhận hủy
     @GetMapping("huy-don")

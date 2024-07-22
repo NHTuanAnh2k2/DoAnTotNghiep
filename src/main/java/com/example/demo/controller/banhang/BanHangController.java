@@ -810,6 +810,14 @@ public class BanHangController {
                 phieugiamgiachtietset.setGiabandau(tongtienhoadonhientai);
                 phieugiamgiachtietset.setTiengiam(sotiengiam);
                 phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
+                PhieuGiamGia phieuGiamGiasaveSl=phieugiamsaoluu;
+                if(phieuGiamGiasaveSl.getSoluong()>0){
+                    phieuGiamGiasaveSl.setSoluong(phieuGiamGiasaveSl.getSoluong()-1);
+                    if(phieuGiamGiasaveSl.getSoluong()==0){
+                        phieuGiamGiasaveSl.setTrangthai(2);
+                    }
+                    daoPGG.save(phieuGiamGiasaveSl);
+                }
                 daoPGGCT.save(phieugiamgiachtietset);
             }
             // lịch sử hóa đơn 0
