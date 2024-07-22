@@ -183,6 +183,9 @@
     }
     </style>
 <body class="container">
+<!--&lt;!&ndash; header section start &ndash;&gt;-->
+<!--<nav th:replace="~{/layout/header.html}"></nav>-->
+<!--&lt;!&ndash; header section end &ndash;&gt;-->
 <input type="hidden" th:value="${token}" id="kiemtratokendangnhap">
 <div class="tong">
     <div class="left">
@@ -324,8 +327,8 @@
                         <div class="opciones-radio">
                             <div class="form-group" style="padding-top: 7px;">
                         <span class="opcion-radio">
-                            <input type="radio" id="comida_mexicana" name="abc" checked>
-                            <label for="comida_mexicana">Miễn phí vận chuyển cho đơn hàng 1,5 triệu</label>
+                            <input type="radio" id="kiemtramienphiship" name="abc" checked disabled>
+                            <label for="kiemtramienphiship">Miễn phí vận chuyển cho đơn hàng từ 2 triệu</label>
                         </span>
                             </div>
                         </div>
@@ -482,7 +485,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <p style="color: #AAAAAA; font-size: 18px;">Tạm tính</p>
             <div style="display: flex; align-items: center;">
-                <h5 id="tamTinh" th:text="${#numbers.formatDecimal(totalAmount, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></h5>
+                <h5 id="tamTinh" th:text="${#numbers.formatDecimal(totalAmount, 0, 'COMMA', 0, 'POINT') + ' &#x20ab;'}"></h5>
             </div>
         </div>
         <div id="fillMaGiam">
@@ -500,7 +503,7 @@
                     </div>
                 </div>
                 <div>
-                    <h5 id="soTienGiam">0</h5>
+                    <h5 id="soTienGiam">0 ₫</h5>
                 </div>
             </div>
         </div>
@@ -869,7 +872,7 @@
 
         function convertCashInput(amount) {
             // Chuyển số thành chuỗi và thêm dấu phân cách hàng nghìn
-            let formattedAmount = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            let formattedAmount = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             // Thêm ký hiệu tiền tệ ₫ vào cuối chuỗi
             return formattedAmount + " ₫";
         }
@@ -907,8 +910,18 @@
                 })
                 .then(function (d) {
                     var shipfe = convertCashInput(d.data.total);
-                    document.getElementById('phivanchuyen').innerText = shipfe;
-                    tinhtongtien();
+                    const tamtinh = chuyendoitien(document.getElementById("tamTinh"));
+                    console.log("tam tinh phí"+tamtinh);
+                    if(tamtinh >= 2000000){
+                        document.getElementById('phivanchuyen').innerText= "0 ₫";
+                        document.getElementById("kiemtramienphiship").checked= true;
+                        tinhtongtien();
+                    }else{
+                        document.getElementById('phivanchuyen').innerText = shipfe;
+                        document.getElementById("kiemtramienphiship").checked= false;
+                        tinhtongtien();
+                    }
+
                 })
 
         }
@@ -916,10 +929,9 @@
         function tinhtongtien() {
             const tamtinh = chuyendoitien(document.getElementById("tamTinh"));
             const soTienGiam = chuyendoitien(document.getElementById("soTienGiam"));
-            console.log("Tien giam: " + soTienGiam)
             const phivanchuyen = chuyendoitien(document.getElementById("phivanchuyen"));
             const tongTien = tamtinh - soTienGiam + phivanchuyen;
-            document.getElementById("tongtien").innerText = tongTien;
+            document.getElementById("tongtien").innerText = formatCurrencyVND(tongTien);
         }
 
         function validateFormDiaChiKhachLe(event) {
@@ -1139,7 +1151,7 @@
                 }
                 document.getElementById("fillMaGiam").style.display = "block";
                 document.getElementById("maCodeGiam").innerText = max.code;
-                document.getElementById("soTienGiam").innerText = "- " + max.value + " ₫";
+                document.getElementById("soTienGiam").innerText = "-" + formatCurrencyVND(max.value);
                 tinhtongtien();
             }
         }
@@ -1150,7 +1162,7 @@
             event.preventDefault();
             document.getElementById("fillMaGiam").style.display = "none";
             document.getElementById("maCodeGiam").innerText = "khong";
-            document.getElementById("soTienGiam").innerText = 0;
+            document.getElementById("soTienGiam").innerText = "0 ₫";
             tinhtongtien();
         });
         // });
@@ -1206,7 +1218,7 @@
                 errorMaGiam.innerText = "";
                 document.getElementById("fillMaGiam").style.display = "block";
                 document.getElementById("maCodeGiam").innerText = max.code;
-                document.getElementById("soTienGiam").innerText = "- " + max.value + " ₫";
+                document.getElementById("soTienGiam").innerText = "-" + formatCurrencyVND(max.value);
                 tinhtongtien();
             }
             if (MangTienGiam.length <= 0) {
@@ -1271,7 +1283,7 @@
                     errorMaGiam.innerText = "";
                     document.getElementById("fillMaGiam").style.display = "block";
                     document.getElementById("maCodeGiam").innerText = max.code;
-                    document.getElementById("soTienGiam").innerText = "- " + max.value + " ₫";
+                    document.getElementById("soTienGiam").innerText = "-" + formatCurrencyVND(max.value);
                     tinhtongtien();
                 }
                 if (MangTienGiam.length <= 0) {
@@ -1638,6 +1650,20 @@
         document.getElementById('huyennhan').value = inputHuyen;
         document.getElementById('xanhan').value = inputXa;
     }
+    function formatCurrencyVND(number) {
+        // Định dạng số theo tiền tệ Việt Nam
+        let formattedNumber = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number);
+
+        // Thay dấu chấm bằng dấu phẩy
+        formattedNumber = formattedNumber.replace(/\./g, ',');
+
+        return formattedNumber;
+    }
 </script>
+<br>
+<br>
+<!--&lt;!&ndash; footer section start &ndash;&gt;-->
+<!--<nav th:replace="~{/layout/footer.html}"></nav>-->
+<!--&lt;!&ndash; footer section end &ndash;&gt;-->
 </body>
 </html>
