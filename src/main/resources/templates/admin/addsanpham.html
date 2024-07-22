@@ -13,6 +13,26 @@
     }
 </style>
 
+
+<!--màu cho modal-->
+<style>
+    /* CSS cho các tùy chọn được chọn và khi hover */
+    .select2-container--default .select2-results__option--highlighted {
+        background-color: wheat !important;
+        color: black !important;
+    }
+</style>
+
+<!--màu cho select2-->
+<style>
+    .select2-container--default .select2-selection__choice {
+        background-color: white !important;
+        color: white !important;
+        border-color: white !important;
+    }
+</style>
+
+
 <!--&lt;!&ndash;màu cho modal&ndash;&gt;-->
 <!--<style>-->
 <!--    /* CSS cho các tùy chọn được chọn và khi hover */-->
@@ -30,6 +50,7 @@
 <!--        border-color: rgb(249, 72, 42) !important;-->
 <!--    }-->
 <!--</style>-->
+
 
 <!--màu cho checkbox-->
 <style>
@@ -356,13 +377,18 @@
                                     <div class="d-flex">
                                         <p style="margin-left: 20px;font-weight: bold"><span
                                                 style="color: red">* </span>Màu sắc:
+                                            <!--                                            <select id="colorSelect" class="select2" multiple="multiple"-->
+                                            <!--                                                    data-placeholder="Màu sắc" style="width: 500px;" name="idMauSac"-->
+                                            <!--                                                    onchange="clearErrorMessageMauSac()">-->
+                                            <!--                                                <option th:each="ms : ${ms}" th:value="${ms.id}" th:text="${ms.ten}"-->
+                                            <!--                                                        th:data-color="${ms.ten}"></option>-->
+                                            <!--                                            </select>-->
                                             <select id="colorSelect" class="select2" multiple="multiple"
                                                     data-placeholder="Màu sắc" style="width: 500px;" name="idMauSac"
                                                     onchange="clearErrorMessageMauSac()">
-                                                <option th:each="ms : ${ms}" th:value="${ms.id}" th:text="${ms.ten}"
+                                                <option th:each="ms : ${ms}" th:value="${ms.id}"
                                                         th:data-color="${ms.ten}"></option>
                                             </select>
-
                                         </p>
                                         <p>
                                         </p>
@@ -2185,7 +2211,7 @@
                 }
             });
             Toast.fire({
-                icon: 'error',
+                icon: 'success',
                 title: successMessage
             });
             sessionStorage.removeItem('successMessageSuaGia');
@@ -2193,32 +2219,17 @@
     });
 </script>
 
+<!--validate ảnh -->
 <script>
     function showFileInfo(event) {
         // Lấy thẻ <input> từ event
         var input = event.target;
-        // Lấy thẻ <tr> bao quanh thẻ <input>
-        var tr = input.closest('tr');
-        // Lấy vị trí của <tr> trong bảng
-        var table = document.getElementById('example2');
-        var rows = Array.from(table.rows);
-        var rowIndex = rows.indexOf(tr);
-        // Hiển thị vị trí và tên tệp
-        if (input.files && input.files[0]) {
-            // alert(`Vị trí: ${rowIndex}, Tên tệp: ${input.files[0].name}`);
-            var list = [
-                rowIndex,
-                input.files[0].name
-            ]
-            const urlGetImage = `http://localhost:8080/timaddImage?image=${list}`;
-            fetch(urlGetImage)
-                .then(function (a) {
-                    return a.json();
-                })
-                .then(function (b) {
-                })
-        }
 
+        // Hiển thị tên tệp với màu đỏ
+        if (input.files && input.files[0]) {
+            var fileName = input.files[0].name;
+            input.parentNode.style.color = 'red';
+        }
 
         // validate ảnh
         if (input.files && input.files[0]) {
@@ -2245,6 +2256,7 @@
                     title: 'Sai định dạng ảnh. Vui lòng tải ảnh định dạng jpg hoặc png.'
                 });
                 input.value = ''; // Xóa giá trị của input để không lưu ảnh sai định dạng
+                input.parentNode.style.color = ''; // Xóa màu chữ
                 return;
             }
 
@@ -2266,40 +2278,120 @@
                     title: 'Kích thước ảnh không được lớn hơn 1MB.'
                 });
                 input.value = ''; // Xóa giá trị của input để không lưu ảnh quá lớn
+                input.parentNode.style.color = ''; // Xóa màu chữ
                 return;
             }
-
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                var img = new Image();
-                img.onload = function () {
-                    // Kiểm tra kích thước ảnh
-                    // if (img.width < 1280 || img.height < 1280 || img.width > 1280 || img.height > 1280) {
-                    //     const Toast = Swal.mixin({
-                    //         toast: true,
-                    //         position: 'top-end',
-                    //         showConfirmButton: false,
-                    //         timer: 3000,
-                    //         timerProgressBar: true,
-                    //         didOpen: (toast) => {
-                    //             toast.onmouseenter = Swal.stopTimer;
-                    //             toast.onmouseleave = Swal.resumeTimer;
-                    //         }
-                    //     });
-                    //     Toast.fire({
-                    //         icon: 'error',
-                    //         title: 'Kích thước ảnh phải là 1280x1280 pixels.'
-                    //     });
-                    //     input.value = ''; // Xóa giá trị của input để không lưu ảnh sai kích thước
-                    //     return;
-                    // }
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
         }
     }
 </script>
+
+<!--<script>-->
+<!--    function showFileInfo(event) {-->
+<!--        // Lấy thẻ <input> từ event-->
+<!--        var input = event.target;-->
+<!--        // Lấy thẻ <tr> bao quanh thẻ <input>-->
+<!--        var tr = input.closest('tr');-->
+<!--        // Lấy vị trí của <tr> trong bảng-->
+<!--        var table = document.getElementById('example2');-->
+<!--        var rows = Array.from(table.rows);-->
+<!--        var rowIndex = rows.indexOf(tr);-->
+<!--        // Hiển thị vị trí và tên tệp-->
+<!--        if (input.files && input.files[0]) {-->
+<!--            // alert(`Vị trí: ${rowIndex}, Tên tệp: ${input.files[0].name}`);-->
+<!--            var list = [-->
+<!--                rowIndex,-->
+<!--                input.files[0].name-->
+<!--            ]-->
+<!--            const urlGetImage = `http://localhost:8080/timaddImage?image=${list}`;-->
+<!--            fetch(urlGetImage)-->
+<!--                .then(function (a) {-->
+<!--                    return a.json();-->
+<!--                })-->
+<!--                .then(function (b) {-->
+<!--                })-->
+<!--        }-->
+
+
+<!--        // validate ảnh-->
+<!--        if (input.files && input.files[0]) {-->
+<!--            var file = input.files[0];-->
+<!--            var fileName = file.name;-->
+<!--            var fileExtension = fileName.split('.').pop().toLowerCase();-->
+<!--            var fileSizeMB = file.size / (1024 * 1024); // Kích thước tệp tính bằng MB-->
+
+<!--            // Kiểm tra định dạng file-->
+<!--            if (fileExtension !== 'jpg' && fileExtension !== 'png') {-->
+<!--                const Toast = Swal.mixin({-->
+<!--                    toast: true,-->
+<!--                    position: 'top-end',-->
+<!--                    showConfirmButton: false,-->
+<!--                    timer: 3000,-->
+<!--                    timerProgressBar: true,-->
+<!--                    didOpen: (toast) => {-->
+<!--                        toast.onmouseenter = Swal.stopTimer;-->
+<!--                        toast.onmouseleave = Swal.resumeTimer;-->
+<!--                    }-->
+<!--                });-->
+<!--                Toast.fire({-->
+<!--                    icon: 'error',-->
+<!--                    title: 'Sai định dạng ảnh. Vui lòng tải ảnh định dạng jpg hoặc png.'-->
+<!--                });-->
+<!--                input.value = ''; // Xóa giá trị của input để không lưu ảnh sai định dạng-->
+<!--                return;-->
+<!--            }-->
+
+<!--            // Kiểm tra kích thước tệp-->
+<!--            if (fileSizeMB > 1) {-->
+<!--                const Toast = Swal.mixin({-->
+<!--                    toast: true,-->
+<!--                    position: 'top-end',-->
+<!--                    showConfirmButton: false,-->
+<!--                    timer: 3000,-->
+<!--                    timerProgressBar: true,-->
+<!--                    didOpen: (toast) => {-->
+<!--                        toast.onmouseenter = Swal.stopTimer;-->
+<!--                        toast.onmouseleave = Swal.resumeTimer;-->
+<!--                    }-->
+<!--                });-->
+<!--                Toast.fire({-->
+<!--                    icon: 'error',-->
+<!--                    title: 'Kích thước ảnh không được lớn hơn 1MB.'-->
+<!--                });-->
+<!--                input.value = ''; // Xóa giá trị của input để không lưu ảnh quá lớn-->
+<!--                return;-->
+<!--            }-->
+
+<!--            var reader = new FileReader();-->
+<!--            reader.onload = function (e) {-->
+<!--                var img = new Image();-->
+<!--                img.onload = function () {-->
+<!--                    // Kiểm tra kích thước ảnh-->
+<!--                    // if (img.width < 1280 || img.height < 1280 || img.width > 1280 || img.height > 1280) {-->
+<!--                    //     const Toast = Swal.mixin({-->
+<!--                    //         toast: true,-->
+<!--                    //         position: 'top-end',-->
+<!--                    //         showConfirmButton: false,-->
+<!--                    //         timer: 3000,-->
+<!--                    //         timerProgressBar: true,-->
+<!--                    //         didOpen: (toast) => {-->
+<!--                    //             toast.onmouseenter = Swal.stopTimer;-->
+<!--                    //             toast.onmouseleave = Swal.resumeTimer;-->
+<!--                    //         }-->
+<!--                    //     });-->
+<!--                    //     Toast.fire({-->
+<!--                    //         icon: 'error',-->
+<!--                    //         title: 'Kích thước ảnh phải là 1280x1280 pixels.'-->
+<!--                    //     });-->
+<!--                    //     input.value = ''; // Xóa giá trị của input để không lưu ảnh sai kích thước-->
+<!--                    //     return;-->
+<!--                    // }-->
+<!--                };-->
+<!--                img.src = e.target.result;-->
+<!--            };-->
+<!--            reader.readAsDataURL(file);-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
 
 <!--hiển thị background theo giá trị màu sắc-->
 <script>
@@ -2333,9 +2425,48 @@
             }
             var color = $(state.element).data('color');
             var $state = $(
-                '<span style="background-color:' + color + '; color: white;">' + state.text + '</span>'
+                '<span style="background-color:' + color + '; display: inline-block; width: 50px;margin-top: 5px; height: 20px; border-radius: 3px;"></span>' +
+                '<span>' + state.text + '</span>'
             );
             return $state;
         }
     });
 </script>
+
+<!--<script>-->
+<!--    $(function () {-->
+<!--        // Initialize Select2 Elements-->
+<!--        $('.select2').select2();-->
+
+<!--        // Cập nhật màu sắc cho các tùy chọn-->
+<!--        $('.select2').on('select2:open', function () {-->
+<!--            // Duyệt qua tất cả các tùy chọn trong select2-->
+<!--            $('#colorSelect .select2-results__option').each(function () {-->
+<!--                // Lấy mã màu từ thuộc tính data-color-->
+<!--                var color = $(this).data('color');-->
+<!--                // Áp dụng màu nền và màu biên-->
+<!--                $(this).css({-->
+<!--                    'background-color': color,-->
+<!--                    'color': 'white'-->
+<!--                });-->
+<!--            });-->
+<!--        });-->
+
+<!--        // Đảm bảo rằng các tùy chọn được hiển thị đúng màu ngay cả khi trang được tải lại-->
+<!--        $('#colorSelect').select2({-->
+<!--            templateResult: formatState,-->
+<!--            templateSelection: formatState-->
+<!--        });-->
+
+<!--        function formatState(state) {-->
+<!--            if (!state.id) {-->
+<!--                return state.text;-->
+<!--            }-->
+<!--            var color = $(state.element).data('color');-->
+<!--            var $state = $(-->
+<!--                '<span style="background-color:' + color + '; color: white;">' + state.text + '</span>'-->
+<!--            );-->
+<!--            return $state;-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->

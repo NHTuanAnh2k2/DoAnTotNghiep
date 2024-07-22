@@ -176,8 +176,8 @@
                                         <td th:text="${#temporals.format(cl.ngaytao, 'dd-MM-yyyy HH:mm:ss')}"></td>
                                         <td class="tdSameWidth">
                                             <form name="updateTrangThaiForm" th:action="@{/chatlieu/updateTrangThai/{id}(id=${cl.id})}" method="post" onsubmit="return confirmUpdateChatLieu(this);">
-                                                <button type="submit" style="width: 170px; background: none; border: none;"
-                                                        th:classappend="${cl.trangthai == true ? 'btn-outline-success' : 'btn-outline-danger'}">
+                                                <button type="submit" style=" border: none;"
+                                                        th:classappend="${cl.trangthai == true ? 'badge badge-success' : 'badge badge-danger'}">
                                                     <span th:text="${cl.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></span>
                                                 </button>
                                             </form>
