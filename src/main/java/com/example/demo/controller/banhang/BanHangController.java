@@ -810,10 +810,10 @@ public class BanHangController {
                 phieugiamgiachtietset.setGiabandau(tongtienhoadonhientai);
                 phieugiamgiachtietset.setTiengiam(sotiengiam);
                 phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
-                PhieuGiamGia phieuGiamGiasaveSl=phieugiamsaoluu;
-                if(phieuGiamGiasaveSl.getSoluong()>0){
-                    phieuGiamGiasaveSl.setSoluong(phieuGiamGiasaveSl.getSoluong()-1);
-                    if(phieuGiamGiasaveSl.getSoluong()==0){
+                PhieuGiamGia phieuGiamGiasaveSl = phieugiamsaoluu;
+                if (phieuGiamGiasaveSl.getSoluong() > 0) {
+                    phieuGiamGiasaveSl.setSoluong(phieuGiamGiasaveSl.getSoluong() - 1);
+                    if (phieuGiamGiasaveSl.getSoluong() == 0) {
                         phieuGiamGiasaveSl.setTrangthai(2);
                     }
                     daoPGG.save(phieuGiamGiasaveSl);
@@ -917,8 +917,8 @@ public class BanHangController {
                 phieugiamgiachtietset.setGiasauapdung(hdset1.getTongtien());
                 phieugiamgiachtietset.setGiabandau(tongtienhoadonhientai);
                 phieugiamgiachtietset.setTiengiam(sotiengiam);
-
                 phieugiamgiachtietset.setNgaytao(Timestamp.valueOf(currentDateTime));
+                daoPGGCT.save(phieugiamgiachtietset);
             }
 
             //trả sau thì cần  fake luôn lịch sử đã xác nhận
@@ -954,7 +954,8 @@ public class BanHangController {
             phuongthuc.setTrangthai(false);
             daoPTTT.add_update(phuongthuc);
             /////////////
-            daoPGGCT.save(phieugiamgiachtietset);
+
+
             lstPTTT = new ArrayList<>();
             List<HoaDon> lstcheck7 = daoHD.timTheoTrangThaiVaLoai(7, false);
             if (lstcheck7.size() > 0) {
