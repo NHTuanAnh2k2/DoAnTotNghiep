@@ -49,13 +49,17 @@
             <div class="col-md-6">
                 <div class="alert alert-danger text-center"
                      style="background-color: #fff3cd; border-color: #ffeeba;">
-                    <div class="error-message">
+                    <div th:if="${adminDangnhap}" class="error-message">
                         Tài khoản này không có quyền truy cập.
+                    </div>
+                    <div th:unless="${adminDangnhap}" class="error-message">
+                        Bạn chưa đăng nhập.
                     </div>
                 </div>
                 <div class="text-center mt-3">
                     <a href="javascript:history.back()" class="btn btn-secondary-custom" style="width: 50%">Quay lại</a>
-                    <a th:href="@{/admin/dangxuat}" class="btn btn-custom" style="margin-top: 10px">Đăng xuất và vào tài khoản khác</a>
+                    <a th:if="${adminDangnhap}" th:href="@{/admin/dangxuat}" class="btn btn-custom" style="margin-top: 10px">Đăng xuất và vào tài khoản khác</a>
+                    <a th:unless="${adminDangnhap}" th:href="@{/admin/account}" class="btn btn-custom">Đăng nhập</a>
                 </div>
             </div>
         </div>

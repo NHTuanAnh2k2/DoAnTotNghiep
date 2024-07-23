@@ -400,7 +400,7 @@
         fetch(`/api/validate-code`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams({ emailResetPassword: email, codeReset: code, userId: id })
+            body: new URLSearchParams({ emailResetPassword: email, codeReset: code })
         })
             .then(response => {
                 if (!response.ok) {

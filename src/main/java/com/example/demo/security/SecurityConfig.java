@@ -1,32 +1,17 @@
 package com.example.demo.security;
 
-import com.example.demo.entity.NguoiDung;
-import com.example.demo.repository.NguoiDungRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -39,7 +24,7 @@ public class SecurityConfig {
     @Autowired
     JwtAuthEntryPoint jwtAuthEntryPoint;
     @Autowired
-    SuccessHandler successHandler;
+    AccessDeniedHandler accessDeniedHandler;
 
     private static final String[] NHANVIEN_LINK = {
             "/hoa-don/ban-hang"
@@ -52,20 +37,22 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
        return http
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
+               .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthEntryPoint)
+                       .accessDeniedHandler(accessDeniedHandler)
+                )
+               .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+               .authorizeHttpRequests(auth -> auth
 //                        .requestMatchers(QUANLY_LINK).hasAuthority("ROLE_QUANLY")
                         .requestMatchers("/api/khachhang").hasAuthority("ROLE_QUANLY")
+//                        .requestMatchers("/hoa-don/ban-hang").authenticated()
                         .anyRequest().permitAll()
                 )
-               .formLogin(form -> form
-                       .loginPage("/admin/account")
-                       .successHandler(successHandler)
-                       .permitAll()
-               )
-                .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(getProvider())
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthEntryPoint))
-                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class).build();
+//               .formLogin(form -> form
+//                       .loginPage("/admin/account")
+//                       .successHandler(successHandler)
+//                       .permitAll()
+//               )
+               .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class).build();
 
     }
 
@@ -90,13 +77,13 @@ public class SecurityConfig {
 //        return http.build();
 //    }
 
-    @Bean
-    public AuthenticationProvider getProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(passwordEncoder());
-        provider.setUserDetailsService(userDetailService);
-        return provider;
-    }
+//    @Bean
+//    public AuthenticationProvider getProvider() {
+//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+//        provider.setPasswordEncoder(passwordEncoder());
+//        provider.setUserDetailsService(userDetailService);
+//        return provider;
+//    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
