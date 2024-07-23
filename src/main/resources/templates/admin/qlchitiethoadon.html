@@ -221,10 +221,10 @@
                                                         </div>
                                                     </div>
                                                     <p></p>
-                                                    <button class="btn btn-danger" th:if="${trangThaiHienTai<3}"
+                                                    <button class="btn btn-danger" th:if="${trangThaiHienTai<2}"
                                                         data-bs-toggle="modal" data-bs-target="#huy">Hủy</button>
                                                     <button class="btn btn-warning"
-                                                        th:if="${trangThaiHienTai > 0 and trangThaiHienTai < 5}"
+                                                        th:if="${trangThaiHienTai > 0 and trangThaiHienTai < 2}"
                                                         data-bs-toggle="modal" data-bs-target="#quaylai">Quay
                                                         lại</button>
                                                     <button th:if="${trangThaiHienTai==0}" class="btn btn-primary"
@@ -757,12 +757,12 @@
                                                     <button type="button" class="btn btn-outline-secondary"
                                                         data-bs-toggle="modal" data-bs-target="#modalThayDoiHoaDon"
                                                         th:classappend="${trangThaiHienTai!=0?'disabled':''}">Thay
-                                                        đổi</button>
-                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        đổi thông tin</button>
+                                                    <!-- <button type="button" class="btn btn-outline-secondary"
                                                         id="changeNV" data-bs-toggle="modal"
                                                         data-bs-target="#modalChuyenNhanVien"
                                                         th:classappend="${trangThaiHienTai!=0?'disabled':''}">Chuyển
-                                                        nhân viên</button>
+                                                        nhân viên</button> -->
                                                 </div>
 
                                                 <!--Modal thay đổi thông tin hóa đơn-->
@@ -1120,7 +1120,9 @@
                                                     </span>
                                                 </span>
                                                 <button class="btn btn-light" style="margin-bottom: 0px;"
-                                                    data-bs-toggle="modal" id="chonMaGiam"
+                                                    th:if="${hoaDonDT.loaihoadon==false}" data-bs-toggle="modal"
+                                                    id="chonMaGiam"
+                                                    th:classappend="${trangThaiHienTai!=0?'disabled':''}"
                                                     data-bs-target="#staticBackdrop" onclick="showmagiam()">
                                                     Chọn mã</button>
                                             </div>
@@ -1273,7 +1275,8 @@
                                                                                         style="width: 120px;">
                                                                                         <option value="all" selected>
                                                                                             ----</option>
-                                                                                        <option th:each="a:${dsMauSac}" th:style="'background-color: ' + ${a.ten} + '; color: ' + ${#fff}"
+                                                                                        <option th:each="a:${dsMauSac}"
+                                                                                            th:style="'background-color: ' + ${a.ten} + '; color: ' + ${#fff}"
                                                                                             th:value="${a.ten}"
                                                                                             th:text="${a.ten}">
 
@@ -2105,7 +2108,7 @@
             ]
             let encodedList = list.map(item => encodeURIComponent(item));
             var urltimSPCT = `/hoa-don/searchSP?lstData=${encodedList.join(",")}`;
-           // var urltimSPCT = `/hoa-don/searchSP?lstData=${list}`;
+            // var urltimSPCT = `/hoa-don/searchSP?lstData=${list}`;
             fetch(urltimSPCT)
                 .then(function (c) {
                     return c.json();
@@ -3011,7 +3014,7 @@
                                             <p>${'HSD: ' + hd.ngayketthuc}</p>
                                         </div>
                                         <div class="right_magiam">
-                                        <a onclick="apdungvoucher('http://localhost:8080/ban-hang-tai-quay/ap-dung-voucher/${hd.id}')" data-bs-dismiss="modal" >
+                                        <a  onclick="apdungvoucher('http://localhost:8080/hoa-don/ap-dung-voucher/${hd.id}')"  data-bs-dismiss="modal" >
                                             Áp dụng
                                                           </a>
                                         </div>
@@ -3037,6 +3040,10 @@
                 })
         }
 
+        function apdungvoucher(inputs) {
+            window.location.href = inputs;
+        }
+
         function formatCurrency(amount) {
             return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
         }
@@ -3045,13 +3052,21 @@
     <script th:inline="javascript">
         /*<![CDATA[*/
         var sendmail = /*[[${sendmail}]]*/ false;
-        var chagesTTHDSucsess = /*[[${chagesTTHDSucsess}]]*/ false;
+        var chagesTTHDSucsess = /*[[${chagesTTHDSucsess}]]*/ false; 
+        var addVoucherSucsess = /*[[${addVoucherSucsess}]]*/ false;  
+        var addVoucherfail = /*[[${addVoucherfail}]]*/ false;  
         /*]]>*/
         if (sendmail == true) {
             thongbao('In hóa đơn thành công!', 'success')
         }
         if (chagesTTHDSucsess == true) {
             thongbao('Thay đổi thông tin thành công!', 'success')
+        }
+        if (addVoucherSucsess == true) {
+            thongbao('Áp dụng thành công!', 'success')
+        }
+        if (addVoucherfail == true) {
+            thongbao('Đơn chưa đạt giá trị tối thiểu!', 'error')
         }
     </script>
 
