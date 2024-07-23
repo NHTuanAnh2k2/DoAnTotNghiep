@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.*;
 import com.example.demo.info.NguoiDungKHInfo;
+import com.example.demo.info.TaiKhoanTokenInfo;
 import com.example.demo.info.hosokhachhang.DoiMatKhauNguoiDung;
 import com.example.demo.info.hosokhachhang.UpdateDiaChi;
 import com.example.demo.info.hosokhachhang.UpdateKhachHang;
@@ -9,11 +10,13 @@ import com.example.demo.info.hosokhachhang.UpdateNguoiDung;
 import com.example.demo.info.token.UserManager;
 import com.example.demo.repository.DiaChiRepository;
 import com.example.demo.repository.NguoiDungRepository;
+import com.example.demo.repository.giohang.GioHangRepository;
 import com.example.demo.repository.hoadon.HoaDonChiTietRepository;
 import com.example.demo.repository.hoadon.HoaDonRepository;
 import com.example.demo.restcontroller.khachhang.Province;
 import com.example.demo.security.JWTGenerator;
 import com.example.demo.service.KhachHangService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +34,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @Controller
 public class CustomerController {
@@ -49,6 +49,8 @@ public class CustomerController {
     UserManager userManager;
     @Autowired
     HoaDonRepository hoaDonRepository;
+    @Autowired
+    GioHangRepository gioHangRepository;
 
 
     @GetMapping("/trangchu")
@@ -64,11 +66,12 @@ public class CustomerController {
     @GetMapping("/quenmatkhau")
     public String quenmatkhauview(@ModelAttribute("nguoidung") NguoiDungKHInfo nguoidung,
                                   Model model) {
-
         return "same/quenmatkhau";
     }
-
-
+    @GetMapping("/customer/tracuudonhang")
+    public String tracuu(Model model) {
+        return "customer/tracuudonhang";
+    }
     @GetMapping("/hosokhachhang/{username}")
     public String hosokhachhang(Model model,
                                 @PathVariable("username") String username,
@@ -324,5 +327,79 @@ public class CustomerController {
 
         return "redirect:/hosokhachhang/{username}";
     }
+
+    @GetMapping("/customer/timkiem")
+    public String timkiem(Model model,
+                          @RequestParam(value = "searchInput", required = false) String inputsearch
+                          ){
+        List<HoaDon> lstHoaDon = new ArrayList<>();
+        if (inputsearch != null) {
+           lstHoaDon = hoaDonRepository.findHoaDonByMaOrSdtOrEmail(inputsearch);
+            System.out.println("lstHoaDon: " + lstHoaDon);
+        }
+
+        model.addAttribute("lstHoaDon", lstHoaDon);
+        return "customer/tracuudonhang";
+    }
+
+//    @PostMapping("/mualai")
+//    public String addToCart(@RequestParam Integer idHoaDon,
+//                            @RequestParam Integer quantity,
+//                            Model model,
+//                            HttpSession session) {
+//        // Tìm sản phẩm chi tiết dựa trên màu sắc và kích cỡ
+//        String selectedColor =
+//        String selectedSize =
+//        SanPhamChiTiet sanPhamChiTiet = sanPhamChiTietRepository.findBySanPhamIdAndColorAndSize(id, selectedColor, selectedSize);
+//        List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
+//        if (taiKhoanTokenInfos == null || taiKhoanTokenInfos.isEmpty()) {
+//            boolean foundInCart = false;
+//            for (GioHangChiTiet item : listGioHangKhongTK) {
+//                if (item.getSanphamchitiet().equals(sanPhamChiTiet)) {
+//                    item.setSoluong(item.getSoluong() + quantity);
+//                    foundInCart = true;
+//                    break;
+//                }
+//            }
+//            if (!foundInCart) {
+//                GioHangChiTiet newItem = new GioHangChiTiet();
+//                newItem.setId(generateUniqueItemId()); // Cấp phát id duy nhất
+//                newItem.setSanphamchitiet(sanPhamChiTiet);
+//                newItem.setSoluong(quantity);
+//                newItem.setNgaytao(new Date());
+//                newItem.setTrangthai(true);
+//                listGioHangKhongTK.add(newItem);
+//            }
+//            session.setAttribute("cartItems", listGioHangKhongTK);
+//            return "redirect:/detailsanphamCustomer/" + id;
+//        } else {
+//            String username = (String) session.getAttribute("userDangnhap");
+//            NguoiDung nguoiDung = khachHangService.findNguoiDungByTaikhoan(username);
+//            KhachHang khachHang = khachHangService.findKhachHangByIdNguoiDung(nguoiDung.getId());
+//            // Kiểm tra xem khách hàng đã có giỏ hàng hay chưa
+//            GioHang gioHang = gioHangRepository.findByIdKhachHang(khachHang.getId());
+//                // Nếu đã có giỏ hàng, thêm sản phẩm vào giỏ hàng
+//                GioHangChiTiet newItem = new GioHangChiTiet();
+//                newItem.setSanphamchitiet(sanPhamChiTiet);
+//                newItem.setSoluong(quantity);
+//                newItem.setNgaytao(new Date());
+//                newItem.setTrangthai(true);
+//                newItem.setGiohang(gioHang);
+//
+//                boolean foundInCart = false;
+//                List<GioHangChiTiet> gioHangChiTietList = gioHangChiTietRepository.findGioHangChiTietByGiohang(gioHang.getId());
+//                for (GioHangChiTiet item : gioHangChiTietList) {
+//                    if (item.getSanphamchitiet().equals(sanPhamChiTiet)) {
+//                        item.setSoluong(item.getSoluong() + quantity);
+//                        gioHangChiTietRepository.save(item);
+//                        foundInCart = true;
+//                        break;
+//                    }
+//                }
+//
+//            }
+//            return "redirect:/detailsanphamCustomer/" + id;
+//        }
+//    }
 
 }

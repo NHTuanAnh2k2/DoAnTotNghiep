@@ -3,6 +3,7 @@ package com.example.demo.controller.login;
 import com.example.demo.entity.KhachHang;
 import com.example.demo.entity.NguoiDung;
 import com.example.demo.entity.NhanVien;
+import com.example.demo.info.AdminTokenInfo;
 import com.example.demo.info.DangNhapNDInfo;
 import com.example.demo.info.TaiKhoanTokenInfo;
 import com.example.demo.info.token.AdminManager;
@@ -37,6 +38,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 @RequestMapping("/admin")
 public class DangNhapAdminController {
@@ -69,6 +73,7 @@ public class DangNhapAdminController {
         return "admin/dangnhap/loginadmin";
     }
 
+    public List<AdminTokenInfo> adminTokenInfos = new ArrayList<>();
     @PostMapping("/dangnhap")
     public String dangnhap(Model model,
                            @RequestParam("username") String taikhoan,
@@ -111,7 +116,10 @@ public class DangNhapAdminController {
                             userDetails, null, userDetails.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                     String token = jwtGenerator.generateToken(authentication);
-//                    String tokenAdmin = "Bearer " + token;
+                    Integer userId = nd.getId();
+                    AdminTokenInfo adminTokenInfo = new AdminTokenInfo(userId, token);
+                    adminTokenInfos.add(adminTokenInfo);
+                    session.setAttribute("taiKhoanTokenInfos", adminTokenInfos);
                     adminManager.addUser(nd.getId(), token);
                     session.setAttribute("tokenAdmin", token);
                     session.setAttribute("adminDangnhap", nd.getTaikhoan());
