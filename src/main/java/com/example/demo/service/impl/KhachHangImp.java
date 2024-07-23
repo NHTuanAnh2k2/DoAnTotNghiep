@@ -169,7 +169,7 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
         }
     }
 
-    @Async
+    @Override
     public boolean sendPasswordResetCode(String email, String name) {
         // Cấu hình thông tin email
         String host = "smtp.gmail.com";

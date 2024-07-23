@@ -42,9 +42,9 @@ public class SecurityConfig {
                 )
                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers(QUANLY_LINK).hasAuthority("ROLE_QUANLY")
+                        .requestMatchers(QUANLY_LINK).hasAuthority("ROLE_QUANLY")
                         .requestMatchers("/api/khachhang").hasAuthority("ROLE_QUANLY")
-//                        .requestMatchers("/hoa-don/ban-hang").authenticated()
+                        .requestMatchers("/hoa-don/ban-hang").authenticated()
                         .anyRequest().permitAll()
                 )
 //               .formLogin(form -> form
