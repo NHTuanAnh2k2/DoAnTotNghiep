@@ -29,6 +29,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -971,8 +976,15 @@ public class hoaDonController {
     // tìm kiếm sảm phẩm theo bộ lọc
     @GetMapping("searchSP")
     @ResponseBody
-    public ResponseEntity<?> timSPHDCT(@RequestParam("lstData") List<String> lstData
+    public ResponseEntity<?> timSPHDCT(@RequestParam("lstData") String lstDataStr
     ) {
+        String[] lstDataArray = lstDataStr.split(",");
+
+        // Giải mã các phần tử trong mảng
+        List<String> lstData = Arrays.stream(lstDataArray)
+                .map(item -> URLDecoder.decode(item, StandardCharsets.UTF_8))
+                .collect(Collectors.toList());
+
         String ten = lstData.get(0).equalsIgnoreCase("all") ? "" : lstData.get(0);
         String ChatLieu = lstData.get(1).equalsIgnoreCase("all") ? "" : lstData.get(1);
         String ThuongHieu = lstData.get(2).equalsIgnoreCase("all") ? "" : lstData.get(2);
