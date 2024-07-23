@@ -1,9 +1,11 @@
 package com.example.demo.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
@@ -20,20 +22,19 @@ import java.util.function.Function;
 @Component
 @AllArgsConstructor
 public class JWTGenerator {
-//        private static final Key key = new SecretKeySpec(Base64.getDecoder().decode(SecurityConstants.JWT_SECRET), SignatureAlgorithm.HS512.getJcaName());
-    private final Key signInKey = new SecretKeySpec(Base64.getDecoder().decode(SecurityConstants.JWT_SECRET), SignatureAlgorithm.HS512.getJcaName());
+    private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);//    private final Key signInKey = new SecretKeySpec(Base64.getDecoder().decode(SecurityConstants.JWT_SECRET), SignatureAlgorithm.HS512.getJcaName());
 
-    private Claims getClaims(String token) {
-        return Jwts.parser()
-                .setSigningKey(SecurityConstants.JWT_SECRET)
-                .build()
-                .parseSignedClaims(token)
-                .getBody();
-    }
+//    private Claims getClaims(String token) {
+//        return Jwts.parser()
+//                .setSigningKey(SecurityConstants.JWT_SECRET)
+//                .build()
+//                .parseSignedClaims(token)
+//                .getBody();
+//    }
 
     public String getUsernameFromJWT(String token) {
         Claims claims = Jwts.parser()
-                .setSigningKey(signInKey)
+                .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
@@ -49,48 +50,48 @@ public class JWTGenerator {
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(expireDate)
-                .signWith(SignatureAlgorithm.HS512, SecurityConstants.JWT_SECRET)
+                .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
         System.out.println("New token:");
         System.out.println(token);
         return token;
     }
-    
+
     public boolean validateToken(String token) {
         try {
             Jwts.parser()
-                    .setSigningKey(SecurityConstants.JWT_SECRET)
+                    .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
             return true;
         } catch (Exception ex) {
-            throw new AuthenticationCredentialsNotFoundException("JWT đã hết hạn hoặc không chính xác");
+            throw new AuthenticationCredentialsNotFoundException("JWT was exprired or incorrect",ex.fillInStackTrace());
         }
     }
 
 
-    private <T> T extractClaim(String token, Function<Claims, T> getClaimValue) {
-        final Claims claims = getClaims(token);
-        return getClaimValue.apply(claims);
-    }
-
-    public boolean isTokenExpired(String token) {
-        Date expiredDate = extractClaim(token, Claims::getExpiration);
-        return new Date().after(expiredDate);
-    }
-
-    public boolean isTheSameUser(String token, UserDetails userDetails) {
-        return userDetails.getUsername().equals(getUsernameFromJWT(token));
-    }
-
-    public boolean isAccountEnable(UserDetails userDetails) {
-        return userDetails.isEnabled();
-    }
-
-
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-        return !isTokenExpired(token) &&
-                isTheSameUser(token, userDetails) &&
-                isAccountEnable(userDetails);
-    }
+//    private <T> T extractClaim(String token, Function<Claims, T> getClaimValue) {
+//        final Claims claims = getClaims(token);
+//        return getClaimValue.apply(claims);
+//    }
+//
+//    public boolean isTokenExpired(String token) {
+//        Date expiredDate = extractClaim(token, Claims::getExpiration);
+//        return new Date().after(expiredDate);
+//    }
+//
+//    public boolean isTheSameUser(String token, UserDetails userDetails) {
+//        return userDetails.getUsername().equals(getUsernameFromJWT(token));
+//    }
+//
+//    public boolean isAccountEnable(UserDetails userDetails) {
+//        return userDetails.isEnabled();
+//    }
+//
+//
+//    public boolean isTokenValid(String token, UserDetails userDetails) {
+//        return !isTokenExpired(token) &&
+//                isTheSameUser(token, userDetails) &&
+//                isAccountEnable(userDetails);
+//    }
 }

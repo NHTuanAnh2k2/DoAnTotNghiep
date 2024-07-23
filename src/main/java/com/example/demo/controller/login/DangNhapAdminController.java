@@ -75,8 +75,9 @@ public class DangNhapAdminController {
                            @RequestParam("password") String matkhau,
                            @ModelAttribute("dangnhap") AuthRequestDTO dangnhap,
                            RedirectAttributes redirectAttributes,
-                           HttpServletRequest request
-                           ) {
+                           HttpServletRequest request,
+                           HttpSession session
+    ) {
         if (taikhoan == "" && matkhau == "") {
             redirectAttributes.addFlashAttribute("error", "Tài khoản và mật khẩu đang trống");
             return "redirect:/admin/account";
@@ -110,10 +111,9 @@ public class DangNhapAdminController {
                             userDetails, null, userDetails.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                     String token = jwtGenerator.generateToken(authentication);
-                    String tokenAdmin = "Bearer " + token;
+//                    String tokenAdmin = "Bearer " + token;
                     adminManager.addUser(nd.getId(), token);
-                    HttpSession session = request.getSession();
-                    session.setAttribute("tokenAdmin", tokenAdmin);
+                    session.setAttribute("tokenAdmin", token);
                     session.setAttribute("adminDangnhap", nd.getTaikhoan());
                     return "redirect:/hoa-don/ban-hang";
                 } else {
@@ -129,19 +129,19 @@ public class DangNhapAdminController {
             }
         }
     }
-    @GetMapping("/dangxuat")
-    public String logout (HttpServletRequest request, HttpSession session){
-        // Xóa session của người dùng để đăng xuất
-//        HttpSession session = request.getSession(false);
 
-        if (session != null) {
-            String userName = (String) session.getAttribute("adminDangnhap");
-            NguoiDung nguoiDung = khachHangService.findNguoiDungByTaikhoan(userName);
-            Integer adminId = nguoiDung.getId();
-            String token = adminManager.getToken(adminId);
-            session.invalidate();
-            adminManager.logoutUser(adminId, token);
-        }
+    @GetMapping("/dangxuat")
+    public String logout(HttpServletRequest request, HttpSession session) {
+        // Xóa session của người dùng để đăng xuất
+        String userName = (String) session.getAttribute("adminDangnhap");
+        NguoiDung nguoiDung = khachHangService.findNguoiDungByTaikhoan(userName);
+        Integer adminId = nguoiDung.getId();
+        String token = adminManager.getToken(adminId);
+        session.removeAttribute("adminDangnhap");
+        session.removeAttribute("adminToken");
+        session.invalidate();
+        adminManager.logoutUser(adminId, token);
         return "redirect:/admin/account";
+
     }
 }
