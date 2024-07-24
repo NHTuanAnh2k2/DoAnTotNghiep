@@ -1391,8 +1391,11 @@
                                                             style="font-family: 'Times New Roman'; font-size: 15px;font-weight: bold;">
                                                             ></p>
                                                     </td>
-                                                    <td th:text="${a.sanphamchitiet.mausac.ten}"
-                                                        style="vertical-align: middle;"></td>
+                                                    <td style="vertical-align: middle;">
+                                                        <p th:text="${a.sanphamchitiet.mausac.ten}"
+                                                            th:style="'background-color: ' + ${a.sanphamchitiet.mausac.ten} + '; color: white; padding: 3px 15px; border-radius: 14px;'">
+                                                        </p>
+                                                    </td>
 
                                                     <td style="vertical-align: middle;"><input
                                                             th:name="${a.sanphamchitiet.id}"
@@ -3052,12 +3055,12 @@
     <script th:inline="javascript">
         /*<![CDATA[*/
         var sendmail = /*[[${sendmail}]]*/ false;
-        var chagesTTHDSucsess = /*[[${chagesTTHDSucsess}]]*/ false; 
-        var addVoucherSucsess = /*[[${addVoucherSucsess}]]*/ false;  
-        var addVoucherfail = /*[[${addVoucherfail}]]*/ false;  
-        var updateSLSuccsess = /*[[${updateSLSuccsess}]]*/ false;  
-        var autokickvoucher = /*[[${autokickvoucher}]]*/ false;  
-        var addProductSuccsess = /*[[${addProductSuccsess}]]*/ false;  
+        var chagesTTHDSucsess = /*[[${chagesTTHDSucsess}]]*/ false;
+        var addVoucherSucsess = /*[[${addVoucherSucsess}]]*/ false;
+        var addVoucherfail = /*[[${addVoucherfail}]]*/ false;
+        var updateSLSuccsess = /*[[${updateSLSuccsess}]]*/ false;
+        var autokickvoucher = /*[[${autokickvoucher}]]*/ false;
+        var addProductSuccsess = /*[[${addProductSuccsess}]]*/ false;
         /*]]>*/
         if (sendmail == true) {
             thongbao('In hóa đơn thành công!', 'success')
