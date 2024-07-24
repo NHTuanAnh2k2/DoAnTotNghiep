@@ -620,8 +620,17 @@ public class hoaDonController {
         daoPT.add_update(ptttTim);
         hds.setTongtien(tongTT);
         dao.capNhatHD(hds);
-        PhieuGiamGiaChiTiet phieuGiamGiaChiTietTim = daoPGGCT.timListPhieuTheoHD(hds).get(0);
-        phieuGiamGiaChiTietTim.setPhieugiamgia(phieutim);
+        PhieuGiamGiaChiTiet phieuGiamGiaChiTietTim = new PhieuGiamGiaChiTiet();
+        List<PhieuGiamGiaChiTiet> lst=daoPGGCT.timListPhieuTheoHD(hds);
+        if(lst.size()>0){
+            phieuGiamGiaChiTietTim=lst.get(0);
+        }else {
+            phieuGiamGiaChiTietTim.setHoadon(hds);
+            phieuGiamGiaChiTietTim.setPhieugiamgia(phieutim);
+            phieuGiamGiaChiTietTim.setGiabandau(tongTienSP);
+            phieuGiamGiaChiTietTim.setGiasauapdung(tongTT);
+            phieuGiamGiaChiTietTim.setTiengiam(sotiengiam);
+        }
         daoPGGCTRepo.save(phieuGiamGiaChiTietTim);
         redirectAttributes.addFlashAttribute("addVoucherSucsess", true);
         return "redirect:/hoa-don/showDetail";
@@ -1125,18 +1134,24 @@ public class hoaDonController {
                 ) {
                     tongTienSP = tongTienSP.add(b.getGiasanpham().multiply(new BigDecimal(b.getSoluong())));
                 }
-                if (pgctTim.getPhieugiamgia() != null) {
-                    if (pgctTim.getPhieugiamgia().getLoaiphieu() == true) {
-                        // phiếu %
-                        if ((new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100"))).compareTo(pgctTim.getPhieugiamgia().getGiatrigiamtoida()) > 0) {
-                            sotiengiam = pgctTim.getPhieugiamgia().getGiatrigiamtoida();
-                        } else {
-                            sotiengiam = (new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100")));
-                        }
 
+                if (pgctTim.getPhieugiamgia() != null) {
+                    if (tongTienSP.compareTo(pgctTim.getPhieugiamgia().getDontoithieu()) >= 0) {
+                        if (pgctTim.getPhieugiamgia().getLoaiphieu() == true) {
+                            // phiếu %
+                            if ((new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100"))).compareTo(pgctTim.getPhieugiamgia().getGiatrigiamtoida()) > 0) {
+                                sotiengiam = pgctTim.getPhieugiamgia().getGiatrigiamtoida();
+                            } else {
+                                sotiengiam = (new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100")));
+                            }
+
+                        } else {
+                            // phiếu vnđ
+                            sotiengiam = new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam());
+                        }
                     } else {
-                        // phiếu vnđ
-                        sotiengiam = new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam());
+                        daoPGGCTRepo.deleteById(pgctTim.getId());
+
                     }
                 }
 
@@ -1165,23 +1180,27 @@ public class hoaDonController {
         for (HoaDonChiTiet b : lstHDCT
         ) {
             tongTienSP = tongTienSP.add(b.getGiasanpham().multiply(new BigDecimal(b.getSoluong())));
-            System.out.println("BBBBBBBB");
-            System.out.println(b.getSoluong());
         }
-        if (pgctTim.getPhieugiamgia() != null) {
-            if (pgctTim.getPhieugiamgia().getLoaiphieu() == true) {
-                // phiếu %
-                if ((new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100"))).compareTo(pgctTim.getPhieugiamgia().getGiatrigiamtoida()) > 0) {
-                    sotiengiam = pgctTim.getPhieugiamgia().getGiatrigiamtoida();
-                } else {
-                    sotiengiam = (new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100")));
-                }
 
+        if (pgctTim.getPhieugiamgia() != null) {
+            if (tongTienSP.compareTo(pgctTim.getPhieugiamgia().getDontoithieu()) >= 0) {
+                if (pgctTim.getPhieugiamgia().getLoaiphieu() == true) {
+                    // phiếu %
+                    if ((new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100"))).compareTo(pgctTim.getPhieugiamgia().getGiatrigiamtoida()) > 0) {
+                        sotiengiam = pgctTim.getPhieugiamgia().getGiatrigiamtoida();
+                    } else {
+                        sotiengiam = (new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100")));
+                    }
+
+                } else {
+                    // phiếu vnđ
+                    sotiengiam = new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam());
+                }
             } else {
-                // phiếu vnđ
-                sotiengiam = new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam());
+                daoPGGCTRepo.deleteById(pgctTim.getId());
             }
         }
+
 
         BigDecimal tongTT = (tongTienSP.add(hd.getPhivanchuyen())).subtract(sotiengiam);
 
