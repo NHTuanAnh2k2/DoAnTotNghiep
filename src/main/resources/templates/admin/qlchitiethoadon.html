@@ -3055,6 +3055,9 @@
         var chagesTTHDSucsess = /*[[${chagesTTHDSucsess}]]*/ false; 
         var addVoucherSucsess = /*[[${addVoucherSucsess}]]*/ false;  
         var addVoucherfail = /*[[${addVoucherfail}]]*/ false;  
+        var updateSLSuccsess = /*[[${updateSLSuccsess}]]*/ false;  
+        var autokickvoucher = /*[[${autokickvoucher}]]*/ false;  
+        var addProductSuccsess = /*[[${addProductSuccsess}]]*/ false;  
         /*]]>*/
         if (sendmail == true) {
             thongbao('In hóa đơn thành công!', 'success')
@@ -3067,6 +3070,15 @@
         }
         if (addVoucherfail == true) {
             thongbao('Đơn chưa đạt giá trị tối thiểu!', 'error')
+        }
+        if (updateSLSuccsess == true) {
+            thongbao('Cập nhật thành công!', 'success')
+        }
+        if (autokickvoucher == true) {
+            thongbao('Không thể áp dụng voucher hiện tại do chưa đạt giá trị tối thiểu!', 'error')
+        }
+        if (addProductSuccsess == true) {
+            thongbao('Thêm thành công!', 'success')
         }
     </script>
 
