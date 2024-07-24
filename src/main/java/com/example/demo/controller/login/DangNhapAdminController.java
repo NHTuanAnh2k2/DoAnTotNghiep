@@ -119,7 +119,7 @@ public class DangNhapAdminController {
                     Integer userId = nd.getId();
                     AdminTokenInfo adminTokenInfo = new AdminTokenInfo(userId, token);
                     adminTokenInfos.add(adminTokenInfo);
-                    session.setAttribute("taiKhoanTokenInfos", adminTokenInfos);
+                    session.setAttribute("adminTokenInfos", adminTokenInfos);
                     adminManager.addUser(nd.getId(), token);
                     session.setAttribute("tokenAdmin", token);
                     session.setAttribute("adminDangnhap", nd.getTaikhoan());
