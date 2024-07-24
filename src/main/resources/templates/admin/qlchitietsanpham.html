@@ -110,15 +110,16 @@
                                                 </select>
                                             </h3>
                                             <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Màu sắc:
-                                                <select class="form-control" name="idMauSac"
-                                                        style="color: rgb(249,72,42); font-weight: bold;width: 150px" onchange="submitForm()">
+                                                <select id="mausac-select" class="form-control" name="idMauSac"
+                                                        style="color: rgb(249,72,42); font-weight: bold; width: 150px" onchange="submitForm()">
                                                     <option value="" th:selected="${fillMauSac == null}">Tất cả</option>
                                                     <option th:each="mausac : ${ms}"
                                                             th:value="${mausac.id}"
                                                             th:selected="${mausac.id == fillMauSac}"
-                                                            th:text="${mausac.ten}">
-                                                    </option>
+                                                            th:text="${mausac.ten}"
+                                                            th:data-color="${mausac.ten}"></option>
                                                 </select>
+
                                             </h3>
                                             <h3 class="card-title" style="margin-left: 20px;font-weight: bold">Chất liệu:
                                                 <select class="form-control" name="idChatLieu"
@@ -559,4 +560,21 @@
     function submitForm() {
         document.getElementById("searchForm").submit();
     }
+</script>
+
+<!--Màu sắc-->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const selectElement = document.getElementById('mausac-select');
+        const options = selectElement.querySelectorAll('option');
+
+        options.forEach(option => {
+            const colorValue = option.getAttribute('data-color');
+            if (colorValue) {
+                option.style.backgroundColor = colorValue;
+                option.style.color = 'white'; // Hoặc màu chữ khác nếu cần
+            }
+        });
+    });
+
 </script>

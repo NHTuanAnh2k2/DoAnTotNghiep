@@ -226,9 +226,13 @@
                                         </p>
                                         <p style="margin-left:92px">
                                             Màu sắc:
-                                            <select th:field="*{mausac.id}" class="form-control" style="width:482px">
+<!--                                            <select th:field="*{mausac.id}" class="form-control" style="width:482px">-->
+<!--                                                <option th:each="ms : ${ms}" th:value="${ms.id}"-->
+<!--                                                        th:text="${ms.ten}"></option>-->
+<!--                                            </select>-->
+                                            <select id="mausac-select"  th:field="*{mausac.id}" class="form-control" style="width:482px">
                                                 <option th:each="ms : ${ms}" th:value="${ms.id}"
-                                                        th:text="${ms.ten}"></option>
+                                                        th:text="${ms.ten}" th:data-color="${ms.ten}"></option>
                                             </select>
                                         </p>
                                         <p>
@@ -1006,3 +1010,19 @@
     });
 </script>
 
+<!--Màu sắc-->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const selectElement = document.getElementById('mausac-select');
+        const options = selectElement.querySelectorAll('option');
+
+        options.forEach(option => {
+            const colorValue = option.getAttribute('data-color');
+            if (colorValue) {
+                option.style.backgroundColor = colorValue;
+                option.style.color = 'white'; // Hoặc màu chữ khác nếu cần
+            }
+        });
+    });
+
+</script>

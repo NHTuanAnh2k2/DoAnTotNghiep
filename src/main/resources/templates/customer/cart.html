@@ -232,49 +232,65 @@
                                             <span class="visually-hidden">Next</span>
                                         </button>
                                     </div>
-                                    <form th:if="${token != null}" th:action="@{/update-cart/{id}(id=${item.id})}" method="post">
+                                    <form th:if="${token != null}" th:action="@{/update-cart/{id}(id=${item.id})}"
+                                          method="post">
                                         <div>
                                             <div class="ten_sp">
-                                                <p style="font-size: 18px;" th:text="${item.sanphamchitiet.sanpham.tensanpham}"></p>
-                                                <a th:href="@{/delete/cart/{id}(id=${item.id})}" class="btn-close" aria-label="Close"></a>
+                                                <p style="font-size: 18px;"
+                                                   th:text="${item.sanphamchitiet.sanpham.tensanpham}"></p>
+                                                <a th:href="@{/delete/cart/{id}(id=${item.id})}" class="btn-close"
+                                                   aria-label="Close"></a>
                                             </div>
                                             <div class="thong_tin_sp">
                                                 <div class="giatien d-flex justify-content-start align-items-center">
                                                     <h5 th:text="${#numbers.formatDecimal(item.sanphamchitiet.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></h5>
                                                 </div>
-                                                <p class="mausac">Màu sắc: <span th:text="${item.sanphamchitiet.mausac.ten}"></span></p>
-                                                <p class="size">Size: <span th:text="${item.sanphamchitiet.kichco.ten}"></span></p>
+                                                <p class="mausac">Màu sắc: <span
+                                                        th:text="${item.sanphamchitiet.mausac.ten}"></span></p>
+                                                <p class="size">Size: <span
+                                                        th:text="${item.sanphamchitiet.kichco.ten}"></span></p>
                                                 <div class="quantity-container">
                                                     <button class="quantity-button decrement">-</button>
-                                                    <input type="number" class="quantity-input" th:value="${item.soluong}" min="1" name="quantity">
+                                                    <input type="number" class="quantity-input"
+                                                           th:value="${item.soluong}" min="1" name="quantity">
                                                     <button class="quantity-button increment">+</button>
                                                 </div>
                                                 <div class="giaban d-flex justify-content-start align-items-center">
-                                                    <h5 th:text="${#numbers.formatDecimal(item.sanphamchitiet.giatien * item.soluong, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}" style="color: red"></h5>
+                                                    <h5 th:text="${#numbers.formatDecimal(item.sanphamchitiet.giatien * item.soluong, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"
+                                                        style="color: red"></h5>
                                                 </div>
                                             </div>
                                         </div>
                                     </form>
 
-                                    <form th:if="${token == null}" th:action="@{/update-cart/guest/{id}(id=${item.id})}" method="post">
+                                    <form th:if="${token == null}" th:action="@{/update-cart/guest/{id}(id=${item.id})}"
+                                          method="post">
                                         <div>
                                             <div class="ten_sp">
-                                                <p style="font-size: 18px;" th:text="${item.sanphamchitiet.sanpham.tensanpham}"></p>
-                                                <a th:href="@{/delete/cart/guest/{id}(id=${item.id})}" class="btn-close" aria-label="Close"></a>
+                                                <p style="font-size: 18px;"
+                                                   th:text="${item.sanphamchitiet.sanpham.tensanpham}"></p>
+                                                <a th:href="@{/delete/cart/guest/{id}(id=${item.id})}" class="btn-close"
+                                                   aria-label="Close"></a>
                                             </div>
                                             <div class="thong_tin_sp">
                                                 <div class="giatien d-flex justify-content-start align-items-center">
                                                     <h5 th:text="${#numbers.formatDecimal(item.sanphamchitiet.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></h5>
                                                 </div>
-                                                <p class="mausac">Màu sắc: <span th:text="${item.sanphamchitiet.mausac.ten}"></span></p>
-                                                <p class="size">Size: <span th:text="${item.sanphamchitiet.kichco.ten}"></span></p>
+                                                <p class="mausac">
+                                                    Màu sắc: <span th:text="${item.sanphamchitiet.mausac.ten}"
+                                                                   th:style="'background-color: ' + ${item.sanphamchitiet.mausac.ten} + '; color: white;'"></span>
+                                                </p>
+                                                <p class="size">Size: <span
+                                                        th:text="${item.sanphamchitiet.kichco.ten}"></span></p>
                                                 <div class="quantity-container">
                                                     <button class="quantity-button decrement">-</button>
-                                                    <input type="number" class="quantity-input" th:value="${item.soluong}" min="1" name="quantity">
+                                                    <input type="number" class="quantity-input"
+                                                           th:value="${item.soluong}" min="1" name="quantity">
                                                     <button class="quantity-button increment">+</button>
                                                 </div>
                                                 <div class="giaban d-flex justify-content-start align-items-center">
-                                                    <h5 th:text="${#numbers.formatDecimal(item.sanphamchitiet.giatien * item.soluong, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}" style="color: red"></h5>
+                                                    <h5 th:text="${#numbers.formatDecimal(item.sanphamchitiet.giatien * item.soluong, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"
+                                                        style="color: red"></h5>
                                                 </div>
                                             </div>
                                         </div>
@@ -435,8 +451,8 @@
 </script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         var token = document.getElementById("tokenDN").value;
-        console.log("hhhh"+token);
+        console.log("hhhh" + token);
     });
 </script>

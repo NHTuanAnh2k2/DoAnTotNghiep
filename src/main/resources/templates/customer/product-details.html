@@ -10,6 +10,34 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <style>
+    .color-button {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: inline-block;
+        text-align: center;
+        padding: 0;
+        border-style: solid; /* Ensure border style is solid */
+    }
+    .size-button {
+        width: 30px;
+        height: 30px;
+        /*border-radius: 50%;*/
+        display: inline-block;
+        text-align: center;
+        padding: 0;
+        border-style: solid; /* Ensure border style is solid */
+    }
+    .btn-border-thick {
+        border-width: 4px; /* Thicker border */
+        border-color: black !important; /* Ensure border color is black when selected */
+    }
+    .btn-border-thin {
+        border-width: 2px; /* Thinner border */
+    }
+</style>
+
+<style>
     /* Dùng thanh cuộn ngang */
     .tab-pane.horizontal-scrollable .single-products.row {
         display: flex;
@@ -425,9 +453,11 @@
                                     <span style="margin-right: 10px;">Màu sắc:</span>
                                     <div th:each="color, iterStat : ${colors}">
                                         <div style="margin-right: 10px">
-                                            <a class="btn"
-                                               th:classappend="${iterStat.index == 0} ? 'btn-dark' : 'btn-outline-dark'"
-                                               th:text="${color}" th:data-color="${color}"
+                                            <a class="btn color-button"
+                                               th:classappend="${iterStat.index == 0} ? 'btn-border-thick' : 'btn-border-thin'"
+                                               th:data-color="${color}"
+                                               th:style="'background-color:' + ${color} + ';border-color:' + (${iterStat.index == 0} ? 'black' : ${color})"
+                                               th:aria-label="${color}"
                                                th:onclick="'changeButtonBackground(this); selectColor(this)'"></a>
                                         </div>
                                     </div>
@@ -437,8 +467,9 @@
                                     <span style="margin-right: 10px;">Kích cỡ:</span>
                                     <div th:each="size, iterStat : ${sizes}">
                                         <div style="margin-right: 10px">
-                                            <a class="btn"
-                                               th:classappend="${iterStat.index == 0} ? 'btn-dark' : 'btn-outline-dark'"
+                                            <a class="btn size-button"
+                                               th:classappend="${iterStat.index == 0} ? 'btn-border-thick' : 'btn-border-thin'"
+                                               style="border-color: black"
                                                th:text="${size}" th:data-size="${size}"
                                                th:onclick="'changeButtonBackground(this); selectSize(this)'"></a>
                                         </div>
@@ -820,8 +851,8 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const defaultColorElement = document.querySelector('.btn-dark[data-color]');
-        const defaultSizeElement = document.querySelector('.btn-dark[data-size]');
+        const defaultColorElement = document.querySelector('.btn-border-thick[data-color]');
+        const defaultSizeElement = document.querySelector('.btn-border-thick[data-size]');
         if (defaultColorElement) {
             updateImagesAndPrice();
         }
@@ -829,10 +860,9 @@
             updatePriceAndQuantity();
         }
     });
-
     function updateImagesAndPrice() {
-        const color = document.querySelector('.btn-dark[data-color]') ? document.querySelector('.btn-dark[data-color]').getAttribute('data-color') : null;
-        const size = document.querySelector('.btn-dark[data-size]') ? document.querySelector('.btn-dark[data-size]').getAttribute('data-size') : null;
+        const color = document.querySelector('.btn-border-thick[data-color]') ? document.querySelector('.btn-border-thick[data-color]').getAttribute('data-color') : null;
+        const size = document.querySelector('.btn-border-thick[data-size]') ? document.querySelector('.btn-border-thick[data-size]').getAttribute('data-size') : null;
         const url = new URL(window.location);
 
         if (color) {
@@ -862,8 +892,8 @@
     }
 
     function updatePriceAndQuantity() {
-        const color = document.querySelector('.btn-dark[data-color]') ? document.querySelector('.btn-dark[data-color]').getAttribute('data-color') : null;
-        const size = document.querySelector('.btn-dark[data-size]') ? document.querySelector('.btn-dark[data-size]').getAttribute('data-size') : null;
+        const color = document.querySelector('.btn-border-thick[data-color]') ? document.querySelector('.btn-border-thick[data-color]').getAttribute('data-color') : null;
+        const size = document.querySelector('.btn-border-thick[data-size]') ? document.querySelector('.btn-border-thick[data-size]').getAttribute('data-size') : null;
         const url = new URL(window.location);
 
         if (color) {
@@ -933,32 +963,37 @@
 
         if (isColorButton) {
             const colorButtons = document.querySelectorAll('.btn[data-color]');
-            const isSelected = element.classList.contains('btn-dark');
+            const isSelected = element.classList.contains('btn-border-thick');
 
             if (!isSelected) {
                 colorButtons.forEach(button => {
-                    button.classList.remove('btn-dark');
-                    button.classList.add('btn-outline-dark');
+                    button.classList.remove('btn-border-thick');
+                    button.classList.add('btn-border-thin');
+                    button.style.borderColor = button.getAttribute('data-color'); // Set border color back to original color
                 });
-                element.classList.remove('btn-outline-dark');
-                element.classList.add('btn-dark');
+                element.classList.remove('btn-border-thin');
+                element.classList.add('btn-border-thick');
+                element.style.borderColor = 'black'; // Set border color to black when selected
             }
         } else if (isSizeButton) {
             const sizeButtons = document.querySelectorAll('.btn[data-size]');
-            const isSelected = element.classList.contains('btn-dark');
+            const isSelected = element.classList.contains('btn-border-thick');
 
             if (!isSelected) {
                 sizeButtons.forEach(button => {
-                    button.classList.remove('btn-dark');
-                    button.classList.add('btn-outline-dark');
+                    button.classList.remove('btn-border-thick');
+                    button.classList.add('btn-border-thin');
+                    button.style.borderColor = button.getAttribute('data-size'); // Set border color back to original color
                 });
-                element.classList.remove('btn-outline-dark');
-                element.classList.add('btn-dark');
+                element.classList.remove('btn-border-thin');
+                element.classList.add('btn-border-thick');
+                element.style.borderColor = 'black'; // Set border color to black when selected
             }
         }
 
         updateImagesAndPrice();
     }
+
 </script>
 
 <!--giá trị mặc định của màu sắc và kích cỡ-->
