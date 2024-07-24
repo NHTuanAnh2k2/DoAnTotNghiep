@@ -13,6 +13,7 @@ import com.example.demo.repository.NguoiDungRepository;
 import com.example.demo.repository.giohang.GioHangRepository;
 import com.example.demo.repository.hoadon.HoaDonChiTietRepository;
 import com.example.demo.repository.hoadon.HoaDonRepository;
+import com.example.demo.repository.phuongThucThanhToan.PhuongThucThanhToanRepository;
 import com.example.demo.restcontroller.khachhang.Province;
 import com.example.demo.security.JWTGenerator;
 import com.example.demo.service.KhachHangService;
@@ -51,6 +52,8 @@ public class CustomerController {
     HoaDonRepository hoaDonRepository;
     @Autowired
     GioHangRepository gioHangRepository;
+    @Autowired
+    PhuongThucThanhToanRepository phuongThucThanhToanRepository;
 
 
     @GetMapping("/trangchu")
@@ -342,6 +345,16 @@ public class CustomerController {
         return "customer/tracuudonhang";
     }
 
+    @GetMapping("/customer/detail-don-hang")
+    public String detail(Model model,
+                         @RequestParam("id") Integer idDonHang
+                         ) {
+        HoaDon hd = hoaDonRepository.findHoaDonById(idDonHang);
+        PhuongThucThanhToan pttt = phuongThucThanhToanRepository.findByIdHoaDon(hd.getId());
+        model.addAttribute("hoadon", hd);
+        model.addAttribute("pttt", pttt);
+        return "customer/detaildonhang";
+    }
 //    @PostMapping("/mualai")
 //    public String addToCart(@RequestParam Integer idHoaDon,
 //                            @RequestParam Integer quantity,
