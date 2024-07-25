@@ -202,7 +202,7 @@ public class TrangChuCustomerController {
         SanPham sanPham = trangChuRepository.findById(id).orElse(null);
         model.addAttribute("sanpham", sanPham);
         SanPhamChiTiet sanPhamChiTiet = sanPhamChiTietRepository.findById(id).orElse(null);
-        model.addAttribute("giamgia",sanPhamChiTiet.getGiamGia());
+//        model.addAttribute("giamgia",sanPhamChiTiet.getGiamGia());
         model.addAttribute("sanphamchitiet", sanPhamChiTiet);
         List<String> danhSachAnh = new ArrayList<>();
         for (SanPhamChiTiet spct : sanPham.getSpct()) {
