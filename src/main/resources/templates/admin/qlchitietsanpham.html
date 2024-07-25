@@ -229,7 +229,7 @@
                                 <table id="example2" style="width: 100%" class="table-bordered table-hover text-center">
                                     <thead style="background-color:rgb(249,72,42);height: 50px;color: white">
                                     <tr>
-                                        <th style="padding-left: 30px">
+                                        <th style="padding-left: 50px;padding-bottom: 25px">
                                             <input type="checkbox" name="chontatcactsp" id="chontatcactsp"
                                                    onchange="selectAll(this)"
                                                    class="form-check-input checkbox checkbox-red">
@@ -249,7 +249,7 @@
                                     </thead>
                                     <tbody>
                                     <tr th:each="spct, stt : ${sanphamchitiet}">
-                                        <td>
+                                        <td style="padding-left: 20px;padding-bottom: 25px">
                                             <input type="checkbox" class="form-check-input checkbox checkbox-red"
                                                    th:value="${spct.id}" onchange="toggleRowHighlight(this)"
                                                    name="chonspct">

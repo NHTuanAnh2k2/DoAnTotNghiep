@@ -388,7 +388,9 @@
                         <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
                         <div class="image-container">
                             <span class="ribbon top-left">Hàng mới</span> <!-- Ribbon hàng mới ở góc trên bên trái -->
-                            <span class="ribbon top-right">-10%</span> <!-- Ribbon % giảm giá ở góc trên bên phải -->
+            <span th:each="dotGiamGia : ${sanphamchitiet.sanphamdotgiam}"> <!-- Ribbon % giảm giá ở góc trên bên phải -->
+                <span class="ribbon top-right" th:text="${dotGiamGia.dotgiamgia.giatrigiam} + ' %'"></span>
+            </span>
                             <img th:src="@{'/upload' + ${image.substring(image.lastIndexOf('upload') + 6)}}"
                                  style="width:100%" alt="Ảnh" onclick="openModal(this)">
                         </div>
