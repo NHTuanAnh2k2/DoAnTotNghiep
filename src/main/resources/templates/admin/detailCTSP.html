@@ -117,8 +117,8 @@
                                       name="updateProduct" onsubmit="return validateForm()">
                                     <div class="d-flex">
                                         <p>Tên sản phẩm:
-                                            <input class="form-control" style="width:550px"
-                                                   th:field="*{sanpham.tensanpham}" readonly>
+                                            <input class="form-control" style="width:550px" th:field="*{sanpham.tensanpham}" readonly>
+                                            <input type="hidden" th:field="*{sanpham.id}">
                                         </p>
                                         <p id="errorSanPham" class="error-message"
                                            style="display: none; color: red;"></p>
