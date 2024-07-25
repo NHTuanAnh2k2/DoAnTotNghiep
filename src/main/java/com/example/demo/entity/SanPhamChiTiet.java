@@ -75,8 +75,17 @@ public class SanPhamChiTiet {
     @OneToMany(mappedBy = "sanphamchitiet", fetch = FetchType.EAGER)
     List<Anh> anh;
 
-    @OneToMany(mappedBy = "sanphamchitiet", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "sanphamchitiet")
     List<SanPhamDotGiam> sanphamdotgiam;
+
+//    public BigDecimal getGiamGia() {
+//        BigDecimal giamGia = BigDecimal.ZERO;
+//        for (SanPhamDotGiam spdg : sanphamdotgiam) {
+//            giamGia = giamGia.add(spdg.getDotgiamgia().getGiatrigiam() != null ?
+//                    BigDecimal.valueOf(spdg.getDotgiamgia().getGiatrigiam()) : BigDecimal.ZERO);
+//        }
+//        return giamGia;
+//    }
 
     @Override
     public boolean equals(Object o) {

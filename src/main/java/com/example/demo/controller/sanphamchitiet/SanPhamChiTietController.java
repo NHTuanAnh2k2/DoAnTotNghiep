@@ -180,6 +180,7 @@ public class SanPhamChiTietController {
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy kích cỡ"));
         SanPhamChiTiet existingSanPhamChiTiet = sanPhamChiTietRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm chi tiết"));
+
         existingSanPhamChiTiet.setSanpham(sanPham);
         existingSanPhamChiTiet.setThuonghieu(thuongHieu);
         existingSanPhamChiTiet.setChatlieu(chatLieu);
@@ -187,6 +188,12 @@ public class SanPhamChiTietController {
         existingSanPhamChiTiet.setMausac(mauSac);
         existingSanPhamChiTiet.setKichco(kichCo);
         existingSanPhamChiTiet.setLancapnhatcuoi(currentTime);
+        existingSanPhamChiTiet.setSoluong(sanPhamChiTiet.getSoluong());
+        existingSanPhamChiTiet.setGiatien(sanPhamChiTiet.getGiatien());
+        existingSanPhamChiTiet.setMota(sanPhamChiTiet.getMota());
+        existingSanPhamChiTiet.setTrangthai(sanPhamChiTiet.getTrangthai());
+      existingSanPhamChiTiet.setGioitinh(sanPhamChiTiet.getGioitinh());
+
         sanPhamChiTietRepository.save(existingSanPhamChiTiet);
         if (anhFiles != null && !anhFiles.isEmpty()) {
             SanPhamChiTiet spct = sanPhamChiTietRepository.findById(spctId).orElse(null);
