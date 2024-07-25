@@ -75,6 +75,9 @@ public class SanPhamChiTiet {
     @OneToMany(mappedBy = "sanphamchitiet", fetch = FetchType.EAGER)
     List<Anh> anh;
 
+    @OneToMany(mappedBy = "sanphamchitiet", fetch = FetchType.EAGER)
+    List<SanPhamDotGiam> sanphamdotgiam;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
