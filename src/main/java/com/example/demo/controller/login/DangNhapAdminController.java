@@ -150,6 +150,5 @@ public class DangNhapAdminController {
         session.invalidate();
         adminManager.logoutUser(adminId, token);
         return "redirect:/admin/account";
-
     }
 }

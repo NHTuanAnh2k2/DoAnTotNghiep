@@ -3,13 +3,19 @@ package com.example.demo.controller;
 import com.example.demo.entity.*;
 import com.example.demo.info.NguoiDungKHInfo;
 import com.example.demo.info.TaiKhoanTokenInfo;
+import com.example.demo.info.TraCuuDetailInfo;
 import com.example.demo.info.hosokhachhang.DoiMatKhauNguoiDung;
 import com.example.demo.info.hosokhachhang.UpdateDiaChi;
 import com.example.demo.info.hosokhachhang.UpdateKhachHang;
 import com.example.demo.info.hosokhachhang.UpdateNguoiDung;
 import com.example.demo.info.token.UserManager;
 import com.example.demo.repository.DiaChiRepository;
+import com.example.demo.repository.HoaDonChiTietRepository1;
+import com.example.demo.repository.LichSuHoaDon.LichSuHoaDonRepository;
 import com.example.demo.repository.NguoiDungRepository;
+//import com.example.demo.repository.SanPhamChiTietRepository1;
+import com.example.demo.repository.SanPhamChiTietRepository;
+import com.example.demo.repository.giohang.GioHangChiTietRepository;
 import com.example.demo.repository.giohang.GioHangRepository;
 import com.example.demo.repository.hoadon.HoaDonChiTietRepository;
 import com.example.demo.repository.hoadon.HoaDonRepository;
@@ -24,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -53,7 +60,15 @@ public class CustomerController {
     @Autowired
     GioHangRepository gioHangRepository;
     @Autowired
+    GioHangChiTietRepository gioHangChiTietRepository;
+    @Autowired
     PhuongThucThanhToanRepository phuongThucThanhToanRepository;
+    @Autowired
+    HoaDonChiTietRepository1 hoaDonChiTietRepository;
+    @Autowired
+    LichSuHoaDonRepository lichSuHoaDonRepository;
+    @Autowired
+    HoaDonChiTietRepository1 hoaDonChiTietRepository1;
 
 
     @GetMapping("/trangchu")
@@ -71,10 +86,12 @@ public class CustomerController {
                                   Model model) {
         return "same/quenmatkhau";
     }
+
     @GetMapping("/customer/tracuudonhang")
     public String tracuu(Model model) {
         return "customer/tracuudonhang";
     }
+
     @GetMapping("/hosokhachhang/{username}")
     public String hosokhachhang(Model model,
                                 @PathVariable("username") String username,
@@ -113,7 +130,7 @@ public class CustomerController {
                 List<HoaDon> lstHoaDon3 = hoaDonRepository.findHoaDonByTrangThaiAndKhachhang(3, customerId); //đang giao hàng
                 List<HoaDon> lstHoaDon4 = hoaDonRepository.findHoaDonByTrangThaiAndKhachhang(4, customerId); //đã thanh toán
                 List<HoaDon> lstHoaDon5 = hoaDonRepository.findHoaDonByTrangThaiAndKhachhang(5, customerId); //đã hoàn thành
-                List<HoaDon>  lstHoaDon6 = hoaDonRepository.findHoaDonByTrangThaiAndKhachhang(6, customerId); //đã hủy
+                List<HoaDon> lstHoaDon6 = hoaDonRepository.findHoaDonByTrangThaiAndKhachhang(6, customerId); //đã hủy
 
                 model.addAttribute("lstHoaDon", lstHoaDon);
                 model.addAttribute("lstHoaDon0", lstHoaDon0);
@@ -334,85 +351,107 @@ public class CustomerController {
     @GetMapping("/customer/timkiem")
     public String timkiem(Model model,
                           @RequestParam(value = "searchInput", required = false) String inputsearch
-                          ){
+    ) {
         List<HoaDon> lstHoaDon = new ArrayList<>();
         if (inputsearch != null) {
-           lstHoaDon = hoaDonRepository.findHoaDonByMaOrSdtOrEmail(inputsearch);
+            lstHoaDon = hoaDonRepository.findHoaDonByMaOrSdtOrEmail(inputsearch);
             System.out.println("lstHoaDon: " + lstHoaDon);
+            lstHoaDon.removeIf(hoaDon -> hoaDon.getTrangthai() == 6);
         }
 
         model.addAttribute("lstHoaDon", lstHoaDon);
+        model.addAttribute("searchInput", inputsearch);
         return "customer/tracuudonhang";
     }
 
     @GetMapping("/customer/detail-don-hang")
     public String detail(Model model,
-                         @RequestParam("id") Integer idDonHang
-                         ) {
-        HoaDon hd = hoaDonRepository.findHoaDonById(idDonHang);
+                         @RequestParam("id") String idDonHang
+    ) {
+        Integer id = null;
+        try {
+            id = Integer.parseInt(idDonHang);
+        } catch (NumberFormatException e) {
+            return "redirect:/customer/tracuudonhang";
+        }
+        HoaDon hd = hoaDonRepository.findHoaDonById(id);
         PhuongThucThanhToan pttt = phuongThucThanhToanRepository.findByIdHoaDon(hd.getId());
+        List<TraCuuDetailInfo> lstHdct = hoaDonChiTietRepository1.findTraCuu(hd.getId());
         model.addAttribute("hoadon", hd);
         model.addAttribute("pttt", pttt);
+        model.addAttribute("lstHdct", lstHdct);
         return "customer/detaildonhang";
     }
-//    @PostMapping("/mualai")
-//    public String addToCart(@RequestParam Integer idHoaDon,
-//                            @RequestParam Integer quantity,
-//                            Model model,
-//                            HttpSession session) {
-//        // Tìm sản phẩm chi tiết dựa trên màu sắc và kích cỡ
-//        String selectedColor =
-//        String selectedSize =
-//        SanPhamChiTiet sanPhamChiTiet = sanPhamChiTietRepository.findBySanPhamIdAndColorAndSize(id, selectedColor, selectedSize);
-//        List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
-//        if (taiKhoanTokenInfos == null || taiKhoanTokenInfos.isEmpty()) {
-//            boolean foundInCart = false;
-//            for (GioHangChiTiet item : listGioHangKhongTK) {
-//                if (item.getSanphamchitiet().equals(sanPhamChiTiet)) {
-//                    item.setSoluong(item.getSoluong() + quantity);
-//                    foundInCart = true;
-//                    break;
-//                }
-//            }
-//            if (!foundInCart) {
-//                GioHangChiTiet newItem = new GioHangChiTiet();
-//                newItem.setId(generateUniqueItemId()); // Cấp phát id duy nhất
-//                newItem.setSanphamchitiet(sanPhamChiTiet);
-//                newItem.setSoluong(quantity);
-//                newItem.setNgaytao(new Date());
-//                newItem.setTrangthai(true);
-//                listGioHangKhongTK.add(newItem);
-//            }
-//            session.setAttribute("cartItems", listGioHangKhongTK);
-//            return "redirect:/detailsanphamCustomer/" + id;
-//        } else {
-//            String username = (String) session.getAttribute("userDangnhap");
-//            NguoiDung nguoiDung = khachHangService.findNguoiDungByTaikhoan(username);
-//            KhachHang khachHang = khachHangService.findKhachHangByIdNguoiDung(nguoiDung.getId());
-//            // Kiểm tra xem khách hàng đã có giỏ hàng hay chưa
-//            GioHang gioHang = gioHangRepository.findByIdKhachHang(khachHang.getId());
-//                // Nếu đã có giỏ hàng, thêm sản phẩm vào giỏ hàng
-//                GioHangChiTiet newItem = new GioHangChiTiet();
-//                newItem.setSanphamchitiet(sanPhamChiTiet);
-//                newItem.setSoluong(quantity);
-//                newItem.setNgaytao(new Date());
-//                newItem.setTrangthai(true);
-//                newItem.setGiohang(gioHang);
-//
-//                boolean foundInCart = false;
-//                List<GioHangChiTiet> gioHangChiTietList = gioHangChiTietRepository.findGioHangChiTietByGiohang(gioHang.getId());
-//                for (GioHangChiTiet item : gioHangChiTietList) {
-//                    if (item.getSanphamchitiet().equals(sanPhamChiTiet)) {
-//                        item.setSoluong(item.getSoluong() + quantity);
-//                        gioHangChiTietRepository.save(item);
-//                        foundInCart = true;
-//                        break;
-//                    }
-//                }
-//
-//            }
-//            return "redirect:/detailsanphamCustomer/" + id;
-//        }
-//    }
+
+    @PostMapping("/mualai")
+    public String addToCart(Model model,
+                            RedirectAttributes redirectAttributes,
+                            HttpSession session,
+                            @RequestParam("id") Integer idHoaDon) {
+        String username = (String) session.getAttribute("userDangnhap");
+        NguoiDung nguoiDung = khachHangService.findNguoiDungByTaikhoan(username);
+        KhachHang khachHang = khachHangService.findKhachHangByIdNguoiDung(nguoiDung.getId());
+        GioHang gioHang = gioHangRepository.findByIdKhachHang(khachHang.getId());
+        if (gioHang == null) {
+            // Nếu chưa có giỏ hàng, tạo mới
+            gioHang = new GioHang();
+            gioHang.setNgaytao(LocalDateTime.now());
+            gioHang.setTrangthai(true);
+            gioHang.setKhachhang(khachHang);
+            gioHang = gioHangRepository.save(gioHang);
+        }
+
+        List<HoaDonChiTiet> chiTietList = hoaDonChiTietRepository.findHoaDonChiTietByIdHoaDon(idHoaDon);
+        boolean hasValidProduct = false;
+        for (HoaDonChiTiet chiTiet : chiTietList) {
+            // Kiểm tra sản phẩm đã có trong giỏ hàng chưa
+            GioHangChiTiet gioHangChiTiet = gioHangChiTietRepository.findByGiohangIdAndSanphamchitietId(
+                    gioHang.getId(), chiTiet.getSanphamchitiet().getId());
+
+            if (chiTiet.getSanphamchitiet().getSoluong() < 1 || chiTiet.getSanphamchitiet().getTrangthai() == false) {
+                continue;
+            }
+            hasValidProduct = true;
+            if (gioHangChiTiet == null) {
+                // Nếu chưa có, tạo mới chi tiết giỏ hàng
+                gioHangChiTiet = new GioHangChiTiet();
+                gioHangChiTiet.setGiohang(gioHang);
+                gioHangChiTiet.setSanphamchitiet(chiTiet.getSanphamchitiet());
+                gioHangChiTiet.setSoluong(1);
+                gioHangChiTiet.setNgaytao(Timestamp.valueOf(LocalDateTime.now()));
+                gioHangChiTiet.setTrangthai(true);
+            } else {
+                // Nếu đã có, cập nhật số lượng
+                gioHangChiTiet.setSoluong(gioHangChiTiet.getSoluong() + 1);
+            }
+
+            gioHangChiTietRepository.save(gioHangChiTiet);
+        }
+        if (!hasValidProduct) {
+            redirectAttributes.addFlashAttribute("repurchase", false);
+            return "redirect:/hosokhachhang/" + username;
+        }
+        redirectAttributes.addFlashAttribute("repurchase", true);
+        return "redirect:/cart";
+    }
+
+    @GetMapping("/huydonhang/{id}")
+    public ResponseEntity<?> huydonhang(@PathVariable("id") Integer id, @RequestParam("lydohuy") String lydohuy) {
+        HoaDon hoaDon = hoaDonRepository.findHoaDonById(id);
+        hoaDon.setTrangthai(6);
+        hoaDon.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
+        hoaDon.setNgaygiaodukien(null);
+        hoaDon.setNgayxacnhan(null);
+        hoaDon.setNgayvanchuyen(null);
+        hoaDon.setNgayhoanthanh(null);
+        hoaDon.setNguoicapnhat("CUSTOMER");
+        hoaDonRepository.save(hoaDon);
+        LichSuHoaDon lichSuHoaDon = lichSuHoaDonRepository.findLichSuHoaDonByIdHoaDon(id);
+        lichSuHoaDon.setLancapnhatcuoi(hoaDon.getLancapnhatcuoi());
+        lichSuHoaDon.setNguoicapnhat("CUSTOMER");
+        lichSuHoaDon.setGhichu(lydohuy);
+        lichSuHoaDonRepository.save(lichSuHoaDon);
+        return ResponseEntity.ok("Thành công");
+    }
 
 }
