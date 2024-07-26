@@ -7,6 +7,7 @@ import com.example.demo.repository.hoadon.HoaDonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -21,8 +22,10 @@ public class CustomerRestController {
     LichSuHoaDonRepository lichSuHoaDonRepository;
 
 
-    @PostMapping("/huydonhang/{id}")
-    public ResponseEntity<?> huydonhang(@PathVariable Integer id, @RequestParam("lydohuy") String lydohuy) {
+    @GetMapping("/huydonhang/{id}")
+    public ResponseEntity<?> huydonhang(@PathVariable("id") Integer id,
+                                        @RequestParam("lydohuy") String lydohuy,
+                                        RedirectAttributes redirectAttributes) {
         HoaDon hoaDon = hoaDonRepository.findHoaDonById(id);
         hoaDon.setTrangthai(6);
         hoaDon.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
@@ -37,6 +40,7 @@ public class CustomerRestController {
         lichSuHoaDon.setNguoicapnhat("CUSTOMER");
         lichSuHoaDon.setGhichu(lydohuy);
         lichSuHoaDonRepository.save(lichSuHoaDon);
+        redirectAttributes.addFlashAttribute("huyhangSuccess", true);
         return ResponseEntity.ok("Thành công");
     }
 

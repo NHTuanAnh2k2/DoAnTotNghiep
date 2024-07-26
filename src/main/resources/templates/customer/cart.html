@@ -456,3 +456,26 @@
         console.log("hhhh" + token);
     });
 </script>
+
+<script th:inline="javascript">
+    var repurchase = /*[[${repurchase}]]*/ false;
+    if (repurchase === true) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+
+        Toast.fire({
+            icon: "success",
+            title: "Sản phẩm đã được thêm vào giỏ hàng!"
+        });
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -13,8 +13,8 @@
     }
 
     .progress-circle {
-        width: 50px;
-        height: 50px;
+        width: 75px;
+        height: 75px;
         border-radius: 50%;
         background-color: #e0dbdb;
         display: flex;
@@ -26,9 +26,10 @@
         margin-bottom: 40px;
         position: relative;
     }
+
     .progress-circle1 {
-        width: 50px;
-        height: 50px;
+        width: 75px;
+        height: 75px;
         border-radius: 50%;
         background-color: #e0dbdb;
         display: flex;
@@ -43,7 +44,8 @@
 
     .progress-circle:before {
         content: "";
-        color: #ccc; position: absolute;
+        color: #ccc;
+        position: absolute;
         top: 100%;
         left: 50%;
         width: 2px;
@@ -66,6 +68,9 @@
         /* Màu mạnh hơn cho nội dung đã hoàn thành */
     }
 
+    body {
+        background-color: rgb(244, 244, 244);
+    }
 </style>
 <body>
 
@@ -73,36 +78,40 @@
 <nav th:replace="~{/layout/header.html}"></nav>
 <!-- header end -->
 <section>
-    <div class="container row" style="margin-top: 20px;">
-        <div class="card-header col" style="padding-left: 100px; margin-top: 50px">
+    <div class="container row" style="margin-top: -20px">
+        <div class="card-header col" style="padding-left: 150px; margin-top: 100px; width: 871px">
             <div class="d-flex justify-content-between align-content-center">
                 <h4>
                     Thông tin đơn hàng: <span style="color: orangered" th:text="${hoadon.mahoadon}"></span>
                 </h4>
             </div>
-            <hr class="border border-danger border-2 opacity-50">
+            <hr style="width: 871px" class="border border-danger border-2 opacity-50">
             <div class="row g-3">
                 <div class="col-lg-7 col-md-7">
                     <div class="d-flex justify-content-start">
                         <h6 style="white-space: nowrap; margin-top: 2.5px">Địa chỉ:</h6>
-                        <span style="font-family: 'Times New Roman'; margin-left: 77px" th:text="${hoadon.diachi}"></span>
+                        <span style="font-family: 'Times New Roman'; margin-left: 77px"
+                              th:text="${hoadon.diachi}"></span>
                     </div>
                     <br>
                     <div class="d-flex justify-content-start">
                         <h6>
-                            Tên khách hàng: <span style="font-family: 'Times New Roman'; margin-left: 10px" th:text="${hoadon.tennguoinhan}"></span>
+                            Tên khách hàng: <span style="font-family: 'Times New Roman'; margin-left: 10px"
+                                                  th:text="${hoadon.tennguoinhan}"></span>
                         </h6>
                     </div>
                     <br>
                     <div class="d-flex justify-content-start">
                         <h6>Số
-                            điện thoại: <span style="font-family: 'Times New Roman'; margin-left: 30px" th:text="${hoadon.sdt}"></span>
+                            điện thoại: <span style="font-family: 'Times New Roman'; margin-left: 30px"
+                                              th:text="${hoadon.sdt}"></span>
                         </h6>
                     </div>
                     <br>
                     <div class="d-flex justify-content-start">
                         <h6>
-                            Ngày tạo: <span style="font-family: 'Times New Roman'; margin-left: 60px" th:text="${#dates.format(hoadon.ngaytao, 'dd-MM-yyyy HH:mm:ss')}"></span>
+                            Ngày tạo: <span style="font-family: 'Times New Roman'; margin-left: 60px"
+                                            th:text="${#dates.format(hoadon.ngaytao, 'dd-MM-yyyy HH:mm:ss')}"></span>
                         </h6>
                     </div>
                 </div>
@@ -112,77 +121,166 @@
                             <h6 style="margin-top: 2.5px">
                                 Loại giao dịch:
                                 <span th:text="${pttt.tenphuongthuc}"
-                                   style="margin-left: 79px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
+                                      style="margin-left: 86px; font-family: 'Times New Roman';">
                                 </span>
                             </h6>
                         </div>
                         <br>
                         <div class="d-flex justify-content-start">
                             <h6>
-                                Phương thức thanh toán:</h6>
-                            <p th:text="${pttt.mota}"
-                               style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
-                            </p>
+                                Phương thức thanh toán:
+                                <span th:text="${pttt.mota}"
+                                      style="margin-left: 15px; font-family: 'Times New Roman';">
+                                </span>
+                            </h6>
+
                         </div>
                         <br>
                     </div>
                     <div class="d-flex justify-content-start">
                         <h6>
-                            Ngày giao dự kiến:</h6>
-                        <p th:text="${hoadon.ngaygiaodukien==null?' -------':#dates.format(hoadon.ngaygiaodukien, 'dd-MM-yyyy')}"
-                           style="margin-left: 53px; font-family: 'Times New Roman'; font-size: 15px;">
-                            25/12/2024</p>
+                            Ngày giao dự kiến:
+                            <span th:text="${hoadon.ngaygiaodukien==null?' -------':#dates.format(hoadon.ngaygiaodukien, 'dd-MM-yyyy')}"
+                                  style="margin-left: 57px; font-family: 'Times New Roman'; font-size: 15px;">
+                            25/12/2024</span>
+                        </h6>
+
                     </div>
                     <br>
                     <div class="d-flex justify-content-start">
                         <h6>
-                            Hình thức giao:</h6>
-
-                        <p th:text="${hoadon.hoatoc==true?'Hỏa tốc':'Thông thường'}"
-                           style="margin-left: 75px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
-                        </p>
+                            Hình thức giao:
+                            <span th:text="${hoadon.hoatoc==true?'Hỏa tốc':'Thông thường'}"
+                                  style="margin-left: 80px; font-family: 'Times New Roman';">
+                            </span>
+                        </h6>
+                    </div>
+                    <br>
+                    <div class="d-flex justify-content-start" th:if="${hoadon.trangthai == 5}">
+                        <h6>
+                            Ngày hoàn thành:
+                            <span th:text="${#dates.format(hoadon.ngayhoanthanh, 'dd-MM-yyyy')}"
+                                  style="margin-left: 65px; color: orangered; font-family: 'Times New Roman';">
+                            </span>
+                        </h6>
                     </div>
                 </div>
             </div>
             <br>
             <!-- <hr class="border border-danger border-2 opacity-50"> -->
-            <button class="btn" style="background-color: rgb(249,72,42);color: white; margin-top: 20px;">Quay lại
-            </button>
+            <a href="javascript:history.back()" class="btn" style="background-color: rgb(249,72,42);color: white; margin-top: 5px;">Quay lại
+            </a>
         </div>
         <div class="col-3" style="padding-left: 100px;">
             <div class="progress-container">
-                <div class="progress-circle">
-                    <img src="/img/hourglass.png" width="20" height="20">
+                <div class="progress-circle" id="img0">
+                    <img src="/img/hourglass.png" width="40" height="40">
                 </div>
-                <p style="color: #8f8f8f; position: absolute; margin-top: 15px; margin-right: -180px;">Chờ xác nhận</p>
-                <div class="progress-circle">
-                    <img src="/img/shopping-bag.png" width="20" height="20">
+                <p id="text0"
+                   style="color: #8f8f8f; position: absolute; margin-top: 25px; margin-right: -200px; font-size: medium">
+                    Chờ xác nhận</p>
+                <div id="img1" class="progress-circle">
+                    <img src="/img/shopping-bag.png" width="40" height="40">
                 </div>
-                <p style="color: #8f8f8f; position: absolute; margin-top: 105px; margin-right: -170px;">Đã xác nhận</p>
-                <div class="progress-circle">
-                    <img src="/img/express-delivery.png" width="20" height="20">
+                <p id="text1"
+                   style="color: #8f8f8f; position: absolute; margin-top: 140px; margin-right: -193px; font-size: medium">
+                    Đã xác nhận</p>
+                <div id="img2" class="progress-circle">
+                    <img src="/img/express-delivery.png" width="40" height="40">
                 </div>
-                <p style="color: #8f8f8f; position: absolute; margin-top: 195px; margin-right: -180px;">Chờ giao
+                <p id="text2"
+                   style="color: #8f8f8f; position: absolute; margin-top: 255px; margin-right: -203px; font-size: medium">
+                    Chờ giao
                     hàng</p>
-                <div class="progress-circle">
-                    <img src="/img/fast-delivery.png" width="20" height="20">
+                <div id="img3" class="progress-circle">
+                    <img src="/img/fast-delivery.png" width="40" height="40">
                 </div>
-                <p style="color: #8f8f8f; position: absolute; margin-top: 285px; margin-right: -190px;">Đang giao
+                <p id="text3"
+                   style="color: #8f8f8f; position: absolute; margin-top: 370px; margin-right: -213px; font-size: medium">
+                    Đang giao
                     hàng</p>
-                <div class="progress-circle">
-                    <img src="/img/paid.png" width="20" height="20">
+                <div id="img4" class="progress-circle">
+                    <img src="/img/paid.png" width="40" height="40">
                 </div>
-                <p style="color: #8f8f8f; position: absolute; margin-top: 375px; margin-right: -180px;">Đã thanh
+                <p id="text4"
+                   style="color: #8f8f8f; position: absolute; margin-top: 485px; margin-right: -203px; font-size: medium">
+                    Đã thanh
                     toán</p>
-                <div class="progress-circle1">
-                    <img src="/img/completed-task.png" width="20" height="20">
+                <div id="img5" class="progress-circle1">
+                    <img src="/img/completed-task.png" width="40" height="40">
                 </div>
-                <p style="color: #8f8f8f; position: absolute; margin-top: 465px; margin-right: -180px;">Đã hoàn
+                <p id="text5"
+                   style="color: #8f8f8f; position: absolute; margin-top: 600px; margin-right: -203px; font-size: medium">
+                    Đã hoàn
                     thành</p>
             </div>
         </div>
     </div>
+
+    <h4 style="position: relative; top: -270px; padding-left: 150px">Thông tin sản phẩm:</h4>
+    <hr style="width: 871px; position: relative; top: -260px; margin-left: 150px" class="border border-danger border-2 opacity-50">
+
+    <div  style="margin-left: 150px; margin-bottom: 50px; margin-top: -280px; width: 871px; border-radius: 5px; background-color: white">
+        <div th:each="hdct:${lstHdct}" style="width: 871px; padding: 20px">
+            <div class="row">
+                <div class="col-md-3">
+                    <img th:src="${hdct.tenAnh}" alt="Ảnh sản phẩm" class="img-fluid product-image">
+                </div>
+                <div class="col-md-8">
+                    <h2 th:text="${hdct.tenSanPham}" class="mb-3">Áo Thun Basic dsadasdsasd</h2>
+                    <p th:text="'Kích cỡ: ' + ${hdct.size}" style="font-size: medium">Phân loại hàng: DEN,XL</p>
+                    <p th:text="'Số lượng: ' + ${hdct.soLuong}" class="mb-5" style="font-size: medium">Số lượng: 1</p>
+                    <p th:text="'Thành tiền: ' + ${#numbers.formatDecimal(hdct.tongTien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}" style="font-size: larger; color: orangered">65,000 ₫</p>
+                    <!--                <p class="text-muted"><del>130,000 ₫</del></p>-->
+                </div>
+            </div>
+            <hr>
+        </div>
+    </div>
 </section>
+<script th:inline="javascript">
+    var trangthai = /*[[${hoadon.trangthai}]]*/ '';
+</script>
+<script>
+    var img0 = document.getElementById('img0');
+    var img1 = document.getElementById('img1');
+    var img2 = document.getElementById('img2');
+    var img3 = document.getElementById('img3');
+    var img4 = document.getElementById('img4');
+    var img5 = document.getElementById('img5');
+
+    var text0 = document.getElementById('text0');
+    var text1 = document.getElementById('text1');
+    var text2 = document.getElementById('text2');
+    var text3 = document.getElementById('text3');
+    var text4 = document.getElementById('text4');
+    var text5 = document.getElementById('text5');
+
+    if (trangthai === 0) {
+        img0.style.backgroundColor = 'rgb(0, 229, 255)';
+        text0.style.color = 'rgb(0, 229, 255)';
+    }
+    if (trangthai === 1) {
+        img1.style.backgroundColor = 'rgb(0, 229, 255)';
+        text1.style.color = 'rgb(0, 229, 255)';
+    }
+    if (trangthai === 2) {
+        img2.style.backgroundColor = 'rgb(0, 229, 255)';
+        text2.style.color = 'rgb(0, 229, 255)';
+    }
+    if (trangthai === 3) {
+        img3.style.backgroundColor = 'rgb(0, 229, 255)';
+        text3.style.color = 'rgb(0, 229, 255)';
+    }
+    if (trangthai === 4) {
+        img4.style.backgroundColor = 'rgb(0, 229, 255)';
+        text4.style.color = 'rgb(0, 229, 255)';
+    }
+    if (trangthai === 5) {
+        img5.style.backgroundColor = 'rgb(0, 229, 255)';
+        text5.style.color = 'rgb(0, 229, 255)';
+    }
+</script>
 <nav th:replace="~{/layout/footer.html}"></nav>
 <!-- footer end -->
 </body>

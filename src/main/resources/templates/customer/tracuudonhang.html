@@ -13,14 +13,14 @@
 <!-- header -->
 <nav th:replace="~{/layout/header.html}"></nav>
 <!-- header end -->
-<section style="height: 800px;">
+<section style="margin-bottom: 50px">
 <div class="container login-container" style="margin-top: 50px; margin-left: 200px; width: 1000px;">
   <div class="row">
     <div class="col-md-6 tabcontent" style="margin-top: 100px;">
       <form id="formTraCuu" th:action="@{/customer/timkiem}" method="get">
         <div class="form-group form123">
           <h3 style="font-size: larger;" class="mb-3">Tra cứu đơn hàng của bạn</h3>
-          <input type="text" class="form-control" id="searchInput" name="searchInput"
+          <input type="text" class="form-control" id="searchInput" name="searchInput" th:value="${searchInput}"
                  placeholder="Hãy nhập mã hóa đơn, số điện thoại hoặc email của bạn">
         </div>
 
