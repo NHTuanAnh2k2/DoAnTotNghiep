@@ -231,7 +231,7 @@ public class KhachHangController {
             NguoiDung nguoiDung = khachHangService.findNguoiDungByTaikhoan(userName);
             Integer userId = nguoiDung.getId();
             String token = userManager.getToken(userId);
-            session.invalidate();
+            session.removeAttribute("userDangnhap");
             userManager.logoutUser(userId, token);
             redirectAttributes.addFlashAttribute("success", true);
             return "redirect:/khachhang";

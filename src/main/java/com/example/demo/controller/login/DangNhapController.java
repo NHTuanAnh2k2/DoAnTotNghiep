@@ -113,7 +113,7 @@ public class DangNhapController {
                     session.setAttribute("token", token);
                     userManager.addUser(userId, token);
                     session.setAttribute("userDangnhap", nd.getTaikhoan());
-                    session.setAttribute("user", nd);
+//                    session.setAttribute("user", nd);
                     return "redirect:/customer/trangchu";
                 } else {
                     redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
@@ -206,7 +206,7 @@ public class DangNhapController {
             Integer userId = nguoiDung.getId();
             String token = userManager.getToken(userId);
             if (session != null) {
-                session.invalidate();
+                session.removeAttribute("userDangnhap");
                 userManager.logoutUser(userId, token);
                 System.out.println("Danh sách người dùng đang đăng nhập: " + userManager.getLoggedInUsers());
             }
