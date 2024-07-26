@@ -245,8 +245,10 @@
                                                 <div class="giatien d-flex justify-content-start align-items-center">
                                                     <h5 th:text="${#numbers.formatDecimal(item.sanphamchitiet.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></h5>
                                                 </div>
-                                                <p class="mausac">Màu sắc: <span
-                                                        th:text="${item.sanphamchitiet.mausac.ten}"></span></p>
+                                                <p class="mausac">
+                                                    Màu sắc: <span th:text="${item.sanphamchitiet.mausac.ten}"
+                                                                   th:style="'background-color: ' + ${item.sanphamchitiet.mausac.ten} + '; color: white;'"></span>
+                                                </p>
                                                 <p class="size">Size: <span
                                                         th:text="${item.sanphamchitiet.kichco.ten}"></span></p>
                                                 <div class="quantity-container">
