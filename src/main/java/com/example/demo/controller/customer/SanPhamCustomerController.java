@@ -2,6 +2,7 @@ package com.example.demo.controller.customer;
 
 import com.example.demo.entity.*;
 import com.example.demo.info.SanPhamCustomerInfo;
+import com.example.demo.info.TaiKhoanTokenInfo;
 import com.example.demo.repository.AnhRepository;
 import com.example.demo.repository.KichCoRepository;
 import com.example.demo.repository.SanPhamChiTietRepository;
@@ -23,6 +24,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,11 +99,42 @@ public class SanPhamCustomerController {
                               @RequestParam(defaultValue = "0") int p)
     {
         List<GioHangChiTiet> cartItems = new ArrayList<>();
+        String token = (String) session.getAttribute("token");
+        NguoiDung nguoiDung = null;
+        KhachHang khachHang = null;
+        GioHang gioHang = null;
+        if (token != null) {
+            List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
+            if (taiKhoanTokenInfos != null) {
+                for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
+                    if (tkInfo.getToken().equals(token)) {
+                        Integer userId = tkInfo.getId();
+                        nguoiDung = nguoiDungGioHangRepository.findById(userId).orElse(null);
+                        break;
+                    }
+                }
+                if (nguoiDung != null) {
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
+                    if (khachHang != null) {
+                        gioHang = gioHangRepository.findByKhachhang(khachHang);
+                        if (gioHang != null) {
+                            cartItems = gioHang.getGioHangChiTietList();
+                        }
+                    }
+                }
+            }
+        } else {
+            cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
+            if (cartItems == null) {
+                cartItems = new ArrayList<>();
+            }
+        }
         int totalQuantity = 0;
         for (GioHangChiTiet item : cartItems) {
             totalQuantity += item.getSoluong();
         }
         model.addAttribute("totalQuantity", totalQuantity);
+
 //        Pageable pageable = PageRequest.of(p, 10);
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
@@ -137,8 +171,37 @@ public class SanPhamCustomerController {
 
     @GetMapping("/customer/sanphamnam")
     public String sanphamnam(Model model, @ModelAttribute("loctheothkc") SanPhamCustomerInfo info, @RequestParam(defaultValue = "0") int p) {
-
         List<GioHangChiTiet> cartItems = new ArrayList<>();
+        String token = (String) session.getAttribute("token");
+        NguoiDung nguoiDung = null;
+        KhachHang khachHang = null;
+        GioHang gioHang = null;
+        if (token != null) {
+            List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
+            if (taiKhoanTokenInfos != null) {
+                for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
+                    if (tkInfo.getToken().equals(token)) {
+                        Integer userId = tkInfo.getId();
+                        nguoiDung = nguoiDungGioHangRepository.findById(userId).orElse(null);
+                        break;
+                    }
+                }
+                if (nguoiDung != null) {
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
+                    if (khachHang != null) {
+                        gioHang = gioHangRepository.findByKhachhang(khachHang);
+                        if (gioHang != null) {
+                            cartItems = gioHang.getGioHangChiTietList();
+                        }
+                    }
+                }
+            }
+        } else {
+            cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
+            if (cartItems == null) {
+                cartItems = new ArrayList<>();
+            }
+        }
         int totalQuantity = 0;
         for (GioHangChiTiet item : cartItems) {
             totalQuantity += item.getSoluong();
@@ -233,11 +296,42 @@ public class SanPhamCustomerController {
                              @RequestParam(defaultValue = "0") int p)
     {
         List<GioHangChiTiet> cartItems = new ArrayList<>();
+        String token = (String) session.getAttribute("token");
+        NguoiDung nguoiDung = null;
+        KhachHang khachHang = null;
+        GioHang gioHang = null;
+        if (token != null) {
+            List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
+            if (taiKhoanTokenInfos != null) {
+                for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
+                    if (tkInfo.getToken().equals(token)) {
+                        Integer userId = tkInfo.getId();
+                        nguoiDung = nguoiDungGioHangRepository.findById(userId).orElse(null);
+                        break;
+                    }
+                }
+                if (nguoiDung != null) {
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
+                    if (khachHang != null) {
+                        gioHang = gioHangRepository.findByKhachhang(khachHang);
+                        if (gioHang != null) {
+                            cartItems = gioHang.getGioHangChiTietList();
+                        }
+                    }
+                }
+            }
+        } else {
+            cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
+            if (cartItems == null) {
+                cartItems = new ArrayList<>();
+            }
+        }
         int totalQuantity = 0;
         for (GioHangChiTiet item : cartItems) {
             totalQuantity += item.getSoluong();
         }
         model.addAttribute("totalQuantity", totalQuantity);
+
 //        Pageable pageable = PageRequest.of(p, 10);
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
@@ -295,11 +389,42 @@ public class SanPhamCustomerController {
                              @ModelAttribute("searchspnam") SanPhamCustomerInfo info3,
                              @RequestParam(defaultValue = "0") int p) {
         List<GioHangChiTiet> cartItems = new ArrayList<>();
+        String token = (String) session.getAttribute("token");
+        NguoiDung nguoiDung = null;
+        KhachHang khachHang = null;
+        GioHang gioHang = null;
+        if (token != null) {
+            List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
+            if (taiKhoanTokenInfos != null) {
+                for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
+                    if (tkInfo.getToken().equals(token)) {
+                        Integer userId = tkInfo.getId();
+                        nguoiDung = nguoiDungGioHangRepository.findById(userId).orElse(null);
+                        break;
+                    }
+                }
+                if (nguoiDung != null) {
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
+                    if (khachHang != null) {
+                        gioHang = gioHangRepository.findByKhachhang(khachHang);
+                        if (gioHang != null) {
+                            cartItems = gioHang.getGioHangChiTietList();
+                        }
+                    }
+                }
+            }
+        } else {
+            cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
+            if (cartItems == null) {
+                cartItems = new ArrayList<>();
+            }
+        }
         int totalQuantity = 0;
         for (GioHangChiTiet item : cartItems) {
             totalQuantity += item.getSoluong();
         }
         model.addAttribute("totalQuantity", totalQuantity);
+
 //        Pageable pageable = PageRequest.of(p, 10);
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
@@ -354,11 +479,42 @@ public class SanPhamCustomerController {
     @GetMapping("/customer/sanphamnu")
     public String sanphamnu(Model model, @ModelAttribute("loctheothkc") SanPhamCustomerInfo info, @RequestParam(defaultValue = "0") int p) {
         List<GioHangChiTiet> cartItems = new ArrayList<>();
+        String token = (String) session.getAttribute("token");
+        NguoiDung nguoiDung = null;
+        KhachHang khachHang = null;
+        GioHang gioHang = null;
+        if (token != null) {
+            List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
+            if (taiKhoanTokenInfos != null) {
+                for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
+                    if (tkInfo.getToken().equals(token)) {
+                        Integer userId = tkInfo.getId();
+                        nguoiDung = nguoiDungGioHangRepository.findById(userId).orElse(null);
+                        break;
+                    }
+                }
+                if (nguoiDung != null) {
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
+                    if (khachHang != null) {
+                        gioHang = gioHangRepository.findByKhachhang(khachHang);
+                        if (gioHang != null) {
+                            cartItems = gioHang.getGioHangChiTietList();
+                        }
+                    }
+                }
+            }
+        } else {
+            cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
+            if (cartItems == null) {
+                cartItems = new ArrayList<>();
+            }
+        }
         int totalQuantity = 0;
         for (GioHangChiTiet item : cartItems) {
             totalQuantity += item.getSoluong();
         }
         model.addAttribute("totalQuantity", totalQuantity);
+
 //        Pageable pageable = PageRequest.of(p, 8);
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
@@ -444,11 +600,42 @@ public class SanPhamCustomerController {
                             @ModelAttribute("loctheothkc") SanPhamCustomerInfo info3,
                             @RequestParam(defaultValue = "0") int p) {
         List<GioHangChiTiet> cartItems = new ArrayList<>();
+        String token = (String) session.getAttribute("token");
+        NguoiDung nguoiDung = null;
+        KhachHang khachHang = null;
+        GioHang gioHang = null;
+        if (token != null) {
+            List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
+            if (taiKhoanTokenInfos != null) {
+                for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
+                    if (tkInfo.getToken().equals(token)) {
+                        Integer userId = tkInfo.getId();
+                        nguoiDung = nguoiDungGioHangRepository.findById(userId).orElse(null);
+                        break;
+                    }
+                }
+                if (nguoiDung != null) {
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
+                    if (khachHang != null) {
+                        gioHang = gioHangRepository.findByKhachhang(khachHang);
+                        if (gioHang != null) {
+                            cartItems = gioHang.getGioHangChiTietList();
+                        }
+                    }
+                }
+            }
+        } else {
+            cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
+            if (cartItems == null) {
+                cartItems = new ArrayList<>();
+            }
+        }
         int totalQuantity = 0;
         for (GioHangChiTiet item : cartItems) {
             totalQuantity += item.getSoluong();
         }
         model.addAttribute("totalQuantity", totalQuantity);
+
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
         List<MauSac> listMauSac = mauSacImp.findAll();
@@ -507,11 +694,42 @@ public class SanPhamCustomerController {
                             @ModelAttribute("loctheothkc") SanPhamCustomerInfo info3,
                             @RequestParam(defaultValue = "0") int p) {
         List<GioHangChiTiet> cartItems = new ArrayList<>();
+        String token = (String) session.getAttribute("token");
+        NguoiDung nguoiDung = null;
+        KhachHang khachHang = null;
+        GioHang gioHang = null;
+        if (token != null) {
+            List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
+            if (taiKhoanTokenInfos != null) {
+                for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
+                    if (tkInfo.getToken().equals(token)) {
+                        Integer userId = tkInfo.getId();
+                        nguoiDung = nguoiDungGioHangRepository.findById(userId).orElse(null);
+                        break;
+                    }
+                }
+                if (nguoiDung != null) {
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
+                    if (khachHang != null) {
+                        gioHang = gioHangRepository.findByKhachhang(khachHang);
+                        if (gioHang != null) {
+                            cartItems = gioHang.getGioHangChiTietList();
+                        }
+                    }
+                }
+            }
+        } else {
+            cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
+            if (cartItems == null) {
+                cartItems = new ArrayList<>();
+            }
+        }
         int totalQuantity = 0;
         for (GioHangChiTiet item : cartItems) {
             totalQuantity += item.getSoluong();
         }
         model.addAttribute("totalQuantity", totalQuantity);
+
 //        Pageable pageable = PageRequest.of(p, 10);
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
@@ -570,11 +788,42 @@ public class SanPhamCustomerController {
                              @ModelAttribute("loctheothkc") SanPhamCustomerInfo info3,
                              @RequestParam(defaultValue = "0") int p) {
         List<GioHangChiTiet> cartItems = new ArrayList<>();
+        String token = (String) session.getAttribute("token");
+        NguoiDung nguoiDung = null;
+        KhachHang khachHang = null;
+        GioHang gioHang = null;
+        if (token != null) {
+            List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
+            if (taiKhoanTokenInfos != null) {
+                for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
+                    if (tkInfo.getToken().equals(token)) {
+                        Integer userId = tkInfo.getId();
+                        nguoiDung = nguoiDungGioHangRepository.findById(userId).orElse(null);
+                        break;
+                    }
+                }
+                if (nguoiDung != null) {
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
+                    if (khachHang != null) {
+                        gioHang = gioHangRepository.findByKhachhang(khachHang);
+                        if (gioHang != null) {
+                            cartItems = gioHang.getGioHangChiTietList();
+                        }
+                    }
+                }
+            }
+        } else {
+            cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
+            if (cartItems == null) {
+                cartItems = new ArrayList<>();
+            }
+        }
         int totalQuantity = 0;
         for (GioHangChiTiet item : cartItems) {
             totalQuantity += item.getSoluong();
         }
         model.addAttribute("totalQuantity", totalQuantity);
+
 //        Pageable pageable = PageRequest.of(p, 10);
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();

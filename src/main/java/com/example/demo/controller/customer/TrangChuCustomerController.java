@@ -152,13 +152,9 @@ public class TrangChuCustomerController {
         NguoiDung nguoiDung = null;
         KhachHang khachHang = null;
         GioHang gioHang = null;
-
-        // Kiểm tra xem người dùng đã đăng nhập hay chưa
         if (token != null) {
-            // Lấy danh sách token từ session
             List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
             if (taiKhoanTokenInfos != null) {
-                // Tìm người dùng từ danh sách token
                 for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
                     if (tkInfo.getToken().equals(token)) {
                         Integer userId = tkInfo.getId();
@@ -167,7 +163,6 @@ public class TrangChuCustomerController {
                     }
                 }
                 if (nguoiDung != null) {
-                    // Lấy giỏ hàng của người dùng đã đăng nhập
                     khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
                     if (khachHang != null) {
                         gioHang = gioHangRepository.findByKhachhang(khachHang);
@@ -178,25 +173,16 @@ public class TrangChuCustomerController {
                 }
             }
         } else {
-            // Giỏ hàng của người dùng chưa đăng nhập
             cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
             if (cartItems == null) {
                 cartItems = new ArrayList<>();
             }
         }
-        // Tính tổng số lượng sản phẩm và tổng tiền
         int totalQuantity = 0;
-        BigDecimal totalAmount = BigDecimal.ZERO;
         for (GioHangChiTiet item : cartItems) {
             totalQuantity += item.getSoluong();
-            BigDecimal giatien = sanPhamChiTietRepository.findPriceByProductId(item.getSanphamchitiet().getId());
-            totalAmount = totalAmount.add(giatien.multiply(BigDecimal.valueOf(item.getSoluong())));
         }
-        // Thêm các thông tin vào model
-
-        model.addAttribute("totalAmount", totalAmount);
         model.addAttribute("totalQuantity", totalQuantity);
-        model.addAttribute("cartItems", cartItems);
 
         SanPham sanPham = trangChuRepository.findById(id).orElse(null);
         model.addAttribute("sanpham", sanPham);
@@ -267,6 +253,36 @@ public class TrangChuCustomerController {
                                  @ModelAttribute("search") SanPhamCustomerInfo info,
                                  HttpSession session) {
         List<GioHangChiTiet> cartItems = new ArrayList<>();
+        String token = (String) session.getAttribute("token");
+        NguoiDung nguoiDung = null;
+        KhachHang khachHang = null;
+        GioHang gioHang = null;
+        if (token != null) {
+            List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
+            if (taiKhoanTokenInfos != null) {
+                for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
+                    if (tkInfo.getToken().equals(token)) {
+                        Integer userId = tkInfo.getId();
+                        nguoiDung = nguoiDungGioHangRepository.findById(userId).orElse(null);
+                        break;
+                    }
+                }
+                if (nguoiDung != null) {
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
+                    if (khachHang != null) {
+                        gioHang = gioHangRepository.findByKhachhang(khachHang);
+                        if (gioHang != null) {
+                            cartItems = gioHang.getGioHangChiTietList();
+                        }
+                    }
+                }
+            }
+        } else {
+            cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
+            if (cartItems == null) {
+                cartItems = new ArrayList<>();
+            }
+        }
         int totalQuantity = 0;
         for (GioHangChiTiet item : cartItems) {
             totalQuantity += item.getSoluong();

@@ -17,6 +17,8 @@ import com.example.demo.repository.NguoiDungRepository;
 import com.example.demo.repository.SanPhamChiTietRepository;
 import com.example.demo.repository.giohang.GioHangChiTietRepository;
 import com.example.demo.repository.giohang.GioHangRepository;
+import com.example.demo.repository.giohang.KhachHangGioHangRepository;
+import com.example.demo.repository.giohang.NguoiDungGioHangRepository;
 import com.example.demo.repository.hoadon.HoaDonChiTietRepository;
 import com.example.demo.repository.hoadon.HoaDonRepository;
 import com.example.demo.repository.phuongThucThanhToan.PhuongThucThanhToanRepository;
@@ -70,17 +72,13 @@ public class CustomerController {
     @Autowired
     HoaDonChiTietRepository1 hoaDonChiTietRepository1;
 
+    @Autowired
+    NguoiDungGioHangRepository nguoiDungGioHangRepository;
 
-    @GetMapping("/trangchu")
-    public String trangchu() {
-        return "customer/trangchu";
-    }
+    @Autowired
+    KhachHangGioHangRepository khachHangGioHangRepository;
 
-    @GetMapping("/modal")
-    public String modal() {
-        return "customer/modal";
-    }
-
+    
     @GetMapping("/quenmatkhau")
     public String quenmatkhauview(@ModelAttribute("nguoidung") NguoiDungKHInfo nguoidung,
                                   Model model) {
@@ -88,7 +86,43 @@ public class CustomerController {
     }
 
     @GetMapping("/customer/tracuudonhang")
-    public String tracuu(Model model) {
+    public String tracuu(Model model, HttpSession session) {
+        List<GioHangChiTiet> cartItems = new ArrayList<>();
+        String token = (String) session.getAttribute("token");
+        NguoiDung nguoiDung = null;
+        KhachHang khachHang = null;
+        GioHang gioHang = null;
+        if (token != null) {
+            List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
+            if (taiKhoanTokenInfos != null) {
+                for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
+                    if (tkInfo.getToken().equals(token)) {
+                        Integer userId = tkInfo.getId();
+                        nguoiDung = nguoiDungGioHangRepository.findById(userId).orElse(null);
+                        break;
+                    }
+                }
+                if (nguoiDung != null) {
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
+                    if (khachHang != null) {
+                        gioHang = gioHangRepository.findByKhachhang(khachHang);
+                        if (gioHang != null) {
+                            cartItems = gioHang.getGioHangChiTietList();
+                        }
+                    }
+                }
+            }
+        } else {
+            cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
+            if (cartItems == null) {
+                cartItems = new ArrayList<>();
+            }
+        }
+        int totalQuantity = 0;
+        for (GioHangChiTiet item : cartItems) {
+            totalQuantity += item.getSoluong();
+        }
+        model.addAttribute("totalQuantity", totalQuantity);
         return "customer/tracuudonhang";
     }
 
@@ -98,6 +132,44 @@ public class CustomerController {
                                 @RequestParam("page") Optional<Integer> pageParam,
                                 HttpSession session
     ) {
+        List<GioHangChiTiet> cartItems = new ArrayList<>();
+        String token = (String) session.getAttribute("token");
+        NguoiDung nguoiDung = null;
+        KhachHang khachHang = null;
+        GioHang gioHang = null;
+        if (token != null) {
+            List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
+            if (taiKhoanTokenInfos != null) {
+                for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
+                    if (tkInfo.getToken().equals(token)) {
+                        Integer userId = tkInfo.getId();
+                        nguoiDung = nguoiDungGioHangRepository.findById(userId).orElse(null);
+                        break;
+                    }
+                }
+                if (nguoiDung != null) {
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
+                    if (khachHang != null) {
+                        gioHang = gioHangRepository.findByKhachhang(khachHang);
+                        if (gioHang != null) {
+                            cartItems = gioHang.getGioHangChiTietList();
+                        }
+                    }
+                }
+            }
+        } else {
+            cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
+            if (cartItems == null) {
+                cartItems = new ArrayList<>();
+            }
+        }
+        int totalQuantity = 0;
+        for (GioHangChiTiet item : cartItems) {
+            totalQuantity += item.getSoluong();
+        }
+        model.addAttribute("totalQuantity", totalQuantity);
+
+
         String userDangnhap = (String) session.getAttribute("userDangnhap");
         if (username != null) {
             if (userDangnhap != null) {
@@ -349,9 +421,47 @@ public class CustomerController {
     }
 
     @GetMapping("/customer/timkiem")
-    public String timkiem(Model model,
+    public String timkiem(Model model, HttpSession session,
                           @RequestParam(value = "searchInput", required = false) String inputsearch
     ) {
+        List<GioHangChiTiet> cartItems = new ArrayList<>();
+        String token = (String) session.getAttribute("token");
+        NguoiDung nguoiDung = null;
+        KhachHang khachHang = null;
+        GioHang gioHang = null;
+        if (token != null) {
+            List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
+            if (taiKhoanTokenInfos != null) {
+                for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
+                    if (tkInfo.getToken().equals(token)) {
+                        Integer userId = tkInfo.getId();
+                        nguoiDung = nguoiDungGioHangRepository.findById(userId).orElse(null);
+                        break;
+                    }
+                }
+                if (nguoiDung != null) {
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
+                    if (khachHang != null) {
+                        gioHang = gioHangRepository.findByKhachhang(khachHang);
+                        if (gioHang != null) {
+                            cartItems = gioHang.getGioHangChiTietList();
+                        }
+                    }
+                }
+            }
+        } else {
+            cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
+            if (cartItems == null) {
+                cartItems = new ArrayList<>();
+            }
+        }
+        int totalQuantity = 0;
+        for (GioHangChiTiet item : cartItems) {
+            totalQuantity += item.getSoluong();
+        }
+        model.addAttribute("totalQuantity", totalQuantity);
+
+
         List<HoaDon> lstHoaDon = new ArrayList<>();
         if (inputsearch != null) {
             lstHoaDon = hoaDonRepository.findHoaDonByMaOrSdtOrEmail(inputsearch);
@@ -365,9 +475,48 @@ public class CustomerController {
     }
 
     @GetMapping("/customer/detail-don-hang")
-    public String detail(Model model,
+    public String detail(Model model, HttpSession session,
                          @RequestParam("id") String idDonHang
     ) {
+        List<GioHangChiTiet> cartItems = new ArrayList<>();
+        String token = (String) session.getAttribute("token");
+        NguoiDung nguoiDung = null;
+        KhachHang khachHang = null;
+        GioHang gioHang = null;
+        if (token != null) {
+            List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
+            if (taiKhoanTokenInfos != null) {
+                for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
+                    if (tkInfo.getToken().equals(token)) {
+                        Integer userId = tkInfo.getId();
+                        nguoiDung = nguoiDungGioHangRepository.findById(userId).orElse(null);
+                        break;
+                    }
+                }
+                if (nguoiDung != null) {
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
+                    if (khachHang != null) {
+                        gioHang = gioHangRepository.findByKhachhang(khachHang);
+                        if (gioHang != null) {
+                            cartItems = gioHang.getGioHangChiTietList();
+                        }
+                    }
+                }
+            }
+        } else {
+            cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
+            if (cartItems == null) {
+                cartItems = new ArrayList<>();
+            }
+        }
+        int totalQuantity = 0;
+        for (GioHangChiTiet item : cartItems) {
+            totalQuantity += item.getSoluong();
+        }
+        model.addAttribute("totalQuantity", totalQuantity);
+
+
+
         Integer id = null;
         try {
             id = Integer.parseInt(idDonHang);
