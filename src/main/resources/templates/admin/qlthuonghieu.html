@@ -328,15 +328,11 @@
                         toast.onmouseleave = Swal.resumeTimer;
                     }
                 });
-
-                Toast.fire({
-                    icon: "success",
-                    title: "Thêm thành công!"
-                });
-
                 setTimeout(function () {
+                    // Lưu thông báo vào sessionStorage
+                    sessionStorage.setItem('successMessage', 'Thêm thành công!');
                     document.addThuongHieu.submit();
-                }, 3000);
+                });
             }
         });
 
