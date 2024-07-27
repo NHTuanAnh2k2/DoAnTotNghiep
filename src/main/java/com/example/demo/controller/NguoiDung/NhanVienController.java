@@ -242,6 +242,9 @@ public class NhanVienController {
         }else {
             nd.setAnh(ndTim.getAnh());
         }
+        if(nv.getVaitro() == null){
+            nv.setVaitro(true);
+        }
         nd.setTrangthai(nv.getTrangthai());
         dc.setTrangthai(nv.getTrangthai());
         nguoiDung.update(nd,id);
@@ -277,7 +280,8 @@ public class NhanVienController {
     @GetMapping("/updatevaitro/{id}")
     public String updateVaiTro(Model model,
                                   @PathVariable("id") Integer id,
-                                  RedirectAttributes redirectAttributes) {
+                                  RedirectAttributes redirectAttributes,HttpSession session) {
+        Integer checkcapnhat=0;
         DiaChi dc = diaChi.search(id);
         NguoiDung nd = nguoiDung.findById(id);
         NhanVien nv = nhanVien.search(id);
@@ -294,7 +298,8 @@ public class NhanVienController {
         dc.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
         dc.setTrangthai(true);
         diaChi.updateS(dc);
-        redirectAttributes.addFlashAttribute("success", true);
+        checkcapnhat=1;
+        session.setAttribute("capnhatthanhcong",checkcapnhat);
         return "redirect:/admin/qlnhanvien";
     }
 }
