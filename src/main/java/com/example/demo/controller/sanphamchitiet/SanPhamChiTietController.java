@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -18,7 +19,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 
 
 @Controller
@@ -192,7 +192,7 @@ public class SanPhamChiTietController {
         existingSanPhamChiTiet.setGiatien(sanPhamChiTiet.getGiatien());
         existingSanPhamChiTiet.setMota(sanPhamChiTiet.getMota());
         existingSanPhamChiTiet.setTrangthai(sanPhamChiTiet.getTrangthai());
-      existingSanPhamChiTiet.setGioitinh(sanPhamChiTiet.getGioitinh());
+        existingSanPhamChiTiet.setGioitinh(sanPhamChiTiet.getGioitinh());
 
         sanPhamChiTietRepository.save(existingSanPhamChiTiet);
         if (anhFiles != null && !anhFiles.isEmpty()) {
