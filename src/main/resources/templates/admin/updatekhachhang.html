@@ -335,9 +335,9 @@
             isValid = false;
         }
 
-        // for (const key in errors) {
-        //     document.getElementById(key).innerText = errors[key];
-        // }
+        for (const key in errors) {
+            document.getElementById(key).innerText = errors[key];
+        }
 
         return isValid ? saveDiaChi() : false;
     }

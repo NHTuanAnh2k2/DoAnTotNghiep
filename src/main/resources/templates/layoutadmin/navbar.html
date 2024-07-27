@@ -37,11 +37,13 @@
             <a class="nav-link dropdown-toggle" href="#" id="avatarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                <span style="margin-left: 5px;" th:if="${adminDangnhap}"
                      th:text="${adminDangnhap}">Xin chào</span>
-                <img src="../../dist/img/bong1.jpg" class="img-circle" height="30px" width="30px">
+                <img th:if="${adminAvatar}" th:src="${adminAvatar}" class="img-circle" height="30px" width="30px">
+                <img th:unless="${adminAvatar}" src="../../dist/img/bong1.jpg" class="img-circle" height="30px" width="30px">
             </a>
             <div class="dropdown-menu" aria-labelledby="avatarDropdown">
                 <!-- Các mục trong menu sổ xuống -->
-                <a class="dropdown-item" th:href="@{/same/login}">ĐĂNG XUẤT</a>
+                <a th:if="${adminDangnhap}" class="dropdown-item" th:href="@{/admin/dangxuat}">ĐĂNG XUẤT</a>
+                <a th:unless="${adminDangnhap}" class="dropdown-item" th:href="@{/admin/account}">ĐĂNG NHẬP</a>
             </div>
         </li>
 

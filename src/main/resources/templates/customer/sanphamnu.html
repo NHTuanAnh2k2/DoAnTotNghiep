@@ -10,67 +10,6 @@
     .checkbox {
         transform: scale(1.4); /* Tăng kích thước lên 1.5 lần */
     }
-
-    .black-checkbox {
-        color: rgb(249, 72, 42);
-        font-weight: bold;
-        background-color: black;
-    }
-
-    .white-checkbox {
-        color: rgb(249, 72, 42);
-        font-weight: bold;
-        background-color: white;
-    }
-
-    .red-checkbox {
-        color: rgb(249, 72, 42);
-        font-weight: bold;
-        background-color: red;
-    }
-
-    .blue-checkbox {
-        color: rgb(249, 72, 42);
-        font-weight: bold;
-        background-color: blue;
-    }
-
-    .green-checkbox {
-        color: rgb(249, 72, 42);
-        font-weight: bold;
-        background-color: green;
-    }
-
-    .orange-checkbox {
-        color: rgb(249, 72, 42);
-        font-weight: bold;
-        background-color: orange;
-    }
-
-    .yellow-checkbox {
-        color: rgb(249, 72, 42);
-        font-weight: bold;
-        background-color: yellow;
-    }
-
-    .pink-checkbox {
-        color: rgb(249, 72, 42);
-        font-weight: bold;
-        background-color: pink;
-    }
-
-    .brown-checkbox {
-        color: rgb(249, 72, 42);
-        font-weight: bold;
-        background-color: brown;
-    }
-
-    .grey-checkbox {
-        color: rgb(249, 72, 42);
-        font-weight: bold;
-        background-color: grey;
-    }
-
 </style>
 <!--Các sản phẩm nổi bật-->
 <style>
@@ -285,19 +224,8 @@
                                                                 <input type="checkbox" th:field="*{idMauSac2}"
                                                                        th:value="${mausac.id}"
                                                                        class="form-check-input checkbox"
-                                                                       onchange="locmausac()"
-                                                                       th:if="${mausac.ten == 'Đen'} or ${mausac.ten == 'Trắng'} or ${mausac.ten == 'Đỏ'} or ${mausac.ten == 'Xanh dương'} or ${mausac.ten == 'Xanh lá cây'} or ${mausac.ten == 'Cam'} or ${mausac.ten == 'Vàng'} or ${mausac.ten == 'Hồng'} or ${mausac.ten == 'Nâu'} or ${mausac.ten == 'Ghi'}"
-                                                                       th:classappend="${(mausac.ten == 'Đen') ? 'black-checkbox'
-               : (mausac.ten == 'Trắng') ? 'white-checkbox'
-               : (mausac.ten == 'Đỏ') ? 'red-checkbox'
-               : (mausac.ten == 'Xanh dương') ? 'blue-checkbox'
-               : (mausac.ten == 'Xanh lá cây') ? 'green-checkbox'
-               : (mausac.ten == 'Cam') ? 'orange-checkbox'
-               : (mausac.ten == 'Vàng') ? 'yellow-checkbox'
-               : (mausac.ten == 'Hồng') ? 'pink-checkbox'
-               : (mausac.ten == 'Nâu') ? 'brown-checkbox'
-               : (mausac.ten == 'Ghi') ? 'grey-checkbox'
-               : ''}">
+                                                                       th:style="'background-color:' + ${mausac.ten}"
+                                                                       onchange="locmausac()">
                                                                 <label th:text="${mausac.ten}"
                                                                        style="margin-left: 25px;"></label>
                                                             </p>
@@ -406,23 +334,23 @@
                                         <div class="tag-n-s">
                                             <span>New</span>
                                         </div>
-                                        <div class="actions-btn">
-                                            <ul class="clearfix">
-                                                <li>
-                                                    <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#"><i class="fa fa-heart"></i></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
-                                                            class="fa fa-eye"></i></a>
-                                                </li>
-                                            </ul>
-                                        </div>
+<!--                                        <div class="actions-btn">-->
+<!--                                            <ul class="clearfix">-->
+<!--                                                <li>-->
+<!--                                                    <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>-->
+<!--                                                </li>-->
+<!--                                                <li>-->
+<!--                                                    <a href="#"><i class="fa fa-heart"></i></a>-->
+<!--                                                </li>-->
+<!--                                                <li>-->
+<!--                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i-->
+<!--                                                            class="fa fa-eye"></i></a>-->
+<!--                                                </li>-->
+<!--                                            </ul>-->
+<!--                                        </div>-->
                                     </div>
                                     <div class="product-title">
-                                        <a href="#"><h3 class="title" th:text="${sp[1]}"></h3></a>
+                                        <a href="#"><h3 class="title" th:text="${sp[1]}" style="font-weight: bold"></h3></a>
                                         <div class="ratting">
                                             <h6><span th:text="${sp[7]} + ' size'" style="font-family: 'Bahnschrift'"></span> / <span th:text="${sp[8]} + ' màu sắc'" style="font-family: 'Bahnschrift'"></span></h6>
                                         </div>
@@ -509,23 +437,23 @@
                                 <div class="tag-n-s">
                                     <span>New</span>
                                 </div>
-                                <div class="actions-btn">
-                                    <ul class="clearfix">
-                                        <li>
-                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><i class="fa fa-heart"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
-                                                    class="fa fa-eye"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
+<!--                                <div class="actions-btn">-->
+<!--                                    <ul class="clearfix">-->
+<!--                                        <li>-->
+<!--                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>-->
+<!--                                        </li>-->
+<!--                                        <li>-->
+<!--                                            <a href="#"><i class="fa fa-heart"></i></a>-->
+<!--                                        </li>-->
+<!--                                        <li>-->
+<!--                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i-->
+<!--                                                    class="fa fa-eye"></i></a>-->
+<!--                                        </li>-->
+<!--                                    </ul>-->
+<!--                                </div>-->
                             </div>
                             <div class="product-title">
-                                <a href="#"><h3 class="title" th:text="${sp[1]}"></h3></a>
+                                <a href="#"><h3 class="title" th:text="${sp[1]}" style="font-weight: bold"></h3></a>
                                 <div class="ratting">
                                     <h6><span th:text="${sp[7]} + ' size'" style="font-family: 'Bahnschrift'"></span> / <span th:text="${sp[8]} + ' màu sắc'" style="font-family: 'Bahnschrift'"></span></h6>
                                 </div>
@@ -577,23 +505,23 @@
                                 <div class="tag-n-s">
                                     <span>New</span>
                                 </div>
-                                <div class="actions-btn">
-                                    <ul class="clearfix">
-                                        <li>
-                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><i class="fa fa-heart"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
-                                                    class="fa fa-eye"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
+<!--                                <div class="actions-btn">-->
+<!--                                    <ul class="clearfix">-->
+<!--                                        <li>-->
+<!--                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>-->
+<!--                                        </li>-->
+<!--                                        <li>-->
+<!--                                            <a href="#"><i class="fa fa-heart"></i></a>-->
+<!--                                        </li>-->
+<!--                                        <li>-->
+<!--                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i-->
+<!--                                                    class="fa fa-eye"></i></a>-->
+<!--                                        </li>-->
+<!--                                    </ul>-->
+<!--                                </div>-->
                             </div>
                             <div class="product-title">
-                                <a href="#"><h3 class="title" th:text="${sp[1]}"></h3></a>
+                                <a href="#"><h3 class="title" th:text="${sp[1]}" style="font-weight: bold"></h3></a>
                                 <div class="ratting">
                                     <h6><span th:text="${sp[7]} + ' size'" style="font-family: 'Bahnschrift'"></span> / <span th:text="${sp[8]} + ' màu sắc'" style="font-family: 'Bahnschrift'"></span></h6>
                                 </div>

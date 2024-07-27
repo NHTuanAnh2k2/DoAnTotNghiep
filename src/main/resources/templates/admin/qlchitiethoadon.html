@@ -81,6 +81,69 @@
         background-color: #7CFC00;
         /* Màu xanh lá */
     }
+
+    /* css cho modal mã giảm giá */
+
+
+    .ma_giam_gia {
+        width: 100%;
+        margin-bottom: 15px;
+        padding: 5px 10px;
+        background: #fff;
+        display: flex;
+        border-radius: 15px;
+    }
+
+    .ma-item-left {
+        width: 30%;
+        padding-right: 10px;
+        display: flex;
+        align-items: center;
+        border-right: 1px dashed #ccc;
+    }
+
+    .anh_ma {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+    }
+
+    .ma-item-right {
+        padding-left: 10px;
+        position: relative;
+        width: 70%;
+    }
+
+    .ma-item-des {
+        display: flex;
+        justify-content: space-between;
+        align-items: self-end;
+        font-size: 10px;
+    }
+
+    .right_magiam {
+        font-weight: 700;
+        padding: 5px 7px;
+        background: rgb(249, 72, 42);
+        color: white;
+        border-radius: 15px;
+        cursor: pointer;
+        margin-bottom: 26px;
+    }
+
+    .right_magiam:hover {
+        font-weight: 700;
+        padding: 5px 7px;
+        background: rgb(249, 72, 42);
+        color: white;
+        border-radius: 15px;
+        cursor: pointer;
+        margin-bottom: 26px;
+        border: 0.5px solid rgb(77, 70, 70);
+        /* Hiển thị viền khi hover */
+        transform: scale(1.01);
+        /* Tăng kích thước một chút khi hover */
+    }
 </style>
 
 <body class="hold-transition sidebar-mini layout-fixed" style="font-family: 'Bahnschrift'">
@@ -104,15 +167,13 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
+                            <h1>QUẢN LÝ CHI TIẾT HÓA ĐƠN</h1>
                             <!--                        <h5 class="m-0" style="color: grey">< Đơn hàng</h5>-->
                             <!--                        &lt;!&ndash;Tên hóa đơn&ndash;&gt;-->
                             <!--                        <p><h2 class="m-0">HD123456</h2> <h5 class="m-0" style="color: grey">25/11/2023 15:40 </h5></p>-->
                         </div>
                         <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Quản lý chi tiết hóa đơn</li>
-                            </ol>
+
                         </div>
                     </div>
                 </div>
@@ -160,10 +221,10 @@
                                                         </div>
                                                     </div>
                                                     <p></p>
-                                                    <button class="btn btn-danger" th:if="${trangThaiHienTai<3}"
+                                                    <button class="btn btn-danger" th:if="${trangThaiHienTai<2}"
                                                         data-bs-toggle="modal" data-bs-target="#huy">Hủy</button>
                                                     <button class="btn btn-warning"
-                                                        th:if="${trangThaiHienTai > 0 and trangThaiHienTai < 5}"
+                                                        th:if="${trangThaiHienTai > 0 and trangThaiHienTai < 2}"
                                                         data-bs-toggle="modal" data-bs-target="#quaylai">Quay
                                                         lại</button>
                                                     <button th:if="${trangThaiHienTai==0}" class="btn btn-primary"
@@ -528,7 +589,30 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <!-- modal xem mã giảm -->
+                                                    <div class="modal fade" id="staticBackdrop"
+                                                        data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                                        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered"
+                                                            style="width: 430px;">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header"
+                                                                    style="background-color: #EEEEEE;">
+                                                                    <h1 class="modal-title fs-5"
+                                                                        id="staticBackdropLabel">Danh sách phiếu khuyến
+                                                                        mãi:</h1>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body"
+                                                                    style="background-color: #e6f2f4;" id="showvoucher">
 
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
                                                     <div class="modal fade" id="hoanthanh" tabindex="-1"
                                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -673,12 +757,12 @@
                                                     <button type="button" class="btn btn-outline-secondary"
                                                         data-bs-toggle="modal" data-bs-target="#modalThayDoiHoaDon"
                                                         th:classappend="${trangThaiHienTai!=0?'disabled':''}">Thay
-                                                        đổi</button>
-                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        đổi thông tin</button>
+                                                    <!-- <button type="button" class="btn btn-outline-secondary"
                                                         id="changeNV" data-bs-toggle="modal"
                                                         data-bs-target="#modalChuyenNhanVien"
                                                         th:classappend="${trangThaiHienTai!=0?'disabled':''}">Chuyển
-                                                        nhân viên</button>
+                                                        nhân viên</button> -->
                                                 </div>
 
                                                 <!--Modal thay đổi thông tin hóa đơn-->
@@ -759,12 +843,16 @@
                                                                             oninput="showcasst('phigiaoHang')"
                                                                             id="phigiaoHang" th:field="*{phigiao}"
                                                                             th:value="${phigiao}">
+                                                                        <i style="color: red;"
+                                                                            id="TTTK_phigiao_regex"></i>
 
                                                                     </div>
                                                                     <div class="col-12">
                                                                         <label class="form-label">Ghi chú:</label>
-                                                                        <textarea class="form-control"
+                                                                        <textarea class="form-control" id="ghichus"
                                                                             th:field="*{ghichu}" rows="3"></textarea>
+                                                                        <i style="color: red;"
+                                                                            id="TTTK_ghichus_regex"></i>
                                                                     </div>
                                                                     <button onclick="return validateForm()"
                                                                         type="submit" class="btn btn-primary">Xác
@@ -1006,16 +1094,17 @@
                                                     style="font-family: 'Times New Roman'; font-size: 16px;">
                                                 </p>
                                             </div>
-                                            <div class="d-flex justify-content-between">
+                                            <div class="d-flex justify-content-between align-items-center">
                                                 <h6 style="font-family: 'Times New Roman'; font-weight: bold">Phiếu giảm
                                                     giá
                                                     :</h6>
 
                                                 <span th:if="${phieuGiamCT.id!=null}">
                                                     <p th:text="${phieuGiamCT.phieugiamgia.loaiphieu==false?#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiam, 0, 'COMMA', 0, 'POINT')+'&#x20ab;':phieuGiamCT.phieugiamgia.giatrigiam+' %, tối đa '+#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiamtoida, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
-                                                        style="font-family: 'Times New Roman'; font-size: 16px;">
+                                                        style="font-family: 'Times New Roman'; font-size: 16px; margin-top: 10px;">
                                                     </p>
                                                 </span>
+
                                                 <span th:if="${phieuGiamCT.id==null}">
                                                     <span class="applied-reduction-code"
                                                         style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px;">
@@ -1030,7 +1119,12 @@
                                                             !</span>
                                                     </span>
                                                 </span>
-
+                                                <button class="btn btn-light" style="margin-bottom: 0px;"
+                                                    th:if="${hoaDonDT.loaihoadon==false}" data-bs-toggle="modal"
+                                                    id="chonMaGiam"
+                                                    th:classappend="${trangThaiHienTai!=0?'disabled':''}"
+                                                    data-bs-target="#staticBackdrop" onclick="showmagiam()">
+                                                    Chọn mã</button>
                                             </div>
                                             <div class="d-flex justify-content-between">
                                                 <h6 style="font-family: 'Times New Roman'; font-weight: bold">Tổng tiền
@@ -1176,12 +1270,13 @@
                                                                                     <label class="col-form-label">Màu
                                                                                         sắc</label>
                                                                                     <select class="form-select"
-                                                                                        oninput="SearchSPHDCT()"
+                                                                                        onchange="SearchSPHDCT()"
                                                                                         id="mausac"
                                                                                         style="width: 120px;">
                                                                                         <option value="all" selected>
                                                                                             ----</option>
                                                                                         <option th:each="a:${dsMauSac}"
+                                                                                            th:style="'background-color: ' + ${a.ten} + '; color: ' + ${#fff}"
                                                                                             th:value="${a.ten}"
                                                                                             th:text="${a.ten}">
 
@@ -1296,8 +1391,11 @@
                                                             style="font-family: 'Times New Roman'; font-size: 15px;font-weight: bold;">
                                                             ></p>
                                                     </td>
-                                                    <td th:text="${a.sanphamchitiet.mausac.ten}"
-                                                        style="vertical-align: middle;"></td>
+                                                    <td style="vertical-align: middle;">
+                                                        <p th:text="${a.sanphamchitiet.mausac.ten}"
+                                                            th:style="'background-color: ' + ${a.sanphamchitiet.mausac.ten} + '; color: white; padding: 3px 15px; border-radius: 14px;'">
+                                                        </p>
+                                                    </td>
 
                                                     <td style="vertical-align: middle;"><input
                                                             th:name="${a.sanphamchitiet.id}"
@@ -1949,7 +2047,9 @@
             var list = [
                 tentim, cl, th, dg, kc, ms, gt, kg
             ]
-            var urltimSPCT = `/hoa-don/searchSP?lstData=${list}`;
+            let encodedList = list.map(item => encodeURIComponent(item));
+            var urltimSPCT = `/hoa-don/searchSP?lstData=${encodedList.join(",")}`;
+            //var urltimSPCT = `/hoa-don/searchSP?lstData=${list}`;
             fetch(urltimSPCT)
                 .then(function (c) {
                     return c.json();
@@ -1970,7 +2070,11 @@
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
-                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
+                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: ${hd.mausac.ten}; padding: 3px 15px 3px 15px; color: white;">
+                                       ${hd.mausac.ten}
+                                        </p>
+                                    </td>
                                    <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
@@ -2005,7 +2109,9 @@
             var list = [
                 tentim, cl, th, dg, kc, ms, gt, kg
             ]
-            var urltimSPCT = `/hoa-don/searchSP?lstData=${list}`;
+            let encodedList = list.map(item => encodeURIComponent(item));
+            var urltimSPCT = `/hoa-don/searchSP?lstData=${encodedList.join(",")}`;
+            // var urltimSPCT = `/hoa-don/searchSP?lstData=${list}`;
             fetch(urltimSPCT)
                 .then(function (c) {
                     return c.json();
@@ -2026,7 +2132,11 @@
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
-                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                  <td style="vertical-align: middle;">
+                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: ${hd.mausac.ten}; padding: 3px 15px 3px 15px; color: white;">
+                                       ${hd.mausac.ten}
+                                        </p>
+                                    </td>
                                    <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
@@ -2076,7 +2186,11 @@
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
-                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                  <td style="vertical-align: middle;">
+                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: ${hd.mausac.ten}; padding: 3px 15px 3px 15px; color: white;">
+                                       ${hd.mausac.ten}
+                                        </p>
+                                    </td>
                                    <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
@@ -2141,7 +2255,11 @@
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
-                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
+                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: ${hd.mausac.ten}; padding: 3px 15px 3px 15px; color: white;">
+                                       ${hd.mausac.ten}
+                                        </p>
+                                    </td>
                                    <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
@@ -2203,7 +2321,11 @@
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
-                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                  <td style="vertical-align: middle;">
+                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: ${hd.mausac.ten}; padding: 3px 15px 3px 15px; color: white;">
+                                       ${hd.mausac.ten}
+                                        </p>
+                                    </td>
                                    <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
@@ -2267,7 +2389,11 @@
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
-                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                  <td style="vertical-align: middle;">
+                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: ${hd.mausac.ten}; padding: 3px 15px 3px 15px; color: white;">
+                                       ${hd.mausac.ten}
+                                        </p>
+                                    </td>
                                    <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
@@ -2333,7 +2459,11 @@
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
-                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
+                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: ${hd.mausac.ten}; padding: 3px 15px 3px 15px; color: white;">
+                                       ${hd.mausac.ten}
+                                        </p>
+                                    </td>
                                    <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
@@ -2708,6 +2838,9 @@
             var diaChi = document.getElementById("TTTK_diachi").value.trim();
             var huyen = document.getElementById("district").value;
             var xa = document.getElementById("ward").value;
+            var ghichus = document.getElementById("ghichus").value;
+            var tienships = document.getElementById("phigiaoHang").value;
+
             // Biến để kiểm tra nếu có lỗi
             var error = false;
 
@@ -2755,7 +2888,22 @@
 
                 }
             }
+            //kiểm tra ghi chú k đc >50
+            if (ghichus.length > 50) {
+                document.getElementById('TTTK_ghichus_regex').innerHTML = 'Ghi chú không được quá 50 kí tự!';
+                error = true;
+            } else {
+                document.getElementById('TTTK_ghichus_regex').innerHTML = '';
+            }
 
+            //check phí giao=đ
+            if (tienships.trim() === "₫") {
+                // alert("Địa chỉ không được để trống");
+                document.getElementById('TTTK_phigiao_regex').innerHTML = 'Nếu miễn ship hãy nhập 0.0 ₫!';
+                error = true;
+            } else {
+                document.getElementById('TTTK_phigiao_regex').innerHTML = '';
+            }
             // Kiểm tra địa chỉ
             if (diaChi === "") {
                 // alert("Địa chỉ không được để trống");
@@ -2791,7 +2939,7 @@
 
             // Nếu có lỗi, ngăn chặn form không submit
             if (error) {
-                thongbao('Dữ liệu nhập sai!!','warning')
+                thongbao('Dữ liệu nhập sai!!', 'warning')
             }
             return !error;
         }
@@ -2833,17 +2981,107 @@
                 input.value = value.toLocaleString('vi-VN') + ' ₫';
             }
         });
+
+        function showmagiam() {
+            const urlVoucher = `http://localhost:8080/hoa-don/show-all-voucher`;
+            fetch(urlVoucher)
+                .then(function (a) {
+                    return a.json();
+                })
+                .then(function (b) {
+                    if (b === false) {
+                        document.getElementById('showvoucher').innerHTML = `<div class="tab-pane fade show active text-center fw-bold" id="tatCaHoaDon-tab-pane" role="tabpanel" aria-labelledby="tatCaHoaDon-tab" tabindex="0">
+                                            <br>
+                                            <img src="../dist/img/no_product.png" width="300px" height="300px">
+                                            <h3 class="text text-danger"><i>Không tìm thấy voucher phù hợp!! <i class="bi bi-emoji-tear"></i>!</i></h3>
+                                        </div>`;
+                    } else {
+                        if (b.length > 0) {
+                            var htmlvoucher = '';
+                            for (const hd of b) {
+                                htmlvoucher += `
+                        <div class="ma_giam_gia">
+                                <div class="ma-item-left">
+                                    <img class="anh_ma" src="../dist/img/anhgiamgia.webp">
+                                </div>
+                                <div class="ma-item-right">
+                                    <h4 style="font-size: 14px; font-weight: 700; margin: 0; padding: 0;" >${hd.loaiphieu == true ? 'Giảm ' + hd.giatrigiam + ' %' + ', tối đa ' + formatCurrency(hd.giatrigiamtoida) : 'Giảm ' + formatCurrency(hd.giatrigiam)}
+                                    </h4>
+                                    
+                                    <p style="font-size: 14px; margin: 0; padding: 0; color: black">${'Đơn hàng từ ' + formatCurrency(hd.dontoithieu) + ' trở lên'}
+                                        </p>
+                                    <div class="ma-item-des">
+                                        <div class="left_magiam">
+                                            <p style="margin: 0; white-space: nowrap;">Mã: <b
+                                                    class="code">${hd.macode}</b></p>
+                                            <p>${'HSD: ' + hd.ngayketthuc}</p>
+                                        </div>
+                                        <div class="right_magiam">
+                                        <a  onclick="apdungvoucher('http://localhost:8080/hoa-don/ap-dung-voucher/${hd.id}')"  data-bs-dismiss="modal" >
+                                            Áp dụng
+                                                          </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        `;
+                            }
+
+                            document.getElementById('showvoucher').innerHTML = htmlvoucher;
+
+
+                        } else {
+                            document.getElementById('showvoucher').innerHTML = `<div class="tab-pane fade show active text-center fw-bold" id="tatCaHoaDon-tab-pane" role="tabpanel" aria-labelledby="tatCaHoaDon-tab" tabindex="0">
+                                            <br>
+                                            <img src="../dist/img/no_product.png" width="300px" height="300px">
+                                            <h3 class="text text-danger"><i>Không tìm thấy voucher phù hợp!! <i class="bi bi-emoji-tear"></i>!</i></h3>
+                                        </div>`;
+                        }
+                    }
+
+                })
+        }
+
+        function apdungvoucher(inputs) {
+            window.location.href = inputs;
+        }
+
+        function formatCurrency(amount) {
+            return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+        }
+
     </script>
     <script th:inline="javascript">
         /*<![CDATA[*/
-        var sendmail = /*[[${sendmail}]]*/ false; 
-        var chagesTTHDSucsess = /*[[${chagesTTHDSucsess}]]*/ false; 
+        var sendmail = /*[[${sendmail}]]*/ false;
+        var chagesTTHDSucsess = /*[[${chagesTTHDSucsess}]]*/ false;
+        var addVoucherSucsess = /*[[${addVoucherSucsess}]]*/ false;
+        var addVoucherfail = /*[[${addVoucherfail}]]*/ false;
+        var updateSLSuccsess = /*[[${updateSLSuccsess}]]*/ false;
+        var autokickvoucher = /*[[${autokickvoucher}]]*/ false;
+        var addProductSuccsess = /*[[${addProductSuccsess}]]*/ false;
         /*]]>*/
         if (sendmail == true) {
             thongbao('In hóa đơn thành công!', 'success')
         }
         if (chagesTTHDSucsess == true) {
             thongbao('Thay đổi thông tin thành công!', 'success')
+        }
+        if (addVoucherSucsess == true) {
+            thongbao('Áp dụng thành công!', 'success')
+        }
+        if (addVoucherfail == true) {
+            thongbao('Đơn chưa đạt giá trị tối thiểu!', 'error')
+        }
+        if (updateSLSuccsess == true) {
+            thongbao('Cập nhật thành công!', 'success')
+        }
+        if (autokickvoucher == true) {
+            thongbao('Không thể áp dụng voucher hiện tại do chưa đạt giá trị tối thiểu!', 'error')
+        }
+        if (addProductSuccsess == true) {
+            thongbao('Thêm thành công!', 'success')
         }
     </script>
 

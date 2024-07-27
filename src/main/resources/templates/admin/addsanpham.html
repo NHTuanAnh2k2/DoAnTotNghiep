@@ -4,24 +4,53 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<!--css cho tên màu sắc trong table-->
+<style>
+    .highlight-color {
+        color: white; /* Màu chữ cho tên màu sắc */
+        padding: 2px 5px; /* Khoảng cách bên trong */
+        border-radius: 3px; /* Bo góc */
+    }
+</style>
+
 
 <!--màu cho modal-->
 <style>
     /* CSS cho các tùy chọn được chọn và khi hover */
     .select2-container--default .select2-results__option--highlighted {
-        background-color: rgb(249, 72, 42) !important;
-        color: white !important;
+        background-color: wheat !important;
+        color: black !important;
     }
 </style>
 
 <!--màu cho select2-->
 <style>
     .select2-container--default .select2-selection__choice {
-        background-color: rgb(249, 72, 42) !important;
+        background-color: white !important;
         color: white !important;
-        border-color: rgb(249, 72, 42) !important;
+        border-color: white !important;
     }
 </style>
+
+
+<!--&lt;!&ndash;màu cho modal&ndash;&gt;-->
+<!--<style>-->
+<!--    /* CSS cho các tùy chọn được chọn và khi hover */-->
+<!--    .select2-container&#45;&#45;default .select2-results__option&#45;&#45;highlighted {-->
+<!--        background-color: rgb(249, 72, 42) !important;-->
+<!--        color: white !important;-->
+<!--    }-->
+<!--</style>-->
+
+<!--&lt;!&ndash;màu cho select2&ndash;&gt;-->
+<!--<style>-->
+<!--    .select2-container&#45;&#45;default .select2-selection__choice {-->
+<!--        background-color: rgb(249, 72, 42) !important;-->
+<!--        color: white !important;-->
+<!--        border-color: rgb(249, 72, 42) !important;-->
+<!--    }-->
+<!--</style>-->
+
 
 <!--màu cho checkbox-->
 <style>
@@ -220,9 +249,8 @@
                                                 <option style="font-family: 'Bahnschrift'"></option>
                                                 <option th:each="sp : ${sp}" th:value="${sp.id}"
                                                         th:text="${sp.tensanpham}"
-                                                        th:selected="${selectedTensp}"></option>
+                                                        th:selected="${sp.id == selectedTensp}"></option>
                                             </select>
-
                                         </h5>
                                         <span class="btn"
                                               style="margin: 0 0 -20px 10px; background-color: white; color: black; border-color: black; padding: 7px 10px; cursor: pointer;"
@@ -241,19 +269,20 @@
                                         <span style="color: red">* </span>Giới tính:
                                         <br>
                                         <div class="form-check d-inline-block" style="margin-left: 20px">
-                                            <input class="form-check-input" type="radio" name="gioitinh"
+                                            <input class="form-check-input" type="radio" name="gioitinh" style="width: 15px;height: 15px"
                                                    id="gioitinhNam" value="true"
                                                    th:checked="${gioitinh == null || gioitinh}"
                                                    onchange="clearErrorMessageGioiTinh()">
-                                            <label for="gioitinhNam" style="font-size: 15px" class="form-check-label">
+                                            <label for="gioitinhNam" style="font-size: 15px; margin-left: -5px" class="form-check-label">
                                                 Nam
                                             </label>
                                         </div>
                                         <div class="form-check d-inline-block" style="margin-left: 20px;">
-                                            <input class="form-check-input" type="radio" name="gioitinh" id="gioitinhNu"
-                                                   value="false" th:checked="${gioitinh != null && !gioitinh}"
+                                            <input class="form-check-input" type="radio" name="gioitinh" style="width: 15px;height: 15px"
+                                                   id="gioitinhNu" value="false"
+                                                   th:checked="${gioitinh != null && !gioitinh}"
                                                    onchange="clearErrorMessageGioiTinh()">
-                                            <label for="gioitinhNu" style="font-size: 15px" class="form-check-label">
+                                            <label for="gioitinhNu" style="font-size: 15px;margin-left: -5px" class="form-check-label">
                                                 Nữ
                                             </label>
                                         </div>
@@ -349,11 +378,17 @@
                                     <div class="d-flex">
                                         <p style="margin-left: 20px;font-weight: bold"><span
                                                 style="color: red">* </span>Màu sắc:
-                                            <select class="select2" multiple="multiple" data-placeholder="Màu sắc"
-                                                    style="width: 500px;" name="idMauSac"
+                                            <!--                                            <select id="colorSelect" class="select2" multiple="multiple"-->
+                                            <!--                                                    data-placeholder="Màu sắc" style="width: 500px;" name="idMauSac"-->
+                                            <!--                                                    onchange="clearErrorMessageMauSac()">-->
+                                            <!--                                                <option th:each="ms : ${ms}" th:value="${ms.id}" th:text="${ms.ten}"-->
+                                            <!--                                                        th:data-color="${ms.ten}"></option>-->
+                                            <!--                                            </select>-->
+                                            <select id="colorSelect" class="select2" multiple="multiple"
+                                                    data-placeholder="Màu sắc" style="width: 500px;" name="idMauSac"
                                                     onchange="clearErrorMessageMauSac()">
                                                 <option th:each="ms : ${ms}" th:value="${ms.id}"
-                                                        th:text="${ms.ten}"></option>
+                                                        th:data-color="${ms.ten}"></option>
                                             </select>
                                         </p>
                                         <p>
@@ -585,10 +620,9 @@
                                               th:action="@{/addMauSacModal}" onsubmit="return validateTrungMauSac()">
                                             <p>
                                                 <span style="color: red">* </span>
-                                                Tên màu sắc:
-                                                <input id="tenInputMauSac" class="form-control" th:field="*{ten}"/>
-                                            <div style="color: red; font-weight: initial;font-style: italic"
-                                                 id="errorTenMauSac"></div>
+                                                Mã màu sắc:
+                                                <input type="color" id="tenInputMauSac" th:field="*{ten}"
+                                                       style="width: 100%" class="form-control"/>
                                             </p>
                                             <button id="submitButtonMauSac" class="btn"
                                                     style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
@@ -696,7 +730,7 @@
                                            class="table-bordered table-hover text-center">
                                         <thead style="background-color:rgb(249,72,42);height: 50px;color: white">
                                         <tr>
-                                            <th style="padding-left: 30px">
+                                            <th style="padding-left: 40px;padding-bottom: 25px">
                                                 <input type="checkbox" name="chontatcactsp" id="chontatcactsp"
                                                        onchange="selectAll(this)"
                                                        class="form-check-input checkbox checkbox-red">
@@ -711,7 +745,7 @@
                                         </thead>
                                         <tbody>
                                         <tr th:each="spctt, stt : ${sanphamchitiet}" class="product-row">
-                                            <td>
+                                            <td style="padding-left: 12px;padding-bottom: 25px">
                                                 <input type="checkbox" class="form-check-input checkbox checkbox-red"
                                                        th:value="${spctt.id}" onchange="toggleRowHighlight(this)"
                                                        name="chonspct">
@@ -720,10 +754,24 @@
                                                 <span style="margin-left: 7px" th:text="${stt.index + 1}"></span>
                                             </td>
                                             <td>
-                                            <span th:if="${#strings.length(spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']') > 40}"
-                                                  th:text="${#strings.substring(spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']', 0, 40)} + '...'"></span>
-                                                <span th:unless="${#strings.length(spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']') > 40}"
-                                                      th:text="${spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']' }"></span>
+                                                <!--                                            <span th:if="${#strings.length(spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']') > 40}"-->
+                                                <!--                                                  th:text="${#strings.substring(spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']', 0, 40)} + '...'"></span>-->
+                                                <!--                                                <span th:unless="${#strings.length(spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']') > 40}"-->
+                                                <!--                                                      th:text="${spctt.sanpham.tensanpham + ' [' + spctt.kichco.ten + '-' + spctt.mausac.ten + ']' }"></span>-->
+                                                <span th:if="${#strings.length(spctt.sanpham.tensanpham + spctt.kichco.ten + ' -' + spctt.mausac.ten) > 40}">
+    <span th:text="${#strings.substring(spctt.sanpham.tensanpham  + spctt.kichco.ten + ' -' + spctt.mausac.ten, 0, 40)} + '...'"></span>
+    <span th:text="${spctt.kichco.ten} + ' -'"
+          th:style="'background-color:' + ${spctt.kichco.ten} + '; color: black; padding: 2px 5px; border-radius: 3px;'"></span>
+    <span th:text="${spctt.mausac.ten}"
+          th:style="'background-color:' + ${spctt.mausac.ten} + '; color: white; padding: 2px 5px; border-radius: 3px;'"></span>
+</span>
+                                                <span th:unless="${#strings.length(spctt.sanpham.tensanpham + spctt.kichco.ten + ' -' + spctt.mausac.ten) > 40}">
+    <span th:text="${spctt.sanpham.tensanpham}"></span>
+    <span th:text="${spctt.kichco.ten} + ' -'"
+          th:style="'background-color:' + ${spctt.kichco.ten} + '; color: black; padding: 2px 5px; border-radius: 3px;'"></span>
+    <span th:text="${spctt.mausac.ten}"
+          th:style="'background-color:' + ${spctt.mausac.ten} + '; color: white; padding: 2px 5px; border-radius: 3px;'"></span>
+</span>
                                             </td>
                                             <td>
                                                 <span style="width: 70px; height: 30px; line-height: 30px;"
@@ -1108,7 +1156,6 @@
         }
     });
 </script>
-
 
 <!--dùng cho thêm size-->
 <script>
@@ -1618,25 +1665,21 @@
     }
 
     function validateTrungMauSac() {
+        // Khai báo và cấu hình Toast của SweetAlert2
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+
         var inputMaMauSac = document.getElementById("tenInputMauSac").value;
-        var errorMaMauSac = document.getElementById("errorTenMauSac");
         var isMaValid = true;
-
-        // Kiểm tra xem trường "Tên màu sắc" có trống không
-        // Kiểm tra xem trường "Tên màu sắc" có trống không
-        if (inputMaMauSac.trim() === "") {
-            errorMaMauSac.innerText = "Vui lòng nhập tên màu sắc.";
-            return false; // Ngăn form được gửi đi
-        } else if (inputMaMauSac.trim().length > 20) {
-            errorMaMauSac.innerText = "Tên màu sắc không được vượt quá 20 ký tự.";
-            return false; // Ngăn form được gửi đi
-        } else if (specialCharPatternSo.test(inputMaMauSac.trim())) {
-            errorMaMauSac.innerText = "Tên màu sắc không được chứa ký tự đặc biệt và số.";
-            return false; // Ngăn form được gửi đi
-        } else {
-            errorMaMauSac.innerText = ""; // Xóa thông báo lỗi nếu có
-        }
-
 // Kiểm tra trùng tên màu sắc (không phân biệt chữ hoa chữ thường và khoảng trắng)
         for (var i = 0; i < objectsFromControllerMauSac.length; i++) {
             var obj = objectsFromControllerMauSac[i];
@@ -1645,17 +1688,17 @@
             var normalizedObjName = obj.ten.trim().replace(/\s+/g, ' ').toLowerCase();
 
             if (normalizedInput === normalizedObjName) {
-                errorMaMauSac.innerText = "Tên màu sắc đã tồn tại!";
+                // Hiển thị thông báo toast khi mã màu đã tồn tại
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Mã màu sắc đã tồn tại'
+                });
                 return false; // Ngăn form được gửi đi
             }
         }
-
-
         if (isMaValid) {
-            errorMaMauSac.innerText = "";
             themMauSac();
         }
-
         return false;
     }
 
@@ -2169,7 +2212,7 @@
                 }
             });
             Toast.fire({
-                icon: 'error',
+                icon: 'success',
                 title: successMessage
             });
             sessionStorage.removeItem('successMessageSuaGia');
@@ -2177,36 +2220,254 @@
     });
 </script>
 
+<!--validate ảnh -->
 <script>
     function showFileInfo(event) {
-
         // Lấy thẻ <input> từ event
         var input = event.target;
 
-        // Lấy thẻ <tr> bao quanh thẻ <input>
-        var tr = input.closest('tr');
-
-        // Lấy vị trí của <tr> trong bảng
-        var table = document.getElementById('example2');
-        var rows = Array.from(table.rows);
-        var rowIndex = rows.indexOf(tr);
-
-        // Hiển thị vị trí và tên tệp
+        // Hiển thị tên tệp với màu đỏ
         if (input.files && input.files[0]) {
-            // alert(`Vị trí: ${rowIndex}, Tên tệp: ${input.files[0].name}`);
+            var fileName = input.files[0].name;
+            input.parentNode.style.color = 'red';
+        }
 
-            var list = [
-                rowIndex,
-                input.files[0].name
-            ]
-            const urlGetImage = `http://localhost:8080/timaddImage?image=${list}`;
-            fetch(urlGetImage)
-                .then(function (a) {
-                    return a.json();
-                })
-                .then(function (b) {
-                })
+        // validate ảnh
+        if (input.files && input.files[0]) {
+            var file = input.files[0];
+            var fileName = file.name;
+            var fileExtension = fileName.split('.').pop().toLowerCase();
+            var fileSizeMB = file.size / (1024 * 1024); // Kích thước tệp tính bằng MB
+
+            // Kiểm tra định dạng file
+            if (fileExtension !== 'jpg' && fileExtension !== 'png') {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Sai định dạng ảnh. Vui lòng tải ảnh định dạng jpg hoặc png.'
+                });
+                input.value = ''; // Xóa giá trị của input để không lưu ảnh sai định dạng
+                input.parentNode.style.color = ''; // Xóa màu chữ
+                return;
+            }
+
+            // Kiểm tra kích thước tệp
+            if (fileSizeMB > 1) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Kích thước ảnh không được lớn hơn 1MB.'
+                });
+                input.value = ''; // Xóa giá trị của input để không lưu ảnh quá lớn
+                input.parentNode.style.color = ''; // Xóa màu chữ
+                return;
+            }
         }
     }
 </script>
 
+<!--<script>-->
+<!--    function showFileInfo(event) {-->
+<!--        // Lấy thẻ <input> từ event-->
+<!--        var input = event.target;-->
+<!--        // Lấy thẻ <tr> bao quanh thẻ <input>-->
+<!--        var tr = input.closest('tr');-->
+<!--        // Lấy vị trí của <tr> trong bảng-->
+<!--        var table = document.getElementById('example2');-->
+<!--        var rows = Array.from(table.rows);-->
+<!--        var rowIndex = rows.indexOf(tr);-->
+<!--        // Hiển thị vị trí và tên tệp-->
+<!--        if (input.files && input.files[0]) {-->
+<!--            // alert(`Vị trí: ${rowIndex}, Tên tệp: ${input.files[0].name}`);-->
+<!--            var list = [-->
+<!--                rowIndex,-->
+<!--                input.files[0].name-->
+<!--            ]-->
+<!--            const urlGetImage = `http://localhost:8080/timaddImage?image=${list}`;-->
+<!--            fetch(urlGetImage)-->
+<!--                .then(function (a) {-->
+<!--                    return a.json();-->
+<!--                })-->
+<!--                .then(function (b) {-->
+<!--                })-->
+<!--        }-->
+
+
+<!--        // validate ảnh-->
+<!--        if (input.files && input.files[0]) {-->
+<!--            var file = input.files[0];-->
+<!--            var fileName = file.name;-->
+<!--            var fileExtension = fileName.split('.').pop().toLowerCase();-->
+<!--            var fileSizeMB = file.size / (1024 * 1024); // Kích thước tệp tính bằng MB-->
+
+<!--            // Kiểm tra định dạng file-->
+<!--            if (fileExtension !== 'jpg' && fileExtension !== 'png') {-->
+<!--                const Toast = Swal.mixin({-->
+<!--                    toast: true,-->
+<!--                    position: 'top-end',-->
+<!--                    showConfirmButton: false,-->
+<!--                    timer: 3000,-->
+<!--                    timerProgressBar: true,-->
+<!--                    didOpen: (toast) => {-->
+<!--                        toast.onmouseenter = Swal.stopTimer;-->
+<!--                        toast.onmouseleave = Swal.resumeTimer;-->
+<!--                    }-->
+<!--                });-->
+<!--                Toast.fire({-->
+<!--                    icon: 'error',-->
+<!--                    title: 'Sai định dạng ảnh. Vui lòng tải ảnh định dạng jpg hoặc png.'-->
+<!--                });-->
+<!--                input.value = ''; // Xóa giá trị của input để không lưu ảnh sai định dạng-->
+<!--                return;-->
+<!--            }-->
+
+<!--            // Kiểm tra kích thước tệp-->
+<!--            if (fileSizeMB > 1) {-->
+<!--                const Toast = Swal.mixin({-->
+<!--                    toast: true,-->
+<!--                    position: 'top-end',-->
+<!--                    showConfirmButton: false,-->
+<!--                    timer: 3000,-->
+<!--                    timerProgressBar: true,-->
+<!--                    didOpen: (toast) => {-->
+<!--                        toast.onmouseenter = Swal.stopTimer;-->
+<!--                        toast.onmouseleave = Swal.resumeTimer;-->
+<!--                    }-->
+<!--                });-->
+<!--                Toast.fire({-->
+<!--                    icon: 'error',-->
+<!--                    title: 'Kích thước ảnh không được lớn hơn 1MB.'-->
+<!--                });-->
+<!--                input.value = ''; // Xóa giá trị của input để không lưu ảnh quá lớn-->
+<!--                return;-->
+<!--            }-->
+
+<!--            var reader = new FileReader();-->
+<!--            reader.onload = function (e) {-->
+<!--                var img = new Image();-->
+<!--                img.onload = function () {-->
+<!--                    // Kiểm tra kích thước ảnh-->
+<!--                    // if (img.width < 1280 || img.height < 1280 || img.width > 1280 || img.height > 1280) {-->
+<!--                    //     const Toast = Swal.mixin({-->
+<!--                    //         toast: true,-->
+<!--                    //         position: 'top-end',-->
+<!--                    //         showConfirmButton: false,-->
+<!--                    //         timer: 3000,-->
+<!--                    //         timerProgressBar: true,-->
+<!--                    //         didOpen: (toast) => {-->
+<!--                    //             toast.onmouseenter = Swal.stopTimer;-->
+<!--                    //             toast.onmouseleave = Swal.resumeTimer;-->
+<!--                    //         }-->
+<!--                    //     });-->
+<!--                    //     Toast.fire({-->
+<!--                    //         icon: 'error',-->
+<!--                    //         title: 'Kích thước ảnh phải là 1280x1280 pixels.'-->
+<!--                    //     });-->
+<!--                    //     input.value = ''; // Xóa giá trị của input để không lưu ảnh sai kích thước-->
+<!--                    //     return;-->
+<!--                    // }-->
+<!--                };-->
+<!--                img.src = e.target.result;-->
+<!--            };-->
+<!--            reader.readAsDataURL(file);-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
+
+<!--hiển thị background theo giá trị màu sắc-->
+<script>
+    $(function () {
+        // Initialize Select2 Elements
+        $('.select2').select2();
+
+        // Cập nhật màu sắc cho các tùy chọn
+        $('.select2').on('select2:open', function () {
+            // Duyệt qua tất cả các tùy chọn trong select2
+            $('#colorSelect .select2-results__option').each(function () {
+                // Lấy mã màu từ thuộc tính data-color
+                var color = $(this).data('color');
+                // Áp dụng màu nền và màu biên
+                $(this).css({
+                    'background-color': color,
+                    'color': 'white'
+                });
+            });
+        });
+
+        // Đảm bảo rằng các tùy chọn được hiển thị đúng màu ngay cả khi trang được tải lại
+        $('#colorSelect').select2({
+            templateResult: formatState,
+            templateSelection: formatState
+        });
+
+        function formatState(state) {
+            if (!state.id) {
+                return state.text;
+            }
+            var color = $(state.element).data('color');
+            var $state = $(
+                '<span style="background-color:' + color + '; display: inline-block; width: 50px;margin-top: 5px; height: 20px; border-radius: 3px;"></span>' +
+                '<span>' + state.text + '</span>'
+            );
+            return $state;
+        }
+    });
+</script>
+
+<!--<script>-->
+<!--    $(function () {-->
+<!--        // Initialize Select2 Elements-->
+<!--        $('.select2').select2();-->
+
+<!--        // Cập nhật màu sắc cho các tùy chọn-->
+<!--        $('.select2').on('select2:open', function () {-->
+<!--            // Duyệt qua tất cả các tùy chọn trong select2-->
+<!--            $('#colorSelect .select2-results__option').each(function () {-->
+<!--                // Lấy mã màu từ thuộc tính data-color-->
+<!--                var color = $(this).data('color');-->
+<!--                // Áp dụng màu nền và màu biên-->
+<!--                $(this).css({-->
+<!--                    'background-color': color,-->
+<!--                    'color': 'white'-->
+<!--                });-->
+<!--            });-->
+<!--        });-->
+
+<!--        // Đảm bảo rằng các tùy chọn được hiển thị đúng màu ngay cả khi trang được tải lại-->
+<!--        $('#colorSelect').select2({-->
+<!--            templateResult: formatState,-->
+<!--            templateSelection: formatState-->
+<!--        });-->
+
+<!--        function formatState(state) {-->
+<!--            if (!state.id) {-->
+<!--                return state.text;-->
+<!--            }-->
+<!--            var color = $(state.element).data('color');-->
+<!--            var $state = $(-->
+<!--                '<span style="background-color:' + color + '; color: white;">' + state.text + '</span>'-->
+<!--            );-->
+<!--            return $state;-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->

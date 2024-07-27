@@ -14,8 +14,8 @@ import java.util.List;
 
 @Repository
 public interface GioHangChiTietRepository extends JpaRepository<GioHangChiTiet, Integer> {
-
-    GioHangChiTiet findByGiohangAndSanphamchitiet(GioHang gioHang, SanPhamChiTiet sanPhamChiTiet);
+    @Query("SELECT g FROM GioHangChiTiet g WHERE g.giohang.id =?1 and g.sanphamchitiet.id =?2")
+    GioHangChiTiet findByGiohangIdAndSanphamchitietId(Integer gioHangId, Integer spctId);
 
     @Transactional
     @Modifying

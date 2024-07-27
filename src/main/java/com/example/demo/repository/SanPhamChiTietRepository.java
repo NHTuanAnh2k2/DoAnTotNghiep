@@ -15,6 +15,30 @@ import java.util.List;
 
 @Repository
 public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, Integer> {
+
+    // search theo biến thể sản phẩm
+    @Query("SELECT spct FROM SanPhamChiTiet spct WHERE spct.sanpham = :sanPham " +
+            "AND (:key IS NULL OR spct.sanpham.tensanpham LIKE :key OR spct.masanphamchitiet LIKE :key) " +
+            "AND (:idThuongHieu IS NULL OR spct.thuonghieu.id = :idThuongHieu) " +
+            "AND (:idDeGiay IS NULL OR spct.degiay.id = :idDeGiay) " +
+            "AND (:idKichCo IS NULL OR spct.kichco.id = :idKichCo) " +
+            "AND (:idMauSac IS NULL OR spct.mausac.id = :idMauSac) " +
+            "AND (:idChatLieu IS NULL OR spct.chatlieu.id = :idChatLieu) " +
+            "AND (:gioiTinh IS NULL OR spct.gioitinh = :gioiTinh) " +
+            "AND (:trangThai IS NULL OR spct.sanpham.trangthai = :trangThai)")
+    List<SanPhamChiTiet> searchBySanPham(
+            @Param("sanPham") SanPham sanPham,
+            @Param("key") String key,
+            @Param("idThuongHieu") Integer idThuongHieu,
+            @Param("idDeGiay") Integer idDeGiay,
+            @Param("idKichCo") Integer idKichCo,
+            @Param("idMauSac") Integer idMauSac,
+            @Param("idChatLieu") Integer idChatLieu,
+            @Param("gioiTinh") Boolean gioiTinh,
+            @Param("trangThai") Boolean trangThai
+    );
+
+
     //bên a tùng
     @Query(value = """
 

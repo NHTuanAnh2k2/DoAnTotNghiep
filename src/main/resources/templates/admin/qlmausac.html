@@ -161,13 +161,10 @@
                                                   th:action="@{/addSaveMauSac}" onsubmit="return validateTrung()">
                                                 <p>
                                                     <span style="color: red">* </span>
-                                                    Tên màu sắc:
-                                                    <input id="tenInput" class="form-control" th:field="*{ten}"/>
-                                                <div style="color: red; font-weight: initial;font-style: italic"
-                                                     id="errorTen"></div>
+                                                    Mã màu sắc:
+                                                    <input type="color" id="colorInput" th:field="*{ten}" style="width:100%;" class="form-control">
                                                 </p>
-                                                <button id="submitButton" class="btn"
-                                                        style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
+                                                <button id="submitButton" class="btn" style="margin-left: 400px; background-color: rgb(249,72,42); color: white">
                                                     Thêm
                                                 </button>
                                             </form>
@@ -182,7 +179,7 @@
                                     <thead style="background-color:rgb(249,72,42);height: 50px;color: white">
                                     <tr>
                                         <th>STT</th>
-                                        <th>Tên màu sắc</th>
+                                        <th>Màu sắc</th>
                                         <th>Ngày tạo</th>
                                         <th>Trạng thái</th>
                                         <th>Thao tác</th>
@@ -192,10 +189,12 @@
                                     <tr th:each="ms,stt:${list}">
                                         <td th:text="${stt.index+1}"></td>
                                         <td>
-                                            <span th:if="${#strings.length(ms.ten) > 20}"
-                                                  th:text="${#strings.substring(ms.ten, 0, 20)} + '...'"></span>
-                                            <span th:unless="${#strings.length(ms.ten) > 20}"
-                                                  th:text="${ms.ten}"></span>
+<!--                                            <span th:if="${#strings.length(ms.ten) > 20}"-->
+<!--                                                  th:text="${#strings.substring(ms.ten, 0, 20)} + '...'"></span>-->
+<!--                                            <span th:unless="${#strings.length(ms.ten) > 20}"-->
+<!--                                                  th:text="${ms.ten}"></span>-->
+                                            <input type="color" th:value="${ms.ten}" class="form-control" disabled>
+                                            <p th:text="${ms.ten}" style="color: red">
                                         </td>
 
                                         <td th:text="${#temporals.format(ms.ngaytao, 'dd-MM-yyyy HH:mm:ss')}"></td>
@@ -203,9 +202,13 @@
                                             <form name="updateTrangThaiForm"
                                                   th:action="@{/mausac/updateTrangThai/{id}(id=${ms.id})}" method="post"
                                                   onsubmit="return confirmUpdateMauSac(this);">
-                                                <button type="submit"
-                                                        style="width: 170px; background: none; border: none;"
-                                                        th:classappend="${ms.trangthai == true ? 'btn-outline-success' : 'btn-outline-danger'}">
+<!--                                                <button type="submit"-->
+<!--                                                        style="width: 170px; background: none; border: none;"-->
+<!--                                                        th:classappend="${ms.trangthai == true ? 'btn-outline-success' : 'btn-outline-danger'}">-->
+<!--                                                    <span th:text="${ms.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></span>-->
+<!--                                                </button>-->
+                                                <button type="submit" style=" border: none;"
+                                                        th:classappend="${ms.trangthai == true ? 'badge badge-success' : 'badge badge-danger'}">
                                                     <span th:text="${ms.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></span>
                                                 </button>
                                             </form>
@@ -241,13 +244,8 @@
                                                 <input type="hidden" id="mauSacId">
                                                 <div class="mb-3">
                                                     <span style="color: red">* </span>
-                                                    <label for="tenMauSac" class="form-label">Tên màu sắc:</label>
-                                                    <input type="text" class="form-control" id="tenMauSac">
-                                                    <div id="error-message" class="text-danger" style="display: none;">
-                                                    </div>
-                                                    <div id="length-error-message" class="text-danger"
-                                                         style="display: none;">
-                                                    </div>
+                                                    <label for="tenMauSac" class="form-label">Mã màu sắc:</label>
+                                                    <input type="color" class="form-control" id="tenMauSac">
                                                     <div id="duplicate-error-message" class="text-danger"
                                                          style="display: none;">
                                                     </div>
@@ -294,50 +292,46 @@
 </script>
 
 <script th:inline="javascript">
-
     /*<![CDATA[*/
     var objectsFromController = /*[[${list}]]*/ [];
 
-    const specialCharPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
-    const specialCharPatternSo = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?0-9]/;
+    // Khai báo và cấu hình Toast của SweetAlert2
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
 
+    // Hàm kiểm tra trùng mã màu sắc
     function validateTrung() {
-        var inputMa = document.getElementById("tenInput").value;
-        var errorMa = document.getElementById("errorTen");
+        var inputMa = document.getElementById("colorInput").value;
         var isMaValid = true;
 
-        // Kiểm tra xem trường "Tên màu sắc" có trống không và không vượt quá 20 ký tự
-        if (inputMa.trim() === "") {
-            errorMa.innerText = "Vui lòng nhập tên màu sắc.";
-            return false; // Ngăn form được gửi đi
-        } else if (inputMa.trim().length > 20) {
-            errorMa.innerText = "Tên màu sắc không được vượt quá 20 ký tự.";
-            return false; // Ngăn form được gửi đi
-        } else if (specialCharPatternSo.test(inputMa.trim())) {
-            errorMa.innerText = "Tên màu sắc không được chứa ký tự đặc biệt và số.";
-            return false; // Ngăn form được gửi đi
-        } else {
-            errorMa.innerText = ""; // Xóa thông báo lỗi nếu có
-        }
-
-        // Kiểm tra trùng tên màu sắc (không phân biệt chữ hoa chữ thường và khoảng trắng)
+        // Kiểm tra trùng tên màu sắc
         for (var i = 0; i < objectsFromController.length; i++) {
             var obj = objectsFromController[i];
-            // Loại bỏ khoảng trắng và chuyển đổi về chữ thường để so sánh
             var normalizedInput = inputMa.trim().replace(/\s+/g, ' ').toLowerCase();
             var normalizedObjName = obj.ten.trim().replace(/\s+/g, ' ').toLowerCase();
 
             if (normalizedInput === normalizedObjName) {
-                errorMa.innerText = "Tên màu sắc đã tồn tại!";
+                // Hiển thị thông báo toast khi mã màu đã tồn tại
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Mã màu sắc đã tồn tại'
+                });
                 return false; // Ngăn form được gửi đi
             }
         }
 
         if (isMaValid) {
-            errorMa.innerText = "";
-            them();
+            them(); // Gọi hàm thêm nếu dữ liệu hợp lệ
         }
-
         return false;
     }
 
@@ -364,22 +358,15 @@
                         toast.onmouseleave = Swal.resumeTimer;
                     }
                 });
-
-                Toast.fire({
-                    icon: "success",
-                    title: "Thêm thành công!"
-                });
-
                 setTimeout(function () {
+                    sessionStorage.setItem('successMessage', 'Thêm thành công!');
                     document.addMauSac.submit();
-                }, 3000);
+                });
             }
         });
-
         // Ngăn form được gửi đi ngay lập tức
         return false;
     }
-
     /*]]>*/
 </script>
 </body>
@@ -427,7 +414,6 @@
     function checkChanges() {
         const currentName = document.getElementById('tenMauSac').value.trim();
         const updateButton = document.getElementById('updateButton');
-
         // So sánh tên hiện tại với tên ban đầu
         if (currentName === originalName) {
             updateButton.disabled = true; // Vô hiệu hóa nút nếu không thay đổi
@@ -442,48 +428,38 @@
 
     // Thêm hàm cập nhật
     function updateShoeSoleNameMauSac() {
+        // Khai báo và cấu hình Toast của SweetAlert2
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+
         const id = document.getElementById('mauSacId').value;
         let ten = document.getElementById('tenMauSac').value;
-
         // Loại bỏ khoảng trắng ở đầu và cuối và chỉ giữ lại một khoảng trắng giữa các từ
         ten = ten.trim().replace(/\s+/g, ' ');
-
-        const errorMessage = document.getElementById('error-message');
-        const lengthErrorMessage = document.getElementById('length-error-message');
         const duplicateErrorMessage = document.getElementById('duplicate-error-message');
-        const specialCharPatternSo = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?0-9]/;
         // Reset thông báo lỗi
-        errorMessage.style.display = 'none';
-        lengthErrorMessage.style.display = 'none';
         duplicateErrorMessage.style.display = 'none';
-
-        // Kiểm tra tính hợp lệ
-        if (!ten) {
-            errorMessage.style.display = 'block';
-            errorMessage.innerText = "Tên màu sắc không được để trống";
-            return;
-        }
-
-        if (ten.length > 20) {
-            lengthErrorMessage.style.display = 'block';
-            lengthErrorMessage.innerText = 'Tên màu sắc không được vượt quá 20 ký tự.';
-            return;
-        } else if (specialCharPatternSo.test(ten)) {
-            lengthErrorMessage.style.display = 'block';
-            lengthErrorMessage.innerText = 'Tên màu sắc không được chứa ký tự đặc biệt và số.';
-            return;
-        }
-
         // Kiểm tra tên trùng
         fetch(`/checkTenMauSac?ten=${encodeURIComponent(ten)}`)
             .then(response => response.json())
             .then(exists => {
                 if (exists) {
-                    duplicateErrorMessage.style.display = 'block';
-                    duplicateErrorMessage.innerText='Tên màu sắc không được trùng!';
+                    // Hiển thị thông báo toast khi mã màu sắc bị trùng
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Mã màu sắc không được trùng'
+                    });
                     return;
                 }
-
                 // Hiển thị xác nhận trước khi cập nhật
                 Swal.fire({
                     title: 'Bạn có muốn cập nhật không?',
@@ -494,7 +470,6 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         const updatedDeGiay = {ten};
-
                         fetch(`/updateMauSac/${id}`, {
                             method: 'PUT',
                             headers: {
@@ -524,8 +499,6 @@
                 alert('Có lỗi xảy ra: ' + error.message);
             });
     }
-
-
 </script>
 <!--message1-->
 <script>

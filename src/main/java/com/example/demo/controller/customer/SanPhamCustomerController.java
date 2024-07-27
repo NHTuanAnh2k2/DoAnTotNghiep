@@ -24,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -102,13 +103,9 @@ public class SanPhamCustomerController {
         NguoiDung nguoiDung = null;
         KhachHang khachHang = null;
         GioHang gioHang = null;
-
-        // Kiểm tra xem người dùng đã đăng nhập hay chưa
         if (token != null) {
-            // Lấy danh sách token từ session
             List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
             if (taiKhoanTokenInfos != null) {
-                // Tìm người dùng từ danh sách token
                 for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
                     if (tkInfo.getToken().equals(token)) {
                         Integer userId = tkInfo.getId();
@@ -117,7 +114,6 @@ public class SanPhamCustomerController {
                     }
                 }
                 if (nguoiDung != null) {
-                    // Lấy giỏ hàng của người dùng đã đăng nhập
                     khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
                     if (khachHang != null) {
                         gioHang = gioHangRepository.findByKhachhang(khachHang);
@@ -128,26 +124,16 @@ public class SanPhamCustomerController {
                 }
             }
         } else {
-            // Giỏ hàng của người dùng chưa đăng nhập
             cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
             if (cartItems == null) {
                 cartItems = new ArrayList<>();
             }
         }
-        // Tính tổng số lượng sản phẩm và tổng tiền
         int totalQuantity = 0;
-        BigDecimal totalAmount = BigDecimal.ZERO;
         for (GioHangChiTiet item : cartItems) {
             totalQuantity += item.getSoluong();
-            BigDecimal giatien = sanPhamChiTietRepository.findPriceByProductId(item.getSanphamchitiet().getId());
-            totalAmount = totalAmount.add(giatien.multiply(BigDecimal.valueOf(item.getSoluong())));
         }
-        // Thêm các thông tin vào model
-        model.addAttribute("token", token);
-        model.addAttribute("totalAmount", totalAmount);
         model.addAttribute("totalQuantity", totalQuantity);
-        model.addAttribute("cartItems", cartItems);
-
 
 //        Pageable pageable = PageRequest.of(p, 10);
         List<SanPham> listSanPham = sanPhamImp.findAll();
@@ -176,7 +162,6 @@ public class SanPhamCustomerController {
         model.addAttribute("page", page1);
         List<Object[]> page2 = trangChuRepository.topspmoinhatdetail();
         model.addAttribute("page2", page2);
-        // Đoạn code để lấy và truyền dữ liệu từ query sang view
         List<Object[]> soLuongThuongHieuList = sanPhamChiTietRepository.findSoLuongThuongHieuGrouped();
         model.addAttribute("soLuongThuongHieuList", soLuongThuongHieuList);
         List<Object[]> soLuongKichCoList = sanPhamChiTietRepository.findSoLuongKichCoGrouped();
@@ -186,19 +171,14 @@ public class SanPhamCustomerController {
 
     @GetMapping("/customer/sanphamnam")
     public String sanphamnam(Model model, @ModelAttribute("loctheothkc") SanPhamCustomerInfo info, @RequestParam(defaultValue = "0") int p) {
-
         List<GioHangChiTiet> cartItems = new ArrayList<>();
         String token = (String) session.getAttribute("token");
         NguoiDung nguoiDung = null;
         KhachHang khachHang = null;
         GioHang gioHang = null;
-
-        // Kiểm tra xem người dùng đã đăng nhập hay chưa
         if (token != null) {
-            // Lấy danh sách token từ session
             List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
             if (taiKhoanTokenInfos != null) {
-                // Tìm người dùng từ danh sách token
                 for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
                     if (tkInfo.getToken().equals(token)) {
                         Integer userId = tkInfo.getId();
@@ -207,7 +187,6 @@ public class SanPhamCustomerController {
                     }
                 }
                 if (nguoiDung != null) {
-                    // Lấy giỏ hàng của người dùng đã đăng nhập
                     khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
                     if (khachHang != null) {
                         gioHang = gioHangRepository.findByKhachhang(khachHang);
@@ -218,25 +197,16 @@ public class SanPhamCustomerController {
                 }
             }
         } else {
-            // Giỏ hàng của người dùng chưa đăng nhập
             cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
             if (cartItems == null) {
                 cartItems = new ArrayList<>();
             }
         }
-        // Tính tổng số lượng sản phẩm và tổng tiền
         int totalQuantity = 0;
-        BigDecimal totalAmount = BigDecimal.ZERO;
         for (GioHangChiTiet item : cartItems) {
             totalQuantity += item.getSoluong();
-            BigDecimal giatien = sanPhamChiTietRepository.findPriceByProductId(item.getSanphamchitiet().getId());
-            totalAmount = totalAmount.add(giatien.multiply(BigDecimal.valueOf(item.getSoluong())));
         }
-        // Thêm các thông tin vào model
-        model.addAttribute("token", token);
-        model.addAttribute("totalAmount", totalAmount);
         model.addAttribute("totalQuantity", totalQuantity);
-        model.addAttribute("cartItems", cartItems);
 
         Pageable pageable = PageRequest.of(p, 8);
         List<SanPham> listSanPham = sanPhamImp.findAll();
@@ -308,7 +278,6 @@ public class SanPhamCustomerController {
         model.addAttribute("page", page1);
         List<Object[]> page2 = trangChuRepository.topspmoinhatdetail();
         model.addAttribute("page2", page2);
-        // Đoạn code để lấy và truyền dữ liệu từ query sang view
         List<Object[]> soLuongThuongHieuList = sanPhamChiTietRepository.findSoLuongThuongHieuGrouped();
         model.addAttribute("soLuongThuongHieuList", soLuongThuongHieuList);
         List<Object[]> soLuongKichCoList = sanPhamChiTietRepository.findSoLuongKichCoGrouped();
@@ -331,13 +300,9 @@ public class SanPhamCustomerController {
         NguoiDung nguoiDung = null;
         KhachHang khachHang = null;
         GioHang gioHang = null;
-
-        // Kiểm tra xem người dùng đã đăng nhập hay chưa
         if (token != null) {
-            // Lấy danh sách token từ session
             List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
             if (taiKhoanTokenInfos != null) {
-                // Tìm người dùng từ danh sách token
                 for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
                     if (tkInfo.getToken().equals(token)) {
                         Integer userId = tkInfo.getId();
@@ -346,7 +311,6 @@ public class SanPhamCustomerController {
                     }
                 }
                 if (nguoiDung != null) {
-                    // Lấy giỏ hàng của người dùng đã đăng nhập
                     khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
                     if (khachHang != null) {
                         gioHang = gioHangRepository.findByKhachhang(khachHang);
@@ -357,25 +321,17 @@ public class SanPhamCustomerController {
                 }
             }
         } else {
-            // Giỏ hàng của người dùng chưa đăng nhập
             cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
             if (cartItems == null) {
                 cartItems = new ArrayList<>();
             }
         }
-        // Tính tổng số lượng sản phẩm và tổng tiền
         int totalQuantity = 0;
-        BigDecimal totalAmount = BigDecimal.ZERO;
         for (GioHangChiTiet item : cartItems) {
             totalQuantity += item.getSoluong();
-            BigDecimal giatien = sanPhamChiTietRepository.findPriceByProductId(item.getSanphamchitiet().getId());
-            totalAmount = totalAmount.add(giatien.multiply(BigDecimal.valueOf(item.getSoluong())));
         }
-        // Thêm các thông tin vào model
-        model.addAttribute("token", token);
-        model.addAttribute("totalAmount", totalAmount);
         model.addAttribute("totalQuantity", totalQuantity);
-        model.addAttribute("cartItems", cartItems);
+
 //        Pageable pageable = PageRequest.of(p, 10);
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
@@ -420,7 +376,6 @@ public class SanPhamCustomerController {
         model.addAttribute("page", page1);
         List<Object[]> page2 = trangChuRepository.topspmoinhatdetail();
         model.addAttribute("page2", page2);
-        // Đoạn code để lấy và truyền dữ liệu từ query sang view
         List<Object[]> soLuongThuongHieuList = sanPhamChiTietRepository.findSoLuongThuongHieuGrouped();
         model.addAttribute("soLuongThuongHieuList", soLuongThuongHieuList);
         List<Object[]> soLuongKichCoList = sanPhamChiTietRepository.findSoLuongKichCoGrouped();
@@ -438,13 +393,9 @@ public class SanPhamCustomerController {
         NguoiDung nguoiDung = null;
         KhachHang khachHang = null;
         GioHang gioHang = null;
-
-        // Kiểm tra xem người dùng đã đăng nhập hay chưa
         if (token != null) {
-            // Lấy danh sách token từ session
             List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
             if (taiKhoanTokenInfos != null) {
-                // Tìm người dùng từ danh sách token
                 for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
                     if (tkInfo.getToken().equals(token)) {
                         Integer userId = tkInfo.getId();
@@ -453,7 +404,6 @@ public class SanPhamCustomerController {
                     }
                 }
                 if (nguoiDung != null) {
-                    // Lấy giỏ hàng của người dùng đã đăng nhập
                     khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
                     if (khachHang != null) {
                         gioHang = gioHangRepository.findByKhachhang(khachHang);
@@ -464,25 +414,17 @@ public class SanPhamCustomerController {
                 }
             }
         } else {
-            // Giỏ hàng của người dùng chưa đăng nhập
             cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
             if (cartItems == null) {
                 cartItems = new ArrayList<>();
             }
         }
-        // Tính tổng số lượng sản phẩm và tổng tiền
         int totalQuantity = 0;
-        BigDecimal totalAmount = BigDecimal.ZERO;
         for (GioHangChiTiet item : cartItems) {
             totalQuantity += item.getSoluong();
-            BigDecimal giatien = sanPhamChiTietRepository.findPriceByProductId(item.getSanphamchitiet().getId());
-            totalAmount = totalAmount.add(giatien.multiply(BigDecimal.valueOf(item.getSoluong())));
         }
-        // Thêm các thông tin vào model
-        model.addAttribute("token", token);
-        model.addAttribute("totalAmount", totalAmount);
         model.addAttribute("totalQuantity", totalQuantity);
-        model.addAttribute("cartItems", cartItems);
+
 //        Pageable pageable = PageRequest.of(p, 10);
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
@@ -527,7 +469,6 @@ public class SanPhamCustomerController {
         model.addAttribute("page", page1);
         List<Object[]> page2 = trangChuRepository.topspmoinhatdetail();
         model.addAttribute("page2", page2);
-        // Đoạn code để lấy và truyền dữ liệu từ query sang view
         List<Object[]> soLuongThuongHieuList = sanPhamChiTietRepository.findSoLuongThuongHieuGrouped();
         model.addAttribute("soLuongThuongHieuList", soLuongThuongHieuList);
         List<Object[]> soLuongKichCoList = sanPhamChiTietRepository.findSoLuongKichCoGrouped();
@@ -537,19 +478,14 @@ public class SanPhamCustomerController {
 
     @GetMapping("/customer/sanphamnu")
     public String sanphamnu(Model model, @ModelAttribute("loctheothkc") SanPhamCustomerInfo info, @RequestParam(defaultValue = "0") int p) {
-
         List<GioHangChiTiet> cartItems = new ArrayList<>();
         String token = (String) session.getAttribute("token");
         NguoiDung nguoiDung = null;
         KhachHang khachHang = null;
         GioHang gioHang = null;
-
-        // Kiểm tra xem người dùng đã đăng nhập hay chưa
         if (token != null) {
-            // Lấy danh sách token từ session
             List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
             if (taiKhoanTokenInfos != null) {
-                // Tìm người dùng từ danh sách token
                 for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
                     if (tkInfo.getToken().equals(token)) {
                         Integer userId = tkInfo.getId();
@@ -558,7 +494,6 @@ public class SanPhamCustomerController {
                     }
                 }
                 if (nguoiDung != null) {
-                    // Lấy giỏ hàng của người dùng đã đăng nhập
                     khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
                     if (khachHang != null) {
                         gioHang = gioHangRepository.findByKhachhang(khachHang);
@@ -569,25 +504,17 @@ public class SanPhamCustomerController {
                 }
             }
         } else {
-            // Giỏ hàng của người dùng chưa đăng nhập
             cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
             if (cartItems == null) {
                 cartItems = new ArrayList<>();
             }
         }
-        // Tính tổng số lượng sản phẩm và tổng tiền
         int totalQuantity = 0;
-        BigDecimal totalAmount = BigDecimal.ZERO;
         for (GioHangChiTiet item : cartItems) {
             totalQuantity += item.getSoluong();
-            BigDecimal giatien = sanPhamChiTietRepository.findPriceByProductId(item.getSanphamchitiet().getId());
-            totalAmount = totalAmount.add(giatien.multiply(BigDecimal.valueOf(item.getSoluong())));
         }
-        // Thêm các thông tin vào model
-        model.addAttribute("token", token);
-        model.addAttribute("totalAmount", totalAmount);
         model.addAttribute("totalQuantity", totalQuantity);
-        model.addAttribute("cartItems", cartItems);
+
 //        Pageable pageable = PageRequest.of(p, 8);
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
@@ -658,7 +585,6 @@ public class SanPhamCustomerController {
         model.addAttribute("page", page1);
         List<Object[]> page2 = trangChuRepository.topspmoinhatdetail();
         model.addAttribute("page2", page2);
-        // Đoạn code để lấy và truyền dữ liệu từ query sang view
         List<Object[]> soLuongThuongHieuList = sanPhamChiTietRepository.findSoLuongThuongHieuGroupedNu();
         model.addAttribute("soLuongThuongHieuList", soLuongThuongHieuList);
         List<Object[]> soLuongKichCoList = sanPhamChiTietRepository.findSoLuongKichCoGroupedNu();
@@ -678,13 +604,9 @@ public class SanPhamCustomerController {
         NguoiDung nguoiDung = null;
         KhachHang khachHang = null;
         GioHang gioHang = null;
-
-        // Kiểm tra xem người dùng đã đăng nhập hay chưa
         if (token != null) {
-            // Lấy danh sách token từ session
             List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
             if (taiKhoanTokenInfos != null) {
-                // Tìm người dùng từ danh sách token
                 for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
                     if (tkInfo.getToken().equals(token)) {
                         Integer userId = tkInfo.getId();
@@ -693,7 +615,6 @@ public class SanPhamCustomerController {
                     }
                 }
                 if (nguoiDung != null) {
-                    // Lấy giỏ hàng của người dùng đã đăng nhập
                     khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
                     if (khachHang != null) {
                         gioHang = gioHangRepository.findByKhachhang(khachHang);
@@ -704,26 +625,17 @@ public class SanPhamCustomerController {
                 }
             }
         } else {
-            // Giỏ hàng của người dùng chưa đăng nhập
             cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
             if (cartItems == null) {
                 cartItems = new ArrayList<>();
             }
         }
-        // Tính tổng số lượng sản phẩm và tổng tiền
         int totalQuantity = 0;
-        BigDecimal totalAmount = BigDecimal.ZERO;
         for (GioHangChiTiet item : cartItems) {
             totalQuantity += item.getSoluong();
-            BigDecimal giatien = sanPhamChiTietRepository.findPriceByProductId(item.getSanphamchitiet().getId());
-            totalAmount = totalAmount.add(giatien.multiply(BigDecimal.valueOf(item.getSoluong())));
         }
-        // Thêm các thông tin vào model
-        model.addAttribute("token", token);
-        model.addAttribute("totalAmount", totalAmount);
         model.addAttribute("totalQuantity", totalQuantity);
-        model.addAttribute("cartItems", cartItems);
-//        Pageable pageable = PageRequest.of(p, 10);
+
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
         List<MauSac> listMauSac = mauSacImp.findAll();
@@ -768,7 +680,6 @@ public class SanPhamCustomerController {
         model.addAttribute("page", page1);
         List<Object[]> page2 = trangChuRepository.topspmoinhatdetail();
         model.addAttribute("page2", page2);
-        // Đoạn code để lấy và truyền dữ liệu từ query sang view
         List<Object[]> soLuongThuongHieuList = sanPhamChiTietRepository.findSoLuongThuongHieuGroupedNu();
         model.addAttribute("soLuongThuongHieuList", soLuongThuongHieuList);
         List<Object[]> soLuongKichCoList = sanPhamChiTietRepository.findSoLuongKichCoGroupedNu();
@@ -787,13 +698,9 @@ public class SanPhamCustomerController {
         NguoiDung nguoiDung = null;
         KhachHang khachHang = null;
         GioHang gioHang = null;
-
-        // Kiểm tra xem người dùng đã đăng nhập hay chưa
         if (token != null) {
-            // Lấy danh sách token từ session
             List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
             if (taiKhoanTokenInfos != null) {
-                // Tìm người dùng từ danh sách token
                 for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
                     if (tkInfo.getToken().equals(token)) {
                         Integer userId = tkInfo.getId();
@@ -802,7 +709,6 @@ public class SanPhamCustomerController {
                     }
                 }
                 if (nguoiDung != null) {
-                    // Lấy giỏ hàng của người dùng đã đăng nhập
                     khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
                     if (khachHang != null) {
                         gioHang = gioHangRepository.findByKhachhang(khachHang);
@@ -813,25 +719,17 @@ public class SanPhamCustomerController {
                 }
             }
         } else {
-            // Giỏ hàng của người dùng chưa đăng nhập
             cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
             if (cartItems == null) {
                 cartItems = new ArrayList<>();
             }
         }
-        // Tính tổng số lượng sản phẩm và tổng tiền
         int totalQuantity = 0;
-        BigDecimal totalAmount = BigDecimal.ZERO;
         for (GioHangChiTiet item : cartItems) {
             totalQuantity += item.getSoluong();
-            BigDecimal giatien = sanPhamChiTietRepository.findPriceByProductId(item.getSanphamchitiet().getId());
-            totalAmount = totalAmount.add(giatien.multiply(BigDecimal.valueOf(item.getSoluong())));
         }
-        // Thêm các thông tin vào model
-        model.addAttribute("token", token);
-        model.addAttribute("totalAmount", totalAmount);
         model.addAttribute("totalQuantity", totalQuantity);
-        model.addAttribute("cartItems", cartItems);
+
 //        Pageable pageable = PageRequest.of(p, 10);
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
@@ -877,14 +775,13 @@ public class SanPhamCustomerController {
         model.addAttribute("page", page1);
         List<Object[]> page2 = trangChuRepository.topspmoinhatdetail();
         model.addAttribute("page2", page2);
-        // Đoạn code để lấy và truyền dữ liệu từ query sang view
         List<Object[]> soLuongThuongHieuList = sanPhamChiTietRepository.findSoLuongThuongHieuGroupedNu();
         model.addAttribute("soLuongThuongHieuList", soLuongThuongHieuList);
         List<Object[]> soLuongKichCoList = sanPhamChiTietRepository.findSoLuongKichCoGroupedNu();
         model.addAttribute("soLuongKichCoList", soLuongKichCoList);
         return "customer/sanphamnu";
     }
-//
+
     @GetMapping("/customer/searchMaAnhTen/spnu")
     public String searchspnu(Model model, @ModelAttribute("searchspnu") SanPhamCustomerInfo info,
                              @ModelAttribute("search2") SanPhamCustomerInfo info2,
@@ -895,13 +792,9 @@ public class SanPhamCustomerController {
         NguoiDung nguoiDung = null;
         KhachHang khachHang = null;
         GioHang gioHang = null;
-
-        // Kiểm tra xem người dùng đã đăng nhập hay chưa
         if (token != null) {
-            // Lấy danh sách token từ session
             List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
             if (taiKhoanTokenInfos != null) {
-                // Tìm người dùng từ danh sách token
                 for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
                     if (tkInfo.getToken().equals(token)) {
                         Integer userId = tkInfo.getId();
@@ -910,7 +803,6 @@ public class SanPhamCustomerController {
                     }
                 }
                 if (nguoiDung != null) {
-                    // Lấy giỏ hàng của người dùng đã đăng nhập
                     khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
                     if (khachHang != null) {
                         gioHang = gioHangRepository.findByKhachhang(khachHang);
@@ -921,32 +813,17 @@ public class SanPhamCustomerController {
                 }
             }
         } else {
-            // Giỏ hàng của người dùng chưa đăng nhập
             cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
             if (cartItems == null) {
                 cartItems = new ArrayList<>();
             }
         }
-        // Tính tổng số lượng sản phẩm và tổng tiền
         int totalQuantity = 0;
-        BigDecimal totalAmount = BigDecimal.ZERO;
         for (GioHangChiTiet item : cartItems) {
             totalQuantity += item.getSoluong();
-            BigDecimal giatien = sanPhamChiTietRepository.findPriceByProductId(item.getSanphamchitiet().getId());
-            totalAmount = totalAmount.add(giatien.multiply(BigDecimal.valueOf(item.getSoluong())));
         }
-        // Thêm các thông tin vào model
-        model.addAttribute("token", token);
-        model.addAttribute("totalAmount", totalAmount);
         model.addAttribute("totalQuantity", totalQuantity);
-        model.addAttribute("cartItems", cartItems);
-//        List<GioHangChiTiet> cartItems = gioHangChiTietRepository.findAll(); // Giả sử bạn có phương thức này để lấy các mục trong giỏ hàng
-//        int totalQuantity = 0;
-//        // Tính tổng số lượng sản phẩm trong giỏ hàng
-//        for (GioHangChiTiet item : cartItems) {
-//            totalQuantity += item.getSoluong();
-//        }
-//        model.addAttribute("totalQuantity", totalQuantity);
+
 //        Pageable pageable = PageRequest.of(p, 10);
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuImp.findAll();
@@ -975,7 +852,6 @@ public class SanPhamCustomerController {
         model.addAttribute("page", page1);
         List<Object[]> page2 = trangChuRepository.topspmoinhatdetail();
         model.addAttribute("page2", page2);
-        // Đoạn code để lấy và truyền dữ liệu từ query sang view
         List<Object[]> soLuongThuongHieuList = sanPhamChiTietRepository.findSoLuongThuongHieuGroupedNu();
         model.addAttribute("soLuongThuongHieuList", soLuongThuongHieuList);
         List<Object[]> soLuongKichCoList = sanPhamChiTietRepository.findSoLuongKichCoGroupedNu();

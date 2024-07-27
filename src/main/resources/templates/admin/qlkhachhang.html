@@ -10,10 +10,13 @@
     }
 
     .tdDiaChi {
-        max-width: 300px;
+        max-width: 270px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+    th {
+        white-space: nowrap;
     }
 </style>
 <body class="hold-transition sidebar-mini">
@@ -210,6 +213,7 @@
 <script src="https://cdn.jsdelivr.net/npm/jsqr"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
+    var success = /*[[${success}]]*/ false;
     var successAdd = /*[[${successAdd}]]*/ false;
     var successUpdate = /*[[${successUpdate}]]*/ false;
     /*]]>*/
@@ -232,6 +236,24 @@
         });
     }
     if (successUpdate === true) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+
+        Toast.fire({
+            icon: "success",
+            title: "Sửa thành công!"
+        });
+    }
+    if (success === true) {
         const Toast = Swal.mixin({
             toast: true,
             position: "top-end",

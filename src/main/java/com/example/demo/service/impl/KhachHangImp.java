@@ -40,6 +40,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 @Service
 public class KhachHangImp implements KhachHangService, NguoiDungService {
@@ -54,7 +55,7 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
     private static final String NUMBER = "0123456789";
     private static final String PASSWORD_ALLOW_BASE = CHAR_LOWER + CHAR_UPPER + NUMBER;
     private static final SecureRandom random = new SecureRandom();
-    private static final Map<String, String> codes = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, String> codes = new ConcurrentHashMap<>();
     private static final Map<String, Long> codeExpiryTimes = new ConcurrentHashMap<>();
 
     @Override
@@ -187,7 +188,7 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
         Random random = new Random();
         String code = String.valueOf(100000 + random.nextInt(900000)); // Mã 6 chữ số ngẫu nhiên
         codes.put(email, code);
-        codeExpiryTimes.put(email, System.currentTimeMillis() + 60 * 1000);
+        codeExpiryTimes.put(code, System.currentTimeMillis() + 60 * 1000);
 
         // Tạo phiên gửi email
         Session session = Session.getInstance(properties, new Authenticator() {
@@ -224,12 +225,13 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
     @Override
     public boolean validateResetCode(String email, String code) {
         if (codes.containsKey(email) && codes.get(email).equals(code)) {
-            long expiryTime = codeExpiryTimes.get(email);
+            long expiryTime = codeExpiryTimes.get(code);
             if (System.currentTimeMillis() <= expiryTime) {
                 return true;
             } else {
+                // Mã đã hết hạn, không xóa ngay lập tức để tránh xóa mã còn hiệu lực
                 codes.remove(email);
-                codeExpiryTimes.remove(email);
+                codeExpiryTimes.remove(code);
             }
         }
         return false;

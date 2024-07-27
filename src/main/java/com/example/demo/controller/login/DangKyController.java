@@ -1,13 +1,15 @@
 package com.example.demo.controller.login;
 
-import com.example.demo.entity.DiaChi;
-import com.example.demo.entity.KhachHang;
-import com.example.demo.entity.NguoiDung;
+import com.example.demo.entity.*;
 import com.example.demo.info.*;
+import com.example.demo.repository.giohang.GioHangRepository;
+import com.example.demo.repository.giohang.KhachHangGioHangRepository;
+import com.example.demo.repository.giohang.NguoiDungGioHangRepository;
 import com.example.demo.security.CustomerUserDetailService;
 import com.example.demo.service.DiaChiService;
 import com.example.demo.service.KhachHangService;
 import com.example.demo.service.NguoiDungService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,12 +37,59 @@ public class DangKyController {
     @Autowired
     DiaChiService diaChiService;
 
+    @Autowired
+    NguoiDungGioHangRepository nguoiDungGioHangRepository;
+
+    @Autowired
+    KhachHangGioHangRepository khachHangGioHangRepository;
+
+    @Autowired
+    GioHangRepository gioHangRepository;
+
     @GetMapping("/account")
     public String view(@ModelAttribute("nguoidung") DangKyNDInfo nguoidung,
                        @ModelAttribute("khachhang") DangKyKHInfo khachhang,
                        @ModelAttribute("dangnhap") DangNhapNDInfo dangnhap,
-                       Model model
+                       Model model, HttpSession session
     ) {
+        List<GioHangChiTiet> cartItems = new ArrayList<>();
+        String token = (String) session.getAttribute("token");
+        NguoiDung nguoiDung = null;
+        KhachHang khachHang = null;
+        GioHang gioHang = null;
+        if (token != null) {
+            List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
+            if (taiKhoanTokenInfos != null) {
+                for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
+                    if (tkInfo.getToken().equals(token)) {
+                        Integer userId = tkInfo.getId();
+                        nguoiDung = nguoiDungGioHangRepository.findById(userId).orElse(null);
+                        break;
+                    }
+                }
+                if (nguoiDung != null) {
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
+                    if (khachHang != null) {
+                        gioHang = gioHangRepository.findByKhachhang(khachHang);
+                        if (gioHang != null) {
+                            cartItems = gioHang.getGioHangChiTietList();
+                        }
+                    }
+                }
+            }
+        } else {
+            cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
+            if (cartItems == null) {
+                cartItems = new ArrayList<>();
+            }
+        }
+        int totalQuantity = 0;
+        for (GioHangChiTiet item : cartItems) {
+            totalQuantity += item.getSoluong();
+        }
+        model.addAttribute("totalQuantity", totalQuantity);
+
+
         List<KhachHang> lstKh = khachHangService.findAll();
         List<String> lstEmail = new ArrayList<>();
         List<String> lstSdt = new ArrayList<>();

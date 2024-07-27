@@ -13,6 +13,8 @@ import java.util.List;
 public interface KhachHangPhieuGiamRepository extends JpaRepository<KhachHangPhieuGiam,Integer> {
     @Query("SELECT s FROM KhachHangPhieuGiam s WHERE s.phieugiamgia.id =:IdPhieu")
     List<KhachHangPhieuGiam> findKhachHangPhieuGiamByIdPhieugiamgia(Integer IdPhieu);
+    @Query("SELECT s FROM KhachHangPhieuGiam s WHERE s.khachhang.id =:IdKH")
+    List<KhachHangPhieuGiam> findKhachHangPhieuGiamByIdKhachHang(Integer IdKH);
 
     List<KhachHangPhieuGiam> findAllByKhachhang(KhachHang kh);
 }

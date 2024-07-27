@@ -14,6 +14,7 @@
     th {
         white-space: nowrap;
     }
+
     td {
         white-space: nowrap;
     }
@@ -42,7 +43,7 @@
     <!-- /.container-fluid -->
     <div class="container">
         <div class="row">
-            <div class="col-lg-3 border rounded" style="background-color: #EEEEEE; height: 450px;">
+            <div class="col-lg-3 border rounded" style="background-color: #EEEEEE; height: 450px; width: 300px">
                 <div class="d-flex justify-content-center mt-5 mb-3">
                     <img src="../dist/img/bong2.jpg" class="rounded-circle" width="120" height="120">
                 </div>
@@ -94,7 +95,7 @@
                                  class="bi bi-border-style" viewBox="0 0 16 16">
                                 <path d="M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm-4 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm-4-4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5z"/>
                             </svg>
-                            <span style="margin-left: 7px;">Quản lý đơn hàng</span>
+                            <span style="margin-left: 7px;">Đơn hàng của tôi</span>
                         </button>
                     </div>
                 </div>
@@ -146,8 +147,10 @@
                                             </p>
                                             <p>
                                                 <span style="color: #808080;min-width: 115px;display: inline-block;">CCCD: </span>
-                                                <span th:if="${#strings.isEmpty(nguoidung.cccd)}" th:text="'Chưa có căn cước công dân'"></span>
-                                                <span th:unless="${#strings.isEmpty(nguoidung.cccd)}" th:text="${nguoidung.cccd}"></span>
+                                                <span th:if="${#strings.isEmpty(nguoidung.cccd)}"
+                                                      th:text="'Chưa có căn cước công dân'"></span>
+                                                <span th:unless="${#strings.isEmpty(nguoidung.cccd)}"
+                                                      th:text="${nguoidung.cccd}"></span>
                                             </p>
                                         </div>
                                         <div class="col-lg-3 mt-2" style="right: 0;">
@@ -209,7 +212,7 @@
                                             </div>
                                             <div class="form-floating mb-3">
                                                 <input type="date" class="form-control" th:field="*{ngaysinh}"
-                                                       id="ngaysinh"
+                                                       id="ngaysinh" onkeydown="return false"
                                                        placeholder="Ngày sinh">
                                                 <label>Ngày sinh</label>
                                                 <span id="ngaysinhNdError" style="color: red"></span>
@@ -257,14 +260,18 @@
                                                         <strong th:text="${lstDiaChi.hotennguoinhan}">Đỗ Quốc
                                                             Thịnh</strong> <span
                                                             th:text="${lstDiaChi.sdtnguoinhan}">(+84) 866511075</span>
-                                                        <p th:if="${#strings.isEmpty(lstDiaChi.tenduong)}" th:text="'Chưa có địa chỉ'">ố 24 liên kề 31 khu đô
+                                                        <p th:if="${#strings.isEmpty(lstDiaChi.tenduong)}"
+                                                           th:text="'Chưa có địa chỉ'">ố 24 liên kề 31 khu đô
                                                             thị
                                                             mới vân canh</p>
-                                                        <p th:unless="${#strings.isEmpty(lstDiaChi.tenduong)}" th:text="${lstDiaChi.tenduong}">ố 24 liên kề 31 khu đô
+                                                        <p th:unless="${#strings.isEmpty(lstDiaChi.tenduong)}"
+                                                           th:text="${lstDiaChi.tenduong}">ố 24 liên kề 31 khu đô
                                                             thị
                                                             mới vân canh</p>
-                                                        <p th:if="${#strings.isEmpty(lstDiaChi.tinhthanhpho)}" th:text="'Chưa có địa chỉ'"></p>
-                                                        <p th:unless="${#strings.isEmpty(lstDiaChi.tinhthanhpho)}" th:text="${lstDiaChi.xaphuong + ', ' + lstDiaChi.quanhuyen + ', ' + lstDiaChi.tinhthanhpho}">
+                                                        <p th:if="${#strings.isEmpty(lstDiaChi.tinhthanhpho)}"
+                                                           th:text="'Chưa có địa chỉ'"></p>
+                                                        <p th:unless="${#strings.isEmpty(lstDiaChi.tinhthanhpho)}"
+                                                           th:text="${lstDiaChi.xaphuong + ', ' + lstDiaChi.quanhuyen + ', ' + lstDiaChi.tinhthanhpho}">
                                                             Xã Vân Canh, Huyện Hoài Đức, Hà Nội</p>
                                                     </div>
                                                     <div>
@@ -376,7 +383,7 @@
                                                    style="color: #808080; text-decoration: none; text-transform: none; margin-right: 50px; font-weight: 550; ">Hủy</a>
                                                 <button type="submit" id="btnThemDiaChi"
                                                         style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 40%; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">
-                                                    CẬP NHẬT THÔNG TIN
+                                                    THÊM THÔNG TIN
                                                 </button>
                                             </div>
                                         </form>
@@ -503,10 +510,9 @@
                             </div>
                             <!--end-->
 
-                            <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" style="max-width: 1000px"
+                            <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" style="width: 113%"
                                  aria-labelledby="v-pills-messages-tab" tabindex="0">
                                 <h3>Đơn hàng của tôi</h3>
-
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <li class="nav-item" role="presentation">
                                         <button class="nav-link active" id="home-tab"
@@ -585,7 +591,8 @@
                                     <div class="tab-pane fade show active" id="home-tab-pane"
                                          role="tabpanel"
                                          aria-labelledby="home-tab" tabindex="0">
-                                        <table id="example2" class="table table-bordered table-hover text-center dataTables_wrapper dt-bootstrap4 no-footer">
+                                        <table id="example2"
+                                               class="table table-bordered table-hover text-center dataTables_wrapper dt-bootstrap4 no-footer">
                                             <thead class="table table-danger">
                                             <tr>
                                                 <th>STT</th>
@@ -615,39 +622,41 @@
                                                 <td th:if="${hd.trangthai == 6}">Đã hủy</td>
                                                 <td th:if="${hd.trangthai == 5 or hd.trangthai == 6}"
                                                     style="width: 100px">
-                                                    <a class="btn"
-                                                       style="background-color: rgb(249,72,42);color: white">
-                                                        Mua lại
-                                                    </a>
+                                                    <form th:action="@{/mualai(id=${hd.id})}" method="post">
+                                                        <button type="submit" class="btn"
+                                                                style="background-color: rgb(249,72,42);color: white">
+                                                            Mua lại
+                                                        </button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                             </tbody>
                                         </table>
-<!--                                        <div class="d-flex flex-row-reverse">-->
-<!--                                            <nav aria-label="Page navigation example"-->
-<!--                                                 th:if="${lstHoaDon.totalPages>1}">-->
-<!--                                                <ul class="pagination">-->
-<!--                                                    <li class="page-item" th:if="${lstHoaDon.number>0}"><a-->
-<!--                                                            class="page-link phantrang"-->
-<!--                                                            th:href="@{'?page='+${lstHoaDon.number-1}}">Trước</a>-->
-<!--                                                    </li>-->
-<!--                                                    <li class="page-item"-->
-<!--                                                        th:each="i:${#numbers.sequence(1,lstHoaDon.totalPages)}"-->
-<!--                                                        th:classappend="${pageNo==i-1?'active':''}"><a-->
-<!--                                                            class="page-link phantrang" th:href="@{'?page='+${i-1}}"-->
-<!--                                                            th:text="${i}"></a></li>-->
-<!--                                                    <li class="page-item"-->
-<!--                                                        th:if="${lstHoaDon.number<lstHoaDon.totalPages-1}"><a-->
-<!--                                                            class="page-link phantrang"-->
-<!--                                                            th:href="@{'?page='+${lstHoaDon.number+1}}">Sau</a>-->
-<!--                                                    </li>-->
-<!--                                                </ul>-->
-<!--                                            </nav>-->
-<!--                                        </div>-->
+                                        <!--                                        <div class="d-flex flex-row-reverse">-->
+                                        <!--                                            <nav aria-label="Page navigation example"-->
+                                        <!--                                                 th:if="${lstHoaDon.totalPages>1}">-->
+                                        <!--                                                <ul class="pagination">-->
+                                        <!--                                                    <li class="page-item" th:if="${lstHoaDon.number>0}"><a-->
+                                        <!--                                                            class="page-link phantrang"-->
+                                        <!--                                                            th:href="@{'?page='+${lstHoaDon.number-1}}">Trước</a>-->
+                                        <!--                                                    </li>-->
+                                        <!--                                                    <li class="page-item"-->
+                                        <!--                                                        th:each="i:${#numbers.sequence(1,lstHoaDon.totalPages)}"-->
+                                        <!--                                                        th:classappend="${pageNo==i-1?'active':''}"><a-->
+                                        <!--                                                            class="page-link phantrang" th:href="@{'?page='+${i-1}}"-->
+                                        <!--                                                            th:text="${i}"></a></li>-->
+                                        <!--                                                    <li class="page-item"-->
+                                        <!--                                                        th:if="${lstHoaDon.number<lstHoaDon.totalPages-1}"><a-->
+                                        <!--                                                            class="page-link phantrang"-->
+                                        <!--                                                            th:href="@{'?page='+${lstHoaDon.number+1}}">Sau</a>-->
+                                        <!--                                                    </li>-->
+                                        <!--                                                </ul>-->
+                                        <!--                                            </nav>-->
+                                        <!--                                        </div>-->
                                     </div>
                                     <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel"
                                          aria-labelledby="profile-tab" tabindex="0">
-                                        <table  class="table table-bordered table-hover text-center">
+                                        <table class="table table-bordered table-hover text-center">
                                             <thead class="table table-danger">
                                             <tr>
                                                 <th>STT</th>
@@ -683,18 +692,60 @@
                                                     </a>
                                                 </td>
                                                 <td style="width: 100px">
-                                                    <a class="btn"
+                                                    <a class="btn" data-bs-toggle="modal"
+                                                       data-bs-target="#staticBackdrop"
                                                        style="background-color: rgb(249,72,42);color: white">
                                                         Huỷ đơn hàng
                                                     </a>
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="staticBackdrop"
+                                                         data-bs-backdrop="static" data-bs-keyboard="false"
+                                                         tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                                         aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5"
+                                                                        id="staticBackdropLabel">Hủy đơn hàng</h1>
+                                                                    <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="mb-3">
+                                                                        <label for="lydohuy" class="col-form-label"
+                                                                               style="margin-right: 350px">Lý do hủy
+                                                                            đơn:</label>
+                                                                        <input type="text" id="lydohuy" name="lydohuy"
+                                                                               class="form-control">
+                                                                    </div>
+                                                                    <span id="lydohuyError" style="color: red"></span>
+                                                                </div>
+                                                                <div class="modal-footer" style="height: 80px">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal"
+                                                                            style="margin-top: 100px; margin-left: 20px; height: 40px; width: 70px">
+                                                                        Đóng
+                                                                    </button>
+                                                                    <button type="button" class="btn"
+                                                                            th:data-id="${hd.id}"
+                                                                            onclick="huyDonHang(this)" id="huydonhang"
+                                                                            style="background-color: rgb(249,72,42);color: white; margin-top: 100px; margin-left: 150px; height: 40px; width: 160px">
+                                                                        HỦY ĐƠN HÀNG
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                             </tr>
                                             </tbody>
                                         </table>
                                     </div>
+
                                     <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel"
                                          aria-labelledby="contact-tab" tabindex="0">
-                                        <table  class="table table-bordered table-hover text-center">
+                                        <table class="table table-bordered table-hover text-center">
                                             <thead class="table table-danger">
                                             <tr>
                                                 <th>STT</th>
@@ -704,7 +755,7 @@
                                                 <th>Tổng tiền</th>
                                                 <th style="white-space: nowrap;">Ngày giao dự kiến</th>
                                                 <th>Trạng thái</th>
-                                                <th>Hành động</th>
+                                                <!--                                                <th>Hành động</th>-->
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -722,13 +773,13 @@
                                                 <td th:if="${hd.trangthai == 4}">Đã thanh toán</td>
                                                 <td th:if="${hd.trangthai == 5}">Đã hoàn thành</td>
                                                 <td th:if="${hd.trangthai == 6}">Đã hủy</td>
-                                                <td th:if="${hd.trangthai == 5 or hd.trangthai == 6}"
-                                                    style="width: 100px">
-                                                    <a class="btn"
-                                                       style="background-color: rgb(249,72,42);color: white">
-                                                        Mua lại
-                                                    </a>
-                                                </td>
+                                                <!--                                                <td th:if="${hd.trangthai == 5 or hd.trangthai == 6}"-->
+                                                <!--                                                    style="width: 100px">-->
+                                                <!--                                                    <a class="btn"-->
+                                                <!--                                                       style="background-color: rgb(249,72,42);color: white">-->
+                                                <!--                                                        Mua lại-->
+                                                <!--                                                    </a>-->
+                                                <!--                                                </td>-->
                                             </tr>
                                             </tbody>
                                         </table>
@@ -736,7 +787,7 @@
                                     <div class="tab-pane fade" id="disabled-tab-pane1"
                                          role="tabpanel"
                                          aria-labelledby="disabled-tab" tabindex="0">
-                                        <table  class="table table-bordered table-hover text-center">
+                                        <table class="table table-bordered table-hover text-center">
                                             <thead class="table table-danger">
                                             <tr>
                                                 <th>STT</th>
@@ -746,7 +797,7 @@
                                                 <th>Tổng tiền</th>
                                                 <th style="white-space: nowrap;">Ngày giao dự kiến</th>
                                                 <th>Trạng thái</th>
-                                                <th>Hành động</th>
+                                                <!--                                                <th>Hành động</th>-->
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -764,13 +815,13 @@
                                                 <td th:if="${hd.trangthai == 4}">Đã thanh toán</td>
                                                 <td th:if="${hd.trangthai == 5}">Đã hoàn thành</td>
                                                 <td th:if="${hd.trangthai == 6}">Đã hủy</td>
-                                                <td th:if="${hd.trangthai == 5 or hd.trangthai == 6}"
-                                                    style="width: 100px">
-                                                    <a class="btn"
-                                                       style="background-color: rgb(249,72,42);color: white">
-                                                        Mua lại
-                                                    </a>
-                                                </td>
+                                                <!--                                                <td th:if="${hd.trangthai == 5 or hd.trangthai == 6}"-->
+                                                <!--                                                    style="width: 100px">-->
+                                                <!--                                                    <a class="btn"-->
+                                                <!--                                                       style="background-color: rgb(249,72,42);color: white">-->
+                                                <!--                                                        Mua lại-->
+                                                <!--                                                    </a>-->
+                                                <!--                                                </td>-->
                                             </tr>
                                             </tbody>
                                         </table>
@@ -778,7 +829,7 @@
                                     <div class="tab-pane fade" id="disabled-tab-pane2"
                                          role="tabpanel"
                                          aria-labelledby="disabled-tab" tabindex="0">
-                                        <table  class="table table-bordered table-hover text-center">
+                                        <table class="table table-bordered table-hover text-center">
                                             <thead class="table table-danger">
                                             <tr>
                                                 <th>STT</th>
@@ -788,7 +839,7 @@
                                                 <th>Tổng tiền</th>
                                                 <th style="white-space: nowrap;">Ngày giao dự kiến</th>
                                                 <th>Trạng thái</th>
-                                                <th>Hành động</th>
+                                                <!--                                                <th>Hành động</th>-->
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -806,13 +857,13 @@
                                                 <td th:if="${hd.trangthai == 4}">Đã thanh toán</td>
                                                 <td th:if="${hd.trangthai == 5}">Đã hoàn thành</td>
                                                 <td th:if="${hd.trangthai == 6}">Đã hủy</td>
-                                                <td th:if="${hd.trangthai == 5 or hd.trangthai == 6}"
-                                                    style="width: 100px">
-                                                    <a class="btn"
-                                                       style="background-color: rgb(249,72,42);color: white">
-                                                        Mua lại
-                                                    </a>
-                                                </td>
+                                                <!--                                                <td th:if="${hd.trangthai == 5 or hd.trangthai == 6}"-->
+                                                <!--                                                    style="width: 100px">-->
+                                                <!--                                                    <a class="btn"-->
+                                                <!--                                                       style="background-color: rgb(249,72,42);color: white">-->
+                                                <!--                                                        Mua lại-->
+                                                <!--                                                    </a>-->
+                                                <!--                                                </td>-->
                                             </tr>
                                             </tbody>
                                         </table>
@@ -820,7 +871,7 @@
                                     <div class="tab-pane fade" id="disabled-tab-pane3"
                                          role="tabpanel"
                                          aria-labelledby="disabled-tab" tabindex="0">
-                                        <table  class="table table-bordered table-hover text-center">
+                                        <table class="table table-bordered table-hover text-center">
                                             <thead class="table table-danger">
                                             <tr>
                                                 <th>STT</th>
@@ -830,7 +881,7 @@
                                                 <th>Tổng tiền</th>
                                                 <th style="white-space: nowrap;">Ngày giao dự kiến</th>
                                                 <th>Trạng thái</th>
-                                                <th>Hành động</th>
+                                                <!--                                                <th>Hành động</th>-->
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -848,13 +899,13 @@
                                                 <td th:if="${hd.trangthai == 4}">Đã thanh toán</td>
                                                 <td th:if="${hd.trangthai == 5}">Đã hoàn thành</td>
                                                 <td th:if="${hd.trangthai == 6}">Đã hủy</td>
-                                                <td th:if="${hd.trangthai == 5 or hd.trangthai == 6}"
-                                                    style="width: 100px">
-                                                    <a class="btn"
-                                                       style="background-color: rgb(249,72,42);color: white">
-                                                        Mua lại
-                                                    </a>
-                                                </td>
+                                                <!--                                                <td th:if="${hd.trangthai == 5 or hd.trangthai == 6}"-->
+                                                <!--                                                    style="width: 100px">-->
+                                                <!--                                                    <a class="btn"-->
+                                                <!--                                                       style="background-color: rgb(249,72,42);color: white">-->
+                                                <!--                                                        Mua lại-->
+                                                <!--                                                    </a>-->
+                                                <!--                                                </td>-->
                                             </tr>
                                             </tbody>
                                         </table>
@@ -862,7 +913,7 @@
                                     <div class="tab-pane fade" id="disabled-tab-pane4"
                                          role="tabpanel"
                                          aria-labelledby="disabled-tab" tabindex="0">
-                                        <table  class="table table-bordered table-hover text-center">
+                                        <table class="table table-bordered table-hover text-center">
                                             <thead class="table table-danger">
                                             <tr>
                                                 <th>STT</th>
@@ -870,7 +921,7 @@
                                                 <th>Tên khách hàng</th>
                                                 <th>Số điện thoại</th>
                                                 <th>Tổng tiền</th>
-                                                <th style="white-space: nowrap;">Ngày giao dự kiến</th>
+                                                <th style="white-space: nowrap;">Ngày nhận hàng</th>
                                                 <th>Trạng thái</th>
                                                 <th>Hành động</th>
                                             </tr>
@@ -882,7 +933,7 @@
                                                 <td th:text="${hd.khachhang.nguoidung.hovaten}"></td>
                                                 <td th:text="${hd.sdt}"></td>
                                                 <td th:text="${#numbers.formatDecimal(hd.tongtien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"></td>
-                                                <td th:text="${#dates.format(hd.ngaygiaodukien, 'dd/MM/yyyy')}"></td>
+                                                <td th:text="${#dates.format(hd.ngaynhanhang, 'dd/MM/yyyy')}"></td>
                                                 <td th:if="${hd.trangthai == 0}">Chờ xác nhận</td>
                                                 <td th:if="${hd.trangthai == 1}">Đã xác nhận</td>
                                                 <td th:if="${hd.trangthai == 2}">Chờ giao hàng</td>
@@ -892,10 +943,12 @@
                                                 <td th:if="${hd.trangthai == 6}">Đã hủy</td>
                                                 <td th:if="${hd.trangthai == 5 or hd.trangthai == 6}"
                                                     style="width: 100px">
-                                                    <a class="btn"
-                                                       style="background-color: rgb(249,72,42);color: white">
-                                                        Mua lại
-                                                    </a>
+                                                    <form th:action="@{/mualai(id=${hd.id})}" method="post">
+                                                        <button type="submit" class="btn"
+                                                                style="background-color: rgb(249,72,42);color: white">
+                                                            Mua lại
+                                                        </button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -904,7 +957,7 @@
                                     <div class="tab-pane fade" id="disabled-tab-pane5"
                                          role="tabpanel"
                                          aria-labelledby="disabled-tab" tabindex="0">
-                                        <table  class="table table-bordered table-hover text-center">
+                                        <table class="table table-bordered table-hover text-center">
                                             <thead class="table table-danger">
                                             <tr>
                                                 <th>STT</th>
@@ -912,7 +965,7 @@
                                                 <th>Tên khách hàng</th>
                                                 <th>Số điện thoại</th>
                                                 <th>Tổng tiền</th>
-                                                <th style="white-space: nowrap;">Ngày giao dự kiến</th>
+                                                <!--                                                <th style="white-space: nowrap;">Ngày giao dự kiến</th>-->
                                                 <th>Trạng thái</th>
                                                 <th>Hành động</th>
                                             </tr>
@@ -924,7 +977,7 @@
                                                 <td th:text="${hd.khachhang.nguoidung.hovaten}"></td>
                                                 <td th:text="${hd.sdt}"></td>
                                                 <td th:text="${#numbers.formatDecimal(hd.tongtien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"></td>
-                                                <td th:text="${#dates.format(hd.ngaygiaodukien, 'dd/MM/yyyy')}"></td>
+                                                <!--                                                <td th:text="${#dates.format(hd.ngaygiaodukien, 'dd/MM/yyyy')}"></td>-->
                                                 <td th:if="${hd.trangthai == 0}">Chờ xác nhận</td>
                                                 <td th:if="${hd.trangthai == 1}">Đã xác nhận</td>
                                                 <td th:if="${hd.trangthai == 2}">Chờ giao hàng</td>
@@ -934,10 +987,12 @@
                                                 <td th:if="${hd.trangthai == 6}">Đã hủy</td>
                                                 <td th:if="${hd.trangthai == 5 or hd.trangthai == 6}"
                                                     style="width: 100px">
-                                                    <a class="btn"
-                                                       style="background-color: rgb(249,72,42);color: white">
-                                                        Mua lại
-                                                    </a>
+                                                    <form th:action="@{/mualai(id=${hd.id})}" method="post">
+                                                        <button type="submit" class="btn"
+                                                                style="background-color: rgb(249,72,42);color: white">
+                                                            Mua lại
+                                                        </button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -1010,9 +1065,12 @@
     var lstEmailFromDb = /*[[${lstEmail}]]*/ [];
     var lstSdtFromDb = /*[[${lstSdt}]]*/ [];
     var lstCccdFromDb = /*[[${lstCccd}]]*/ [];
+    var userDangnhap = /*[[${session.userDangnhap}]]*/ [];
 
     var opentabDiaChi = /*[[${addDiaChiSuccess}]]*/ false;
     var success = /*[[${success}]]*/ false;
+    var repurchase = /*[[${repurchase}]]*/ false;
+
     if (success === true) {
         const Toast = Swal.mixin({
             toast: true,
@@ -1029,6 +1087,25 @@
         Toast.fire({
             icon: "success",
             title: "Lưu thành công!"
+        });
+    }
+    if (repurchase === false) {
+        sessionStorage.setItem('activeTab', 'v-pills-messages');
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+
+        Toast.fire({
+            icon: "warning",
+            title: "Sản phẩm đã hết hàng hoặc đã ngừng kinh doanh!"
         });
     }
 </script>
@@ -1094,7 +1171,6 @@
     document.getElementById('btnDoiMatKhau').addEventListener('click', function () {
         sessionStorage.setItem('activeTab', 'v-pills-disabled');
     })
-
 
 
     // document.getElementById("chuyenthemdiachi").addEventListener("click", function (event) {
@@ -1222,7 +1298,7 @@
             isValid = false;
         } else if (checkTrungCccdUpdate() === false) {
             cccdError.innerText = 'CCCD đã tồn tại';
-            isValid =  false;
+            isValid = false;
         }
 
         if (inputEmail === "") {
@@ -1393,6 +1469,7 @@
     }
 
     var originalCccd = document.getElementById('cccd').value.trim();
+
     function checkTrungCccdUpdate() {
         var cccdInput = document.getElementById('cccd').value.trim();
         var lstCccdFromDbCopy = lstCccdFromDb.slice();
@@ -1494,7 +1571,70 @@
             // Xóa trạng thái tab khỏi sessionStorage
             sessionStorage.removeItem('activeTab');
         }
+
+        if (sessionStorage.getItem('cancelOrderSuccess')) {
+            // Display success notification
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: "success",
+                title: "Hủy đơn hàng thành công!"
+            });
+            // Remove the flag
+            sessionStorage.removeItem('cancelOrderSuccess');
+
+
+        }
     });
+
+
+    function huyDonHang(element) {
+        const lydohuyInput = document.getElementById('lydohuy');
+        const lydohuyError = document.getElementById('lydohuyError');
+        const lydohuy = lydohuyInput.value.trim();
+        const id = element.getAttribute('data-id');
+        // Reset error message
+        lydohuyError.textContent = '';
+
+        // Validate input
+        if (lydohuy === '') {
+            lydohuyError.textContent = 'Vui lòng nhập lý do hủy đơn hàng.';
+            return false;
+        }
+
+        // Nếu input hợp lệ, gửi yêu cầu hủy đơn hàng
+        fetch(`/api/huydonhang/${id}?lydohuy=${encodeURIComponent(lydohuy)}`, {
+            method: 'GET'
+        }).then(response => {
+            if (response.ok) {
+                return response.text();
+            } else {
+                throw new Error('Có lỗi xảy ra khi hủy đơn hàng.');
+            }
+        }).then(data => {
+            // Ẩn modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('staticBackdrop'));
+            modal.hide();
+            sessionStorage.setItem('activeTab', 'v-pills-messages')
+            sessionStorage.setItem('cancelOrderSuccess', 'true');
+            window.location.reload();
+
+        }).catch(error => {
+            lydohuyError.textContent = error.message;
+        });
+
+        return true;
+    }
 </script>
 
 

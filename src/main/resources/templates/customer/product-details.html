@@ -9,6 +9,38 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+    .color-button {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: inline-block;
+        text-align: center;
+        padding: 0;
+        border-style: solid; /* Ensure border style is solid */
+    }
+
+    .size-button {
+        width: 80px;
+        height: 35px;
+        /*border-radius: 50%;*/
+        display: inline-block;
+        text-align: center;
+        padding: 0;
+        border-style: solid; /* Ensure border style is solid */
+    }
+
+    .btn-border-thick {
+        border-width: 3px; /* Thicker border */
+        border-color: black !important; /* Ensure border color is black when selected */
+    }
+
+    .btn-border-thin {
+        border-width: 2px; /* Thinner border */
+    }
+</style>
+
 <style>
     /* Dùng thanh cuộn ngang */
     .tab-pane.horizontal-scrollable .single-products.row {
@@ -360,7 +392,9 @@
                         <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
                         <div class="image-container">
                             <span class="ribbon top-left">Hàng mới</span> <!-- Ribbon hàng mới ở góc trên bên trái -->
-                            <span class="ribbon top-right">-10%</span> <!-- Ribbon % giảm giá ở góc trên bên phải -->
+                            <span th:each="dotGiamGia : ${sanphamchitiet.sanphamdotgiam}"> <!-- Ribbon % giảm giá ở góc trên bên phải -->
+                <span class="ribbon top-right" th:text="${dotGiamGia.dotgiamgia.giatrigiam} + ' %'"></span>
+            </span>
                             <img th:src="@{'/upload' + ${image.substring(image.lastIndexOf('upload') + 6)}}"
                                  style="width:100%" alt="Ảnh" onclick="openModal(this)">
                         </div>
@@ -408,6 +442,9 @@
                             <span id="product-price"
                                   th:text="${#numbers.formatDecimal(selectedPrice, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"
                                   style="color: red; font-weight: bold"></span>
+                            <!--                            <span id="product-price"-->
+                            <!--                                  th:text="${#numbers.formatDecimal(selectedPrice-(selectedPrice*giamgia/100), 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"-->
+                            <!--                                  style="color: red; font-weight: bold"></span>-->
                         </h6>
                         <hr>
                         <h6>
@@ -415,7 +452,7 @@
                             <span id="product-quantity" th:text="${selectedQuantity}"></span>
                         </h6>
 
-                        <form id="addToCartForm" action="/add-to-cart" method="post" onsubmit="return handleSubmit();">
+                        <form id="addToCartForm" method="post" onsubmit="return handleSubmit();">
                             <input type="hidden" th:value="${token}" id="tokenDN" name="tokenDN">
                             <input type="hidden" name="id" th:value="${sanphamchitiet.id}" id="idspct">
                             <input type="hidden" name="selectedColor" id="selectedColor" th:value="${defaultColor}">
@@ -425,9 +462,11 @@
                                     <span style="margin-right: 10px;">Màu sắc:</span>
                                     <div th:each="color, iterStat : ${colors}">
                                         <div style="margin-right: 10px">
-                                            <a class="btn"
-                                               th:classappend="${iterStat.index == 0} ? 'btn-dark' : 'btn-outline-dark'"
-                                               th:text="${color}" th:data-color="${color}"
+                                            <a class="btn color-button"
+                                               th:classappend="${iterStat.index == 0} ? 'btn-border-thick' : 'btn-border-thin'"
+                                               th:data-color="${color}"
+                                               th:style="'background-color:' + ${color} + ';border-color:' + (${iterStat.index == 0} ? 'black' : ${color})"
+                                               th:aria-label="${color}"
                                                th:onclick="'changeButtonBackground(this); selectColor(this)'"></a>
                                         </div>
                                     </div>
@@ -437,13 +476,16 @@
                                     <span style="margin-right: 10px;">Kích cỡ:</span>
                                     <div th:each="size, iterStat : ${sizes}">
                                         <div style="margin-right: 10px">
-                                            <a class="btn"
-                                               th:classappend="${iterStat.index == 0} ? 'btn-dark' : 'btn-outline-dark'"
+                                            <a class="btn size-button"
+                                               th:classappend="${iterStat.index == 0} ? 'btn-border-thick' : 'btn-border-thin'"
+                                               style="border-color: black"
                                                th:text="${size}" th:data-size="${size}"
                                                th:onclick="'changeButtonBackground(this); selectSize(this)'"></a>
                                         </div>
                                     </div>
-                                    <a th:href="@{#}" data-bs-toggle="modal" data-bs-target="#cachchonsize">Cách chọn size</a>
+                                    <a class="btn"  style="border-color: black" th:href="@{#}" data-bs-toggle="modal" data-bs-target="#cachchonsize">
+                                        <i class="bi bi-credit-card-2-front-fill"></i>
+                                        Cách chọn size</a>
                                 </div>
                                 <!-- Modal -->
                                 <div class="modal fade" id="cachchonsize" tabindex="-1"
@@ -502,18 +544,25 @@
                                     <div>
                                         <input type="number" size="4" name="quantity" id="quantityInput" value="1"
                                                min="1" class="tc line-item-qty item-quantity bg-white form-control"
-                                               style="width:100px">
+                                               style="width:100px" oninput="validateQuantity()">
                                     </div>
                                 </div>
                                 <p></p>
                                 <span style="margin-right: 10px;">Mô tả: <span th:text="${sanphamchitiet.mota}"></span></span>
                                 <hr>
                                 <div class="d-flex">
-                                    <a class="btn btn-dark" style="width: 200px;height: 50px;line-height: 40px">Mua ngay</a>
-                                    <button type="submit"
+                                    <button type="submit" th:formaction="@{/muangay}" class="btn btn-dark"
+                                            id="muangaycart"
+                                            style="width: 220px; height: 50px; line-height: 40px">
+                                        <i class="bi bi-plus-square-fill" style="font-size: 20px"></i> MUA NGAY
+                                    </button>
+
+                                    <button type="submit" th:formaction=@{/add-to-cart} id="add-to-cart-btn"
                                             class="btn btn"
-                                            style="background-color: rgb(249,72,42); color: white; width: 200px;height: 50px;line-height: 40px;margin-left: 20px">
+                                            style="background-color: rgb(249,72,42); color: white; width: 220px;height: 50px;line-height: 40px;margin-left: 20px">
+                                        <i class="bi bi-bag-plus-fill" style="font-size: 20px"></i>
                                         THÊM VÀO GIỎ HÀNG
+
                                     </button>
                                 </div>
                             </div>
@@ -562,25 +611,28 @@
                                     <div class="tag-n-s">
                                         <span>New</span>
                                     </div>
-                                    <div class="actions-btn">
-                                        <ul class="clearfix">
-                                            <li>
-                                                <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><i class="fa fa-heart"></i></a>
-                                            </li>
-                                            <li>
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
-                                                        class="fa fa-eye"></i></a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <!--                                    <div class="actions-btn">-->
+                                    <!--                                        <ul class="clearfix">-->
+                                    <!--                                            <li>-->
+                                    <!--                                                <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>-->
+                                    <!--                                            </li>-->
+                                    <!--                                            <li>-->
+                                    <!--                                                <a href="#"><i class="fa fa-heart"></i></a>-->
+                                    <!--                                            </li>-->
+                                    <!--                                            <li>-->
+                                    <!--                                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i-->
+                                    <!--                                                        class="fa fa-eye"></i></a>-->
+                                    <!--                                            </li>-->
+                                    <!--                                        </ul>-->
+                                    <!--                                    </div>-->
                                 </div>
                                 <div class="product-title">
                                     <a href="#"><h3 class="title" th:text="${sp[1]}" style="font-weight: bold"></h3></a>
                                     <div class="ratting">
-                                        <h6><span th:text="${sp[7]} + ' size'" style="font-family: 'Bahnschrift'"></span> / <span th:text="${sp[8]} + ' màu sắc'" style="font-family: 'Bahnschrift'"></span></h6>
+                                        <h6><span th:text="${sp[7]} + ' size'"
+                                                  style="font-family: 'Bahnschrift'"></span> / <span
+                                                th:text="${sp[8]} + ' màu sắc'"
+                                                style="font-family: 'Bahnschrift'"></span></h6>
                                     </div>
                                     <p>
                                     <span style="color: red; font-weight: bold"
@@ -629,25 +681,28 @@
                                     <div class="tag-n-s">
                                         <span>New</span>
                                     </div>
-                                    <div class="actions-btn">
-                                        <ul class="clearfix">
-                                            <li>
-                                                <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><i class="fa fa-heart"></i></a>
-                                            </li>
-                                            <li>
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i
-                                                        class="fa fa-eye"></i></a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <!--                                    <div class="actions-btn">-->
+                                    <!--                                        <ul class="clearfix">-->
+                                    <!--                                            <li>-->
+                                    <!--                                                <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>-->
+                                    <!--                                            </li>-->
+                                    <!--                                            <li>-->
+                                    <!--                                                <a href="#"><i class="fa fa-heart"></i></a>-->
+                                    <!--                                            </li>-->
+                                    <!--                                            <li>-->
+                                    <!--                                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i-->
+                                    <!--                                                        class="fa fa-eye"></i></a>-->
+                                    <!--                                            </li>-->
+                                    <!--                                        </ul>-->
+                                    <!--                                    </div>-->
                                 </div>
                                 <div class="product-title">
                                     <a href="#"><h3 class="title" th:text="${sp[1]}" style="font-weight: bold"></h3></a>
                                     <div class="ratting">
-                                        <h6><span th:text="${sp[7]} + ' size'" style="font-family: 'Bahnschrift'"></span> / <span th:text="${sp[8]} + ' màu sắc'" style="font-family: 'Bahnschrift'"></span></h6>
+                                        <h6><span th:text="${sp[7]} + ' size'"
+                                                  style="font-family: 'Bahnschrift'"></span> / <span
+                                                th:text="${sp[8]} + ' màu sắc'"
+                                                style="font-family: 'Bahnschrift'"></span></h6>
                                     </div>
                                     <p>
                                     <span style="color: red; font-weight: bold"
@@ -811,8 +866,8 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const defaultColorElement = document.querySelector('.btn-dark[data-color]');
-        const defaultSizeElement = document.querySelector('.btn-dark[data-size]');
+        const defaultColorElement = document.querySelector('.btn-border-thick[data-color]');
+        const defaultSizeElement = document.querySelector('.btn-border-thick[data-size]');
         if (defaultColorElement) {
             updateImagesAndPrice();
         }
@@ -822,8 +877,8 @@
     });
 
     function updateImagesAndPrice() {
-        const color = document.querySelector('.btn-dark[data-color]') ? document.querySelector('.btn-dark[data-color]').getAttribute('data-color') : null;
-        const size = document.querySelector('.btn-dark[data-size]') ? document.querySelector('.btn-dark[data-size]').getAttribute('data-size') : null;
+        const color = document.querySelector('.btn-border-thick[data-color]') ? document.querySelector('.btn-border-thick[data-color]').getAttribute('data-color') : null;
+        const size = document.querySelector('.btn-border-thick[data-size]') ? document.querySelector('.btn-border-thick[data-size]').getAttribute('data-size') : null;
         const url = new URL(window.location);
 
         if (color) {
@@ -853,8 +908,8 @@
     }
 
     function updatePriceAndQuantity() {
-        const color = document.querySelector('.btn-dark[data-color]') ? document.querySelector('.btn-dark[data-color]').getAttribute('data-color') : null;
-        const size = document.querySelector('.btn-dark[data-size]') ? document.querySelector('.btn-dark[data-size]').getAttribute('data-size') : null;
+        const color = document.querySelector('.btn-border-thick[data-color]') ? document.querySelector('.btn-border-thick[data-color]').getAttribute('data-color') : null;
+        const size = document.querySelector('.btn-border-thick[data-size]') ? document.querySelector('.btn-border-thick[data-size]').getAttribute('data-size') : null;
         const url = new URL(window.location);
 
         if (color) {
@@ -885,22 +940,22 @@
                 if (newQuantity) {
                     document.querySelector('#product-quantity').innerText = newQuantity;
                 } else {
-                    document.querySelector('#product-quantity').innerText = 'Không có số lượng';
+                    document.querySelector('#product-quantity').innerText = 'Không tồn tại';
                 }
                 if (newThuongHieu) {
                     document.querySelector('#product-thuonghieu').innerText = newThuongHieu;
                 } else {
-                    document.querySelector('#product-thuonghieu').innerText = 'Không có thương hiệu';
+                    document.querySelector('#product-thuonghieu').innerText = 'Không tồn tại';
                 }
                 if (newChatLieu) {
                     document.querySelector('#product-chatlieu').innerText = newChatLieu;
                 } else {
-                    document.querySelector('#product-chatlieu').innerText = 'Không có chất liệu';
+                    document.querySelector('#product-chatlieu').innerText = 'Không tồn tại';
                 }
                 if (newDeGiay) {
                     document.querySelector('#product-degiay').innerText = newDeGiay;
                 } else {
-                    document.querySelector('#product-degiay').innerText = 'Không có đế giày';
+                    document.querySelector('#product-degiay').innerText = 'Không tồn tại';
                 }
                 if (newMaSPCT) {
                     document.querySelector('#product-maspct').innerText = newMaSPCT;
@@ -909,11 +964,17 @@
                 }
 
 
+                const isAnyFieldMissing = !newPrice || !newQuantity || !newThuongHieu || !newChatLieu || !newDeGiay || !newMaSPCT;
+
+                // Disable or enable the "Add to Cart" button
                 const addToCartButton = document.querySelector('#add-to-cart-btn');
-                if (parseInt(newQuantity) === 0) {
+                const muangaycart = document.querySelector('#muangaycart');
+                if (isAnyFieldMissing || parseInt(newQuantity) === 0) {
                     addToCartButton.disabled = true;
+                    muangaycart.disabled = true;
                 } else {
                     addToCartButton.disabled = false;
+                    muangaycart.disabled = false;
                 }
             });
     }
@@ -924,32 +985,37 @@
 
         if (isColorButton) {
             const colorButtons = document.querySelectorAll('.btn[data-color]');
-            const isSelected = element.classList.contains('btn-dark');
+            const isSelected = element.classList.contains('btn-border-thick');
 
             if (!isSelected) {
                 colorButtons.forEach(button => {
-                    button.classList.remove('btn-dark');
-                    button.classList.add('btn-outline-dark');
+                    button.classList.remove('btn-border-thick');
+                    button.classList.add('btn-border-thin');
+                    button.style.borderColor = button.getAttribute('data-color'); // Set border color back to original color
                 });
-                element.classList.remove('btn-outline-dark');
-                element.classList.add('btn-dark');
+                element.classList.remove('btn-border-thin');
+                element.classList.add('btn-border-thick');
+                element.style.borderColor = 'black'; // Set border color to black when selected
             }
         } else if (isSizeButton) {
             const sizeButtons = document.querySelectorAll('.btn[data-size]');
-            const isSelected = element.classList.contains('btn-dark');
+            const isSelected = element.classList.contains('btn-border-thick');
 
             if (!isSelected) {
                 sizeButtons.forEach(button => {
-                    button.classList.remove('btn-dark');
-                    button.classList.add('btn-outline-dark');
+                    button.classList.remove('btn-border-thick');
+                    button.classList.add('btn-border-thin');
+                    button.style.borderColor = button.getAttribute('data-size'); // Set border color back to original color
                 });
-                element.classList.remove('btn-outline-dark');
-                element.classList.add('btn-dark');
+                element.classList.remove('btn-border-thin');
+                element.classList.add('btn-border-thick');
+                element.style.borderColor = 'black'; // Set border color to black when selected
             }
         }
 
         updateImagesAndPrice();
     }
+
 </script>
 
 <!--giá trị mặc định của màu sắc và kích cỡ-->
@@ -963,19 +1029,34 @@
     }
 </script>
 <!--validate soluong-->
-<!--<script th:inline="javascript">-->
-<!--    /*<![CDATA[*/-->
-<!--    document.getElementById('addToCartForm').addEventListener('submit', function (event) {-->
-<!--        var selectedQuantity = parseInt(document.getElementById('quantityInput').value);-->
-<!--        var availableQuantity = parseInt(document.getElementById('product-quantity').innerText); // Lấy số lượng có sẵn từ thẻ span-->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    document.getElementById('addToCartForm').addEventListener('submit', function (event) {
+        var selectedQuantity = parseInt(document.getElementById('quantityInput').value);
+        var availableQuantity = parseInt(document.getElementById('product-quantity').innerText); // Lấy số lượng có sẵn từ thẻ span
 
-<!--        if (selectedQuantity > availableQuantity) {-->
-<!--            alert('Số lượng nhập vào vượt quá số lượng có sẵn trong kho (' + availableQuantity + ')');-->
-<!--            event.preventDefault(); // Ngăn không gửi form nếu số lượng vượt quá-->
-<!--        }-->
-<!--    });-->
-<!--    /*]]>*/-->
-<!--</script>-->
+        if (selectedQuantity > availableQuantity) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: 'warning',
+                title: 'Số lượng nhập vào vượt quá số lượng có sẵn trong kho (' + availableQuantity + ')'
+            });
+            event.preventDefault(); // Ngăn không gửi form nếu số lượng vượt quá
+        }
+    });
+    /*]]>*/
+</script>
+
 <!--dùng cho mã coupont coupon cố định-->
 <script>
     // JavaScript để giữ coupon-noti ở vị trí cố định khi scroll
@@ -1056,13 +1137,14 @@
 <!--    }-->
 <!--</script>-->
 
-<script>
-    function handleSubmit() {
-        // Hiển thị thông báo Toastr khi form được submit
-        sessionStorage.setItem('successMessageThemGioHang', 'Thêm giỏ hàng thành công!');
-        return true; // Trả về true để tiếp tục submit
-    }
-</script>
+<!--thông báo thêm vào giỏ hàng-->
+<!--<script>-->
+<!--    function handleSubmit() {-->
+<!--        // Hiển thị thông báo Toastr khi form được submit-->
+<!--        sessionStorage.setItem('successMessageThemGioHang', 'Thêm giỏ hàng thành công!');-->
+<!--        return true; // Trả về true để tiếp tục submit-->
+<!--    }-->
+<!--</script>-->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const successMessage = sessionStorage.getItem('successMessageThemGioHang');
@@ -1076,4 +1158,34 @@
             sessionStorage.removeItem('successMessageThemGioHang');
         }
     });
+</script>
+
+<!--validate thông báo số lượng không được để trống-->
+<script>
+    function validateQuantity() {
+        const quantityInput = document.getElementById('quantityInput');
+        const currentValue = quantityInput.value;
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+
+        // Kiểm tra nếu giá trị của input là rỗng
+        if (currentValue === '') {
+            Toast.fire({
+                icon: 'warning',
+                title: 'Số lượng không được để trống'
+            });
+
+            // Đặt lại giá trị của input về giá trị mặc định (ví dụ: 1)
+            quantityInput.value = '1';
+        }
+    }
 </script>
