@@ -17,4 +17,5 @@ public class TraCuuDetailInfo {
     private String size;
     private Integer soLuong;
     private BigDecimal tongTien;
+    private String tenMau;
 }

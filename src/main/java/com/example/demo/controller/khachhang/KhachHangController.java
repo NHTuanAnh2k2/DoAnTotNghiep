@@ -233,8 +233,7 @@ public class KhachHangController {
             String token = userManager.getToken(userId);
             session.removeAttribute("userDangnhap");
             userManager.logoutUser(userId, token);
-            redirectAttributes.addFlashAttribute("success", true);
-            return "redirect:/khachhang";
+            session.setAttribute("notificationLogout", true);
         }
 
         redirectAttributes.addFlashAttribute("success", true);

@@ -177,11 +177,11 @@ public class DangKyController {
         khachHangService.addKhachHang(kh);
 
         DiaChi dc = new DiaChi();
-        dc.setTenduong(" ");
-        dc.setTinhthanhpho(" ");
+        dc.setTenduong("Trần Phú");
+        dc.setTinhthanhpho("Thành phố Hà Nội");
         dc.setHotennguoinhan(nd.getHovaten());
-        dc.setQuanhuyen(" ");
-        dc.setXaphuong(" ");
+        dc.setQuanhuyen("Quận Hoàng Mai");
+        dc.setXaphuong("Phường Thanh Trì");
         dc.setNguoidung(nd);
         dc.setLancapnhatcuoi(nd.getLancapnhatcuoi());
         dc.setNgaytao(nd.getNgaytao());

@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -27,33 +29,35 @@ public class SecurityConfig {
     AccessDeniedHandler accessDeniedHandler;
 
     private static final String[] NHANVIEN_LINK = {
-            "/hoa-don/ban-hang"
+            "/hoa-don/ban-hang", "/hoa-don/hien-thi", "/hoa-don/showDetail", "/admin/qlnhanvien", "/updateNhanVien/**",
+            "/admin/addnhanvien"
     };
     private static final String[] QUANLY_LINK = {
-            "/khachhang"
+            "/khachhang/**",
+//            "/listsanpham/**", "/viewaddSPGET",
+//            "/admin/hien-thi-phieu-giam-gia", "/admin/xem-them-phieu-giam-gia",
+//            "/detailsanpham/**", "/updateCTSP", "/allSPCT",
+//            "/admin/hien-thi-dot-giam-gia", "/admin/xem-them-dot-giam-gia",
+//            "/listdegiay/**", "/listthuonghieu", "/chatlieu/**",
+//            "/listMauSac/**", "/listKichCo/**"
     };
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
        return http
                 .csrf(csrf -> csrf.disable())
-               .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthEntryPoint)
+               .exceptionHandling(exception -> exception
+                       .authenticationEntryPoint(jwtAuthEntryPoint)
                        .accessDeniedHandler(accessDeniedHandler)
                 )
                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                .authorizeHttpRequests(auth -> auth
                         .requestMatchers(QUANLY_LINK).hasAuthority("ROLE_QUANLY")
-                        .requestMatchers("/api/khachhang").hasAuthority("ROLE_QUANLY")
-                        .requestMatchers("/hoa-don/ban-hang").authenticated()
+                        .requestMatchers(NHANVIEN_LINK).authenticated()
                         .anyRequest().permitAll()
                 )
-//               .formLogin(form -> form
-//                       .loginPage("/admin/account")
-//                       .successHandler(successHandler)
-//                       .permitAll()
-//               )
+               .authenticationProvider(getProvider())
                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class).build();
-
     }
 
 
@@ -77,13 +81,13 @@ public class SecurityConfig {
 //        return http.build();
 //    }
 
-//    @Bean
-//    public AuthenticationProvider getProvider() {
-//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-//        provider.setPasswordEncoder(passwordEncoder());
-//        provider.setUserDetailsService(userDetailService);
-//        return provider;
-//    }
+    @Bean
+    public AuthenticationProvider getProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(passwordEncoder());
+        provider.setUserDetailsService(userDetailService);
+        return provider;
+    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {

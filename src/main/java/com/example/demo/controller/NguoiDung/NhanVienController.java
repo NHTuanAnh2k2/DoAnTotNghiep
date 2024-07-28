@@ -1,10 +1,9 @@
 package com.example.demo.controller.NguoiDung;
 
 import com.example.demo.entity.*;
-import com.example.demo.info.DiaChiNVInfo;
-import com.example.demo.info.NguoiDungNVInfo;
-import com.example.demo.info.NhanVienInfo;
-import com.example.demo.info.NhanVienSearch;
+import com.example.demo.info.*;
+import com.example.demo.repository.NhanVienRepository;
+import com.example.demo.service.KhachHangService;
 import com.example.demo.service.impl.DiaChiImpl;
 import com.example.demo.service.impl.NguoiDungImpl1;
 import com.example.demo.service.impl.NhanVienImpl;
@@ -35,14 +34,27 @@ public class NhanVienController {
     DiaChiImpl diaChi;
     @Autowired
     NguoiDungImpl1 nguoiDung;
+    @Autowired
+    NhanVienRepository nhanVienRepository;
+    @Autowired
+    KhachHangService khachHangService;
 
 
     @GetMapping("/admin/qlnhanvien")
-    public String listnv(Model model,@ModelAttribute("nds") NhanVienSearch nd) {
+    public String listnv(Model model,@ModelAttribute("nds") NhanVienSearch nd, HttpSession session) {
         List<DiaChi> page = diaChi.getAll();
         List<NhanVien> listnv = nhanVien.getAll();
         model.addAttribute("items1", page);
         model.addAttribute("items2", listnv);
+
+        String username = (String) session.getAttribute("adminDangnhap");
+        if (username != null) {
+            NguoiDung nguoiDung1 = khachHangService.findNguoiDungByTaikhoan(username);
+            NhanVienNVInfo nv = nhanVienRepository.findNhanVienDiaChi(nguoiDung1.getId());
+            if (nv.getVaitro() == false) {
+                model.addAttribute("nv", nv);
+            }
+        }
         return "admin/qlnhanvien";
     }
     @GetMapping("/admin/timkiem")

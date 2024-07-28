@@ -45,7 +45,10 @@
         <div class="row">
             <div class="col-lg-3 border rounded" style="background-color: #EEEEEE; height: 450px; width: 300px">
                 <div class="d-flex justify-content-center mt-5 mb-3">
-                    <img src="../dist/img/bong2.jpg" class="rounded-circle" width="120" height="120">
+                    <img id="uploadedImage" th:src="${userAvatar}" class="rounded-circle" width="120" height="120" style="cursor: pointer;">
+                </div>
+                <div class="file-input-wrapper">
+                    <input type="file" id="fileInput" class="file-input" name="anh" accept="image/*" style="display:none;">
                 </div>
                 <p class="d-flex justify-content-center mb-4" style="font-size: 18px;">Xin chào <span
                         style="color: #0a58ca; padding-left: 7px;" th:text="${hovatenHoSo}">Nguyễn Văn Duy</span>
@@ -612,7 +615,7 @@
                                                 <td th:text="${hd.khachhang.nguoidung.hovaten}"></td>
                                                 <td th:text="${hd.sdt}"></td>
                                                 <td th:text="${#numbers.formatDecimal(hd.tongtien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"></td>
-                                                <td th:text="${hd.ngaygiaodukien}"></td>
+                                                <td th:text="${#dates.format(hd.ngaygiaodukien, 'dd/MM/yyyy')}"></td>
                                                 <td th:if="${hd.trangthai == 0}">Chờ xác nhận</td>
                                                 <td th:if="${hd.trangthai == 1}">Đã xác nhận</td>
                                                 <td th:if="${hd.trangthai == 2}">Chờ giao hàng</td>
@@ -1104,7 +1107,7 @@
         });
 
         Toast.fire({
-            icon: "warning",
+            icon: "error",
             title: "Sản phẩm đã hết hàng hoặc đã ngừng kinh doanh!"
         });
     }
@@ -1746,6 +1749,110 @@
             }
         };
     }
+
+</script>
+
+<script>
+    document.getElementById('fileInput').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+
+        if (file) {
+            // Kiểm tra kích thước tệp (1 MB = 1 * 1024 * 1024 bytes)
+            const maxSize = 1 * 1024 * 1024; // 1 MB
+
+            if (file.size > maxSize) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "error",
+                    title: 'Lỗi',
+                    text: "Tệp ảnh phải nhỏ hơn 1 MB."
+                });
+                // Xóa tệp đã chọn
+                event.target.value = '';
+                return;
+            }
+
+            // Nếu kích thước hợp lệ, hiển thị ảnh đã chọn
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const uploadedImage = document.getElementById('uploadedImage');
+                uploadedImage.src = e.target.result;
+                uploadedImage.style.display = 'block'; // Hiển thị ảnh
+            };
+            reader.readAsDataURL(file);
+
+            // Gửi yêu cầu AJAX để tải lên ảnh
+            const formData = new FormData();
+            formData.append('anh', file);
+
+            fetch('/api/upload', {
+                method: 'POST',
+                body: formData,
+                credentials: 'include' // Để gửi session cookie
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Lỗi khi tải lên ảnh');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    console.log(data);
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+
+                    Toast.fire({
+                        icon: "success",
+                        title: 'Thành công',
+                        text: 'Ảnh đã được tải lên thành công!',
+                    });
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Lỗi',
+                        text: 'Đã xảy ra lỗi khi tải lên ảnh.',
+                    });
+                });
+        }
+    });
+
+    document.getElementById('uploadedImage').addEventListener('click', function() {
+        document.getElementById('fileInput').click();
+    });
 
 </script>
 <!-- footer section start -->
