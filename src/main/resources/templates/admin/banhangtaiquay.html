@@ -518,13 +518,13 @@
                                                     <div>
                                                         <label class="col-form-label">Màu
                                                             sắc</label>
-                                                        <select class="form-select" oninput="SearchSPHDCT()" id="mausac"
+                                                        <select class="form-select" onchange="SearchSPHDCT()" id="mausac"
                                                             style="width: 120px;">
                                                             <option value="all" selected>
                                                                 ----</option>
-                                                            <option th:each="a:${dsMauSac}" th:value="${a.ten}"
+                                                            <option th:each="a:${dsMauSac}" th:value="${a.ten}" th:style="'background-color: ' + ${a.ten} + '; color: ' + ${#fff}"
                                                                 th:text="${a.ten}">
-
+<span th:text="${a.ten}"></span>
                                                             </option>
                                                         </select>
                                                     </div>
@@ -1617,7 +1617,9 @@ tabindex="0">
             var list = [
                 tentim, cl, th, dg, kc, ms, gt, kg
             ]
-            var urltimSPCT = `/hoa-don/searchSP?lstData=${list}`;
+            let encodedList = list.map(item => encodeURIComponent(item));
+            var urltimSPCT = `/hoa-don/searchSP?lstData=${encodedList.join(",")}`;
+            //var urltimSPCT = `/hoa-don/searchSP?lstData=${list}`;
             fetch(urltimSPCT)
                 .then(function (c) {
                     return c.json();
@@ -1639,7 +1641,11 @@ tabindex="0">
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
-                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
+                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: ${hd.mausac.ten}; padding: 3px 15px 3px 15px; color: white;">
+                                       ${hd.mausac.ten}
+                                        </p>
+                                    </td>
                                    <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
@@ -1674,7 +1680,9 @@ tabindex="0">
             var list = [
                 tentim, cl, th, dg, kc, ms, gt, kg
             ]
-            var urltimSPCT = `/hoa-don/searchSP?lstData=${list}`;
+            let encodedList = list.map(item => encodeURIComponent(item));
+            var urltimSPCT = `/hoa-don/searchSP?lstData=${encodedList.join(",")}`;
+            //var urltimSPCT = `/hoa-don/searchSP?lstData=${list}`;
             fetch(urltimSPCT)
                 .then(function (c) {
                     return c.json();
@@ -1695,7 +1703,11 @@ tabindex="0">
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
-                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
+                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: ${hd.mausac.ten}; padding: 3px 15px 3px 15px; color: white;">
+                                       ${hd.mausac.ten}
+                                        </p>
+                                    </td>
                                    <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
@@ -1745,7 +1757,11 @@ tabindex="0">
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
-                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
+                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: ${hd.mausac.ten}; padding: 3px 15px 3px 15px; color: white;">
+                                       ${hd.mausac.ten}
+                                        </p>
+                                    </td>
                                    <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
@@ -1810,7 +1826,11 @@ tabindex="0">
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
-                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
+                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: ${hd.mausac.ten}; padding: 3px 15px 3px 15px; color: white;">
+                                       ${hd.mausac.ten}
+                                        </p>
+                                    </td>
                                    <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
@@ -1872,7 +1892,11 @@ tabindex="0">
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
-                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
+                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: ${hd.mausac.ten}; padding: 3px 15px 3px 15px; color: white;">
+                                       ${hd.mausac.ten}
+                                        </p>
+                                    </td>
                                    <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
@@ -1936,7 +1960,11 @@ tabindex="0">
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
-                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                  <td style="vertical-align: middle;">
+                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: ${hd.mausac.ten}; padding: 3px 15px 3px 15px; color: white;">
+                                       ${hd.mausac.ten}
+                                        </p>
+                                    </td>
                                    <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
@@ -2002,7 +2030,11 @@ tabindex="0">
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
-                                   <td style="vertical-align: middle;">${hd.mausac.ten}</td>
+                                   <td style="vertical-align: middle;">
+                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: ${hd.mausac.ten}; padding: 3px 15px 3px 15px; color: white;">
+                                       ${hd.mausac.ten}
+                                        </p>
+                                    </td>
                                    <td style="vertical-align: middle;">
                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
                                         ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}

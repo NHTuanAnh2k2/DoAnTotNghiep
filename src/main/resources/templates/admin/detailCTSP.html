@@ -117,8 +117,8 @@
                                       name="updateProduct" onsubmit="return validateForm()">
                                     <div class="d-flex">
                                         <p>Tên sản phẩm:
-                                            <input class="form-control" style="width:550px"
-                                                   th:field="*{sanpham.tensanpham}" readonly>
+                                            <input class="form-control" style="width:550px" th:field="*{sanpham.tensanpham}" readonly>
+                                            <input type="hidden" th:field="*{sanpham.id}">
                                         </p>
                                         <p id="errorSanPham" class="error-message"
                                            style="display: none; color: red;"></p>
@@ -226,9 +226,13 @@
                                         </p>
                                         <p style="margin-left:92px">
                                             Màu sắc:
-                                            <select th:field="*{mausac.id}" class="form-control" style="width:482px">
+<!--                                            <select th:field="*{mausac.id}" class="form-control" style="width:482px">-->
+<!--                                                <option th:each="ms : ${ms}" th:value="${ms.id}"-->
+<!--                                                        th:text="${ms.ten}"></option>-->
+<!--                                            </select>-->
+                                            <select id="mausac-select"  th:field="*{mausac.id}" class="form-control" style="width:482px">
                                                 <option th:each="ms : ${ms}" th:value="${ms.id}"
-                                                        th:text="${ms.ten}"></option>
+                                                        th:text="${ms.ten}" th:data-color="${ms.ten}"></option>
                                             </select>
                                         </p>
                                         <p>
@@ -464,15 +468,25 @@
         const uploadButton = document.getElementById('uploadButton');
 
         input.addEventListener('change', function () {
-            const totalImages = preview.querySelectorAll('img').length;
+            const currentImages = document.querySelectorAll('.d-flex img').length;
             const totalFiles = this.files.length;
 
-            if (totalImages + totalFiles > 8) {
-                alert("Bạn chỉ có thể tải lên tối đa 8 ảnh.");
+            if (currentImages + totalFiles > 3) {
+                showToast('error', 'Bạn chỉ có thể tải lên tối đa 3 ảnh.');
                 return;
             }
 
             [...this.files].forEach(file => {
+                if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
+                    showToast('error', 'Chỉ được tải ảnh định dạng JPG và PNG.');
+                    return;
+                }
+
+                if (file.size > 1024 * 1024) {
+                    showToast('error', 'Dung lượng mỗi ảnh không được vượt quá 1MB.');
+                    return;
+                }
+
                 const reader = new FileReader();
                 reader.onload = function (e) {
                     const img = new Image();
@@ -481,8 +495,9 @@
                     img.style.height = '100px';
                     img.style.objectFit = 'cover';
                     preview.appendChild(img);
+
                     // Ẩn hoặc hiển thị nút tải lên dựa trên số lượng ảnh đã hiển thị
-                    if (totalImages + preview.querySelectorAll('img').length >= 8) {
+                    if (currentImages + preview.querySelectorAll('img').length >= 3) {
                         uploadButton.style.display = 'none';
                     } else {
                         uploadButton.style.display = 'inline-block';
@@ -491,6 +506,24 @@
                 reader.readAsDataURL(file);
             });
         });
+
+        function showToast(icon, title) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: icon,
+                title: title
+            });
+        }
     });
 </script>
 <!--validate form-->
@@ -1006,3 +1039,19 @@
     });
 </script>
 
+<!--Màu sắc-->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const selectElement = document.getElementById('mausac-select');
+        const options = selectElement.querySelectorAll('option');
+
+        options.forEach(option => {
+            const colorValue = option.getAttribute('data-color');
+            if (colorValue) {
+                option.style.backgroundColor = colorValue;
+                option.style.color = 'white'; // Hoặc màu chữ khác nếu cần
+            }
+        });
+    });
+
+</script>

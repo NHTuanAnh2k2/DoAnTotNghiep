@@ -212,12 +212,12 @@ public class GioHangController {
 
     @PostMapping("/muangay")
     public String muangay(@RequestParam Integer id,
-                            @RequestParam String selectedColor,
-                            @RequestParam String selectedSize,
-                            @RequestParam Integer quantity,
-                            Model model,
-                            HttpSession session,
-                            @RequestParam(value = "tokenDN") String tokenDN) {
+                          @RequestParam String selectedColor,
+                          @RequestParam String selectedSize,
+                          @RequestParam Integer quantity,
+                          Model model,
+                          HttpSession session,
+                          @RequestParam(value = "tokenDN") String tokenDN) {
         // Tìm sản phẩm chi tiết dựa trên màu sắc và kích cỡ
         SanPhamChiTiet sanPhamChiTiet = sanPhamChiTietRepository.findBySanPhamIdAndColorAndSize(id, selectedColor, selectedSize);
         List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");

@@ -97,15 +97,17 @@
                                                 <h1 class="text-center">
                                                     Ảnh đại diện
                                                 </h1>
+                                                <p class="text-center" style="color: red; font-weight: initial;" id="errorAnh"></p>
                                             </div>
                                             <div class=" d-flex justify-content-center align-items-center">
                                             <div class="file-input-wrapper">
-                                                <input type="file" id="fileInput" class="file-input" name="anh">
+                                                <input type="file" id="fileInput" class="file-input" name="anh" accept="image/png, image/jpeg">
                                                 <label for="fileInput" class="file-input-label">
                                                     <span>+</span>
                                                     <span>Upload</span>
                                                 </label>
                                                 <img id="uploadedImage" src="" alt="Uploaded Image" style="display: none;">
+
                                             </div>
                                             </div>
                                         </section>
@@ -347,24 +349,6 @@
         };
     }
 </script>
-
-<!--xử lý việc add ảnh nhân viên-->
-<script>
-    document.getElementById('fileInput').addEventListener('change', function (event) {
-        var file = event.target.files[0];
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            var imgElement = document.getElementById('uploadedImage');
-            imgElement.src = e.target.result;
-            imgElement.style.display = 'block'; // Hiển thị hình ảnh
-            var labelElement = document.querySelector('.file-input-label');
-            labelElement.style.display = 'none'; // Ẩn phần label
-        };
-
-        reader.readAsDataURL(file);
-    });
-</script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     function goBack() {
@@ -381,6 +365,47 @@
         // Đặt giá trị radio button mặc định
         document.getElementById("radioGT").checked = true;
         document.getElementById("radioVaitro").checked = true;
+    });
+    var errorAnh = document.getElementById("errorAnh");
+    var isAnhValid = true;
+    document.getElementById('fileInput').addEventListener('change', function (event) {
+        var file = event.target.files[0];
+        var imgElement = document.getElementById('uploadedImage');
+        var labelElement = document.querySelector('.file-input-label');
+        errorAnh.innerText = "";
+        imgElement.style.display = 'none';
+        if (file) {
+            // Kiểm tra kích thước tệp (dưới 1MB)
+            const maxSize = 1024 * 1024; // 1MB
+            if (file.size > maxSize) {
+                errorAnh.innerText = "Ảnh nhân viên không được quá 1MB!";
+                isAnhValid = false;
+                return;
+            } else if (isAnhValid) {
+                errorAnh.innerText = ""; // Clear previous error if any
+            }
+
+            // Kiểm tra định dạng tệp (chỉ PNG hoặc JPG)
+            const validFormats = ['image/png', 'image/jpeg'];
+            if (!validFormats.includes(file.type)) {
+                errorAnh.innerText = "Ảnh nhân viên chỉ nhận định dạng PNG và JPG!";
+                isAnhValid = false;
+                return;
+            } else if (isAnhValid) {
+                errorAnh.innerText = ""; // Clear previous error if any
+            }
+            if(isAnhValid) {
+                errorAnh.innerText = "";
+            }
+            // Hiển thị ảnh đã tải lên
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                imgElement.src = e.target.result;
+                imgElement.style.display = 'block'; // Hiển thị hình ảnh
+                labelElement.style.display = 'none'; // Ẩn phần label
+            };
+            reader.readAsDataURL(file);
+        }
     });
     function checkKhongPhaiChuCai(str) {
         // Biểu thức chính quy để kiểm tra bất kỳ ký tự nào không phải là chữ cái tiếng Việt có dấu hoặc chữ cái Latinh không dấu
@@ -617,7 +642,7 @@
             document.getElementById("inputDuong").style.border="";
             errorDuong.innerText = "";
         }
-        if(isTenValid && isNgSinhValid && isCCCDValid && isEmailValid && isSdtValid && isTinhValid && isQuanValid && isHuyenValid && isDuongValid){
+        if(isAnhValid && isTenValid && isNgSinhValid && isCCCDValid && isEmailValid && isSdtValid && isTinhValid && isQuanValid && isHuyenValid && isDuongValid){
             Swal.fire({
                 title: 'Bạn có chắc chắn muốn thêm nhân viên mới không?',
                 icon: 'question',

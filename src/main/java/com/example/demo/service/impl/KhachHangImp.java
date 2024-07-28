@@ -55,8 +55,8 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
     private static final String NUMBER = "0123456789";
     private static final String PASSWORD_ALLOW_BASE = CHAR_LOWER + CHAR_UPPER + NUMBER;
     private static final SecureRandom random = new SecureRandom();
-    private static final ConcurrentHashMap<String, ConcurrentMap<Integer, String>> codes = new ConcurrentHashMap<>();
-    private static final Map<String, ConcurrentMap<Integer, Long>> codeExpiryTimes = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, String> codes = new ConcurrentHashMap<>();
+    private static final Map<String, Long> codeExpiryTimes = new ConcurrentHashMap<>();
 
     @Override
     public List<KhachHang> findAllKhachHang() {
@@ -170,7 +170,7 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
     }
 
     @Override
-    public boolean sendPasswordResetCode(String email, String name, Integer userId) {
+    public boolean sendPasswordResetCode(String email, String name) {
         // Cấu hình thông tin email
         String host = "smtp.gmail.com";
         String port = "587";
@@ -187,8 +187,8 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
         //Tạo code reset password
         Random random = new Random();
         String code = String.valueOf(100000 + random.nextInt(900000)); // Mã 6 chữ số ngẫu nhiên
-        codes.computeIfAbsent(email, k -> new ConcurrentHashMap<>()).put(userId, code);
-        codeExpiryTimes.computeIfAbsent(email, k -> new ConcurrentHashMap<>()).put(userId, System.currentTimeMillis() + 60 * 1000);
+        codes.put(email, code);
+        codeExpiryTimes.put(code, System.currentTimeMillis() + 60 * 1000);
 
         // Tạo phiên gửi email
         Session session = Session.getInstance(properties, new Authenticator() {
@@ -223,15 +223,15 @@ public class KhachHangImp implements KhachHangService, NguoiDungService {
     }
 
     @Override
-    public boolean validateResetCode(String email, String code, Integer userId) {
-        if (codes.containsKey(email) && codes.get(email).containsKey(userId) && codes.get(email).get(userId).equals(code)) {
-            long expiryTime = codeExpiryTimes.get(email).get(userId);
+    public boolean validateResetCode(String email, String code) {
+        if (codes.containsKey(email) && codes.get(email).equals(code)) {
+            long expiryTime = codeExpiryTimes.get(code);
             if (System.currentTimeMillis() <= expiryTime) {
                 return true;
             } else {
                 // Mã đã hết hạn, không xóa ngay lập tức để tránh xóa mã còn hiệu lực
-                codes.get(email).remove(userId);
-                codeExpiryTimes.get(email).remove(userId);
+                codes.remove(email);
+                codeExpiryTimes.remove(code);
             }
         }
         return false;

@@ -3,6 +3,8 @@ package com.example.demo.controller.hoadon;
 import com.example.demo.entity.*;
 import com.example.demo.info.*;
 import com.example.demo.repository.*;
+import com.example.demo.repository.PhieuGiamGiaChiTiet.PhieuGiamChiTietRepository;
+import com.example.demo.repository.hoadon.HoaDonChiTietRepository;
 import com.example.demo.repository.hoadon.HoaDonRepository;
 import com.example.demo.restcontroller.khachhang.Province;
 import com.example.demo.service.*;
@@ -30,6 +32,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -44,6 +52,10 @@ import java.util.*;
 @Controller
 @RequestMapping("hoa-don")
 public class hoaDonController {
+    @Autowired
+    PhieuGiamChiTietRepository daoPGGCTRepo;
+    @Autowired
+    HoaDonRepository daoRepo;
     @Autowired
     PhieuGiamGiaRepository daoPGG;
     @Autowired
@@ -569,6 +581,61 @@ public class hoaDonController {
         return "admin/qlchitiethoadon";
     }
 
+    //ap dụng voucher với off
+    @GetMapping("ap-dung-voucher/{id}")
+    public String addvoucherselect(@PathVariable("id") String id, RedirectAttributes redirectAttributes) {
+        PhieuGiamGia phieutim = daoPGG.findPhieuGiamGiaById(Integer.valueOf(id));
+        BigDecimal tongTienSP = new BigDecimal("0");
+        BigDecimal sotiengiam = new BigDecimal("0");
+        HoaDon hds = daoRepo.findById(idhdshowdetail).get();
+
+        List<HoaDonChiTiet> lstHDCT = daoHDCT.getListSPHD(hds);
+//tính tổng tiền đơn
+        for (HoaDonChiTiet b : lstHDCT
+        ) {
+            tongTienSP = tongTienSP.add(b.getGiasanpham().multiply(new BigDecimal(b.getSoluong())));
+        }
+        if (tongTienSP.compareTo(phieutim.getDontoithieu()) < 0) {
+            redirectAttributes.addFlashAttribute("addVoucherfail", true);
+            return "redirect:/hoa-don/showDetail";
+        }
+// tính lại số tiền giảm
+        sotiengiam = new BigDecimal("0");
+        if (phieutim.getLoaiphieu() == true) {
+            // phiếu %
+            if ((new BigDecimal(phieutim.getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100"))).compareTo(phieutim.getGiatrigiamtoida()) > 0) {
+                sotiengiam = phieutim.getGiatrigiamtoida();
+            } else {
+                sotiengiam = (new BigDecimal(phieutim.getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100")));
+            }
+
+        } else {
+            // phiếu vnđ
+            sotiengiam = new BigDecimal(phieutim.getGiatrigiam());
+        }
+
+        BigDecimal tongTT = (tongTienSP.add(hds.getPhivanchuyen())).subtract(sotiengiam);
+        PhuongThucThanhToan ptttTim = daoPT.timTheoHoaDon(hds).get(0);
+        ptttTim.setTongtien(tongTT);
+        daoPT.add_update(ptttTim);
+        hds.setTongtien(tongTT);
+        dao.capNhatHD(hds);
+        PhieuGiamGiaChiTiet phieuGiamGiaChiTietTim = new PhieuGiamGiaChiTiet();
+        List<PhieuGiamGiaChiTiet> lst=daoPGGCT.timListPhieuTheoHD(hds);
+        if(lst.size()>0){
+            phieuGiamGiaChiTietTim=lst.get(0);
+        }else {
+            phieuGiamGiaChiTietTim.setHoadon(hds);
+            phieuGiamGiaChiTietTim.setPhieugiamgia(phieutim);
+            phieuGiamGiaChiTietTim.setGiabandau(tongTienSP);
+            phieuGiamGiaChiTietTim.setGiasauapdung(tongTT);
+            phieuGiamGiaChiTietTim.setTiengiam(sotiengiam);
+        }
+        daoPGGCTRepo.save(phieuGiamGiaChiTietTim);
+        redirectAttributes.addFlashAttribute("addVoucherSucsess", true);
+        return "redirect:/hoa-don/showDetail";
+    }
+
     @GetMapping("call-api-ngay-giao")
     @ResponseBody
     public ResponseEntity<?> callapi() {
@@ -670,7 +737,7 @@ public class hoaDonController {
             PhieuGiamGia phieuGiamGiasaveSl = new PhieuGiamGia();
             List<PhieuGiamGiaChiTiet> lstPGGCTs = daoPGGCT.timListPhieuTheoHD(hdTT);
             if (lstPGGCTs.size() > 0) {
-                phieuGiamGiasaveSl=lstPGGCTs.get(0).getPhieugiamgia();
+                phieuGiamGiasaveSl = lstPGGCTs.get(0).getPhieugiamgia();
                 if (phieuGiamGiasaveSl.getSoluong() > 0) {
                     phieuGiamGiasaveSl.setSoluong(phieuGiamGiasaveSl.getSoluong() - 1);
                     if (phieuGiamGiasaveSl.getSoluong() == 0) {
@@ -896,7 +963,7 @@ public class hoaDonController {
 
     // thêm sản phẩm tại hdct
     @GetMapping("ChoseSP/{id}")
-    public String choseSP(@PathVariable("id") Integer id) {
+    public String choseSP(@PathVariable("id") Integer id,RedirectAttributes redirectAttributes) {
         SanPhamChiTiet spct = daoSPCT.findById(id);
         SanPhamChiTiet spctCapNhatSL = spct;
 
@@ -915,6 +982,7 @@ public class hoaDonController {
             hdct.setSoluong(sl);
             daoSPCT.addSPCT(spctCapNhatSL);
             daoHDCT.capnhat(hdct);
+            redirectAttributes.addFlashAttribute("addProductSuccsess", true);
             return "redirect:/hoa-don/showDetail";
         }
         HoaDonChiTiet hdctNew = new HoaDonChiTiet();
@@ -957,6 +1025,7 @@ public class hoaDonController {
         daoPT.add_update(ptttTim);
         hdset.setTongtien(tongTT);
         dao.capNhatHD(hdset);
+        redirectAttributes.addFlashAttribute("addProductSuccsess", true);
         return "redirect:/hoa-don/showDetail";
     }
 
@@ -971,8 +1040,15 @@ public class hoaDonController {
     // tìm kiếm sảm phẩm theo bộ lọc
     @GetMapping("searchSP")
     @ResponseBody
-    public ResponseEntity<?> timSPHDCT(@RequestParam("lstData") List<String> lstData
+    public ResponseEntity<?> timSPHDCT(@RequestParam("lstData") String lstDataStr
     ) {
+        String[] lstDataArray = lstDataStr.split(",");
+
+        // Giải mã các phần tử trong mảng
+        List<String> lstData = Arrays.stream(lstDataArray)
+                .map(item -> URLDecoder.decode(item, StandardCharsets.UTF_8))
+                .collect(Collectors.toList());
+
         String ten = lstData.get(0).equalsIgnoreCase("all") ? "" : lstData.get(0);
         String ChatLieu = lstData.get(1).equalsIgnoreCase("all") ? "" : lstData.get(1);
         String ThuongHieu = lstData.get(2).equalsIgnoreCase("all") ? "" : lstData.get(2);
@@ -987,10 +1063,9 @@ public class hoaDonController {
 
     //xóa sản phẩm ra khỏi hóa đơn
     @GetMapping("delete-sp-hdct/{id}")
-    public String deleteSPHDCT(@PathVariable("id") Integer id) {
+    public String deleteSPHDCT(@PathVariable("id") Integer id,RedirectAttributes redirectAttributes) {
         HoaDonChiTiet hdDelete = daoHDCT.findByID(id);
         HoaDon hd = dao.timHDTheoMaHD(hdDelete.getHoadon().getMahoadon());
-
         int slHienTai = hdDelete.getSoluong();
         daoHDCT.deleteById(id);
         if (hd.getLoaihoadon() == false) {
@@ -1008,6 +1083,7 @@ public class hoaDonController {
             tongTienSP = tongTienSP.add(b.getGiasanpham().multiply(new BigDecimal(b.getSoluong())));
         }
         if (pgctTim.getPhieugiamgia() != null) {
+            if (tongTienSP.compareTo(pgctTim.getPhieugiamgia().getDontoithieu()) >= 0) {
             if (pgctTim.getPhieugiamgia().getLoaiphieu() == true) {
                 // phiếu %
                 if ((new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100"))).compareTo(pgctTim.getPhieugiamgia().getGiatrigiamtoida()) > 0) {
@@ -1020,6 +1096,11 @@ public class hoaDonController {
                 // phiếu vnđ
                 sotiengiam = new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam());
             }
+            } else {
+                daoPGGCTRepo.deleteById(pgctTim.getId());
+                redirectAttributes.addFlashAttribute("autokickvoucher", true);
+            }
+
         }
 
 
@@ -1029,12 +1110,13 @@ public class hoaDonController {
         daoPT.add_update(ptttTim);
         hd.setTongtien(tongTT);
         dao.capNhatHD(hd);
+        redirectAttributes.addFlashAttribute("updateSLSuccsess", true);
         return "redirect:/hoa-don/showDetail";
     }
 
 
     @GetMapping("update-sp-hdct/{id}/{sl}")
-    public String updateSPHDCT(@PathVariable("id") Integer id, @PathVariable("sl") Integer sl) {
+    public String updateSPHDCT(@PathVariable("id") Integer id, @PathVariable("sl") Integer sl,RedirectAttributes redirectAttributes) {
         HoaDonChiTiet hdDelete = daoHDCT.findByID(id);
         SanPhamChiTiet spUpdateQuantity = hdDelete.getSanphamchitiet();
         HoaDon hd = dao.timHDTheoMaHD(hdDelete.getHoadon().getMahoadon());
@@ -1042,6 +1124,7 @@ public class hoaDonController {
         PhieuGiamGiaChiTiet pgctTim = daoPGGCT.timListPhieuTheoHD(hd).size() > 0 ? daoPGGCT.timListPhieuTheoHD(hd).get(0) : new PhieuGiamGiaChiTiet();
 
         if (hdDelete.getSoluong() == sl) {
+            redirectAttributes.addFlashAttribute("updateSLSuccsess", true);
             return "redirect:/hoa-don/showDetail";
         } else {
             if (hdDelete.getSoluong() < sl) {
@@ -1060,18 +1143,24 @@ public class hoaDonController {
                 ) {
                     tongTienSP = tongTienSP.add(b.getGiasanpham().multiply(new BigDecimal(b.getSoluong())));
                 }
-                if (pgctTim.getPhieugiamgia() != null) {
-                    if (pgctTim.getPhieugiamgia().getLoaiphieu() == true) {
-                        // phiếu %
-                        if ((new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100"))).compareTo(pgctTim.getPhieugiamgia().getGiatrigiamtoida()) > 0) {
-                            sotiengiam = pgctTim.getPhieugiamgia().getGiatrigiamtoida();
-                        } else {
-                            sotiengiam = (new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100")));
-                        }
 
+                if (pgctTim.getPhieugiamgia() != null) {
+                    if (tongTienSP.compareTo(pgctTim.getPhieugiamgia().getDontoithieu()) >= 0) {
+                        if (pgctTim.getPhieugiamgia().getLoaiphieu() == true) {
+                            // phiếu %
+                            if ((new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100"))).compareTo(pgctTim.getPhieugiamgia().getGiatrigiamtoida()) > 0) {
+                                sotiengiam = pgctTim.getPhieugiamgia().getGiatrigiamtoida();
+                            } else {
+                                sotiengiam = (new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100")));
+                            }
+
+                        } else {
+                            // phiếu vnđ
+                            sotiengiam = new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam());
+                        }
                     } else {
-                        // phiếu vnđ
-                        sotiengiam = new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam());
+                        daoPGGCTRepo.deleteById(pgctTim.getId());
+                        redirectAttributes.addFlashAttribute("autokickvoucher", true);
                     }
                 }
 
@@ -1083,6 +1172,7 @@ public class hoaDonController {
                 daoHDCT.capnhat(hdDelete);
                 hd.setTongtien(tongTT);
                 dao.capNhatHD(hd);
+                redirectAttributes.addFlashAttribute("updateSLSuccsess", true);
                 return "redirect:/hoa-don/showDetail";
             }
         }
@@ -1092,6 +1182,8 @@ public class hoaDonController {
             spUpdateQuantity.setSoluong(spUpdateQuantity.getSoluong() + slgiam);
             daoSPCT.addSPCT(spUpdateQuantity);
         }
+        hdDelete.setSoluong(sl);
+        daoHDCT.capnhat(hdDelete);
         BigDecimal tongTienSP = new BigDecimal("0");
         BigDecimal sotiengiam = new BigDecimal("0");
         List<HoaDonChiTiet> lstHDCT = daoHDCT.getListSPHD(hd);
@@ -1099,30 +1191,36 @@ public class hoaDonController {
         ) {
             tongTienSP = tongTienSP.add(b.getGiasanpham().multiply(new BigDecimal(b.getSoluong())));
         }
-        if (pgctTim.getPhieugiamgia() != null) {
-            if (pgctTim.getPhieugiamgia().getLoaiphieu() == true) {
-                // phiếu %
-                if ((new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100"))).compareTo(pgctTim.getPhieugiamgia().getGiatrigiamtoida()) > 0) {
-                    sotiengiam = pgctTim.getPhieugiamgia().getGiatrigiamtoida();
-                } else {
-                    sotiengiam = (new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100")));
-                }
 
+        if (pgctTim.getPhieugiamgia() != null) {
+            if (tongTienSP.compareTo(pgctTim.getPhieugiamgia().getDontoithieu()) >= 0) {
+                if (pgctTim.getPhieugiamgia().getLoaiphieu() == true) {
+                    // phiếu %
+                    if ((new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100"))).compareTo(pgctTim.getPhieugiamgia().getGiatrigiamtoida()) > 0) {
+                        sotiengiam = pgctTim.getPhieugiamgia().getGiatrigiamtoida();
+                    } else {
+                        sotiengiam = (new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100")));
+                    }
+
+                } else {
+                    // phiếu vnđ
+                    sotiengiam = new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam());
+                }
             } else {
-                // phiếu vnđ
-                sotiengiam = new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam());
+                daoPGGCTRepo.deleteById(pgctTim.getId());
+                redirectAttributes.addFlashAttribute("autokickvoucher", true);
             }
         }
 
 
         BigDecimal tongTT = (tongTienSP.add(hd.getPhivanchuyen())).subtract(sotiengiam);
+
         PhuongThucThanhToan ptttTim = daoPT.timTheoHoaDon(hd).get(0);
         ptttTim.setTongtien(tongTT);
         daoPT.add_update(ptttTim);
-        hdDelete.setSoluong(sl);
-        daoHDCT.capnhat(hdDelete);
         hd.setTongtien(tongTT);
         dao.capNhatHD(hd);
+        redirectAttributes.addFlashAttribute("updateSLSuccsess", true);
         return "redirect:/hoa-don/showDetail";
     }
 

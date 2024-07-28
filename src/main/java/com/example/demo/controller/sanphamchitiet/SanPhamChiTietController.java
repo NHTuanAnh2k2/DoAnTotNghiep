@@ -1,4 +1,5 @@
 package com.example.demo.controller.sanphamchitiet;
+
 import com.example.demo.entity.*;
 import com.example.demo.info.SanPhamChiTietInfo;
 import com.example.demo.info.ThuocTinhInfo;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -17,7 +19,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 
 @Controller
@@ -161,19 +162,12 @@ public class SanPhamChiTietController {
 
     @PostMapping("/updateCTSP/{id}")
     public String updateCTSP(@PathVariable Integer id, @ModelAttribute("hehe") SanPhamChiTiet sanPhamChiTiet,
-                             @RequestParam(name = "anhs") List<MultipartFile> anhFiles,
+                             @RequestParam(name = "anhs", required = false) List<MultipartFile> anhFiles,
                              @RequestParam(name = "spctIds") Integer spctId,
                              RedirectAttributes redirectAttributes) {
-        int doDaiChuoi = 10;
-        String kiTu = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        Random random = new Random();
-        StringBuilder chuoiNgauNhien = new StringBuilder(doDaiChuoi);
-        for (int i = 0; i < doDaiChuoi; i++) {
-            chuoiNgauNhien.append(kiTu.charAt(random.nextInt(kiTu.length())));
-        }
         LocalDateTime currentTime = LocalDateTime.now();
-
-        // Lấy các thực thể từ cơ sở dữ liệu dựa trên ID từ view
+        SanPham sanPham = sanPhamRepositoty.findById(sanPhamChiTiet.getSanpham().getId())
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm"));
         ThuongHieu thuongHieu = thuongHieuRepository.findById(sanPhamChiTiet.getThuonghieu().getId())
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy thương hiệu"));
         ChatLieu chatLieu = chatLieuRepository.findById(sanPhamChiTiet.getChatlieu().getId())
@@ -184,53 +178,65 @@ public class SanPhamChiTietController {
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy màu sắc"));
         KichCo kichCo = kichCoRepository.findById(sanPhamChiTiet.getKichco().getId())
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy kích cỡ"));
+        SanPhamChiTiet existingSanPhamChiTiet = sanPhamChiTietRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm chi tiết"));
 
-        // Gán các thực thể này vào sanPhamChiTiet
-        sanPhamChiTiet.setThuonghieu(thuongHieu);
-        sanPhamChiTiet.setChatlieu(chatLieu);
-        sanPhamChiTiet.setDegiay(deGiay);
-        sanPhamChiTiet.setMausac(mauSac);
-        sanPhamChiTiet.setKichco(kichCo);
+        existingSanPhamChiTiet.setSanpham(sanPham);
+        existingSanPhamChiTiet.setThuonghieu(thuongHieu);
+        existingSanPhamChiTiet.setChatlieu(chatLieu);
+        existingSanPhamChiTiet.setDegiay(deGiay);
+        existingSanPhamChiTiet.setMausac(mauSac);
+        existingSanPhamChiTiet.setKichco(kichCo);
+        existingSanPhamChiTiet.setLancapnhatcuoi(currentTime);
+        existingSanPhamChiTiet.setSoluong(sanPhamChiTiet.getSoluong());
+        existingSanPhamChiTiet.setGiatien(sanPhamChiTiet.getGiatien());
+        existingSanPhamChiTiet.setMota(sanPhamChiTiet.getMota());
+        existingSanPhamChiTiet.setTrangthai(sanPhamChiTiet.getTrangthai());
+        existingSanPhamChiTiet.setGioitinh(sanPhamChiTiet.getGioitinh());
 
-        // Lưu thực thể SanPham nếu nó chưa được lưu
-        SanPham sanPham = sanPhamChiTiet.getSanpham();
-        if (sanPham.getId() == null) {
-            sanPham.setMasanpham(chuoiNgauNhien.toString());
-            sanPham.setTrangthai(true);
-            sanPham.setNgaytao(currentTime);
-            sanPham.setLancapnhatcuoi(currentTime);
-            sanPhamRepositoty.save(sanPham);
-        }
-
-        sanPhamChiTiet.setId(id);
-        sanPhamChiTiet.setMasanphamchitiet(chuoiNgauNhien.toString());
-        sanPhamChiTiet.setNgaytao(currentTime);
-        sanPhamChiTiet.setLancapnhatcuoi(currentTime);
-
-        sanPhamChiTietRepository.save(sanPhamChiTiet);
-
-        SanPhamChiTiet spct = sanPhamChiTietRepository.findById(spctId).orElse(null);
-        if (spct != null) {
-            for (MultipartFile anhFile : anhFiles) {
-                String anhUrl = saveImage(anhFile);
-                Anh anh = new Anh();
-                anh.setTenanh(anhUrl);
-                anh.setTrangthai(true);
-                anh.setNgaytao(currentTime);
-                anh.setLancapnhatcuoi(currentTime);
-                anh.setSanphamchitiet(spct);
-                anhRepository.save(anh);
+        sanPhamChiTietRepository.save(existingSanPhamChiTiet);
+        if (anhFiles != null && !anhFiles.isEmpty()) {
+            SanPhamChiTiet spct = sanPhamChiTietRepository.findById(spctId).orElse(null);
+            if (spct != null) {
+                for (MultipartFile anhFile : anhFiles) {
+                    if (!anhFile.isEmpty()) {
+                        String anhUrl = saveImage(anhFile);
+                        Anh anh = new Anh();
+                        anh.setTenanh(anhUrl);
+                        anh.setTrangthai(true);
+                        anh.setNgaytao(currentTime);
+                        anh.setLancapnhatcuoi(currentTime);
+                        anh.setSanphamchitiet(spct);
+                        anhRepository.save(anh);
+                    }
+                }
             }
         }
-
         Integer firstProductId = sanPhamChiTiet.getSanpham().getId();
         redirectAttributes.addFlashAttribute("success", true);
         return "redirect:/detailsanpham/" + firstProductId;
     }
 
-
+    //    private String saveImage(MultipartFile file) {
+//        String uploadDir = "G:\\Ki7\\DATN\\DATN\\src\\main\\resources\\static\\upload";
+//        try {
+//            File directory = new File(uploadDir);
+//            if (!directory.exists()) {
+//                directory.mkdirs();
+//            }
+//            String originalFileName = file.getOriginalFilename();
+//            String filePath = uploadDir + File.separator + originalFileName;
+//            File dest = new File(filePath);
+//            file.transferTo(dest);
+//            return filePath;
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
     private String saveImage(MultipartFile file) {
-        String uploadDir = "G:\\Ki7\\DATN\\DATN\\src\\main\\resources\\static\\upload";
+        String uploadDir = "D:\\DATN\\src\\main\\resources\\static\\upload";
+        String dbUploadDir = "/upload";
         try {
             File directory = new File(uploadDir);
             if (!directory.exists()) {
@@ -240,13 +246,12 @@ public class SanPhamChiTietController {
             String filePath = uploadDir + File.separator + originalFileName;
             File dest = new File(filePath);
             file.transferTo(dest);
-            return filePath;
+            return dbUploadDir + "/" + originalFileName;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
     }
-
 
     @PostMapping("/updateGiaAndSoLuongCTSP")
     public String updateGiaAndSoLuong(

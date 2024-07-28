@@ -37,7 +37,7 @@ public class DangKyRestController {
         Integer userId = khachHang.getNguoidung().getId();
         if (khachHang != null) {
             session.setAttribute("userIdKhachHang", userId);
-            boolean success = khachHangService.sendPasswordResetCode(emailResetPassword, khachHang.getNguoidung().getHovaten(), userId);
+            boolean success = khachHangService.sendPasswordResetCode(emailResetPassword, khachHang.getNguoidung().getHovaten());
             if (success) {
                 System.out.println("Đã gửi mã đến mail");
                 return ResponseEntity.ok("Mã khôi phục mật khẩu đã được gửi đến email của bạn.");
@@ -51,10 +51,10 @@ public class DangKyRestController {
 
     @PostMapping("/validate-code")
     public ResponseEntity<String> validateResetCode(@RequestParam("emailResetPassword") String emailResetPassword,
-                                                    @RequestParam("codeReset") String code,
-                                                    @RequestParam("userId") Integer userId
+                                                    @RequestParam("codeReset") String code
+//                                                    @RequestParam("userId") Integer userId
                                                     ) {
-        boolean valid = khachHangService.validateResetCode(emailResetPassword, code, userId);
+        boolean valid = khachHangService.validateResetCode(emailResetPassword, code);
         if (valid) {
             return ResponseEntity.ok("Mã xác nhận hợp lệ.");
         } else {
@@ -85,7 +85,7 @@ public class DangKyRestController {
 
         if (nhanVien != null) {
             session.setAttribute("userIdNhanVien", userId);
-            boolean success = khachHangService.sendPasswordResetCode(emailResetPassword, nhanVien.getNguoidung().getHovaten(), userId);
+            boolean success = khachHangService.sendPasswordResetCode(emailResetPassword, nhanVien.getNguoidung().getHovaten());
             if (success) {
                 System.out.println("Đã gửi mã đến mail");
                 return ResponseEntity.ok("Mã khôi phục mật khẩu đã được gửi đến email của bạn.");

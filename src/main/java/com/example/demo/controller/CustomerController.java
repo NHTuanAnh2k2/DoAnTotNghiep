@@ -2,24 +2,37 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.*;
 import com.example.demo.info.NguoiDungKHInfo;
+import com.example.demo.info.TaiKhoanTokenInfo;
+import com.example.demo.info.TraCuuDetailInfo;
 import com.example.demo.info.hosokhachhang.DoiMatKhauNguoiDung;
 import com.example.demo.info.hosokhachhang.UpdateDiaChi;
 import com.example.demo.info.hosokhachhang.UpdateKhachHang;
 import com.example.demo.info.hosokhachhang.UpdateNguoiDung;
 import com.example.demo.info.token.UserManager;
 import com.example.demo.repository.DiaChiRepository;
+import com.example.demo.repository.HoaDonChiTietRepository1;
+import com.example.demo.repository.LichSuHoaDon.LichSuHoaDonRepository;
 import com.example.demo.repository.NguoiDungRepository;
+//import com.example.demo.repository.SanPhamChiTietRepository1;
+import com.example.demo.repository.SanPhamChiTietRepository;
+import com.example.demo.repository.giohang.GioHangChiTietRepository;
+import com.example.demo.repository.giohang.GioHangRepository;
+import com.example.demo.repository.giohang.KhachHangGioHangRepository;
+import com.example.demo.repository.giohang.NguoiDungGioHangRepository;
 import com.example.demo.repository.hoadon.HoaDonChiTietRepository;
 import com.example.demo.repository.hoadon.HoaDonRepository;
+import com.example.demo.repository.phuongThucThanhToan.PhuongThucThanhToanRepository;
 import com.example.demo.restcontroller.khachhang.Province;
 import com.example.demo.security.JWTGenerator;
 import com.example.demo.service.KhachHangService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -31,10 +44,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @Controller
 public class CustomerController {
@@ -49,25 +59,72 @@ public class CustomerController {
     UserManager userManager;
     @Autowired
     HoaDonRepository hoaDonRepository;
+    @Autowired
+    GioHangRepository gioHangRepository;
+    @Autowired
+    GioHangChiTietRepository gioHangChiTietRepository;
+    @Autowired
+    PhuongThucThanhToanRepository phuongThucThanhToanRepository;
+    @Autowired
+    HoaDonChiTietRepository1 hoaDonChiTietRepository;
+    @Autowired
+    LichSuHoaDonRepository lichSuHoaDonRepository;
+    @Autowired
+    HoaDonChiTietRepository1 hoaDonChiTietRepository1;
 
+    @Autowired
+    NguoiDungGioHangRepository nguoiDungGioHangRepository;
 
-    @GetMapping("/trangchu")
-    public String trangchu() {
-        return "customer/trangchu";
-    }
+    @Autowired
+    KhachHangGioHangRepository khachHangGioHangRepository;
 
-    @GetMapping("/modal")
-    public String modal() {
-        return "customer/modal";
-    }
-
+    
     @GetMapping("/quenmatkhau")
     public String quenmatkhauview(@ModelAttribute("nguoidung") NguoiDungKHInfo nguoidung,
                                   Model model) {
-
         return "same/quenmatkhau";
     }
 
+    @GetMapping("/customer/tracuudonhang")
+    public String tracuu(Model model, HttpSession session) {
+        List<GioHangChiTiet> cartItems = new ArrayList<>();
+        String token = (String) session.getAttribute("token");
+        NguoiDung nguoiDung = null;
+        KhachHang khachHang = null;
+        GioHang gioHang = null;
+        if (token != null) {
+            List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
+            if (taiKhoanTokenInfos != null) {
+                for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
+                    if (tkInfo.getToken().equals(token)) {
+                        Integer userId = tkInfo.getId();
+                        nguoiDung = nguoiDungGioHangRepository.findById(userId).orElse(null);
+                        break;
+                    }
+                }
+                if (nguoiDung != null) {
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
+                    if (khachHang != null) {
+                        gioHang = gioHangRepository.findByKhachhang(khachHang);
+                        if (gioHang != null) {
+                            cartItems = gioHang.getGioHangChiTietList();
+                        }
+                    }
+                }
+            }
+        } else {
+            cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
+            if (cartItems == null) {
+                cartItems = new ArrayList<>();
+            }
+        }
+        int totalQuantity = 0;
+        for (GioHangChiTiet item : cartItems) {
+            totalQuantity += item.getSoluong();
+        }
+        model.addAttribute("totalQuantity", totalQuantity);
+        return "customer/tracuudonhang";
+    }
 
     @GetMapping("/hosokhachhang/{username}")
     public String hosokhachhang(Model model,
@@ -75,6 +132,44 @@ public class CustomerController {
                                 @RequestParam("page") Optional<Integer> pageParam,
                                 HttpSession session
     ) {
+        List<GioHangChiTiet> cartItems = new ArrayList<>();
+        String token = (String) session.getAttribute("token");
+        NguoiDung nguoiDung = null;
+        KhachHang khachHang = null;
+        GioHang gioHang = null;
+        if (token != null) {
+            List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
+            if (taiKhoanTokenInfos != null) {
+                for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
+                    if (tkInfo.getToken().equals(token)) {
+                        Integer userId = tkInfo.getId();
+                        nguoiDung = nguoiDungGioHangRepository.findById(userId).orElse(null);
+                        break;
+                    }
+                }
+                if (nguoiDung != null) {
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
+                    if (khachHang != null) {
+                        gioHang = gioHangRepository.findByKhachhang(khachHang);
+                        if (gioHang != null) {
+                            cartItems = gioHang.getGioHangChiTietList();
+                        }
+                    }
+                }
+            }
+        } else {
+            cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
+            if (cartItems == null) {
+                cartItems = new ArrayList<>();
+            }
+        }
+        int totalQuantity = 0;
+        for (GioHangChiTiet item : cartItems) {
+            totalQuantity += item.getSoluong();
+        }
+        model.addAttribute("totalQuantity", totalQuantity);
+
+
         String userDangnhap = (String) session.getAttribute("userDangnhap");
         if (username != null) {
             if (userDangnhap != null) {
@@ -107,7 +202,7 @@ public class CustomerController {
                 List<HoaDon> lstHoaDon3 = hoaDonRepository.findHoaDonByTrangThaiAndKhachhang(3, customerId); //đang giao hàng
                 List<HoaDon> lstHoaDon4 = hoaDonRepository.findHoaDonByTrangThaiAndKhachhang(4, customerId); //đã thanh toán
                 List<HoaDon> lstHoaDon5 = hoaDonRepository.findHoaDonByTrangThaiAndKhachhang(5, customerId); //đã hoàn thành
-                List<HoaDon>  lstHoaDon6 = hoaDonRepository.findHoaDonByTrangThaiAndKhachhang(6, customerId); //đã hủy
+                List<HoaDon> lstHoaDon6 = hoaDonRepository.findHoaDonByTrangThaiAndKhachhang(6, customerId); //đã hủy
 
                 model.addAttribute("lstHoaDon", lstHoaDon);
                 model.addAttribute("lstHoaDon0", lstHoaDon0);
@@ -323,6 +418,189 @@ public class CustomerController {
 
 
         return "redirect:/hosokhachhang/{username}";
+    }
+
+    @GetMapping("/customer/timkiem")
+    public String timkiem(Model model, HttpSession session,
+                          @RequestParam(value = "searchInput", required = false) String inputsearch
+    ) {
+        List<GioHangChiTiet> cartItems = new ArrayList<>();
+        String token = (String) session.getAttribute("token");
+        NguoiDung nguoiDung = null;
+        KhachHang khachHang = null;
+        GioHang gioHang = null;
+        if (token != null) {
+            List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
+            if (taiKhoanTokenInfos != null) {
+                for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
+                    if (tkInfo.getToken().equals(token)) {
+                        Integer userId = tkInfo.getId();
+                        nguoiDung = nguoiDungGioHangRepository.findById(userId).orElse(null);
+                        break;
+                    }
+                }
+                if (nguoiDung != null) {
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
+                    if (khachHang != null) {
+                        gioHang = gioHangRepository.findByKhachhang(khachHang);
+                        if (gioHang != null) {
+                            cartItems = gioHang.getGioHangChiTietList();
+                        }
+                    }
+                }
+            }
+        } else {
+            cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
+            if (cartItems == null) {
+                cartItems = new ArrayList<>();
+            }
+        }
+        int totalQuantity = 0;
+        for (GioHangChiTiet item : cartItems) {
+            totalQuantity += item.getSoluong();
+        }
+        model.addAttribute("totalQuantity", totalQuantity);
+
+
+        List<HoaDon> lstHoaDon = new ArrayList<>();
+        if (inputsearch != null) {
+            lstHoaDon = hoaDonRepository.findHoaDonByMaOrSdtOrEmail(inputsearch);
+            System.out.println("lstHoaDon: " + lstHoaDon);
+            lstHoaDon.removeIf(hoaDon -> hoaDon.getTrangthai() == 6);
+        }
+
+        model.addAttribute("lstHoaDon", lstHoaDon);
+        model.addAttribute("searchInput", inputsearch);
+        return "customer/tracuudonhang";
+    }
+
+    @GetMapping("/customer/detail-don-hang")
+    public String detail(Model model, HttpSession session,
+                         @RequestParam("id") String idDonHang
+    ) {
+        List<GioHangChiTiet> cartItems = new ArrayList<>();
+        String token = (String) session.getAttribute("token");
+        NguoiDung nguoiDung = null;
+        KhachHang khachHang = null;
+        GioHang gioHang = null;
+        if (token != null) {
+            List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
+            if (taiKhoanTokenInfos != null) {
+                for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
+                    if (tkInfo.getToken().equals(token)) {
+                        Integer userId = tkInfo.getId();
+                        nguoiDung = nguoiDungGioHangRepository.findById(userId).orElse(null);
+                        break;
+                    }
+                }
+                if (nguoiDung != null) {
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
+                    if (khachHang != null) {
+                        gioHang = gioHangRepository.findByKhachhang(khachHang);
+                        if (gioHang != null) {
+                            cartItems = gioHang.getGioHangChiTietList();
+                        }
+                    }
+                }
+            }
+        } else {
+            cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
+            if (cartItems == null) {
+                cartItems = new ArrayList<>();
+            }
+        }
+        int totalQuantity = 0;
+        for (GioHangChiTiet item : cartItems) {
+            totalQuantity += item.getSoluong();
+        }
+        model.addAttribute("totalQuantity", totalQuantity);
+
+
+
+        Integer id = null;
+        try {
+            id = Integer.parseInt(idDonHang);
+        } catch (NumberFormatException e) {
+            return "redirect:/customer/tracuudonhang";
+        }
+        HoaDon hd = hoaDonRepository.findHoaDonById(id);
+        PhuongThucThanhToan pttt = phuongThucThanhToanRepository.findByIdHoaDon(hd.getId());
+        List<TraCuuDetailInfo> lstHdct = hoaDonChiTietRepository1.findTraCuu(hd.getId());
+        model.addAttribute("hoadon", hd);
+        model.addAttribute("pttt", pttt);
+        model.addAttribute("lstHdct", lstHdct);
+        return "customer/detaildonhang";
+    }
+
+    @PostMapping("/mualai")
+    public String addToCart(Model model,
+                            RedirectAttributes redirectAttributes,
+                            HttpSession session,
+                            @RequestParam("id") Integer idHoaDon) {
+        String username = (String) session.getAttribute("userDangnhap");
+        NguoiDung nguoiDung = khachHangService.findNguoiDungByTaikhoan(username);
+        KhachHang khachHang = khachHangService.findKhachHangByIdNguoiDung(nguoiDung.getId());
+        GioHang gioHang = gioHangRepository.findByIdKhachHang(khachHang.getId());
+        if (gioHang == null) {
+            // Nếu chưa có giỏ hàng, tạo mới
+            gioHang = new GioHang();
+            gioHang.setNgaytao(LocalDateTime.now());
+            gioHang.setTrangthai(true);
+            gioHang.setKhachhang(khachHang);
+            gioHang = gioHangRepository.save(gioHang);
+        }
+
+        List<HoaDonChiTiet> chiTietList = hoaDonChiTietRepository.findHoaDonChiTietByIdHoaDon(idHoaDon);
+        boolean hasValidProduct = false;
+        for (HoaDonChiTiet chiTiet : chiTietList) {
+            // Kiểm tra sản phẩm đã có trong giỏ hàng chưa
+            GioHangChiTiet gioHangChiTiet = gioHangChiTietRepository.findByGiohangIdAndSanphamchitietId(
+                    gioHang.getId(), chiTiet.getSanphamchitiet().getId());
+
+            if (chiTiet.getSanphamchitiet().getSoluong() < 1 || chiTiet.getSanphamchitiet().getTrangthai() == false) {
+                continue;
+            }
+            hasValidProduct = true;
+            if (gioHangChiTiet == null) {
+                // Nếu chưa có, tạo mới chi tiết giỏ hàng
+                gioHangChiTiet = new GioHangChiTiet();
+                gioHangChiTiet.setGiohang(gioHang);
+                gioHangChiTiet.setSanphamchitiet(chiTiet.getSanphamchitiet());
+                gioHangChiTiet.setSoluong(1);
+                gioHangChiTiet.setNgaytao(Timestamp.valueOf(LocalDateTime.now()));
+                gioHangChiTiet.setTrangthai(true);
+            } else {
+                // Nếu đã có, cập nhật số lượng
+                gioHangChiTiet.setSoluong(gioHangChiTiet.getSoluong() + 1);
+            }
+
+            gioHangChiTietRepository.save(gioHangChiTiet);
+        }
+        if (!hasValidProduct) {
+            redirectAttributes.addFlashAttribute("repurchase", false);
+            return "redirect:/hosokhachhang/" + username;
+        }
+        redirectAttributes.addFlashAttribute("repurchase", true);
+        return "redirect:/cart";
+    }
+
+    @GetMapping("/huydonhang/{id}")
+    public ResponseEntity<?> huydonhang(@PathVariable("id") Integer id, @RequestParam("lydohuy") String lydohuy) {
+        HoaDon hoaDon = hoaDonRepository.findHoaDonById(id);
+        hoaDon.setTrangthai(6);
+        hoaDon.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
+        hoaDon.setNgaygiaodukien(null);
+        hoaDon.setNgayxacnhan(null);
+        hoaDon.setNgayvanchuyen(null);
+        hoaDon.setNgayhoanthanh(null);
+        hoaDon.setNguoicapnhat("CUSTOMER");
+        hoaDonRepository.save(hoaDon);
+        LichSuHoaDon lichSuHoaDon = lichSuHoaDonRepository.findLichSuHoaDonByIdHoaDon(id);
+        lichSuHoaDon.setLancapnhatcuoi(hoaDon.getLancapnhatcuoi());
+        lichSuHoaDon.setNguoicapnhat("CUSTOMER");
+        lichSuHoaDon.setGhichu(lydohuy);
+        lichSuHoaDonRepository.save(lichSuHoaDon);
+        return ResponseEntity.ok("Thành công");
     }
 
 }

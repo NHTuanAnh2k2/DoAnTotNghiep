@@ -891,6 +891,7 @@ public class BanHangController {
             hdset1.setNgayxacnhan(Timestamp.valueOf(LocalDateTime.now()));
             hdset1.setEmail(thongTin.getEmail().trim());
             hdset1.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
+            hdset1.setGhichu(thongTin.getGhichu()!=null?thongTin.getGhichu():"");
 //            hdset1.setNgaygiaodukien();
             long unixTimestamp = Long.valueOf(thongTin.getNgaygiaodukien());
             // Convert Unix timestamp to milliseconds
@@ -984,6 +985,7 @@ public class BanHangController {
             hdset1.setEmail(thongTin.getEmail().trim());
             hdset1.setNgayxacnhan(Timestamp.valueOf(LocalDateTime.now()));
             hdset1.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
+            hdset1.setGhichu(thongTin.getGhichu()!=null?thongTin.getGhichu():"");
             //hdset1.setNgaygiaodukien();
             long unixTimestamp = Long.valueOf(thongTin.getNgaygiaodukien());
             // Convert Unix timestamp to milliseconds

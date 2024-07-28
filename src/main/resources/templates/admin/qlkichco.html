@@ -197,9 +197,8 @@
                                             <form name="updateTrangThaiForm"
                                                   th:action="@{/kichco/updateTrangThai/{id}(id=${kc.id})}" method="post"
                                                   onsubmit="return confirmUpdateKichCo(this);">
-                                                <button type="submit"
-                                                        style="width: 170px; background: none; border: none;"
-                                                        th:classappend="${kc.trangthai == true ? 'btn-outline-success' : 'btn-outline-danger'}">
+                                                <button type="submit" style=" border: none;"
+                                                        th:classappend="${kc.trangthai == true ? 'badge badge-success' : 'badge badge-danger'}">
                                                     <span th:text="${kc.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></span>
                                                 </button>
                                             </form>
