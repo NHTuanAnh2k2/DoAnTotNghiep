@@ -36,7 +36,7 @@
             <a class="nav-link dropdown-toggle" href="#" id="avatarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                <span style="margin-left: 5px; color: black" th:if="${adminDangnhap}"
                      th:text="'Xin chào, ' + ${adminDangnhap}"></span>
-                <img th:if="${adminDangnhap}" th:src="${adminAvatar}" class="img-circle" height="40" width="40">
+                <img th:if="${adminDangnhap}" th:src="@{'/upload' + ${adminAvatar.substring(adminAvatar.lastIndexOf('upload') + 6)}}" class="img-circle" height="40" width="40">
                 <svg th:unless="${adminDangnhap}" xmlns="http://www.w3.org/2000/svg" width="40" height="40"
                      class="bi bi-person-circle" viewBox="0 0 16 16">
                     <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
