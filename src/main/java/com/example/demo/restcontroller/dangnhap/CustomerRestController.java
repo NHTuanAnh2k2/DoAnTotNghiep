@@ -47,10 +47,15 @@ public class CustomerRestController {
         hoaDon.setNgayhoanthanh(null);
         hoaDon.setNguoicapnhat("CUSTOMER");
         hoaDonRepository.save(hoaDon);
-        LichSuHoaDon lichSuHoaDon = lichSuHoaDonRepository.findLichSuHoaDonByIdHoaDon(id);
-        lichSuHoaDon.setLancapnhatcuoi(hoaDon.getLancapnhatcuoi());
+        LichSuHoaDon lichSuHoaDon = new LichSuHoaDon();
+        lichSuHoaDon.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
+        lichSuHoaDon.setNgaytao(Timestamp.valueOf(LocalDateTime.now()));
+        lichSuHoaDon.setNhanvien(hoaDon.getNhanvien());
+        lichSuHoaDon.setHoadon(hoaDon);
         lichSuHoaDon.setNguoicapnhat("CUSTOMER");
+        lichSuHoaDon.setNguoitao("CUSTOMER");
         lichSuHoaDon.setGhichu(lydohuy);
+        lichSuHoaDon.setTrangthai(6);
         lichSuHoaDonRepository.save(lichSuHoaDon);
         redirectAttributes.addFlashAttribute("huyhangSuccess", true);
         return ResponseEntity.ok("Thành công");
