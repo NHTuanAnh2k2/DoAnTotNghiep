@@ -1,6 +1,8 @@
 package com.example.demo.controller.controlleradvice;
 
 import com.example.demo.entity.NguoiDung;
+import com.example.demo.entity.NhanVien;
+import com.example.demo.repository.NhanVienRepository;
 import com.example.demo.service.KhachHangService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,8 @@ public class GlobalControllerAdvice {
 
     @Autowired
     KhachHangService khachHangService;
+    @Autowired
+    NhanVienRepository nhanVienRepository;
 
     @ModelAttribute
     public void addAttributes(Model model, HttpSession session) {
@@ -22,11 +26,14 @@ public class GlobalControllerAdvice {
         NguoiDung admin = khachHangService.findNguoiDungByTaikhoan(adminDangnhap);
         if (userDangnhap != null) {
             model.addAttribute("userDangnhap", userDangnhap);
-
+            model.addAttribute("userAvatar", nd.getAnh());
         }
         if (adminDangnhap != null) {
+            NhanVien nv = nhanVienRepository.findNhanVienByIdNd(admin.getId());
             model.addAttribute("adminDangnhap", adminDangnhap);
             model.addAttribute("adminAvatar", admin.getAnh());
+            model.addAttribute("adminRole", nv.getVaitro());
+            model.addAttribute("adminId", nv.getId());
         }
         if (nd != null) {
             String fullName = nd.getHovaten();

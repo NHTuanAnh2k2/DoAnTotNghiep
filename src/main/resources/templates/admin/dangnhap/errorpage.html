@@ -58,8 +58,8 @@
                 </div>
                 <div class="text-center mt-3">
                     <a href="javascript:history.back()" class="btn btn-secondary-custom" style="width: 50%">Quay lại</a>
-                    <a th:if="${adminDangnhap}" th:href="@{/admin/dangxuat}" class="btn btn-custom" style="margin-top: 10px">Đăng xuất và vào tài khoản khác</a>
-                    <a th:unless="${adminDangnhap}" th:href="@{/admin/account}" class="btn btn-custom">Đăng nhập</a>
+                    <a th:if="${adminDangnhap}" th:href="@{/dangxuat/admin}" class="btn btn-custom" style="margin-top: 10px">Đăng xuất và vào tài khoản khác</a>
+                    <a th:unless="${adminDangnhap}" th:href="@{/account/admin}" class="btn btn-custom">Đăng nhập</a>
                 </div>
             </div>
         </div>
