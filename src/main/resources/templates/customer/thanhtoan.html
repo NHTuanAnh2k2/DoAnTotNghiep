@@ -435,7 +435,7 @@
                     <td style="width: 60%; padding-left: 15px;">
                         <h8 style="margin: 0;padding-top: 0;" th:text="${item.sanphamchitiet.sanpham.tensanpham}"></h8>
                         <p style="margin: 0; padding-top: 0;">
-                            <span th:text="${item.sanphamchitiet.mausac.ten}"></span>
+                            <span th:text="${item.sanphamchitiet.mausac.ten}" th:style="'background-color: ' + ${item.sanphamchitiet.mausac.ten} + '; color: white;'"></span>
                             <span th:text="${item.sanphamchitiet.kichco.ten}"></span>
                         </p>
                     </td>
