@@ -3710,6 +3710,7 @@ tabindex="0">
                                             document.getElementById('thongtingiao_ngaygiao').value = timestamp;
 
                                             // phigiaohang
+                                            
                                             feship(idHuyenreturn, idXareturn);
 
 
@@ -3758,7 +3759,7 @@ tabindex="0">
                     document.getElementById('phigiaohang').value = shipfe;
                     var shipluutam = shipToanCuc;
                     shipToanCuc = d.data.total;
-                    tienkhachthanhtoan = tienkhachthanhtoan + shipToanCuc;
+                    tienkhachthanhtoan = (tongTienDon-TienGiamDon) + shipToanCuc;
                 })
 
         }
