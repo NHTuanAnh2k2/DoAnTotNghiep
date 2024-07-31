@@ -17,7 +17,7 @@ import java.util.List;
 
 @Repository
 public interface HoaDonChiTietRepository1 extends JpaRepository<HoaDonChiTiet, Integer> {
-    @Query("SELECT new com.example.demo.info.TraCuuDetailInfo(a.tenanh, sp.tensanpham, kc.ten, hdc.soluong, spc.giatien, ms.ten)" +
+    @Query("SELECT new com.example.demo.info.TraCuuDetailInfo(a.tenanh, sp.tensanpham, kc.ten, hdc.soluong, hd.tongtien, ms.ten)" +
             "FROM HoaDonChiTiet hdc " +
             "JOIN SanPhamChiTiet spc ON hdc.sanphamchitiet.id = spc.id " +
             "JOIN SanPham sp ON spc.sanpham.id = sp.id " +
