@@ -507,17 +507,7 @@
         var errorE=document.getElementById("errorEnd");
         var isEValid = true;
 
-        // if (startDate === "" || endDate === "") {
-        //     // alert('Vui lòng điền đầy đủ thông tin ngày tháng.');
-        //     errorS.innerText = "Không được để trống ngày";
-        //     document.getElementById("startDate").style.border="1.2px solid red";
-        //     isSValid = false;
-        //     errorE.innerText = "Không được để trống ngày";
-        //     document.getElementById("endDate").style.border="1.2px solid red";
-        //     isEValid = false;
-        //     return false;
-        // }else
-            if (startDate === "") {
+        if (startDate === "") {
             errorS.innerText = "Không được để trống ngày";
             isSValid = false;
             return false;

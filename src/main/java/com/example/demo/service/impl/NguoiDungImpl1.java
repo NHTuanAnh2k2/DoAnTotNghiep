@@ -54,7 +54,7 @@ public class NguoiDungImpl1 implements NguoiDungService1 {
         NguoiDung nd = new NguoiDung();
         nd.setTaikhoan(nguoiDung.getTaikhoan());
         nd.setEmail(nguoiDung.getEmail());
-        nd.setMatkhau(passwordEncoder.encode(generateRandomPassword(10)));
+        nd.setMatkhau(nguoiDung.getMatkhau());
         nd.setHovaten(nguoiDung.getHovaten());
         nd.setNgaysinh(nguoiDung.getNgaysinh());
         nd.setCccd(nguoiDung.getCccd());
