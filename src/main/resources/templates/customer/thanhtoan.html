@@ -320,45 +320,45 @@
         <div id="left3" class="left3">
             <img class="logo" src="../dist/img/logo_bong2.jpg" height="70" width="130">
             <p style="color: red; margin: 0;padding: 0;">Mang đến sự tự tin trong bạn</p>
-            <form th:action="@{/customer/thanh-toan-online-khach-le}" th:object="${diachikotaikhoan}" method="post">
-                <h6 style="margin-top: 50px; margin-bottom: 25px;">PHƯƠNG THỨC VẬN CHUYỂN</h6>
-                <ul class="list-group">
-                    <li class="list-group-item" style="width: 100%; height: 70px;">
-                        <div class="opciones-radio">
-                            <div class="form-group" style="padding-top: 7px;">
-                        <span class="opcion-radio">
-                            <input type="radio" id="kiemtramienphiship" name="abc" checked disabled>
-                            <label for="kiemtramienphiship">Miễn phí vận chuyển cho đơn hàng từ 2 triệu</label>
-                        </span>
-                            </div>
+            <h6 style="margin-top: 50px; margin-bottom: 25px;">PHƯƠNG THỨC VẬN CHUYỂN</h6>
+            <ul class="list-group">
+                <li class="list-group-item" style="width: 100%; height: 70px;">
+                    <div class="opciones-radio">
+                        <div class="form-group" style="padding-top: 7px;">
+                            <span class="opcion-radio">
+                                <input type="radio" id="kiemtramienphiship" name="abc" checked disabled>
+                                <label for="kiemtramienphiship">Miễn phí vận chuyển cho đơn hàng từ 2 triệu</label>
+                            </span>
                         </div>
-                    </li>
-                </ul>
-                <h6 style="margin-top: 35px; margin-bottom: 25px;">PHƯƠNG THỨC THANH TOÁN</h6>
-                <ul class="list-group">
-                    <li class="list-group-item" style="width: 100%; height: 70px;">
-                        <div class="opciones-radio">
-                            <div class="form-group" style="padding-top: 7px;">
+                    </div>
+                </li>
+            </ul>
+            <h6 style="margin-top: 35px; margin-bottom: 25px;">PHƯƠNG THỨC THANH TOÁN</h6>
+            <ul class="list-group">
+                <li class="list-group-item" style="width: 100%; height: 70px;">
+                    <div class="opciones-radio">
+                        <div class="form-group" style="padding-top: 7px;">
                         <span class="opcion-radio">
-                            <input type="radio" id="comida_mexicana1" name="pttt" checked>
-                            <label for="comida_mexicana1">
+                            <input type="radio" id="nhanhang" name="pttt" checked onchange="radioChanged(this)">
+                            <label for="nhanhang">
                                 <img class="main-img" src="https://hstatic.net/0/0/global/design/seller/image/payment/cod.svg?v=6">
                                 Thanh toán khi nhận hàng (COD)</label>
                         </span>
-                            </div>
                         </div>
-                    </li>
-                    <li class="list-group-item" style="width: 100%; height: 70px;">
-                        <div class="opciones-radio">
-                            <div class="form-group" style="padding-top: 7px;">
+                    </div>
+                </li>
+                <li class="list-group-item" style="width: 100%; height: 70px;">
+                    <div class="opciones-radio">
+                        <div class="form-group" style="padding-top: 7px;">
                         <span class="opcion-radio">
-                            <input type="radio" id="comida_mexicana2" name="pttt">
-                            <label for="comida_mexicana2">Thanh toán qua ví điện tử VNPay</label>
+                            <input type="radio" id="vnpay" name="pttt" onchange="radioChanged(this)">
+                            <label for="vnpay">Thanh toán qua ví điện tử VNPay</label>
                         </span>
                             </div>
                         </div>
-                    </li>
-                </ul>
+                </li>
+            </ul>
+            <form id="formNhanHang" th:action="@{/customer/thanh-toan-online-khach-le}" th:object="${diachikotaikhoan}" method="post">
                 <input type="hidden" id="hotennhan" th:field="*{hovaten}"  value="">
                 <input type="hidden" id="emailnhan" th:field="*{email}" value="">
                 <input type="hidden" id="sdtnhan" th:field="*{sodienthoai}" value="">
@@ -377,6 +377,30 @@
                     <button onclick="layGiaTri()" type="submit" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 40%; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">Hoàn tất đơn hàng</button>
                 </div>
             </form>
+            <form id="formVNPay" th:action="@{/submitOrder}" th:object="${diachikotaikhoan}" method="post">
+
+                <input type="hidden" id="hotennhanVNPay" th:field="*{hovaten}"  value="">
+                <input type="hidden" id="emailnhanVNPay" th:field="*{email}" value="">
+                <input type="hidden" id="sdtnhanVNPay" th:field="*{sodienthoai}" value="">
+                <input type="hidden" id="diachinhanVNPay" th:field="*{diachicuthe}" value="">
+                <input type="hidden" id="tinhnhanVNPay" th:field="*{tinhthanhpho}" value="">
+                <input type="hidden" id="huyennhanVNPay" th:field="*{quanhuyen}" value="">
+                <input type="hidden" id="xanhanVNPay" th:field="*{phuongxa}" value="">
+
+                <input type="hidden" id="maCodeGiam2" name="maCodeGiamVNPay" value="">
+                <input type="hidden" id="phivanchuyen2" name="phivanchuyenVNPay" value="">
+                <input type="hidden" id="ngaygiaodukiens2" name="ngaygiaodukienVNPay" value="">
+                <input type="hidden" id="tongtien2" name="tongtienVNPay" value="">
+                <input type="hidden" id="tamtinh2" name="tamtinhVNPay" value="">
+                <input type="hidden" id="sotiengiam2" name="sotiengiamVNPay" value="">
+
+                <input type="hidden" id="amount" name="amount" value="">
+                <input type="hidden" id="orderInfo" name="orderInfo" value="Tuan Anh">
+                <div class="d-flex justify-content-end mb-4" style="margin-top: 30px;">
+                    <button onclick="layGiaTriVNPay()" type="submit" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 40%; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">Hoàn tất đơn hàng1</button>
+                </div>
+            </form>
+
 
         </div>
     </div>
@@ -411,7 +435,7 @@
                     <td style="width: 60%; padding-left: 15px;">
                         <h8 style="margin: 0;padding-top: 0;" th:text="${item.sanphamchitiet.sanpham.tensanpham}"></h8>
                         <p style="margin: 0; padding-top: 0;">
-                            <span th:text="${item.sanphamchitiet.mausac.ten}"></span>
+                            <span th:text="${item.sanphamchitiet.mausac.ten}" th:style="'background-color: ' + ${item.sanphamchitiet.mausac.ten} + '; color: white;'"></span>
                             <span th:text="${item.sanphamchitiet.kichco.ten}"></span>
                         </p>
                     </td>
@@ -553,6 +577,39 @@
     </div>
 </div>
 <script>
+    document.getElementById("formVNPay").style.display = "none";
+    function radioChanged(radio) {
+        if (radio.id === "nhanhang") {
+            document.getElementById("formVNPay").style.display = "none";
+            document.getElementById("formNhanHang").style.display = "block";
+        } else if (radio.id === "vnpay") {
+            document.getElementById("formVNPay").style.display = "block";
+            document.getElementById("formNhanHang").style.display = "none";
+        }
+    }
+    function layGiaTriVNPay(){
+        var tong = document.getElementById('tongtien').innerText;
+        document.getElementById('amount').value = tong;
+
+        var maCode = document.getElementById('maCodeGiam').innerText;
+        var phi = document.getElementById('phivanchuyen').innerText;
+        var tong = document.getElementById('tongtien').innerText;
+        var ngay = document.getElementById('ngaygiaodukiens').innerText;
+        var tamTinh = document.getElementById('tamTinh').innerText;
+        var soTienGiam = document.getElementById('soTienGiam').innerText;
+
+
+        // Đưa nội dung vào input hidden
+
+        document.getElementById('maCodeGiam2').value = maCode;
+        document.getElementById('phivanchuyen2').value = phi;
+        document.getElementById('tongtien2').value = tong;
+        document.getElementById('ngaygiaodukiens2').value = ngay;
+        document.getElementById('tamtinh2').value = tamTinh;
+        document.getElementById('sotiengiam2').value = soTienGiam;
+
+
+    }
     var token= document.getElementById("kiemtratokendangnhap").value;
     if(token !== ""){
         document.getElementById("left2").style.display = "block";
@@ -1340,6 +1397,16 @@
             document.getElementById('tinhnhan').value = inputTinh;
             document.getElementById('huyennhan').value = inputHuyen;
             document.getElementById('xanhan').value = inputXa;
+
+            document.getElementById('hotennhanVNPay').value = inputTen;
+            document.getElementById('emailnhanVNPay').value = inputEmail;
+            document.getElementById('sdtnhanVNPay').value = inputSDT;
+            document.getElementById('diachinhanVNPay').value = inputDiaChi;
+            document.getElementById('tinhnhanVNPay').value = inputTinh;
+            document.getElementById('huyennhanVNPay').value = inputHuyen;
+            document.getElementById('xanhanVNPay').value = inputXa;
+
+            document.getElementById('orderInfo').value = inputTen;
         }
 
 
@@ -1649,6 +1716,16 @@
         document.getElementById('tinhnhan').value = inputTinh;
         document.getElementById('huyennhan').value = inputHuyen;
         document.getElementById('xanhan').value = inputXa;
+
+        document.getElementById('hotennhanVNPay').value = inputTen;
+        document.getElementById('emailnhanVNPay').value = "";
+        document.getElementById('sdtnhanVNPay').value = inputSDT;
+        document.getElementById('diachinhanVNPay').value = inputDiaChi;
+        document.getElementById('tinhnhanVNPay').value = inputTinh;
+        document.getElementById('huyennhanVNPay').value = inputHuyen;
+        document.getElementById('xanhanVNPay').value = inputXa;
+
+        document.getElementById('orderInfo').value = inputTen;
     }
     function formatCurrencyVND(number) {
         // Định dạng số theo tiền tệ Việt Nam

@@ -1,5 +1,7 @@
 package com.example.demo.controller.thanhtoanmuaonline.ConfigVN_Pay;
 
+import org.springframework.stereotype.Component;
+
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
@@ -9,18 +11,14 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
+@Component
 public class VN_PayConfig {
-    public static final String version = "2.1.0";
-    public static final String command = "pay";
-    public static final String bank_code = "NCB";
-    public static final String curr_code = "VND";
-    public static final String location = "vn";
-    public static final String order_type = "other";
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    public static String vnp_Returnurl = "http://localhost:8080/don-hang/thong-tin-thanh-toan";
-    public static String vnp_TmnCode = "Q0M81PPD";
-    public static String vnp_HashSecret = "NRYJBFMTSNTGMVQLVKMUMUZHNONBRGKZ";
+    public static String vnp_Returnurl = "/vnpay-payment-return";
+    public static String vnp_TmnCode = "Q0M81PPD"; // kiểm tra email sau
+    public static String vnp_HashSecret = "NRYJBFMTSNTGMVQLVKMUMUZHNONBRGKZ"; // khi đăng ký Test
     public static String vnp_apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
+
 
     public static String md5(String message) {
         String digest = null;

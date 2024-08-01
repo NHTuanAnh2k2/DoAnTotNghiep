@@ -394,7 +394,9 @@ public class BanHangController {
         //fake nhân viên
         nguoidung.setNguoitao("nhân viên");
         String to = kh.getEmail();
-        String taikhoan = processName(kh.getTen().trim());
+        List<KhachHang> lstKHT = daoKH.findKHGanNhat();
+        Integer makhnew = lstKHT.get(0).getId() + 1;
+        String taikhoan = processName(kh.getTen().trim()) + makhnew;
         String matkhau = "12345";
         String subject = "Chúc mừng bạn đã đăng kí thành công tài khoản T&T shop";
         String mailType = "";
@@ -891,7 +893,7 @@ public class BanHangController {
             hdset1.setNgayxacnhan(Timestamp.valueOf(LocalDateTime.now()));
             hdset1.setEmail(thongTin.getEmail().trim());
             hdset1.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
-            hdset1.setGhichu(thongTin.getGhichu()!=null?thongTin.getGhichu():"");
+            hdset1.setGhichu(thongTin.getGhichu() != null ? thongTin.getGhichu() : "");
 //            hdset1.setNgaygiaodukien();
             long unixTimestamp = Long.valueOf(thongTin.getNgaygiaodukien());
             // Convert Unix timestamp to milliseconds
@@ -985,7 +987,7 @@ public class BanHangController {
             hdset1.setEmail(thongTin.getEmail().trim());
             hdset1.setNgayxacnhan(Timestamp.valueOf(LocalDateTime.now()));
             hdset1.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
-            hdset1.setGhichu(thongTin.getGhichu()!=null?thongTin.getGhichu():"");
+            hdset1.setGhichu(thongTin.getGhichu() != null ? thongTin.getGhichu() : "");
             //hdset1.setNgaygiaodukien();
             long unixTimestamp = Long.valueOf(thongTin.getNgaygiaodukien());
             // Convert Unix timestamp to milliseconds

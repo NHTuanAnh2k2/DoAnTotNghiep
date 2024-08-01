@@ -42,7 +42,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin")
 public class DangNhapAdminController {
 
     @Autowired
@@ -66,7 +65,7 @@ public class DangNhapAdminController {
     @Autowired
     JwtResponseDTO jwtResponseDTO;
 
-    @GetMapping("/account")
+    @GetMapping("/account/admin")
     public String displaydangnhap(Model model) {
         model.addAttribute("nguoidung", new NguoiDung());
         model.addAttribute("dangnhap", new AuthRequestDTO());
@@ -74,7 +73,7 @@ public class DangNhapAdminController {
     }
 
     public List<AdminTokenInfo> adminTokenInfos = new ArrayList<>();
-    @PostMapping("/dangnhap")
+    @PostMapping("/dangnhap/admin")
     public String dangnhap(Model model,
                            @RequestParam("username") String taikhoan,
                            @RequestParam("password") String matkhau,
@@ -85,13 +84,13 @@ public class DangNhapAdminController {
     ) {
         if (taikhoan == "" && matkhau == "") {
             redirectAttributes.addFlashAttribute("error", "Tài khoản và mật khẩu đang trống");
-            return "redirect:/admin/account";
+            return "redirect:/account/admin";
         } else if (taikhoan == "") {
             redirectAttributes.addFlashAttribute("error", "Tài khoản đang trống");
-            return "redirect:/admin/account";
+            return "redirect:/account/admin";
         } else if (matkhau == "") {
             redirectAttributes.addFlashAttribute("error", "Mật khẩu đang trống");
-            return "redirect:/admin/account";
+            return "redirect:/account/admin";
         } else {
             try {
                 NguoiDung nd = khachHangService.findNguoiDungByTaikhoan(taikhoan);
@@ -100,15 +99,15 @@ public class DangNhapAdminController {
 
                 if (userDetails == null) {
                     redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
-                    return "redirect:/admin/account";
+                    return "redirect:/account/admin";
                 }
                 if (nv == null) {
                     redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
-                    return "redirect:/admin/account";
+                    return "redirect:/account/admin";
                 }
                 if (nv.getTrangthai() == false) {
                     redirectAttributes.addFlashAttribute("error", "Tài khoản đã bị khóa");
-                    return "redirect:/admin/account";
+                    return "redirect:/account/admin";
                 }
 
                 if (passwordEncoder.matches(matkhau, userDetails.getPassword())) {
@@ -126,19 +125,19 @@ public class DangNhapAdminController {
                     return "redirect:/hoa-don/ban-hang";
                 } else {
                     redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
-                    return "redirect:/admin/account";
+                    return "redirect:/account/admin";
                 }
             } catch (UsernameNotFoundException e) {
                 redirectAttributes.addFlashAttribute("error", "Sai tài khoản hoặc mật khẩu");
-                return "redirect:/admin/account";
+                return "redirect:/account/admin";
             } catch (Exception e) {
                 redirectAttributes.addFlashAttribute("error", "Đã có lỗi xảy ra, vui lòng thử lại");
-                return "redirect:/admin/account";
+                return "redirect:/account/admin";
             }
         }
     }
 
-    @GetMapping("/dangxuat")
+    @GetMapping("/dangxuat/admin")
     public String logout(HttpServletRequest request, HttpSession session) {
         // Xóa session của người dùng để đăng xuất
         String userName = (String) session.getAttribute("adminDangnhap");
@@ -149,6 +148,6 @@ public class DangNhapAdminController {
         session.removeAttribute("adminToken");
         session.invalidate();
         adminManager.logoutUser(adminId, token);
-        return "redirect:/admin/account";
+        return "redirect:/account/admin";
     }
 }

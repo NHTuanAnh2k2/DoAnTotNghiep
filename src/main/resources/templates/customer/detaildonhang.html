@@ -168,7 +168,8 @@
             </div>
             <br>
             <!-- <hr class="border border-danger border-2 opacity-50"> -->
-            <a href="javascript:history.back()" class="btn" style="background-color: rgb(249,72,42);color: white; margin-top: 5px;">Quay lại
+            <a href="javascript:history.back()" class="btn"
+               style="background-color: rgb(249,72,42);color: white; margin-top: 5px;">Quay lại
             </a>
         </div>
         <div class="col-3" style="padding-left: 100px;">
@@ -218,23 +219,36 @@
     </div>
 
     <h4 style="position: relative; top: -270px; padding-left: 150px">Thông tin sản phẩm:</h4>
-    <hr style="width: 871px; position: relative; top: -260px; margin-left: 150px" class="border border-danger border-2 opacity-50">
+    <hr style="width: 871px; position: relative; top: -260px; margin-left: 150px"
+        class="border border-danger border-2 opacity-50">
 
-    <div  style="margin-left: 150px; margin-bottom: 50px; margin-top: -280px; width: 871px; border-radius: 5px; background-color: white">
-        <div th:each="hdct:${lstHdct}" style="width: 871px; padding: 20px">
-            <div class="row">
-                <div class="col-md-3">
-                    <img th:src="${hdct.tenAnh}" alt="Ảnh sản phẩm" class="img-fluid product-image">
+    <div style="margin-left: 150px; margin-bottom: 50px; margin-top: -280px; width: 871px; border-radius: 5px; background-color: white">
+        <div style="width: 871px; padding: 20px">
+            <div th:each="hdct:${lstHdct}">
+                <div class="row">
+                    <div class="col-md-3">
+                        <img th:src="${hdct.tenAnh}" style="width: 130px;" alt="Ảnh sản phẩm"
+                             class="img-fluid product-image">
+                    </div>
+                    <div class="col-md-8">
+                        <h5 th:text="${hdct.tenSanPham}" class="mb-3">Áo Thun Basic dsadasdsasd</h5>
+                        Phân loại hàng:
+                        <span th:text="${hdct.size} + ', '" style="font-size: smaller">
+                        Phân loại hàng:
+                    </span>
+                        <span th:text="${hdct.tenMau}"
+                              th:style="'background-color:' + ${hdct.tenMau} + '; color: white;'">Tên màu</span>
+
+                        <p th:text="'Số lượng: ' + ${hdct.soLuong}" style="font-size: smaller">Số lượng: 1</p>
+                        <!--                    <p th:text="'Thành tiền: ' + ${#numbers.formatDecimal(hdct.tongTien * hdct.soLuong, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}" style="font-size: medium; color: orangered">65,000 ₫</p>-->
+                        <!--                <p class="text-muted"><del>130,000 ₫</del></p>-->
+                    </div>
                 </div>
-                <div class="col-md-8">
-                    <h2 th:text="${hdct.tenSanPham}" class="mb-3">Áo Thun Basic dsadasdsasd</h2>
-                    <p th:text="'Kích cỡ: ' + ${hdct.size}" style="font-size: medium">Phân loại hàng: DEN,XL</p>
-                    <p th:text="'Số lượng: ' + ${hdct.soLuong}" class="mb-5" style="font-size: medium">Số lượng: 1</p>
-                    <p th:text="'Thành tiền: ' + ${#numbers.formatDecimal(hdct.tongTien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}" style="font-size: larger; color: orangered">65,000 ₫</p>
-                    <!--                <p class="text-muted"><del>130,000 ₫</del></p>-->
-                </div>
+                <hr>
             </div>
-            <hr>
+            <h5 style="color: orangered; float: right"
+                th:text="'Tổng tiền: ' + ${#numbers.formatDecimal(tongTienHoaDon, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}">
+                Tổng tiền</h5>
         </div>
     </div>
 </section>

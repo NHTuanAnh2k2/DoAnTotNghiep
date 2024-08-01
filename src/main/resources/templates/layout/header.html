@@ -95,15 +95,19 @@
             <!--end-->
             <!--account-->
             <li style="padding-left: 20px">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                <span style="margin-left: 5px;" th:if="${userDangnhap}"
+                      th:text="${userHeader}">Xin chào</span>
+                <img th:if="${userDangnhap}" th:src="${userAvatar}" class="rounded-circle" width="40" height="40" alt=""
+                     data-bs-toggle="modal"
+                     data-bs-target="#exampleModal">
+                <svg th:unless="${userDangnhap}" xmlns="http://www.w3.org/2000/svg" width="40" height="40"
+                     fill="currentColor"
                      class="bi bi-person-circle" viewBox="0 0 16 16" data-bs-toggle="modal"
                      data-bs-target="#exampleModal">
                     <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
                     <path fill-rule="evenodd"
                           d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
                 </svg>
-                <span style="margin-left: 5px;" th:if="${userDangnhap}"
-                      th:text="${userHeader}">Xin chào</span>
             </li>
             <!-- Modal -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -146,5 +150,43 @@
 <script>
     function submitSearchForm() {
         document.getElementById('searchForm').submit();
+    }
+</script>
+<script th:inline="javascript">
+    var notificationLogout = /*[[${session.notificationLogout}]]*/ false;
+    console.log(notificationLogout)
+
+    if (notificationLogout === true) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            },
+            didClose: () => {
+                // Gửi yêu cầu xóa session sau khi thông báo đóng
+                fetch('/api/clearLogoutNotification', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+            },
+        });
+
+        Toast.fire({
+            icon: "warning",
+            title: "Cảnh báo",
+            text: "Tài khoản của bạn đã bị khóa"
+        });
     }
 </script>

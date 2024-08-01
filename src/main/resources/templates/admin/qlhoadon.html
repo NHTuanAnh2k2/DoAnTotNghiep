@@ -341,7 +341,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr th:each="a:${lst}" th:if= "${a.tongtien!=null}">
+                                                        <tr th:each="a:${lst}">
                                                             <td th:text="${aStat.index+1}"></td>
                                                             <td th:text="${a.mahoadon}"></td>
                                                             <td th:text="${a.nhanvien.manhanvien}"></td>
@@ -352,7 +352,7 @@
                                                             <td th:text="${a.loaihoadon==true?'online':'tại quầy'}">
                                                             </td>
                                                             <td
-                                                                th:text="${#numbers.formatDecimal(a.tongtien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}">
+                                                                th:text="${a.tongtien==null?'0 ₫':#numbers.formatDecimal(a.tongtien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}">
                                                             </td>
                                                             <td
                                                                 th:text="${ #dates.format(a.ngaytao, 'dd-MM-yyyy HH:mm:ss')}">
@@ -366,8 +366,12 @@
                                                             <td th:if="${a.trangthai==6}">đã hủy</td>
                                                             <td th:if="${a.trangthai==7}">tràn hàng chờ</td>
                                                             <td>
-                                                                <button type="button" class="btn btn-warning">
-                                                                    <a th:href="@{chi-tiet/{id}(id=${a.id})}"><i
+                                                                <button type="button" class="btn btn-warning" th:if= "${a.tongtien!=null}">
+                                                                    <a th:href="@{chi-tiet/{id}(id=${a.id})}"><i class="bi bi-eye"></i></a>
+                                                                </button>
+                                                                
+                                                                <button type="button" class="btn btn-danger" th:if= "${a.tongtien==null}">
+                                                                    <a ><i
                                                                             class="bi bi-eye-slash"></i></a>
                                                                 </button>
                                                             </td>
