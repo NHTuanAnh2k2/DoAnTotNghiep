@@ -29,17 +29,17 @@ public class SecurityConfig {
     AccessDeniedHandler accessDeniedHandler;
 
     private static final String[] NHANVIEN_LINK = {
-            "/hoa-don/ban-hang", "/hoa-don/hien-thi", "/hoa-don/showDetail", "/admin/qlnhanvien", "/updateNhanVien/**",
+            "/hoa-don/**", "/admin/qlnhanvien", "/updateNhanVien/**",
             "/admin/addnhanvien"
     };
     private static final String[] QUANLY_LINK = {
             "/khachhang/**",
-//            "/listsanpham/**", "/viewaddSPGET",
-//            "/admin/hien-thi-phieu-giam-gia", "/admin/xem-them-phieu-giam-gia",
-//            "/detailsanpham/**", "/updateCTSP", "/allSPCT",
-//            "/admin/hien-thi-dot-giam-gia", "/admin/xem-them-dot-giam-gia",
-//            "/listdegiay/**", "/listthuonghieu", "/chatlieu/**",
-//            "/listMauSac/**", "/listKichCo/**"
+            "/listsanpham/**", "/viewaddSPGET",
+            "/admin/hien-thi-phieu-giam-gia", "/admin/xem-them-phieu-giam-gia",
+            "/detailsanpham/**", "/updateCTSP", "/allSPCT",
+            "/admin/hien-thi-dot-giam-gia", "/admin/xem-them-dot-giam-gia",
+            "/listdegiay/**", "/listthuonghieu", "/chatlieu/**",
+            "/listMauSac/**", "/listKichCo/**",
     };
 
     @Bean
