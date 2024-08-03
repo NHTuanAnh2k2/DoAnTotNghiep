@@ -192,7 +192,7 @@
     <form th:object="${nguoidung}" th:action="@{/dangky}" th:method="post" id="formDangKy" name="formDangKy"
           onsubmit="return validateDangKy();">
         <div class="form123 mt-3">
-            <input th:field="*{hovaten}" id="hovaten" type="text" placeholder="Họ tên"/>
+            <input th:field="*{hovaten}" id="hovaten" type="text" placeholder="Họ tên" maxlength="50"/>
             <label>Họ tên</label>
             <span id="tenError" style="color: red;"></span>
         </div>
@@ -217,7 +217,7 @@
         <!--            </div>-->
         <!--        </div>-->
         <div class="form123 mt-4">
-            <input type="text" placeholder="Tên đăng nhập" th:field="*{taikhoan}" id="taikhoan"/>
+            <input type="text" placeholder="Tên đăng nhập" th:field="*{taikhoan}" id="taikhoan" maxlength="50"/>
             <label>Tên đăng nhập</label>
             <span id="taikhoanError" style="color: red;"></span>
         </div>
@@ -232,7 +232,7 @@
             <span id="emailError" style="color: red;"></span>
         </div>
         <div class="form123 mt-4">
-            <input type="password" placeholder="Mật khẩu" th:field="*{matkhau}"/>
+            <input type="password" placeholder="Mật khẩu" th:field="*{matkhau}" maxlength="300"/>
             <label>Mật khẩu</label>
             <span id="matkhauError" style="color: red;"></span>
         </div>
@@ -561,77 +561,119 @@
 
         if (ngaySinhInput.value === '') {
             ngaysinhError.innerText = 'Ngày sinh không được trống';
+            document.getElementById('ngaysinh').style.borderColor = 'red';
             isValid = false;
         } else if (ngaySinhValue > today) {
             ngaysinhError.innerText = 'Ngày sinh không được lớn hơn ngày hiện tại';
+            document.getElementById('ngaysinh').style.borderColor = 'red';
             isValid = false;
         } else if (age <= 16) {
             ngaysinhError.innerText = 'Tuổi phải từ 16 trở lên';
+            document.getElementById('ngaysinh').style.borderColor = 'red';
             isValid = false;
         } else if (age > 70) {
             ngaysinhError.innerText = 'Tuổi phải từ 70 trở xuống';
+            document.getElementById('ngaysinh').style.borderColor = 'red';
+            isValid = false;
         }
         if (tenInput === '') {
             tenError.innerText = 'Họ và tên không được trống';
+            document.getElementById('hovaten').style.borderColor = 'red';
             isValid = false;
         } else if (specialCharPattern.test(tenInput)) {
             tenError.innerText = 'Họ và tên không được chứa ki tự đặc biệt';
+            document.getElementById('hovaten').style.borderColor = 'red';
             isValid = false;
         } else if (numberPattern.test(tenInput)) {
             tenError.innerText = 'Họ và tên không được chứa số';
+            document.getElementById('hovaten').style.borderColor = 'red';
             isValid = false;
         } else if (tenInput.length > 50) {
             tenError.innerText = 'Họ và tên không được quá 50 ký tự';
+            document.getElementById('hovaten').style.borderColor = 'red';
             isValid = false;
         }
         if (emailInput === '') {
             emailError.innerText = 'Email không được trống';
+            document.getElementById('email').style.borderColor = 'red';
             isValid = false;
         } else if (!emailPattern.test(emailInput)) {
             emailError.innerText = 'Email không hợp lệ';
+            document.getElementById('email').style.borderColor = 'red';
             isValid = false;
         } else if (checkTrungEmail() === false) {
             emailError.innerText = 'Email đã tồn tại';
+            document.getElementById('email').style.borderColor = 'red';
+            isValid = false;
+        } else if (emailInput.length < 5) {
+            emailError.innerText = 'Email không được ít hơn 5 ký tự';
+            document.getElementById('email').style.borderColor = 'red';
+            isValid = false;
+        } else if (emailInput.length > 254) {
+            emailError.innerText = 'Email không được quá 254 ký tự';
+            document.getElementById('email').style.borderColor = 'red';
             isValid = false;
         }
+
         if (sdtInput === '') {
             sdtError.innerText = 'Số điện thoại không được trống';
+            document.getElementById('sodienthoai').style.borderColor = 'red';
             isValid = false;
         } else if (!phoneNumberPattern.test(sdtInput)) {
             sdtError.innerText = 'Số điện thoại không hợp lệ';
+            document.getElementById('sodienthoai').style.borderColor = 'red';
             isValid = false;
         } else if (checkTrungSdt() === false) {
             sdtError.innerText = 'Số điện thoại đã tồn tại';
+            document.getElementById('sodienthoai').style.borderColor = 'red';
             isValid = false;
         }
         if (taikhoanInput === '') {
             taikhoanError.innerText = 'Tài khoản không được trống';
+            document.getElementById('taikhoan').style.borderColor = 'red';
             isValid = false;
         } else if (specialCharPattern.test(taikhoanInput)) {
             taikhoanError.innerText = 'Tài khoản không được chứa ký tự đặc biệt';
+            document.getElementById('taikhoan').style.borderColor = 'red';
             isValid = false;
         } else if (taikhoanInput.length < 5) {
             taikhoanError.innerText = 'Tài khoản phải tối thiểu 5 ký tự';
+            document.getElementById('taikhoan').style.borderColor = 'red';
             isValid = false;
         } else if (vietnameseRegex.test(taikhoanInput)) {
             taikhoanError.innerText = 'Tài khoản không được chứa dấu câu';
+            document.getElementById('taikhoan').style.borderColor = 'red';
             isValid = false;
         } else if (checkTrungTaiKhoan() === false) {
             taikhoanError.innerText = 'Tài khoản đã tồn tại';
+            document.getElementById('taikhoan').style.borderColor = 'red';
+            isValid = false;
+        } else if (taikhoanInput.length < 3) {
+            taikhoanError.innerText = 'Tài khoản không được ít hơn 3 ký tự';
+            document.getElementById('taikhoan').style.borderColor = 'red';
+            isValid = false;
+        } else if (taikhoanInput.length > 50) {
+            taikhoanError.innerText = 'Tài khoản không được quá 50 ký tự';
+            document.getElementById('taikhoan').style.borderColor = 'red';
             isValid = false;
         }
+
         if (matkhauInput === '') {
             matkhauError.innerText = 'Mật khẩu không được trống';
+            document.getElementById('matkhau').style.borderColor = 'red';
             isValid = false;
         } else if (matkhauInput.length < 8) {
             matkhauError.innerText = 'Mật khẩu phải tối thiểu 8 ký tự';
+            document.getElementById('matkhau').style.borderColor = 'red';
             isValid = false;
         }
         if (matkhauxnInput === '') {
             xacnhanmkError.innerText = 'Mật khẩu xác nhận được trống';
+            document.getElementById('xacnhanmatkhau').style.borderColor = 'red';
             isValid = false;
         } else if (matkhauxnInput !== matkhauInput) {
             xacnhanmkError.innerText = 'Mật khẩu không khớp';
+            document.getElementById('xacnhanmatkhau').style.borderColor = 'red';
             isValid = false;
         }
 

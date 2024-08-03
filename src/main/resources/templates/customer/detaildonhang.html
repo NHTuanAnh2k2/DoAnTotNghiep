@@ -150,8 +150,13 @@
                     <div class="d-flex justify-content-start">
                         <h6>
                             Hình thức giao:
-                            <span th:text="${hoadon.hoatoc==true?'Hỏa tốc':'Thông thường'}"
+                            <span th:if="${hoadon.hoatoc==true}"
+                                  style="margin-left: 80px; font-family: 'Times New Roman'; color: orangered">
+                                Hỏa tốc
+                            </span>
+                            <span th:if="${hoadon.hoatoc==false}"
                                   style="margin-left: 80px; font-family: 'Times New Roman';">
+                                Thông thường
                             </span>
                         </h6>
                     </div>

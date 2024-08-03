@@ -33,7 +33,7 @@ public class SecurityConfig {
             "/admin/addnhanvien"
     };
     private static final String[] QUANLY_LINK = {
-            "/khachhang/**",
+            "/khachhang/**", "/admin/qlthongke/**",
             "/listsanpham/**", "/viewaddSPGET",
             "/admin/hien-thi-phieu-giam-gia", "/admin/xem-them-phieu-giam-gia",
             "/detailsanpham/**", "/updateCTSP", "/allSPCT",
