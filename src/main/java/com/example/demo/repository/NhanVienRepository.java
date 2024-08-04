@@ -3,6 +3,7 @@ package com.example.demo.repository;
 import com.example.demo.entity.DiaChi;
 import com.example.demo.entity.KhachHang;
 import com.example.demo.entity.NhanVien;
+import com.example.demo.info.NhanVienNVInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,6 +15,13 @@ import java.util.Optional;
 
 @Controller
 public interface NhanVienRepository extends JpaRepository<NhanVien, Integer> {
+    @Query("SELECT new com.example.demo.info.NhanVienNVInfo(nd.id, nv.manhanvien, nd.hovaten," +
+            "nd.sodienthoai, nd.ngaysinh, dc.tinhthanhpho, dc.quanhuyen, dc.xaphuong, dc.tenduong, nv.vaitro, nv.trangthai)" +
+            "FROM NhanVien nv " +
+            "JOIN NguoiDung nd ON nv.nguoidung.id = nd.id " +
+            "JOIN DiaChi dc ON dc.nguoidung.id = nd.id " +
+            "WHERE nd.id =?1")
+    NhanVienNVInfo findNhanVienDiaChi(Integer userId);
     @Query("SELECT k FROM NhanVien k WHERE k.nguoidung.email = ?1")
     NhanVien findNhanVienByEmail(@Param("emailResetPassword") String emailResetPassword);
     @Query("SELECT N FROM NhanVien N WHERE N.manhanvien like %?1%")

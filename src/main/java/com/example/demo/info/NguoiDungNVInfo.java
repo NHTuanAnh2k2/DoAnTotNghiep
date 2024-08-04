@@ -29,6 +29,7 @@ public class NguoiDungNVInfo {
     Boolean gioitinh;
     String anh;
     String taikhoan;
+    String matkhau;
     Timestamp ngaytao;
     String nguoitao;
     Timestamp lancapnhatcuoi;

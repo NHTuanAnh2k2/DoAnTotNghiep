@@ -45,7 +45,10 @@
         <div class="row">
             <div class="col-lg-3 border rounded" style="background-color: #EEEEEE; height: 450px; width: 300px">
                 <div class="d-flex justify-content-center mt-5 mb-3">
-                    <img src="../dist/img/bong2.jpg" class="rounded-circle" width="120" height="120">
+                    <img id="uploadedImage" th:src="${userAvatar}" class="rounded-circle" width="120" height="120" style="cursor: pointer;">
+                </div>
+                <div class="file-input-wrapper">
+                    <input type="file" id="fileInput" class="file-input" name="anh" accept="image/*" style="display:none;">
                 </div>
                 <p class="d-flex justify-content-center mb-4" style="font-size: 18px;">Xin chào <span
                         style="color: #0a58ca; padding-left: 7px;" th:text="${hovatenHoSo}">Nguyễn Văn Duy</span>
@@ -322,7 +325,7 @@
                                             <div>
                                                 <div class="form-floating mb-3">
                                                     <input type="text" class="form-control" th:field="*{hotennguoinhan}"
-                                                           id="hotennguoinhan"
+                                                           id="hotennguoinhan" maxlength="50"
                                                            placeholder="Họ và tên">
                                                     <label>Họ và tên</label>
                                                     <span id="hotennguoinhanError" style="color: red"></span>
@@ -337,7 +340,7 @@
                                             </div>
                                             <div class="form-floating mb-3">
                                                 <input type="text" class="form-control" id="tenduong"
-                                                       th:field="*{tenduong}"
+                                                       th:field="*{tenduong}" maxlength="100"
                                                        placeholder="Địa chỉ">
                                                 <label>Địa chỉ</label>
                                                 <span id="tenduongError" style="color: red"></span>
@@ -383,7 +386,7 @@
                                                    style="color: #808080; text-decoration: none; text-transform: none; margin-right: 50px; font-weight: 550; ">Hủy</a>
                                                 <button type="submit" id="btnThemDiaChi"
                                                         style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 40%; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">
-                                                    THÊM THÔNG TIN
+                                                    THÊM ĐỊA CHỈ
                                                 </button>
                                             </div>
                                         </form>
@@ -403,7 +406,7 @@
                                             <div>
                                                 <div class="form-floating mb-3">
                                                     <input type="text" class="form-control" th:field="*{hotennguoinhan}"
-                                                           id="hotennguoinhan2"
+                                                           id="hotennguoinhan2" maxlength="50"
                                                            placeholder="Họ và tên">
                                                     <label>Họ và tên</label>
                                                     <span id="hotennguoinhanError2" style="color: red"></span>
@@ -418,7 +421,7 @@
                                             </div>
                                             <div class="form-floating mb-3">
                                                 <input type="text" class="form-control" id="tenduong2"
-                                                       th:field="*{tenduong}"
+                                                       th:field="*{tenduong}" maxlength="100"
                                                        placeholder="Địa chỉ">
                                                 <label for="tenduong2">Địa chỉ</label>
                                                 <span id="tenduongError2" style="color: red"></span>
@@ -488,8 +491,8 @@
                                     <p><span style="color: red">(*)</span> Mật khẩu hiện tại:
                                         <input type="password" class="form-control" th:field="*{matkhau}">
                                         <span id="maukhaucuError" style="color: red"></span>
+                                        <span th:text="${error1}" class="mb-3" style="color: red;"></span>
                                     </p>
-                                    <span th:text="${error1}" class="mb-3" style="color: red;"></span>
                                     <p><span style="color: red">(*)</span> Mật khẩu mới:
                                         <input type="password" class="form-control" th:field="*{matkhaumoi}">
                                         <span id="maukhaumoiError" style="color: red"></span>
@@ -498,8 +501,8 @@
                                         <input type="password" class="form-control" name="xacnhanmatkhau"
                                                th:field="*{xacnhanmatkhau}">
                                         <span id="maukhauxnError" style="color: red"></span>
+                                        <span th:text="${error2}" class="mb-3" style="color: red;"></span>
                                     </p>
-                                    <span th:text="${error2}" class="mb-3" style="color: red;"></span>
                                     <p>
                                         <button type="submit" class="btn" id="btnDoiMatKhau"
                                                 style="background-color: rgb(249,72,42);color: white">
@@ -612,7 +615,7 @@
                                                 <td th:text="${hd.khachhang.nguoidung.hovaten}"></td>
                                                 <td th:text="${hd.sdt}"></td>
                                                 <td th:text="${#numbers.formatDecimal(hd.tongtien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"></td>
-                                                <td th:text="${hd.ngaygiaodukien}"></td>
+                                                <td th:text="${#dates.format(hd.ngaygiaodukien, 'dd/MM/yyyy')}"></td>
                                                 <td th:if="${hd.trangthai == 0}">Chờ xác nhận</td>
                                                 <td th:if="${hd.trangthai == 1}">Đã xác nhận</td>
                                                 <td th:if="${hd.trangthai == 2}">Chờ giao hàng</td>
@@ -1104,7 +1107,7 @@
         });
 
         Toast.fire({
-            icon: "warning",
+            icon: "error",
             title: "Sản phẩm đã hết hàng hoặc đã ngừng kinh doanh!"
         });
     }
@@ -1264,62 +1267,87 @@
 
         if (inputNgaySinh.value === '') {
             ngaysinhError.innerText = 'Ngày sinh không được trống';
+            document.getElementById('ngaysinh').style.borderColor = 'red';
             isValid = false;
         } else if (ngaySinhValue > today) {
             ngaysinhError.innerText = 'Ngày sinh không được lớn hơn ngày hiện tại';
+            document.getElementById('ngaysinh').style.borderColor = 'red';
             isValid = false;
         } else if (age <= 16) {
             ngaysinhError.innerText = 'Tuổi phải từ 16 trở lên';
+            document.getElementById('ngaysinh').style.borderColor = 'red';
             isValid = false;
         } else if (age > 70) {
             ngaysinhError.innerText = 'Tuổi phải từ 70 trở xuống';
+            document.getElementById('ngaysinh').style.borderColor = 'red';
             isValid = false;
         }
 
         if (inputTenNd === "") {
             tenError.innerText = "Họ và tên không được trống";
+            document.getElementById('hovaten').style.borderColor = 'red';
             isValid = false;
         } else if (specialCharPattern.test(inputTenNd)) {
             tenError.innerText = "Họ và tên không được chứa ký tự đặc biệt";
+            document.getElementById('hovaten').style.borderColor = 'red';
             isValid = false;
         } else if (numberPattern.test(inputTenNd)) {
             tenError.innerText = "Họ và tên không được chứa số";
+            document.getElementById('hovaten').style.borderColor = 'red';
             isValid = false;
         } else if (inputTenNd.length > 50) {
             tenError.innerText = 'Họ và tên không được quá 50 ký tự';
+            document.getElementById('hovaten').style.borderColor = 'red';
             isValid = false;
         }
 
         if (inputCccd === '') {
             cccdError.innerText = 'CCCD không được trống';
+            document.getElementById('cccd').style.borderColor = 'red';
             isValid = false;
         } else if (!cccdPattern.test(inputCccd)) {
             cccdError.innerText = 'CCCD không hợp lệ';
+            document.getElementById('cccd').style.borderColor = 'red';
             isValid = false;
         } else if (checkTrungCccdUpdate() === false) {
             cccdError.innerText = 'CCCD đã tồn tại';
+            document.getElementById('cccd').style.borderColor = 'red';
             isValid = false;
         }
 
         if (inputEmail === "") {
             emailError.innerText = "Email không được trống";
+            document.getElementById('email').style.borderColor = 'red';
             isValid = false;
         } else if (!emailPattern.test(inputEmail)) {
             emailError.innerText = "Email không hợp lệ";
+            document.getElementById('email').style.borderColor = 'red';
             isValid = false;
         } else if (checkTrungEmailUpdate() === false) {
             emailError.innerText = 'Email đã tồn tại';
+            document.getElementById('email').style.borderColor = 'red';
+            isValid = false;
+        } else if (inputEmail.length < 5) {
+            emailError.innerText = 'Email không được ít hơn 5 ký tự';
+            document.getElementById('email').style.borderColor = 'red';
+            isValid = false;
+        } else if (inputEmail.length > 254) {
+            emailError.innerText = 'Email không được quá 254 ký tự';
+            document.getElementById('email').style.borderColor = 'red';
             isValid = false;
         }
 
         if (inputSdt === "") {
             sdtError.innerText = "Số điện thoại không được trống";
+            document.getElementById('sodienthoai').style.borderColor = 'red';
             isValid = false;
         } else if (!phoneNumberPattern.test(inputSdt)) {
             sdtError.innerText = "Số điện thoại không hợp lệ";
+            document.getElementById('sodienthoai').style.borderColor = 'red';
             isValid = false;
         } else if (checkTrungSdtUpdate() === false) {
             sdtError.innerText = 'Số điện thoại đã tồn tại';
+            document.getElementById('sodienthoai').style.borderColor = 'red';
             isValid = false;
         }
 
@@ -1353,33 +1381,57 @@
 
         if (inputHoten === "") {
             tennguoinhanError.innerText = "Họ và tên không được trống";
+            document.getElementById('hotennguoinhan').style.borderColor = 'red';
             isValid = false;
         } else if (specialCharPattern.test(inputHoten)) {
             tennguoinhanError.innerText = "Họ và tên không được chứa ký tự đặc biệt";
+            document.getElementById('hotennguoinhan').style.borderColor = 'red';
             isValid = false;
         } else if (numberPattern.test(inputHoten)) {
             tennguoinhanError.innerText = "Họ và tên không được chứa số";
+            document.getElementById('hotennguoinhan').style.borderColor = 'red';
+            isValid = false;
+        } else if (inputHoten.length > 50) {
+            tennguoinhanError.innerText = 'Họ và tên không được quá 50 ký tự';
+            document.getElementById('hotennguoinhan').style.borderColor = 'red';
             isValid = false;
         }
 
         if (inputSdt === "") {
             sdtError.innerText = "Số điện thoại không được trống";
+            document.getElementById('sdtnguoinhan').style.borderColor = 'red';
             isValid = false;
         } else if (!phoneNumberPattern.test(inputSdt)) {
             sdtError.innerText = "Số điện thoại không hợp lệ";
+            document.getElementById('sdtnguoinhan').style.borderColor = 'red';
             isValid = false;
         }
 
         if (inputTenDuong === "") {
             tenduongError.innerText = "Không được để trống tên đường";
+            document.getElementById('tenduong').style.borderColor = 'red';
+            isValid = false;
+        } else if (inputTenDuong.length > 100) {
+            tenduongError.innerText = 'Địa chỉ không được quá 100 ký tự';
+            document.getElementById('tenduong').style.borderColor = 'red';
+            isValid = false;
+        } else if (specialCharPattern.test(inputTenDuong)) {
+            tenduongError.innerText = "Địa chỉ không được chứa ký tự đặc biệt";
+            document.getElementById('tenduong').style.borderColor = 'red';
             isValid = false;
         }
 
         if (tinhthanhSelect === '' || quanhuyenSelect === '' || xaphuongSelect === '') {
             tinhthanhError.innerText = 'Hãy chọn địa chỉ';
+            document.getElementById('city').style.borderColor = 'red';
+            document.getElementById('district').style.borderColor = 'red';
+            document.getElementById('ward').style.borderColor = 'red';
             isValid = false;
         } else {
             tinhthanhError.innerText = '';
+            document.getElementById('city').style.borderColor = '#dee2e6';
+            document.getElementById('district').style.borderColor = '#dee2e6';
+            document.getElementById('ward').style.borderColor = '#dee2e6';
         }
         sessionStorage.setItem('activeTab', 'v-pills-profile');
         return isValid;
@@ -1401,23 +1453,43 @@
 
         if (inputHoten2 === "") {
             tennguoinhanError2.innerText = "Họ và tên không được trống";
+            document.getElementById('hotennguoinhan2').style.borderColor = 'red';
             isValid = false;
         } else if (specialCharPattern.test(inputHoten2)) {
             tennguoinhanError2.innerText = "Họ và tên không được chứa ký tự đặc biệt";
+            document.getElementById('hotennguoinhan2').style.borderColor = 'red';
             isValid = false;
         } else if (numberPattern.test(inputHoten2)) {
             tennguoinhanError2.innerText = "Họ và tên không được chứa số";
+            document.getElementById('hotennguoinhan2').style.borderColor = 'red';
+            isValid = false;
+        } else if (inputHoten2.length > 50) {
+            tennguoinhanError2.innerText = 'Họ và tên không được quá 50 ký tự';
+            document.getElementById('hotennguoinhan2').style.borderColor = 'red';
             isValid = false;
         }
+
         if (inputTenDuong2 === "") {
             tenduongError2.innerText = "Không được để trống tên đường";
+            document.getElementById('tenduong2').style.borderColor = 'red';
+            isValid = false;
+        } else if (inputTenDuong2.length > 100) {
+            tenduongError2.innerText = 'Địa chỉ không được quá 100 ký tự';
+            document.getElementById('tenduong2').style.borderColor = 'red';
+            isValid = false;
+        } else if (specialCharPattern.test(inputTenDuong2)) {
+            tenduongError2.innerText = "Địa chỉ không được chứa ký tự đặc biệt";
+            document.getElementById('tenduong2').style.borderColor = 'red';
             isValid = false;
         }
+
         if (inputSdt2 === "") {
             sdtError2.innerText = "Số điện thoại không được trống";
+            document.getElementById('sdtnguoinhan2').style.borderColor = 'red';
             isValid = false;
         } else if (!phoneNumberPattern.test(inputSdt2)) {
             sdtError2.innerText = "Số điện thoại không hợp lệ";
+            document.getElementById('sdtnguoinhan2').style.borderColor = 'red';
             isValid = false;
         }
         sessionStorage.setItem('activeTab', 'v-pills-profile');
@@ -1451,8 +1523,13 @@
             xacnhanmkError.innerText = "Không được để trống xác nhận mật khẩu";
             isValid = false;
         }
-        sessionStorage.setItem('activeTab', 'v-pills-disabled-tab');
+        sessionStorage.setItem('activeTab', 'v-pills-disabled');
         return isValid;
+    }
+
+    function doimatkhau() {
+        sessionStorage.setItem('activeTab', 'v-pills-disabled');
+        return true;
     }
 
     function checkTrungCccd() {
@@ -1746,6 +1823,110 @@
             }
         };
     }
+
+</script>
+
+<script>
+    document.getElementById('fileInput').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+
+        if (file) {
+            // Kiểm tra kích thước tệp (1 MB = 1 * 1024 * 1024 bytes)
+            const maxSize = 1 * 1024 * 1024; // 1 MB
+
+            if (file.size > maxSize) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "error",
+                    title: 'Lỗi',
+                    text: "Tệp ảnh phải nhỏ hơn 1 MB."
+                });
+                // Xóa tệp đã chọn
+                event.target.value = '';
+                return;
+            }
+
+            // Nếu kích thước hợp lệ, hiển thị ảnh đã chọn
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const uploadedImage = document.getElementById('uploadedImage');
+                uploadedImage.src = e.target.result;
+                uploadedImage.style.display = 'block'; // Hiển thị ảnh
+            };
+            reader.readAsDataURL(file);
+
+            // Gửi yêu cầu AJAX để tải lên ảnh
+            const formData = new FormData();
+            formData.append('anh', file);
+
+            fetch('/api/upload', {
+                method: 'POST',
+                body: formData,
+                credentials: 'include' // Để gửi session cookie
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Lỗi khi tải lên ảnh');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    console.log(data);
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+
+                    Toast.fire({
+                        icon: "success",
+                        title: 'Thành công',
+                        text: 'Ảnh đã được tải lên thành công!',
+                    });
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Lỗi',
+                        text: 'Đã xảy ra lỗi khi tải lên ảnh.',
+                    });
+                });
+        }
+    });
+
+    document.getElementById('uploadedImage').addEventListener('click', function() {
+        document.getElementById('fileInput').click();
+    });
 
 </script>
 <!-- footer section start -->

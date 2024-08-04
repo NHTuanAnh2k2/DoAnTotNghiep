@@ -32,18 +32,22 @@
 <!--        </li>-->
         <!--end -->
         <!--avata -->
-        <li class="nav-item dropdown">
-
+        <li class="nav-item dropdown mb-3 mr-3">
             <a class="nav-link dropdown-toggle" href="#" id="avatarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-               <span style="margin-left: 5px;" th:if="${adminDangnhap}"
-                     th:text="${adminDangnhap}">Xin chào</span>
-                <img th:if="${adminAvatar}" th:src="${adminAvatar}" class="img-circle" height="30px" width="30px">
-                <img th:unless="${adminAvatar}" src="../../dist/img/bong1.jpg" class="img-circle" height="30px" width="30px">
+               <span style="margin-left: 5px; color: black" th:if="${adminDangnhap}"
+                     th:text="'Xin chào, ' + ${adminDangnhap}"></span>
+                <img th:if="${adminDangnhap}" th:src="@{'/upload' + ${adminAvatar.substring(adminAvatar.lastIndexOf('upload') + 6)}}" class="img-circle" height="40" width="40">
+                <svg th:unless="${adminDangnhap}" xmlns="http://www.w3.org/2000/svg" width="40" height="40"
+                     class="bi bi-person-circle" viewBox="0 0 16 16">
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                    <path fill-rule="evenodd"
+                          d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                </svg>
             </a>
-            <div class="dropdown-menu" aria-labelledby="avatarDropdown">
+            <div class="dropdown-menu mt-3" aria-labelledby="avatarDropdown">
                 <!-- Các mục trong menu sổ xuống -->
-                <a th:if="${adminDangnhap}" class="dropdown-item" th:href="@{/admin/dangxuat}">ĐĂNG XUẤT</a>
-                <a th:unless="${adminDangnhap}" class="dropdown-item" th:href="@{/admin/account}">ĐĂNG NHẬP</a>
+                <a th:if="${adminDangnhap}" class="dropdown-item" th:href="@{/dangxuat/admin}">ĐĂNG XUẤT</a>
+                <a th:unless="${adminDangnhap}" class="dropdown-item" th:href="@{/account/admin}">ĐĂNG NHẬP</a>
             </div>
         </li>
 

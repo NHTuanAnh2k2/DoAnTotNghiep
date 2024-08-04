@@ -529,6 +529,7 @@ public class CustomerController {
         model.addAttribute("hoadon", hd);
         model.addAttribute("pttt", pttt);
         model.addAttribute("lstHdct", lstHdct);
+        model.addAttribute("tongTienHoaDon", hd.getTongtien());
         return "customer/detaildonhang";
     }
 

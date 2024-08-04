@@ -100,12 +100,15 @@
                                                     <p class="text-center" style="color: red; font-weight: initial;" id="errorAnh"></p>
                                                 </div>
                                                 <div class=" d-flex justify-content-center align-items-center">
-                                                    <div class="file-input-wrapper">
+                                                    <div class="file-input-wrapper" th:if="${adminRole == true}">
                                                         <input type="file" id="fileInput" class="file-input" name="anh" accept="image/png, image/jpeg">
                                                         <label for="fileInput" class="file-input-label">
                                                         </label>
                                                         <img id="uploadedImage"  src="" alt="Uploaded Image" style="display: none;">
                                                         <img id="uploadedImage1" th:if="*{anh != null}" th:src="@{'/upload' + *{anh.substring(anh.lastIndexOf('upload') + 6)}}">
+                                                    </div>
+                                                    <div class="file-input-wrapper" th:if="${adminRole == false}">
+                                                        <img th:src="${adminAvatar}" class="rounded-circle" width="100%" alt="">
                                                     </div>
                                                 </div>
                                             </section>
@@ -264,7 +267,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button type="submit" class="btn btn-primary" style="margin-top: 20px"  >Cập nhật nhân viên</button>
+                                            <button th:if="${adminRole == true}" type="submit" class="btn btn-primary" style="margin-top: 20px"  >Cập nhật nhân viên</button>
                                             <button type="button" class="btn btn-danger" style="margin-top: 20px"  onclick="goBack()">Thoát</button>
                                         </form>
                                     </div>

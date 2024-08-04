@@ -3710,6 +3710,7 @@ tabindex="0">
                                             document.getElementById('thongtingiao_ngaygiao').value = timestamp;
 
                                             // phigiaohang
+                                            
                                             feship(idHuyenreturn, idXareturn);
 
 
@@ -3754,11 +3755,13 @@ tabindex="0">
                     return response.data // In dữ liệu ra console
                 })
                 .then(function (d) {
-                    var shipfe = convertCashInput(d.data.total);
-                    document.getElementById('phigiaohang').value = shipfe;
                     var shipluutam = shipToanCuc;
                     shipToanCuc = d.data.total;
-                    tienkhachthanhtoan = tienkhachthanhtoan + shipToanCuc;
+                    if(tongTienDon>=2000000){
+                        shipToanCuc=0;
+                    }
+                    document.getElementById('phigiaohang').value =  convertCashInput(shipToanCuc);
+                    tienkhachthanhtoan = (tongTienDon-TienGiamDon) + shipToanCuc;
                 })
 
         }

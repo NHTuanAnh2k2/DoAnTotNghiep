@@ -1,16 +1,16 @@
 package com.example.demo.controller.NguoiDung;
 
 import com.example.demo.entity.*;
-import com.example.demo.info.DiaChiNVInfo;
-import com.example.demo.info.NguoiDungNVInfo;
-import com.example.demo.info.NhanVienInfo;
-import com.example.demo.info.NhanVienSearch;
+import com.example.demo.info.*;
+import com.example.demo.repository.NhanVienRepository;
+import com.example.demo.service.KhachHangService;
 import com.example.demo.service.impl.DiaChiImpl;
 import com.example.demo.service.impl.NguoiDungImpl1;
 import com.example.demo.service.impl.NhanVienImpl;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.Normalizer;
@@ -35,14 +36,33 @@ public class NhanVienController {
     DiaChiImpl diaChi;
     @Autowired
     NguoiDungImpl1 nguoiDung;
+    @Autowired
+    PasswordEncoder passwordEncoder;
+    private static final String CHAR_LOWER = "abcdefghijklmnopqrstuvwxyz";
+    private static final String CHAR_UPPER = CHAR_LOWER.toUpperCase();
+    private static final String NUMBER = "0123456789";
+    private static final String PASSWORD_ALLOW_BASE = CHAR_LOWER + CHAR_UPPER + NUMBER;
+    private static final SecureRandom random = new SecureRandom();
+    NhanVienRepository nhanVienRepository;
+    @Autowired
+    KhachHangService khachHangService;
 
 
     @GetMapping("/admin/qlnhanvien")
-    public String listnv(Model model,@ModelAttribute("nds") NhanVienSearch nd) {
+    public String listnv(Model model,@ModelAttribute("nds") NhanVienSearch nd, HttpSession session) {
         List<DiaChi> page = diaChi.getAll();
         List<NhanVien> listnv = nhanVien.getAll();
         model.addAttribute("items1", page);
         model.addAttribute("items2", listnv);
+
+        String username = (String) session.getAttribute("adminDangnhap");
+        if (username != null) {
+            NguoiDung nguoiDung1 = khachHangService.findNguoiDungByTaikhoan(username);
+            NhanVienNVInfo nv = nhanVienRepository.findNhanVienDiaChi(nguoiDung1.getId());
+            if (nv.getVaitro() == false) {
+                model.addAttribute("nv", nv);
+            }
+        }
         return "admin/qlnhanvien";
     }
     @GetMapping("/admin/timkiem")
@@ -121,6 +141,14 @@ public class NhanVienController {
         model.addAttribute("items2", listnv);
         return "admin/addnhanvien";
     }
+    public String generateRandomPassword(int length) {
+        if (length < 4) throw new IllegalArgumentException("Length too short, minimum 4 characters required");
+        StringBuilder password = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            password.append(PASSWORD_ALLOW_BASE.charAt(random.nextInt(PASSWORD_ALLOW_BASE.length())));
+        }
+        return password.toString();
+    }
     @PostMapping("/admin/addnv")
     public String addSave(
             @Valid  @ModelAttribute("nd") NguoiDungNVInfo nd,
@@ -132,6 +160,7 @@ public class NhanVienController {
             @RequestParam(name = "anh") MultipartFile anh,
             Model model, BindingResult result, Errors errors, HttpSession session) {
         Integer checkthem=0;
+        String matKhau;
         String trimmedTenSanPham = (nd.getHovaten() != null)
                 ? nd.getHovaten().trim().replaceAll("\\s+", " ")
                 : null;
@@ -167,6 +196,8 @@ public class NhanVienController {
         int s = l.size() + 1;
         tenCuoi = tenCuoi + chuoiMoi.toString().toLowerCase() + s;
         nd.setTaikhoan(tenCuoi);
+        matKhau = generateRandomPassword(10);
+        nd.setMatkhau(passwordEncoder.encode(matKhau));
         NguoiDung a = nguoiDung.add(nd);
         nv.setIdnguoidung(a);
         nhanVien.add(nv);
@@ -175,7 +206,7 @@ public class NhanVienController {
         String to = a.getEmail();
         String subject = "Chúc mừng đã trở thành nhân viên của T&T shop";
         String mailType = "";
-        String mailContent = "Tài khoản của bạn là: " + a.getTaikhoan() +"\nMật khẩu của bạn là: "+ a.getMatkhau();
+        String mailContent = "Tài khoản của bạn là: " + a.getTaikhoan() +"\nMật khẩu của bạn là: "+ matKhau;
         nguoiDung.sendEmail(to, subject, mailType, mailContent);
         checkthem=1;
         session.setAttribute("themthanhcong",checkthem);
@@ -183,6 +214,7 @@ public class NhanVienController {
     }
     private String saveImage(MultipartFile file) {
         String uploadDir = "D:\\DATN\\src\\main\\resources\\static\\upload";
+        String dbUploadDir = "/upload";
         try {
             File directory = new File(uploadDir);
             if (!directory.exists()) {
@@ -192,7 +224,7 @@ public class NhanVienController {
             String filePath = uploadDir + File.separator + originalFileName;
             File dest = new File(filePath);
             file.transferTo(dest);
-            return filePath;
+            return dbUploadDir + "/" + originalFileName;
         } catch (IOException e) {
             e.printStackTrace();
             return null;

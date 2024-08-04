@@ -224,7 +224,7 @@
                                                     <button class="btn btn-danger" th:if="${trangThaiHienTai<2}"
                                                         data-bs-toggle="modal" data-bs-target="#huy">Hủy</button>
                                                     <button class="btn btn-warning"
-                                                        th:if="${trangThaiHienTai > 0 and trangThaiHienTai < 2}"
+                                                        th:if="${trangThaiHienTai > 0 and trangThaiHienTai < 2 and lstphuongThucTT[0].trangthai!=true}"
                                                         data-bs-toggle="modal" data-bs-target="#quaylai">Quay
                                                         lại</button>
                                                     <button th:if="${trangThaiHienTai==0}" class="btn btn-primary"

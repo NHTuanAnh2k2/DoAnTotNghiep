@@ -17,11 +17,12 @@ import java.util.List;
 
 @Repository
 public interface HoaDonChiTietRepository1 extends JpaRepository<HoaDonChiTiet, Integer> {
-    @Query("SELECT new com.example.demo.info.TraCuuDetailInfo(a.tenanh, sp.tensanpham, kc.ten, hdc.soluong, hd.tongtien)" +
+    @Query("SELECT new com.example.demo.info.TraCuuDetailInfo(a.tenanh, sp.tensanpham, kc.ten, hdc.soluong, hd.tongtien, ms.ten)" +
             "FROM HoaDonChiTiet hdc " +
             "JOIN SanPhamChiTiet spc ON hdc.sanphamchitiet.id = spc.id " +
             "JOIN SanPham sp ON spc.sanpham.id = sp.id " +
             "JOIN KichCo kc ON spc.kichco.id = kc.id " +
+            "JOIN MauSac ms ON spc.mausac.id = ms.id " +
             "JOIN HoaDon hd ON hdc.hoadon.id = hd.id " +
             "JOIN Anh a ON spc.id = a.sanphamchitiet.id " +
             "WHERE hd.id = :hoaDonId")

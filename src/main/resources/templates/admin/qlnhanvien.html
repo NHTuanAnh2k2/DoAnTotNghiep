@@ -89,8 +89,8 @@
                                     <ul class="notifications"></ul>
                                         <div class="d-flex justify-content-between buttons"
                                              style="margin-right: 35%; margin-left: 35%;">
-                                            <button type="submit" id="searchButton" class="btn btn-primary">Tìm kiếm</button>
-                                            <button type="reset" class="btn btn-danger"  onclick="clearForm()">Làm mới</button>
+                                            <button th:if="${adminRole == true}" type="submit" id="searchButton" class="btn btn-primary">Tìm kiếm</button>
+                                            <button th:if="${adminRole == true}" type="reset" class="btn btn-danger"  onclick="clearForm()">Làm mới</button>
                                         </div>
                                     </form>
                             </div>
@@ -119,11 +119,11 @@
                                     </svg>
                                     Danh sách nhân viên
                                 </h3>
-                                <a th:href="@{/admin/addnhanvien}" class="card-title btn btn-primary" style="margin-left: 850px">Thêm nhân viên</a>
+                                <a th:if="${adminRole == true}" th:href="@{/admin/addnhanvien}" class="card-title btn btn-primary" style="margin-left: 850px">Thêm nhân viên</a>
                             </div>
 
                             <!-- /.card-header -->
-                            <div class="card-body">
+                            <div th:unless="${nv}" class="card-body">
                                 <table id="example2" style="width: 100%" class="table table-bordered table-hover text-center">
                                     <thead class="table table-danger">
                                     <tr>
@@ -181,6 +181,59 @@
                                     </tfoot>
                                 </table>
                             </div>
+
+                            <div th:if="${nv}" class="card-body">
+                                <table id="example3" style="width: 100%" class="table table-bordered table-hover text-center">
+                                    <thead class="table table-danger">
+                                    <tr>
+                                        <th>STT</th>
+                                        <th style="white-space: nowrap;">Mã nhân viên</th>
+                                        <th style="white-space: nowrap;">Tên nhân viên</th>
+                                        <th style="white-space: nowrap;">Số điện thoại</th>
+                                        <th style="white-space: nowrap;">Ngày sinh</th>
+                                        <!--                                        <th style="white-space: nowrap;">Giới tính</th>-->
+                                        <th style="white-space: nowrap;">Địa chỉ</th>
+                                        <th>Vai trò</th>
+                                        <th style="white-space: nowrap;">Trạng thái</th>
+                                        <th style=" white-space: nowrap;">Hành động</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="nv,stt:${nv}">
+                                        <td th:text="${stt.index+1}"></td>
+                                        <td style="white-space: nowrap;" th:text="${nv.manhanvien}"></td>
+                                        <td style="white-space: nowrap;" th:text="${nv.hovaten}"></td>
+                                        <td style="white-space: nowrap;" th:text="${nv.sdt}"></td>
+                                        <td style="white-space: nowrap;" th:text="${#dates.format(nv.ngaysinh, 'dd-MM-yyyy')}"></td>
+                                        <!--                                        <td style="white-space: nowrap;" th:text="${items2[i].nguoidung.gioitinh ? 'Nam' : 'Nữ'}"></td>-->
+                                        <td><span th:if="${#strings.length(nv.tenduong + ' ' + nv.xaphuong + ' ' + nv.quanhuyen + ' ' + nv.tinhthanh) > 20}" th:text="${#strings.substring(nv.tenduong + ' ' + nv.xaphuong + ' ' + nv.quanhuyen + ' ' + nv.tinhthanh, 0, 20)} + '...'"></span>
+                                            <span th:unless="${#strings.length(nv.tenduong + ' ' + nv.xaphuong + ' ' + nv.quanhuyen + ' ' + nv.tinhthanh) > 20}" th:text="${nv.tenduong + ' ' + nv.xaphuong + ' ' + nv.quanhuyen + ' ' + nv.tinhthanh}"></span></td>
+                                        <td th:if="${nv.vaitro == true}" style="white-space: nowrap;">
+                                            <b class="btn btn-success">Quản lý</b>
+                                        </td>
+                                        <td th:unless="${nv.vaitro}" style="white-space: nowrap;">
+                                            <a class="btn btn-info">Nhân viên</a>
+                                        </td>
+                                        <td th:if="${nv.trangthai == true}" style="white-space: nowrap;">
+                                            <a class="btn btn-outline-success">Làm việc</a>
+                                        </td>
+                                        <td th:unless="${nv.trangthai}" style="white-space: nowrap;">
+                                            <a class="btn btn-outline-danger">Nghỉ làm</a>
+                                        </td>
+                                        <td style="white-space: nowrap; " >
+                                            <a th:href="@{/updateNhanVien/{id}(id=${nv.id})}" style="color:rgb(249,72,42);">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                                                     fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                                                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                                </svg>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                    </tfoot>
+                                </table>
+                            </div>
                             <!-- /.card-body -->
                         </div>
                         <!-- /.card -->
@@ -217,7 +270,7 @@
             toast: true,
             position: "top-end",
             showConfirmButton: false,
-            timer: 2000,
+            timer: 1000,
             timerProgressBar: true,
             didOpen: (toast) => {
                 toast.onmouseenter = Swal.stopTimer;
@@ -240,7 +293,7 @@
                 toast: true,
                 position: "top-end",
                 showConfirmButton: false,
-                timer: 3000,
+                timer: 1000,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                     toast.onmouseenter = Swal.stopTimer;
@@ -268,7 +321,7 @@
                 toast: true,
                 position: "top-end",
                 showConfirmButton: false,
-                timer: 3000,
+                timer: 1000,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                     toast.onmouseenter = Swal.stopTimer;

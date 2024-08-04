@@ -122,7 +122,15 @@
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a th:href="@{/admin/qlnhanvien}" class="nav-link">
+                        <a th:if="${adminRole == null}" th:href="@{/admin/qlnhanvien}" class="nav-link">
+                            <i class="far nav-icon"></i>
+                            <p>Nhân viên</p>
+                        </a>
+                        <a th:if="${adminRole == true}" th:href="@{/admin/qlnhanvien}" class="nav-link">
+                            <i class="far nav-icon"></i>
+                            <p>Nhân viên</p>
+                        </a>
+                        <a th:if="${adminRole == false}" th:href="@{/updateNhanVien/{id}(id=${adminId})}" class="nav-link">
                             <i class="far nav-icon"></i>
                             <p>Nhân viên</p>
                         </a>
