@@ -261,6 +261,7 @@
                 if (this.checked) {
                     selectedProducts.add(product.id);
                     const details = await getProductDetails(product.id);
+                     console.log(details);
                     displayDetails(details);
                 } else {
                     selectedProducts.delete(product.id);

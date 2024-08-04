@@ -3,10 +3,7 @@ package com.example.demo.entity;
 import com.fasterxml.jackson.annotation.ObjectIdGenerator;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
@@ -25,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Entity
 @Table(name = "sanphamchitiet")
 public class SanPhamChiTiet {
@@ -74,7 +72,6 @@ public class SanPhamChiTiet {
 
     @OneToMany(mappedBy = "sanphamchitiet", fetch = FetchType.EAGER)
     List<Anh> anh;
-
     @OneToMany(mappedBy = "sanphamchitiet")
     List<SanPhamDotGiam> sanphamdotgiam;
 

@@ -45,8 +45,8 @@ public class SanPhamChiTietImp implements SanPhamChiTietService {
     }
 
     @Override
-    public List<SanPhamChiTiet> findBySanPhamId(Integer idSanPham) {
-        return sanPhamChiTietRepository.findBySanPhamId(idSanPham);
+    public List<SanPhamChiTiet> findBySanPhamId(Integer Id) {
+        return sanPhamChiTietRepository.findBySanPhamId(Id);
     }
 
 //    @Override

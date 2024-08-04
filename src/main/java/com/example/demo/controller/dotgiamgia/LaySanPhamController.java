@@ -1,6 +1,7 @@
 package com.example.demo.controller.dotgiamgia;
 
 import com.example.demo.entity.*;
+import com.example.demo.info.SanPhamChiTietConvertTA;
 import com.example.demo.service.impl.DotGiamGiaImp;
 import com.example.demo.service.impl.SanPHamDotGiamImp;
 import com.example.demo.service.impl.SanPhamChiTietImp;
@@ -39,13 +40,19 @@ public class LaySanPhamController {
         return lstSanPham;
     }
     @GetMapping("/hien-thi-san-pham-chi-tiet/{Id}")
-    public List<SanPhamChiTiet> getProductDetails(@PathVariable int Id) {
-        List<SanPhamChiTiet> details = new ArrayList<>();
+    public List<SanPhamChiTietConvertTA> getProductDetails(@PathVariable("Id") Integer Id) {
         List<SanPhamChiTiet> lst= sanPhamChiTietImp.findBySanPhamId(Id);
-        for(SanPhamChiTiet sp : lst){
-            details.add(sp);
+        List<SanPhamChiTietConvertTA> lstConverts= new ArrayList<>();
+        for (SanPhamChiTiet s: lst) {
+            SanPhamChiTietConvertTA sp = new SanPhamChiTietConvertTA();
+            sp.setId(s.getId());
+            sp.setSanpham(s.getSanpham());
+            sp.setMausac(s.getMausac());
+            sp.setKichco(s.getKichco());
+            sp.setAnh(s.getAnh());
+            lstConverts.add(sp);
         }
-        return details;
+        return lstConverts;
     }
     @GetMapping("/san-pham-dot-giam")
     public List<SanPham> sanphamdotgiam(HttpSession session){
@@ -66,14 +73,20 @@ public class LaySanPhamController {
         return lstSP;
     }
     @GetMapping("/chi-tiet-san-pham-dot-giam")
-    public List<SanPhamChiTiet> sanphamchitietdotgiam(HttpSession session){
+    public List<SanPhamChiTietConvertTA> sanphamchitietdotgiam(HttpSession session){
         DotGiamGia dotGiamGia = (DotGiamGia) session.getAttribute("dotGG");
         List<SanPhamDotGiam> lstSPDG= sanPHamDotGiamImp.findSanPhamDotGiamByIdDotgiamgia(dotGiamGia.getId());
 
-        List<SanPhamChiTiet> lstSPCT= new ArrayList<>();
+        List<SanPhamChiTietConvertTA> lstSPCT= new ArrayList<>();
         for(SanPhamDotGiam sp: lstSPDG){
             SanPhamChiTiet spct= sanPhamChiTietImp.findById(sp.getSanphamchitiet().getId());
-            lstSPCT.add(spct);
+            SanPhamChiTietConvertTA s = new SanPhamChiTietConvertTA();
+            s.setId(spct.getId());
+            s.setSanpham(spct.getSanpham());
+            s.setAnh(spct.getAnh());
+            s.setKichco(spct.getKichco());
+            s.setMausac(spct.getMausac());
+            lstSPCT.add(s);
         }
         return lstSPCT;
     }

@@ -84,8 +84,8 @@ public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, 
     List<SanPhamChiTiet> search(String key, String maSPCT, Integer idthuonghieu, Integer iddegiay, Integer idkichco, Integer idmausac, Integer idchatlieu, Boolean gioitinh, Boolean trangthai);
 
     // bên a tuấn
-    @Query("SELECT spct FROM SanPhamChiTiet spct WHERE spct.sanpham.id = :idSanPham")
-    List<SanPhamChiTiet> findBySanPhamId(@Param("idSanPham") Integer idSanPham);
+    @Query("SELECT spct FROM SanPhamChiTiet spct WHERE spct.sanpham.id = :Id")
+    List<SanPhamChiTiet> findBySanPhamId(@Param("Id") Integer Id);
 
     //update số lượng và giá tiền
     @Transactional
