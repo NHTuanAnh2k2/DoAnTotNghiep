@@ -16,14 +16,15 @@ import com.example.demo.service.impl.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class TrangChuCustomerController {
@@ -206,6 +207,7 @@ public class TrangChuCustomerController {
         String selectedChatLieu = null;
         String selectedDeGiay = null;
         String selectedMaSPCT = null;
+        Integer selectedIdspct=null;
         String defaultColor = null;
         String defaultSize = null;
         for (SanPhamChiTiet spct : sanPham.getSpct()) {
@@ -222,6 +224,7 @@ public class TrangChuCustomerController {
                 selectedChatLieu = spct.getChatlieu().getTen();
                 selectedDeGiay = spct.getDegiay().getTen();
                 selectedMaSPCT = spct.getMasanphamchitiet();
+                selectedIdspct=spct.getId();
             }
         }
         if (colors.size() > 0) {
@@ -240,6 +243,7 @@ public class TrangChuCustomerController {
         model.addAttribute("selectedMaSPCT", selectedMaSPCT);
         model.addAttribute("defaultColor", defaultColor);
         model.addAttribute("defaultSize", defaultSize);
+        model.addAttribute("selectedIdspct", selectedIdspct);
         List<Object[]> page = trangChuRepository.topspmoinhatdetail();
         model.addAttribute("page", page);
         List<Object[]> page2 = trangChuRepository.topspnoibatdetail();
@@ -247,6 +251,68 @@ public class TrangChuCustomerController {
         model.addAttribute("token", token);
         return "customer/product-details";
     }
+
+    //validate input số lượng detail client
+    @GetMapping("checkQuantity")
+    @ResponseBody
+    public ResponseEntity<Boolean> checksl(@RequestParam("id") String lstDataStr, HttpSession session) {
+        String[] lstDataArray = lstDataStr.split(",");
+        List<String> lstData = Arrays.stream(lstDataArray)
+                .map(item -> URLDecoder.decode(item, StandardCharsets.UTF_8))
+                .collect(Collectors.toList());
+
+        Integer idspct = Integer.valueOf(lstData.get(0));
+        Integer slInput = Integer.valueOf(lstData.get(1));
+        Optional<SanPhamChiTiet> optionalSpct = sanPhamChiTietRepository.findById(idspct);
+        if (optionalSpct.isPresent()) {
+            SanPhamChiTiet sanPhamChiTiet = optionalSpct.get();
+            Integer slTrongKho = sanPhamChiTiet.getSoluong();
+            // Lấy số lượng sản phẩm hiện tại trong giỏ hàng (đã đăng nhập)
+            List<GioHangChiTiet> cartItems = new ArrayList<>();
+            String token = (String) session.getAttribute("token");
+            if (token != null) {
+                List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
+                if (taiKhoanTokenInfos != null) {
+                    for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
+                        if (tkInfo.getToken().equals(token)) {
+                            Integer userId = tkInfo.getId();
+                            NguoiDung nguoiDung = nguoiDungGioHangRepository.findById(userId).orElse(null);
+                            if (nguoiDung != null) {
+                                KhachHang khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
+                                if (khachHang != null) {
+                                    GioHang gioHang = gioHangRepository.findByKhachhang(khachHang);
+                                    if (gioHang != null) {
+                                        cartItems = gioHang.getGioHangChiTietList();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                // Lấy giỏ hàng từ session nếu người dùng chưa đăng nhập
+                cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
+                if (cartItems == null) {
+                    cartItems = new ArrayList<>();
+                }
+            }
+            // Tính tổng số lượng của biến thể sản phẩm hiện tại trong giỏ hàng
+            Integer slTrongGio = cartItems.stream()
+                    .filter(item -> item.getSanphamchitiet().getId().equals(idspct))
+                    .mapToInt(GioHangChiTiet::getSoluong)
+                    .sum();
+            // Kiểm tra số lượng nhập vào cộng với số lượng trong giỏ hàng có vượt quá số lượng trong kho không
+            if (slInput + slTrongGio > slTrongKho) {
+                return ResponseEntity.ok(false); // Không hợp lệ
+            } else {
+                return ResponseEntity.ok(true); // Hợp lệ
+            }
+        } else {
+            return ResponseEntity.ok(false); // Không tìm thấy sản phẩm
+        }
+    }
+
+
 
     @GetMapping("/search-trangchu")
     public String searchTrangChu(Model model,
