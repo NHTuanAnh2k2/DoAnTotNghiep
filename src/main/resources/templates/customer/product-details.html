@@ -483,7 +483,8 @@
                                                th:onclick="'changeButtonBackground(this); selectSize(this)'"></a>
                                         </div>
                                     </div>
-                                    <a class="btn"  style="border-color: black" th:href="@{#}" data-bs-toggle="modal" data-bs-target="#cachchonsize">
+                                    <a class="btn" style="border-color: black" th:href="@{#}" data-bs-toggle="modal"
+                                       data-bs-target="#cachchonsize">
                                         <i class="bi bi-credit-card-2-front-fill"></i>
                                         Cách chọn size</a>
                                 </div>
@@ -542,13 +543,14 @@
                                 <div class="d-flex align-items-center">
                                     <span style="margin-right: 10px;">Số lượng:</span>
                                     <div>
-                                        <input type="number" size="4" name="quantity" id="quantityInput" value="1"
+                                        <input type="number" size="4" name="quantity" id="quantityInput" value="0"
                                                min="1" class="tc line-item-qty item-quantity bg-white form-control"
                                                style="width:100px" oninput="validateQuantity()">
                                     </div>
                                 </div>
                                 <p></p>
                                 <span style="margin-right: 10px;">Mô tả: <span th:text="${sanphamchitiet.mota}"></span></span>
+                                <span th:text="${selectedIdspct}" id="idan"></span>
                                 <hr>
                                 <div class="d-flex">
                                     <button type="submit" th:formaction="@{/muangay}" class="btn btn-dark"
@@ -562,7 +564,6 @@
                                             style="background-color: rgb(249,72,42); color: white; width: 220px;height: 50px;line-height: 40px;margin-left: 20px">
                                         <i class="bi bi-bag-plus-fill" style="font-size: 20px"></i>
                                         THÊM VÀO GIỎ HÀNG
-
                                     </button>
                                 </div>
                             </div>
@@ -926,11 +927,16 @@
                 const newDocument = parser.parseFromString(html, 'text/html');
                 const newPrice = newDocument.querySelector('#product-price').innerText;
                 const newQuantity = newDocument.querySelector('#product-quantity').innerText;
+                const idan = newDocument.querySelector('#idan').innerText;
                 const newThuongHieu = newDocument.querySelector('#product-thuonghieu').innerText;
                 const newChatLieu = newDocument.querySelector('#product-chatlieu').innerText;
                 const newDeGiay = newDocument.querySelector('#product-degiay').innerText;
                 const newMaSPCT = newDocument.querySelector('#product-maspct').innerText;
-
+                if (idan) {
+                    document.querySelector('#idan').innerText = idan;
+                } else {
+                    document.querySelector('#idan').innerText = "Không tồn tại";
+                }
                 if (newPrice) {
                     document.querySelector('#product-price').innerText = newPrice;
                 } else {
@@ -1163,29 +1169,95 @@
 <!--validate thông báo số lượng không được để trống-->
 <script>
     function validateQuantity() {
-        const quantityInput = document.getElementById('quantityInput');
-        const currentValue = quantityInput.value;
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-            }
-        });
-
-        // Kiểm tra nếu giá trị của input là rỗng
-        if (currentValue === '') {
+        const idan = document.getElementById('idan').textContent.trim();
+        const sl = document.getElementById('quantityInput').value;
+        var list = [idan, sl];
+        let encodedList = list.map(item => encodeURIComponent(item));
+        if (sl === "") {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
             Toast.fire({
                 icon: 'warning',
                 title: 'Số lượng không được để trống'
             });
-
-            // Đặt lại giá trị của input về giá trị mặc định (ví dụ: 1)
             quantityInput.value = '1';
+        } else {
+            var urlchecksl = `http://localhost:8080/checkQuantity?id=${encodedList.join(",")}`;
+            fetch(urlchecksl)
+                .then(response => response.json())
+                .then(isValid => {
+                    if (!isValid) {
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            }
+                        });
+                        Toast.fire({
+                            icon: 'warning',
+                            title: 'Số lượng nhập vào vượt quá số lượng có sẵn trong kho'
+                        });
+
+                        // Vô hiệu hóa các nút "MUA NGAY" và "THÊM VÀO GIỎ HÀNG"
+                        document.getElementById('muangaycart').disabled = true;
+                        document.getElementById('add-to-cart-btn').disabled = true;
+                    } else {
+                        // Kích hoạt lại các nút "MUA NGAY" và "THÊM VÀO GIỎ HÀNG"
+                        document.getElementById('muangaycart').disabled = false;
+                        document.getElementById('add-to-cart-btn').disabled = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi',
+                        text: 'Đã xảy ra lỗi, vui lòng thử lại sau!'
+                    });
+                    // Vô hiệu hóa các nút "MUA NGAY" và "THÊM VÀO GIỎ HÀNG"
+                    document.getElementById('muangaycart').disabled = true;
+                    document.getElementById('add-to-cart-btn').disabled = true;
+                });
         }
     }
+</script>
+
+<script>
+    // // const currentValue = quantityInput.value;
+    // const Toast = Swal.mixin({
+    //     toast: true,
+    //     position: 'top-end',
+    //     showConfirmButton: false,
+    //     timer: 3000,
+    //     timerProgressBar: true,
+    //     didOpen: (toast) => {
+    //         toast.onmouseenter = Swal.stopTimer;
+    //         toast.onmouseleave = Swal.resumeTimer;
+    //     }
+    // });
+    //
+    // // Kiểm tra nếu giá trị của input là rỗng
+    // if (currentValue === '') {
+    //     Toast.fire({
+    //         icon: 'warning',
+    //         title: 'Số lượng không được để trống'
+    //     });
+    //
+    //     // Đặt lại giá trị của input về giá trị mặc định (ví dụ: 1)
+    //     quantityInput.value = '1';
+    // }
 </script>
