@@ -133,11 +133,11 @@ public interface SanPhamNuRepository extends JpaRepository<SanPham, Integer> {
             JOIN spct.anh anh
             WHERE 
                 (
-                    (?1 = true AND spct.giatien BETWEEN 0 AND 1000000)
-                    OR (?2 = true AND spct.giatien BETWEEN 1000000 AND 2000000)
-                    OR (?3 = true AND spct.giatien BETWEEN 2000000 AND 3000000)
-                    OR (?4 = true AND spct.giatien BETWEEN 3000000 AND 5000000)
-                    OR (?5 = true AND spct.giatien > 5000000)
+                    (?1 = true AND spct.giatien BETWEEN 0 AND 1000000 AND spct.gioitinh=false)
+                    OR (?2 = true AND spct.giatien BETWEEN 1000000 AND 2000000 AND spct.gioitinh=false)
+                    OR (?3 = true AND spct.giatien BETWEEN 2000000 AND 3000000 AND spct.gioitinh=false)
+                    OR (?4 = true AND spct.giatien BETWEEN 3000000 AND 5000000 AND spct.gioitinh=false)
+                    OR (?5 = true AND spct.giatien > 5000000 AND spct.gioitinh=false)
                 )
                 OR (
                     (?6 IS NULL OR spct.thuonghieu.id IN (?6))
