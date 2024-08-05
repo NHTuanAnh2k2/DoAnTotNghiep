@@ -245,6 +245,7 @@
                                                 <div class="giatien d-flex justify-content-start align-items-center">
                                                     <h5 th:text="${#numbers.formatDecimal(item.sanphamchitiet.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></h5>
                                                 </div>
+                                                <input type="hidden" name="idspct" th:value="${item.sanphamchitiet.id}">
                                                 <p class="mausac">
                                                     Màu sắc: <span th:text="${item.sanphamchitiet.mausac.ten}"
                                                                    th:style="'background-color: ' + ${item.sanphamchitiet.mausac.ten} + '; color: white;'"></span>
@@ -254,7 +255,7 @@
                                                 <div class="quantity-container">
                                                     <button class="quantity-button decrement">-</button>
                                                     <input type="number" class="quantity-input"
-                                                           th:value="${item.soluong}" min="1" name="quantity">
+                                                           th:value="${item.soluong}" min="1" name="quantity" readonly>
                                                     <button class="quantity-button increment">+</button>
                                                 </div>
                                                 <div class="giaban d-flex justify-content-start align-items-center">
@@ -278,6 +279,7 @@
                                                 <div class="giatien d-flex justify-content-start align-items-center">
                                                     <h5 th:text="${#numbers.formatDecimal(item.sanphamchitiet.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></h5>
                                                 </div>
+                                                <input type="hidden" name="idspct" th:value="${item.sanphamchitiet.id}">
                                                 <p class="mausac">
                                                     Màu sắc: <span th:text="${item.sanphamchitiet.mausac.ten}"
                                                                    th:style="'background-color: ' + ${item.sanphamchitiet.mausac.ten} + '; color: white;'"></span>
@@ -287,7 +289,7 @@
                                                 <div class="quantity-container">
                                                     <button class="quantity-button decrement">-</button>
                                                     <input type="number" class="quantity-input"
-                                                           th:value="${item.soluong}" min="1" name="quantity">
+                                                           th:value="${item.soluong}" min="1" name="quantity" readonly>
                                                     <button class="quantity-button increment">+</button>
                                                 </div>
                                                 <div class="giaban d-flex justify-content-start align-items-center">
@@ -330,7 +332,7 @@
                             <li>Bạn có thể nhập mã giảm giá ở trang thanh toán</li>
                         </ul>
                         <a th:href="@{/view-thanh-toan}"
-                           th:attr="style='display: inline-block; background-color: rgb(249, 72, 42); color: white; padding: 10px 20px; width: 100%; height: auto; border-radius: 10px; margin-top: 15px; text-decoration: none; text-align: center; border: 1px solid rgb(249, 72, 42); cursor: pointer;' + (${cartItems == null or #lists.isEmpty(cartItems)} ? ' opacity: 0.5; pointer-events: none;' : '')">
+                           th:attr="style='display: inline-block; background-color: rgb(249, 72, 42); color: white; padding: 10px 20px; width: 100%; height: auto; border-radius: 10px; margin-top: 15px; text-decoration: none; text-align: center; border: 1px solid rgb(249, 72, 42); cursor: pointer;' + (${cartItems == null or #lists.isEmpty(cartItems)} ? ' opacity: 0.5; pointer-events: none;' : '')" id="dathangngay">
                             ĐẶT HÀNG NGAY
                         </a>
                     </div>
@@ -481,3 +483,37 @@
     }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function thongbao(title, iconsz) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+
+        Toast.fire({
+            icon: iconsz,
+            title: title
+        });
+    }
+</script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var addProductSuccsess = /*[[${sussuses}]]*/ false;
+    /*]]>*/
+
+    if (addProductSuccsess == true) {
+        thongbao('Số lượng trong giỏ hàng vượt quá số lượng trong kho!', 'error')
+        // alert("Số lượng trong giỏ hàng vượt quá số lượng trong kho");
+        // document.getElementById('dathangngay').style.pointerEvents = 'none';
+        // document.getElementById('dathangngay').style.opacity = '0.5';
+
+    }
+</script>
+
