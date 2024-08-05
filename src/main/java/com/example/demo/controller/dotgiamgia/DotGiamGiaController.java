@@ -1,6 +1,8 @@
 package com.example.demo.controller.dotgiamgia;
 
 import com.example.demo.entity.*;
+import com.example.demo.repository.NguoiDungRepository;
+import com.example.demo.repository.NhanVienRepository;
 import com.example.demo.service.impl.DotGiamGiaImp;
 import com.example.demo.service.impl.SanPHamDotGiamImp;
 import com.example.demo.service.impl.SanPhamChiTietImp;
@@ -33,6 +35,10 @@ public class DotGiamGiaController {
     SanPhamChiTietImp sanPhamChiTietImp;
     @Autowired
     SanPHamDotGiamImp sanPHamDotGiamImp;
+    @Autowired
+    NguoiDungRepository daoNguoiDung;
+    @Autowired
+    NhanVienRepository nhanvienRPo;
 
 
     @RequestMapping("/admin/hien-thi-dot-giam-gia")
@@ -121,9 +127,13 @@ public class DotGiamGiaController {
                                   @RequestParam("ngayKetThuc") String ngayKetThuc,
                                   @RequestParam("choncheckbox") String[] choncheckbox,
                                 HttpSession session){
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
             Integer checkthem=1;
             dotGiamGia.setTendot(dotGiamGia.getTendot().trim());
-            dotGiamGia.setNguoitao("Tuan Anh");
+            dotGiamGia.setNguoitao(nv.getNguoidung().getHovaten());
             Timestamp ngayBatDauTimestamp = Timestamp.valueOf(ngayBatDau.replace("T", " ") + ":00");
             Timestamp ngayKetThucTimestamp = Timestamp.valueOf(ngayKetThuc.replace("T", " ") + ":00");
             dotGiamGia.setNgaybatdau(ngayBatDauTimestamp);
@@ -131,7 +141,7 @@ public class DotGiamGiaController {
 
             Timestamp ngayHT= new Timestamp(System.currentTimeMillis());
             dotGiamGia.setLancapnhatcuoi(new Timestamp(System.currentTimeMillis()));
-            dotGiamGia.setNguoicapnhat("Tuan Anh");
+            dotGiamGia.setNguoicapnhat(nv.getNguoidung().getHovaten());
             if(ngayBatDauTimestamp.getTime()> ngayHT.getTime()){
                 dotGiamGia.setTrangthai(0);
             }else{
@@ -196,6 +206,10 @@ public class DotGiamGiaController {
                                       @RequestParam("choncheckbox") String[] choncheckbox,
                                       @RequestParam("trangthaicn") Boolean trangthaicn,
                                       HttpSession session){
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
         Integer checkcapnhat=1;
         DotGiamGia dot= dotGiamGiaImp.findDotGiamGiaById(Id);
         dotGiamGia.setId(Id);
@@ -207,7 +221,7 @@ public class DotGiamGiaController {
         dotGiamGia.setNgayketthuc(ngayKetThucTimestamp);
         Timestamp ngayHT= new Timestamp(System.currentTimeMillis());
         dotGiamGia.setLancapnhatcuoi(new Timestamp(System.currentTimeMillis()));
-        dotGiamGia.setNguoicapnhat("Tuan Anh");
+        dotGiamGia.setNguoicapnhat(nv.getNguoidung().getHovaten());
         dotGiamGia.setNguoitao(dot.getNguoitao());
         dotGiamGia.setNgaytao(dot.getNgaytao());
         if(trangthaicn==false){

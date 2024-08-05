@@ -63,10 +63,6 @@ public class ThanhToanController {
     DiaChiRepository diaChiRepository;
     @Autowired
     HttpSession session;
-    @Autowired
-    NguoiDungRepository daoNguoiDung;
-    @Autowired
-    NhanVienRepository nhanvienRPo;
 
     @Autowired
     private GioHangChiTietRepository gioHangChiTietRepository;
@@ -172,12 +168,6 @@ public class ThanhToanController {
                                          @RequestParam("tamtinh") String tamtinh,
                                          @RequestParam("sotiengiam") String sotiengiam,
                                          HttpSession session) {
-        String username = (String) session.getAttribute("adminDangnhap");
-        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
-        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
-        //
-        NhanVien nv = lstnvtimve.get(0);
-
         String token = (String) session.getAttribute("token");
         NguoiDung nguoiDung = null;
         KhachHang khachHang = null;
@@ -239,6 +229,7 @@ public class ThanhToanController {
                         hoaDon.setPhivanchuyen(new BigDecimal(convertCurrency(phivanchuyen)));
                         LocalDateTime currentDateTime = LocalDateTime.now();
                         hoaDon.setNgaytao(Timestamp.valueOf(currentDateTime));
+                        hoaDon.setLancapnhatcuoi(Timestamp.valueOf(currentDateTime));
                         hoaDon.setTennguoinhan(diachikotaikhoan.getHovaten());
                         hoaDon.setTrangthai(0);
                         daoHD.capNhatHD(hoaDon);
@@ -256,7 +247,7 @@ public class ThanhToanController {
                             hoaDonChiTiet.setSoluong(g.getSoluong());
                             hoaDonChiTiet.setTrangthai(true);
                             hoaDonChiTietImp.capnhat(hoaDonChiTiet);
-
+                            gioHangChiTietRepository.delete(g);
                         }
                         //Xóa đối tượng trong list gio hàng
 
@@ -350,6 +341,7 @@ public class ThanhToanController {
             hoaDon.setPhivanchuyen(new BigDecimal(convertCurrency(phivanchuyen)));
             LocalDateTime currentDateTime = LocalDateTime.now();
             hoaDon.setNgaytao(Timestamp.valueOf(currentDateTime));
+            hoaDon.setLancapnhatcuoi(Timestamp.valueOf(currentDateTime));
             hoaDon.setTennguoinhan(diachikotaikhoan.getHovaten());
             hoaDon.setTrangthai(0);
             daoHD.capNhatHD(hoaDon);

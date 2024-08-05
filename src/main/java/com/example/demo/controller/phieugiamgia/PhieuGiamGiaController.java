@@ -1,9 +1,9 @@
 package com.example.demo.controller.phieugiamgia;
 
 import com.example.demo.controller.phieugiamgia.mail.EmailService;
-import com.example.demo.entity.KhachHang;
-import com.example.demo.entity.KhachHangPhieuGiam;
-import com.example.demo.entity.PhieuGiamGia;
+import com.example.demo.entity.*;
+import com.example.demo.repository.NguoiDungRepository;
+import com.example.demo.repository.NhanVienRepository;
 import com.example.demo.service.KhachHangPhieuGiamService;
 import com.example.demo.service.KhachHangService;
 import com.example.demo.service.NguoiDungService;
@@ -35,6 +35,10 @@ public class PhieuGiamGiaController {
     private KhachHangPhieuGiamImp  khachHangPhieuGiamImp;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    NguoiDungRepository daoNguoiDung;
+    @Autowired
+    NhanVienRepository nhanvienRPo;
 
     @GetMapping("/admin/qldotgiamgia")
     public String qldotgiamgia() {
@@ -132,6 +136,10 @@ public class PhieuGiamGiaController {
                                   @RequestParam("kieuphieu") Boolean kieuphieu,
                                   @RequestParam("choncheckbox") String[] choncheckbox,
                                   HttpSession session){
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
         Integer checkthem=0;
         if(phieuGiamGia.getKieuphieu()){
             if(phieuGiamGia.getMacode()=="" || phieuGiamGia.getMacode().isEmpty()){
@@ -155,8 +163,8 @@ public class PhieuGiamGiaController {
             phieuGiamGia.setTenphieu(phieuGiamGia.getTenphieu().trim());
             phieuGiamGia.setLoaiphieu(loaiphieu);
             phieuGiamGia.setKieuphieu(kieuphieu);
-            phieuGiamGia.setNguoitao("Tuan Anh");
-            phieuGiamGia.setNguoicapnhat("Tuan Anh");
+            phieuGiamGia.setNguoitao(nv.getNguoidung().getHovaten());
+            phieuGiamGia.setNguoicapnhat(nv.getNguoidung().getHovaten());
             Timestamp ngayBatDauTimestamp = Timestamp.valueOf(ngayBatDau.replace("T", " ") + ":00");
             Timestamp ngayKetThucTimestamp = Timestamp.valueOf(ngayKetThuc.replace("T", " ") + ":00");
             phieuGiamGia.setNgaybatdau(ngayBatDauTimestamp);
@@ -225,8 +233,8 @@ public class PhieuGiamGiaController {
             phieuGiamGia.setTenphieu(phieuGiamGia.getTenphieu().trim());
             phieuGiamGia.setLoaiphieu(loaiphieu);
             phieuGiamGia.setKieuphieu(kieuphieu);
-            phieuGiamGia.setNguoitao("Tuan Anh");
-            phieuGiamGia.setNguoicapnhat("Tuan Anh");
+            phieuGiamGia.setNguoitao(nv.getNguoidung().getHovaten());
+            phieuGiamGia.setNguoicapnhat(nv.getNguoidung().getHovaten());
             Timestamp ngayBatDauTimestamp = Timestamp.valueOf(ngayBatDau.replace("T", " ") + ":00");
             Timestamp ngayKetThucTimestamp = Timestamp.valueOf(ngayKetThuc.replace("T", " ") + ":00");
             phieuGiamGia.setNgaybatdau(ngayBatDauTimestamp);
@@ -281,6 +289,10 @@ public class PhieuGiamGiaController {
                                       @RequestParam("loaiphieu") Boolean loaiphieu,
                                       @RequestParam("trangthaicn") Boolean trangthaicn,
                                       HttpSession session){
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
         Integer checkcapnhat=0;
         PhieuGiamGia phieu= phieuGiamGiaImp.findPhieuGiamGiaById(Id);
         phieuGiamGia.setId(Id);
@@ -297,7 +309,7 @@ public class PhieuGiamGiaController {
         phieuGiamGia.setNgayketthuc(ngayKetThucTimestamp);
         Timestamp ngayHT= new Timestamp(System.currentTimeMillis());
         phieuGiamGia.setLancapnhatcuoi(new Timestamp(System.currentTimeMillis()));
-        phieuGiamGia.setNguoicapnhat("Tuan Anh");
+        phieuGiamGia.setNguoicapnhat(nv.getNguoidung().getHovaten());
         if(trangthaicn==false){
             if (ngayBatDauTimestamp.getTime() > ngayHT.getTime()) {
                 phieuGiamGia.setTrangthai(0);
