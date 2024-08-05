@@ -61,6 +61,7 @@ public interface NhanVienRepository extends JpaRepository<NhanVien, Integer> {
                             @Param("startDate") Date startDate,
                             @Param("endDate") Date endDate);
 
+    //tùng đã ở đây
     List<NhanVien> findByNguoidung(NguoiDung nd);
 
 }
