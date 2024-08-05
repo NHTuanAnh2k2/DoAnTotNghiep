@@ -596,4 +596,31 @@
         var token = document.getElementById("tokenDN").value;
         console.log("hhhh" + token);
     });
+    async function DatHangOnlThanhCong() {
+        const response = await fetch('/dat-online-thanh-cong');
+        const data = await response.json();
+        console.log(data);
+        if (data === 1) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: "success",
+                title: "Đặt hàng thành công!"
+            }).then(async () => {
+                // Xóa session sau khi hiển thị thông báo
+                await fetch('/clear-session-thanh-toan-online', { method: 'POST' });
+            });
+        }
+    }
+    DatHangOnlThanhCong();
 </script>

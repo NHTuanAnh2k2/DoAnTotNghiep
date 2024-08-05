@@ -4,10 +4,8 @@ import com.example.demo.controller.giohang.GioHangController;
 import com.example.demo.entity.*;
 import com.example.demo.info.DiaChiThanhToanNoTaiKhoanOnline;
 import com.example.demo.info.TaiKhoanTokenInfo;
-import com.example.demo.repository.DiaChiRepository;
-import com.example.demo.repository.KhachHangPhieuGiamRepository;
+import com.example.demo.repository.*;
 import com.example.demo.repository.PhieuGiamGiaChiTiet.PhieuGiamChiTietRepository;
-import com.example.demo.repository.SanPhamChiTietRepository;
 import com.example.demo.repository.giohang.GioHangChiTietRepository;
 import com.example.demo.repository.giohang.GioHangRepository;
 import com.example.demo.repository.giohang.KhachHangGioHangRepository;
@@ -65,6 +63,10 @@ public class ThanhToanController {
     DiaChiRepository diaChiRepository;
     @Autowired
     HttpSession session;
+    @Autowired
+    NguoiDungRepository daoNguoiDung;
+    @Autowired
+    NhanVienRepository nhanvienRPo;
 
     @Autowired
     private GioHangChiTietRepository gioHangChiTietRepository;
@@ -97,7 +99,15 @@ public class ThanhToanController {
                     }
                 }
                 if (nguoiDung != null) {
+                    model.addAttribute("tenKH",nguoiDung.getHovaten());
+                    model.addAttribute("emailKH",nguoiDung.getEmail());
                     List<DiaChi> lstDC = diaChiRepository.findDiaChiByIdNd(nguoiDung.getId());
+                    for(DiaChi dc: lstDC){
+                        if(dc.getTrangthai()== true){
+                            session.setAttribute("diachimacdinh",dc);
+                            break;
+                        }
+                    }
                     if (lstDC.size() > 0) {
                         model.addAttribute("lstDC", lstDC);
                     }
@@ -162,6 +172,10 @@ public class ThanhToanController {
                                          @RequestParam("tamtinh") String tamtinh,
                                          @RequestParam("sotiengiam") String sotiengiam,
                                          HttpSession session) {
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
 
         String token = (String) session.getAttribute("token");
         NguoiDung nguoiDung = null;

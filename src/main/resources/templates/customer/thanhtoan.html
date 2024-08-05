@@ -194,8 +194,8 @@
             <p style="color: red; margin: 0;padding: 0;">Mang đến sự tự tin trong bạn</p>
             <h6 style="margin-top: 50px;">THÔNG TIN GIAO HÀNG</h6>
             <div class="mt-3 d-flex justify-content-start">
-                <p>Bạn đã có tài khoản?</p>
-                <a href="#" style="color: rgb(249,72,42); padding-left: 5px; text-decoration: none; text-transform: none;">Đăng nhập</a>
+<!--                <p>Bạn đã có tài khoản?</p>-->
+<!--                <a href="#" style="color: rgb(249,72,42); padding-left: 5px; text-decoration: none; text-transform: none;">Đăng nhập</a>-->
             </div>
             <form id="formDiaChiKhachLe" onsubmit="return validateFormDiaChiKhachLe(event)">
                 <div class="form-floating mb-3">
@@ -256,17 +256,19 @@
                 <div style="margin-right: 15px;">
                     <img src="../dist/img/user7-128x128.jpg" style="border-radius: 7px;" width="70px" height="70px">
                 </div>
-                <p style="padding-top: 7px;">
-                    Văn Hoa Nguyễn (nguyeenxvawnhoa@gmail.com)
-                    <br>
-                    <a href="#" style="color: rgb(249,72,42); text-decoration: none; text-transform: none;">Đăng xuất</a>
+                <p style="padding-top: 7px;" th:if="${token} !=''" th:text="${tenKH} + ' (' +${emailKH}+ ')'">
+
+<!--                    Văn Hoa Nguyễn (nguyeenxvawnhoa@gmail.com)-->
+<!--                    <br>-->
+<!--                    <a href="#" style="color: rgb(249,72,42); text-decoration: none; text-transform: none;">Đăng xuất</a>-->
                 </p>
             </div>
             <form class="mt-4" id="formDiaChiKhachCoTaiKhoan" onsubmit="return validateFormDiaChiKhachCotaiKhoan(event)">
                 <div class="form-floating mb-3">
                     <select class="form-select" id="diachidaluu" aria-label="Floating label select example" onchange="HienDiaChiDaChon()">
-                        <option th:value="-1" selected>Thêm địa chỉ mới</option>
+                        <option th:value="-1">Thêm địa chỉ mới</option>
                         <option th:each=" dc: ${lstDC}"
+                                th:selected="${dc.trangthai == true}"
                                 th:value="${dc.id}"
                                 th:text="${dc.sdtnguoinhan}+ ', '+ ${dc.tenduong}+ ', '+ ${dc.xaphuong}+ ', '+ ${dc.quanhuyen}+ ', '+${dc.tinhthanhpho}">
                         </option>
@@ -615,6 +617,7 @@
         document.getElementById("left2").style.display = "block";
         document.getElementById("left1").style.display = "none";
         document.getElementById("left3").style.display = "none";
+
     }else{
         document.getElementById("left1").style.display = "block";
         document.getElementById("left2").style.display = "none";
@@ -706,6 +709,7 @@
             opt.text = x.Name;
             opt.setAttribute('data-id', x.Id);
             citis2.options.add(opt);
+
         }
         citis2.onchange = function () {
             districts2.length = 1;
@@ -988,6 +992,7 @@
             const soTienGiam = chuyendoitien(document.getElementById("soTienGiam"));
             const phivanchuyen = chuyendoitien(document.getElementById("phivanchuyen"));
             const tongTien = tamtinh - soTienGiam + phivanchuyen;
+            console.log("tongtien"+ tongTien);
             document.getElementById("tongtien").innerText = formatCurrencyVND(tongTien);
         }
 
@@ -1209,6 +1214,8 @@
                 document.getElementById("fillMaGiam").style.display = "block";
                 document.getElementById("maCodeGiam").innerText = max.code;
                 document.getElementById("soTienGiam").innerText = "-" + formatCurrencyVND(max.value);
+                tinhtongtien();
+            }else{
                 tinhtongtien();
             }
         }
@@ -1536,6 +1543,119 @@
             }
         }
     }
+    async function getDiaChiMacDinh() {
+        const response = await fetch(`/dia-chi-mac-dinh`);
+        return await response.json();
+    }
+    async function diaChiMacDinh(){
+        const dc = await getDiaChiMacDinh();
+
+        document.getElementById("hovaten2").value = dc.hotennguoinhan;
+        document.getElementById("sdt2").value = dc.sdtnguoinhan;
+        document.getElementById("diachi2").value = dc.tenduong;
+
+        var Parameter3 = {
+            url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
+            method: "GET",
+            responseType: "application/json",
+        };
+
+        var tinh = dc.tinhthanhpho;
+        var huyen = dc.quanhuyen;
+        var xa = dc.xaphuong;
+        var dataCities1 = [];
+        var tinh3 = document.getElementById("tinh2");
+        var huyen3 = document.getElementById("huyen2");
+        var xa3 = document.getElementById("xa2");
+
+        axios(Parameter3).then(function (result) {
+            dataCities1 = result.data;
+            console.log(dataCities1);
+            renderCity3(dataCities1);
+        });
+
+        function renderCity3(data) {
+            // Clear existing options
+            tinh3.length = 1;
+            huyen3.length = 1;
+            xa3.length = 1;
+
+            // Populate tinh3 options
+            document.getElementById("tinh2").options[0].selected = false;
+            for (const x of data) {
+
+                var opt = document.createElement('option');
+                opt.value = x.Name;
+                opt.text = x.Name;
+                opt.setAttribute('data-id', x.Id);
+                console.log(`Selecting tinh: ${x.Name}`);
+                if (x.Name === tinh) {
+                    console.log(`Selecting tinh: ${x.Name}`);  // Debugging
+                    opt.selected = true;
+                }
+                tinh3.options.add(opt);
+            }
+            // Add event listeners
+            tinh3.addEventListener('change', function() {
+                renderHuyen3(data);
+            });
+            huyen3.addEventListener('change', function() {
+                renderXa3(data);
+            });
+
+            // Initial render of huyen3 and xa3
+            renderHuyen3(data);
+            renderXa3(data);
+        }
+
+        function renderHuyen3(data) {
+            // Clear existing options
+            huyen3.length = 1;
+            xa3.length = 1;
+
+            const selectedTinhId = tinh3.options[tinh3.selectedIndex].dataset.id;
+            if (selectedTinhId) {
+                const selectedTinh = data.find(n => n.Id === selectedTinhId);
+                for (const k of selectedTinh.Districts) {
+                    var opt = document.createElement('option');
+                    opt.value = k.Name;
+                    opt.text = k.Name;
+                    opt.setAttribute('data-id', k.Id);
+                    if (k.Name == huyen) {
+                        opt.selected = true;
+                    }
+                    huyen3.options.add(opt);
+                }
+            }
+
+            renderXa3(data);
+        }
+
+        function renderXa3(data) {
+            // Clear existing options
+            xa3.length = 1;
+
+            const selectedTinhId = tinh3.options[tinh3.selectedIndex].dataset.id;
+            const selectedHuyenId = huyen3.options[huyen3.selectedIndex].dataset.id;
+
+            if (selectedTinhId && selectedHuyenId) {
+                const selectedTinh = data.find(n => n.Id === selectedTinhId);
+                const selectedHuyen = selectedTinh.Districts.find(n => n.Id === selectedHuyenId);
+
+                for (const w of selectedHuyen.Wards) {
+                    var opt = document.createElement('option');
+                    opt.value = w.Name;
+                    opt.text = w.Name;
+                    opt.setAttribute('data-id', w.Id);
+                    if (w.Name == xa) {
+                        opt.selected = true;
+                    }
+                    xa3.options.add(opt);
+                }
+            }
+        }
+    }
+    diaChiMacDinh();
 
     function validateFormDiaChiKhachCotaiKhoan(event) {
         event.preventDefault();
@@ -1736,6 +1856,33 @@
 
         return formattedNumber;
     }
+    async function DatHangOnlThatBai() {
+        const response = await fetch('/dat-online-that-bai');
+        const data = await response.json();
+        console.log(data);
+        if (data === 2) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: "error",
+                title: "Đã hủy thanh toán!"
+            }).then(async () => {
+                // Xóa session sau khi hiển thị thông báo
+                await fetch('/clear-session-thanh-toan-online', { method: 'POST' });
+            });
+        }
+    }
+    DatHangOnlThatBai();
 </script>
 <br>
 <br>

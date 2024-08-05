@@ -349,7 +349,11 @@ public class ThanhToanVNPay {
             daoPTTT.add_update(phuongthuc);
 
         }
-
-        return paymentStatus == 1 ? "customer/orderSuccess" : "customer/orderFail";
+        if(paymentStatus == 1){
+            session.setAttribute("datHangOnlThanhCong",1);
+        }else{
+            session.setAttribute("datHangOnlThatBai",2);
+        }
+        return paymentStatus == 1 ? "redirect:/customer/trangchu" : "redirect:/view-thanh-toan";
     }
 }

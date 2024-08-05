@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -36,5 +37,27 @@ public class RestControllerThanhToan {
         return null;
 
 
+    }
+    @GetMapping("/dat-online-thanh-cong")
+    public Integer themthanhcong(HttpSession session){
+        Integer dathem = (Integer) session.getAttribute("datHangOnlThanhCong");
+        return dathem;
+    }
+    @GetMapping("/dat-online-that-bai")
+    public Integer themthatbai(HttpSession session){
+        Integer dathem = (Integer) session.getAttribute("datHangOnlThatBai");
+        return dathem;
+    }
+    @PostMapping("/clear-session-thanh-toan-online")
+    public void clearSession(HttpSession session) {
+//        session.invalidate();
+        session.removeAttribute("datHangOnlThanhCong");
+        session.removeAttribute("datHangOnlThatBai");
+    }
+
+    @GetMapping("/dia-chi-mac-dinh")
+    public DiaChi diachimacdinh(HttpSession session){
+        DiaChi dathem = (DiaChi) session.getAttribute("diachimacdinh");
+        return dathem;
     }
 }
