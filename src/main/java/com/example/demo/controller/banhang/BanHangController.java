@@ -718,13 +718,13 @@ public class BanHangController {
     //hiển thị bill lên modal
     @GetMapping("show-bill")
     @ResponseBody
-    public ResponseEntity<?> showbill( HttpSession session) {
+    public ResponseEntity<?> showbill(HttpSession session) {
 
         String username = (String) session.getAttribute("adminDangnhap");
         NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
         List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
         NhanVien nv = lstnvtimve.get(0);
-        String nhanviens=nv.getNguoidung().getHovaten();
+        String nhanviens = nv.getNguoidung().getHovaten();
         List<sanPhamIn> lstin = new ArrayList<>();
         List<HoaDonChiTiet> lsthdct = daoHDCT.getListSPHD(hoaDonCheckBill);
         BigDecimal tongTienSP = new BigDecimal("0");
@@ -781,7 +781,7 @@ public class BanHangController {
         //end tạo qr
 
         MauHoaDon u = new MauHoaDon("FSPORT SHOP", hoaDonCheckBill.getMahoadon(), hoaDonCheckBill.getNgaytao(), "103 Trịnh Văn Bô,Phương Canh, Nam Từ Liêm, Hà Nội",
-                hoaDonCheckBill.getDiachi(), "0379036607", hoaDonCheckBill.getSdt(), ten, lstin, tongTienSP, qrcode,nhanviens);
+                hoaDonCheckBill.getDiachi(), "0379036607", hoaDonCheckBill.getSdt(), ten, lstin, tongTienSP, qrcode, nhanviens);
         billTam = u;
 
         return ResponseEntity.ok(u);
@@ -789,14 +789,17 @@ public class BanHangController {
 
     // xác nhận thanh toán lưu vào db
     @PostMapping("xacnhanthanhtoan/{magiao}")
-    public String xacnhanPTTT(@PathVariable("magiao") Integer magiao, @ModelAttribute("thongtingiaohang") DiaChiGiaoCaseBanHangOff thongTin, RedirectAttributes redirectAttributes) {
-
+    public String xacnhanPTTT(@PathVariable("magiao") Integer magiao, @ModelAttribute("thongtingiaohang") DiaChiGiaoCaseBanHangOff thongTin, RedirectAttributes redirectAttributes, HttpSession session) {
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
         PhieuGiamGiaChiTiet phieugiamgiachtietset = new PhieuGiamGiaChiTiet();
         //thanh toán đơn không giao hàng
         if (magiao == 1) {
             //nhân viên fake
-            NhanVien nvfake = new NhanVien();
-            nvfake.setId(5);
+
+            NhanVien nvfake = nv;
             //
             HoaDon hdset = daoHD.timHDTheoMaHD(hdHienTai.getMahoadon());
             hdset.setTrangthai(5);
@@ -815,7 +818,7 @@ public class BanHangController {
                 hdset.setSdt(hdset.getKhachhang().getNguoidung().getSodienthoai());
             } else {
                 hdset.setTennguoinhan("Khách lẻ");
-                hdset.setSdt("Khách lẻ");
+                hdset.setSdt("037xxxxxx6");
             }
 
             daoHD.capNhatHD(hdset);
@@ -943,8 +946,7 @@ public class BanHangController {
             //trả sau thì cần  fake luôn lịch sử đã xác nhận
             LichSuHoaDon lichSuHoaDon = new LichSuHoaDon();
             //fake nhân viên
-            NhanVien nvfake = new NhanVien();
-            nvfake.setId(5);
+            NhanVien nvfake = nv;
             //fake lịch sử chờ 0
             lichSuHoaDon.setNhanvien(nvfake);
             lichSuHoaDon.setGhichu("khách hàng đã xác đặt đơn đơn hàng");
@@ -1036,8 +1038,8 @@ public class BanHangController {
 
             LichSuHoaDon lichSuHoaDon = new LichSuHoaDon();
             //fake nhân viên
-            NhanVien nvfake = new NhanVien();
-            nvfake.setId(5);
+            NhanVien nvfake = nv;
+
             //fake lịch sử chờ 0
             lichSuHoaDon.setNhanvien(nvfake);
             lichSuHoaDon.setGhichu("khách hàng đã xác đặt đơn đơn hàng");
