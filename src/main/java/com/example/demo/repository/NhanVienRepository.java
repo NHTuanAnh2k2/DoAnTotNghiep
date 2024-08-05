@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import com.example.demo.entity.DiaChi;
 import com.example.demo.entity.KhachHang;
+import com.example.demo.entity.NguoiDung;
 import com.example.demo.entity.NhanVien;
 import com.example.demo.info.NhanVienNVInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -22,8 +24,10 @@ public interface NhanVienRepository extends JpaRepository<NhanVien, Integer> {
             "JOIN DiaChi dc ON dc.nguoidung.id = nd.id " +
             "WHERE nd.id =?1")
     NhanVienNVInfo findNhanVienDiaChi(Integer userId);
+
     @Query("SELECT k FROM NhanVien k WHERE k.nguoidung.email = ?1")
     NhanVien findNhanVienByEmail(@Param("emailResetPassword") String emailResetPassword);
+
     @Query("SELECT N FROM NhanVien N WHERE N.manhanvien like %?1%")
     List<NhanVien> timNVTheoMa(String ten);
 
@@ -32,6 +36,7 @@ public interface NhanVienRepository extends JpaRepository<NhanVien, Integer> {
 
     @Query("SELECT n FROM NhanVien n ORDER BY n.lancapnhatcuoi DESC ")
     List<NhanVien> getAll();
+
     @Query("SELECT n FROM NhanVien n WHERE n.nguoidung.id <> ?1 ORDER BY n.lancapnhatcuoi DESC ")
     List<NhanVien> getAll1(Integer id);
 
@@ -53,7 +58,9 @@ public interface NhanVienRepository extends JpaRepository<NhanVien, Integer> {
             "(:startDate is null or u.nguoidung.ngaysinh >= :startDate) and " +
             "(:endDate is null or u.nguoidung.ngaysinh <= :endDate)  ORDER BY u.lancapnhatcuoi DESC")
     List<NhanVien> findByKe(@Param("name") String name,
-                             @Param("startDate") Date startDate,
-                             @Param("endDate") Date endDate);
+                            @Param("startDate") Date startDate,
+                            @Param("endDate") Date endDate);
+
+    List<NhanVien> findByNguoidung(NguoiDung nd);
 
 }

@@ -2,11 +2,9 @@ package com.example.demo.controller.banhang;
 
 import com.example.demo.entity.*;
 import com.example.demo.info.*;
-import com.example.demo.repository.DiaChiRepository;
-import com.example.demo.repository.KhachHangPhieuGiamRepository;
-import com.example.demo.repository.NguoiDungRepository;
+import com.example.demo.info.token.AdminManager;
+import com.example.demo.repository.*;
 import com.example.demo.repository.PhieuGiamGiaChiTiet.PhieuGiamChiTietRepository;
-import com.example.demo.repository.PhieuGiamGiaRepository;
 import com.example.demo.repository.khachhang.KhachHangRepostory;
 import com.example.demo.service.*;
 import com.example.demo.service.impl.NguoiDungImpl1;
@@ -16,6 +14,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -44,6 +43,8 @@ import java.util.regex.Pattern;
 @Controller
 @RequestMapping("ban-hang-tai-quay")
 public class BanHangController {
+    @Autowired
+    NhanVienRepository nhanvienRPo;
     @Autowired
     LichSuHoaDonService daoLSHD;
     @Autowired
@@ -106,12 +107,14 @@ public class BanHangController {
 
     @GetMapping("tao-don-cho")
     @ResponseBody
-    public ResponseEntity<?> createNewHD() {
+    public ResponseEntity<?> createNewHD(HttpSession session) {
         HoaDon hoadonCho = new HoaDon();
         hoadonCho.setTrangthai(0);
         hoadonCho.setLoaihoadon(false);
-        NhanVien nv = new NhanVien();
-        nv.setId(1);
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
         // fake id nhân viên sau này sẽ lấy thì login xuống
         hoadonCho.setNhanvien(nv);
         HoaDon hdMaGet = daoHD.timBanGhiDuocTaoGanNhat();
@@ -119,6 +122,8 @@ public class BanHangController {
         hoadonCho.setMahoadon("HDFSPORT" + maMoi);
         LocalDateTime currentDateTime = LocalDateTime.now();
         hoadonCho.setNgaytao(Timestamp.valueOf(currentDateTime));
+        hoadonCho.setHoatoc(false);
+        hoadonCho.setNguoitao(nv.getNguoidung().getHovaten());
         daoHD.capNhatHD(hoadonCho);
         List<HoaDon> lst = daoHD.timTheoTrangThaiVaLoai(0, false);
         if (lst.size() > 0) {
@@ -375,7 +380,7 @@ public class BanHangController {
     }
 
     @PostMapping("add-nhanh")
-    public String changesTTDH(Model model, @ModelAttribute("AddKHNhanh") AddKHNhanhFormBanHang kh, RedirectAttributes redirectAttributes) {
+    public String changesTTDH(Model model, @ModelAttribute("AddKHNhanh") AddKHNhanhFormBanHang kh, RedirectAttributes redirectAttributes, HttpSession session) {
         if (kh.getCheck() == true) {
             if (this.hdHienTai == null) {
                 redirectAttributes.addFlashAttribute("checkaddKH", true);
@@ -391,8 +396,12 @@ public class BanHangController {
         nguoidung.setNgaysinh(Date.valueOf("2020-06-06"));
         nguoidung.setNgaytao(Timestamp.valueOf(currentDateTime));
         nguoidung.setTrangthai(true);
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
         //fake nhân viên
-        nguoidung.setNguoitao("nhân viên");
+        nguoidung.setNguoitao(nv.getNguoidung().getHovaten());
         String to = kh.getEmail();
         List<KhachHang> lstKHT = daoKH.findKHGanNhat();
         Integer makhnew = lstKHT.get(0).getId() + 1;
@@ -424,7 +433,7 @@ public class BanHangController {
 
         khAdd.setNgaytao(Timestamp.valueOf(currentDateTime));
         //fake người tạo
-        khAdd.setNguoitao("nhân viên");
+        khAdd.setNguoitao(nv.getNguoidung().getHovaten());
         daoKH.save(khAdd);
         KhachHang khTim = daoKH.findByNguoiDung(nguoidungtim.getId());
         String diaChiHD = kh.getDiachi() + ", " + kh.getXa() + ", " + kh.getHuyen() + ", " + kh.getTinh();
@@ -487,6 +496,7 @@ public class BanHangController {
     @GetMapping("show-all-voucher")
     @ResponseBody
     public ResponseEntity<?> showAllMa() {
+
         if (hdHienTai == null) {
             return ResponseEntity.ok(false);
         }
@@ -708,7 +718,13 @@ public class BanHangController {
     //hiển thị bill lên modal
     @GetMapping("show-bill")
     @ResponseBody
-    public ResponseEntity<?> showbill() {
+    public ResponseEntity<?> showbill( HttpSession session) {
+
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
+        String nhanviens=nv.getNguoidung().getHovaten();
         List<sanPhamIn> lstin = new ArrayList<>();
         List<HoaDonChiTiet> lsthdct = daoHDCT.getListSPHD(hoaDonCheckBill);
         BigDecimal tongTienSP = new BigDecimal("0");
@@ -765,7 +781,7 @@ public class BanHangController {
         //end tạo qr
 
         MauHoaDon u = new MauHoaDon("FSPORT SHOP", hoaDonCheckBill.getMahoadon(), hoaDonCheckBill.getNgaytao(), "103 Trịnh Văn Bô,Phương Canh, Nam Từ Liêm, Hà Nội",
-                hoaDonCheckBill.getDiachi(), "0379036607", hoaDonCheckBill.getSdt(), ten, lstin, tongTienSP, qrcode);
+                hoaDonCheckBill.getDiachi(), "0379036607", hoaDonCheckBill.getSdt(), ten, lstin, tongTienSP, qrcode,nhanviens);
         billTam = u;
 
         return ResponseEntity.ok(u);
@@ -799,7 +815,7 @@ public class BanHangController {
                 hdset.setSdt(hdset.getKhachhang().getNguoidung().getSodienthoai());
             } else {
                 hdset.setTennguoinhan("Khách lẻ");
-                hdset.setSdt("037xxxxxx6");
+                hdset.setSdt("Khách lẻ");
             }
 
             daoHD.capNhatHD(hdset);
