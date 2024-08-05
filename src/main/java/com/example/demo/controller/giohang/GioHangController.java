@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -303,9 +305,19 @@ public class GioHangController {
     }
 
     @PostMapping("/update-cart/{id}")
-    public String updateCart(@PathVariable("id") Integer id, Integer quantity) {
+    public String updateCart(@PathVariable("id") Integer id,
+                             @RequestParam("idspct") Integer idspct,
+                             Integer quantity,
+                             RedirectAttributes redirectAttributes
+    ) {
         try {
-            gioHangChiTietRepository.updateSoLuongById(quantity, id);
+            SanPhamChiTiet sanPhamChiTiet = sanPhamChiTietRepository.findById(idspct).orElse(null);
+            if (quantity > sanPhamChiTiet.getSoluong()) {
+                gioHangChiTietRepository.updateSoLuongById(sanPhamChiTiet.getSoluong(), id);
+                redirectAttributes.addFlashAttribute("sussuses", true);
+            } else {
+                gioHangChiTietRepository.updateSoLuongById(quantity, id);
+            }
             return "redirect:/cart";
         } catch (Exception e) {
             return "redirect:/error";
@@ -323,17 +335,28 @@ public class GioHangController {
     }
 
     @PostMapping("/update-cart/guest/{id}")
-    public String updateCartForGuest(@PathVariable("id") Integer id, @RequestParam("quantity") Integer quantity, HttpSession session) {
+    public String updateCartForGuest(@PathVariable("id") Integer id,
+                                     @RequestParam("idspct") Integer idspct,
+                                     @RequestParam("quantity") Integer quantity, HttpSession session,
+                                     RedirectAttributes redirectAttributes
+    ) {
         List<GioHangChiTiet> cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
+        SanPhamChiTiet sanPhamChiTiet = sanPhamChiTietRepository.findById(idspct).orElse(null);
         if (cartItems != null) {
             for (GioHangChiTiet item : cartItems) {
                 if (item.getId().equals(id)) {
+                    if (quantity > sanPhamChiTiet.getSoluong()) {
+                        item.setSoluong(sanPhamChiTiet.getSoluong());
+                        redirectAttributes.addFlashAttribute("sussuses", true);
+                        break;
+                    }
                     item.setSoluong(quantity);
                     break;
                 }
             }
-            session.setAttribute("cartItems", cartItems);
         }
+        session.setAttribute("cartItems", cartItems);
         return "redirect:/cart";
     }
+
 }
