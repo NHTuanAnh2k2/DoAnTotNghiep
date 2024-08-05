@@ -175,6 +175,7 @@ public class ThanhToanController {
         String username = (String) session.getAttribute("adminDangnhap");
         NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
         List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        //
         NhanVien nv = lstnvtimve.get(0);
 
         String token = (String) session.getAttribute("token");
