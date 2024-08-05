@@ -43,6 +43,8 @@ public class NhanVienController {
     private static final String NUMBER = "0123456789";
     private static final String PASSWORD_ALLOW_BASE = CHAR_LOWER + CHAR_UPPER + NUMBER;
     private static final SecureRandom random = new SecureRandom();
+
+    @Autowired
     NhanVienRepository nhanVienRepository;
     @Autowired
     KhachHangService khachHangService;
