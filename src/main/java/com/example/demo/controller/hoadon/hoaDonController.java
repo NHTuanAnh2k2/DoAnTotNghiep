@@ -15,6 +15,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -52,6 +53,10 @@ import java.util.*;
 @Controller
 @RequestMapping("hoa-don")
 public class hoaDonController {
+    @Autowired
+    NguoiDungRepository daoNguoiDung;
+    @Autowired
+    NhanVienRepository nhanvienRPo;
     @Autowired
     PhieuGiamChiTietRepository daoPGGCTRepo;
     @Autowired
@@ -621,10 +626,10 @@ public class hoaDonController {
         hds.setTongtien(tongTT);
         dao.capNhatHD(hds);
         PhieuGiamGiaChiTiet phieuGiamGiaChiTietTim = new PhieuGiamGiaChiTiet();
-        List<PhieuGiamGiaChiTiet> lst=daoPGGCT.timListPhieuTheoHD(hds);
-        if(lst.size()>0){
-            phieuGiamGiaChiTietTim=lst.get(0);
-        }else {
+        List<PhieuGiamGiaChiTiet> lst = daoPGGCT.timListPhieuTheoHD(hds);
+        if (lst.size() > 0) {
+            phieuGiamGiaChiTietTim = lst.get(0);
+        } else {
             phieuGiamGiaChiTietTim.setHoadon(hds);
             phieuGiamGiaChiTietTim.setPhieugiamgia(phieutim);
             phieuGiamGiaChiTietTim.setGiabandau(tongTienSP);
@@ -664,13 +669,18 @@ public class hoaDonController {
 
     //xác nhận đơn
     @GetMapping("xac-nhan-don")
-    public String xacNhanHD(Model model, @ModelAttribute("ghichu") LichSuHoaDonCustom noidung, RedirectAttributes redirectAttributes) {
+    public String xacNhanHD(Model model, @ModelAttribute("ghichu") LichSuHoaDonCustom noidung, RedirectAttributes redirectAttributes, HttpSession session) {
         String ngaytao = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
         HoaDon hoadon = new HoaDon();
         hoadon.setId(idhdshowdetail);
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
+        String tennv = nv.getNguoidung().getHovaten();
         //fake id nhân viên thao tác
-        NhanVien nhanvien = new NhanVien();
-        nhanvien.setId(1);
+        NhanVien nhanvien = nv;
+
         //end fake id nhân viên thao tác
         LichSuHoaDon lshd = new LichSuHoaDon();
         lshd.setHoadon(hoadon);
@@ -722,7 +732,7 @@ public class hoaDonController {
         //set lần cập nhât cuối
         hdTT.setLancapnhatcuoi(Timestamp.valueOf(currentDateTime));
         //set người cập nhật theo id đã login
-
+        hdTT.setNguoicapnhat(nhanvien.getNguoidung().getHovaten());
         //
         hdTT.setTrangthai(trangthaiset);
         if (trangthaiset == 2) {
@@ -767,8 +777,10 @@ public class hoaDonController {
 
         }
         BigDecimal tongTT = (tongTienSP.add(hdTT.getPhivanchuyen())).subtract(phieuGiamCT.getTiengiam());
+
+
         MauHoaDon u = new MauHoaDon("FSPORT", hdTT.getMahoadon(), hdTT.getNgaytao(), "Lô H023, Nhà số 39, Ngõ 148, Xuân Phương, Phương Canh,Nam Từ Liêm, Hà Nội",
-                hdTT.getDiachi(), "0379036607", hdTT.getSdt(), hdTT.getTennguoinhan(), lstin, tongTT, "");
+                hdTT.getDiachi(), "0379036607", hdTT.getSdt(), hdTT.getTennguoinhan(), lstin, tongTT, "", tennv);
         String finalhtml = null;
         //tạo qr
         String qrCodeText = hdTT.getMahoadon(); // Chuỗi để tạo QR
@@ -963,7 +975,7 @@ public class hoaDonController {
 
     // thêm sản phẩm tại hdct
     @GetMapping("ChoseSP/{id}")
-    public String choseSP(@PathVariable("id") Integer id,RedirectAttributes redirectAttributes) {
+    public String choseSP(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         SanPhamChiTiet spct = daoSPCT.findById(id);
         SanPhamChiTiet spctCapNhatSL = spct;
 
@@ -1063,7 +1075,7 @@ public class hoaDonController {
 
     //xóa sản phẩm ra khỏi hóa đơn
     @GetMapping("delete-sp-hdct/{id}")
-    public String deleteSPHDCT(@PathVariable("id") Integer id,RedirectAttributes redirectAttributes) {
+    public String deleteSPHDCT(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         HoaDonChiTiet hdDelete = daoHDCT.findByID(id);
         HoaDon hd = dao.timHDTheoMaHD(hdDelete.getHoadon().getMahoadon());
         int slHienTai = hdDelete.getSoluong();
@@ -1084,18 +1096,18 @@ public class hoaDonController {
         }
         if (pgctTim.getPhieugiamgia() != null) {
             if (tongTienSP.compareTo(pgctTim.getPhieugiamgia().getDontoithieu()) >= 0) {
-            if (pgctTim.getPhieugiamgia().getLoaiphieu() == true) {
-                // phiếu %
-                if ((new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100"))).compareTo(pgctTim.getPhieugiamgia().getGiatrigiamtoida()) > 0) {
-                    sotiengiam = pgctTim.getPhieugiamgia().getGiatrigiamtoida();
-                } else {
-                    sotiengiam = (new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100")));
-                }
+                if (pgctTim.getPhieugiamgia().getLoaiphieu() == true) {
+                    // phiếu %
+                    if ((new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100"))).compareTo(pgctTim.getPhieugiamgia().getGiatrigiamtoida()) > 0) {
+                        sotiengiam = pgctTim.getPhieugiamgia().getGiatrigiamtoida();
+                    } else {
+                        sotiengiam = (new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100")));
+                    }
 
-            } else {
-                // phiếu vnđ
-                sotiengiam = new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam());
-            }
+                } else {
+                    // phiếu vnđ
+                    sotiengiam = new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam());
+                }
             } else {
                 daoPGGCTRepo.deleteById(pgctTim.getId());
                 redirectAttributes.addFlashAttribute("autokickvoucher", true);
@@ -1116,7 +1128,7 @@ public class hoaDonController {
 
 
     @GetMapping("update-sp-hdct/{id}/{sl}")
-    public String updateSPHDCT(@PathVariable("id") Integer id, @PathVariable("sl") Integer sl,RedirectAttributes redirectAttributes) {
+    public String updateSPHDCT(@PathVariable("id") Integer id, @PathVariable("sl") Integer sl, RedirectAttributes redirectAttributes) {
         HoaDonChiTiet hdDelete = daoHDCT.findByID(id);
         SanPhamChiTiet spUpdateQuantity = hdDelete.getSanphamchitiet();
         HoaDon hd = dao.timHDTheoMaHD(hdDelete.getHoadon().getMahoadon());
