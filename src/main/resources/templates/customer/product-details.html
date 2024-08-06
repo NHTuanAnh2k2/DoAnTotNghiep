@@ -449,6 +449,7 @@
                                   th:text="${#numbers.formatDecimal(selectedPrice-(selectedPrice*selectedDiscount/100), 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"
                                   style="color: red; font-weight: bold"></span>
                         </h6>
+
                         <hr>
                         <h6>
                             Số lượng có sẵn:
@@ -553,7 +554,8 @@
                                 </div>
                                 <p></p>
                                 <span style="margin-right: 10px;">Mô tả: <span th:text="${sanphamchitiet.mota}"></span></span>
-                                <span th:text="${selectedIdspct}" id="idan"></span>
+<!--                                <span th:text="${selectedIdspct}" id="idan"></span>-->
+                                <span th:text="${selectedIdspct}" id="idan" style="display: none;"></span>
                                 <hr>
                                 <div class="d-flex">
                                     <button type="submit" th:formaction="@{/muangay}" class="btn btn-dark"
