@@ -191,21 +191,6 @@ public class BanHangController {
         return ResponseEntity.ok(pageNV);
     }
 
-    @GetMapping("discounts/{id}")
-    @ResponseBody
-    public ResponseEntity<?> discounts(@PathVariable("id") Integer id) {
-        SanPhamChiTiet spctTim = new SanPhamChiTiet();
-        spctTim.setId(id);
-        List<SanPhamDotGiam> lst = SPdotgiamRepo.findBySanphamchitiet(spctTim);
-        Integer discounts = 0;
-        for (SanPhamDotGiam a : lst
-        ) {
-            if (a.getDotgiamgia().getTrangthai() == 1) {
-                discounts = a.getDotgiamgia().getGiatrigiam();
-            }
-        }
-        return ResponseEntity.ok(discounts);
-    }
 
     @GetMapping("checkSPQR")
     @ResponseBody
@@ -231,6 +216,22 @@ public class BanHangController {
     @ResponseBody
     public ResponseEntity<?> checkemail(@RequestParam("email") String email) {
         return ResponseEntity.ok(daoNguoiDung.existsByEmail(email.trim()));
+    }
+
+    @GetMapping("discounts/{id}")
+    @ResponseBody
+    public ResponseEntity<?> discounts(@PathVariable("id") Integer id) {
+        SanPhamChiTiet spctTim = new SanPhamChiTiet();
+        spctTim.setId(id);
+        List<SanPhamDotGiam> lst = SPdotgiamRepo.findBySanphamchitiet(spctTim);
+        Integer discounts = 0;
+        for (SanPhamDotGiam a : lst
+        ) {
+            if (a.getDotgiamgia().getTrangthai() == 1) {
+                discounts = a.getDotgiamgia().getGiatrigiam();
+            }
+        }
+        return ResponseEntity.ok(discounts);
     }
 
     // thêm sản phẩm tại hdct

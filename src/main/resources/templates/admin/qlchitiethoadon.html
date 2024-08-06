@@ -1397,8 +1397,10 @@
                                                 <tr th:each="a:${pageSPHD}">
                                                     <td th:text="${aStat.index+1}" style="vertical-align: middle;"></td>
                                                     <td style="vertical-align: middle;">
-                                                        <img alt="" th:src="@{${a.sanphamchitiet.anh[0].tenanh}}"
-                                                            style="height: 100px; width: 100px;">
+                                                        <div class="image-container">
+                                                            <img th:src="@{${a.sanphamchitiet.anh[0].tenanh}}" alt="" style="height: 100px; width: 100px;">
+                                                            <div class="discount-badge">0%</div>
+                                                        </div>
                                                     </td>
                                                     <td style="vertical-align: middle; text-align: center;">
                                                         <p th:text="${a.sanphamchitiet.sanpham.tensanpham}"
@@ -2091,12 +2093,12 @@
                         STT++;
                         htmlSP += `<tr>
                                    <td style="vertical-align: middle;">${STT}</td>
-                               <td>
-                               <div class="image-container">
-                              <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
-                                <div class="discount-badge">${discounts}%</div>
-                                 </div>
-                                  </td>
+                                <td>
+                   <div class="image-container">
+                       <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
+                       ${discounts > 0 ? `<div class="discount-badge">${discounts}%</div>` : ''}
+                   </div>
+               </td>
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
@@ -2163,12 +2165,12 @@
                         STT++;
                         htmlSP += `<tr>
                                    <td style="vertical-align: middle;">${STT}</td>
-                                    <td>
-                               <div class="image-container">
-                              <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
-                                <div class="discount-badge">${discounts}%</div>
-                                 </div>
-                                  </td>
+                               <td>
+                   <div class="image-container">
+                       <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
+                       ${discounts > 0 ? `<div class="discount-badge">${discounts}%</div>` : ''}
+                   </div>
+               </td>
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
@@ -2227,12 +2229,12 @@
                         STT++;
                         htmlSP += `<tr>
                                    <td style="vertical-align: middle;">${STT}</td>
-                                   <td>
-                               <div class="image-container">
-                              <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
-                                <div class="discount-badge">${discounts}%</div>
-                                 </div>
-                                  </td>
+                                 <td>
+                   <div class="image-container">
+                       <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
+                       ${discounts > 0 ? `<div class="discount-badge">${discounts}%</div>` : ''}
+                   </div>
+               </td>
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
@@ -2306,12 +2308,12 @@
                         STT++;
                         htmlSP += `<tr>
                                    <td style="vertical-align: middle;">${STT}</td>
-                                  <td>
-                               <div class="image-container">
-                              <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
-                                <div class="discount-badge">${discounts}%</div>
-                                 </div>
-                                  </td>
+                                <td>
+                   <div class="image-container">
+                       <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
+                       ${discounts > 0 ? `<div class="discount-badge">${discounts}%</div>` : ''}
+                   </div>
+               </td>
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
@@ -2381,12 +2383,12 @@
                         STT++;
                         htmlSP += `<tr>
                                    <td style="vertical-align: middle;">${STT}</td>
-                                   <td>
-                               <div class="image-container">
-                              <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
-                                <div class="discount-badge">${discounts}%</div>
-                                 </div>
-                                  </td>
+                                <td>
+                   <div class="image-container">
+                       <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
+                       ${discounts > 0 ? `<div class="discount-badge">${discounts}%</div>` : ''}
+                   </div>
+               </td>
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
@@ -2458,12 +2460,12 @@
                         STT++;
                         htmlSP += `<tr>
                                    <td style="vertical-align: middle;">${STT}</td>
-                                  <td>
-                               <div class="image-container">
-                              <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
-                                <div class="discount-badge">${discounts}%</div>
-                                 </div>
-                                  </td>
+                              <td>
+                   <div class="image-container">
+                       <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
+                       ${discounts > 0 ? `<div class="discount-badge">${discounts}%</div>` : ''}
+                   </div>
+               </td>
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
@@ -2537,12 +2539,12 @@
                         STT++;
                         htmlSP += `<tr>
                                    <td style="vertical-align: middle;">${STT}</td>
-                                    <td>
-                               <div class="image-container">
-                              <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
-                                <div class="discount-badge">${discounts}%</div>
-                                 </div>
-                                  </td>
+                               <td>
+                   <div class="image-container">
+                       <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
+                       ${discounts > 0 ? `<div class="discount-badge">${discounts}%</div>` : ''}
+                   </div>
+               </td>
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
