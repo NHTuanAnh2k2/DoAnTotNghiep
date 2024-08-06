@@ -72,7 +72,7 @@ public class SanPhamChiTiet {
 
     @OneToMany(mappedBy = "sanphamchitiet", fetch = FetchType.EAGER)
     List<Anh> anh;
-    @OneToMany(mappedBy = "sanphamchitiet")
+    @OneToMany(mappedBy = "sanphamchitiet", fetch = FetchType.EAGER)
     List<SanPhamDotGiam> sanphamdotgiam;
 
 //    public BigDecimal getGiamGia() {

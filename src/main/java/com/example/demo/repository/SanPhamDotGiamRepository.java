@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.entity.SanPhamChiTiet;
 import com.example.demo.entity.SanPhamDotGiam;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,4 +12,5 @@ import java.util.List;
 public interface SanPhamDotGiamRepository extends JpaRepository<SanPhamDotGiam,Integer> {
     @Query("SELECT s FROM SanPhamDotGiam s WHERE s.dotgiamgia.id =:IdDot")
     List<SanPhamDotGiam> findSanPhamDotGiamByIdDotgiamgia(Integer IdDot);
+    List<SanPhamDotGiam> findBySanphamchitiet(SanPhamChiTiet spct);
 }

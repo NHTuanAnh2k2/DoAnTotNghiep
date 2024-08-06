@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -188,7 +189,6 @@ public class TrangChuCustomerController {
         SanPham sanPham = trangChuRepository.findById(id).orElse(null);
         model.addAttribute("sanpham", sanPham);
         SanPhamChiTiet sanPhamChiTiet = sanPhamChiTietRepository.findById(id).orElse(null);
-//        model.addAttribute("giamgia",sanPhamChiTiet.getGiamGia());
         model.addAttribute("sanphamchitiet", sanPhamChiTiet);
         List<String> danhSachAnh = new ArrayList<>();
         for (SanPhamChiTiet spct : sanPham.getSpct()) {
@@ -207,9 +207,12 @@ public class TrangChuCustomerController {
         String selectedChatLieu = null;
         String selectedDeGiay = null;
         String selectedMaSPCT = null;
-        Integer selectedIdspct=null;
+        Integer selectedIdspct = null;
         String defaultColor = null;
         String defaultSize = null;
+        Integer selectedDiscount = null; // Biến để lưu giá trị giảm giá đã chọn
+        Map<Integer, Integer> sanPhamChiTietGiamGia = new HashMap<>(); // Map để lưu giảm giá cho từng sản phẩm chi tiết
+        // Lấy giá trị giảm giá cho từng sản phẩm chi tiết
         for (SanPhamChiTiet spct : sanPham.getSpct()) {
             if (!sizes.contains(spct.getKichco().getTen())) {
                 sizes.add(spct.getKichco().getTen());
@@ -224,7 +227,7 @@ public class TrangChuCustomerController {
                 selectedChatLieu = spct.getChatlieu().getTen();
                 selectedDeGiay = spct.getDegiay().getTen();
                 selectedMaSPCT = spct.getMasanphamchitiet();
-                selectedIdspct=spct.getId();
+                selectedIdspct = spct.getId();
             }
         }
         if (colors.size() > 0) {
@@ -233,6 +236,19 @@ public class TrangChuCustomerController {
         if (sizes.size() > 0) {
             defaultSize = sizes.get(0);
         }
+        for (SanPhamChiTiet spct : sanPham.getSpct()) {
+            int giamGia = 0;
+            for (SanPhamDotGiam spdg : spct.getSanphamdotgiam()) {
+                DotGiamGia dotGiamGia = spdg.getDotgiamgia();
+                if (dotGiamGia != null) {
+                    giamGia = dotGiamGia.getGiatrigiam(); // Giả sử giatrigiam là giá trị giảm
+                }
+            }
+            sanPhamChiTietGiamGia.put(spct.getId(), giamGia);
+        }
+        selectedDiscount = sanPhamChiTietGiamGia.get(selectedIdspct); // Lấy giá trị giảm giá
+        model.addAttribute("selectedDiscount", selectedDiscount); // Thêm giảm giá đã chọn vào model
+        model.addAttribute("sanPhamChiTietGiamGia", sanPhamChiTietGiamGia); // Thêm giảm giá vào model
         model.addAttribute("sizes", sizes);
         model.addAttribute("colors", colors);
         model.addAttribute("selectedPrice", selectedPrice);
@@ -311,7 +327,6 @@ public class TrangChuCustomerController {
             return ResponseEntity.ok(false); // Không tìm thấy sản phẩm
         }
     }
-
 
 
     @GetMapping("/search-trangchu")

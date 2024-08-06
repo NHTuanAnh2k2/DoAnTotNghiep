@@ -44,6 +44,8 @@ import java.util.regex.Pattern;
 @RequestMapping("ban-hang-tai-quay")
 public class BanHangController {
     @Autowired
+    SanPhamDotGiamRepository SPdotgiamRepo;
+    @Autowired
     NhanVienRepository nhanvienRPo;
     @Autowired
     LichSuHoaDonService daoLSHD;
@@ -189,6 +191,7 @@ public class BanHangController {
         return ResponseEntity.ok(pageNV);
     }
 
+
     @GetMapping("checkSPQR")
     @ResponseBody
     public ResponseEntity<?> checkSPQR(@RequestParam("ma") String ma) {
@@ -213,6 +216,24 @@ public class BanHangController {
     @ResponseBody
     public ResponseEntity<?> checkemail(@RequestParam("email") String email) {
         return ResponseEntity.ok(daoNguoiDung.existsByEmail(email.trim()));
+    }
+
+    @GetMapping("discounts/{id}")
+    @ResponseBody
+    public ResponseEntity<?> discounts(@PathVariable("id") Integer id) {
+        SanPhamChiTiet spctTim = new SanPhamChiTiet();
+        spctTim.setId(id);
+        List<SanPhamDotGiam> lst = SPdotgiamRepo.findBySanphamchitiet(spctTim);
+        Integer discounts = 0;
+        if (lst.size() > 0) {
+            for (SanPhamDotGiam a : lst
+            ) {
+                if (a.getDotgiamgia().getTrangthai() == 1) {
+                    discounts = a.getDotgiamgia().getGiatrigiam();
+                }
+            }
+        }
+        return ResponseEntity.ok(discounts);
     }
 
     // thêm sản phẩm tại hdct

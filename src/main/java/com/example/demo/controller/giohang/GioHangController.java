@@ -20,9 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class GioHangController {
@@ -59,8 +57,7 @@ public class GioHangController {
     public List<GioHangChiTiet> listGioHangKhongTK = new ArrayList<>();
 
     @GetMapping("/cart")
-    public String cart(Model model, HttpSession session
-    ) {
+    public String cart(Model model, HttpSession session) {
         List<GioHangChiTiet> cartItems = null;
         List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
         String token = (String) session.getAttribute("token");
@@ -68,7 +65,6 @@ public class GioHangController {
         NguoiDung nguoiDung = null;
         KhachHang khachHang = null;
 
-        // Kiểm tra xem người dùng đã đăng nhập hay chưa
         if (taiKhoanTokenInfos == null || taiKhoanTokenInfos.isEmpty()) {
             System.out.println("EEEEEEEEEEEE");
             cartItems = (List<GioHangChiTiet>) session.getAttribute("cartItems");
@@ -77,7 +73,6 @@ public class GioHangController {
             }
             session.setAttribute("giohangchitiet", cartItems);
         } else {
-            KhachHang khachHang1 = new KhachHang();
             for (TaiKhoanTokenInfo listTK : taiKhoanTokenInfos) {
                 if (token.equals(listTK.getToken())) {
                     khachHang = khachHangGioHangRepository.findByNguoidung(listTK.getId());
@@ -87,33 +82,52 @@ public class GioHangController {
             GioHang gioHang = gioHangRepository.findByIdKhachHang(khachHang.getId());
             cartItems = gioHang.getGioHangChiTietList();
             session.setAttribute("giohangchitiet", cartItems);
+            System.out.println("giohang123:" + cartItems.size());
         }
-        // Tính tổng số lượng sản phẩm và tổng tiền
+
         int totalQuantity = 0;
         BigDecimal totalAmount = BigDecimal.ZERO;
-        for (
-                GioHangChiTiet item : cartItems) {
+        Map<Integer, BigDecimal> discountedPrices = new HashMap<>(); // Map để lưu giá sau khi giảm cho từng idspct
+
+        for (GioHangChiTiet item : cartItems) {
             totalQuantity += item.getSoluong();
-            BigDecimal giatien = sanPhamChiTietRepository.findPriceByProductId(item.getSanphamchitiet().getId());
-            totalAmount = totalAmount.add(giatien.multiply(BigDecimal.valueOf(item.getSoluong())));
+            SanPhamChiTiet sanPhamChiTiet = item.getSanphamchitiet();
+            BigDecimal giatien = sanPhamChiTiet.getGiatien();
+            int discountValue = 0;
+
+            // Lấy giá trị giảm giá nếu có
+            for (SanPhamDotGiam spdg : sanPhamChiTiet.getSanphamdotgiam()) {
+                DotGiamGia dotGiamGia = spdg.getDotgiamgia();
+                if (dotGiamGia != null) {
+                    discountValue = dotGiamGia.getGiatrigiam();
+                }
+            }
+
+            // Tính toán giá tiền sau khi giảm giá
+            BigDecimal discountedPrice = giatien.subtract(giatien.multiply(BigDecimal.valueOf(discountValue)).divide(BigDecimal.valueOf(100)));
+            discountedPrices.put(sanPhamChiTiet.getId(), discountedPrice); // Lưu giá sau khi giảm với idspct
+            totalAmount = totalAmount.add(discountedPrice.multiply(BigDecimal.valueOf(item.getSoluong())));
         }
+
         // Dùng cho phiếu giảm giá
         List<PhieuGiamGia> lst = phieuGiamGiaImp.findAll();
         List<PhieuGiamGia> lstPGG = new ArrayList<>();
-        for (
-                PhieuGiamGia p : lst) {
+        for (PhieuGiamGia p : lst) {
             if (p.getTrangthai() == 1 && !p.getKieuphieu()) {
                 lstPGG.add(p);
             }
         }
+
         // Thêm các thông tin vào model
         model.addAttribute("token", token);
         model.addAttribute("lstPGG", lstPGG);
+        model.addAttribute("discountedPrices", discountedPrices); // Truyền Map vào model
         model.addAttribute("totalAmount", totalAmount);
         model.addAttribute("totalQuantity", totalQuantity);
         model.addAttribute("cartItems", cartItems);
         return "customer/cart";
     }
+
 
     @ResponseBody
     @GetMapping("/giohangchitiet")

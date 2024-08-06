@@ -54,6 +54,8 @@ import java.util.*;
 @RequestMapping("hoa-don")
 public class hoaDonController {
     @Autowired
+    SanPhamDotGiamRepository SPdotgiamRepo;
+    @Autowired
     NguoiDungRepository daoNguoiDung;
     @Autowired
     NhanVienRepository nhanvienRPo;
@@ -567,6 +569,27 @@ public class hoaDonController {
                 hoaDonXem.getTennguoinhan(), hoaDonXem.getSdt(),
                 tinh, huyen, xa, diachiCT, hoaDonXem.getPhivanchuyen() + "", hoaDonXem.getGhichu()
         );
+        //tìm list đợt giảm giá
+        int page = 0;
+        Page<HoaDonChiTiet> hoaDonPage = daoHDCT.getDSSPHD(hoaDonXem, p);
+        List<SanPhamDotGiam> lstsanphamdotgiam = new ArrayList<>();
+        do {
+            Pageable pageable = PageRequest.of(page, 5);
+            hoaDonPage = daoHDCT.getDSSPHD(hoaDonXem, pageable);
+            List<HoaDonChiTiet> hoaDonChiTiets = hoaDonPage.getContent();
+            for (HoaDonChiTiet a : hoaDonChiTiets) {
+                List<SanPhamDotGiam> lsts =SPdotgiamRepo.findBySanphamchitiet(a.getSanphamchitiet());
+                if(lsts.size()>0){
+                    for (SanPhamDotGiam b:lsts
+                         ) {
+                        if(b.getDotgiamgia().getTrangthai()==1){
+                            lstsanphamdotgiam.add(b);
+                        }
+                    }
+                }
+            }
+            page++;
+        } while (hoaDonPage.hasNext());
         //gửi địa chỉ giao
         lstdiachigiao = new ArrayList<>();
         lstdiachigiao.add(tinh);
@@ -583,6 +606,8 @@ public class hoaDonController {
         model.addAttribute("phieuGiamCT", phieuGiamCT);
         model.addAttribute("trangThaiHienTai", lstLichSuHoaDon.get(lstLichSuHoaDon.size() - 1).getTrangthai());
         model.addAttribute("pageSPHD", daoHDCT.getDSSPHD(hoaDonXem, p));
+        model.addAttribute("lstsanphamdotgiam", lstsanphamdotgiam);
+
         return "admin/qlchitiethoadon";
     }
 

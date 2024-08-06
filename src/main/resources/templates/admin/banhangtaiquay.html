@@ -119,6 +119,46 @@
         transform: scale(1.01);
         /* Tăng kích thước một chút khi hover */
     }
+
+    .image-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .discount-badge {
+        position: absolute;
+        top: 2px;
+        /* Khoảng cách từ phía trên */
+        right: 2px;
+        /* Khoảng cách từ bên phải */
+        background-color: red;
+        color: white;
+        padding: 5px;
+        border-radius: 50%;
+        /* Làm cho hình dạng của badge thành hình tròn */
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .strikethrough {
+        position: relative;
+        display: inline-block;
+    }
+
+    .strikethrough::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        /* Điều chỉnh vị trí của gạch ngang */
+        border-top: 2px solid rgb(29, 3, 3);
+        /* Đặt màu và độ dày của gạch ngang */
+        transform: translateY(-50%);
+        /* Canh chỉnh đường gạch ngang giữa chữ */
+        z-index: 1;
+        /* Đảm bảo gạch ngang nằm trên chữ */
+    }
 </style>
 <script src="../sweetalert2/dist/sweetalert2.min.js/"></script>
 <link rel="stylesheet" type="text/css" href="../sweetalert2/dist/sweetalert2.min.css">
@@ -518,13 +558,14 @@
                                                     <div>
                                                         <label class="col-form-label">Màu
                                                             sắc</label>
-                                                        <select class="form-select" onchange="SearchSPHDCT()" id="mausac"
-                                                            style="width: 120px;">
+                                                        <select class="form-select" onchange="SearchSPHDCT()"
+                                                            id="mausac" style="width: 120px;">
                                                             <option value="all" selected>
                                                                 ----</option>
-                                                            <option th:each="a:${dsMauSac}" th:value="${a.ten}" th:style="'background-color: ' + ${a.ten} + '; color: ' + ${#fff}"
+                                                            <option th:each="a:${dsMauSac}" th:value="${a.ten}"
+                                                                th:style="'background-color: ' + ${a.ten} + '; color: ' + ${#fff}"
                                                                 th:text="${a.ten}">
-<span th:text="${a.ten}"></span>
+                                                                <span th:text="${a.ten}"></span>
                                                             </option>
                                                         </select>
                                                     </div>
@@ -964,6 +1005,7 @@
 
         // JavaScript để mở tab lúc load
         function openInvoice1(evt, invoiceName) {
+            shipToanCuc = 0;
             document.getElementById('chonMaGiam').disabled = false;
             document.getElementById('changeNV').disabled = false;
             document.getElementById('start-scan').disabled = false;
@@ -993,7 +1035,7 @@
                 .then(function (a) {
                     return a.json();
                 })
-                .then(function (b) {
+                .then(async function (b) {
                     var tongTien = 0;
                     var tongThanhT = 0;
                     var tienGiamT = 0;
@@ -1049,28 +1091,51 @@
                             </div>`;
                     }
                     if (b.length > 0) {
-
+                        var discounts;
                         var stt = 0;
                         for (const hd of b) {
-                            tongTien += hd.soluong * hd.giasanpham;
+                            const urlDiscount = `http://localhost:8080/ban-hang-tai-quay/discounts/${hd.sanphamchitiet.id}`;
+                            await fetch(urlDiscount)
+                                .then(function (c) {
+                                    return c.json();
+                                })
+                                .then(function (b) {
+                                    discounts = b;
+                                })
+                            if (discounts > 0) {
+                                tongTien += hd.soluong * (hd.giasanpham / 100 * (100 - discounts));
+                            } else {
+                                tongTien += hd.soluong * hd.giasanpham;
+                            }
+
                             stt++;
                             htmlTR += `
                 <tr>
 <td class="text-center" style="vertical-align: middle;">
     <span style="margin-left: 7px">${stt}</span>
 </td>
-<td style="vertical-align: middle;">
-    <img src="${hd.sanphamchitiet.anh[0].tenanh}" width="100px" height="100px" />
-</td>
+                   <td>
+                   <div class="image-container">
+                       <img src="${hd.sanphamchitiet.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
+                       ${discounts > 0 ? `<div class="discount-badge">${discounts}%</div>` : ''}
+                   </div>
+               </td>
 <td style="vertical-align: middle;">
     <p style="font-weight: bold">${hd.sanphamchitiet.sanpham.tensanpham}</p>
-    <p style="color: red;font-weight: bold">${hd.giasanpham.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+     ${discounts > 0 ? ` <p style="color: red;font-weight: bold">${(hd.giasanpham / 100 * (100 - discounts)).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+      <p class="strikethrough" style="color: black;font-weight: bold">${hd.giasanpham.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+     ` : ` <p style="color: red;font-weight: bold">${hd.giasanpham.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>`}
     <p> Size: ${hd.sanphamchitiet.kichco.ten}</p>
 </td>
 <td style="vertical-align: middle;">
     <input class="form-control" style="width: 120px;height: 30px; margin-left: 20%;" type="text" id="${hd.id}" value="${hd.soluong}" oninput="changeQuantity(event)" name="${hd.sanphamchitiet.id}">
 </td>
-<td style="color: red;font-weight: bold;vertical-align: middle;">${(hd.soluong * hd.giasanpham).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+ <td style="color: red;font-weight: bold;vertical-align: middle;">
+                ${discounts > 0 ? ` <p style="color: red;font-weight: bold">${((hd.giasanpham / 100 * (100 - discounts)) * hd.soluong).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+     ` : ` <p style="color: red;font-weight: bold">${(hd.soluong * hd.giasanpham).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>`}
+           
+                </td>
+
 <td style="vertical-align: middle;">
                                                <a href="http://localhost:8080/ban-hang-tai-quay/delete/${hd.id}"
                                                 >
@@ -1137,7 +1202,6 @@ tabindex="0">
                             } else {
                                 document.getElementById('maGiamFill').innerHTML = 'chưa có mã nào phù hợp!';
                                 tongThanhT = tongTien;
-
                             }
                             tongTienDon = tongTien;
                             tienkhachthanhtoan = tongThanhT;
@@ -1256,6 +1320,7 @@ tabindex="0">
 
         // JavaScript để mở tab
         function openInvoice(evt, invoiceName) {
+            shipToanCuc = 0;
             document.getElementById('ngaygiaodukiens').innerHTML = "đang tính toán...";
             document.getElementById('changeNV').disabled = false;
             document.getElementById('chonMaGiam').disabled = false;
@@ -1289,7 +1354,7 @@ tabindex="0">
                 .then(function (a) {
                     return a.json();
                 })
-                .then(function (b) {
+                .then(async function (b) {
                     var tongTien = 0;
                     var tongThanhT = 0;
                     var tienGiamT = 0;
@@ -1345,28 +1410,51 @@ tabindex="0">
                                         </div>`;
                     }
                     if (b.length > 0) {
-
+                        var discounts;
                         var stt = 0;
                         for (const hd of b) {
-                            tongTien += hd.soluong * hd.giasanpham;
+                            const urlDiscount = `http://localhost:8080/ban-hang-tai-quay/discounts/${hd.sanphamchitiet.id}`;
+                            await fetch(urlDiscount)
+                                .then(function (c) {
+                                    return c.json();
+                                })
+                                .then(function (b) {
+                                    discounts = b;
+                                })
+                            if (discounts > 0) {
+                                tongTien += hd.soluong * (hd.giasanpham / 100 * (100 - discounts));
+                            } else {
+                                tongTien += hd.soluong * hd.giasanpham;
+                            }
                             stt++;
                             htmlTR += `
                             <tr>
             <td class="text-center" style="vertical-align: middle;">
                 <span style="margin-left: 7px">${stt}</span>
             </td>
-            <td style="vertical-align: middle;">
-                <img src="${hd.sanphamchitiet.anh[0].tenanh}" width="100px" height="100px" />
-            </td>
+              <td>
+                   <div class="image-container">
+                       <img src="${hd.sanphamchitiet.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
+                       ${discounts > 0 ? `<div class="discount-badge">${discounts}%</div>` : ''}
+                   </div>
+               </td>
             <td style="vertical-align: middle;">
                 <p style="font-weight: bold">${hd.sanphamchitiet.sanpham.tensanpham}</p>
-                <p style="color: red;font-weight: bold">${hd.giasanpham.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+               ${discounts > 0 ? ` <p style="color: red;font-weight: bold">${(hd.giasanpham / 100 * (100 - discounts)).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+      <p class="strikethrough" style="color: black;font-weight: bold">${hd.giasanpham.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+     ` : ` <p style="color: red;font-weight: bold">${hd.giasanpham.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>`}
+  
                 <p> Size: ${hd.sanphamchitiet.kichco.ten}</p>
             </td>
             <td style="vertical-align: middle;">
                 <input class="form-control" style="width: 120px;height: 30px; margin-left: 20%;" type="text" id="${hd.id}" value="${hd.soluong}" oninput="changeQuantity(event)">
             </td>
-            <td style="color: red;font-weight: bold;vertical-align: middle;">${(hd.soluong * hd.giasanpham).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+            <td style="color: red;font-weight: bold;vertical-align: middle;">
+                ${discounts > 0 ? ` <p style="color: red;font-weight: bold">${((hd.giasanpham / 100 * (100 - discounts)) * hd.soluong).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+     ` : ` <p style="color: red;font-weight: bold">${(hd.soluong * hd.giasanpham).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>`}
+           
+                </td>
+            
             <td style="vertical-align: middle;">
                                                            <a href="http://localhost:8080/ban-hang-tai-quay/delete/${hd.id}"
                                                             >
@@ -1604,6 +1692,7 @@ tabindex="0">
         var mausac = document.getElementById('mausac');
         var gioitinh = document.getElementById('gioitinh');
         var khoanggia = document.getElementById('priceRange');
+        //lấy % giảm của sp
 
         function SearchSPHDCT() {
             var tentim = tensp.value;
@@ -1624,20 +1713,29 @@ tabindex="0">
                 .then(function (c) {
                     return c.json();
                 })
-                .then(function (b) {
-
+                .then(async function (b) {
+                    var discounts;
                     var STT = 0;
                     let htmlSP = '';
                     let htmlNumberPageSP = '';
                     for (const hd of b) {
+                        const urlDiscount = `http://localhost:8080/ban-hang-tai-quay/discounts/${hd.id}`;
+                        await fetch(urlDiscount)
+                            .then(function (c) {
+                                return c.json();
+                            })
+                            .then(function (b) {
+                                discounts = b;
+                            })
                         STT++;
                         htmlSP += `<tr>
                                    <td style="vertical-align: middle;">${STT}</td>
-                                   <td> 
-                                    <img src="${hd.anh[0].tenanh}" alt=""
-                                                                style="height: 100px; width: 100px;">
-                                    
-                                    </td>
+                                <td>
+                   <div class="image-container">
+                       <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
+                       ${discounts > 0 ? `<div class="discount-badge">${discounts}%</div>` : ''}
+                   </div>
+               </td>
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
@@ -1687,19 +1785,29 @@ tabindex="0">
                 .then(function (c) {
                     return c.json();
                 })
-                .then(function (b) {
+                .then(async function (b) {
+                    var discounts;
                     var STT = 0;
                     let htmlSP = '';
                     let htmlNumberPageSP = '';
                     for (const hd of b) {
+                        const urlDiscount = `http://localhost:8080/ban-hang-tai-quay/discounts/${hd.id}`;
+                        await fetch(urlDiscount)
+                            .then(function (c) {
+                                return c.json();
+                            })
+                            .then(function (b) {
+                                discounts = b;
+                            })
                         STT++;
                         htmlSP += `<tr>
                                    <td style="vertical-align: middle;">${STT}</td>
-                                   <td> 
-                                    <img src="${hd.anh[0].tenanh}" alt=""
-                                                                style="height: 100px; width: 100px;">
-                                    
-                                    </td>
+                                 <td>
+                   <div class="image-container">
+                       <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
+                       ${discounts > 0 ? `<div class="discount-badge">${discounts}%</div>` : ''}
+                   </div>
+               </td>
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
@@ -1741,19 +1849,29 @@ tabindex="0">
                 .then(function (c) {
                     return c.json();
                 })
-                .then(function (b) {
+                .then(async function (b) {
+                    var discounts;
                     var STT = 0;
                     let htmlSP = '';
                     let htmlNumberPageSP = '';
                     for (const hd of b.content) {
+                        const urlDiscount = `http://localhost:8080/ban-hang-tai-quay/discounts/${hd.id}`;
+                        await fetch(urlDiscount)
+                            .then(function (c) {
+                                return c.json();
+                            })
+                            .then(function (b) {
+                                discounts = b;
+                            })
                         STT++;
                         htmlSP += `<tr>
                                    <td style="vertical-align: middle;">${STT}</td>
-                                   <td> 
-                                    <img src="${hd.anh[0].tenanh}" alt=""
-                                                                style="height: 100px; width: 100px;">
-                                    
-                                    </td>
+                                  <td>
+                   <div class="image-container">
+                       <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
+                       ${discounts > 0 ? `<div class="discount-badge">${discounts}%</div>` : ''}
+                   </div>
+               </td>
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
@@ -1810,19 +1928,29 @@ tabindex="0">
                 .then(function (c) {
                     return c.json();
                 })
-                .then(function (b) {
+                .then(async function (b) {
+                    var discounts;
                     var STT = 0;
                     let htmlSP = '';
                     let htmlNumberPageSP = '';
                     for (const hd of b.content) {
+                        const urlDiscount = `http://localhost:8080/ban-hang-tai-quay/discounts/${hd.id}`;
+                        await fetch(urlDiscount)
+                            .then(function (c) {
+                                return c.json();
+                            })
+                            .then(function (b) {
+                                discounts = b;
+                            })
                         STT++;
                         htmlSP += `<tr>
                                    <td style="vertical-align: middle;">${STT}</td>
-                                   <td> 
-                                    <img src="${hd.anh[0].tenanh}" alt=""
-                                                                style="height: 100px; width: 100px;">
-                                    
-                                    </td>
+                                  <td>
+                   <div class="image-container">
+                       <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
+                       ${discounts > 0 ? `<div class="discount-badge">${discounts}%</div>` : ''}
+                   </div>
+               </td>
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
@@ -1875,20 +2003,29 @@ tabindex="0">
                 .then(function (a) {
                     return a.json();
                 })
-                .then(function (b) {
-
+                .then(async function (b) {
+                    var discounts;
                     var STT = 0;
                     let htmlSP = '';
                     let htmlNumberPageSP = '';
                     for (const hd of b.content) {
+                        const urlDiscount = `http://localhost:8080/ban-hang-tai-quay/discounts/${hd.id}`;
+                        await fetch(urlDiscount)
+                            .then(function (c) {
+                                return c.json();
+                            })
+                            .then(function (b) {
+                                discounts = b;
+                            })
                         STT++;
                         htmlSP += `<tr>
                                    <td style="vertical-align: middle;">${STT}</td>
-                                   <td> 
-                                    <img src="${hd.anh[0].tenanh}" alt=""
-                                                                style="height: 100px; width: 100px;">
-                                    
-                                    </td>
+                                 <td>
+                   <div class="image-container">
+                       <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
+                       ${discounts > 0 ? `<div class="discount-badge">${discounts}%</div>` : ''}
+                   </div>
+               </td>
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
@@ -1943,20 +2080,29 @@ tabindex="0">
                 .then(function (a) {
                     return a.json();
                 })
-                .then(function (b) {
-
+                .then(async function (b) {
+                    var discounts;
                     var STT = 0;
                     let htmlSP = '';
                     let htmlNumberPageSP = '';
                     for (const hd of b.content) {
+                        const urlDiscount = `http://localhost:8080/ban-hang-tai-quay/discounts/${hd.id}`;
+                        await fetch(urlDiscount)
+                            .then(function (c) {
+                                return c.json();
+                            })
+                            .then(function (b) {
+                                discounts = b;
+                            })
                         STT++;
                         htmlSP += `<tr>
                                    <td style="vertical-align: middle;">${STT}</td>
-                                   <td> 
-                                    <img src="${hd.anh[0].tenanh}" alt=""
-                                                                style="height: 100px; width: 100px;">
-                                    
-                                    </td>
+                                <td>
+                   <div class="image-container">
+                       <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
+                       ${discounts > 0 ? `<div class="discount-badge">${discounts}%</div>` : ''}
+                   </div>
+               </td>
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
@@ -2013,20 +2159,29 @@ tabindex="0">
                 .then(function (a) {
                     return a.json();
                 })
-                .then(function (b) {
-
+                .then(async function (b) {
+                    var discounts;
                     var STT = 0;
                     let htmlSP = '';
                     let htmlNumberPageSP = '';
                     for (const hd of b.content) {
+                        const urlDiscount = `http://localhost:8080/ban-hang-tai-quay/discounts/${hd.id}`;
+                        await fetch(urlDiscount)
+                            .then(function (c) {
+                                return c.json();
+                            })
+                            .then(function (b) {
+                                discounts = b;
+                            })
                         STT++;
                         htmlSP += `<tr>
                                    <td style="vertical-align: middle;">${STT}</td>
-                                   <td> 
-                                    <img src="${hd.anh[0].tenanh}" alt=""
-                                                                style="height: 100px; width: 100px;">
-                                    
-                                    </td>
+                                  <td>
+                   <div class="image-container">
+                       <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
+                       ${discounts > 0 ? `<div class="discount-badge">${discounts}%</div>` : ''}
+                   </div>
+               </td>
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
@@ -3709,7 +3864,7 @@ tabindex="0">
                                             document.getElementById('thongtingiao_ngaygiao').value = timestamp;
 
                                             // phigiaohang
-                                            
+
                                             feship(idHuyenreturn, idXareturn);
 
 
@@ -3756,11 +3911,11 @@ tabindex="0">
                 .then(function (d) {
                     var shipluutam = shipToanCuc;
                     shipToanCuc = d.data.total;
-                    if(tongTienDon>=2000000){
-                        shipToanCuc=0;
+                    if (tongTienDon >= 2000000) {
+                        shipToanCuc = 0;
                     }
-                    document.getElementById('phigiaohang').value =  convertCashInput(shipToanCuc);
-                    tienkhachthanhtoan = (tongTienDon-TienGiamDon) + shipToanCuc;
+                    document.getElementById('phigiaohang').value = convertCashInput(shipToanCuc);
+                    tienkhachthanhtoan = (tongTienDon - TienGiamDon) + shipToanCuc;
                 })
 
         }
