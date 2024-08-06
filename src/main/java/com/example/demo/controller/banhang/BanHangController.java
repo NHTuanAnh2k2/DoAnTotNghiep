@@ -225,10 +225,12 @@ public class BanHangController {
         spctTim.setId(id);
         List<SanPhamDotGiam> lst = SPdotgiamRepo.findBySanphamchitiet(spctTim);
         Integer discounts = 0;
-        for (SanPhamDotGiam a : lst
-        ) {
-            if (a.getDotgiamgia().getTrangthai() == 1) {
-                discounts = a.getDotgiamgia().getGiatrigiam();
+        if (lst.size() > 0) {
+            for (SanPhamDotGiam a : lst
+            ) {
+                if (a.getDotgiamgia().getTrangthai() == 1) {
+                    discounts = a.getDotgiamgia().getGiatrigiam();
+                }
             }
         }
         return ResponseEntity.ok(discounts);

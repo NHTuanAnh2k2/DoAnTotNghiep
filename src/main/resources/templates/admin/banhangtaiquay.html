@@ -1005,6 +1005,7 @@
 
         // JavaScript để mở tab lúc load
         function openInvoice1(evt, invoiceName) {
+            shipToanCuc = 0;
             document.getElementById('chonMaGiam').disabled = false;
             document.getElementById('changeNV').disabled = false;
             document.getElementById('start-scan').disabled = false;
@@ -1101,12 +1102,12 @@
                                 .then(function (b) {
                                     discounts = b;
                                 })
-                                if(discounts>0){
-                                    tongTien += hd.soluong * (hd.giasanpham/100*(100-discounts));
-                                }else{
-                                    tongTien += hd.soluong * hd.giasanpham;
-                                }
-                            
+                            if (discounts > 0) {
+                                tongTien += hd.soluong * (hd.giasanpham / 100 * (100 - discounts));
+                            } else {
+                                tongTien += hd.soluong * hd.giasanpham;
+                            }
+
                             stt++;
                             htmlTR += `
                 <tr>
@@ -1319,6 +1320,7 @@ tabindex="0">
 
         // JavaScript để mở tab
         function openInvoice(evt, invoiceName) {
+            shipToanCuc = 0;
             document.getElementById('ngaygiaodukiens').innerHTML = "đang tính toán...";
             document.getElementById('changeNV').disabled = false;
             document.getElementById('chonMaGiam').disabled = false;
@@ -1419,11 +1421,11 @@ tabindex="0">
                                 .then(function (b) {
                                     discounts = b;
                                 })
-                                if(discounts>0){
-                                    tongTien += hd.soluong * (hd.giasanpham/100*(100-discounts));
-                                }else{
-                                    tongTien += hd.soluong * hd.giasanpham;
-                                }
+                            if (discounts > 0) {
+                                tongTien += hd.soluong * (hd.giasanpham / 100 * (100 - discounts));
+                            } else {
+                                tongTien += hd.soluong * hd.giasanpham;
+                            }
                             stt++;
                             htmlTR += `
                             <tr>

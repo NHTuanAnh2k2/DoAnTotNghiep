@@ -164,6 +164,26 @@
         font-size: 12px;
         font-weight: bold;
     }
+
+    .strikethrough {
+        position: relative;
+        display: inline-block;
+    }
+
+    .strikethrough::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        /* Điều chỉnh vị trí của gạch ngang */
+        border-top: 2px solid rgb(29, 3, 3);
+        /* Đặt màu và độ dày của gạch ngang */
+        transform: translateY(-50%);
+        /* Canh chỉnh đường gạch ngang giữa chữ */
+        z-index: 1;
+        /* Đảm bảo gạch ngang nằm trên chữ */
+    }
 </style>
 
 <body class="hold-transition sidebar-mini layout-fixed" style="font-family: 'Bahnschrift'">
@@ -1398,17 +1418,39 @@
                                                     <td th:text="${aStat.index+1}" style="vertical-align: middle;"></td>
                                                     <td style="vertical-align: middle;">
                                                         <div class="image-container">
-                                                            <img th:src="@{${a.sanphamchitiet.anh[0].tenanh}}" alt="" style="height: 100px; width: 100px;">
-                                                            <div class="discount-badge">0%</div>
+                                                            <img th:src="@{${a.sanphamchitiet.anh[0].tenanh}}" alt=""
+                                                                style="height: 100px; width: 100px;">
+                                                            <div th:each="b : ${lstsanphamdotgiam}">
+                                                                <div class="discount-badge"
+                                                                    th:text="${b.dotgiamgia.giatrigiam+'%'}"
+                                                                    th:if="${a.sanphamchitiet.id==b.sanphamchitiet.id}">
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </td>
                                                     <td style="vertical-align: middle; text-align: center;">
                                                         <p th:text="${a.sanphamchitiet.sanpham.tensanpham}"
                                                             style="font-family: 'Times New Roman'; font-size: 15px; font-weight: bold;">
                                                             ></p>
-                                                        <p th:text="${#numbers.formatDecimal(a.giasanpham, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
-                                                            style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
-                                                            ></p>
+
+                                                        <span th:each="b : ${lstsanphamdotgiam}">
+                                                            <p th:if="${a.sanphamchitiet.id!=b.sanphamchitiet.id}"
+                                                                th:text="${#numbers.formatDecimal(a.giasanpham, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                                style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
+                                                                ></p>
+                                                            <span th:if="${a.sanphamchitiet.id==b.sanphamchitiet.id}">
+                                                                <p th:text="${#numbers.formatDecimal((a.giasanpham/100*(100-b.dotgiamgia.giatrigiam)), 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                                    style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
+                                                                    ></p>
+                                                                <p class="strikethrough"
+                                                                    th:text="${#numbers.formatDecimal(a.giasanpham, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                                    style="font-family: 'Times New Roman'; font-size: 15px; color: black;font-weight: bold;">
+                                                                    ></p>
+                                                            </span>
+
+                                                        </span>
+
+
                                                         <p th:text="${'Size: '+a.sanphamchitiet.kichco.ten}"
                                                             style="font-family: 'Times New Roman'; font-size: 15px;font-weight: bold;">
                                                             ></p>
@@ -1427,8 +1469,19 @@
                                                             th:value="${a.soluong}"
                                                             th:readonly="${trangThaiHienTai != 0}"></td>
 
-                                                    <td th:text="${#numbers.formatDecimal(a.giasanpham*a.soluong, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
-                                                        style="color: red; vertical-align: middle;">
+                                                    <td style="vertical-align: middle;">
+                                                        <span th:each="b : ${lstsanphamdotgiam}">
+                                                            <p th:if="${a.sanphamchitiet.id!=b.sanphamchitiet.id}"
+                                                                th:text="${#numbers.formatDecimal(a.giasanpham*a.soluong, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                                style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
+                                                                ></p>
+                                                            <span th:if="${a.sanphamchitiet.id==b.sanphamchitiet.id}">
+                                                                <p th:text="${#numbers.formatDecimal((a.giasanpham/100*(100-b.dotgiamgia.giatrigiam)*a.soluong), 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                                    style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
+                                                                    ></p>
+                                                            </span>
+
+                                                        </span>
                                                     </td>
                                                     <td style="vertical-align: middle;">
                                                         <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;"
