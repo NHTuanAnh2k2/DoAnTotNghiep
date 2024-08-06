@@ -263,37 +263,47 @@ public interface TrangChuRepository extends JpaRepository<SanPham, Integer> {
 
 
     @Query(nativeQuery = true, value = """
-                WITH AnhDaiDien AS (
-                    SELECT spct.IdSanPham, anh.tenanh,
-                           ROW_NUMBER() OVER (PARTITION BY spct.IdSanPham ORDER BY anh.tenanh DESC) AS row_num
-                    FROM Anh anh
-                    JOIN SanPhamChiTiet spct ON anh.IdSanPhamChiTiet = spct.id
-                ),
-                SanPhamChiTietGrouped AS (
-                    SELECT IdSanPham, SUM(soluong) AS tongSoLuong, MIN(giatien) AS giatien
-                    FROM SanPhamChiTiet
-                    GROUP BY IdSanPham
-                ),
-                KichCoCount AS (
-                    SELECT spct.IdSanPham, COUNT(DISTINCT kc.id) AS soLuongKichCo
-                    FROM SanPhamChiTiet spct
-                    JOIN KichCo kc ON spct.IdKichCo = kc.id
-                    GROUP BY spct.IdSanPham
-                ),
-                MauSacCount AS (
-                    SELECT spct.IdSanPham, COUNT(DISTINCT ms.id) AS soLuongMauSac
-                    FROM SanPhamChiTiet spct
-                    JOIN MauSac ms ON spct.IdMauSac = ms.id
-                    GROUP BY spct.IdSanPham
-                )
-                SELECT sp.id, sp.tensanpham, sp.ngaytao, spctg.tongSoLuong, sp.trangthai, spctg.giatien, anhdd.tenanh, kc.soLuongKichCo, ms.soLuongMauSac
-                FROM SanPham sp
-                JOIN SanPhamChiTietGrouped spctg ON sp.id = spctg.IdSanPham
-                JOIN AnhDaiDien anhdd ON sp.id = anhdd.IdSanPham AND anhdd.row_num = 1
-                JOIN KichCoCount kc ON sp.id = kc.IdSanPham
-                JOIN MauSacCount ms ON sp.id = ms.IdSanPham
-                ORDER BY sp.ngaytao DESC, spctg.tongSoLuong DESC
-            """)
+    WITH AnhDaiDien AS (
+        SELECT spct.IdSanPham, anh.tenanh,
+               ROW_NUMBER() OVER (PARTITION BY spct.IdSanPham ORDER BY anh.tenanh DESC) AS row_num
+        FROM Anh anh
+        JOIN SanPhamChiTiet spct ON anh.IdSanPhamChiTiet = spct.id
+    ),
+    SanPhamChiTietGrouped AS (
+        SELECT IdSanPham, SUM(soluong) AS tongSoLuong, MIN(giatien) AS giatien
+        FROM SanPhamChiTiet
+        GROUP BY IdSanPham
+    ),
+    KichCoCount AS (
+        SELECT spct.IdSanPham, COUNT(DISTINCT kc.id) AS soLuongKichCo
+        FROM SanPhamChiTiet spct
+        JOIN KichCo kc ON spct.IdKichCo = kc.id
+        GROUP BY spct.IdSanPham
+    ),
+    MauSacCount AS (
+        SELECT spct.IdSanPham, COUNT(DISTINCT ms.id) AS soLuongMauSac
+        FROM SanPhamChiTiet spct
+        JOIN MauSac ms ON spct.IdMauSac = ms.id
+        GROUP BY spct.IdSanPham
+    ),
+    GiamGia AS (
+        SELECT spct.IdSanPham, MAX(dg.giatrigiam) AS giaGiam
+        FROM SanPhamChiTiet spct
+        JOIN SanPhamDotGiam spdg ON spct.Id = spdg.idchitietsanpham
+        JOIN DotGiamGia dg ON spdg.iddotgiam = dg.id
+        WHERE dg.trangthai = 1
+        GROUP BY spct.IdSanPham
+    )
+    SELECT sp.id, sp.tensanpham, sp.ngaytao, spctg.tongSoLuong, sp.trangthai, spctg.giatien, anhdd.tenanh, kc.soLuongKichCo, ms.soLuongMauSac, COALESCE(giamgia.giaGiam, 0) AS giaGiam
+    FROM SanPham sp
+    JOIN SanPhamChiTietGrouped spctg ON sp.id = spctg.IdSanPham
+    JOIN AnhDaiDien anhdd ON sp.id = anhdd.IdSanPham AND anhdd.row_num = 1
+    LEFT JOIN KichCoCount kc ON sp.id = kc.IdSanPham
+    LEFT JOIN MauSacCount ms ON sp.id = ms.IdSanPham
+    LEFT JOIN GiamGia giamgia ON sp.id = giamgia.IdSanPham
+    ORDER BY sp.ngaytao DESC, spctg.tongSoLuong DESC
+""")
     List<Object[]> searchAll();
+
 
 }
