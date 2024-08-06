@@ -57,4 +57,18 @@ public class GioHangService {
         }
         return total;
     }
+
+    private List<GioHangChiTiet> listGioHangKhongTK = new ArrayList<>();
+
+    public List<GioHangChiTiet> getListGioHangKhongTK() {
+        return listGioHangKhongTK;
+    }
+
+    public void addGioHangChiTiet(GioHangChiTiet gioHangChiTiet) {
+        listGioHangKhongTK.add(gioHangChiTiet);
+    }
+
+    public void clearListGioHangKhongTK() {
+        listGioHangKhongTK.clear();
+    }
 }

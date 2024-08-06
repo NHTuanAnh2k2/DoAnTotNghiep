@@ -182,12 +182,12 @@
 
     }
     </style>
-<body class="container">
+<body>
 <!--&lt;!&ndash; header section start &ndash;&gt;-->
-<!--<nav th:replace="~{/layout/header.html}"></nav>-->
+<nav th:replace="~{/layout/header.html}"></nav>
 <!--&lt;!&ndash; header section end &ndash;&gt;-->
 <input type="hidden" th:value="${token}" id="kiemtratokendangnhap">
-<div class="tong">
+<div class="tong mt-3 mb-3 container">
     <div class="left">
         <div id="left1" class="left1">
             <img class="logo" src="../dist/img/logo_bong2.jpg" height="70" width="130">
@@ -360,7 +360,7 @@
                         </div>
                 </li>
             </ul>
-            <form id="formNhanHang" th:action="@{/customer/thanh-toan-online-khach-le}" th:object="${diachikotaikhoan}" method="post">
+            <form id="formNhanHang" th:action="@{/customer/thanh-toan-online-khach-le}" th:object="${diachikotaikhoan}" method="post" onsubmit="return SubmitFormNhanHangTraSau()">
                 <input type="hidden" id="hotennhan" th:field="*{hovaten}"  value="">
                 <input type="hidden" id="emailnhan" th:field="*{email}" value="">
                 <input type="hidden" id="sdtnhan" th:field="*{sodienthoai}" value="">
@@ -379,7 +379,7 @@
                     <button onclick="layGiaTri()" type="submit" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 40%; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">Hoàn tất đơn hàng</button>
                 </div>
             </form>
-            <form id="formVNPay" th:action="@{/submitOrder}" th:object="${diachikotaikhoan}" method="post">
+            <form id="formVNPay" th:action="@{/submitOrder}" th:object="${diachikotaikhoan}" method="post" onsubmit="return SubmitFormNhanHangTraTruoc()">
 
                 <input type="hidden" id="hotennhanVNPay" th:field="*{hovaten}"  value="">
                 <input type="hidden" id="emailnhanVNPay" th:field="*{email}" value="">
@@ -578,7 +578,80 @@
         </div>
     </div>
 </div>
+<nav th:replace="~{/layout/footer.html}"></nav>
+<!-- footer end -->
 <script>
+    function SubmitFormNhanHangTraSau(){
+        Swal.fire({
+            title: 'Bạn có chắc chắn muốn đặt hàng không?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                // Toast.fire({
+                //     icon: "success",
+                //     title: "Thêm thành công!"
+                // });
+
+                setTimeout(function () {
+                    document.getElementById("formNhanHang").submit();
+                }, 500);
+            }
+        });
+        // Ngăn form được gửi đi ngay lập tức
+        return false;
+    }
+
+    function SubmitFormNhanHangTraTruoc(){
+        Swal.fire({
+            title: 'Bạn có chắc chắn muốn thanh toán trước đơn hàng không?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và chuyển hướng sau một khoảng thời gian
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                // Toast.fire({
+                //     icon: "success",
+                //     title: "Thêm thành công!"
+                // });
+
+                setTimeout(function () {
+                    document.getElementById("formVNPay").submit();
+                }, 500);
+            }
+        });
+        // Ngăn form được gửi đi ngay lập tức
+        return false;
+    }
     document.getElementById("formVNPay").style.display = "none";
     function radioChanged(radio) {
         if (radio.id === "nhanhang") {
@@ -756,7 +829,7 @@
 
     function validateTen(inputString) {
         // Biểu thức chính quy cho phép các ký tự Latinh, số từ 0-9 và có độ dài từ 5 đến 15 ký tự
-        const regex = /^[a-zA-ZàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆìÌỉỈĩĨíÍịỊòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰýÝđĐ ]{1,30}$/;
+        const regex = /^[a-zA-ZàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆìÌỉỈĩĨíÍịỊòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰýÝđĐ ]{1,50}$/;
         return regex.test(inputString);
     }
 
@@ -1015,7 +1088,7 @@
             }
             if (inputTen.trim().length > 0) {
                 if (validateTen(inputTen.trim()) === false) {
-                    errorTen.innerText = "Họ tên chỉ chứa ký tự và tối đa 30 ký tự!";
+                    errorTen.innerText = "Họ tên chỉ chứa ký tự và tối đa 50 ký tự!";
                     document.getElementById("hovaten").style.border = "2px solid red";
                     isTenValid = false;
                 }

@@ -1,6 +1,5 @@
 package com.example.demo.controller.thanhtoanmuaonline;
 
-import com.example.demo.controller.giohang.GioHangController;
 import com.example.demo.entity.*;
 import com.example.demo.info.DiaChiThanhToanNoTaiKhoanOnline;
 import com.example.demo.info.TaiKhoanTokenInfo;
@@ -13,8 +12,8 @@ import com.example.demo.repository.giohang.NguoiDungGioHangRepository;
 import com.example.demo.service.HoaDonService;
 import com.example.demo.service.LichSuHoaDonService;
 import com.example.demo.service.PhuongThucThanhToanService;
+import com.example.demo.service.giohang.GioHangService;
 import com.example.demo.service.impl.HoaDonChiTietImp;
-import com.example.demo.service.impl.HoaDonImp;
 import com.example.demo.service.impl.PhieuGiamGiaImp;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +62,8 @@ public class ThanhToanController {
     DiaChiRepository diaChiRepository;
     @Autowired
     HttpSession session;
-
+    @Autowired
+    GioHangService gioHangService;
     @Autowired
     private GioHangChiTietRepository gioHangChiTietRepository;
 
@@ -247,10 +247,9 @@ public class ThanhToanController {
                             hoaDonChiTiet.setSoluong(g.getSoluong());
                             hoaDonChiTiet.setTrangthai(true);
                             hoaDonChiTietImp.capnhat(hoaDonChiTiet);
-                            gioHangChiTietRepository.delete(g);
                         }
                         //Xóa đối tượng trong list gio hàng
-
+                        gioHangChiTietRepository.deleteGioHangChiTietTT(gioHang.getId());
                         //Xác định khách dùng phiếu giả hay không
                         if (maCodeGiam.equals("khong")) {
 
@@ -298,6 +297,7 @@ public class ThanhToanController {
                     }
                 }
             }
+            session.setAttribute("datHangOnlThanhCong",1);
             return "redirect:/customer/trangchu";
         } else {
             //Hóa đơn
@@ -360,7 +360,7 @@ public class ThanhToanController {
 
             }
             //Xóa đối tượng trong list gio hàng
-
+            gioHangService.clearListGioHangKhongTK();
             //Xác định khách dùng phiếu giả hay không
             if (maCodeGiam.equals("khong")) {
 
@@ -405,8 +405,9 @@ public class ThanhToanController {
             phuongthuc.setNguoitao("Tuan Anh");
             phuongthuc.setTrangthai(false);
             daoPTTT.add_update(phuongthuc);
-
+            session.setAttribute("datHangOnlThanhCong",1);
             return "redirect:/customer/trangchu";
         }
+
     }
 }

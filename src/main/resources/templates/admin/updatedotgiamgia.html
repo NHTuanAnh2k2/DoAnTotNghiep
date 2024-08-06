@@ -507,7 +507,7 @@
     }
     function validateTenPhieuGiamBTCQ(inputString) {
         // Biểu thức chính quy cho phép các ký tự Latinh, số từ 0-9 và có độ dài từ 5 đến 15 ký tự
-        const regex = /^[a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯăâêôơưÁÉÍÓÚáéíóúýÝĂÂÊÔĂÂÊÔĂÂÊÔăâêôơưÁÉÍÓÚáéíóúýÝ ]{1,30}$/;
+        const regex = /^[a-zA-ZàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆìÌỉỈĩĨíÍịỊòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰýÝđĐ ]{1,50}$/;
         return regex.test(inputString);
     }
     function validateForm(){
@@ -529,7 +529,7 @@
         }
         if(inputTen.trim().length > 0){
             if(validateTenPhieuGiamBTCQ(inputTen)===false){
-                errorTen.innerText = "Tên phiếu chỉ được chứa ký tự, số và tối đa 30 ký tự!";
+                errorTen.innerText = "Tên phiếu chỉ được chứa ký tự, số và tối đa 50 ký tự!";
                 document.getElementById("inputTen").style.border = "1.2px solid red";
                 isTenValid = false;
             }

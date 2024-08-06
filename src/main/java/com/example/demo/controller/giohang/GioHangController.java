@@ -8,6 +8,7 @@ import com.example.demo.repository.giohang.GioHangChiTietRepository;
 import com.example.demo.repository.giohang.GioHangRepository;
 import com.example.demo.repository.giohang.KhachHangGioHangRepository;
 import com.example.demo.repository.giohang.NguoiDungGioHangRepository;
+import com.example.demo.service.giohang.GioHangService;
 import com.example.demo.service.impl.PhieuGiamGiaImp;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,8 @@ public class GioHangController {
     public UserManager userManager;
 
     @Autowired
+    GioHangService gioHangService;
+    @Autowired
     HttpSession session;
 
     private static int nextItemId = 1;
@@ -51,7 +54,6 @@ public class GioHangController {
     public synchronized int generateUniqueItemId() {
         return nextItemId++;
     }
-
     public List<GioHangChiTiet> listGioHangKhongTK = new ArrayList<>();
 
     @GetMapping("/cart")
@@ -138,7 +140,7 @@ public class GioHangController {
         List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
         if (taiKhoanTokenInfos == null || taiKhoanTokenInfos.isEmpty()) {
             boolean foundInCart = false;
-            for (GioHangChiTiet item : listGioHangKhongTK) {
+            for (GioHangChiTiet item : gioHangService.getListGioHangKhongTK()) {
                 if (item.getSanphamchitiet().equals(sanPhamChiTiet)) {
                     item.setSoluong(item.getSoluong() + quantity);
                     foundInCart = true;
@@ -152,9 +154,9 @@ public class GioHangController {
                 newItem.setSoluong(quantity);
                 newItem.setNgaytao(new Date());
                 newItem.setTrangthai(true);
-                listGioHangKhongTK.add(newItem);
+                gioHangService.addGioHangChiTiet(newItem);
             }
-            session.setAttribute("cartItems", listGioHangKhongTK);
+            session.setAttribute("cartItems", gioHangService.getListGioHangKhongTK());
             return "redirect:/detailsanphamCustomer/" + id;
         } else {
             KhachHang khachHang = null;
@@ -223,7 +225,7 @@ public class GioHangController {
         List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
         if (taiKhoanTokenInfos == null || taiKhoanTokenInfos.isEmpty()) {
             boolean foundInCart = false;
-            for (GioHangChiTiet item : listGioHangKhongTK) {
+            for (GioHangChiTiet item : gioHangService.getListGioHangKhongTK()) {
                 if (item.getSanphamchitiet().equals(sanPhamChiTiet)) {
                     item.setSoluong(item.getSoluong() + quantity);
                     foundInCart = true;
@@ -237,9 +239,9 @@ public class GioHangController {
                 newItem.setSoluong(quantity);
                 newItem.setNgaytao(new Date());
                 newItem.setTrangthai(true);
-                listGioHangKhongTK.add(newItem);
+                gioHangService.addGioHangChiTiet(newItem);
             }
-            session.setAttribute("cartItems", listGioHangKhongTK);
+            session.setAttribute("cartItems", gioHangService.getListGioHangKhongTK());
             return "redirect:/view-thanh-toan";
         } else {
             KhachHang khachHang = null;

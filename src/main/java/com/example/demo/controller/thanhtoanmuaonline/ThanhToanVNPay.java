@@ -16,6 +16,7 @@ import com.example.demo.repository.giohang.NguoiDungGioHangRepository;
 import com.example.demo.service.HoaDonService;
 import com.example.demo.service.LichSuHoaDonService;
 import com.example.demo.service.PhuongThucThanhToanService;
+import com.example.demo.service.giohang.GioHangService;
 import com.example.demo.service.impl.HoaDonChiTietImp;
 import com.example.demo.service.impl.PhieuGiamGiaImp;
 import jakarta.servlet.http.HttpServletRequest;
@@ -68,6 +69,8 @@ public class ThanhToanVNPay {
     DiaChiRepository diaChiRepository;
     @Autowired
     GioHangChiTietRepository gioHangChiTietRepository;
+    @Autowired
+    GioHangService gioHangService;
 
     public static String convertCurrency(String formattedAmount) {
         // Xóa ký hiệu "₫" và các dấu phân cách
@@ -198,7 +201,7 @@ public class ThanhToanVNPay {
 
                             }
                             //Xóa đối tượng trong list gio hàng
-
+                            gioHangChiTietRepository.deleteGioHangChiTietTT(gioHang.getId());
                             //Xác định khách dùng phiếu giả hay không
                             if (thongTinHoaDonOnline.getMaCodeGiam().equals("khong")) {
 
@@ -307,7 +310,7 @@ public class ThanhToanVNPay {
 
                 }
                 //Xóa đối tượng trong list gio hàng
-
+                gioHangService.clearListGioHangKhongTK();
                 //Xác định khách dùng phiếu giả hay không
                 if (thongTinHoaDonOnline.getMaCodeGiam().equals("khong")) {
 
