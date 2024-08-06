@@ -64,6 +64,8 @@ public class ThanhToanController {
     GioHangService gioHangService;
     @Autowired
     private GioHangChiTietRepository gioHangChiTietRepository;
+    @Autowired
+    SanPhamDotGiamRepository SPdotgiamRepo;
 
     @RequestMapping("/view-thanh-toan")
     public String viewthanhtoan(Model model, @ModelAttribute("diachikotaikhoan") DiaChiThanhToanNoTaiKhoanOnline diachikotaikhoan, HttpSession session) {
@@ -244,7 +246,25 @@ public class ThanhToanController {
                             HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
                             hoaDonChiTiet.setHoadon(hdMoiThem);
                             hoaDonChiTiet.setSanphamchitiet(g.getSanphamchitiet());
-                            hoaDonChiTiet.setGiasanpham(g.getSanphamchitiet().getGiatien());
+
+                            List<SanPhamDotGiam> lst = SPdotgiamRepo.findBySanphamchitiet(g.getSanphamchitiet());
+                            Integer discounts = 0;
+                            Integer discountbacks = 0;
+                            if (lst.size() > 0) {
+                                for (SanPhamDotGiam a : lst
+                                ) {
+                                    if (a.getDotgiamgia().getTrangthai() == 1) {
+                                        discounts = a.getDotgiamgia().getGiatrigiam();
+                                        discountbacks = 100 - discounts;
+                                    }
+                                }
+                            }
+                            if (discounts > 0) {
+                                hoaDonChiTiet.setGiasanpham((g.getSanphamchitiet().getGiatien().divide(new BigDecimal("100"))).multiply(new BigDecimal(discountbacks+"")));
+                            } else {
+                                hoaDonChiTiet.setGiasanpham(g.getSanphamchitiet().getGiatien());
+                            }
+
                             hoaDonChiTiet.setSoluong(g.getSoluong());
                             hoaDonChiTiet.setTrangthai(true);
                             hoaDonChiTietImp.capnhat(hoaDonChiTiet);
@@ -384,7 +404,25 @@ public class ThanhToanController {
                 HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
                 hoaDonChiTiet.setHoadon(hdMoiThem);
                 hoaDonChiTiet.setSanphamchitiet(g.getSanphamchitiet());
-                hoaDonChiTiet.setGiasanpham(g.getSanphamchitiet().getGiatien());
+
+                List<SanPhamDotGiam> lst = SPdotgiamRepo.findBySanphamchitiet(g.getSanphamchitiet());
+                Integer discounts = 0;
+                Integer discountbacks = 0;
+                if (lst.size() > 0) {
+                    for (SanPhamDotGiam a : lst
+                    ) {
+                        if (a.getDotgiamgia().getTrangthai() == 1) {
+                            discounts = a.getDotgiamgia().getGiatrigiam();
+                            discountbacks = 100 - discounts;
+                        }
+                    }
+                }
+                if (discounts > 0) {
+                    hoaDonChiTiet.setGiasanpham((g.getSanphamchitiet().getGiatien().divide(new BigDecimal("100"))).multiply(new BigDecimal(discountbacks+"")));
+                } else {
+                    hoaDonChiTiet.setGiasanpham(g.getSanphamchitiet().getGiatien());
+                }
+
                 hoaDonChiTiet.setSoluong(g.getSoluong());
                 hoaDonChiTiet.setTrangthai(true);
                 hoaDonChiTietImp.capnhat(hoaDonChiTiet);
