@@ -236,8 +236,17 @@ public class NhanVienController {
     public String viewUpdate(@PathVariable Integer id, Model model,
                              @ModelAttribute("nd") NguoiDungNVInfo nd,
                              @ModelAttribute("nv") NhanVienInfo nv,
-                             @ModelAttribute("dc") DiaChiNVInfo dc
+                             @ModelAttribute("dc") DiaChiNVInfo dc,
+                             HttpSession session
                              ) {
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung nguoiDung1 = khachHangService.findNguoiDungByTaikhoan(username);
+        NhanVien nhanVien1 = nhanVienRepository.findNhanVienByIdNd(nguoiDung1.getId());
+        if (nhanVien1.getVaitro() == false) {
+            if (!nguoiDung1.getId().equals(id)) {
+                return "redirect:/errorpage/admin";
+            }
+        }
         model.addAttribute("nd", nguoiDung.findById(id));
         model.addAttribute("dc",diaChi.search(id));
         model.addAttribute("nv",nhanVien.search(id));

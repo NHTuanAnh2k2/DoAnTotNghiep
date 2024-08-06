@@ -553,6 +553,28 @@ public class hoaDonController {
         }
         BigDecimal tongTienSP = new BigDecimal("0");
         List<HoaDonChiTiet> lstHDCT = daoHDCT.getListSPHD(hoaDonXem);
+
+        int page = 0;
+        Page<HoaDonChiTiet> hoaDonPage = daoHDCT.getDSSPHD(hoaDonXem, p);
+        List<SanPhamDotGiam> lstsanphamdotgiam = new ArrayList<>();
+        do {
+            Pageable pageable = PageRequest.of(page, 5);
+            hoaDonPage = daoHDCT.getDSSPHD(hoaDonXem, pageable);
+            List<HoaDonChiTiet> hoaDonChiTiets = hoaDonPage.getContent();
+            for (HoaDonChiTiet a : hoaDonChiTiets) {
+                List<SanPhamDotGiam> lsts = SPdotgiamRepo.findBySanphamchitiet(a.getSanphamchitiet());
+                if (lsts.size() > 0) {
+                    for (SanPhamDotGiam b : lsts
+                    ) {
+                        if (b.getDotgiamgia().getTrangthai() == 1) {
+                            lstsanphamdotgiam.add(b);
+                        }
+                    }
+                }
+            }
+            page++;
+        } while (hoaDonPage.hasNext());
+
         for (HoaDonChiTiet b : lstHDCT
         ) {
             tongTienSP = tongTienSP.add(b.getGiasanpham().multiply(new BigDecimal(b.getSoluong())));
@@ -570,26 +592,7 @@ public class hoaDonController {
                 tinh, huyen, xa, diachiCT, hoaDonXem.getPhivanchuyen() + "", hoaDonXem.getGhichu()
         );
         //tìm list đợt giảm giá
-        int page = 0;
-        Page<HoaDonChiTiet> hoaDonPage = daoHDCT.getDSSPHD(hoaDonXem, p);
-        List<SanPhamDotGiam> lstsanphamdotgiam = new ArrayList<>();
-        do {
-            Pageable pageable = PageRequest.of(page, 5);
-            hoaDonPage = daoHDCT.getDSSPHD(hoaDonXem, pageable);
-            List<HoaDonChiTiet> hoaDonChiTiets = hoaDonPage.getContent();
-            for (HoaDonChiTiet a : hoaDonChiTiets) {
-                List<SanPhamDotGiam> lsts =SPdotgiamRepo.findBySanphamchitiet(a.getSanphamchitiet());
-                if(lsts.size()>0){
-                    for (SanPhamDotGiam b:lsts
-                         ) {
-                        if(b.getDotgiamgia().getTrangthai()==1){
-                            lstsanphamdotgiam.add(b);
-                        }
-                    }
-                }
-            }
-            page++;
-        } while (hoaDonPage.hasNext());
+
         //gửi địa chỉ giao
         lstdiachigiao = new ArrayList<>();
         lstdiachigiao.add(tinh);
@@ -1027,7 +1030,23 @@ public class hoaDonController {
         hdctNew.setSanphamchitiet(spct);
         hdctNew.setSoluong(1);
         hdctNew.setTrangthai(true);
-        hdctNew.setGiasanpham(spct.getGiatien());
+        List<SanPhamDotGiam> lst = SPdotgiamRepo.findBySanphamchitiet(spct);
+        Integer discounts = 0;
+        Integer discountbacks = 0;
+        if (lst.size() > 0) {
+            for (SanPhamDotGiam a : lst
+            ) {
+                if (a.getDotgiamgia().getTrangthai() == 1) {
+                    discounts = a.getDotgiamgia().getGiatrigiam();
+                    discountbacks = 100 - discounts;
+                }
+            }
+        }
+        if (discounts > 0) {
+            hdctNew.setGiasanpham((spct.getGiatien().divide(new BigDecimal("100"))).multiply(new BigDecimal(discountbacks+"")));
+        } else {
+            hdctNew.setGiasanpham(spct.getGiatien());
+        }
         daoSPCT.addSPCT(spctCapNhatSL);
         daoHDCT.capnhat(hdctNew);
         PhieuGiamGiaChiTiet pgctTim = daoPGGCT.timListPhieuTheoHD(hdset).size() > 0 ? daoPGGCT.timListPhieuTheoHD(hdset).get(0) : new PhieuGiamGiaChiTiet();
