@@ -122,7 +122,9 @@ public class GioHangController {
         model.addAttribute("token", token);
         model.addAttribute("lstPGG", lstPGG);
         model.addAttribute("discountedPrices", discountedPrices); // Truyền Map vào model
+        session.setAttribute("discountedPrices",discountedPrices);
         model.addAttribute("totalAmount", totalAmount);
+        session.setAttribute("totalAmount",totalAmount);
         model.addAttribute("totalQuantity", totalQuantity);
         model.addAttribute("cartItems", cartItems);
         return "customer/cart";

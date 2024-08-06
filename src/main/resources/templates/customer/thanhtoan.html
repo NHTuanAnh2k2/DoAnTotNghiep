@@ -267,7 +267,7 @@
             <form class="mt-4" id="formDiaChiKhachCoTaiKhoan" onsubmit="return validateFormDiaChiKhachCotaiKhoan(event)">
                 <div class="form-floating mb-3">
                     <select class="form-select" id="diachidaluu" aria-label="Floating label select example" onchange="HienDiaChiDaChon()">
-                        <option th:value="-1">Thêm địa chỉ mới</option>
+                        <option th:value="-1" selected>Thêm địa chỉ mới</option>
                         <option th:each=" dc: ${lstDC}"
                                 th:selected="${dc.trangthai == true}"
                                 th:value="${dc.id}"
@@ -372,6 +372,7 @@
                 <input type="hidden" id="tinhnhan" th:field="*{tinhthanhpho}" value="">
                 <input type="hidden" id="huyennhan" th:field="*{quanhuyen}" value="">
                 <input type="hidden" id="xanhan" th:field="*{phuongxa}" value="">
+                <input type="hidden" id="laydiachidaluu" name="laydiachidaluu" value="">
 
                 <input type="hidden" id="maCodeGiam1" name="maCodeGiam" value="">
                 <input type="hidden" id="phivanchuyen1" name="phivanchuyen" value="">
@@ -393,6 +394,7 @@
                 <input type="hidden" id="tinhnhanVNPay" th:field="*{tinhthanhpho}" value="">
                 <input type="hidden" id="huyennhanVNPay" th:field="*{quanhuyen}" value="">
                 <input type="hidden" id="xanhanVNPay" th:field="*{phuongxa}" value="">
+                <input type="hidden" id="laydiachidaluuVNPay" name="laydiachidaluuVNPay" value="">
 
                 <input type="hidden" id="maCodeGiam2" name="maCodeGiamVNPay" value="">
                 <input type="hidden" id="phivanchuyen2" name="phivanchuyenVNPay" value="">
@@ -449,7 +451,7 @@
                     </td>
                     <td style="width: 25%; text-align: right;">
                         <div class="d-flex justify-content-end align-items-center">
-                            <b th:text="${#numbers.formatDecimal(item.sanphamchitiet.giatien * item.soluong, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></b>
+                            <b th:text="${#numbers.formatDecimal(discountedPrices[item.sanphamchitiet.id] * item.soluong, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></b>
                         </div>
                     </td>
                 </tr>
@@ -1499,6 +1501,8 @@
             var inputTinh = document.getElementById("tinh").value;
             var inputHuyen = document.getElementById("huyen").value;
             var inputXa = document.getElementById("xa").value;
+            var selectElement = document.getElementById("diachidaluu");
+            var diachi = selectElement.value;
 
             document.getElementById('hotennhan').value = inputTen;
             document.getElementById('emailnhan').value = inputEmail;
@@ -1507,6 +1511,7 @@
             document.getElementById('tinhnhan').value = inputTinh;
             document.getElementById('huyennhan').value = inputHuyen;
             document.getElementById('xanhan').value = inputXa;
+            document.getElementById('laydiachidaluu').value = diachi;
 
             document.getElementById('hotennhanVNPay').value = inputTen;
             document.getElementById('emailnhanVNPay').value = inputEmail;
@@ -1515,6 +1520,7 @@
             document.getElementById('tinhnhanVNPay').value = inputTinh;
             document.getElementById('huyennhanVNPay').value = inputHuyen;
             document.getElementById('xanhanVNPay').value = inputXa;
+            document.getElementById('laydiachidaluuVNPay').value = diachi;
 
             document.getElementById('orderInfo').value = inputTen;
         }
@@ -1931,6 +1937,8 @@
         var inputTinh = document.getElementById("tinh2").value;
         var inputHuyen = document.getElementById("huyen2").value;
         var inputXa = document.getElementById("xa2").value;
+        var selectElement = document.getElementById("diachidaluu");
+        var diachi = selectElement.value;
 
         document.getElementById('hotennhan').value = inputTen;
         document.getElementById('emailnhan').value = "";
@@ -1939,6 +1947,7 @@
         document.getElementById('tinhnhan').value = inputTinh;
         document.getElementById('huyennhan').value = inputHuyen;
         document.getElementById('xanhan').value = inputXa;
+        document.getElementById('laydiachidaluu').value = diachi;
 
         document.getElementById('hotennhanVNPay').value = inputTen;
         document.getElementById('emailnhanVNPay').value = "";
@@ -1947,6 +1956,7 @@
         document.getElementById('tinhnhanVNPay').value = inputTinh;
         document.getElementById('huyennhanVNPay').value = inputHuyen;
         document.getElementById('xanhanVNPay').value = inputXa;
+        document.getElementById('laydiachidaluuVNPay').value = diachi;
 
         document.getElementById('orderInfo').value = inputTen;
     }

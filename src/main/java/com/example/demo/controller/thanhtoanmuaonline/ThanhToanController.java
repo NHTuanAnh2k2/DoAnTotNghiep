@@ -29,9 +29,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class ThanhToanController {
@@ -139,15 +137,17 @@ public class ThanhToanController {
         }
         // Tính tổng số lượng sản phẩm và tổng tiền
         int totalQuantity = 0;
-        BigDecimal totalAmount = BigDecimal.ZERO;
-        for (GioHangChiTiet item : cartItems) {
-            totalQuantity += item.getSoluong();
-            BigDecimal giatien = sanPhamChiTietRepository.findPriceByProductId(item.getSanphamchitiet().getId());
-            totalAmount = totalAmount.add(giatien.multiply(BigDecimal.valueOf(item.getSoluong())));
-        }
+        BigDecimal totalAmount = (BigDecimal) session.getAttribute("totalAmount");
+//        for (GioHangChiTiet item : cartItems) {
+//            totalQuantity += item.getSoluong();
+//            BigDecimal giatien = sanPhamChiTietRepository.findPriceByProductId(item.getSanphamchitiet().getId());
+//            totalAmount = totalAmount.add(giatien.multiply(BigDecimal.valueOf(item.getSoluong())));
+//        }
+        Map<Integer, BigDecimal> discountedPrices = (Map<Integer, BigDecimal>) session.getAttribute("discountedPrices");
         model.addAttribute("token", token);
         session.setAttribute("tokenTT", token);
         model.addAttribute("totalAmount", totalAmount);
+        model.addAttribute("discountedPrices", discountedPrices);
         model.addAttribute("totalQuantity", totalQuantity);
         model.addAttribute("cartItems", cartItems);
         return "customer/thanhtoan";
@@ -167,6 +167,7 @@ public class ThanhToanController {
                                          @RequestParam("tongtien") String tongtien,
                                          @RequestParam("tamtinh") String tamtinh,
                                          @RequestParam("sotiengiam") String sotiengiam,
+                                         @RequestParam("laydiachidaluu") String laydiachidaluu,
                                          HttpSession session) {
         String token = (String) session.getAttribute("token");
         NguoiDung nguoiDung = null;
@@ -294,6 +295,36 @@ public class ThanhToanController {
                         phuongthuc.setNguoitao("Tuan Anh");
                         phuongthuc.setTrangthai(false);
                         daoPTTT.add_update(phuongthuc);
+
+                        //Luu dia chi
+                        if(Integer.parseInt(laydiachidaluu)==-1){
+                            DiaChi diachi = new DiaChi();
+                            diachi.setTenduong(diachikotaikhoan.getDiachicuthe());
+                            diachi.setXaphuong(diachikotaikhoan.getPhuongxa());
+                            diachi.setQuanhuyen(diachikotaikhoan.getQuanhuyen());
+                            diachi.setTinhthanhpho(diachikotaikhoan.getTinhthanhpho());
+                            diachi.setSdtnguoinhan(diachikotaikhoan.getSodienthoai());
+                            diachi.setHotennguoinhan(diachikotaikhoan.getHovaten());
+                            diachi.setNgaytao(Timestamp.valueOf(currentDateTime));
+                            diachi.setNguoitao(diachikotaikhoan.getHovaten());
+                            diachi.setLancapnhatcuoi(Timestamp.valueOf(currentDateTime));
+                            diachi.setNguoicapnhat(diachikotaikhoan.getHovaten());
+                            diachi.setTrangthai(false);
+                            diachi.setNguoidung(nguoiDung);
+                            diaChiRepository.save(diachi);
+
+                        }else{
+                            DiaChi diachiTim= diaChiRepository.findDiaChiByIdDiaChiTA(Integer.parseInt(laydiachidaluu));
+                            diachiTim.setTenduong(diachikotaikhoan.getDiachicuthe());
+                            diachiTim.setXaphuong(diachikotaikhoan.getPhuongxa());
+                            diachiTim.setQuanhuyen(diachikotaikhoan.getQuanhuyen());
+                            diachiTim.setTinhthanhpho(diachikotaikhoan.getTinhthanhpho());
+                            diachiTim.setSdtnguoinhan(diachikotaikhoan.getSodienthoai());
+                            diachiTim.setHotennguoinhan(diachikotaikhoan.getHovaten());
+                            diachiTim.setLancapnhatcuoi(Timestamp.valueOf(currentDateTime));
+                            diachiTim.setNguoicapnhat(diachikotaikhoan.getHovaten());
+                            diaChiRepository.save(diachiTim);
+                        }
                     }
                 }
             }

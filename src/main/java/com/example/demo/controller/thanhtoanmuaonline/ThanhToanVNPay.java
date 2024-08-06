@@ -89,6 +89,7 @@ public class ThanhToanVNPay {
                               @RequestParam("tongtienVNPay") String tongtien,
                               @RequestParam("tamtinhVNPay") String tamtinh,
                               @RequestParam("sotiengiamVNPay") String sotiengiam,
+                              @RequestParam("laydiachidaluuVNPay") String laydiachidaluuVNPay,
                               HttpSession session){
         ThongTinHoaDonOnline thongTinHoaDonOnline= new ThongTinHoaDonOnline(maCodeGiam,phivanchuyen,ngaygiaodukien,tongtien,tamtinh,sotiengiam);
 
@@ -98,6 +99,7 @@ public class ThanhToanVNPay {
 
         session.setAttribute("diachiVNpay",diachikotaikhoan);
         session.setAttribute("thongtinhoadonVNPay",thongTinHoaDonOnline);
+        session.setAttribute("laydiachidaluuVNPay",laydiachidaluuVNPay);
         return "redirect:" + vnpayUrl;
     }
 
@@ -108,6 +110,7 @@ public class ThanhToanVNPay {
         if(paymentStatus==1){
             DiaChiThanhToanNoTaiKhoanOnline diachikotaikhoan= (DiaChiThanhToanNoTaiKhoanOnline) session.getAttribute("diachiVNpay");
             ThongTinHoaDonOnline thongTinHoaDonOnline= (ThongTinHoaDonOnline) session.getAttribute("thongtinhoadonVNPay");
+            String laydiachidaluuVNPay= (String) session.getAttribute("laydiachidaluuVNPay");
 
             String orderInfo = request.getParameter("vnp_OrderInfo");
             String paymentTime = request.getParameter("vnp_PayDate");
@@ -246,6 +249,36 @@ public class ThanhToanVNPay {
                             phuongthuc.setNguoitao("Tuan Anh");
                             phuongthuc.setTrangthai(true);
                             daoPTTT.add_update(phuongthuc);
+
+                            //Luu dia chi
+                            if(Integer.parseInt(laydiachidaluuVNPay) == -1){
+                                DiaChi diachi = new DiaChi();
+                                diachi.setTenduong(diachikotaikhoan.getDiachicuthe());
+                                diachi.setXaphuong(diachikotaikhoan.getPhuongxa());
+                                diachi.setQuanhuyen(diachikotaikhoan.getQuanhuyen());
+                                diachi.setTinhthanhpho(diachikotaikhoan.getTinhthanhpho());
+                                diachi.setSdtnguoinhan(diachikotaikhoan.getSodienthoai());
+                                diachi.setHotennguoinhan(diachikotaikhoan.getHovaten());
+                                diachi.setNgaytao(Timestamp.valueOf(currentDateTime));
+                                diachi.setNguoitao(diachikotaikhoan.getHovaten());
+                                diachi.setLancapnhatcuoi(Timestamp.valueOf(currentDateTime));
+                                diachi.setNguoicapnhat(diachikotaikhoan.getHovaten());
+                                diachi.setTrangthai(false);
+                                diachi.setNguoidung(nguoiDung);
+                                diaChiRepository.save(diachi);
+
+                            }else{
+                                DiaChi diachiTim= diaChiRepository.findDiaChiByIdDiaChiTA(Integer.parseInt(laydiachidaluuVNPay));
+                                diachiTim.setTenduong(diachikotaikhoan.getDiachicuthe());
+                                diachiTim.setXaphuong(diachikotaikhoan.getPhuongxa());
+                                diachiTim.setQuanhuyen(diachikotaikhoan.getQuanhuyen());
+                                diachiTim.setTinhthanhpho(diachikotaikhoan.getTinhthanhpho());
+                                diachiTim.setSdtnguoinhan(diachikotaikhoan.getSodienthoai());
+                                diachiTim.setHotennguoinhan(diachikotaikhoan.getHovaten());
+                                diachiTim.setLancapnhatcuoi(Timestamp.valueOf(currentDateTime));
+                                diachiTim.setNguoicapnhat(diachikotaikhoan.getHovaten());
+                                diaChiRepository.save(diachiTim);
+                            }
                         }
                     }
                 }
