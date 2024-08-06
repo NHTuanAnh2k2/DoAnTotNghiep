@@ -44,6 +44,8 @@ import java.util.regex.Pattern;
 @RequestMapping("ban-hang-tai-quay")
 public class BanHangController {
     @Autowired
+    SanPhamDotGiamRepository SPdotgiamRepo;
+    @Autowired
     NhanVienRepository nhanvienRPo;
     @Autowired
     LichSuHoaDonService daoLSHD;
@@ -187,6 +189,22 @@ public class BanHangController {
     public ResponseEntity<?> timlistKH(@RequestParam("keySearch") String key) {
         List<KhachHang> pageNV = daoKH.timNVTheoMa(key);
         return ResponseEntity.ok(pageNV);
+    }
+
+    @GetMapping("discounts/{id}")
+    @ResponseBody
+    public ResponseEntity<?> discounts(@PathVariable("id") Integer id) {
+        SanPhamChiTiet spctTim = new SanPhamChiTiet();
+        spctTim.setId(id);
+        List<SanPhamDotGiam> lst = SPdotgiamRepo.findBySanphamchitiet(spctTim);
+        Integer discounts = 0;
+        for (SanPhamDotGiam a : lst
+        ) {
+            if (a.getDotgiamgia().getTrangthai() == 1) {
+                discounts = a.getDotgiamgia().getGiatrigiam();
+            }
+        }
+        return ResponseEntity.ok(discounts);
     }
 
     @GetMapping("checkSPQR")

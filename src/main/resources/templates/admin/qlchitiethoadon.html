@@ -144,6 +144,26 @@
         transform: scale(1.01);
         /* Tăng kích thước một chút khi hover */
     }
+
+    .image-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .discount-badge {
+        position: absolute;
+        top: 2px;
+        /* Khoảng cách từ phía trên */
+        right: 2px;
+        /* Khoảng cách từ bên phải */
+        background-color: red;
+        color: white;
+        padding: 5px;
+        border-radius: 50%;
+        /* Làm cho hình dạng của badge thành hình tròn */
+        font-size: 12px;
+        font-weight: bold;
+    }
 </style>
 
 <body class="hold-transition sidebar-mini layout-fixed" style="font-family: 'Bahnschrift'">
@@ -2054,19 +2074,29 @@
                 .then(function (c) {
                     return c.json();
                 })
-                .then(function (b) {
+                .then(async function (b) {
+                    var discounts;
                     var STT = 0;
                     let htmlSP = '';
                     let htmlNumberPageSP = '';
                     for (const hd of b) {
+                        const urlDiscount = `http://localhost:8080/ban-hang-tai-quay/discounts/${hd.id}`;
+                        await fetch(urlDiscount)
+                            .then(function (c) {
+                                return c.json();
+                            })
+                            .then(function (b) {
+                                discounts = b;
+                            })
                         STT++;
                         htmlSP += `<tr>
                                    <td style="vertical-align: middle;">${STT}</td>
-                                   <td> 
-                                    <img src="${hd.anh[0].tenanh}" alt=""
-                                                                style="height: 100px; width: 100px;">
-                                    
-                                    </td>
+                               <td>
+                               <div class="image-container">
+                              <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
+                                <div class="discount-badge">${discounts}%</div>
+                                 </div>
+                                  </td>
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
@@ -2116,19 +2146,29 @@
                 .then(function (c) {
                     return c.json();
                 })
-                .then(function (b) {
+                .then(async function (b) {
+                    var discounts;
                     var STT = 0;
                     let htmlSP = '';
                     let htmlNumberPageSP = '';
                     for (const hd of b) {
+                        const urlDiscount = `http://localhost:8080/ban-hang-tai-quay/discounts/${hd.id}`;
+                        await fetch(urlDiscount)
+                            .then(function (c) {
+                                return c.json();
+                            })
+                            .then(function (b) {
+                                discounts = b;
+                            })
                         STT++;
                         htmlSP += `<tr>
                                    <td style="vertical-align: middle;">${STT}</td>
-                                   <td> 
-                                    <img src="${hd.anh[0].tenanh}" alt=""
-                                                                style="height: 100px; width: 100px;">
-                                    
-                                    </td>
+                                    <td>
+                               <div class="image-container">
+                              <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
+                                <div class="discount-badge">${discounts}%</div>
+                                 </div>
+                                  </td>
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
@@ -2170,19 +2210,29 @@
                 .then(function (c) {
                     return c.json();
                 })
-                .then(function (b) {
+                .then(async function (b) {
+                    var discounts;
                     var STT = 0;
                     let htmlSP = '';
                     let htmlNumberPageSP = '';
                     for (const hd of b.content) {
+                        const urlDiscount = `http://localhost:8080/ban-hang-tai-quay/discounts/${hd.id}`;
+                        await fetch(urlDiscount)
+                            .then(function (c) {
+                                return c.json();
+                            })
+                            .then(function (b) {
+                                discounts = b;
+                            })
                         STT++;
                         htmlSP += `<tr>
                                    <td style="vertical-align: middle;">${STT}</td>
-                                   <td> 
-                                    <img src="${hd.anh[0].tenanh}" alt=""
-                                                                style="height: 100px; width: 100px;">
-                                    
-                                    </td>
+                                   <td>
+                               <div class="image-container">
+                              <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
+                                <div class="discount-badge">${discounts}%</div>
+                                 </div>
+                                  </td>
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
@@ -2239,19 +2289,29 @@
                 .then(function (c) {
                     return c.json();
                 })
-                .then(function (b) {
+                .then(async function (b) {
+                    var discounts;
                     var STT = 0;
                     let htmlSP = '';
                     let htmlNumberPageSP = '';
                     for (const hd of b.content) {
+                        const urlDiscount = `http://localhost:8080/ban-hang-tai-quay/discounts/${hd.id}`;
+                        await fetch(urlDiscount)
+                            .then(function (c) {
+                                return c.json();
+                            })
+                            .then(function (b) {
+                                discounts = b;
+                            })
                         STT++;
                         htmlSP += `<tr>
                                    <td style="vertical-align: middle;">${STT}</td>
-                                   <td> 
-                                    <img src="${hd.anh[0].tenanh}" alt=""
-                                                                style="height: 100px; width: 100px;">
-                                    
-                                    </td>
+                                  <td>
+                               <div class="image-container">
+                              <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
+                                <div class="discount-badge">${discounts}%</div>
+                                 </div>
+                                  </td>
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
@@ -2304,20 +2364,29 @@
                 .then(function (a) {
                     return a.json();
                 })
-                .then(function (b) {
-                    console.log(b)
+                .then(async function (b) {
+                    var discounts;
                     var STT = 0;
                     let htmlSP = '';
                     let htmlNumberPageSP = '';
                     for (const hd of b.content) {
+                        const urlDiscount = `http://localhost:8080/ban-hang-tai-quay/discounts/${hd.id}`;
+                        await fetch(urlDiscount)
+                            .then(function (c) {
+                                return c.json();
+                            })
+                            .then(function (b) {
+                                discounts = b;
+                            })
                         STT++;
                         htmlSP += `<tr>
                                    <td style="vertical-align: middle;">${STT}</td>
-                                   <td> 
-                                    <img src="${hd.anh[0].tenanh}" alt=""
-                                                                style="height: 100px; width: 100px;">
-                                    
-                                    </td>
+                                   <td>
+                               <div class="image-container">
+                              <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
+                                <div class="discount-badge">${discounts}%</div>
+                                 </div>
+                                  </td>
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
@@ -2372,20 +2441,29 @@
                 .then(function (a) {
                     return a.json();
                 })
-                .then(function (b) {
-                    console.log(b)
+                .then(async function (b) {
+                    var discounts;
                     var STT = 0;
                     let htmlSP = '';
                     let htmlNumberPageSP = '';
                     for (const hd of b.content) {
+                        const urlDiscount = `http://localhost:8080/ban-hang-tai-quay/discounts/${hd.id}`;
+                        await fetch(urlDiscount)
+                            .then(function (c) {
+                                return c.json();
+                            })
+                            .then(function (b) {
+                                discounts = b;
+                            })
                         STT++;
                         htmlSP += `<tr>
                                    <td style="vertical-align: middle;">${STT}</td>
-                                   <td> 
-                                    <img src="${hd.anh[0].tenanh}" alt=""
-                                                                style="height: 100px; width: 100px;">
-                                    
-                                    </td>
+                                  <td>
+                               <div class="image-container">
+                              <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
+                                <div class="discount-badge">${discounts}%</div>
+                                 </div>
+                                  </td>
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
@@ -2442,20 +2520,29 @@
                 .then(function (a) {
                     return a.json();
                 })
-                .then(function (b) {
-                    console.log(b)
+                .then(async function (b) {
+                    var discounts;
                     var STT = 0;
                     let htmlSP = '';
                     let htmlNumberPageSP = '';
                     for (const hd of b.content) {
+                        const urlDiscount = `http://localhost:8080/ban-hang-tai-quay/discounts/${hd.id}`;
+                        await fetch(urlDiscount)
+                            .then(function (c) {
+                                return c.json();
+                            })
+                            .then(function (b) {
+                                discounts = b;
+                            })
                         STT++;
                         htmlSP += `<tr>
                                    <td style="vertical-align: middle;">${STT}</td>
-                                   <td> 
-                                    <img src="${hd.anh[0].tenanh}" alt=""
-                                                                style="height: 100px; width: 100px;">
-                                    
-                                    </td>
+                                    <td>
+                               <div class="image-container">
+                              <img src="${hd.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
+                                <div class="discount-badge">${discounts}%</div>
+                                 </div>
+                                  </td>
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
