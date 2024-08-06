@@ -172,23 +172,9 @@
                                     <!--                                         th:src="@{${sp[6]}}"-->
                                     <!--                                         class="d-block w-100 carousel-img rounded-3" alt="Ảnh">-->
                                 </a>
-                                <div class="tag-n-s">
-                                    <span>New</span>
+                                <div class="tag-n-s" th:if="${sp[9] != null}">
+                                    <span th:text="${sp[9] + '%'}"></span>
                                 </div>
-                                <!--                                <div class="actions-btn">-->
-                                <!--                                    <ul class="clearfix">-->
-                                <!--                                        <li>-->
-                                <!--                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>-->
-                                <!--                                        </li>-->
-                                <!--                                        <li>-->
-                                <!--                                            <a href="#"><i class="fa fa-heart"></i></a>-->
-                                <!--                                        </li>-->
-                                <!--                                        <li>-->
-                                <!--                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i-->
-                                <!--                                                    class="fa fa-eye"></i></a>-->
-                                <!--                                        </li>-->
-                                <!--                                    </ul>-->
-                                <!--                                </div>-->
                             </div>
                             <div class="product-title">
                                 <a href="#"><h3 class="title" th:text="${sp[1]}" style="font-weight: bold"></h3></a>
@@ -198,9 +184,21 @@
                                     </h6>
                                 </div>
                                 <p>
-                                    <span style="color: red; font-weight: bold"
-                                          th:text="${#numbers.formatDecimal(sp[5], 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
-                                    <!-- <del>$170.00</del> -->
+                                    <!-- Tính giá sau khi giảm -->
+                                <div th:with="giaGoc=${sp[5] != null ? sp[5] : 0}, giaGiam=${sp[9] != null ? sp[9] : 0}, giaSauKhiGiam=${giaGoc - (giaGoc * giaGiam / 100)}">
+                                    <!-- Hiển thị thẻ <del> chỉ khi giá gốc khác giá sau khi giảm -->
+                                    <del style="color: black; font-weight: bold"
+                                         th:if="${giaGoc != giaSauKhiGiam}"
+                                         th:text="${#numbers.formatDecimal(giaGoc, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}">
+                                    </del>
+                                </div>
+
+                                <span style="color: red; font-weight: bold"
+                                      th:text="${#numbers.formatDecimal(
+          (sp[5] != null ? sp[5] : 0) - ((sp[5] != null ? sp[5] : 0) * (sp[9] != null ? sp[9] : 0) / 100),
+          0, 'COMMA', 0, 'POINT') + ' &#x20ab;'
+      }">
+</span>
                                 </p>
                             </div>
                         </div>
@@ -241,23 +239,9 @@
                                          class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
                                 </a>
 
-                                <div class="tag-n-s">
-                                    <span>Hot</span>
+                                <div class="tag-n-s" th:if="${sp[7] != null}">
+                                    <span th:text="${sp[7] + '%'}"></span>
                                 </div>
-                                <!--                                <div class="actions-btn">-->
-                                <!--                                    <ul class="clearfix">-->
-                                <!--                                        <li>-->
-                                <!--                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i></a>-->
-                                <!--                                        </li>-->
-                                <!--                                        <li>-->
-                                <!--                                            <a href="#"><i class="fa fa-heart"></i></a>-->
-                                <!--                                        </li>-->
-                                <!--                                        <li>-->
-                                <!--                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"><i-->
-                                <!--                                                    class="fa fa-eye"></i></a>-->
-                                <!--                                        </li>-->
-                                <!--                                    </ul>-->
-                                <!--                                </div>-->
                             </div>
                             <div class="product-title">
                                 <a href="#"><h3 class="title" th:text="${sp[1]}" style="font-weight: bold"></h3></a>
@@ -267,9 +251,21 @@
                                     </h6>
                                 </div>
                                 <p>
-                            <span style="color: red;font-weight: bold"
-                                  th:text="${#numbers.formatDecimal(sp[2], 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
-                                    <!-- <del >$170.00</del> -->
+                                    <!-- Tính giá sau khi giảm -->
+                                <div th:with="giaGoc=${sp[2] != null ? sp[2] : 0}, giaGiam=${sp[7] != null ? sp[7] : 0}, giaSauKhiGiam=${giaGoc - (giaGoc * giaGiam / 100)}">
+                                    <!-- Hiển thị thẻ <del> chỉ khi giá gốc khác giá sau khi giảm -->
+                                    <del style="color: black; font-weight: bold"
+                                         th:if="${giaGoc != giaSauKhiGiam}"
+                                         th:text="${#numbers.formatDecimal(giaGoc, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}">
+                                    </del>
+                                </div>
+
+                                <span style="color: red; font-weight: bold"
+                                      th:text="${#numbers.formatDecimal(
+          (sp[2] != null ? sp[2] : 0) - ((sp[2] != null ? sp[2] : 0) * (sp[7] != null ? sp[7] : 0) / 100),
+          0, 'COMMA', 0, 'POINT') + ' &#x20ab;'
+      }">
+</span>
                                 </p>
                             </div>
                         </div>
@@ -596,6 +592,7 @@
         var token = document.getElementById("tokenDN").value;
         console.log("hhhh" + token);
     });
+
     async function DatHangOnlThanhCong() {
         const response = await fetch('/dat-online-thanh-cong');
         const data = await response.json();
@@ -618,9 +615,10 @@
                 title: "Đặt hàng thành công!"
             }).then(async () => {
                 // Xóa session sau khi hiển thị thông báo
-                await fetch('/clear-session-thanh-toan-online', { method: 'POST' });
+                await fetch('/clear-session-thanh-toan-online', {method: 'POST'});
             });
         }
     }
+
     DatHangOnlThanhCong();
 </script>
