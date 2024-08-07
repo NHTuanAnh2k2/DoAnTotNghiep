@@ -347,7 +347,23 @@ public class BanHangController {
         hdctNew.setSanphamchitiet(spct);
         hdctNew.setSoluong(1);
         hdctNew.setTrangthai(true);
-        hdctNew.setGiasanpham(spct.getGiatien());
+        List<SanPhamDotGiam> lst = SPdotgiamRepo.findBySanphamchitiet(spct);
+        Integer discounts = 0;
+        Integer discountbacks = 0;
+        if (lst.size() > 0) {
+            for (SanPhamDotGiam a : lst
+            ) {
+                if (a.getDotgiamgia().getTrangthai() == 1) {
+                    discounts = a.getDotgiamgia().getGiatrigiam();
+                    discountbacks = 100 - discounts;
+                }
+            }
+        }
+        if (discounts > 0) {
+            hdctNew.setGiasanpham((spct.getGiatien().divide(new BigDecimal("100"))).multiply(new BigDecimal(discountbacks + "")));
+        } else {
+            hdctNew.setGiasanpham(spct.getGiatien());
+        }
         daoSPCT.addSPCT(spctCapNhatSL);
         daoHDCT.capnhat(hdctNew);
         redirectAttributes.addFlashAttribute("choseSPsucsess", true);
