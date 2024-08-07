@@ -165,6 +165,16 @@ public class SanPhamChiTietController {
         model.addAttribute("cl", listChatLieu);
         model.addAttribute("a", listAnh);
         model.addAttribute("hehe", sanPhamChiTietImp.findById(id));
+
+        SanPhamChiTiet sanPhamChiTiet = sanPhamChiTietImp.findById(id);
+        BigDecimal giatrigiam = sanPhamChiTiet.getGiamGia();
+        BigDecimal giagoc = sanPhamChiTiet.getGiatien();
+        BigDecimal phantramgiam = giatrigiam.divide(new BigDecimal(100));
+        BigDecimal sotiengiam = giagoc.multiply(phantramgiam);
+        BigDecimal giamoi = giagoc.subtract(sotiengiam);
+        model.addAttribute("hehe", sanPhamChiTiet);
+        model.addAttribute("giatrigiam", giatrigiam);
+        model.addAttribute("giamoi", giamoi);
         return "admin/detailCTSP";
     }
 
