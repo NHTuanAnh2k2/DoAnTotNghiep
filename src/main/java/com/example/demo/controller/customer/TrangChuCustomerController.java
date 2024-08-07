@@ -202,6 +202,7 @@ public class TrangChuCustomerController {
         List<String> sizes = new ArrayList<>();
         List<String> colors = new ArrayList<>();
         BigDecimal selectedPrice = null;
+        BigDecimal selectedPriceMoi = null;
         Integer selectedQuantity = null;
         String selectedThuongHieu = null;
         String selectedChatLieu = null;
@@ -212,6 +213,16 @@ public class TrangChuCustomerController {
         String defaultSize = null;
         Integer selectedDiscount = null; // Biến để lưu giá trị giảm giá đã chọn
         Map<Integer, Integer> sanPhamChiTietGiamGia = new HashMap<>(); // Map để lưu giảm giá cho từng sản phẩm chi tiết
+        for (SanPhamChiTiet spct : sanPham.getSpct()) {
+            int giamGia = 0;
+            for (SanPhamDotGiam spdg : spct.getSanphamdotgiam()) {
+                DotGiamGia dotGiamGia = spdg.getDotgiamgia();
+                if (dotGiamGia != null) {
+                    giamGia = dotGiamGia.getGiatrigiam(); // Giả sử giatrigiam là giá trị giảm
+                }
+            }
+            sanPhamChiTietGiamGia.put(spct.getId(), giamGia);
+        }
         // Lấy giá trị giảm giá cho từng sản phẩm chi tiết
         for (SanPhamChiTiet spct : sanPham.getSpct()) {
             if (!sizes.contains(spct.getKichco().getTen())) {
@@ -228,6 +239,8 @@ public class TrangChuCustomerController {
                 selectedDeGiay = spct.getDegiay().getTen();
                 selectedMaSPCT = spct.getMasanphamchitiet();
                 selectedIdspct = spct.getId();
+                selectedDiscount = sanPhamChiTietGiamGia.get(selectedIdspct); // Lấy giá trị giảm giá
+                selectedPriceMoi = selectedPrice.subtract(selectedPrice.multiply(BigDecimal.valueOf(selectedDiscount)).divide(BigDecimal.valueOf(100)));
             }
         }
         if (colors.size() > 0) {
@@ -236,18 +249,9 @@ public class TrangChuCustomerController {
         if (sizes.size() > 0) {
             defaultSize = sizes.get(0);
         }
-        for (SanPhamChiTiet spct : sanPham.getSpct()) {
-            int giamGia = 0;
-            for (SanPhamDotGiam spdg : spct.getSanphamdotgiam()) {
-                DotGiamGia dotGiamGia = spdg.getDotgiamgia();
-                if (dotGiamGia != null) {
-                    giamGia = dotGiamGia.getGiatrigiam(); // Giả sử giatrigiam là giá trị giảm
-                }
-            }
-            sanPhamChiTietGiamGia.put(spct.getId(), giamGia);
-        }
-        selectedDiscount = sanPhamChiTietGiamGia.get(selectedIdspct); // Lấy giá trị giảm giá
+
         model.addAttribute("selectedDiscount", selectedDiscount); // Thêm giảm giá đã chọn vào model
+        model.addAttribute("selectedPriceMoi", selectedPriceMoi); // Thêm giảm giá đã chọn vào model
         model.addAttribute("sanPhamChiTietGiamGia", sanPhamChiTietGiamGia); // Thêm giảm giá vào model
         model.addAttribute("sizes", sizes);
         model.addAttribute("colors", colors);

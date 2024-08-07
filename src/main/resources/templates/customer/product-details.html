@@ -396,7 +396,8 @@
                             <!--                <span class="ribbon top-right" th:text="${dotGiamGia.dotgiamgia.giatrigiam} + ' %'"></span>-->
                             <!--            </span>-->
                             <div th:each="spct : ${sanphamchitiet}">
-                                <span class="ribbon top-right" th:text="${selectedDiscount} + '%'" id="giatrigiam"></span>
+                                <span class="ribbon top-right" th:text="${selectedDiscount} + '%'"
+                                      id="giatrigiam"></span>
                             </div>
                             <img th:src="@{'/upload' + ${image.substring(image.lastIndexOf('upload') + 6)}}"
                                  style="width:100%" alt="Ảnh" onclick="openModal(this)">
@@ -441,14 +442,18 @@
                                 <span id="product-degiay" th:text="${selectedDeGiay}" style="color: red"></span>
                             </h6>
                         </div>
-                        <h6>Giá tiền:
-                            <del id="product-price"
-                                 th:text="${#numbers.formatDecimal(selectedPrice, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"
-                                 style="color: black; font-weight: bold"></del>
-                            <span id="product-price2"
-                                  th:text="${#numbers.formatDecimal(selectedPrice-(selectedPrice*selectedDiscount/100), 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"
-                                  style="color: red; font-weight: bold"></span>
+                        <h6 class="d-flex align-items-center">Giá tiền:
+                            <del id="newPrice" style="margin-top: -17px; margin-left: 5px; margin-right: 5px">
+        <span th:if="${selectedPrice != selectedPriceMoi}"
+              th:text="${#numbers.formatDecimal(selectedPrice, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"
+              style="color: black; font-weight: bold;">
+        </span>
+                            </del>
+                            <span id="newPriceMoi"
+                                  th:text="${#numbers.formatDecimal(selectedPriceMoi, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"
+                                  style="color: red; font-weight: bold;"></span>
                         </h6>
+
 
                         <hr>
                         <h6>
@@ -554,7 +559,7 @@
                                 </div>
                                 <p></p>
                                 <span style="margin-right: 10px;">Mô tả: <span th:text="${sanphamchitiet.mota}"></span></span>
-<!--                                <span th:text="${selectedIdspct}" id="idan"></span>-->
+                                <!--                                <span th:text="${selectedIdspct}" id="idan"></span>-->
                                 <span th:text="${selectedIdspct}" id="idan" style="display: none;"></span>
                                 <hr>
                                 <div class="d-flex">
@@ -606,7 +611,7 @@
                         </svg>
                     </button> <!-- Nút cuộn về trước -->
                     <div class="single-products row">
-                        <div class="col-md-3" th:each="sp, stt : ${page}">
+                        <div class="col-md-3" th:each="sp, stt : ${page2}">
                             <div class="product-item margin40">
                                 <div class="pro-img">
                                     <a th:href="@{/detailsanphamCustomer/{id}(id=${sp[0]})}">
@@ -614,8 +619,8 @@
                                              th:src="@{'/upload' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
                                              class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
                                     </a>
-                                    <div class="tag-n-s">
-                                        <span>New</span>
+                                    <div class="tag-n-s" th:if="${sp[9] != null}">
+                                        <span th:text="${sp[9] + '%'}"></span>
                                     </div>
                                     <!--                                    <div class="actions-btn">-->
                                     <!--                                        <ul class="clearfix">-->
@@ -641,9 +646,21 @@
                                                 style="font-family: 'Bahnschrift'"></span></h6>
                                     </div>
                                     <p>
+                                        <!-- Tính giá sau khi giảm -->
+                                    <div th:with="giaGoc=${sp[5] != null ? sp[5] : 0}, giaGiam=${sp[9] != null ? sp[9] : 0}, giaSauKhiGiam=${giaGoc - (giaGoc * giaGiam / 100)}">
+                                        <!-- Hiển thị thẻ <del> chỉ khi giá gốc khác giá sau khi giảm -->
+                                        <del style="color: black; font-weight: bold"
+                                             th:if="${giaGoc != giaSauKhiGiam}"
+                                             th:text="${#numbers.formatDecimal(giaGoc, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}">
+                                        </del>
+                                    </div>
+
                                     <span style="color: red; font-weight: bold"
-                                          th:text="${#numbers.formatDecimal(sp[5], 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
-                                        <!-- <del>$170.00</del> -->
+                                          th:text="${#numbers.formatDecimal(
+          (sp[5] != null ? sp[5] : 0) - ((sp[5] != null ? sp[5] : 0) * (sp[9] != null ? sp[9] : 0) / 100),
+          0, 'COMMA', 0, 'POINT') + ' &#x20ab;'
+      }">
+</span>
                                     </p>
                                 </div>
                             </div>
@@ -676,7 +693,7 @@
                         </svg>
                     </button> <!-- Nút cuộn về trước -->
                     <div class="single-products-new row">
-                        <div class="col-md-3" th:each="sp, stt : ${page2}">
+                        <div class="col-md-3" th:each="sp, stt : ${page}">
                             <div class="product-item margin40">
                                 <div class="pro-img">
                                     <a th:href="@{/detailsanphamCustomer/{id}(id=${sp[0]})}">
@@ -684,8 +701,8 @@
                                              th:src="@{'/upload' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
                                              class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
                                     </a>
-                                    <div class="tag-n-s">
-                                        <span>New</span>
+                                    <div class="tag-n-s" th:if="${sp[9] != null}">
+                                        <span th:text="${sp[9] + '%'}"></span>
                                     </div>
                                     <!--                                    <div class="actions-btn">-->
                                     <!--                                        <ul class="clearfix">-->
@@ -711,9 +728,21 @@
                                                 style="font-family: 'Bahnschrift'"></span></h6>
                                     </div>
                                     <p>
+                                        <!-- Tính giá sau khi giảm -->
+                                    <div th:with="giaGoc=${sp[5] != null ? sp[5] : 0}, giaGiam=${sp[9] != null ? sp[9] : 0}, giaSauKhiGiam=${giaGoc - (giaGoc * giaGiam / 100)}">
+                                        <!-- Hiển thị thẻ <del> chỉ khi giá gốc khác giá sau khi giảm -->
+                                        <del style="color: black; font-weight: bold"
+                                             th:if="${giaGoc != giaSauKhiGiam}"
+                                             th:text="${#numbers.formatDecimal(giaGoc, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}">
+                                        </del>
+                                    </div>
+
                                     <span style="color: red; font-weight: bold"
-                                          th:text="${#numbers.formatDecimal(sp[5], 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
-                                        <!-- <del>$170.00</del> -->
+                                          th:text="${#numbers.formatDecimal(
+          (sp[5] != null ? sp[5] : 0) - ((sp[5] != null ? sp[5] : 0) * (sp[9] != null ? sp[9] : 0) / 100),
+          0, 'COMMA', 0, 'POINT') + ' &#x20ab;'
+      }">
+</span>
                                     </p>
                                 </div>
                             </div>
@@ -930,7 +959,7 @@
             .then(html => {
                 const parser = new DOMParser();
                 const newDocument = parser.parseFromString(html, 'text/html');
-                const newPrice = newDocument.querySelector('#product-price').innerText;
+                const newPrice = newDocument.querySelector('#newPrice').innerText;
                 const newQuantity = newDocument.querySelector('#product-quantity').innerText;
                 const idan = newDocument.querySelector('#idan').innerText;
                 const newThuongHieu = newDocument.querySelector('#product-thuonghieu').innerText;
@@ -938,16 +967,16 @@
                 const newDeGiay = newDocument.querySelector('#product-degiay').innerText;
                 const newMaSPCT = newDocument.querySelector('#product-maspct').innerText;
                 const giatrigiam = newDocument.querySelector('#giatrigiam').innerText;
-                const newPriceMoi=newDocument.querySelector('#product-price2').innerText;
-                if(newPriceMoi){
-                    document.querySelector('#product-price2').innerText = newPriceMoi;
-                }else {
-                    document.querySelector('#product-price2').innerText = "Không tồn tại";
+                const newPriceMoi = newDocument.querySelector('#newPriceMoi').innerText;
+                if (newPriceMoi) {
+                    document.querySelector('#newPriceMoi').innerText = newPriceMoi;
+                } else {
+                    document.querySelector('#newPriceMoi').innerText = "Không tồn tại";
                 }
 
-                if(giatrigiam){
+                if (giatrigiam) {
                     document.querySelector('#giatrigiam').innerText = giatrigiam;
-                }else {
+                } else {
                     document.querySelector('#giatrigiam').innerText = "Không tồn tại";
                 }
                 if (idan) {
@@ -956,9 +985,9 @@
                     document.querySelector('#idan').innerText = "Không tồn tại";
                 }
                 if (newPrice) {
-                    document.querySelector('#product-price').innerText = newPrice;
+                    document.querySelector('#newPrice').innerText = newPrice;
                 } else {
-                    document.querySelector('#product-price').innerText = 'Không có giá';
+                    document.querySelector('#newPrice').innerText = 'Không có giá';
                 }
 
                 if (newQuantity) {

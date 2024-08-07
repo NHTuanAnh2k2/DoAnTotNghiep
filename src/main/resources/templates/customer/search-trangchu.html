@@ -38,7 +38,7 @@
                                                  th:src="@{'/upload' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
                                                  class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
                                         </a>
-                                        <div class="tag-n-s" th:if="${sp[9] != null}">
+                                        <div class="tag-n-s" th:if="${sp[9] != 0}">
                                             <span th:text="${sp[9] + '%'}"></span>
                                         </div>
 <!--                                        <div class="actions-btn">-->
