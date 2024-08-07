@@ -1,9 +1,14 @@
 package com.example.demo.controller.mausac;
 
 import com.example.demo.entity.MauSac;
+import com.example.demo.entity.NguoiDung;
+import com.example.demo.entity.NhanVien;
 import com.example.demo.info.ThuocTinhInfo;
 import com.example.demo.repository.MauSacRepository;
+import com.example.demo.repository.NguoiDungRepository;
+import com.example.demo.repository.NhanVienRepository;
 import com.example.demo.service.impl.MauSacImp;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Controller;
@@ -19,6 +24,12 @@ public class MauSacController {
     MauSacImp mauSacImp;
     @Autowired
     MauSacRepository mauSacRepository;
+
+    @Autowired
+    NhanVienRepository nhanvienRPo;
+
+    @Autowired
+    NguoiDungRepository daoNguoiDung;
 
     @GetMapping("/listMauSac")
     public String listMauSac(@RequestParam(defaultValue = "0") int p, @ModelAttribute("mausac") MauSac mauSac, @ModelAttribute("tim") ThuocTinhInfo info, Model model) {
@@ -51,7 +62,12 @@ public class MauSacController {
 
     @PostMapping("/addSaveMauSac")
     @CacheEvict(value = "mausacCache", allEntries = true)
-    public String addSave(@ModelAttribute("mausac") MauSac mauSac, @ModelAttribute("ms") ThuocTinhInfo info, Model model) {
+    public String addSave(@ModelAttribute("mausac") MauSac mauSac, @ModelAttribute("ms") ThuocTinhInfo info, Model model, HttpSession session) {
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
+
         String trimmedTenMauSac = (mauSac.getTen() != null)
                 ? mauSac.getTen().trim().replaceAll("\\s+", " ")
                 : null;
@@ -60,12 +76,19 @@ public class MauSacController {
         mauSac.setTrangthai(true);
         mauSac.setNgaytao(currentTime);
         mauSac.setLancapnhatcuoi(currentTime);
+        mauSac.setNguoitao(nv.getNguoidung().getHovaten());
+        mauSac.setNguoicapnhat(nv.getNguoidung().getHovaten());
         mauSacRepository.save(mauSac);
         return "redirect:/listMauSac";
     }
 
     @PostMapping("/addMauSacModal")
-    public String addMauSacModal(@ModelAttribute("mausac") MauSac mauSac) {
+    public String addMauSacModal(@ModelAttribute("mausac") MauSac mauSac, HttpSession session) {
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
+
         String trimmedTenMauSac = (mauSac.getTen() != null)
                 ? mauSac.getTen().trim().replaceAll("\\s+", " ")
                 : null;
@@ -74,12 +97,19 @@ public class MauSacController {
         mauSac.setTrangthai(true);
         mauSac.setNgaytao(currentTime);
         mauSac.setLancapnhatcuoi(currentTime);
+        mauSac.setNguoitao(nv.getNguoidung().getHovaten());
+        mauSac.setNguoicapnhat(nv.getNguoidung().getHovaten());
         mauSacImp.addMauSac(mauSac);
         return "redirect:/viewaddSPGET";
     }
 
     @PostMapping("/addMauSacSua")
-    public String addMauSacSua(@ModelAttribute("mausac") MauSac mauSac, @RequestParam("spctId") Integer spctId) {
+    public String addMauSacSua(@ModelAttribute("mausac") MauSac mauSac, @RequestParam("spctId") Integer spctId, HttpSession session) {
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
+
         String trimmedTenMauSac = (mauSac.getTen() != null)
                 ? mauSac.getTen().trim().replaceAll("\\s+", " ")
                 : null;
@@ -88,6 +118,8 @@ public class MauSacController {
         mauSac.setTrangthai(true);
         mauSac.setNgaytao(currentTime);
         mauSac.setLancapnhatcuoi(currentTime);
+        mauSac.setNguoitao(nv.getNguoidung().getHovaten());
+        mauSac.setNguoicapnhat(nv.getNguoidung().getHovaten());
         mauSacImp.addMauSac(mauSac);
         return "redirect:/updateCTSP/" + spctId;
     }

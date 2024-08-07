@@ -1,9 +1,14 @@
 package com.example.demo.controller.chatlieu;
 
 import com.example.demo.entity.ChatLieu;
+import com.example.demo.entity.NguoiDung;
+import com.example.demo.entity.NhanVien;
 import com.example.demo.info.ThuocTinhInfo;
 import com.example.demo.repository.ChatLieuRepository;
+import com.example.demo.repository.NguoiDungRepository;
+import com.example.demo.repository.NhanVienRepository;
 import com.example.demo.service.ChatLieuService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +23,12 @@ public class ChatLieuController {
     ChatLieuRepository chatLieuRepository;
     @Autowired
     ChatLieuService chatLieuService;
+
+    @Autowired
+    NhanVienRepository nhanvienRPo;
+
+    @Autowired
+    NguoiDungRepository daoNguoiDung;
 
     @GetMapping("/chatlieu")
     public String display(@ModelAttribute("search") ThuocTinhInfo info, @ModelAttribute("chatlieu") ChatLieu chatLieu, Model model) {
@@ -55,7 +66,12 @@ public class ChatLieuController {
     }
 
     @PostMapping("/add")
-    public String add(Model model, @ModelAttribute("chatlieu") ChatLieu chatLieu) {
+    public String add(Model model, @ModelAttribute("chatlieu") ChatLieu chatLieu, HttpSession session) {
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
+
         String trimmedTenChatLieu = (chatLieu.getTen() != null)
                 ? chatLieu.getTen().trim().replaceAll("\\s+", " ")
                 : null;
@@ -64,12 +80,19 @@ public class ChatLieuController {
         chatLieu.setTrangthai(true);
         chatLieu.setNgaytao(currentTime);
         chatLieu.setLancapnhatcuoi(currentTime);
+        chatLieu.setNguoitao(nv.getNguoidung().getHovaten());
+        chatLieu.setNguoicapnhat(nv.getNguoidung().getHovaten());
         chatLieuService.add(chatLieu);
         return "redirect:/chatlieu";
     }
 
     @PostMapping("/addChatLieuModal")
-    public String addChatLieuModal(Model model, @ModelAttribute("chatlieu") ChatLieu chatLieu) {
+    public String addChatLieuModal(Model model, @ModelAttribute("chatlieu") ChatLieu chatLieu, HttpSession session) {
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
+
         String trimmedTenChatLieu = (chatLieu.getTen() != null)
                 ? chatLieu.getTen().trim().replaceAll("\\s+", " ")
                 : null;
@@ -78,12 +101,19 @@ public class ChatLieuController {
         chatLieu.setTrangthai(true);
         chatLieu.setNgaytao(currentTime);
         chatLieu.setLancapnhatcuoi(currentTime);
+        chatLieu.setNguoitao(nv.getNguoidung().getHovaten());
+        chatLieu.setNguoicapnhat(nv.getNguoidung().getHovaten());
         chatLieuService.add(chatLieu);
         return "redirect:/viewaddSPGET";
     }
 
     @PostMapping("/addChatLieuSua")
-    public String addChatLieuSua(Model model, @ModelAttribute("chatlieu") ChatLieu chatLieu, @RequestParam("spctId") Integer spctId) {
+    public String addChatLieuSua(Model model, @ModelAttribute("chatlieu") ChatLieu chatLieu, @RequestParam("spctId") Integer spctId, HttpSession session) {
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
+
         String trimmedTenChatLieu = (chatLieu.getTen() != null)
                 ? chatLieu.getTen().trim().replaceAll("\\s+", " ")
                 : null;
@@ -92,6 +122,8 @@ public class ChatLieuController {
         chatLieu.setTrangthai(true);
         chatLieu.setNgaytao(currentTime);
         chatLieu.setLancapnhatcuoi(currentTime);
+        chatLieu.setNguoitao(nv.getNguoidung().getHovaten());
+        chatLieu.setNguoicapnhat(nv.getNguoidung().getHovaten());
         chatLieuService.add(chatLieu);
         return "redirect:/updateCTSP/" + spctId;
     }

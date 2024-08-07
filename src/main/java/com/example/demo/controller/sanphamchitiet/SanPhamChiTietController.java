@@ -5,6 +5,7 @@ import com.example.demo.info.SanPhamChiTietInfo;
 import com.example.demo.info.ThuocTinhInfo;
 import com.example.demo.repository.*;
 import com.example.demo.service.impl.*;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,8 +59,15 @@ public class SanPhamChiTietController {
 
     @Autowired
     AnhImp anhImp;
+
     @Autowired
     AnhRepository anhRepository;
+
+    @Autowired
+    NhanVienRepository nhanvienRPo;
+
+    @Autowired
+    NguoiDungRepository daoNguoiDung;
 
     @GetMapping("/allSPCT")
     public String allSPCT(Model model, @ModelAttribute("search") SanPhamChiTietInfo info) {
@@ -164,7 +172,12 @@ public class SanPhamChiTietController {
     public String updateCTSP(@PathVariable Integer id, @ModelAttribute("hehe") SanPhamChiTiet sanPhamChiTiet,
                              @RequestParam(name = "anhs", required = false) List<MultipartFile> anhFiles,
                              @RequestParam(name = "spctIds") Integer spctId,
-                             RedirectAttributes redirectAttributes) {
+                             RedirectAttributes redirectAttributes, HttpSession session) {
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
+
         LocalDateTime currentTime = LocalDateTime.now();
         SanPham sanPham = sanPhamRepositoty.findById(sanPhamChiTiet.getSanpham().getId())
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm"));
@@ -193,6 +206,8 @@ public class SanPhamChiTietController {
         existingSanPhamChiTiet.setMota(sanPhamChiTiet.getMota());
         existingSanPhamChiTiet.setTrangthai(sanPhamChiTiet.getTrangthai());
         existingSanPhamChiTiet.setGioitinh(sanPhamChiTiet.getGioitinh());
+        existingSanPhamChiTiet.setNguoitao(nv.getNguoidung().getHovaten());
+        existingSanPhamChiTiet.setNguoicapnhat(nv.getNguoidung().getHovaten());
 
         sanPhamChiTietRepository.save(existingSanPhamChiTiet);
         if (anhFiles != null && !anhFiles.isEmpty()) {
@@ -207,6 +222,8 @@ public class SanPhamChiTietController {
                         anh.setNgaytao(currentTime);
                         anh.setLancapnhatcuoi(currentTime);
                         anh.setSanphamchitiet(spct);
+                        anh.setNguoitao(nv.getNguoidung().getHovaten());
+                        anh.setNguoicapnhat(nv.getNguoidung().getHovaten());
                         anhRepository.save(anh);
                     }
                 }

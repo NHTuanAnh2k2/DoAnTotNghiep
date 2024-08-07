@@ -1,16 +1,20 @@
 package com.example.demo.controller.kichco;
 
 import com.example.demo.entity.KichCo;
+import com.example.demo.entity.NguoiDung;
+import com.example.demo.entity.NhanVien;
 import com.example.demo.info.ThuocTinhInfo;
 import com.example.demo.repository.KichCoRepository;
+import com.example.demo.repository.NguoiDungRepository;
+import com.example.demo.repository.NhanVienRepository;
 import com.example.demo.service.impl.KichCoImp;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,6 +25,12 @@ public class KichCoController {
 
     @Autowired
     KichCoRepository kichCoRepository;
+
+    @Autowired
+    NhanVienRepository nhanvienRPo;
+
+    @Autowired
+    NguoiDungRepository daoNguoiDung;
 
     @GetMapping("/listKichCo")
     public String listKichCo(Model model, @ModelAttribute("kichco") KichCo kichCo, @ModelAttribute("tim") ThuocTinhInfo info) {
@@ -59,7 +69,12 @@ public class KichCoController {
 
     @PostMapping("/addSaveKichCo")
     @CacheEvict(value = "kichcoCache", allEntries = true)
-    public String addSave(@ModelAttribute("kichco") KichCo kichCo, @ModelAttribute("kc") ThuocTinhInfo info, Model model) {
+    public String addSave(@ModelAttribute("kichco") KichCo kichCo, @ModelAttribute("kc") ThuocTinhInfo info, Model model, HttpSession session) {
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
+
         String trimmedTenKichCo = (kichCo.getTen() != null)
                 ? kichCo.getTen().trim().replaceAll("\\s+", " ")
                 : null;
@@ -68,12 +83,19 @@ public class KichCoController {
         kichCo.setTrangthai(true);
         kichCo.setNgaytao(currentTime);
         kichCo.setLancapnhatcuoi(currentTime);
+        kichCo.setNguoitao(nv.getNguoidung().getHovaten());
+        kichCo.setNguoicapnhat(nv.getNguoidung().getHovaten());
         kichCoRepository.save(kichCo);
         return "redirect:/listKichCo";
     }
 
     @PostMapping("/addKichCoModal")
-    public String addKichCoModal(@ModelAttribute("kichco") KichCo kichCo) {
+    public String addKichCoModal(@ModelAttribute("kichco") KichCo kichCo, HttpSession session) {
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
+
         String trimmedTenKichCo = (kichCo.getTen() != null)
                 ? kichCo.getTen().trim().replaceAll("\\s+", " ")
                 : null;
@@ -82,12 +104,19 @@ public class KichCoController {
         kichCo.setTrangthai(true);
         kichCo.setNgaytao(currentTime);
         kichCo.setLancapnhatcuoi(currentTime);
+        kichCo.setNguoitao(nv.getNguoidung().getHovaten());
+        kichCo.setNguoicapnhat(nv.getNguoidung().getHovaten());
         kichCoImp.addKichCo(kichCo);
         return "redirect:/viewaddSPGET";
     }
 
     @PostMapping("/addKichCoSua")
-    public String addKichCoSua(@ModelAttribute("kichco") KichCo kichCo, @RequestParam("spctId") Integer spctId) {
+    public String addKichCoSua(@ModelAttribute("kichco") KichCo kichCo, @RequestParam("spctId") Integer spctId, HttpSession session) {
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
+
         String trimmedTenKichCo = (kichCo.getTen() != null)
                 ? kichCo.getTen().trim().replaceAll("\\s+", " ")
                 : null;
@@ -96,6 +125,8 @@ public class KichCoController {
         kichCo.setTrangthai(true);
         kichCo.setNgaytao(currentTime);
         kichCo.setLancapnhatcuoi(currentTime);
+        kichCo.setNguoitao(nv.getNguoidung().getHovaten());
+        kichCo.setNguoicapnhat(nv.getNguoidung().getHovaten());
         kichCoImp.addKichCo(kichCo);
         return "redirect:/updateCTSP/" + spctId;
     }

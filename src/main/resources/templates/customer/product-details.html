@@ -395,10 +395,12 @@
                             <!--                            <span th:each="dotGiamGia : ${sanphamchitiet.sanphamdotgiam}"> &lt;!&ndash; Ribbon % giảm giá ở góc trên bên phải &ndash;&gt;-->
                             <!--                <span class="ribbon top-right" th:text="${dotGiamGia.dotgiamgia.giatrigiam} + ' %'"></span>-->
                             <!--            </span>-->
-                            <div th:each="spct : ${sanphamchitiet}">
-                                <span class="ribbon top-right" th:text="${selectedDiscount} + '%'"
-                                      id="giatrigiam"></span>
-                            </div>
+                            <span id="giatrigiam"
+                                  th:classappend="${selectedDiscount > 0} ? 'ribbon top-right' : ''"
+                                  th:attr="data-discount=${selectedDiscount > 0} ? ${selectedDiscount} + '%' : ''"
+                                  th:text="${selectedDiscount > 0} ? ${selectedDiscount} + '%' : ''">
+</span>
+
                             <img th:src="@{'/upload' + ${image.substring(image.lastIndexOf('upload') + 6)}}"
                                  style="width:100%" alt="Ảnh" onclick="openModal(this)">
                         </div>
@@ -977,7 +979,7 @@
                 if (giatrigiam) {
                     document.querySelector('#giatrigiam').innerText = giatrigiam;
                 } else {
-                    document.querySelector('#giatrigiam').innerText = "Không tồn tại";
+                    document.querySelector('#giatrigiam').innerText = "";
                 }
                 if (idan) {
                     document.querySelector('#idan').innerText = idan;
