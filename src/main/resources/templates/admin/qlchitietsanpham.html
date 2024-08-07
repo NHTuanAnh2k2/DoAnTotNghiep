@@ -263,12 +263,17 @@
                                                 <div class="carousel-inner">
                                                     <th:block th:each="anhs, index : ${spct.anh}">
                                                         <div th:classappend="${index.index == 0} ? 'carousel-item active' : 'carousel-item'">
-                                                            <!--                                                            <img th:if="${anhs.tenanh != null}"-->
-                                                            <!--                                                                 th:src="@{${anhs.tenanh}}"-->
-                                                            <!--                                                                 class="d-block w-100 carousel-img rounded-3" alt="Ảnh">-->
+                                                            <!-- Hình ảnh carousel -->
                                                             <img th:if="${anhs.tenanh != null}"
                                                                  th:src="@{'/upload' + ${anhs.tenanh.substring(anhs.tenanh.lastIndexOf('upload') + 6)}}"
                                                                  class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
+
+                                                            <!-- Hiển thị giá trị giảm giá -->
+                                                            <span th:if="${!#lists.isEmpty(spct.sanphamdotgiam)}"
+                                                                  style="position: absolute; top: 5px; right: 2px; background-color: red; color: white; padding: 2px 2px; border-radius: 20px; font-weight: bold; font-size: 12px;">
+                <span th:each="spdg : ${spct.sanphamdotgiam}"
+                      th:text="${spdg.dotgiamgia.giatrigiam} + '%'"></span>
+            </span>
                                                         </div>
                                                     </th:block>
                                                 </div>
@@ -288,8 +293,23 @@
                                         </td>
 
                                         <td th:text="${spct.soluong}"></td>
-                                        <td style="color: red;font-weight: bold"
-                                            th:text="${#numbers.formatDecimal(spct.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></td>
+                                        <td style="text-align: center;">
+                                            <!-- Kiểm tra xem có đợt giảm giá không -->
+                                            <span th:if="${#lists.isEmpty(spct.sanphamdotgiam)}">
+        <!-- Nếu không có đợt giảm giá, chỉ hiển thị giá tiền cũ -->
+        <span style="color: red; font-weight: bold"
+              th:text="${#numbers.formatDecimal(spct.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
+    </span>
+                                            <span th:unless="${#lists.isEmpty(spct.sanphamdotgiam)}">
+        <!-- Nếu có ít nhất một đợt giảm giá, hiển thị giá tiền mới -->
+        <del th:text="${#numbers.formatDecimal(spct.giatien, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"
+             style="color: black; font-weight: bold"></del>
+        <br/>
+        <span th:each="spdg : ${spct.sanphamdotgiam}"
+              th:text="${#numbers.formatDecimal(spct.giatien - (spct.giatien * spdg.dotgiamgia.giatrigiam) / 100, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"
+              style="color: red; font-weight: bold"></span>
+    </span>
+                                        </td>
                                         <td th:text="${spct.thuonghieu.ten}"></td>
                                         <td th:text="${spct.chatlieu.ten}"></td>
                                         <td th:text="${spct.degiay.ten}"></td>

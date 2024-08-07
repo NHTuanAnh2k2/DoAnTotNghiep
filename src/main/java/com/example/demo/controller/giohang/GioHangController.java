@@ -152,7 +152,8 @@ public class GioHangController {
                             @RequestParam Integer quantity,
                             Model model,
                             HttpSession session,
-                            @RequestParam(value = "tokenDN") String tokenDN) {
+                            @RequestParam(value = "tokenDN") String tokenDN,
+                            RedirectAttributes redirectAttributes) {
         // Tìm sản phẩm chi tiết dựa trên màu sắc và kích cỡ
         SanPhamChiTiet sanPhamChiTiet = sanPhamChiTietRepository.findBySanPhamIdAndColorAndSize(id, selectedColor, selectedSize);
         List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
@@ -175,6 +176,7 @@ public class GioHangController {
                 gioHangService.addGioHangChiTiet(newItem);
             }
             session.setAttribute("cartItems", gioHangService.getListGioHangKhongTK());
+            redirectAttributes.addFlashAttribute("sussuses", true);
             return "redirect:/detailsanphamCustomer/" + id;
         } else {
             KhachHang khachHang = null;
@@ -226,6 +228,7 @@ public class GioHangController {
                     gioHangChiTietRepository.save(newItem);
                 }
             }
+            redirectAttributes.addFlashAttribute("sussuses", true);
             return "redirect:/detailsanphamCustomer/" + id;
         }
     }
