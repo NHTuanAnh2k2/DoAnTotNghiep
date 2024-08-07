@@ -151,32 +151,32 @@ public interface SanPhamNuRepository extends JpaRepository<SanPham, Integer> {
 
     //lọc sản phẩm là nữ
     @Query(value = """
-            SELECT sp.id, sp.tensanpham, sp.ngaytao, SUM(spct.soluong) AS tongSoLuong, sp.trangthai, 
-                   MAX(spct.giatien) AS maxGiaTien, MAX(anh.tenanh) AS maxTenAnh,
-                   COUNT(CASE WHEN spct.kichco IS NOT NULL THEN spct.kichco.id ELSE NULL END) AS countKichCo,
-                   COUNT(CASE WHEN spct.mausac IS NOT NULL THEN spct.mausac.id ELSE NULL END) AS countMauSac, dgg.giatrigiam
-            FROM SanPham sp
-            JOIN sp.spct spct
-            JOIN spct.anh anh
-            JOIN spct.sanphamdotgiam spdg
-            JOIN spdg.dotgiamgia dgg
-            WHERE 
-                (
-                    (?1 = true AND spct.giatien BETWEEN 0 AND 1000000 AND spct.gioitinh=false) 
-                    OR (?2 = true AND spct.giatien BETWEEN 1000000 AND 2000000 AND spct.gioitinh=false)
-                    OR (?3 = true AND spct.giatien BETWEEN 2000000 AND 3000000 AND spct.gioitinh=false)
-                    OR (?4 = true AND spct.giatien BETWEEN 3000000 AND 5000000 AND spct.gioitinh=false)
-                    OR (?5 = true AND spct.giatien > 5000000 AND spct.gioitinh=false)
-                )
-                OR (
-                    (?6 IS NULL OR spct.thuonghieu.id IN (?6))
-                    OR (?7 IS NULL OR spct.kichco.id IN (?7))
-                    OR (?8 IS NULL OR spct.mausac.id IN (?8))
-                ) 
-                AND spct.gioitinh = false 
-            GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai, dgg.giatrigiam
-            ORDER BY sp.ngaytao DESC, tongSoLuong DESC
-            """)
+             SELECT sp.id, sp.tensanpham, sp.ngaytao, SUM(spct.soluong) AS tongSoLuong, sp.trangthai, 
+               MAX(spct.giatien) AS maxGiaTien, MAX(anh.tenanh) AS maxTenAnh,
+               COUNT(CASE WHEN spct.kichco IS NOT NULL THEN spct.kichco.id ELSE NULL END) AS countKichCo,
+               COUNT(CASE WHEN spct.mausac IS NOT NULL THEN spct.mausac.id ELSE NULL END) AS countMauSac, 
+               MAX(COALESCE(dgg.giatrigiam, 0)) AS maxGiaTriGiam
+        FROM SanPham sp
+        JOIN sp.spct spct
+        LEFT JOIN spct.anh anh
+        LEFT JOIN spct.sanphamdotgiam spdg
+        LEFT JOIN spdg.dotgiamgia dgg
+        WHERE (
+                (?1 = true AND spct.giatien BETWEEN 0 AND 1000000 AND spct.gioitinh = false) 
+                OR (?2 = true AND spct.giatien BETWEEN 1000000 AND 2000000 AND spct.gioitinh = false)
+                OR (?3 = true AND spct.giatien BETWEEN 2000000 AND 3000000 AND spct.gioitinh = false)
+                OR (?4 = true AND spct.giatien BETWEEN 3000000 AND 5000000 AND spct.gioitinh = false)
+                OR (?5 = true AND spct.giatien > 5000000 AND spct.gioitinh = false)
+              )
+        OR (
+                (?6 IS NULL OR spct.thuonghieu.id IN (?6))
+                OR (?7 IS NULL OR spct.kichco.id IN (?7))
+                OR (?8 IS NULL OR spct.mausac.id IN (?8))
+              ) 
+        AND spct.gioitinh = false 
+        GROUP BY sp.id, sp.tensanpham, sp.ngaytao, sp.trangthai
+        ORDER BY sp.ngaytao DESC, tongSoLuong DESC
+        """)
     List<Object[]> loctheothkcnu(Boolean range1, Boolean range2, Boolean range3, Boolean range4, Boolean range5, List<Integer> idthuonghieu, List<Integer> idkichco, List<Integer> idmausac);
 
     // tìm kiếm theo mã và tên sản phẩm nữ
