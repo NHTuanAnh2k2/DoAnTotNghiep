@@ -233,6 +233,8 @@ public class BanHangController {
                 }
             }
         }
+        System.out.println("aaaaaaaaaaaa");
+        System.out.println(discounts);
         return ResponseEntity.ok(discounts);
     }
 
@@ -433,10 +435,12 @@ public class BanHangController {
         nguoidung.setNgaysinh(Date.valueOf("2020-06-06"));
         nguoidung.setNgaytao(Timestamp.valueOf(currentDateTime));
         nguoidung.setTrangthai(true);
+
         String username = (String) session.getAttribute("adminDangnhap");
         NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
         List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
         NhanVien nv = lstnvtimve.get(0);
+
         //fake nhân viên
         nguoidung.setNguoitao(nv.getNguoidung().getHovaten());
         String to = kh.getEmail();

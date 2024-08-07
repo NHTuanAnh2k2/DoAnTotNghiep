@@ -1033,6 +1033,8 @@
             const urlGetListSP = `/ban-hang-tai-quay/tim-coutSP-theoHD?maHD=${maHD}`;
             fetch(urlGetListSP)
                 .then(function (a) {
+                    console.log("đây")
+                    console.log(a)
                     return a.json();
                 })
                 .then(async function (b) {
