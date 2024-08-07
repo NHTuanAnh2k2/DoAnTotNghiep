@@ -1,9 +1,14 @@
 package com.example.demo.controller.thuonghieu;
 
+import com.example.demo.entity.NguoiDung;
+import com.example.demo.entity.NhanVien;
 import com.example.demo.entity.ThuongHieu;
 import com.example.demo.info.ThuocTinhInfo;
+import com.example.demo.repository.NguoiDungRepository;
+import com.example.demo.repository.NhanVienRepository;
 import com.example.demo.repository.ThuongHieuRepository;
 import com.example.demo.service.impl.ThuongHieuImp;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Controller;
@@ -17,8 +22,15 @@ import java.util.List;
 public class ThuongHieuController {
     @Autowired
     ThuongHieuRepository thuongHieuRepository;
+
     @Autowired
     ThuongHieuImp thuongHieuImp;
+
+    @Autowired
+    NhanVienRepository nhanvienRPo;
+
+    @Autowired
+    NguoiDungRepository daoNguoiDung;
 
     @GetMapping("/listthuonghieu")
     public String hienthi(@RequestParam(defaultValue = "0") int p, Model model, @ModelAttribute("thuonghieu") ThuongHieu thuongHieu,@ModelAttribute("tim") ThuocTinhInfo info) {
@@ -50,7 +62,12 @@ public class ThuongHieuController {
 
     @PostMapping("/addSaveThuongHieu")
     @CacheEvict(value = "thuonghieuCache", allEntries = true)
-    public String addSave(@ModelAttribute("thuonghieu") ThuongHieu thuongHieu, @ModelAttribute("th") ThuocTinhInfo info, Model model) {
+    public String addSave(@ModelAttribute("thuonghieu") ThuongHieu thuongHieu, @ModelAttribute("th") ThuocTinhInfo info, Model model, HttpSession session) {
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
+
         if (thuongHieuRepository.existsByTen(thuongHieu.getTen())) {
             model.addAttribute("errThuongHieu", "Tên thương hiệu trùng!");
             return "admin/qlthuonghieu";
@@ -63,13 +80,20 @@ public class ThuongHieuController {
         thuongHieu.setTrangthai(true);
         thuongHieu.setNgaytao(currentTime);
         thuongHieu.setLancapnhatcuoi(currentTime);
+        thuongHieu.setNguoitao(nv.getNguoidung().getHovaten());
+        thuongHieu.setNguoicapnhat(nv.getNguoidung().getHovaten());
         thuongHieuImp.add(thuongHieu);
         return "redirect:/listthuonghieu";
     }
 
 
     @PostMapping("/addThuongHieuModal")
-    public String addThuongHieuModal(@ModelAttribute("thuonghieu") ThuongHieu thuongHieu, @ModelAttribute("th") ThuocTinhInfo info) {
+    public String addThuongHieuModal(@ModelAttribute("thuonghieu") ThuongHieu thuongHieu, @ModelAttribute("th") ThuocTinhInfo info,HttpSession session) {
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
+
         String trimmedTenThuongHieu = (thuongHieu.getTen() != null)
                 ? thuongHieu.getTen().trim().replaceAll("\\s+", " ")
                 : null;
@@ -78,12 +102,19 @@ public class ThuongHieuController {
         thuongHieu.setTrangthai(true);
         thuongHieu.setNgaytao(currentTime);
         thuongHieu.setLancapnhatcuoi(currentTime);
+        thuongHieu.setNguoitao(nv.getNguoidung().getHovaten());
+        thuongHieu.setNguoicapnhat(nv.getNguoidung().getHovaten());
         thuongHieuImp.add(thuongHieu);
         return "redirect:/viewaddSPGET";
     }
 
     @PostMapping("/addThuongHieuSua")
-    public String addThuongHieuSua(@ModelAttribute("thuonghieu") ThuongHieu thuongHieu, @ModelAttribute("th") ThuocTinhInfo info, @RequestParam("spctId") Integer spctId) {
+    public String addThuongHieuSua(@ModelAttribute("thuonghieu") ThuongHieu thuongHieu, @ModelAttribute("th") ThuocTinhInfo info, @RequestParam("spctId") Integer spctId, HttpSession session) {
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
+
         String trimmedTenThuongHieu = (thuongHieu.getTen() != null)
                 ? thuongHieu.getTen().trim().replaceAll("\\s+", " ")
                 : null;
@@ -92,6 +123,8 @@ public class ThuongHieuController {
         thuongHieu.setTrangthai(true);
         thuongHieu.setNgaytao(currentTime);
         thuongHieu.setLancapnhatcuoi(currentTime);
+        thuongHieu.setNguoitao(nv.getNguoidung().getHovaten());
+        thuongHieu.setNguoicapnhat(nv.getNguoidung().getHovaten());
         thuongHieuImp.add(thuongHieu);
         return "redirect:/updateCTSP/" + spctId;
     }

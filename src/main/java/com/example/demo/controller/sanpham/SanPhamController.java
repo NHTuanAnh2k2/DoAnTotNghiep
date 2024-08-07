@@ -7,6 +7,7 @@ import com.example.demo.info.ThuocTinhInfo;
 import com.example.demo.repository.*;
 import com.example.demo.service.impl.*;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -67,6 +69,13 @@ public class SanPhamController {
     @Autowired
     HttpServletRequest request;
 
+    @Autowired
+    NhanVienRepository nhanvienRPo;
+
+    @Autowired
+    NguoiDungRepository daoNguoiDung;
+
+
     private String taoChuoiNgauNhien(int doDaiChuoi, String kiTu) {
         Random random = new Random();
         StringBuilder chuoiNgauNhien = new StringBuilder(doDaiChuoi);
@@ -77,23 +86,26 @@ public class SanPhamController {
     }
 
     @PostMapping("/addTenSPModal")
-    public String addTenSPModel(Model model, @ModelAttribute("sanpham") SanPham sanPham) {
+    public String addTenSPModel(Model model, @ModelAttribute("sanpham") SanPham sanPham, HttpSession session) {
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
+
         String chuoiNgauNhien = taoChuoiNgauNhien(7, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
         LocalDateTime currentTime = LocalDateTime.now();
         String maSanPham = "SP" + chuoiNgauNhien;
-
         // Trim tên sản phẩm và thay thế nhiều khoảng trắng liên tiếp bằng một khoảng trắng
         String trimmedTenSanPham = (sanPham.getTensanpham() != null)
                 ? sanPham.getTensanpham().trim().replaceAll("\\s+", " ")
                 : null;
         sanPham.setTensanpham(trimmedTenSanPham);
-
         sanPham.setTrangthai(true);
         sanPham.setMasanpham(maSanPham);
         sanPham.setNgaytao(currentTime);
         sanPham.setLancapnhatcuoi(currentTime);
-        sanPham.setNguoitao("DuyNV");
-        sanPham.setNguoicapnhat("DuyNV");
+        sanPham.setNguoitao(nv.getNguoidung().getHovaten());
+        sanPham.setNguoicapnhat(nv.getNguoidung().getHovaten());
         sanPham.setQrcode("ABC");
         sanPhamRepositoty.save(sanPham);
         return "redirect:/viewaddSPGET";
@@ -160,8 +172,14 @@ public class SanPhamController {
                              @RequestParam Boolean gioitinh,
                              @RequestParam(name = "kichCoId") List<String> kichCoNames,
                              @RequestParam DeGiay idDeGiay,
-                             @RequestParam List<MauSac> idMauSac
+                             @RequestParam List<MauSac> idMauSac, HttpSession session
     ) {
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
+        LocalDateTime currentTime = LocalDateTime.now();
+
         String trimmedMota = (mota != null) ? mota.trim().replaceAll("\\s+", " ") : null;
         model.addAttribute("selectedTensp", tensp);
         model.addAttribute("motas", mota);
@@ -200,6 +218,10 @@ public class SanPhamController {
                         spct.setKichco(kichCo);
                         spct.setDegiay(idDeGiay);
                         spct.setMausac(colorId);
+                        spct.setNguoitao(nv.getNguoidung().getHovaten());
+                        spct.setNguoicapnhat(nv.getNguoidung().getHovaten());
+                        spct.setNgaytao(currentTime);
+                        spct.setLancapnhatcuoi(currentTime);
                         sanPhamChiTietList.add(spct);
 
                         for (SanPhamChiTiet spcts : sanPhamChiTietList) {
@@ -247,6 +269,10 @@ public class SanPhamController {
                             spct.setKichco(kichCo);
                             spct.setDegiay(idDeGiay);
                             spct.setMausac(colorId);
+                            spct.setNguoitao(nv.getNguoidung().getHovaten());
+                            spct.setNguoicapnhat(nv.getNguoidung().getHovaten());
+                            spct.setNgaytao(currentTime);
+                            spct.setLancapnhatcuoi(currentTime);
                             sanPhamChiTietList.add(spct);
                         }
                     }
@@ -322,7 +348,6 @@ public class SanPhamController {
     }
 
 
-
     @GetMapping("/deleteCTSP/{id}")
     public String deleteCTSP(@PathVariable Integer id, Model model) {
         for (Iterator<SanPhamChiTiet> iterator = sanPhamChiTietList.iterator(); iterator.hasNext(); ) {
@@ -387,8 +412,15 @@ public class SanPhamController {
         return "redirect:/listsanpham";
     }
 
+    @Autowired
+    HttpSession session;
 
     private void addAnh(SanPhamChiTiet spct, MultipartFile anhFile) {
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
+
         if (!anhFile.isEmpty()) {
             String anhUrl = saveImage(anhFile);
             if (anhUrl != null) {
@@ -397,6 +429,10 @@ public class SanPhamController {
                 anh.setTenanh(anhUrl);
                 anh.setNgaytao(currentTime);
                 anh.setSanphamchitiet(spct);
+                anh.setTrangthai(true);
+                anh.setLancapnhatcuoi(currentTime);
+                anh.setNguoitao(nv.getNguoidung().getHovaten());
+                anh.setNguoicapnhat(nv.getNguoidung().getHovaten());
                 anhRepository.save(anh);
             }
         }
@@ -420,7 +456,6 @@ public class SanPhamController {
             return null;
         }
     }
-
 
 
     @PostMapping("/updateGiaAndSoLuong")
@@ -457,7 +492,7 @@ public class SanPhamController {
         Anh anh = new Anh();
         String url = "D:\\DATN\\src\\main\\resources\\static\\upload\\" + listData.get(1);
         anh.setTenanh(url);
-        List<Anh> list =sanPhamChiTietList.get(Integer.valueOf(listData.get(0)) - 1).getAnh()==null?new ArrayList<>():sanPhamChiTietList.get(Integer.valueOf(listData.get(0)) - 1).getAnh();
+        List<Anh> list = sanPhamChiTietList.get(Integer.valueOf(listData.get(0)) - 1).getAnh() == null ? new ArrayList<>() : sanPhamChiTietList.get(Integer.valueOf(listData.get(0)) - 1).getAnh();
         list.add(anh);
         System.out.println("KKKKKKKKKKKKKK" + list.size());
         sanPhamChiTietList.get(Integer.valueOf(listData.get(0)) - 1).setAnh(list);
