@@ -442,7 +442,7 @@
                     <div class="singl-pro-title" th:data-product-id="${sanpham.id}">
                         <h3>
                             <span th:text="${sanpham.tensanpham}"></span>
-                            <span id="product-maspct" th:text="${'['+selectedMaSPCT}+']'"></span>
+                            <span id="product-maspct" th:text="${selectedMaSPCT == null ? 'Không tồn tại' : '[' + selectedMaSPCT + ']'}"></span>
                         </h3>
                         <div class="d-flex">
                             <h6>Thương hiệu:
@@ -463,7 +463,7 @@
         </span>
                             </del>
                             <span id="newPriceMoi"
-                                  th:text="${#numbers.formatDecimal(selectedPriceMoi, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"
+                                  th:text="${selectedPriceMoi == null ? '0đ' : #numbers.formatDecimal(selectedPriceMoi, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"
                                   style="color: red; font-weight: bold;"></span>
                         </h6>
 

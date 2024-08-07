@@ -135,8 +135,13 @@
                                     <div class="d-flex">
                                         <p>
                                             <span style="color: red">* </span>Giá tiền:
-                                            <input class="form-control" style="width:550px" th:field="*{giatien}">
+                                            <input class="form-control" style="width:550px"
+                                                   th:value="${#numbers.formatDecimal(giamoi, 0, 'COMMA', 0, 'POINT') + '₫'}"
+                                                   readonly>
                                         </p>
+
+                                        <input type="hidden" th:field="*{giatien}" th:value="${giamoi}">
+
                                         <p style="margin-left: 92px">
                                             <span style="color: red">* </span>Giới tính:
                                             <select class="form-control" style="width:550px" th:field="*{gioitinh}">
