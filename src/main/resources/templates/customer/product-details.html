@@ -1308,3 +1308,34 @@
     //     quantityInput.value = '1';
     // }
 </script>
+<!--thông báo thêm giỏ hàng-->
+<script>
+    function thongbao(title, iconsz) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+
+        Toast.fire({
+            icon: iconsz,
+            title: title
+        });
+    }
+</script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var addProductSuccsess = /*[[${sussuses}]]*/ false;
+    /*]]>*/
+
+    if (addProductSuccsess == true) {
+        thongbao('Thêm giỏ hàng thành công!', 'success')
+    }
+</script>
