@@ -3,10 +3,13 @@ package com.example.demo.restcontroller.dangnhap;
 import com.example.demo.entity.HoaDon;
 import com.example.demo.entity.LichSuHoaDon;
 import com.example.demo.entity.NguoiDung;
+import com.example.demo.info.token.UserManager;
 import com.example.demo.repository.LichSuHoaDon.LichSuHoaDonRepository;
 import com.example.demo.repository.NguoiDungRepository;
 import com.example.demo.repository.hoadon.HoaDonRepository;
+import com.example.demo.security.JWTGenerator;
 import com.example.demo.service.KhachHangService;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,12 +35,21 @@ public class CustomerRestController {
     KhachHangService khachHangService;
     @Autowired
     NguoiDungRepository nguoiDungRepository;
+    @Autowired
+    JWTGenerator jwtGenerator;
+    @Autowired
+    UserManager userManager;
 
 
     @GetMapping("/huydonhang/{id}")
     public ResponseEntity<?> huydonhang(@PathVariable("id") Integer id,
                                         @RequestParam("lydohuy") String lydohuy,
-                                        RedirectAttributes redirectAttributes) {
+                                        RedirectAttributes redirectAttributes,
+                                        HttpSession session) {
+        Claims claims = jwtGenerator.
+                getClaims(userManager.getToken((String)session.getAttribute("userDangnhap")));
+        NguoiDung ndIsLogged = khachHangService.findNguoiDungByTaikhoan(claims.getSubject());
+
         HoaDon hoaDon = hoaDonRepository.findHoaDonById(id);
         hoaDon.setTrangthai(6);
         hoaDon.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
@@ -45,15 +57,15 @@ public class CustomerRestController {
         hoaDon.setNgayxacnhan(null);
         hoaDon.setNgayvanchuyen(null);
         hoaDon.setNgayhoanthanh(null);
-        hoaDon.setNguoicapnhat("CUSTOMER");
+        hoaDon.setNguoicapnhat(ndIsLogged.getTaikhoan());
         hoaDonRepository.save(hoaDon);
         LichSuHoaDon lichSuHoaDon = new LichSuHoaDon();
         lichSuHoaDon.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
         lichSuHoaDon.setNgaytao(Timestamp.valueOf(LocalDateTime.now()));
         lichSuHoaDon.setNhanvien(hoaDon.getNhanvien());
         lichSuHoaDon.setHoadon(hoaDon);
-        lichSuHoaDon.setNguoicapnhat("CUSTOMER");
-        lichSuHoaDon.setNguoitao("CUSTOMER");
+        lichSuHoaDon.setNguoicapnhat(ndIsLogged.getTaikhoan());
+        lichSuHoaDon.setNguoitao(ndIsLogged.getTaikhoan());
         lichSuHoaDon.setGhichu(lydohuy);
         lichSuHoaDon.setTrangthai(6);
         lichSuHoaDonRepository.save(lichSuHoaDon);
@@ -63,6 +75,11 @@ public class CustomerRestController {
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadImage(@RequestParam("anh") MultipartFile file, HttpSession session) {
+
+        Claims claims = jwtGenerator.
+                getClaims(userManager.getToken((String)session.getAttribute("userDangnhap")));
+        NguoiDung ndIsLogged = khachHangService.findNguoiDungByTaikhoan(claims.getSubject());
+
         if (file.isEmpty()) {
             return new ResponseEntity<>("Bạn chưa chọn file nào.", HttpStatus.BAD_REQUEST);
         }
@@ -90,7 +107,7 @@ public class CustomerRestController {
             if (username != null) {
                 NguoiDung nd = khachHangService.findNguoiDungByTaikhoan(username);
                 nd.setAnh(relativeFilePath);
-                nd.setNguoicapnhat("CUSTOMER");
+                nd.setNguoicapnhat(ndIsLogged.getTaikhoan());
                 nd.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
                 nguoiDungRepository.save(nd);
             }

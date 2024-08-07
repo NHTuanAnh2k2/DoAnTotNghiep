@@ -119,7 +119,7 @@ public class DangNhapAdminController {
                     AdminTokenInfo adminTokenInfo = new AdminTokenInfo(userId, token);
                     adminTokenInfos.add(adminTokenInfo);
                     session.setAttribute("adminTokenInfos", adminTokenInfos);
-                    adminManager.addUser(nd.getId(), token);
+                    adminManager.addUser(nd.getTaikhoan(), token);
                     session.setAttribute("tokenAdmin", token);
                     session.setAttribute("adminDangnhap", nd.getTaikhoan());
                     return "redirect:/hoa-don/ban-hang";
@@ -142,12 +142,11 @@ public class DangNhapAdminController {
         // Xóa session của người dùng để đăng xuất
         String userName = (String) session.getAttribute("adminDangnhap");
         NguoiDung nguoiDung = khachHangService.findNguoiDungByTaikhoan(userName);
-        Integer adminId = nguoiDung.getId();
-        String token = adminManager.getToken(adminId);
+        String token = adminManager.getToken(nguoiDung.getTaikhoan());
         session.removeAttribute("adminDangnhap");
         session.removeAttribute("adminToken");
         session.invalidate();
-        adminManager.logoutUser(adminId, token);
+        adminManager.logoutUser(nguoiDung.getTaikhoan(), token);
         return "redirect:/account/admin";
     }
 }

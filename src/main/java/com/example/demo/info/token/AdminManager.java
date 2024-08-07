@@ -8,37 +8,37 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class AdminManager {
-    public final Map<Integer, String> loggedInUsers = new ConcurrentHashMap<>();
+    public final Map<String, String> loggedInUsers = new ConcurrentHashMap<>();
 
-    public final Map<Integer, String> userAgents = new HashMap<>();
+    public final Map<String, String> userAgents = new HashMap<>();
 
-    public void storeUserAgent(Integer userId, String userAgent) {
-        userAgents.put(userId, userAgent);
+    public void storeUserAgent(String username, String userAgent) {
+        userAgents.put(username, userAgent);
     }
 
-    public String getUserAgent(Integer userId) {
-        return userAgents.get(userId);
+    public String getUserAgent(String username) {
+        return userAgents.get(username);
     }
 
-    public void remove(Integer userId, String userAgent) {
-        userAgents.remove(userId, userAgent);
+    public void remove(String username, String userAgent) {
+        userAgents.remove(username, userAgent);
     }
 
-    public void addUser(Integer userId, String token) {
-        loggedInUsers.put(userId, token);
+    public void addUser(String username, String token) {
+        loggedInUsers.put(username, token);
     }
 
-    public void removeUser(Integer userId, String token) {
-        loggedInUsers.remove(userId, token);
+    public void removeUser(String username, String token) {
+        loggedInUsers.remove(username, token);
     }
 
-    public String getToken(Integer userId) {
-        return loggedInUsers.get(userId);
+    public String getToken(String username) {
+        return loggedInUsers.get(username);
     }
 
-    public boolean isUserLoggedIn(Integer userId, String userAgent) {
-        if (userAgents.containsKey(userId)) {
-            String token = loggedInUsers.get(userId);
+    public boolean isUserLoggedIn(String username, String userAgent) {
+        if (userAgents.containsKey(username)) {
+            String token = loggedInUsers.get(username);
             if (token != null && token.equals(userAgent)) {
                 return true;
             } else {
@@ -50,13 +50,13 @@ public class AdminManager {
     }
 
 
-    public Map<Integer, String> getLoggedInUsers() {
+    public Map<String, String> getLoggedInUsers() {
         return loggedInUsers;
     }
 
-    public void logoutUser(Integer userId, String token) {
-        if (loggedInUsers.containsKey(userId)) {
-            loggedInUsers.remove(userId, token);
+    public void logoutUser(String username, String token) {
+        if (loggedInUsers.containsKey(username)) {
+            loggedInUsers.remove(username, token);
         }
     }
 }

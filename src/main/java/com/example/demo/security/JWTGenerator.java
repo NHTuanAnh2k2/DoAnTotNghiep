@@ -6,7 +6,9 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,15 +24,17 @@ import java.util.function.Function;
 @Component
 @AllArgsConstructor
 public class JWTGenerator {
-    private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);//    private final Key signInKey = new SecretKeySpec(Base64.getDecoder().decode(SecurityConstants.JWT_SECRET), SignatureAlgorithm.HS512.getJcaName());
 
-//    private Claims getClaims(String token) {
-//        return Jwts.parser()
-//                .setSigningKey(SecurityConstants.JWT_SECRET)
-//                .build()
-//                .parseSignedClaims(token)
-//                .getBody();
-//    }
+    @Autowired
+    HttpSession session;
+    private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);//    private final Key signInKey = new SecretKeySpec(Base64.getDecoder().decode(SecurityConstants.JWT_SECRET), SignatureAlgorithm.HS512.getJcaName());
+    public Claims getClaims(String token) {
+        return Jwts.parser()
+                .setSigningKey(key)
+                .build()
+                .parseSignedClaims(token)
+                .getBody();
+    }
 
     public String getUsernameFromJWT(String token) {
         Claims claims = Jwts.parser()
@@ -65,15 +69,16 @@ public class JWTGenerator {
                     .parseClaimsJws(token);
             return true;
         } catch (Exception ex) {
-            throw new AuthenticationCredentialsNotFoundException("JWT was exprired or incorrect",ex.fillInStackTrace());
+            session.invalidate();
+            return false;
         }
     }
 
 
-//    private <T> T extractClaim(String token, Function<Claims, T> getClaimValue) {
-//        final Claims claims = getClaims(token);
-//        return getClaimValue.apply(claims);
-//    }
+    private <T> T extractClaim(String token, Function<Claims, T> getClaimValue) {
+        final Claims claims = getClaims(token);
+        return getClaimValue.apply(claims);
+    }
 //
 //    public boolean isTokenExpired(String token) {
 //        Date expiredDate = extractClaim(token, Claims::getExpiration);
