@@ -4,11 +4,13 @@ import com.example.demo.entity.DiaChi;
 import com.example.demo.entity.KhachHang;
 import com.example.demo.entity.NguoiDung;
 import com.example.demo.info.*;
+import com.example.demo.info.token.AdminManager;
 import com.example.demo.info.token.UserManager;
 import com.example.demo.repository.DiaChiRepository;
 import com.example.demo.repository.NguoiDungRepository;
 import com.example.demo.restcontroller.khachhang.KhachHangRestController;
 import com.example.demo.restcontroller.khachhang.Province;
+import com.example.demo.security.JWTGenerator;
 import com.example.demo.service.DiaChiService;
 import com.example.demo.service.KhachHangService;
 import com.example.demo.service.NguoiDungService;
@@ -17,6 +19,7 @@ import com.google.zxing.MultiFormatReader;
 import com.google.zxing.Result;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.eclipse.tags.shaded.org.apache.regexp.RE;
@@ -58,6 +61,10 @@ public class KhachHangController {
     PasswordEncoder passwordEncoder;
     @Autowired
     UserManager userManager;
+    @Autowired
+    AdminManager adminManager;
+    @Autowired
+    JWTGenerator jwtGenerator;
 
     @GetMapping
     public String display(Model model, @ModelAttribute("khachhang") KhachHang khachHang) {
@@ -151,7 +158,8 @@ public class KhachHangController {
                       @ModelAttribute("nguoidung") NguoiDungKHInfo nguoidung,
                       @ModelAttribute("diachi") DiaChiKHInfo diachi,
                       RedirectAttributes redirectAttributes,
-                      Model model
+                      Model model,
+                      HttpSession session
     ) throws IOException {
         LocalDateTime currentDate = LocalDateTime.now();
         int passwordLength = 10;
@@ -161,6 +169,11 @@ public class KhachHangController {
         String trimmedTenNguoiDung = (nguoidung.getHovaten() != null)
                 ? nguoidung.getHovaten().trim().replaceAll("\\s+", " ")
                 : null;
+
+        Claims claims = jwtGenerator.
+                getClaims(adminManager.getToken((String)session.getAttribute("adminDangnhap")));
+        NguoiDung ndIsLogged = khachHangService.findNguoiDungByTaikhoan(claims.getSubject());
+
 
         NguoiDung nd = new NguoiDung();
         nd.setEmail(nguoidung.getEmail().trim());
@@ -175,6 +188,8 @@ public class KhachHangController {
         nd.setNgaytao(Timestamp.valueOf(currentDate));
         nd.setLancapnhatcuoi(Timestamp.valueOf(currentDate));
         nd.setTrangthai(true);
+        nd.setNguoitao(ndIsLogged.getTaikhoan());
+        nd.setNguoicapnhat(ndIsLogged.getTaikhoan());
         khachHangService.addNguoiDung(nd);
         Integer id = nd.getId();
         String usernameWithId = username + id;
@@ -192,6 +207,8 @@ public class KhachHangController {
         dc.setTrangthai(nd.getTrangthai());
         dc.setNgaytao(nd.getNgaytao());
         dc.setLancapnhatcuoi(nd.getLancapnhatcuoi());
+        dc.setNguoitao(ndIsLogged.getTaikhoan());
+        dc.setNguoicapnhat(ndIsLogged.getTaikhoan());
         khachHangService.addDiaChi(dc);
 
         KhachHang kh = new KhachHang();
@@ -201,6 +218,8 @@ public class KhachHangController {
         kh.setTrangthai(nd.getTrangthai());
         kh.setNgaytao(nd.getNgaytao());
         kh.setLancapnhatcuoi(nd.getLancapnhatcuoi());
+        kh.setNguoitao(ndIsLogged.getTaikhoan());
+        kh.setNguoicapnhat(ndIsLogged.getTaikhoan());
         khachHangService.addKhachHang(kh);
 
         khachHangService.sendEmail(nd.getEmail(), nd.getTaikhoan(), password, nd.getHovaten());
@@ -214,14 +233,18 @@ public class KhachHangController {
                                   @PathVariable("id") Integer id,
                                   RedirectAttributes redirectAttributes,
                                   HttpSession session) {
+        Claims claims = jwtGenerator.
+                getClaims(adminManager.getToken((String)session.getAttribute("adminDangnhap")));
+        NguoiDung ndIsLogged = khachHangService.findNguoiDungByTaikhoan(claims.getSubject());
+
         DiaChi dc = khachHangService.findDiaChiById(id);
         NguoiDung nd = khachHangService.findNguoiDungById(dc.getNguoidung().getId());
         KhachHang kh = khachHangService.findKhachHangByIdNguoiDung(nd.getId());
-        nd.setNguoicapnhat("ADMIN");
+        nd.setNguoicapnhat(ndIsLogged.getTaikhoan());
         nd.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
         nd.setTrangthai(!nd.getTrangthai());
         khachHangService.updateNguoiDung(nd);
-        kh.setNguoicapnhat("ADMIN");
+        kh.setNguoicapnhat(ndIsLogged.getTaikhoan());
         kh.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
         kh.setTrangthai(!kh.getTrangthai());
         khachHangService.updateKhachHang(kh);
@@ -229,10 +252,9 @@ public class KhachHangController {
         String userName = (String) session.getAttribute("userDangnhap");
         if (userName != null) {
             NguoiDung nguoiDung = khachHangService.findNguoiDungByTaikhoan(userName);
-            Integer userId = nguoiDung.getId();
-            String token = userManager.getToken(userId);
+            String token = userManager.getToken(nguoiDung.getTaikhoan());
             session.removeAttribute("userDangnhap");
-            userManager.logoutUser(userId, token);
+            userManager.logoutUser(nguoiDung.getTaikhoan(), token);
             session.setAttribute("notificationLogout", true);
         }
 
@@ -273,7 +295,8 @@ public class KhachHangController {
                          @ModelAttribute("diachi") DiaChiKHInfo diachi,
                          @PathVariable("id") Integer id,
                          RedirectAttributes redirectAttributes,
-                         Model model
+                         Model model,
+                         HttpSession session
     ) {
 
         String trimmedTenNguoiDung = (nguoidung.getHovaten() != null)
@@ -283,12 +306,17 @@ public class KhachHangController {
                 ? diachi.getTenduong().trim().replaceAll("\\s+", " ")
                 : null;
 
+        Claims claims = jwtGenerator.
+                getClaims(adminManager.getToken((String)session.getAttribute("adminDangnhap")));
+        NguoiDung ndIsLogged = khachHangService.findNguoiDungByTaikhoan(claims.getSubject());
+
         DiaChi dc = khachHangService.findDiaChiById(id);
         dc.setTinhthanhpho(diachi.getTinhthanhpho());
         dc.setQuanhuyen(diachi.getQuanhuyen());
         dc.setXaphuong(diachi.getXaphuong());
         dc.setTenduong(trimmedTenDuong);
         dc.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
+        dc.setNguoicapnhat(ndIsLogged.getTaikhoan());
         khachHangService.updateDiaChi(dc);
 
         NguoiDung nd = khachHangService.findNguoiDungById(dc.getNguoidung().getId());
@@ -299,10 +327,12 @@ public class KhachHangController {
         nd.setSodienthoai(nguoidung.getSodienthoai().trim());
         nd.setGioitinh(nguoidung.getGioitinh());
         nd.setLancapnhatcuoi(dc.getLancapnhatcuoi());
+        nd.setNguoicapnhat(ndIsLogged.getTaikhoan());
         khachHangService.updateNguoiDung(nd);
 
         KhachHang kh = khachHangService.findKhachHangByIdNguoiDung(nd.getId());
         kh.setLancapnhatcuoi(dc.getLancapnhatcuoi());
+        kh.setNguoicapnhat(ndIsLogged.getNguoicapnhat());
         khachHangService.updateKhachHang(kh);
 
         model.addAttribute("lstKhachHang", khachHangService.displayKhachHang());

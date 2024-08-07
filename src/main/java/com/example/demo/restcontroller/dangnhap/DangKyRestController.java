@@ -69,6 +69,8 @@ public class DangKyRestController {
 
         if (khachHang != null) {
             khachHang.getNguoidung().setMatkhau(passwordEncoder.encode(newPassword));
+            khachHang.getNguoidung().setNguoicapnhat(khachHang.getNguoidung().getTaikhoan());
+            khachHang.setNguoicapnhat(khachHang.getNguoidung().getTaikhoan());
             khachHangRepostory.save(khachHang);
             return ResponseEntity.ok("Đổi mật khẩu thành công.");
         } else {
@@ -104,6 +106,8 @@ public class DangKyRestController {
 
         if (nhanVien != null) {
             nhanVien.getNguoidung().setMatkhau(passwordEncoder.encode(newPassword));
+            nhanVien.getNguoidung().setNguoicapnhat(nhanVien.getNguoidung().getTaikhoan());
+            nhanVien.setNguoicapnhat(nhanVien.getNguoidung().getTaikhoan());
             nhanVienRepository.save(nhanVien);
             return ResponseEntity.ok("Đổi mật khẩu thành công.");
         } else {

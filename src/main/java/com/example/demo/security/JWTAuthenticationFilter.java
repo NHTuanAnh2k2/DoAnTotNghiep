@@ -29,7 +29,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         String token = (String) request.getSession().getAttribute("tokenAdmin");
-        System.out.println("TokenJWT: " + token);
+//        System.out.println("TokenJWT: " + token);
 //        if (token != null && tokenGenerator.isTokenExpired(token)) {
 //            request.getSession().removeAttribute("tokenAdmin");
 //            request.getSession().removeAttribute("adminDangnhap");
@@ -48,18 +48,16 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private String getJWTFromRequest(HttpServletRequest request, HttpServletResponse response) {
-        String adminDangnhap = (String) request.getSession().getAttribute("tokenAdmin");
-        if (adminDangnhap != null) {
-            String bearerToken = adminDangnhap;
-//            System.out.println("Authorization: " + bearerToken);
-            if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-
-              String token = bearerToken.substring(7, bearerToken.length());
-
-            }
-        }
-        return null;
-
-    }
+//    private String getJWTFromRequest(HttpServletRequest request, HttpServletResponse response) {
+//        String adminDangnhap = (String) request.getSession().getAttribute("tokenAdmin");
+//        if (adminDangnhap != null) {
+//            String bearerToken = adminDangnhap;
+////            System.out.println("Authorization: " + bearerToken);
+//            if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+//              String token = bearerToken.substring(7, bearerToken.length());
+//            }
+//        }
+//        return null;
+//
+//    }
 }
