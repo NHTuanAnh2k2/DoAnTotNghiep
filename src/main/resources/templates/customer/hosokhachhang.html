@@ -1831,6 +1831,29 @@
         const file = event.target.files[0];
 
         if (file) {
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/gif']; // Các loại ảnh được phép
+            if (!allowedTypes.includes(file.type)) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "error",
+                    title: 'Chỉ cho phép chọn các file ảnh (JPEG, PNG, GIF).',
+                });
+                // Xóa tệp đã chọn
+                event.target.value = '';
+                return;
+            }
+
             // Kiểm tra kích thước tệp (1 MB = 1 * 1024 * 1024 bytes)
             const maxSize = 1 * 1024 * 1024; // 1 MB
 
@@ -1857,7 +1880,7 @@
                 return;
             }
 
-            // Nếu kích thước hợp lệ, hiển thị ảnh đã chọn
+            // Nếu kích thước hợp lệ và loại tệp là ảnh, hiển thị ảnh đã chọn
             const reader = new FileReader();
             reader.onload = function(e) {
                 const uploadedImage = document.getElementById('uploadedImage');
@@ -1929,6 +1952,7 @@
     });
 
 </script>
+
 <!-- footer section start -->
 <nav th:replace="~{/layout/footer.html}"></nav>
 <!-- footer section end -->
