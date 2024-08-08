@@ -54,7 +54,6 @@ public class GioHangController {
     public synchronized int generateUniqueItemId() {
         return nextItemId++;
     }
-    public List<GioHangChiTiet> listGioHangKhongTK = new ArrayList<>();
 
     @GetMapping("/cart")
     public String cart(Model model, HttpSession session) {

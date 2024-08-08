@@ -187,12 +187,12 @@
                                         </div>
                                     </div>
                                     <div class="form123">
-                                        <input id="inputTuNgay" name="ngayBatDau" th:value="${phieuGiamGia.ngaybatdau}" type="datetime-local"/>
+                                        <input onkeydown="return false" id="inputTuNgay" name="ngayBatDau" th:value="${phieuGiamGia.ngaybatdau}" type="datetime-local"/>
                                         <label>Ngày bắt đầu</label>
                                         <div style="color: red; font-weight: initial;" id="errorTuNgay"></div>
                                     </div>
                                     <div class="form123">
-                                        <input id="inputDenNgay" name="ngayKetThuc" th:value="${phieuGiamGia.ngayketthuc}" type="datetime-local"/>
+                                        <input onkeydown="return false" id="inputDenNgay" name="ngayKetThuc" th:value="${phieuGiamGia.ngayketthuc}" type="datetime-local"/>
                                         <label>Ngày kết thúc</label>
                                         <div style="color: red; font-weight: initial;" id="errorDenNgay"></div>
                                     </div>
@@ -439,7 +439,7 @@
     }
     function validateTenPhieuGiamBTCQ(inputString) {
         // Biểu thức chính quy cho phép các ký tự Latinh, số từ 0-9 và có độ dài từ 5 đến 15 ký tự
-        const regex = /^[a-zA-ZàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆìÌỉỈĩĨíÍịỊòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰýÝđĐ ]{1,50}$/;
+        const regex = /^[0-9a-zA-ZàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆìÌỉỈĩĨíÍịỊòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰýÝđĐ ]{1,50}$/;
         return regex.test(inputString);
     }
     function validateForm(event){

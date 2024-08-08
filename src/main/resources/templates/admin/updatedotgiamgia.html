@@ -108,10 +108,10 @@
                         </h1>
                     </div>
                     <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">QUẢN LÝ ĐỢT GIẢM GIÁ</li>
-                        </ol>
+<!--                        <ol class="breadcrumb float-sm-right">-->
+<!--                            <li class="breadcrumb-item"><a href="#">Home</a></li>-->
+<!--                            <li class="breadcrumb-item active">QUẢN LÝ ĐỢT GIẢM GIÁ</li>-->
+<!--                        </ol>-->
                     </div>
                 </div>
             </div><!-- /.container-fluid -->
@@ -156,12 +156,12 @@
                                         <div style="color: red; font-weight: initial;" id="errorGiaTri"></div>
                                     </div>
                                     <div class="form123 mt-1">
-                                        <input id="inputTuNgay" name="ngayBatDau" th:value="${dotGiamGia.ngaybatdau}" type="datetime-local"/>
+                                        <input onkeydown="return false" id="inputTuNgay" name="ngayBatDau" th:value="${dotGiamGia.ngaybatdau}" type="datetime-local"/>
                                         <label>Ngày bắt đầu</label>
                                         <div style="color: red; font-weight: initial;" id="errorTuNgay"></div>
                                     </div>
                                     <div class="form123 mt-1">
-                                        <input id="inputDenNgay" name="ngayKetThuc" th:value="${dotGiamGia.ngayketthuc}" type="datetime-local"/>
+                                        <input onkeydown="return false" id="inputDenNgay" name="ngayKetThuc" th:value="${dotGiamGia.ngayketthuc}" type="datetime-local"/>
                                         <label>Ngày kết thúc</label>
                                         <div style="color: red; font-weight: initial;" id="errorDenNgay"></div>
                                     </div>
@@ -507,7 +507,7 @@
     }
     function validateTenPhieuGiamBTCQ(inputString) {
         // Biểu thức chính quy cho phép các ký tự Latinh, số từ 0-9 và có độ dài từ 5 đến 15 ký tự
-        const regex = /^[a-zA-ZàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆìÌỉỈĩĨíÍịỊòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰýÝđĐ ]{1,50}$/;
+        const regex = /^[0-9a-zA-ZàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆìÌỉỈĩĨíÍịỊòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰýÝđĐ ]{1,50}$/;
         return regex.test(inputString);
     }
     function validateForm(){

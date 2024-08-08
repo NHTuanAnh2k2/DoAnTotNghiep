@@ -90,11 +90,11 @@
                                     <div class="row mb-4">
                                         <div class="col-lg-5 d-flex justify-content-between">
                                             <div class="form123">
-                                                <input id="tungaySearch" name="tungaySearch" th:value="${tungay}" type="datetime-local" class="form-control" style="width: 205px;" onchange="submitFormSearch()">
+                                                <input onkeydown="return false" id="tungaySearch" name="tungaySearch" th:value="${tungay}" type="datetime-local" class="form-control" style="width: 205px;" onchange="submitFormSearch()">
                                                 <label>Từ ngày</label>
                                             </div>
                                             <div class="form123">
-                                                <input id="denngaySearch" name="denngaySearch" th:value="${denngay}" type="datetime-local" class="form-control" style="width: 205px;" onchange="submitFormSearch()">
+                                                <input onkeydown="return false" id="denngaySearch" name="denngaySearch" th:value="${denngay}" type="datetime-local" class="form-control" style="width: 205px;" onchange="submitFormSearch()">
                                                 <label>Đến ngày</label>
                                             </div>
                                         </div>
