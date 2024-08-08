@@ -610,6 +610,7 @@ public class hoaDonController {
         model.addAttribute("trangThaiHienTai", lstLichSuHoaDon.get(lstLichSuHoaDon.size() - 1).getTrangthai());
         model.addAttribute("pageSPHD", daoHDCT.getDSSPHD(hoaDonXem, p));
         model.addAttribute("lstsanphamdotgiam", lstsanphamdotgiam);
+        model.addAttribute("checksizes", lstsanphamdotgiam.size()>0?true:false);
         return "admin/qlchitiethoadon";
     }
 

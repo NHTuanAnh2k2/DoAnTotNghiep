@@ -1433,7 +1433,8 @@
                                                             style="font-family: 'Times New Roman'; font-size: 15px; font-weight: bold;">
                                                         </p>
 
-                                                        <span th:each="b : ${lstsanphamdotgiam}" class="spanboddy">
+                                                        <span th:each="b : ${lstsanphamdotgiam}" class="spanboddy"
+                                                            th:if="${checksizes==true}">
                                                             <span th:if="${a.sanphamchitiet.id == b.sanphamchitiet.id}"
                                                                 class="spanboddy1">
                                                                 <p th:text="${#numbers.formatDecimal((a.sanphamchitiet.giatien/100*(100-b.dotgiamgia.giatrigiam)), 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
@@ -1443,7 +1444,7 @@
                                                                     th:text="${#numbers.formatDecimal(a.sanphamchitiet.giatien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
                                                                     style="font-family: 'Times New Roman'; font-size: 15px; color: black;font-weight: bold;">
                                                                 </p>
-                                                                <span th:remove="all"></span>
+
                                                             </span>
 
                                                             <span th:if="${a.sanphamchitiet.id != b.sanphamchitiet.id}"
@@ -1451,11 +1452,15 @@
                                                                 <p th:text="${#numbers.formatDecimal(a.sanphamchitiet.giatien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
                                                                     style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
                                                                 </p>
-                                                                <span th:remove="all"></span>
+
                                                             </span>
 
                                                         </span>
-
+                                                        <span th:if="${checksizes==false}">
+                                                            <p th:text="${#numbers.formatDecimal(a.sanphamchitiet.giatien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                                style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
+                                                            </p>
+                                                        </span>
 
                                                         <p th:text="${'Size: '+a.sanphamchitiet.kichco.ten}"
                                                             style="font-family: 'Times New Roman'; font-size: 15px;font-weight: bold;">
@@ -1477,7 +1482,8 @@
                                                             th:readonly="${trangThaiHienTai != 0}"></td>
 
                                                     <td style="vertical-align: middle;">
-                                                        <span th:each="b : ${lstsanphamdotgiam}" class="spanTong">
+                                                        <span th:each="b : ${lstsanphamdotgiam}" class="spanTong"
+                                                            th:if="${checksizes==true}">
                                                             <span th:if="${a.sanphamchitiet.id!=b.sanphamchitiet.id}"
                                                                 class="spanTong1">
                                                                 <p th:text="${#numbers.formatDecimal(a.sanphamchitiet.giatien*a.soluong, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
@@ -1492,6 +1498,11 @@
                                                                     ></p>
                                                             </span>
 
+                                                        </span>
+                                                        <span th:if="${checksizes==false}">
+                                                            <p th:text="${#numbers.formatDecimal(a.sanphamchitiet.giatien*a.soluong, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                                style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
+                                                                ></p>
                                                         </span>
                                                     </td>
                                                     <td style="vertical-align: middle;">
@@ -3237,7 +3248,6 @@
             thongbao('Thêm thành công!', 'success')
         }
     </script>
-    
 
 </body>
 
