@@ -25,6 +25,7 @@ import com.example.demo.repository.phuongThucThanhToan.PhuongThucThanhToanReposi
 import com.example.demo.restcontroller.khachhang.Province;
 import com.example.demo.security.JWTGenerator;
 import com.example.demo.service.KhachHangService;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -71,12 +72,12 @@ public class CustomerController {
     LichSuHoaDonRepository lichSuHoaDonRepository;
     @Autowired
     HoaDonChiTietRepository1 hoaDonChiTietRepository1;
-
     @Autowired
     NguoiDungGioHangRepository nguoiDungGioHangRepository;
-
     @Autowired
     KhachHangGioHangRepository khachHangGioHangRepository;
+    @Autowired
+    JWTGenerator jwtGenerator;
 
     
     @GetMapping("/quenmatkhau")
@@ -236,9 +237,13 @@ public class CustomerController {
                                   @PathVariable("username") String username,
                                   @ModelAttribute("nguoidung") UpdateNguoiDung nguoidung,
                                   @ModelAttribute("diachi") UpdateDiaChi diachi,
-                                  @ModelAttribute("khachhang") UpdateKhachHang khachhang
+                                  @ModelAttribute("khachhang") UpdateKhachHang khachhang,
+                                  HttpSession session
 
     ) {
+        Claims claims = jwtGenerator.
+                getClaims(userManager.getToken((String)session.getAttribute("userDangnhap")));
+        NguoiDung ndIsLogged = khachHangService.findNguoiDungByTaikhoan(claims.getSubject());
 
         NguoiDung userSelect = khachHangService.findNguoiDungByTaikhoan(username);
         int userId = userSelect.getId();
@@ -252,7 +257,7 @@ public class CustomerController {
         nd.setNgaysinh(nguoidung.getNgaysinh());
         nd.setSodienthoai(nguoidung.getSodienthoai().trim());
         nd.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
-        nd.setNguoicapnhat("CUSTOMER");
+        nd.setNguoicapnhat(ndIsLogged.getTaikhoan());
         khachHangService.updateNguoiDung(nd);
         System.out.println("updateND ok");
 
@@ -265,9 +270,14 @@ public class CustomerController {
     public String themdiachi(Model model,
                              @PathVariable("username") String username,
                              @ModelAttribute("addDiaChi") UpdateDiaChi diachi,
-                             RedirectAttributes redirectAttributes
+                             RedirectAttributes redirectAttributes,
+                             HttpSession session
 
     ) {
+        Claims claims = jwtGenerator.
+                getClaims(userManager.getToken((String)session.getAttribute("userDangnhap")));
+        NguoiDung ndIsLogged = khachHangService.findNguoiDungByTaikhoan(claims.getSubject());
+
         NguoiDung userSelect = khachHangService.findNguoiDungByTaikhoan(username);
 
         DiaChi existingDiaChi = diaChiRepository.findDiaChiByDetails(
@@ -287,7 +297,7 @@ public class CustomerController {
             existingDiaChi.setQuanhuyen(diachi.getQuanhuyen());
             existingDiaChi.setXaphuong(diachi.getXaphuong());
             existingDiaChi.setHotennguoinhan(diachi.getHotennguoinhan().trim().replaceAll("\\s+", " "));
-            existingDiaChi.setNguoicapnhat("CUSTOMER");
+            existingDiaChi.setNguoicapnhat(ndIsLogged.getTaikhoan());
             existingDiaChi.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
 
             khachHangService.addDiaChi(existingDiaChi);
@@ -300,8 +310,8 @@ public class CustomerController {
             dc.setTenduong(diachi.getTenduong().trim().replaceAll("\\s+", " "));
             dc.setSdtnguoinhan(diachi.getSdtnguoinhan());
             dc.setHotennguoinhan(diachi.getHotennguoinhan().trim().replaceAll("\\s+", " "));
-            dc.setNguoicapnhat("CUSTOMER");
-            dc.setNguoitao("CUSTOMER");
+            dc.setNguoicapnhat(ndIsLogged.getTaikhoan());
+            dc.setNguoitao(ndIsLogged.getTaikhoan());
             dc.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
             dc.setNgaytao(Timestamp.valueOf(LocalDateTime.now()));
             dc.setTrangthai(false);
@@ -318,7 +328,8 @@ public class CustomerController {
                             @PathVariable("username") String username,
                             @Valid @ModelAttribute("updateDiaChi") UpdateDiaChi diachi,
                             BindingResult dcBindingResult,
-                            RedirectAttributes redirectAttributes
+                            RedirectAttributes redirectAttributes,
+                            HttpSession session
 
     ) {
         if (dcBindingResult.hasErrors()) {
@@ -326,6 +337,10 @@ public class CustomerController {
             System.out.println("List Error DiaChi: " + lstErrorDc);
             return "customer/hosokhachhang";
         }
+
+        Claims claims = jwtGenerator.
+                getClaims(userManager.getToken((String)session.getAttribute("userDangnhap")));
+        NguoiDung ndIsLogged = khachHangService.findNguoiDungByTaikhoan(claims.getSubject());
 
         NguoiDung userSelect = khachHangService.findNguoiDungByTaikhoan(username);
 
@@ -336,8 +351,7 @@ public class CustomerController {
         dc.setTenduong(diachi.getTenduong().trim().replaceAll("\\s+", " "));
         dc.setSdtnguoinhan(diachi.getSdtnguoinhan());
         dc.setHotennguoinhan(diachi.getHotennguoinhan().trim().replaceAll("\\s+", " "));
-        dc.setNguoicapnhat("CUSTOMER");
-        dc.setNguoitao("CUSTOMER");
+        dc.setNguoicapnhat(ndIsLogged.getTaikhoan());
         dc.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
         khachHangService.addDiaChi(dc);
 
@@ -349,12 +363,19 @@ public class CustomerController {
     @GetMapping("/thietlapmacdinh")
     public String thietlapmacdinh(Model model,
                                   RedirectAttributes redirectAttributes,
-                                  @RequestParam("id") Integer id) {
+                                  @RequestParam("id") Integer id,
+                                  HttpSession session) {
+
+        Claims claims = jwtGenerator.
+                getClaims(userManager.getToken((String)session.getAttribute("userDangnhap")));
+        NguoiDung ndIsLogged = khachHangService.findNguoiDungByTaikhoan(claims.getSubject());
 
         DiaChi dc = khachHangService.findDiaChiById(id);
         DiaChi dcMacDinh = diaChiRepository.findDiaChiByTrangthai(dc.getNguoidung().getId(), true);
         dcMacDinh.setTrangthai(false);
+        dcMacDinh.setNguoicapnhat(ndIsLogged.getTaikhoan());
         dc.setTrangthai(true);
+        dc.setNguoicapnhat(ndIsLogged.getTaikhoan());
         khachHangService.updateDiaChi(dcMacDinh);
         khachHangService.updateDiaChi(dc);
 
@@ -380,7 +401,12 @@ public class CustomerController {
     public String doimatkhau(@ModelAttribute("nguoidungdoimatkhau") DoiMatKhauNguoiDung nguoidungdoimatkhau,
                              @PathVariable("username") String username,
                              RedirectAttributes redirectAttributes,
-                             Model model) {
+                             Model model,
+                             HttpSession session) {
+
+        Claims claims = jwtGenerator.
+                getClaims(userManager.getToken((String)session.getAttribute("userDangnhap")));
+        NguoiDung ndIsLogged = khachHangService.findNguoiDungByTaikhoan(claims.getSubject());
 
         NguoiDung nd = khachHangService.findNguoiDungByTaikhoan(username);
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -409,13 +435,15 @@ public class CustomerController {
             return "redirect:/hosokhachhang/{username}";
         }
 
-
         String matkhaumoi = passwordEncoder.encode(nguoidungdoimatkhau.getMatkhaumoi());
+
         nguoiDungRepository.updatePassword(username, matkhaumoi);
+        nd.setNguoicapnhat(ndIsLogged.getTaikhoan());
+        nd.setLancapnhatcuoi(Timestamp.valueOf(LocalDateTime.now()));
+        nguoiDungRepository.save(nd);
         System.out.println("Đã update mật khẩu");
 
         redirectAttributes.addFlashAttribute("success", true);
-
 
         return "redirect:/hosokhachhang/{username}";
     }
@@ -561,6 +589,12 @@ public class CustomerController {
             if (chiTiet.getSanphamchitiet().getSoluong() < 1 || chiTiet.getSanphamchitiet().getTrangthai() == false) {
                 continue;
             }
+            if (gioHangChiTiet != null) {
+                if (gioHangChiTiet.getSoluong() == chiTiet.getSanphamchitiet().getSoluong()) {
+                    continue;
+                }
+            }
+
             hasValidProduct = true;
             if (gioHangChiTiet == null) {
                 // Nếu chưa có, tạo mới chi tiết giỏ hàng

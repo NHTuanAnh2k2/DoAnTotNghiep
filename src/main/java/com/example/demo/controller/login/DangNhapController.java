@@ -111,7 +111,7 @@ public class DangNhapController {
                     taiKhoanTokenInfos.add(taiKhoanTokenInfo);
                     session.setAttribute("taiKhoanTokenInfos", taiKhoanTokenInfos);
                     session.setAttribute("token", token);
-                    userManager.addUser(userId, token);
+                    userManager.addUser(nd.getTaikhoan(), token);
                     session.setAttribute("userDangnhap", nd.getTaikhoan());
 //                    session.setAttribute("user", nd);
                     return "redirect:/customer/trangchu";
@@ -203,11 +203,10 @@ public class DangNhapController {
             HttpSession session = request.getSession(false);
             String userName = (String) session.getAttribute("userDangnhap");
             NguoiDung nguoiDung = khachHangService.findNguoiDungByTaikhoan(userName);
-            Integer userId = nguoiDung.getId();
-            String token = userManager.getToken(userId);
+            String token = userManager.getToken(nguoiDung.getTaikhoan());
             if (session != null) {
                 session.removeAttribute("userDangnhap");
-                userManager.logoutUser(userId, token);
+                userManager.logoutUser(nguoiDung.getTaikhoan(), token);
                 System.out.println("Danh sách người dùng đang đăng nhập: " + userManager.getLoggedInUsers());
             }
             return "redirect:/customer/trangchu";

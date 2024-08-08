@@ -65,10 +65,10 @@
                         </h1>
                     </div>
                     <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
+                        <!-- <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <li class="breadcrumb-item active">QUẢN LÝ PHIẾU GIẢM GIÁ</li>
-                        </ol>
+                        </ol> -->
                     </div>
                 </div>
             </div><!-- /.container-fluid -->
@@ -100,11 +100,11 @@
                                     <div class="row mb-4">
                                         <div class="col-lg-5 d-flex justify-content-between">
                                             <div class="form123">
-                                                <input id="tungaySearch" name="tungaySearch" th:value="${tungay}" type="datetime-local" class="form-control" style="width: 205px;" onchange="submitFormSearch1()">
+                                                <input onkeydown="return false" id="tungaySearch" name="tungaySearch" th:value="${tungay}" type="datetime-local" class="form-control" style="width: 205px;" onchange="submitFormSearch1()">
                                                 <label>Từ ngày</label>
                                             </div>
                                             <div class="form123">
-                                                <input id="denngaySearch" name="denngaySearch" th:value="${denngay}" type="datetime-local" class="form-control" style="width: 205px;" onchange="submitFormSearch1()">
+                                                <input onkeydown="return false" id="denngaySearch" name="denngaySearch" th:value="${denngay}" type="datetime-local" class="form-control" style="width: 205px;" onchange="submitFormSearch1()">
                                                 <label>Đến ngày</label>
                                             </div>
                                         </div>

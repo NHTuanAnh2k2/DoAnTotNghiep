@@ -1033,6 +1033,8 @@
             const urlGetListSP = `/ban-hang-tai-quay/tim-coutSP-theoHD?maHD=${maHD}`;
             fetch(urlGetListSP)
                 .then(function (a) {
+                    console.log("đây")
+                    console.log(a)
                     return a.json();
                 })
                 .then(async function (b) {
@@ -1103,9 +1105,9 @@
                                     discounts = b;
                                 })
                             if (discounts > 0) {
-                                tongTien += hd.soluong * (hd.giasanpham / 100 * (100 - discounts));
+                                tongTien += hd.soluong * (hd.sanphamchitiet.giatien / 100 * (100 - discounts));
                             } else {
-                                tongTien += hd.soluong * hd.giasanpham;
+                                tongTien += hd.soluong * hd.sanphamchitiet.giatien;
                             }
 
                             stt++;
@@ -1122,17 +1124,17 @@
                </td>
 <td style="vertical-align: middle;">
     <p style="font-weight: bold">${hd.sanphamchitiet.sanpham.tensanpham}</p>
-     ${discounts > 0 ? ` <p style="color: red;font-weight: bold">${(hd.giasanpham / 100 * (100 - discounts)).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
-      <p class="strikethrough" style="color: black;font-weight: bold">${hd.giasanpham.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
-     ` : ` <p style="color: red;font-weight: bold">${hd.giasanpham.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>`}
+     ${discounts > 0 ? ` <p style="color: red;font-weight: bold">${(hd.sanphamchitiet.giatien / 100 * (100 - discounts)).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+      <p class="strikethrough" style="color: black;font-weight: bold">${hd.sanphamchitiet.giatien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+     ` : ` <p style="color: red;font-weight: bold">${hd.sanphamchitiet.giatien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>`}
     <p> Size: ${hd.sanphamchitiet.kichco.ten}</p>
 </td>
 <td style="vertical-align: middle;">
     <input class="form-control" style="width: 120px;height: 30px; margin-left: 20%;" type="text" id="${hd.id}" value="${hd.soluong}" oninput="changeQuantity(event)" name="${hd.sanphamchitiet.id}">
 </td>
  <td style="color: red;font-weight: bold;vertical-align: middle;">
-                ${discounts > 0 ? ` <p style="color: red;font-weight: bold">${((hd.giasanpham / 100 * (100 - discounts)) * hd.soluong).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
-     ` : ` <p style="color: red;font-weight: bold">${(hd.soluong * hd.giasanpham).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>`}
+                ${discounts > 0 ? ` <p style="color: red;font-weight: bold">${((hd.sanphamchitiet.giatien / 100 * (100 - discounts)) * hd.soluong).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+     ` : ` <p style="color: red;font-weight: bold">${(hd.soluong * hd.sanphamchitiet.giatien).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>`}
            
                 </td>
 
@@ -1422,9 +1424,9 @@ tabindex="0">
                                     discounts = b;
                                 })
                             if (discounts > 0) {
-                                tongTien += hd.soluong * (hd.giasanpham / 100 * (100 - discounts));
+                                tongTien += hd.soluong * (hd.sanphamchitiet.giatien / 100 * (100 - discounts));
                             } else {
-                                tongTien += hd.soluong * hd.giasanpham;
+                                tongTien += hd.soluong * hd.sanphamchitiet.giatien;
                             }
                             stt++;
                             htmlTR += `
@@ -1440,9 +1442,9 @@ tabindex="0">
                </td>
             <td style="vertical-align: middle;">
                 <p style="font-weight: bold">${hd.sanphamchitiet.sanpham.tensanpham}</p>
-               ${discounts > 0 ? ` <p style="color: red;font-weight: bold">${(hd.giasanpham / 100 * (100 - discounts)).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
-      <p class="strikethrough" style="color: black;font-weight: bold">${hd.giasanpham.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
-     ` : ` <p style="color: red;font-weight: bold">${hd.giasanpham.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>`}
+               ${discounts > 0 ? ` <p style="color: red;font-weight: bold">${(hd.sanphamchitiet.giatien / 100 * (100 - discounts)).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+      <p class="strikethrough" style="color: black;font-weight: bold">${hd.sanphamchitiet.giatien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+     ` : ` <p style="color: red;font-weight: bold">${hd.sanphamchitiet.giatien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>`}
   
                 <p> Size: ${hd.sanphamchitiet.kichco.ten}</p>
             </td>
@@ -1450,8 +1452,8 @@ tabindex="0">
                 <input class="form-control" style="width: 120px;height: 30px; margin-left: 20%;" type="text" id="${hd.id}" value="${hd.soluong}" oninput="changeQuantity(event)">
             </td>
             <td style="color: red;font-weight: bold;vertical-align: middle;">
-                ${discounts > 0 ? ` <p style="color: red;font-weight: bold">${((hd.giasanpham / 100 * (100 - discounts)) * hd.soluong).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
-     ` : ` <p style="color: red;font-weight: bold">${(hd.soluong * hd.giasanpham).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>`}
+                ${discounts > 0 ? ` <p style="color: red;font-weight: bold">${((hd.sanphamchitiet.giatien / 100 * (100 - discounts)) * hd.soluong).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+     ` : ` <p style="color: red;font-weight: bold">${(hd.soluong * hd.sanphamchitiet.giatien).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>`}
            
                 </td>
             

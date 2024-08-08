@@ -3,7 +3,17 @@
 <!--thư viện-->
 <nav th:replace="~{/layoutadmin/head.html}"></nav>
 <nav th:replace="~{/layout/head.html}"></nav>
+<!--Hover vào ảnh-->
+<style>
+    .carousel-img {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
 
+    .carousel-img:hover {
+        transform: scale(1.05); /* Tăng kích thước ảnh một chút khi hover */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Thêm bóng đổ để tạo cảm giác nổi bật */
+    }
+</style>
 <body>
 
 <!-- header -->
@@ -38,8 +48,8 @@
                                                  th:src="@{'/upload' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
                                                  class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
                                         </a>
-                                        <div class="tag-n-s">
-                                            <span>New</span>
+                                        <div class="tag-n-s" th:if="${sp[9] != 0}">
+                                            <span th:text="${sp[9] + '%'}"></span>
                                         </div>
 <!--                                        <div class="actions-btn">-->
 <!--                                            <ul class="clearfix">-->
@@ -62,9 +72,21 @@
                                             <h6><span th:text="${sp[7]} + ' size'" style="font-family: 'Bahnschrift'"></span> / <span th:text="${sp[8]} + ' màu sắc'" style="font-family: 'Bahnschrift'"></span></h6>
                                         </div>
                                         <p>
-                                    <span style="color: red; font-weight: bold"
-                                          th:text="${#numbers.formatDecimal(sp[5], 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></span>
-                                            <!-- <del>$170.00</del> -->
+                                            <!-- Tính giá sau khi giảm -->
+                                        <div th:with="giaGoc=${sp[5] != null ? sp[5] : 0}, giaGiam=${sp[9] != null ? sp[9] : 0}, giaSauKhiGiam=${giaGoc - (giaGoc * giaGiam / 100)}">
+                                            <!-- Hiển thị thẻ <del> chỉ khi giá gốc khác giá sau khi giảm -->
+                                            <del style="color: black; font-weight: bold"
+                                                 th:if="${giaGoc != giaSauKhiGiam}"
+                                                 th:text="${#numbers.formatDecimal(giaGoc, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}">
+                                            </del>
+                                        </div>
+
+                                        <span style="color: red; font-weight: bold"
+                                              th:text="${#numbers.formatDecimal(
+          (sp[5] != null ? sp[5] : 0) - ((sp[5] != null ? sp[5] : 0) * (sp[9] != null ? sp[9] : 0) / 100),
+          0, 'COMMA', 0, 'POINT') + ' &#x20ab;'
+      }">
+</span>
                                         </p>
                                     </div>
                                 </div>

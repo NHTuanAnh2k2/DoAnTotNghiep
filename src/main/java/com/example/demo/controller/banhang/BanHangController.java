@@ -142,8 +142,36 @@ public class BanHangController {
     ) {
         lstPTTT = new ArrayList<>();
         hdHienTai = daoHD.timHDTheoMaHD(maHD);
-        List<HoaDonChiTiet> lst = daoHDCT.timDSHDTCTTheoMaHD(maHD);
-        return ResponseEntity.ok(lst);
+        List<HoaDonChiTiet> lst1 = daoHDCT.timDSHDTCTTheoMaHD(maHD);
+        List<HoaDonChiTietInfo> lst2 = new ArrayList<>();
+        for (int i = 0; i < lst1.size(); i++) {
+            SPCTIF spetlai = new SPCTIF();
+            spetlai.setId(lst1.get(i).getSanphamchitiet().getId());
+            spetlai.setQrcode(lst1.get(i).getSanphamchitiet().getQrcode());
+            spetlai.setMasanphamchitiet(lst1.get(i).getSanphamchitiet().getMasanphamchitiet());
+            spetlai.setMota(lst1.get(i).getSanphamchitiet().getMota());
+            spetlai.setGioitinh(lst1.get(i).getSanphamchitiet().getGioitinh());
+            spetlai.setSoluong(lst1.get(i).getSanphamchitiet().getSoluong());
+            spetlai.setGiatien(lst1.get(i).getSanphamchitiet().getGiatien());
+            spetlai.setNgaytao(lst1.get(i).getSanphamchitiet().getNgaytao());
+            spetlai.setNguoitao(lst1.get(i).getSanphamchitiet().getNguoitao());
+            spetlai.setLancapnhatcuoi(lst1.get(i).getSanphamchitiet().getLancapnhatcuoi());
+            spetlai.setNguoicapnhat(lst1.get(i).getSanphamchitiet().getNguoicapnhat());
+            spetlai.setTrangthai(lst1.get(i).getSanphamchitiet().getTrangthai());
+            spetlai.setSanpham(lst1.get(i).getSanphamchitiet().getSanpham());
+            spetlai.setKichco(lst1.get(i).getSanphamchitiet().getKichco());
+            spetlai.setMausac(lst1.get(i).getSanphamchitiet().getMausac());
+            spetlai.setChatlieu(lst1.get(i).getSanphamchitiet().getChatlieu());
+            spetlai.setThuonghieu(lst1.get(i).getSanphamchitiet().getThuonghieu());
+            spetlai.setDegiay(lst1.get(i).getSanphamchitiet().getDegiay());
+            spetlai.setAnh(lst1.get(i).getSanphamchitiet().getAnh());
+
+            HoaDonChiTietInfo hdctifos = new HoaDonChiTietInfo(lst1.get(i).getId(), lst1.get(i).getGiasanpham(), lst1.get(i).getSoluong(),
+                   lst1.get(i).getGhichu(), lst1.get(i).getTrangthai(), spetlai, lst1.get(i).getHoadon());
+           lst2.add(hdctifos);
+        }
+
+        return ResponseEntity.ok(lst2);
     }
 
     @GetMapping("tim-HD-TheoMaHD")
@@ -233,6 +261,8 @@ public class BanHangController {
                 }
             }
         }
+        System.out.println("aaaaaaaaaaaa");
+        System.out.println(discounts);
         return ResponseEntity.ok(discounts);
     }
 
@@ -265,7 +295,23 @@ public class BanHangController {
         hdctNew.setSanphamchitiet(spct);
         hdctNew.setSoluong(1);
         hdctNew.setTrangthai(true);
-        hdctNew.setGiasanpham(spct.getGiatien());
+        List<SanPhamDotGiam> lst = SPdotgiamRepo.findBySanphamchitiet(spct);
+        Integer discounts = 0;
+        Integer discountbacks = 0;
+        if (lst.size() > 0) {
+            for (SanPhamDotGiam a : lst
+            ) {
+                if (a.getDotgiamgia().getTrangthai() == 1) {
+                    discounts = a.getDotgiamgia().getGiatrigiam();
+                    discountbacks = 100 - discounts;
+                }
+            }
+        }
+        if (discounts > 0) {
+            hdctNew.setGiasanpham((spct.getGiatien().divide(new BigDecimal("100"))).multiply(new BigDecimal(discountbacks + "")));
+        } else {
+            hdctNew.setGiasanpham(spct.getGiatien());
+        }
         daoSPCT.addSPCT(spctCapNhatSL);
         daoHDCT.capnhat(hdctNew);
         redirectAttributes.addFlashAttribute("choseSPsucsess", true);
@@ -301,7 +347,23 @@ public class BanHangController {
         hdctNew.setSanphamchitiet(spct);
         hdctNew.setSoluong(1);
         hdctNew.setTrangthai(true);
-        hdctNew.setGiasanpham(spct.getGiatien());
+        List<SanPhamDotGiam> lst = SPdotgiamRepo.findBySanphamchitiet(spct);
+        Integer discounts = 0;
+        Integer discountbacks = 0;
+        if (lst.size() > 0) {
+            for (SanPhamDotGiam a : lst
+            ) {
+                if (a.getDotgiamgia().getTrangthai() == 1) {
+                    discounts = a.getDotgiamgia().getGiatrigiam();
+                    discountbacks = 100 - discounts;
+                }
+            }
+        }
+        if (discounts > 0) {
+            hdctNew.setGiasanpham((spct.getGiatien().divide(new BigDecimal("100"))).multiply(new BigDecimal(discountbacks + "")));
+        } else {
+            hdctNew.setGiasanpham(spct.getGiatien());
+        }
         daoSPCT.addSPCT(spctCapNhatSL);
         daoHDCT.capnhat(hdctNew);
         redirectAttributes.addFlashAttribute("choseSPsucsess", true);
@@ -417,10 +479,12 @@ public class BanHangController {
         nguoidung.setNgaysinh(Date.valueOf("2020-06-06"));
         nguoidung.setNgaytao(Timestamp.valueOf(currentDateTime));
         nguoidung.setTrangthai(true);
+
         String username = (String) session.getAttribute("adminDangnhap");
         NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
         List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
         NhanVien nv = lstnvtimve.get(0);
+
         //fake nhân viên
         nguoidung.setNguoitao(nv.getNguoidung().getHovaten());
         String to = kh.getEmail();
