@@ -1229,6 +1229,7 @@
 <script src="https://cdn.jsdelivr.net/npm/jsqr"></script>
 <script>
     const specialCharPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+    const specialCharPatternAddress = /[!@#$%^&*()_+\=\[\]{};':"\\|.<>\/?]/;
     const numberPattern = /\d/;
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,4}(?:\.[a-zA-Z]{2,4})?$/;
     const phoneNumberPattern = /^0[0-9]{9}$/;
@@ -1415,8 +1416,12 @@
             tenduongError.innerText = 'Địa chỉ không được quá 100 ký tự';
             document.getElementById('tenduong').style.borderColor = 'red';
             isValid = false;
-        } else if (specialCharPattern.test(inputTenDuong)) {
+        } else if (specialCharPatternAddress.test(inputTenDuong)) {
             tenduongError.innerText = "Địa chỉ không được chứa ký tự đặc biệt";
+            document.getElementById('tenduong').style.borderColor = 'red';
+            isValid = false;
+        } else if (inputTenDuong.length < 5) {
+            tenduongError.innerText = 'Địa chỉ không được ít hon 5 ký tự';
             document.getElementById('tenduong').style.borderColor = 'red';
             isValid = false;
         }
@@ -1477,9 +1482,13 @@
             tenduongError2.innerText = 'Địa chỉ không được quá 100 ký tự';
             document.getElementById('tenduong2').style.borderColor = 'red';
             isValid = false;
-        } else if (specialCharPattern.test(inputTenDuong2)) {
+        } else if (specialCharPatternAddress.test(inputTenDuong2)) {
             tenduongError2.innerText = "Địa chỉ không được chứa ký tự đặc biệt";
             document.getElementById('tenduong2').style.borderColor = 'red';
+            isValid = false;
+        } else if (inputTenDuong2.length < 5) {
+            tenduongError2.innerText = 'Địa chỉ không được ít hơn 5 ký tự';
+            document.getElementById('tenduong').style.borderColor = 'red';
             isValid = false;
         }
 
