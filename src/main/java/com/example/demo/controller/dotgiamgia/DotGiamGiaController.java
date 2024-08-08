@@ -3,6 +3,7 @@ package com.example.demo.controller.dotgiamgia;
 import com.example.demo.entity.*;
 import com.example.demo.repository.NguoiDungRepository;
 import com.example.demo.repository.NhanVienRepository;
+import com.example.demo.repository.SanPhamChiTietRepository;
 import com.example.demo.service.impl.DotGiamGiaImp;
 import com.example.demo.service.impl.SanPHamDotGiamImp;
 import com.example.demo.service.impl.SanPhamChiTietImp;
@@ -19,10 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Controller
 public class DotGiamGiaController {
@@ -39,6 +37,8 @@ public class DotGiamGiaController {
     NguoiDungRepository daoNguoiDung;
     @Autowired
     NhanVienRepository nhanvienRPo;
+    @Autowired
+    SanPhamChiTietRepository sanPhamChiTietRepository;
 
 
     @RequestMapping("/admin/hien-thi-dot-giam-gia")
@@ -160,36 +160,32 @@ public class DotGiamGiaController {
             }
             listInt.remove(Integer.valueOf(-1));
             List<SanPhamDotGiam> lstDotSP= sanPHamDotGiamImp.findAll();
-            for(Integer chon :listInt){
-                DotGiamGia dot = dotGiamGiaImp.findFirstByOrderByNgaytaoDesc();
-                SanPhamChiTiet spct= sanPhamChiTietImp.findById(chon);
-                for(SanPhamDotGiam d : lstDotSP){
-                    if(spct.getId()==d.getSanphamchitiet().getId()){
-                        if(dot.getNgaybatdau().getTime()<= d.getDotgiamgia().getNgayketthuc().getTime()){
+        DotGiamGia dot = dotGiamGiaImp.findFirstByOrderByNgaytaoDesc();
+        for (Integer chon : listInt) {
+            Optional<SanPhamChiTiet> spctOpt = sanPhamChiTietRepository.findById(chon);
+            if (spctOpt.isPresent()) {
+                SanPhamChiTiet spct = spctOpt.get();
+                boolean isUpdated = false;
+
+                for (SanPhamDotGiam d : lstDotSP) {
+                    if (spct.getId().equals(d.getSanphamchitiet().getId())) {
+                        if (dot.getNgaybatdau().getTime() <= d.getDotgiamgia().getNgayketthuc().getTime()) {
                             sanPHamDotGiamImp.delete(d);
-                            SanPhamDotGiam sanPhamDotGiam= new SanPhamDotGiam();
-                            sanPhamDotGiam.setSanphamchitiet(spct);
-                            sanPhamDotGiam.setDotgiamgia(dot);
-
-                            sanPHamDotGiamImp.AddSanPhamDotGiam(sanPhamDotGiam);
-                        }else{
-                            SanPhamDotGiam sanPhamDotGiam= new SanPhamDotGiam();
-                            sanPhamDotGiam.setSanphamchitiet(spct);
-                            sanPhamDotGiam.setDotgiamgia(dot);
-
-                            sanPHamDotGiamImp.AddSanPhamDotGiam(sanPhamDotGiam);
                         }
+                        addSanPhamDotGiam(spct, dot);
+                        isUpdated = true;
+                        break;
                     }
                 }
-//                SanPhamDotGiam sanPhamDotGiam= new SanPhamDotGiam();
-//                sanPhamDotGiam.setSanphamchitiet(spct);
-//                sanPhamDotGiam.setDotgiamgia(dot);
-//
-//                sanPHamDotGiamImp.AddSanPhamDotGiam(sanPhamDotGiam);
 
+                if (!isUpdated) {
+                    addSanPhamDotGiam(spct, dot);
+                }
             }
-            session.setAttribute("themdotthanhcong",checkthem);
-            return "redirect:/admin/hien-thi-dot-giam-gia";
+        }
+
+        session.setAttribute("themdotthanhcong",checkthem);
+        return "redirect:/admin/hien-thi-dot-giam-gia";
 
     }
     @GetMapping("/admin/xem-cap-nhat-dot-giam-gia/{Id}")
@@ -234,15 +230,6 @@ public class DotGiamGiaController {
         if(trangthaicn==true){
             dotGiamGia.setTrangthai(2);
         }
-//        if (dot.getTrangthai() == 2) {
-//            dotGiamGia.setTrangthai(2);
-//        } else {
-//            if (ngayBatDauTimestamp.getTime() > ngayHT.getTime()) {
-//                dotGiamGia.setTrangthai(0);
-//            } else {
-//                dotGiamGia.setTrangthai(1);
-//            }
-//        }
 
 
         dotGiamGiaImp.AddDotGiamGia(dotGiamGia);
@@ -260,44 +247,46 @@ public class DotGiamGiaController {
         for(SanPhamDotGiam sp :lstSPDG){
             sanPHamDotGiamImp.delete(sp);
         }
+        List<SanPhamDotGiam> lstDotSP= sanPHamDotGiamImp.findAll();
+        for (Integer chon : listInt) {
+            Optional<SanPhamChiTiet> spctOpt = sanPhamChiTietRepository.findById(chon);
+            if (spctOpt.isPresent()) {
+                SanPhamChiTiet spct = spctOpt.get();
+                boolean isUpdated = false;
 
-        for(Integer chon :listInt){
-            SanPhamChiTiet spct= sanPhamChiTietImp.findById(chon);
-            SanPhamDotGiam sanPhamDotGiam= new SanPhamDotGiam();
-            sanPhamDotGiam.setSanphamchitiet(spct);
-            sanPhamDotGiam.setDotgiamgia(dotGiamGia);
+                for (SanPhamDotGiam d : lstDotSP) {
+                    if (spct.getId().equals(d.getSanphamchitiet().getId())) {
+                        if (dotGiamGia.getNgaybatdau().getTime() <= d.getDotgiamgia().getNgayketthuc().getTime()) {
+                            sanPHamDotGiamImp.delete(d);
+                        }
+                        addSanPhamDotGiam(spct, dotGiamGia);
+                        isUpdated = true;
+                        break;
+                    }
+                }
 
-            sanPHamDotGiamImp.AddSanPhamDotGiam(sanPhamDotGiam);
-
+                if (!isUpdated) {
+                    addSanPhamDotGiam(spct, dotGiamGia);
+                }
+            }
         }
+
+//        for(Integer chon :listInt){
+//            SanPhamChiTiet spct= sanPhamChiTietImp.findById(chon);
+//            SanPhamDotGiam sanPhamDotGiam= new SanPhamDotGiam();
+//            sanPhamDotGiam.setSanphamchitiet(spct);
+//            sanPhamDotGiam.setDotgiamgia(dotGiamGia);
+//
+//            sanPHamDotGiamImp.AddSanPhamDotGiam(sanPhamDotGiam);
+//
+//        }
         session.setAttribute("capnhatdotthanhcong",checkcapnhat);
         return "redirect:/admin/hien-thi-dot-giam-gia";
     }
-//    @GetMapping("/products")
-//    public String getAllProducts(Model model) {
-//        List<Product> products = productService.getAllProducts();
-//        model.addAttribute("products", products);
-//        return "products"; // Trả về template HTML chứa danh sách sản phẩm và chi tiết sản phẩm
-//    }
-//
-//    @GetMapping("/productDetails/{productId}")
-//    public String getProductDetails(@PathVariable Long productId, Model model) {
-//        List<ProductDetail> productDetails = productService.getProductDetails(productId);
-//        model.addAttribute("productDetails", productDetails);
-//        return "products"; // Trả về template HTML chứa danh sách sản phẩm và chi tiết sản phẩm
-//    }
-
-//    @GetMapping("/xem-chi-tiet-san-pham")
-//
-//    public String getProductDetails(@RequestParam("productIds") List<String> productIds,Model model) {
-//        List<SanPhamChiTiet> allProductDetails = new ArrayList<>();
-//        for (String productId : productIds) {
-//            Integer id= Integer.parseInt(productId);
-//            List<SanPhamChiTiet> productDetails = sanPhamChiTietImp.findBySanPhamId(id);
-//            allProductDetails.addAll(productDetails);
-//        }
-//        model.addAttribute("lstSPCT",allProductDetails);
-//        return "forward://admin/hien-thi-dot-giam-gia";// Trả về danh sách chi tiết sản phẩm của tất cả các sản phẩm
-//    }
-
+    private void addSanPhamDotGiam(SanPhamChiTiet spct, DotGiamGia dot) {
+        SanPhamDotGiam sanPhamDotGiam = new SanPhamDotGiam();
+        sanPhamDotGiam.setSanphamchitiet(spct);
+        sanPhamDotGiam.setDotgiamgia(dot);
+        sanPHamDotGiamImp.AddSanPhamDotGiam(sanPhamDotGiam);
+    }
 }

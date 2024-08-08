@@ -67,6 +67,11 @@ public class ThanhToanController {
     @Autowired
     SanPhamDotGiamRepository SPdotgiamRepo;
 
+    @RequestMapping("/cam-on")
+    public String camon(){
+        return "customer/camondathang";
+    }
+
     @RequestMapping("/view-thanh-toan")
     public String viewthanhtoan(Model model, @ModelAttribute("diachikotaikhoan") DiaChiThanhToanNoTaiKhoanOnline diachikotaikhoan, HttpSession session) {
         List<GioHangChiTiet> cartItems = new ArrayList<>();
