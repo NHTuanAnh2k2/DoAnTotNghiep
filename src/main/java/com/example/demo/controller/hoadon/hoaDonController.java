@@ -611,6 +611,7 @@ public class hoaDonController {
         model.addAttribute("pageSPHD", daoHDCT.getDSSPHD(hoaDonXem, p));
         model.addAttribute("lstsanphamdotgiam", lstsanphamdotgiam);
         model.addAttribute("checksizes", lstsanphamdotgiam.size()>0?true:false);
+        model.addAttribute("checksizeJS", lstsanphamdotgiam.size());
         return "admin/qlchitiethoadon";
     }
 
