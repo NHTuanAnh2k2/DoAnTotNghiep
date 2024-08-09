@@ -637,6 +637,7 @@ public class hoaDonController {
             // phiếu %
             if ((new BigDecimal(phieutim.getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100"))).compareTo(phieutim.getGiatrigiamtoida()) > 0) {
                 sotiengiam = phieutim.getGiatrigiamtoida();
+
             } else {
                 sotiengiam = (new BigDecimal(phieutim.getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100")));
             }
@@ -654,7 +655,7 @@ public class hoaDonController {
         dao.capNhatHD(hds);
         PhieuGiamGiaChiTiet phieuGiamGiaChiTietTim = new PhieuGiamGiaChiTiet();
         List<PhieuGiamGiaChiTiet> lst = daoPGGCT.timListPhieuTheoHD(hds);
-        if (lst.size() > 0) {       
+        if (lst.size() > 0) {
             phieuGiamGiaChiTietTim = lst.get(0);
             phieuGiamGiaChiTietTim.setPhieugiamgia(phieutim);
             phieuGiamGiaChiTietTim.setGiabandau(tongTienSP);
@@ -982,12 +983,17 @@ public class hoaDonController {
     public String changesTTDH(Model model, @ModelAttribute("thayDoiTT") ThayDoiTTHoaDon_KHInfo TTChanges, RedirectAttributes redirectAttributes) {
         List<HoaDon> hd = dao.timTheoID(idhdshowdetail);
         HoaDon hdset = hd.get(0);
+        BigDecimal tongtiennew=(hdset.getTongtien().subtract(hdset.getPhivanchuyen()));
+        hdset.setTongtien(tongtiennew.add(BigDecimal.valueOf(Double.valueOf(convertCurrency(TTChanges.getPhigiao())))));
         hdset.setTennguoinhan(TTChanges.getTen().trim().replaceAll("\\s+", " "));
         hdset.setSdt(TTChanges.getSdt().trim());
         String diachi = TTChanges.getDiachiCT() + ", " + TTChanges.getXa() + ", " + TTChanges.getHuyen() + ", " + TTChanges.getTinh();
         hdset.setDiachi(diachi.trim().replaceAll("\\s+", " "));
         hdset.setPhivanchuyen(BigDecimal.valueOf(Double.valueOf(convertCurrency(TTChanges.getPhigiao()))));
+//        System.out.println(tongtiennew);
         hdset.setGhichu(TTChanges.getGhichu().trim().replaceAll("\\s+", " "));
+        PhuongThucThanhToan ptttTim = daoPT.timTheoHoaDon(hdset).get(0);
+        ptttTim.setTongtien(tongtiennew.add(BigDecimal.valueOf(Double.valueOf(convertCurrency(TTChanges.getPhigiao())))));
         dao.capNhatHD(hdset);
         redirectAttributes.addFlashAttribute("chagesTTHDSucsess", true);
         return "redirect:/hoa-don/showDetail";
