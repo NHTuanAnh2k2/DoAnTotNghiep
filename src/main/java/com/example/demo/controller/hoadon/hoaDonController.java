@@ -654,7 +654,7 @@ public class hoaDonController {
         dao.capNhatHD(hds);
         PhieuGiamGiaChiTiet phieuGiamGiaChiTietTim = new PhieuGiamGiaChiTiet();
         List<PhieuGiamGiaChiTiet> lst = daoPGGCT.timListPhieuTheoHD(hds);
-        if (lst.size() > 0) {
+        if (lst.size() > 0) {       
             phieuGiamGiaChiTietTim = lst.get(0);
             phieuGiamGiaChiTietTim.setPhieugiamgia(phieutim);
             phieuGiamGiaChiTietTim.setGiabandau(tongTienSP);

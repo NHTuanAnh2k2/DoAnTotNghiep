@@ -261,32 +261,43 @@
                                                         </div>
                                                     </div>
                                                     <p></p>
-                                                    <button class="btn btn-danger" th:if="${trangThaiHienTai<2}"
-                                                        data-bs-toggle="modal" data-bs-target="#huy">Hủy</button>
-                                                    <button class="btn btn-warning"
-                                                        th:if="${trangThaiHienTai > 0 and trangThaiHienTai < 2 and lstphuongThucTT[0].trangthai!=true}"
-                                                        data-bs-toggle="modal" data-bs-target="#quaylai">Quay
-                                                        lại</button>
-                                                    <button th:if="${trangThaiHienTai==0}" class="btn btn-primary"
-                                                        data-bs-toggle="modal" data-bs-target="#xacnhan">Xác
-                                                        nhận</button>
-                                                    <button th:if="${trangThaiHienTai==1}" class="btn btn-primary"
-                                                        data-bs-toggle="modal" data-bs-target="#chogiao">Chờ
-                                                        giao</button>
-                                                    <button th:if="${trangThaiHienTai==2}" class="btn btn-primary"
-                                                        data-bs-toggle="modal" data-bs-target="#vanchuyen">Vận
-                                                        chuyển</button>
-                                                    <button th:if="${trangThaiHienTai==3}" class="btn btn-primary"
-                                                        data-bs-toggle="modal" data-bs-target="#thanhtoan">Thanh
-                                                        toán</button>
-                                                    <button th:if="${trangThaiHienTai==4}" class="btn btn-primary"
-                                                        data-bs-toggle="modal" data-bs-target="#hoanthanh">Hoàn
-                                                        thành</button>
-                                                    <button class="btn btn-dark" data-bs-toggle="modal"
-                                                        data-bs-target="#lichsu" style="margin-left: 805px">Lịch
-                                                        sử</button>
-                                                    <!-- Button trigger modal lịch sử -->
+                                                    <div class="d-flex justify-content-between">
+                                                        <div>
 
+
+                                                            <button class="btn btn-danger" th:if="${trangThaiHienTai<2}"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#huy">Hủy</button>
+                                                            <button class="btn btn-warning"
+                                                                th:if="${trangThaiHienTai > 0 and trangThaiHienTai < 2 and lstphuongThucTT[0].trangthai!=true}"
+                                                                data-bs-toggle="modal" data-bs-target="#quaylai">Quay
+                                                                lại</button>
+                                                            <button th:if="${trangThaiHienTai==0}"
+                                                                class="btn btn-primary" data-bs-toggle="modal"
+                                                                data-bs-target="#xacnhan">Xác
+                                                                nhận</button>
+                                                            <button th:if="${trangThaiHienTai==1}"
+                                                                class="btn btn-primary" data-bs-toggle="modal"
+                                                                data-bs-target="#chogiao">Chờ
+                                                                giao</button>
+                                                            <button th:if="${trangThaiHienTai==2}"
+                                                                class="btn btn-primary" data-bs-toggle="modal"
+                                                                data-bs-target="#vanchuyen">Vận
+                                                                chuyển</button>
+                                                            <button th:if="${trangThaiHienTai==3}"
+                                                                class="btn btn-primary" data-bs-toggle="modal"
+                                                                data-bs-target="#thanhtoan">Thanh
+                                                                toán</button>
+                                                            <button th:if="${trangThaiHienTai==4}"
+                                                                class="btn btn-primary" data-bs-toggle="modal"
+                                                                data-bs-target="#hoanthanh">Hoàn
+                                                                thành</button>
+                                                        </div>
+                                                        <button class="btn btn-dark" data-bs-toggle="modal"
+                                                            data-bs-target="#lichsu">Lịch
+                                                            sử</button>
+                                                        <!-- Button trigger modal lịch sử -->
+                                                    </div>
                                                     <!-- Modal lịch sử -->
                                                     <div class="modal fade" id="lichsu" tabindex="-1"
                                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -314,19 +325,19 @@
                                                                         <tbody>
                                                                             <tr th:each="a:${lstlichsu}">
                                                                                 <td th:text="${aStat.index+1}"></td>
-                                                                                <td th:if="${a.trangthai==0}">chờ xác
+                                                                                <td th:if="${a.trangthai==0}">Chờ xác
                                                                                     nhận</td>
-                                                                                <td th:if="${a.trangthai==1}">đã xác
+                                                                                <td th:if="${a.trangthai==1}">Đã xác
                                                                                     nhận</td>
-                                                                                <td th:if="${a.trangthai==2}">chờ giao
+                                                                                <td th:if="${a.trangthai==2}">Chờ giao
                                                                                     hàng</td>
-                                                                                <td th:if="${a.trangthai==3}">đang giao
+                                                                                <td th:if="${a.trangthai==3}">Đang giao
                                                                                     hàng</td>
-                                                                                <td th:if="${a.trangthai==4}">đã thanh
+                                                                                <td th:if="${a.trangthai==4}">Đã thanh
                                                                                     toán</td>
-                                                                                <td th:if="${a.trangthai==5}">đã hoàn
+                                                                                <td th:if="${a.trangthai==5}">Đã hoàn
                                                                                     thành</td>
-                                                                                <td th:if="${a.trangthai==6}">đã hủy
+                                                                                <td th:if="${a.trangthai==6}">Đã hủy
                                                                                 </td>
                                                                                 <td
                                                                                     th:text="${ #dates.format(a.ngaytao, 'dd-MM-yyyy HH:mm:ss')}">
@@ -1025,10 +1036,10 @@
                                                             Loại:</h6>
                                                         <p th:if="${hoaDonDT.loaihoadon==true}"
                                                             style="margin-left: 50px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
-                                                            online</p>
+                                                            Online</p>
                                                         <p th:if="${hoaDonDT.loaihoadon==false}"
                                                             style="margin-left: 50px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
-                                                            offline</p>
+                                                            Offline</p>
                                                     </div>
                                                     <div class="d-flex justify-content-start">
                                                         <h6 style="font-family: 'Times New Roman'; font-weight: bold">
@@ -1375,22 +1386,29 @@
                                                                 </tbody>
                                                             </table>
                                                             <br>
-                                                            <nav aria-label="Page navigation example" id="navAddSPHDCT">
-                                                                <ul class="pagination">
-                                                                    <li class="page-item" id="btn_prev_page"><a
-                                                                            class="page-link"
-                                                                            id="prevPageSP">Previous</a>
-                                                                    </li>
-                                                                    <li class="d-flex flex-row page-item"
-                                                                        id="numberPageSP">
+                                                            <div class="ps-2 pe-2">
+                                                                <div class="d-flex justify-content-end">
+                                                                    <nav aria-label="Page navigation example"
+                                                                        id="navAddSPHDCT">
+                                                                        <ul class="pagination">
+                                                                            <li class="page-item" id="btn_prev_page"><a
+                                                                                    class="page-link"
+                                                                                    id="prevPageSP">Trước</a>
+                                                                            </li>
+                                                                            <li class="d-flex flex-row page-item"
+                                                                                id="numberPageSP">
 
 
-                                                                    </li>
-                                                                    <li class="page-item" id="btn_next_page">
-                                                                        <a class="page-link" id="nextPageSP">Next</a>
-                                                                    </li>
-                                                                </ul>
-                                                            </nav>
+                                                                            </li>
+                                                                            <li class="page-item" id="btn_next_page">
+                                                                                <a class="page-link"
+                                                                                    id="nextPageSP">Sau</a>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </nav>
+                                                                </div>
+                                                            </div>
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1435,11 +1453,12 @@
                                                         <p th:text="${#numbers.formatDecimal(a.giasanpham, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
                                                             style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
                                                         </p>
-                                                        <p class="strikethrough" th:if= "${a.giasanpham!=a.sanphamchitiet.giatien}"
+                                                        <p class="strikethrough"
+                                                            th:if="${a.giasanpham!=a.sanphamchitiet.giatien}"
                                                             th:text="${#numbers.formatDecimal(a.sanphamchitiet.giatien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
                                                             style="font-family: 'Times New Roman'; font-size: 15px; color: black;font-weight: bold;">
                                                         </p>
-                                                
+
                                                         <p th:text="${'Size: '+a.sanphamchitiet.kichco.ten}"
                                                             style="font-family: 'Times New Roman'; font-size: 15px;font-weight: bold;">
                                                         </p>
@@ -1463,11 +1482,11 @@
                                                         <p th:text="${#numbers.formatDecimal(a.giasanpham*a.soluong, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
                                                             style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
                                                         </p>
-                                                    
+
                                                     </td>
                                                     <td style="vertical-align: middle;">
                                                         <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;"
-                                                            th:text="${a.trangthai==true?'thành công':'thất bại'}"></p>
+                                                            th:text="${a.trangthai==true?'Thành công':'Thất bại'}"></p>
                                                     </td>
                                                     <td style="vertical-align: middle;">
 
@@ -1478,13 +1497,12 @@
                                                                 type="button"><i class="bi bi-trash3"></i></button></a>
 
 
-                                                        <button class="btn btn-outline-danger"
-                                                            th:if="${trangThaiHienTai!=0}" disabled type="button"><i
-                                                                class="bi bi-trash3"></i></button>
+                                                        <button class="btn btn-danger" th:if="${trangThaiHienTai!=0}"
+                                                            disabled type="button"><i class="bi bi-trash3"></i></button>
 
 
-                                                        <button class="btn btn-outline-warning"
-                                                            th:if="${trangThaiHienTai!=0}" disabled type="button"><i
+                                                        <button class="btn btn-warning" th:if="${trangThaiHienTai!=0}"
+                                                            disabled type="button"><i
                                                                 class="bi bi-arrow-clockwise bi-warning"></i></button>
 
                                                         <a th:if="${trangThaiHienTai==0}" th:id="${a.id+'fsport'}"
