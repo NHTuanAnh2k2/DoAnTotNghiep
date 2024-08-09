@@ -610,8 +610,6 @@ public class hoaDonController {
         model.addAttribute("trangThaiHienTai", lstLichSuHoaDon.get(lstLichSuHoaDon.size() - 1).getTrangthai());
         model.addAttribute("pageSPHD", daoHDCT.getDSSPHD(hoaDonXem, p));
         model.addAttribute("lstsanphamdotgiam", lstsanphamdotgiam);
-        model.addAttribute("checksizes", lstsanphamdotgiam.size()>0?true:false);
-        model.addAttribute("checksizeJS", lstsanphamdotgiam.size());
         return "admin/qlchitiethoadon";
     }
 
@@ -1044,7 +1042,7 @@ public class hoaDonController {
             }
         }
         if (discounts > 0) {
-            hdctNew.setGiasanpham((spct.getGiatien().divide(new BigDecimal("100"))).multiply(new BigDecimal(discountbacks+"")));
+            hdctNew.setGiasanpham((spct.getGiatien().divide(new BigDecimal("100"))).multiply(new BigDecimal(discountbacks + "")));
         } else {
             hdctNew.setGiasanpham(spct.getGiatien());
         }

@@ -1432,8 +1432,10 @@
                                                         <p th:text="${a.sanphamchitiet.sanpham.tensanpham}"
                                                             style="font-family: 'Times New Roman'; font-size: 15px; font-weight: bold;">
                                                         </p>
-
-                                                        <span th:each="b : ${lstsanphamdotgiam}" class="spanboddy"
+                                                        <p th:text="${#numbers.formatDecimal(a.giasanpham, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                            style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
+                                                        </p>
+                                                        <!-- <span th:each="b : ${lstsanphamdotgiam}" class="spanboddy"
                                                             th:if="${checksizes==true}">
                                                             <span th:if="${a.sanphamchitiet.id == b.sanphamchitiet.id}"
                                                                 class="spanboddy1">
@@ -1460,7 +1462,7 @@
                                                             <p th:text="${#numbers.formatDecimal(a.sanphamchitiet.giatien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
                                                                 style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
                                                             </p>
-                                                        </span>
+                                                        </span> -->
 
                                                         <p th:text="${'Size: '+a.sanphamchitiet.kichco.ten}"
                                                             style="font-family: 'Times New Roman'; font-size: 15px;font-weight: bold;">
@@ -1482,7 +1484,10 @@
                                                             th:readonly="${trangThaiHienTai != 0}"></td>
 
                                                     <td style="vertical-align: middle;">
-                                                        <span th:each="b : ${lstsanphamdotgiam}" class="spanTong"
+                                                        <p th:text="${#numbers.formatDecimal(a.giasanpham*a.soluong, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                            style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
+                                                            </p>
+                                                        <!-- <span th:each="b : ${lstsanphamdotgiam}" class="spanTong"
                                                             th:if="${checksizes==true}">
                                                             <span th:if="${a.sanphamchitiet.id!=b.sanphamchitiet.id}"
                                                                 class="spanTong1">
@@ -1498,12 +1503,12 @@
                                                                     ></p>
                                                             </span>
 
-                                                        </span>
-                                                        <span th:if="${checksizes==false}">
+                                                        </span> -->
+                                                        <!-- <span th:if="${checksizes==false}">
                                                             <p th:text="${#numbers.formatDecimal(a.sanphamchitiet.giatien*a.soluong, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
                                                                 style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
                                                                 ></p>
-                                                        </span>
+                                                        </span> -->
                                                     </td>
                                                     <td style="vertical-align: middle;">
                                                         <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;"
