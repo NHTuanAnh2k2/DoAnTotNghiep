@@ -1435,35 +1435,11 @@
                                                         <p th:text="${#numbers.formatDecimal(a.giasanpham, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
                                                             style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
                                                         </p>
-                                                        <!-- <span th:each="b : ${lstsanphamdotgiam}" class="spanboddy"
-                                                            th:if="${checksizes==true}">
-                                                            <span th:if="${a.sanphamchitiet.id == b.sanphamchitiet.id}"
-                                                                class="spanboddy1">
-                                                                <p th:text="${#numbers.formatDecimal((a.sanphamchitiet.giatien/100*(100-b.dotgiamgia.giatrigiam)), 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
-                                                                    style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
-                                                                </p>
-                                                                <p class="strikethrough"
-                                                                    th:text="${#numbers.formatDecimal(a.sanphamchitiet.giatien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
-                                                                    style="font-family: 'Times New Roman'; font-size: 15px; color: black;font-weight: bold;">
-                                                                </p>
-
-                                                            </span>
-
-                                                            <span th:if="${a.sanphamchitiet.id != b.sanphamchitiet.id}"
-                                                                class="spanboddy2">
-                                                                <p th:text="${#numbers.formatDecimal(a.sanphamchitiet.giatien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
-                                                                    style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
-                                                                </p>
-
-                                                            </span>
-
-                                                        </span>
-                                                        <span th:if="${checksizes==false}">
-                                                            <p th:text="${#numbers.formatDecimal(a.sanphamchitiet.giatien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
-                                                                style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
-                                                            </p>
-                                                        </span> -->
-
+                                                        <p class="strikethrough" th:if= "${a.giasanpham!=a.sanphamchitiet.giatien}"
+                                                            th:text="${#numbers.formatDecimal(a.sanphamchitiet.giatien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                            style="font-family: 'Times New Roman'; font-size: 15px; color: black;font-weight: bold;">
+                                                        </p>
+                                                
                                                         <p th:text="${'Size: '+a.sanphamchitiet.kichco.ten}"
                                                             style="font-family: 'Times New Roman'; font-size: 15px;font-weight: bold;">
                                                         </p>
@@ -1486,29 +1462,8 @@
                                                     <td style="vertical-align: middle;">
                                                         <p th:text="${#numbers.formatDecimal(a.giasanpham*a.soluong, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
                                                             style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
-                                                            </p>
-                                                        <!-- <span th:each="b : ${lstsanphamdotgiam}" class="spanTong"
-                                                            th:if="${checksizes==true}">
-                                                            <span th:if="${a.sanphamchitiet.id!=b.sanphamchitiet.id}"
-                                                                class="spanTong1">
-                                                                <p th:text="${#numbers.formatDecimal(a.sanphamchitiet.giatien*a.soluong, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
-                                                                    style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
-                                                                    ></p>
-                                                            </span>
-
-                                                            <span th:if="${a.sanphamchitiet.id==b.sanphamchitiet.id}"
-                                                                class="spanTong2">
-                                                                <p th:text="${#numbers.formatDecimal((a.sanphamchitiet.giatien/100*(100-b.dotgiamgia.giatrigiam)*a.soluong), 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
-                                                                    style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
-                                                                    ></p>
-                                                            </span>
-
-                                                        </span> -->
-                                                        <!-- <span th:if="${checksizes==false}">
-                                                            <p th:text="${#numbers.formatDecimal(a.sanphamchitiet.giatien*a.soluong, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
-                                                                style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
-                                                                ></p>
-                                                        </span> -->
+                                                        </p>
+                                                    
                                                     </td>
                                                     <td style="vertical-align: middle;">
                                                         <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;"
@@ -3253,58 +3208,6 @@
             thongbao('Thêm thành công!', 'success')
         }
     </script>
-    <!-- <script th:inline="javascript">
-        /*<![CDATA[*/
-        var checksizeJS = /*[[${checksizeJS}]]*/ 0;
-        /*]]>*/
-
-        if (checksizeJS > 1) {
-            document.addEventListener('DOMContentLoaded', function () {
-                // Lấy tất cả các phần tử với lớp 'spanboddy'
-                var spanBoddyElements = document.querySelectorAll('.spanboddy');
-
-                // Biến để kiểm tra sự tồn tại của 'spanboddy1'
-                var hasSpanBoddy1 = false;
-                var spanBoddy2Elements = [];
-
-                // Lặp qua tất cả các phần tử 'spanboddy'
-                spanBoddyElements.forEach(function (spanBoddy) {
-                    // Kiểm tra sự tồn tại của phần tử 'spanboddy1' và 'spanboddy2'
-                    if (spanBoddy.querySelector('.spanboddy1')) {
-                        hasSpanBoddy1 = true;
-                    } else if (spanBoddy.querySelector('.spanboddy2')) {
-                        spanBoddy2Elements.push(spanBoddy);
-                    }
-                });
-
-                // Áp dụng quy tắc hiển thị
-                if (hasSpanBoddy1) {
-                    // Ẩn tất cả các phần tử 'spanboddy2'
-                    spanBoddy2Elements.forEach(function (spanBoddy) {
-                        spanBoddy.querySelectorAll('.spanboddy2').forEach(function (spanBoddy2) {
-                            spanBoddy2.style.display = 'none';
-                        });
-                    });
-                } else {
-                    // Chỉ hiển thị một phần tử 'spanboddy2' còn lại ẩn hết
-                    var shownSpanBoddy2 = false;
-                    spanBoddy2Elements.forEach(function (spanBoddy) {
-                        var spanBoddy2s = spanBoddy.querySelectorAll('.spanboddy2');
-                        spanBoddy2s.forEach(function (spanBoddy2) {
-                            if (!shownSpanBoddy2) {
-                                spanBoddy2.style.display = 'block';
-                                shownSpanBoddy2 = true;
-                            } else {
-                                spanBoddy2.style.display = 'none';
-                            }
-                        });
-                    });
-                }
-            });
-
-            
-        }
-    </script> -->
 
 </body>
 

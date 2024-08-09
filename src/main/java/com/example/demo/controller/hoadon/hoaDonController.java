@@ -656,6 +656,10 @@ public class hoaDonController {
         List<PhieuGiamGiaChiTiet> lst = daoPGGCT.timListPhieuTheoHD(hds);
         if (lst.size() > 0) {
             phieuGiamGiaChiTietTim = lst.get(0);
+            phieuGiamGiaChiTietTim.setPhieugiamgia(phieutim);
+            phieuGiamGiaChiTietTim.setGiabandau(tongTienSP);
+            phieuGiamGiaChiTietTim.setGiasauapdung(tongTT);
+            phieuGiamGiaChiTietTim.setTiengiam(sotiengiam);
         } else {
             phieuGiamGiaChiTietTim.setHoadon(hds);
             phieuGiamGiaChiTietTim.setPhieugiamgia(phieutim);
