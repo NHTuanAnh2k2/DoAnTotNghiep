@@ -983,7 +983,7 @@ public class hoaDonController {
     public String changesTTDH(Model model, @ModelAttribute("thayDoiTT") ThayDoiTTHoaDon_KHInfo TTChanges, RedirectAttributes redirectAttributes) {
         List<HoaDon> hd = dao.timTheoID(idhdshowdetail);
         HoaDon hdset = hd.get(0);
-        BigDecimal tongtiennew=(hdset.getTongtien().subtract(hdset.getPhivanchuyen()));
+        BigDecimal tongtiennew = (hdset.getTongtien().subtract(hdset.getPhivanchuyen()));
         hdset.setTongtien(tongtiennew.add(BigDecimal.valueOf(Double.valueOf(convertCurrency(TTChanges.getPhigiao())))));
         hdset.setTennguoinhan(TTChanges.getTen().trim().replaceAll("\\s+", " "));
         hdset.setSdt(TTChanges.getSdt().trim());
@@ -1031,6 +1031,7 @@ public class hoaDonController {
             hdct.setSoluong(sl);
             daoSPCT.addSPCT(spctCapNhatSL);
             daoHDCT.capnhat(hdct);
+
             redirectAttributes.addFlashAttribute("addProductSuccsess", true);
             return "redirect:/hoa-don/showDetail";
         }
@@ -1089,6 +1090,11 @@ public class hoaDonController {
         ptttTim.setTongtien(tongTT);
         daoPT.add_update(ptttTim);
         hdset.setTongtien(tongTT);
+        PhieuGiamGiaChiTiet phieuGiamGiaChiTietTim = new PhieuGiamGiaChiTiet();
+        List<PhieuGiamGiaChiTiet> lstpg = daoPGGCT.timListPhieuTheoHD(hdset);
+        phieuGiamGiaChiTietTim = lstpg.get(0);
+        phieuGiamGiaChiTietTim.setTiengiam(sotiengiam);
+        daoPGGCTRepo.save(phieuGiamGiaChiTietTim);
         dao.capNhatHD(hdset);
         redirectAttributes.addFlashAttribute("addProductSuccsess", true);
         return "redirect:/hoa-don/showDetail";
@@ -1174,6 +1180,11 @@ public class hoaDonController {
         ptttTim.setTongtien(tongTT);
         daoPT.add_update(ptttTim);
         hd.setTongtien(tongTT);
+        PhieuGiamGiaChiTiet phieuGiamGiaChiTietTim = new PhieuGiamGiaChiTiet();
+        List<PhieuGiamGiaChiTiet> lst = daoPGGCT.timListPhieuTheoHD(hd);
+        phieuGiamGiaChiTietTim = lst.get(0);
+        phieuGiamGiaChiTietTim.setTiengiam(sotiengiam);
+        daoPGGCTRepo.save(phieuGiamGiaChiTietTim);
         dao.capNhatHD(hd);
         redirectAttributes.addFlashAttribute("updateSLSuccsess", true);
         return "redirect:/hoa-don/showDetail";
@@ -1236,6 +1247,11 @@ public class hoaDonController {
                 daoPT.add_update(ptttTim);
                 daoHDCT.capnhat(hdDelete);
                 hd.setTongtien(tongTT);
+                PhieuGiamGiaChiTiet phieuGiamGiaChiTietTim = new PhieuGiamGiaChiTiet();
+                List<PhieuGiamGiaChiTiet> lst = daoPGGCT.timListPhieuTheoHD(hd);
+                phieuGiamGiaChiTietTim = lst.get(0);
+                phieuGiamGiaChiTietTim.setTiengiam(sotiengiam);
+                daoPGGCTRepo.save(phieuGiamGiaChiTietTim);
                 dao.capNhatHD(hd);
                 redirectAttributes.addFlashAttribute("updateSLSuccsess", true);
                 return "redirect:/hoa-don/showDetail";
@@ -1284,6 +1300,11 @@ public class hoaDonController {
         ptttTim.setTongtien(tongTT);
         daoPT.add_update(ptttTim);
         hd.setTongtien(tongTT);
+        PhieuGiamGiaChiTiet phieuGiamGiaChiTietTim = new PhieuGiamGiaChiTiet();
+        List<PhieuGiamGiaChiTiet> lst = daoPGGCT.timListPhieuTheoHD(hd);
+        phieuGiamGiaChiTietTim = lst.get(0);
+        phieuGiamGiaChiTietTim.setTiengiam(sotiengiam);
+        daoPGGCTRepo.save(phieuGiamGiaChiTietTim);
         dao.capNhatHD(hd);
         redirectAttributes.addFlashAttribute("updateSLSuccsess", true);
         return "redirect:/hoa-don/showDetail";
