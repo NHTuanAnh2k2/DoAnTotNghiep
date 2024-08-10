@@ -381,7 +381,24 @@ public class SanPhamChiTietController {
 //            return null;
 //        }
 //    }
-    
+    //    private String saveImage(MultipartFile file) {
+//        String uploadDir = "G:\\Ki7\\DATN\\DATN\\src\\main\\resources\\static\\upload";
+//        try {
+//            File directory = new File(uploadDir);
+//            if (!directory.exists()) {
+//                directory.mkdirs();
+//            }
+//            String originalFileName = file.getOriginalFilename();
+//            String filePath = uploadDir + File.separator + originalFileName;
+//            File dest = new File(filePath);
+//            file.transferTo(dest);
+//            return filePath;
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
+
     private String saveImage(MultipartFile file) {
         String uploadDir = "D:\\DATN\\src\\main\\resources\\static\\upload";
         String dbUploadDir = "/upload";
