@@ -178,6 +178,60 @@ public class SanPhamChiTietController {
         return "admin/detailCTSP";
     }
 
+
+    @GetMapping("/updateAllCTSP/{id}")
+    public String viewupdateAllCTSP(@PathVariable Integer id, Model model,
+                                 @ModelAttribute("thuonghieu") ThuongHieu thuongHieu,
+                                 @ModelAttribute("chatlieu") ChatLieu chatLieu,
+                                 @ModelAttribute("kichco") KichCo kichCo,
+                                 @ModelAttribute("degiay") DeGiay deGiay,
+                                 @ModelAttribute("mausac") MauSac mauSac,
+                                 @ModelAttribute("tim") ThuocTinhInfo info
+
+    ) {
+        //dùng cho validate
+        List<DeGiay> listDG = deGiayRepository.findAll();
+        model.addAttribute("listDG", listDG);
+        List<ThuongHieu> listTH = thuongHieuRepository.findAll();
+        model.addAttribute("listTH", listTH);
+        List<ChatLieu> listCL = chatLieuRepository.findAll();
+        model.addAttribute("listCL", listCL);
+        List<MauSac> listMS = mauSacRepository.findAll();
+        model.addAttribute("listMS", listMS);
+        List<KichCo> listKC = kichCoRepository.findAll();
+        model.addAttribute("listKC", listKC);
+
+        List<SanPham> listSanPham = sanPhamImp.findAll();
+        List<SanPhamChiTiet> listSPCT = sanPhamChiTietImp.findAll();
+        List<ThuongHieu> listThuongHieu = thuongHieuRepository.getAll();
+        List<MauSac> listMauSac = mauSacRepository.getAll();
+        List<KichCo> listKichCo = kichCoRepository.getAll();
+        List<DeGiay> listDeGiay = deGiayRepository.getAll();
+        List<ChatLieu> listChatLieu = chatLieuRepository.getAll();
+        List<Anh> listAnh = anhImp.findAll();
+        model.addAttribute("sp", listSanPham);
+        model.addAttribute("spct", listSPCT);
+        model.addAttribute("th", listThuongHieu);
+        model.addAttribute("ms", listMauSac);
+        model.addAttribute("kc", listKichCo);
+        model.addAttribute("dg", listDeGiay);
+        model.addAttribute("cl", listChatLieu);
+        model.addAttribute("a", listAnh);
+        model.addAttribute("AllCTSP", sanPhamChiTietImp.findById(id));
+
+        SanPhamChiTiet sanPhamChiTiet = sanPhamChiTietImp.findById(id);
+        BigDecimal giatrigiam = sanPhamChiTiet.getGiamGia();
+        BigDecimal giagoc = sanPhamChiTiet.getGiatien();
+        BigDecimal phantramgiam = giatrigiam.divide(new BigDecimal(100));
+        BigDecimal sotiengiam = giagoc.multiply(phantramgiam);
+        BigDecimal giamoi = giagoc.subtract(sotiengiam);
+        model.addAttribute("hehe", sanPhamChiTiet);
+        model.addAttribute("giatrigiam", giatrigiam);
+        model.addAttribute("giamoi", giamoi);
+        return "admin/ViewAllCTSP";
+    }
+
+
     @PostMapping("/updateCTSP/{id}")
     public String updateCTSP(@PathVariable Integer id, @ModelAttribute("hehe") SanPhamChiTiet sanPhamChiTiet,
                              @RequestParam(name = "anhs", required = false) List<MultipartFile> anhFiles,
@@ -242,6 +296,73 @@ public class SanPhamChiTietController {
         Integer firstProductId = sanPhamChiTiet.getSanpham().getId();
         redirectAttributes.addFlashAttribute("success", true);
         return "redirect:/detailsanpham/" + firstProductId;
+    }
+
+
+
+    @PostMapping("/updateAllCTSP/{id}")
+    public String updateAllCTSP(@PathVariable Integer id, @ModelAttribute("AllCTSP") SanPhamChiTiet sanPhamChiTiet,
+                             @RequestParam(name = "anhs", required = false) List<MultipartFile> anhFiles,
+                             @RequestParam(name = "spctIds") Integer spctId,
+                             RedirectAttributes redirectAttributes, HttpSession session) {
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
+
+        LocalDateTime currentTime = LocalDateTime.now();
+        SanPham sanPham = sanPhamRepositoty.findById(sanPhamChiTiet.getSanpham().getId())
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm"));
+        ThuongHieu thuongHieu = thuongHieuRepository.findById(sanPhamChiTiet.getThuonghieu().getId())
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy thương hiệu"));
+        ChatLieu chatLieu = chatLieuRepository.findById(sanPhamChiTiet.getChatlieu().getId())
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy chất liệu"));
+        DeGiay deGiay = deGiayRepository.findById(sanPhamChiTiet.getDegiay().getId())
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy đế giày"));
+        MauSac mauSac = mauSacRepository.findById(sanPhamChiTiet.getMausac().getId())
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy màu sắc"));
+        KichCo kichCo = kichCoRepository.findById(sanPhamChiTiet.getKichco().getId())
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy kích cỡ"));
+        SanPhamChiTiet existingSanPhamChiTiet = sanPhamChiTietRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm chi tiết"));
+
+        existingSanPhamChiTiet.setSanpham(sanPham);
+        existingSanPhamChiTiet.setThuonghieu(thuongHieu);
+        existingSanPhamChiTiet.setChatlieu(chatLieu);
+        existingSanPhamChiTiet.setDegiay(deGiay);
+        existingSanPhamChiTiet.setMausac(mauSac);
+        existingSanPhamChiTiet.setKichco(kichCo);
+        existingSanPhamChiTiet.setLancapnhatcuoi(currentTime);
+        existingSanPhamChiTiet.setSoluong(sanPhamChiTiet.getSoluong());
+        existingSanPhamChiTiet.setGiatien(sanPhamChiTiet.getGiatien());
+        existingSanPhamChiTiet.setMota(sanPhamChiTiet.getMota());
+        existingSanPhamChiTiet.setTrangthai(sanPhamChiTiet.getTrangthai());
+        existingSanPhamChiTiet.setGioitinh(sanPhamChiTiet.getGioitinh());
+        existingSanPhamChiTiet.setNguoitao(nv.getNguoidung().getHovaten());
+        existingSanPhamChiTiet.setNguoicapnhat(nv.getNguoidung().getHovaten());
+
+        sanPhamChiTietRepository.save(existingSanPhamChiTiet);
+        if (anhFiles != null && !anhFiles.isEmpty()) {
+            SanPhamChiTiet spct = sanPhamChiTietRepository.findById(spctId).orElse(null);
+            if (spct != null) {
+                for (MultipartFile anhFile : anhFiles) {
+                    if (!anhFile.isEmpty()) {
+                        String anhUrl = saveImage(anhFile);
+                        Anh anh = new Anh();
+                        anh.setTenanh(anhUrl);
+                        anh.setTrangthai(true);
+                        anh.setNgaytao(currentTime);
+                        anh.setLancapnhatcuoi(currentTime);
+                        anh.setSanphamchitiet(spct);
+                        anh.setNguoitao(nv.getNguoidung().getHovaten());
+                        anh.setNguoicapnhat(nv.getNguoidung().getHovaten());
+                        anhRepository.save(anh);
+                    }
+                }
+            }
+        }
+        redirectAttributes.addFlashAttribute("success", true);
+        return "redirect:/allSPCT";
     }
 
     //    private String saveImage(MultipartFile file) {

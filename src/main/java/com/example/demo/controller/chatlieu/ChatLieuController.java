@@ -128,6 +128,27 @@ public class ChatLieuController {
         return "redirect:/updateCTSP/" + spctId;
     }
 
+    @PostMapping("/addChatLieuSuaAll")
+    public String addChatLieuSuaAll(Model model, @ModelAttribute("chatlieu") ChatLieu chatLieu, @RequestParam("spctId") Integer spctId, HttpSession session) {
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
+
+        String trimmedTenChatLieu = (chatLieu.getTen() != null)
+                ? chatLieu.getTen().trim().replaceAll("\\s+", " ")
+                : null;
+        LocalDateTime currentTime = LocalDateTime.now();
+        chatLieu.setTen(trimmedTenChatLieu);
+        chatLieu.setTrangthai(true);
+        chatLieu.setNgaytao(currentTime);
+        chatLieu.setLancapnhatcuoi(currentTime);
+        chatLieu.setNguoitao(nv.getNguoidung().getHovaten());
+        chatLieu.setNguoicapnhat(nv.getNguoidung().getHovaten());
+        chatLieuService.add(chatLieu);
+        return "redirect:/updateAllCTSP/" + spctId;
+    }
+
     @GetMapping("/chatlieu/delete/{id}")
     public String delete(@PathVariable int id) {
         chatLieuService.deleteById(id);

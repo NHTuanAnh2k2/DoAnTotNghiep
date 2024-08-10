@@ -130,4 +130,25 @@ public class KichCoController {
         kichCoImp.addKichCo(kichCo);
         return "redirect:/updateCTSP/" + spctId;
     }
+
+    @PostMapping("/addKichCoSuaAll")
+    public String addKichCoSuaAll(@ModelAttribute("kichco") KichCo kichCo, @RequestParam("spctId") Integer spctId, HttpSession session) {
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
+
+        String trimmedTenKichCo = (kichCo.getTen() != null)
+                ? kichCo.getTen().trim().replaceAll("\\s+", " ")
+                : null;
+        LocalDateTime currentTime = LocalDateTime.now();
+        kichCo.setTen(trimmedTenKichCo);
+        kichCo.setTrangthai(true);
+        kichCo.setNgaytao(currentTime);
+        kichCo.setLancapnhatcuoi(currentTime);
+        kichCo.setNguoitao(nv.getNguoidung().getHovaten());
+        kichCo.setNguoicapnhat(nv.getNguoidung().getHovaten());
+        kichCoImp.addKichCo(kichCo);
+        return "redirect:/updateAllCTSP/" + spctId;
+    }
 }
