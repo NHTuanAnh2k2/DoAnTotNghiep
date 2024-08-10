@@ -313,12 +313,12 @@
                 }
             });
 
-            Toast.fire({
-                icon: "success",
-                title: "Thêm thành công!"
-            }).then(async () => {
-                // Xóa session sau khi hiển thị thông báo
-                await fetch('/clear-session', { method: 'POST' });
+            await fetch('/clear-session', { method: 'POST' }).then(() => {
+                // Sau khi xóa session thành công, hiển thị thông báo
+                Toast.fire({
+                    icon: "success",
+                    title: "Thêm thành công!"
+                });
             });
         }
     }
@@ -341,12 +341,12 @@
                 }
             });
 
-            Toast.fire({
-                icon: "success",
-                title: "Cập nhật thành công!"
-            }).then(async () => {
-                // Xóa session sau khi hiển thị thông báo
-                await fetch('/clear-session', { method: 'POST' });
+            await fetch('/clear-session', { method: 'POST' }).then(() => {
+                // Sau khi xóa session thành công, hiển thị thông báo
+                Toast.fire({
+                    icon: "success",
+                    title: "Cập nhật thành công!"
+                });
             });
         }
     }
