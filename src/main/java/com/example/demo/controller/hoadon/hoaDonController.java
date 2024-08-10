@@ -1031,7 +1031,37 @@ public class hoaDonController {
             hdct.setSoluong(sl);
             daoSPCT.addSPCT(spctCapNhatSL);
             daoHDCT.capnhat(hdct);
+            PhieuGiamGiaChiTiet pgctTim = daoPGGCT.timListPhieuTheoHD(hdset).size() > 0 ? daoPGGCT.timListPhieuTheoHD(hdset).get(0) : new PhieuGiamGiaChiTiet();
 
+            BigDecimal tongTienSP = new BigDecimal("0");
+            BigDecimal sotiengiam = new BigDecimal("0");
+            List<HoaDonChiTiet> lstHDCT = daoHDCT.getListSPHD(hdset);
+            for (HoaDonChiTiet b : lstHDCT
+            ) {
+                tongTienSP = tongTienSP.add(b.getGiasanpham().multiply(new BigDecimal(b.getSoluong())));
+            }
+            if (pgctTim.getPhieugiamgia() != null) {
+                if (pgctTim.getPhieugiamgia().getLoaiphieu() == true) {
+                    // phiếu %
+                    if ((new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100"))).compareTo(pgctTim.getPhieugiamgia().getGiatrigiamtoida()) > 0) {
+                        sotiengiam = pgctTim.getPhieugiamgia().getGiatrigiamtoida();
+                    } else {
+                        sotiengiam = (new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam())).multiply(tongTienSP.divide(new BigDecimal("100")));
+                    }
+
+                } else {
+                    // phiếu vnđ
+                    sotiengiam = new BigDecimal(pgctTim.getPhieugiamgia().getGiatrigiam());
+                }
+            }
+            PhieuGiamGiaChiTiet phieuGiamGiaChiTietTim = new PhieuGiamGiaChiTiet();
+            List<PhieuGiamGiaChiTiet> lstpg = daoPGGCT.timListPhieuTheoHD(hdset);
+            phieuGiamGiaChiTietTim = lstpg.get(0);
+            phieuGiamGiaChiTietTim.setTiengiam(sotiengiam);
+            daoPGGCTRepo.save(phieuGiamGiaChiTietTim);
+            BigDecimal tongTT = (tongTienSP.add(hdset.getPhivanchuyen())).subtract(sotiengiam);
+            hdset.setTongtien(tongTT);
+            dao.capNhatHD(hdset);
             redirectAttributes.addFlashAttribute("addProductSuccsess", true);
             return "redirect:/hoa-don/showDetail";
         }
