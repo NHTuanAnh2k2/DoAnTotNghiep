@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <!--css cho tên màu sắc trong table-->
 <style>
     .highlight-color {
@@ -234,7 +235,11 @@
                     <div class="col-12">
                         <form action="/addProduct" method="post" name="addProduct" onsubmit="return validateForm()">
                             <div class="card">
-                                <h3 class="text-center" style="font-weight: bold;margin-top: 10px">
+                                <h3 style="font-weight: bold;margin-top: 20px; margin-left: 20px">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-file-earmark-plus" viewBox="0 0 16 16">
+                                        <path d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5"/>
+                                        <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z"/>
+                                    </svg>
                                     THÊM SẢN PHẨM
                                 </h3>
                                 <div class="card-header">
@@ -499,7 +504,7 @@
                                               th:object="${thuonghieu}"
                                               th:action="@{/addThuongHieuModal}"
                                               onsubmit="return validateTrungThuongHieu()">
-                                            <p>
+                                            <p style="font-weight: bold">
                                                 <span style="color: red">* </span>
                                                 Tên thương hiệu:
                                                 <input id="tenInputThuongHieu" class="form-control" th:field="*{ten}"/>
@@ -530,7 +535,7 @@
                                         <form id="addFormChatLieu" name="addChatLieu" th:method="post"
                                               th:action="@{/addChatLieuModal}" th:object="${chatlieu}"
                                               onsubmit="return validateTrungChatLieu()">
-                                            <p>
+                                            <p style="font-weight: bold">
                                                 <span style="color: red">* </span>
                                                 Tên chất liệu:
                                                 <input id="tenInputChatLieu" th:field="*{ten}" class="form-control">
@@ -589,7 +594,7 @@
                                         <form id="addFormKichCo" name="addKichCo"
                                               onsubmit="return validateTrungKichCo()"
                                               method="post" th:action="@{/addKichCoModal}" th:object="${kichco}">
-                                            <p>
+                                            <p style="font-weight: bold">
                                                 <span style="color: red">* </span>
                                                 Tên kích cỡ:
                                                 <input id="tenInputKichCo" class="form-control" th:field="*{ten}"/>
@@ -618,7 +623,7 @@
                                     <div class="modal-body">
                                         <form id="addFormMauSac" th:method="post" name="addMauSac" th:object="${mausac}"
                                               th:action="@{/addMauSacModal}" onsubmit="return validateTrungMauSac()">
-                                            <p>
+                                            <p style="font-weight: bold">
                                                 <span style="color: red">* </span>
                                                 Mã màu sắc:
                                                 <input type="color" id="tenInputMauSac" th:field="*{ten}"
@@ -646,7 +651,7 @@
                                     <div class="modal-body">
                                         <form id="addFormTenSP" th:method="post" name="addTenSP" th:object="${sanpham}"
                                               th:action="@{/addTenSPModal}" onsubmit="return validateTrungTenSP()">
-                                            <p>
+                                            <p style="font-weight: bold">
                                                 <span style="color: red">* </span>
                                                 Tên sản phẩm:
                                                 <input id="tenInputTenSP" class="form-control"
@@ -673,7 +678,13 @@
             <!-- /.container-fluid -->
         </section>
         <!-- Main content -->
-        <h3 class="text-bold text-center" style="padding-left: 15px">CHI TIẾT SẢN PHẨM</h3>
+        <h3 style="padding-left: 15px; margin-left: 20px; font-weight: bold">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-ticket-detailed" viewBox="0 0 16 16">
+                <path d="M4 5.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5M5 7a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2z"/>
+                <path d="M0 4.5A1.5 1.5 0 0 1 1.5 3h13A1.5 1.5 0 0 1 16 4.5V6a.5.5 0 0 1-.5.5 1.5 1.5 0 0 0 0 3 .5.5 0 0 1 .5.5v1.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 11.5V10a.5.5 0 0 1 .5-.5 1.5 1.5 0 1 0 0-3A.5.5 0 0 1 0 6zM1.5 4a.5.5 0 0 0-.5.5v1.05a2.5 2.5 0 0 1 0 4.9v1.05a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-1.05a2.5 2.5 0 0 1 0-4.9V4.5a.5.5 0 0 0-.5-.5z"/>
+            </svg>
+            CHI TIẾT SẢN PHẨM
+        </h3>
 
 
         <!-- Modal chỉnh sửa số lượng và giá -->
@@ -1112,7 +1123,7 @@
         var deleteUrl = event.currentTarget.getAttribute('href'); // Lấy giá trị của thuộc tính href của thẻ <a>
         console.log("Delete URL: ", deleteUrl); // Hiển thị giá trị của deleteUrl trong console
         Swal.fire({
-            title: 'Bạn có muốn xóa?',
+            title: 'Bạn có muốn xóa không?',
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: 'Xóa',

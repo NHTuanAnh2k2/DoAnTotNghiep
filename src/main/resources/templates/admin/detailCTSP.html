@@ -101,7 +101,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">
+                                <h3 class="card-title" style="font-weight: bold">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
                                          class="bi bi-card-list" viewBox="0 0 16 16">
                                         <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"/>
@@ -116,14 +116,14 @@
                                       th:action="@{/updateCTSP/{id}(id=${hehe.id})}"
                                       name="updateProduct" onsubmit="return validateForm()">
                                     <div class="d-flex">
-                                        <p>
+                                        <p style="font-weight: bold">
                                             <span style="color: red">* </span>Tên sản phẩm:
                                             <input class="form-control" style="width:550px" th:field="*{sanpham.tensanpham}" readonly>
                                             <input type="hidden" th:field="*{sanpham.id}">
                                         </p>
                                         <p id="errorSanPham" class="error-message"
                                            style="display: none; color: red;"></p>
-                                        <p style="margin-left: 92px">
+                                        <p style="margin-left: 92px;font-weight: bold" >
                                             <span style="color: red">* </span>Số lượng:
                                             <input type="number" class="form-control" style="width:550px"
                                                    th:field="*{soluong}">
@@ -133,8 +133,8 @@
                                     <p id="errorSoLuong" class="error-message"
                                        style="display: none; color: red;padding-left: 650px"></p>
                                     <div class="d-flex">
-                                        <p>
-                                            <span style="color: red">* </span>Giá tiền:
+                                        <p style="font-weight: bold">
+                                            <span style="color: red;">* </span>Giá tiền:
                                             <input class="form-control" style="width:550px"
                                                    th:value="${#numbers.formatDecimal(giamoi, 0, 'COMMA', 0, 'POINT') + '₫'}"
                                                    readonly>
@@ -142,7 +142,7 @@
 
                                         <input type="hidden" th:field="*{giatien}" th:value="${giamoi}">
 
-                                        <p style="margin-left: 92px">
+                                        <p style="margin-left: 92px;font-weight: bold">
                                             <span style="color: red">* </span>Giới tính:
                                             <select class="form-control" style="width:550px" th:field="*{gioitinh}">
                                                 <option value="true">Nam</option>
@@ -151,7 +151,7 @@
                                         </p>
                                     </div>
                                     <p id="errorGiaTien" class="error-message" style="display: none; color: red;"></p>
-                                    <p>
+                                    <p style="font-weight: bold">
                                         <span style="color: red">* </span>Mô tả:
                                         <textarea rows="2" cols="100" class="form-control"
                                                   th:field="*{mota}"></textarea>
@@ -159,7 +159,7 @@
                                     </p>
                                     <p id="errorMoTa" class="error-message" style="display: none; color: red;"></p>
                                     <div class="d-flex">
-                                        <p>
+                                        <p style="font-weight: bold">
                                             <span style="color: red">* </span>Thương hiệu:
                                             <select th:field="*{thuonghieu.id}" class="form-control"
                                                     style="width:482px">
@@ -174,7 +174,7 @@
                 <i class="bi bi-plus-circle-fill" style="font-size: 25px;"></i>
             </span>
                                         </p>
-                                        <p style="margin-left:92px">
+                                        <p style="margin-left:92px;font-weight: bold">
                                             <span style="color: red">* </span>Trạng thái:
                                             <select class="form-control" style="width:482px" th:field="*{trangthai}">
                                                 <option value="true">Đang kinh doanh</option>
@@ -190,7 +190,7 @@
                                         </p>
                                     </div>
                                     <div class="d-flex">
-                                        <p>
+                                        <p style="font-weight: bold">
                                             <span style="color: red">* </span>Chất liệu:
                                             <select th:field="*{chatlieu.id}" class="form-control" style="width:482px">
                                                 <option th:each="cl : ${cl}" th:value="${cl.id}"
@@ -204,7 +204,7 @@
                 <i class="bi bi-plus-circle-fill" style="font-size: 25px;"></i>
             </span>
                                         </p>
-                                        <p style="margin-left:92px">
+                                        <p style="margin-left:92px; font-weight: bold">
                                             <span style="color: red">* </span>Đế giày:
                                             <select th:field="*{degiay.id}" class="form-control" style="width:482px">
                                                 <option th:each="dg : ${dg}" th:value="${dg.id}"
@@ -220,7 +220,7 @@
                                         </p>
                                     </div>
                                     <div class="d-flex">
-                                        <p>
+                                        <p style="font-weight: bold">
                                             <span style="color: red">* </span>Kích cỡ:
                                             <select th:field="*{kichco.id}" class="form-control" style="width:482px">
                                                 <option th:each="kc : ${kc}" th:value="${kc.id}"
@@ -234,7 +234,7 @@
                 <i class="bi bi-plus-circle-fill" style="font-size: 25px;"></i>
             </span>
                                         </p>
-                                        <p style="margin-left:92px">
+                                        <p style="margin-left:92px; font-weight: bold">
                                             <span style="color: red">* </span>Màu sắc:
 <!--                                            <select th:field="*{mausac.id}" class="form-control" style="width:482px">-->
 <!--                                                <option th:each="ms : ${ms}" th:value="${ms.id}"-->
@@ -296,7 +296,7 @@
                                                       th:object="${thuonghieu}"
                                                       th:action="@{/addThuongHieuSua}"
                                                       onsubmit="return validateTrungThuongHieu()">
-                                                    <p>
+                                                    <p style="font-weight: bold">
                                                         <span style="color: red">* </span>
                                                         Tên thương hiệu:
                                                         <input id="tenInputThuongHieu" class="form-control"
@@ -330,7 +330,7 @@
                                                 <form id="addFormChatLieu" name="addChatLieu" th:method="post"
                                                       th:action="@{/addChatLieuSua}" th:object="${chatlieu}"
                                                       onsubmit="return validateTrungChatLieu()">
-                                                    <p>
+                                                    <p style="font-weight: bold">
                                                         <span style="color: red">* </span>
                                                         Tên chất liệu:
                                                         <input id="tenInputChatLieu" th:field="*{ten}"
@@ -364,7 +364,7 @@
                                                       th:object="${degiay}"
                                                       th:action="@{/addDeGiaySua}"
                                                       onsubmit="return validateTrungDeGiay()">
-                                                    <p>
+                                                    <p style="font-weight: bold">
                                                         <span style="color: red">* </span>
                                                         Tên đế giày:
                                                         <input id="tenInputDeGiay" class="form-control"
@@ -397,7 +397,7 @@
                                                       onsubmit="return validateTrungKichCo()"
                                                       method="post" th:action="@{/addKichCoSua}"
                                                       th:object="${kichco}">
-                                                    <p>
+                                                    <p style="font-weight: bold">
                                                         <span style="color: red">* </span>Tên kích cỡ:
                                                         <input id="tenInputKichCo" class="form-control"
                                                                th:field="*{ten}"/>
@@ -431,7 +431,7 @@
                                                       th:object="${mausac}"
                                                       th:action="@{/addMauSacSua}"
                                                       onsubmit="return validateTrungMauSac()">
-                                                    <p>
+                                                    <p style="font-weight: bold">
                                                         <span style="color: red">* </span>
                                                         Mã màu sắc:
                                                         <input type="color" id="tenInputMauSac" style="width: 100%"

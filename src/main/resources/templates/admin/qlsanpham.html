@@ -59,8 +59,8 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">
+                            <div class="card-header" style="height: 150px;">
+                                <h3 class="card-title" style="font-weight: bold">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
                                         <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
                                     </svg>
@@ -68,25 +68,34 @@
                                 </h3>
                                 <br>
                                 <hr class="border border-danger border opacity-50">
-                                <form id="searchForm" method="get" th:object="${tim}">
-                                    <h3 style="position: relative; display: inline-block;">
-                                        <input type="text" id="searchInput" placeholder="Tìm kiếm theo mã và tên sản phẩm" class="form-control text-muted" name="key" style="width: 1200px; padding-right: 30px;" th:value="${fillSearch}">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search"
-                                             viewBox="0 0 16 16" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
-                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                                        </svg>
-                                    </h3>
-
-                                    <!--                                    <h3 class="card-title" style="margin-left: 50px;font-weight: bold">Trạng thái:-->
-<!--                                        <select id="statusSelect" class="form-control" name="trangthai" style="color: rgb(249,72,42); font-weight: bold; width: 150px">-->
+                                <form id="searchForm" method="get" th:object="${tim}" style="display: flex; align-items: center;">
+                                    <div style="display: inline-block; margin-right: 20px;">
+                                        <span style="font-weight: bold">Tìm kiếm theo mã hoặc tên:</span>
+                                        <br>
+                                        <div style="position: relative; display: inline-block; width: 1000px;">
+                                            <input type="text" id="searchInput" placeholder="Tìm kiếm theo mã hoặc tên sản phẩm" class="form-control text-muted" name="key" style="width: 100%; padding-right: 30px;" th:value="${fillSearch}">
+<!--                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search"-->
+<!--                                                 viewBox="0 0 16 16" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">-->
+<!--                                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>-->
+<!--                                            </svg>-->
+                                        </div>
+                                    </div>
+                                    <div style="display: inline-block;">
+                                        <span style="font-weight: bold;margin-left: 10px">Trạng thái:</span>
+                                        <br>
+                                        <select id="statusSelect" class="form-control" name="trangthai" style="color: rgb(249,72,42); font-weight: bold; width: 160px; margin-left: 10px;">
 <!--                                            <option value="" th:selected="${fillTrangThai == null}">Tất cả</option>-->
-<!--                                            <option value="true" th:selected="${fillTrangThai != null && fillTrangThai}">Đang kinh doanh</option>-->
-<!--                                            <option value="false" th:selected="${fillTrangThai != null && !fillTrangThai}">Ngừng kinh doanh</option>-->
-<!--                                        </select>-->
-<!--                                    </h3>-->
+<!--                                            <option value="0" th:selected="${fillTrangThai != null && fillTrangThai == 0}">Ngừng kinh doanh</option>-->
+<!--                                            <option value="1" th:selected="${fillTrangThai != null && fillTrangThai == 1}">Đang kinh doanh</option>-->
+<!--                                            <option value="2" th:selected="${fillTrangThai != null && fillTrangThai == 2}">Hết hàng</option>-->
+                                                                                        <option value="" th:selected="${fillTrangThai == null}">Tất cả</option>
+                                                                                        <option value="true" th:selected="${fillTrangThai != null && fillTrangThai}">Đang kinh doanh</option>
+                                                                                        <option value="false" th:selected="${fillTrangThai != null && !fillTrangThai}">Ngừng kinh doanh</option>
+                                        </select>
+
+                                    </div>
                                 </form>
                             </div>
-
                         </div>
                         <!-- /.card -->
 
@@ -105,7 +114,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title" style="margin-top: 10px">
+                                <h3 class="card-title" style="margin-top: 10px;font-weight: bold">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-list-task" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd" d="M2 2.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5zM3 3H2v1h1z"/>
                                         <path d="M5 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M5.5 7a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 4a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1z"/>
@@ -149,12 +158,20 @@
                                         <td>
                                             <span th:text="${#temporals.format(sp[2], 'dd-MM-yyyy HH:mm:ss')}"></span>
                                         </td>
-
+                                        <!--trạng thái cũ-->
+                                        <!--                                        <td>-->
+                                        <!--                                            <button id="statusBtn_[[${sp[0]}]]" style="border-radius: 5px"-->
+                                        <!--                                                    class="btn-xs"-->
+                                        <!--                                                    th:classappend="${sp[4] ? 'btn-custom-info' : 'btn-custom-warning'}"-->
+                                        <!--                                                    th:text="${sp[4] ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>-->
+                                        <!--                                        </td>-->
+                                        <!--trạng thái mới-->
 <!--                                        <td>-->
-<!--                                            <button id="statusBtn_[[${sp[0]}]]" style="border-radius: 5px"-->
-<!--                                                    class="btn-xs"-->
-<!--                                                    th:classappend="${sp[4] ? 'btn-custom-info' : 'btn-custom-warning'}"-->
-<!--                                                    th:text="${sp[4] ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>-->
+<!--                                            <a>-->
+<!--                                                <div th:if="${sp[4] == 0}">-->
+<!--                                                    <p style=" font-family: 'Times New Roman'; font-size: 12px; border-radius: 14px; background-color: orange; padding: 2px 5px 2px 5px; color: white;">Ngừng kích hoạt</p>-->
+<!--                                                </div>-->
+<!--                                            </a>-->
 <!--                                        </td>-->
                                         <td>
                                             <a style="color: rgb(249,72,42); font-size: 25px;" th:data-id="${sp[0]}" data-bs-toggle="modal" data-bs-target="#capnhatsanpham" onclick="fillShoeSoleNameSanPham(this)">
