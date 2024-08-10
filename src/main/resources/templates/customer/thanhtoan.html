@@ -1985,13 +1985,12 @@
                     toast.onmouseleave = Swal.resumeTimer;
                 }
             });
-
-            Toast.fire({
-                icon: "error",
-                title: "Đã hủy thanh toán!"
-            }).then(async () => {
-                // Xóa session sau khi hiển thị thông báo
-                await fetch('/clear-session-thanh-toan-online', { method: 'POST' });
+            await fetch('/clear-session-thanh-toan-online', { method: 'POST' }).then(() => {
+                // Sau khi xóa session thành công, hiển thị thông báo
+                Toast.fire({
+                    icon: "success",
+                    title: "Đã hủy thanh toán!"
+                });
             });
         }
     }

@@ -67,7 +67,7 @@ public class ThanhToanController {
     @Autowired
     SanPhamDotGiamRepository SPdotgiamRepo;
 
-    @RequestMapping("/cam-on")
+    @RequestMapping("/cam-on-da-dat-hang")
     public String camon(){
         return "customer/camondathang";
     }
@@ -175,11 +175,13 @@ public class ThanhToanController {
                                          @RequestParam("tamtinh") String tamtinh,
                                          @RequestParam("sotiengiam") String sotiengiam,
                                          @RequestParam("laydiachidaluu") String laydiachidaluu,
-                                         HttpSession session) {
+                                         HttpSession session, Model model) {
         String token = (String) session.getAttribute("token");
         NguoiDung nguoiDung = null;
         KhachHang khachHang = null;
         GioHang gioHang = null;
+        Integer IDHDCamOn=0;
+        String MaHDCamOn="";
         if (token != null) {
             // Lấy danh sách token từ session
             List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
@@ -247,6 +249,8 @@ public class ThanhToanController {
                         List<GioHangChiTiet> lstGHCT = gioHang.getGioHangChiTietList();
 
                         HoaDon hdMoiThem = daoHD.timBanGhiDuocTaoGanNhat();
+                        IDHDCamOn = hdMoiThem.getId();
+                        MaHDCamOn = hdMoiThem.getMahoadon();
                         for (GioHangChiTiet g : lstGHCT) {
                             HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
                             hoaDonChiTiet.setHoadon(hdMoiThem);
@@ -353,8 +357,9 @@ public class ThanhToanController {
                     }
                 }
             }
-            session.setAttribute("datHangOnlThanhCong",1);
-            return "redirect:/customer/trangchu";
+            model.addAttribute("MaHDCamOn",MaHDCamOn);
+            model.addAttribute("IDHDCamOn",IDHDCamOn);
+            return "customer/camondathang";
         } else {
             //Hóa đơn
             HoaDon hoaDon = new HoaDon();
@@ -405,6 +410,8 @@ public class ThanhToanController {
             //Thêm hóa đơn ci tiết
             List<GioHangChiTiet> lstGHCT = (List<GioHangChiTiet>) session.getAttribute("cartItems");
             HoaDon hdMoiThem = daoHD.timBanGhiDuocTaoGanNhat();
+            IDHDCamOn = hdMoiThem.getId();
+            MaHDCamOn = hdMoiThem.getMahoadon();
             for (GioHangChiTiet g : lstGHCT) {
                 HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
                 hoaDonChiTiet.setHoadon(hdMoiThem);
@@ -479,8 +486,11 @@ public class ThanhToanController {
             phuongthuc.setNguoitao("Tuan Anh");
             phuongthuc.setTrangthai(false);
             daoPTTT.add_update(phuongthuc);
-            session.setAttribute("datHangOnlThanhCong",1);
-            return "redirect:/customer/trangchu";
+
+
+            model.addAttribute("MaHDCamOn",MaHDCamOn);
+            model.addAttribute("IDHDCamOn",IDHDCamOn);
+            return "customer/camondathang";
         }
 
     }

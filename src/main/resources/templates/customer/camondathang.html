@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <!--thư viện-->
 <nav th:replace="~{/layout/head.html}"></nav>
+
 <body style="font-family: Tahoma;">
 <!-- header section start -->
 <nav th:replace="~{/layout/header.html}"></nav>
@@ -20,14 +21,14 @@
             <h2 class="mt-3" style="color: green;">Đặt hàng thành công</h2>
             <br>
             <p style="font-size: 17px; font-weight: 400;">Chân thành cảm ơn quý khách đã mua hàng tại FSPORT</p>
-            <p style="font-size: 17px; font-weight: 400;">Đơn hàng FSPHD1234 của quý khác hiện đã được tiếp nhận. Chúng tôi sẽ liên hệ với quý khách trong 24h</p>
+            <p style="font-size: 17px; font-weight: 400;" th:text="'Đơn hàng '+ ${MaHDCamOn} + ' của quý khác hiện đã được tiếp nhận. Chúng tôi sẽ liên hệ với quý khách trong 24h'"></p>
             <p style="font-size: 17px; font-weight: 400;">Chúng tôi hy vọng quý khách hài lòng với trải nghiệm mua sắm và các sản phẩm đã chọn</p>
             <p style="font-size: 17px; font-weight: 400;">FSPORT rất hân hạnh được phục vụ quý khách!</p>
             <div class="mt-5">
                 <a th:href="@{/customer/trangchu}">
                     <button th:href="@{/customer/trangchu}" type="button" class="btn btn-outline-dark" style="margin-right: 25px; height: 50px; width: 250px; font-size: 18px; font-weight: 500; border-radius: 10px;">Tiếp tục mua sắm</button>
                 </a>
-                <a th:href="">
+                <a th:href="@{/customer/detail-don-hang(id=${IDHDCamOn})}">
                     <button type="button" class="btn btn-outline-warning" style="margin-right: 25px; height: 50px; width: 250px; font-size: 18px; font-weight: 500; border-radius: 10px;">Chi tiết đơn hàng</button>
                 </a>
             </div>

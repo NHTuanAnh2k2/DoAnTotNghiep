@@ -38,11 +38,6 @@ public class RestControllerThanhToan {
 
 
     }
-    @GetMapping("/dat-online-thanh-cong")
-    public Integer themthanhcong(HttpSession session){
-        Integer dathem = (Integer) session.getAttribute("datHangOnlThanhCong");
-        return dathem;
-    }
     @GetMapping("/dat-online-that-bai")
     public Integer themthatbai(HttpSession session){
         Integer dathem = (Integer) session.getAttribute("datHangOnlThatBai");
@@ -51,7 +46,6 @@ public class RestControllerThanhToan {
     @PostMapping("/clear-session-thanh-toan-online")
     public void clearSession(HttpSession session) {
 //        session.invalidate();
-        session.removeAttribute("datHangOnlThanhCong");
         session.removeAttribute("datHangOnlThatBai");
     }
 
