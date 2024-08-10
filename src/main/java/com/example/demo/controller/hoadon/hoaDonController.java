@@ -1212,7 +1212,9 @@ public class hoaDonController {
         hd.setTongtien(tongTT);
         PhieuGiamGiaChiTiet phieuGiamGiaChiTietTim = new PhieuGiamGiaChiTiet();
         List<PhieuGiamGiaChiTiet> lst = daoPGGCT.timListPhieuTheoHD(hd);
-        phieuGiamGiaChiTietTim = lst.get(0);
+        if (lst.size() > 0) {
+            phieuGiamGiaChiTietTim = lst.get(0);
+        }
         phieuGiamGiaChiTietTim.setTiengiam(sotiengiam);
         daoPGGCTRepo.save(phieuGiamGiaChiTietTim);
         dao.capNhatHD(hd);
