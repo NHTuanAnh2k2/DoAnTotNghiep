@@ -294,6 +294,8 @@
             ngaysinhError.innerText = 'Tuổi phải từ 70 trở xuống';
             document.getElementById('ngaysinh').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('ngaysinh').style.borderColor = '#dee2e6';
         }
 
         if (tenInput === '') {
@@ -312,6 +314,8 @@
             tenError.innerText = 'Họ và tên không được quá 50 ký tự';
             document.getElementById('hovaten').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('hovaten').style.borderColor = '#dee2e6';
         }
 
         if (cccdInput === '') {
@@ -326,7 +330,10 @@
             cccdError.innerText = 'CCCD đã tồn tại';
             document.getElementById('cccd').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('cccd').style.borderColor = '#dee2e6';
         }
+
         if (emailInput === '') {
             emailError.innerText = 'Email không được trống';
             document.getElementById('email').style.borderColor = 'red';
@@ -347,6 +354,8 @@
             emailError.innerText = 'Email không được quá 254 ký tự';
             document.getElementById('email').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('email').style.borderColor = '#dee2e6';
         }
 
         if (sdtInput === '') {
@@ -361,21 +370,30 @@
             sdtError.innerText = 'Số điện thoại đã tồn tại';
             document.getElementById('sodienthoai').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('sodienthoai').style.borderColor = '#dee2e6';
         }
+
         if (tinhthanhSelect === '') {
             tinhthanhError.innerText = 'Tỉnh thành chưa được chọn';
             document.getElementById('city').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('city').style.borderColor = '#dee2e6';
         }
         if (quanhuyenSelect === '') {
             quanhuyenError.innerText = 'Quận huyện chưa được chọn';
             document.getElementById('district').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('district').style.borderColor = '#dee2e6';
         }
         if (xaphuongSelect === '') {
             xaphuongError.innerText = 'Xã phường chưa được chọn';
             document.getElementById('ward').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('ward').style.borderColor = '#dee2e6';
         }
         if (tenduongInput === '') {
             tenduongError.innerText = 'Tên đường không được trống';
@@ -389,6 +407,8 @@
             tenduongError.innerText = 'Tên đường không được nhỏ hơn 5 kí tự';
             document.getElementById('tenduong').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('tenduong').style.borderColor = '#dee2e6';
         }
 
         if (isValid) {
