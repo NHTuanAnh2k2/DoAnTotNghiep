@@ -217,8 +217,8 @@
                     Tạo hóa đơn
                 </button>
                 <button onclick="showHDtrangcho()" type="button" class="btn btn-outline-dark" style="margin-left: 10px;"
-                    data-bs-toggle="modal" data-bs-target="#trancho">Hóa đơn hàng chờ <i
-                        class="bi bi-hourglass-split"></i></button>
+                    data-bs-toggle="modal" data-bs-target="#trancho"><i class="bi bi-hourglass-split"></i> Hóa đơn hàng
+                    chờ</button>
             </div>
             <p></p>
             <!-- Container cho các tab -->
@@ -247,7 +247,7 @@
                     </svg>
                     Quét QR Sản phẩm
                 </button>
-                <button class="btn" style="margin-left: 20px;background-color: rgb(249,72,42);color: white"
+                <button class="btn" style="margin-left: 10px;background-color: rgb(249,72,42);color: white"
                     data-bs-toggle="modal" data-bs-target="#modalThemSanPhamHD" id="changeSP">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                         class="bi bi-plus" viewBox="0 0 16 16">
@@ -257,7 +257,7 @@
                     Thêm sản phẩm
                 </button>
                 <a href="http://localhost:8080/hoa-don/hien-thi">
-                    <button class="btn" style="margin-left: 20px;background-color: rgb(220, 67, 40);color: white">
+                    <button class="btn" style="margin-left: 10px;background-color: rgb(220, 67, 40);color: white">
                         <i class="bi bi-list-ol"></i>
                         Danh sách hóa đơn
                     </button>
@@ -455,19 +455,22 @@
                                     </tbody>
                                 </table>
                                 <br>
-
-                                <nav aria-label="Page navigation example" id="navNV">
-                                    <ul class="pagination">
-                                        <li class="page-item" id="btn_prev_page"><a class="page-link"
-                                                id="prevPage">Previous</a>
-                                        </li>
-                                        <li class="d-flex flex-row page-item" id="numberPage">
-                                        </li>
-                                        <li class="page-item" id="btn_next_page">
-                                            <a class="page-link" id="nextPage">Next</a>
-                                        </li>
-                                    </ul>
-                                </nav>
+                                <div class="ps-2 pe-2">
+                                    <div class="d-flex justify-content-end">
+                                        <nav aria-label="Page navigation example" id="navNV">
+                                            <ul class="pagination">
+                                                <li class="page-item" id="btn_prev_page"><a class="page-link"
+                                                        id="prevPage">Trước</a>
+                                                </li>
+                                                <li class="d-flex flex-row page-item" id="numberPage">
+                                                </li>
+                                                <li class="page-item" id="btn_next_page">
+                                                    <a class="page-link" id="nextPage">Sau</a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -619,20 +622,25 @@
                                     </tbody>
                                 </table>
                                 <br>
-                                <nav aria-label="Page navigation example" id="navAddSPHDCT">
-                                    <ul class="pagination">
-                                        <li class="page-item" id="btn_prev_page"><a class="page-link"
-                                                id="prevPageSP">Previous</a>
-                                        </li>
-                                        <li class="d-flex flex-row page-item" id="numberPageSP">
+                                <div class="ps-2 pe-2">
+                                    <div class="d-flex justify-content-end">
+                                        <nav aria-label="Page navigation example" id="navAddSPHDCT">
+                                            <ul class="pagination">
+                                                <li class="page-item" id="btn_prev_page"><a class="page-link"
+                                                        id="prevPageSP">Trước</a>
+                                                </li>
+                                                <li class="d-flex flex-row page-item" id="numberPageSP">
 
 
-                                        </li>
-                                        <li class="page-item" id="btn_next_page">
-                                            <a class="page-link" id="nextPageSP">Next</a>
-                                        </li>
-                                    </ul>
-                                </nav>
+                                                </li>
+                                                <li class="page-item" id="btn_next_page">
+                                                    <a class="page-link" id="nextPageSP">Sau</a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -756,12 +764,14 @@
             <!--end-->
             <div>
                 <hr>
-                <div class="d-flex">
-                    <h5 style="margin-left: 820px">Tổng tiền:</h5>
-                    <h5 style="margin-left: 25px;color: red" id="tongTien">0 đ</h5>
+                <div class="ps-2 pe-2">
+                    <div class="d-flex justify-content-end ">
+                        <h5 style="margin-left: 920px">Tổng tiền:</h5>
+                        <h5 style="margin-left: 25px;color: red" id="tongTien">0 đ</h5>
+                    </div>
                 </div>
                 <br>
-                <div class="d-flex pe-1 ps-1">
+                <div class="d-flex pe-1 ">
                     <h5 class="me-auto">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-person" viewBox="0 0 16 16">
@@ -779,8 +789,8 @@
                         </svg>
                         Chọn tài khoản
                     </button>
-                    <button type="button" class="btn ms-1" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                        id="themKHS" style="background-color: rgb(42, 197, 249);color: white">+Thêm khách
+                    <button type="button" class="btn ms-2" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                        id="themKHS" style="background-color: rgb(42, 197, 249);color: white">+ Thêm khách
                         hàng</button>
 
                 </div>
@@ -1141,14 +1151,14 @@
 <td style="vertical-align: middle;">
                                                <a href="http://localhost:8080/ban-hang-tai-quay/delete/${hd.id}"
                                                 >
-                                                <button class="btn btn-outline-danger"
+                                                <button class="btn btn-danger"
                                                     onclick="return confirm('Bạn có muốn xóa sản phẩm này không?')"
                                                     type="button"><i class="bi bi-trash3"></i></button></a>
 
 
                                                     <a href="http://localhost:8080/ban-hang-tai-quay/update/${hd.id}/${hd.soluong}" id="${hd.id + 'fsport'}"
                                                 >
-                                                <button class="btn btn-outline-warning"
+                                                <button class="btn btn-warning"
                                                     onclick="return confirm('Bạn có muốn cập nhật lại sản phẩm này không?')"
                                                     type="button"><i
                                                         class="bi bi-arrow-clockwise bi-warning"></i></button></a>
@@ -1460,14 +1470,14 @@ tabindex="0">
             <td style="vertical-align: middle;">
                                                            <a href="http://localhost:8080/ban-hang-tai-quay/delete/${hd.id}"
                                                             >
-                                                            <button class="btn btn-outline-danger"
+                                                            <button class="btn btn-danger"
                                                                 onclick="return confirm('Bạn có muốn xóa sản phẩm này không?')"
                                                                 type="button"><i class="bi bi-trash3"></i></button></a>
 
 
                                                                 <a href="http://localhost:8080/ban-hang-tai-quay/update/${hd.id}/${hd.soluong}" id="${hd.id + 'fsport'}"
                                                             >
-                                                            <button class="btn btn-outline-warning"
+                                                            <button class="btn btn-warning"
                                                                 onclick="return confirm('Bạn có muốn cập nhật lại sản phẩm này không?')"
                                                                 type="button"><i
                                                                     class="bi bi-arrow-clockwise bi-warning"></i></button></a>
@@ -2251,6 +2261,11 @@ tabindex="0">
 
     <!-- thay đổi khách hàng -->
     <script>
+        function formatDate(dateString) {
+            const [year, month, day] = dateString.split('-');
+            return `${day}-${month}-${year}`;
+        }
+
         let thisNumberPage = 0;
 
         var reload = document.getElementById('reloadnv');
@@ -2277,7 +2292,7 @@ tabindex="0">
                                <td>${hd.makhachhang}</td>
                                <td>${hd.nguoidung.hovaten}</td>
                                <td>${hd.nguoidung.sodienthoai}</td>
-                               <td>${hd.nguoidung.ngaysinh}</td>
+                               <td>${formatDate(hd.nguoidung.ngaysinh)}</td>
                                <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
                                <td>
                                 <a href="http://localhost:8080/ban-hang-tai-quay/ChoseKH/${hd.id}"><button
@@ -2333,7 +2348,7 @@ tabindex="0">
                                <td>${hd.makhachhang}</td>
                                <td>${hd.nguoidung.hovaten}</td>
                                <td>${hd.nguoidung.sodienthoai}</td>
-                               <td>${hd.nguoidung.ngaysinh}</td>
+                               <td>${formatDate(hd.nguoidung.ngaysinh)}</td>
                                <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
                                <td>
                                 <a href="http://localhost:8080/ban-hang-tai-quay/ChoseKH/${hd.id}"><button
@@ -2387,7 +2402,7 @@ tabindex="0">
                        <td>${hd.makhachhang}</td>
                        <td>${hd.nguoidung.hovaten}</td>
                        <td>${hd.nguoidung.sodienthoai}</td>
-                       <td>${hd.nguoidung.ngaysinh}</td>
+                       <td>${formatDate(hd.nguoidung.ngaysinh)}</td>
                        <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
                        <td>
                         <a href="http://localhost:8080/ban-hang-tai-quay/ChoseKH/${hd.id}"><button
@@ -2421,7 +2436,7 @@ tabindex="0">
                                <td>${hd.makhachhang}</td>
                                <td>${hd.nguoidung.hovaten}</td>
                                <td>${hd.nguoidung.sodienthoai}</td>
-                               <td>${hd.nguoidung.ngaysinh}</td>
+                               <td>${formatDate(hd.nguoidung.ngaysinh)}</td>
                                <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
                                <td>
                                 <a href="http://localhost:8080/ban-hang-tai-quay/ChoseKH/${hd.id}"><button
@@ -2473,7 +2488,7 @@ tabindex="0">
                                <td>${hd.makhachhang}</td>
                                <td>${hd.nguoidung.hovaten}</td>
                                <td>${hd.nguoidung.sodienthoai}</td>
-                               <td>${hd.nguoidung.ngaysinh}</td>
+                               <td>${formatDate(hd.nguoidung.ngaysinh)}</td>
                                <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
                                <td>
                                 <a href="http://localhost:8080/ban-hang-tai-quay/ChoseKH/${hd.id}"><button
@@ -2529,7 +2544,7 @@ tabindex="0">
                                <td>${hd.makhachhang}</td>
                                <td>${hd.nguoidung.hovaten}</td>
                                <td>${hd.nguoidung.sodienthoai}</td>
-                               <td>${hd.nguoidung.ngaysinh}</td>
+                               <td>${formatDate(hd.nguoidung.ngaysinh)}</td>
                                <td>${hd.nguoidung.gioitinh == true ? 'Nam' : 'Nữ'}</td>
                                <td>
                                 <a href="http://localhost:8080/ban-hang-tai-quay/ChoseKH/${hd.id}"><button

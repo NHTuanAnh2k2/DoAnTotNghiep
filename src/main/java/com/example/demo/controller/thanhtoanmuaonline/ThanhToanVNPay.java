@@ -109,6 +109,8 @@ public class ThanhToanVNPay {
     // Sau khi hoàn tất thanh toán, VNPAY sẽ chuyển hướng trình duyệt về URL này
     @GetMapping("/vnpay-payment-return")
     public String GetMapping(HttpServletRequest request, Model model, HttpSession session){
+        Integer IDHDCamOn=0;
+        String MaHDCamOn="";
         int paymentStatus =vnPayService.orderReturn(request);
         if(paymentStatus==1){
             DiaChiThanhToanNoTaiKhoanOnline diachikotaikhoan= (DiaChiThanhToanNoTaiKhoanOnline) session.getAttribute("diachiVNpay");
@@ -195,6 +197,8 @@ public class ThanhToanVNPay {
                             List<GioHangChiTiet> lstGHCT = gioHang.getGioHangChiTietList();
 
                             HoaDon hdMoiThem = daoHD.timBanGhiDuocTaoGanNhat();
+                            IDHDCamOn= hdMoiThem.getId();
+                            MaHDCamOn= hdMoiThem.getMahoadon();
                             for (GioHangChiTiet g : lstGHCT) {
                                 HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
                                 hoaDonChiTiet.setHoadon(hdMoiThem);
@@ -353,6 +357,8 @@ public class ThanhToanVNPay {
                 //Thêm hóa đơn ci tiết
                 List<GioHangChiTiet> lstGHCT = (List<GioHangChiTiet>) session.getAttribute("cartItems");
                 HoaDon hdMoiThem = daoHD.timBanGhiDuocTaoGanNhat();
+                IDHDCamOn= hdMoiThem.getId();
+                MaHDCamOn= hdMoiThem.getMahoadon();
                 for (GioHangChiTiet g : lstGHCT) {
                     HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
                     hoaDonChiTiet.setHoadon(hdMoiThem);
@@ -427,14 +433,14 @@ public class ThanhToanVNPay {
                 phuongthuc.setNguoitao("Tuan Anh");
                 phuongthuc.setTrangthai(true);
                 daoPTTT.add_update(phuongthuc);
-
             }
-        }
-        if(paymentStatus == 1){
-            session.setAttribute("datHangOnlThanhCong",1);
+
+            model.addAttribute("MaHDCamOn",MaHDCamOn);
+            model.addAttribute("IDHDCamOn",IDHDCamOn);
+            return "customer/camondathang";
         }else{
             session.setAttribute("datHangOnlThatBai",2);
+            return "redirect:/view-thanh-toan";
         }
-        return paymentStatus == 1 ? "redirect:/customer/trangchu" : "redirect:/view-thanh-toan";
     }
 }

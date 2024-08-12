@@ -754,11 +754,11 @@ public class BanHangController {
     @GetMapping("xac-nhan-phuong-thuc")
     @ResponseBody
     public ResponseEntity<?> xacNhanPhuongThuc(@RequestParam("phuongthuc") List<String> lst) {
-        String mota = Integer.valueOf(lst.get(0)) == 1 ? "tiền mặt" : "chuyển khoản";
+        String mota = Integer.valueOf(lst.get(0)) == 1 ? "Tiền mặt" : "Chuyển khoản";
         PhuongThucThanhToan phuongThucInsert = new PhuongThucThanhToan();
         phuongThucInsert.setHoadon(hdHienTai);
         phuongThucInsert.setMagiaodichvnpay("N/A");
-        phuongThucInsert.setTenphuongthuc("trả trước");
+        phuongThucInsert.setTenphuongthuc("Trả trước");
         phuongThucInsert.setTongtien(BigDecimal.valueOf(Double.valueOf(convertCurrency(lst.get(1)))));
         phuongThucInsert.setMota(mota);
         phuongThucInsert.setTrangthai(true);

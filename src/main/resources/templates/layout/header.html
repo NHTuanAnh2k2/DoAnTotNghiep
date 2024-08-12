@@ -52,9 +52,15 @@
             <li>
                 <a th:href="@{/customer/gioithieu}" class="nav-link">GIỚI THIỆU</a>
             </li>
-<!--            <li>-->
+<!-- <<<<<<< thinh -->
+<!-- <!--            <li>--> -->
 <!--                <a th:href="@{/customer/vechungtoi}" class="nav-link">VỀ CHÚNG TÔI</a>-->
 <!--            </li>-->
+<!-- ======= -->
+            <!-- <li>
+                <a th:href="@{/customer/vechungtoi}" class="nav-link">VỀ CHÚNG TÔI</a>
+            </li> -->
+<!-- >>>>>>> master -->
             <li>
                 <a th:href="@{/customer/tracuudonhang}" class="nav-link">TRA CỨU</a>
             </li>
@@ -72,7 +78,7 @@
                         <div style="position: relative;">
                             <input class="form-control" type="search" placeholder="Bạn cần tìm gì?..."
                                    aria-label="Search"
-                                   style="width: 200px; padding-right: 40px;" name="key" th:value="${fillSearch}">
+                                   style="width: 350px; padding-right: 40px;" name="key" th:value="${fillSearch}">
                             <span style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"
                                   onclick="submitSearchForm()">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search"

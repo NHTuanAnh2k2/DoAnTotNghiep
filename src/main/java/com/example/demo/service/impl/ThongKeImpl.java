@@ -126,16 +126,17 @@ public class ThongKeImpl implements ThongKeService {
         return dao.namData();
     }
 
+    //ok
     @Override
     public List<Object[]> dayex() {
         return dao.dayex();
     }
-
+    //ok
     @Override
     public List<Object[]> thangex() {
         return dao.thangex();
     }
-
+    //ok
     @Override
     public List<Object[]> namex() {
         return dao.namex();

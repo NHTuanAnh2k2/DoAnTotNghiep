@@ -497,7 +497,7 @@
 </div>
 <div id="coupon-notizalo" data-toggle="modal" data-target="#modalCoupons" class="noti-icon has-item">
     <!-- Nội dung của coupon-noti -->
-    <a target="_blank">
+    <a target="_blank" href="https://zalo.me/g/gghsor912">
         <span class=""><img alt="Zalo" style="width:50px" src="../dist/img/zalo.png"/></span>
     </a>
 </div>
@@ -592,33 +592,4 @@
         var token = document.getElementById("tokenDN").value;
         console.log("hhhh" + token);
     });
-
-    async function DatHangOnlThanhCong() {
-        const response = await fetch('/dat-online-thanh-cong');
-        const data = await response.json();
-        console.log(data);
-        if (data === 1) {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
-                }
-            });
-
-            Toast.fire({
-                icon: "success",
-                title: "Đặt hàng thành công!"
-            }).then(async () => {
-                // Xóa session sau khi hiển thị thông báo
-                await fetch('/clear-session-thanh-toan-online', {method: 'POST'});
-            });
-        }
-    }
-
-    DatHangOnlThanhCong();
 </script>

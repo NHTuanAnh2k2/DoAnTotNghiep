@@ -64,7 +64,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">
+                                <h3 class="card-title" style="font-weight: bold">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
                                          class="bi bi-funnel" viewBox="0 0 16 16">
                                         <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
@@ -75,11 +75,13 @@
                                 <hr class="border border-danger border opacity-50">
                                 <form id="searchForm" method="get" th:object="${tim}">
                                     <h3 class="card-title">
+                                        <span style="font-weight: bold">Tìm kiếm theo tên:</span>
                                         <input type="text" id="searchInput" placeholder="Tìm kiếm thương hiệu"
                                                class="form-control" name="key" style="width: 980px" th:value="${fillSearch}">
                                     </h3>
 
                                     <h3 class="card-title" style="margin-left: 50px;font-weight: bold">
+                                        <span style="font-weight: bold">Trạng thái:</span>
                                         <select id="statusSelect" class="form-control" name="trangthai" style="color: rgb(249,72,42); font-weight: bold; width: 150px">
                                             <option value="" th:selected="${fillTrangThai == null}">Tất cả</option>
                                             <option value="true" th:selected="${fillTrangThai != null && fillTrangThai}">Đang kinh doanh</option>
@@ -105,7 +107,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">
+                                <h3 class="card-title" style="font-weight: bold">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
                                          class="bi bi-card-list" viewBox="0 0 16 16">
                                         <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"/>
@@ -133,7 +135,7 @@
                                         <div class="modal-body">
                                             <form id="addForm" name="addThuongHieu" th:method="post" th:object="${thuonghieu}"
                                                   th:action="@{/addSaveThuongHieu}" onsubmit="return validateTrung()">
-                                                <p>
+                                                <p style="font-weight: bold">
                                                     <span style="color: red">* </span>
                                                     Tên thương hiệu:
                                                     <input id="tenInput" class="form-control" th:field="*{ten}"/>

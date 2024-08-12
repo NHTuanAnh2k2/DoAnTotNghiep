@@ -283,7 +283,8 @@ public interface ThongKeRepository extends JpaRepository<HoaDon, Integer> {
             "ORDER BY \n" +
             "    y.SaleYear;\n",nativeQuery = true)
     List<Object[]> namData();
-
+    //ok
+    //ok
     @Query(value = "WITH DateRange AS (\n" +
             "    SELECT CAST(GETDATE() - 6 AS DATE) AS SaleDay\n" +
             "    UNION ALL\n" +
@@ -312,6 +313,8 @@ public interface ThongKeRepository extends JpaRepository<HoaDon, Integer> {
             "ORDER BY d.SaleDay\n" +
             "OPTION (MAXRECURSION 7);\n",nativeQuery = true)
     List<Object[]> dayex();
+    //ok
+    //ok
     @Query(value = "WITH MonthRange AS (\n" +
             "    SELECT FORMAT(DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()) - 11, 0), 'yyyy-MM') AS SaleMonth\n" +
             "    UNION ALL\n" +

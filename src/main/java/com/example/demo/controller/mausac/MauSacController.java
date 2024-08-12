@@ -123,4 +123,25 @@ public class MauSacController {
         mauSacImp.addMauSac(mauSac);
         return "redirect:/updateCTSP/" + spctId;
     }
+
+    @PostMapping("/addMauSacSuaAll")
+    public String addMauSacSuaAll(@ModelAttribute("mausac") MauSac mauSac, @RequestParam("spctId") Integer spctId, HttpSession session) {
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
+
+        String trimmedTenMauSac = (mauSac.getTen() != null)
+                ? mauSac.getTen().trim().replaceAll("\\s+", " ")
+                : null;
+        LocalDateTime currentTime = LocalDateTime.now();
+        mauSac.setTen(trimmedTenMauSac);
+        mauSac.setTrangthai(true);
+        mauSac.setNgaytao(currentTime);
+        mauSac.setLancapnhatcuoi(currentTime);
+        mauSac.setNguoitao(nv.getNguoidung().getHovaten());
+        mauSac.setNguoicapnhat(nv.getNguoidung().getHovaten());
+        mauSacImp.addMauSac(mauSac);
+        return "redirect:/updateAllCTSP/" + spctId;
+    }
 }

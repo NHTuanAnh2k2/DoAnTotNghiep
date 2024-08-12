@@ -261,10 +261,17 @@ public class ThongKeController {
     @PostMapping("/export-excel")
     @ResponseBody
     public ResponseEntity<byte[]> exportToExcel() {
+//        ok
+        //ok
+        //ok
+        //ok
         List<Object[]> sp = thongKe.soLuongDaBan();
         List<Object[]> slt = thongKe.soLuongTon();
+        //ok
         List<Object[]> day = thongKe.dayex();
+        //ok
         List<Object[]> thang = thongKe.thangex();
+        //ok
         List<Object[]> nam = thongKe.namex();
 
         // Tạo Workbook mới
