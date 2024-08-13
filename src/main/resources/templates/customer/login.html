@@ -628,7 +628,10 @@
             ngaysinhError.innerText = 'Tuổi phải từ 70 trở xuống';
             document.getElementById('ngaysinh').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('ngaysinh').style.borderColor = '#dee2e6';
         }
+
         if (tenInput === '') {
             tenError.innerText = 'Họ và tên không được trống';
             document.getElementById('hovaten').style.borderColor = 'red';
@@ -645,7 +648,10 @@
             tenError.innerText = 'Họ và tên không được quá 50 ký tự';
             document.getElementById('hovaten').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('hovaten').style.borderColor = '#dee2e6';
         }
+
         if (emailInput === '') {
             emailError.innerText = 'Email không được trống';
             document.getElementById('email').style.borderColor = 'red';
@@ -666,6 +672,8 @@
             emailError.innerText = 'Email không được quá 254 ký tự';
             document.getElementById('email').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('email').style.borderColor = '#dee2e6';
         }
 
         if (sdtInput === '') {
@@ -680,7 +688,10 @@
             sdtError.innerText = 'Số điện thoại đã tồn tại';
             document.getElementById('sodienthoai').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('sodienthoai').style.borderColor = '#dee2e6';
         }
+
         if (taikhoanInput === '') {
             taikhoanError.innerText = 'Tài khoản không được trống';
             document.getElementById('taikhoan').style.borderColor = 'red';
@@ -709,6 +720,8 @@
             taikhoanError.innerText = 'Tài khoản không được quá 50 ký tự';
             document.getElementById('taikhoan').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('taikhoan').style.borderColor = '#dee2e6';
         }
 
         if (matkhauInput === '') {
@@ -719,7 +732,10 @@
             matkhauError.innerText = 'Mật khẩu phải tối thiểu 8 ký tự';
             document.getElementById('matkhau').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('matkhau').style.borderColor = '#dee2e6';
         }
+
         if (matkhauxnInput === '') {
             xacnhanmkError.innerText = 'Mật khẩu xác nhận được trống';
             document.getElementById('xacnhanmatkhau').style.borderColor = 'red';
@@ -728,6 +744,8 @@
             xacnhanmkError.innerText = 'Mật khẩu không khớp';
             document.getElementById('xacnhanmatkhau').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('xacnhanmatkhau').style.borderColor = '#dee2e6';
         }
 
         return isValid;
