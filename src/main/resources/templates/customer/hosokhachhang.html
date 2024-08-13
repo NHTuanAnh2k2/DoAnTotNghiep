@@ -118,7 +118,7 @@
                                         KHOẢN</p>
                                     <hr class="border border-danger border opacity-50">
                                     <div class="row">
-                                        <div class="thongtintaikhoan col-lg-9">
+                                        <div class="thongtintaikhoan col-lg-10">
                                             <p>
                                                 <span style="color: #808080;min-width: 115px;display: inline-block;">Họ và tên: </span>
                                                 <span th:text="${nguoidung.hovaten}"></span>
@@ -156,10 +156,10 @@
                                                       th:text="${nguoidung.cccd}"></span>
                                             </p>
                                         </div>
-                                        <div class="col-lg-3 mt-2" style="right: 0;">
+                                        <div class="col-lg-2 mt-2" style="right: 0">
                                             <button id="btnchuyencapnhattaikhoan"
-                                                    style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100%; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">
-                                                CẬP NHẬT THÔNG TIN
+                                                    style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100px; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">
+                                                Cập nhật
                                             </button>
                                         </div>
                                     </div>
@@ -224,8 +224,8 @@
                                                 <a id="huycapnhattaikhoan" href="#"
                                                    style="color: #808080; text-decoration: none; text-transform: none; margin-right: 50px; font-weight: 550; ">Hủy</a>
                                                 <button id="btncapnhattaikhoan"
-                                                        style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 40%; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">
-                                                    CẬP NHẬT THÔNG TIN
+                                                        style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100px; height: 50px; border-radius: 10px;">
+                                                    Cập nhật
                                                 </button>
                                             </div>
                                         </form>
@@ -245,7 +245,7 @@
                                     <!-- Address Section -->
                                     <div class="d-flex justify-content-between align-items-center mb-3">
                                         <!--                                        <h3>Địa chỉ của tôi</h3>-->
-                                        <button id="chuyencapnhatdiachi" class="btn btn-danger">+ Thêm địa chỉ
+                                        <button id="chuyencapnhatdiachi" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: auto; height: 50px; border-radius: 10px;" class="btn btn-danger">+ Thêm địa chỉ
                                             mới
                                         </button>
                                     </div>
@@ -278,7 +278,7 @@
                                                             Xã Vân Canh, Huyện Hoài Đức, Hà Nội</p>
                                                     </div>
                                                     <div>
-                                                        <a id="chuyencapnhatdiachi2" href="#" class="btn btn-link">Cập
+                                                        <a id="chuyencapnhatdiachi2" style="text-transform: none; text-decoration: none; color: rgb(249,72,42)" href="#" class="btn btn-link">Cập
                                                             nhật</a>
                                                         <button class="btn btn-light btn-sm">Mặc định</button>
                                                     </div>
@@ -298,9 +298,9 @@
                                                     </div>
                                                     <div>
                                                         <a th:href="@{/xoadiachi(id=${lstDiaChi.id})}"
-                                                           class="btn btn-link" id="btnXoaDiaChi">Xóa</a>
-                                                        <a th:href="@{/thietlapmacdinh(id=${lstDiaChi.id})}"
-                                                           class="btn btn-link btnUpDateTrangThai">Thiết lập mặc
+                                                           class="btn btn-link" id="btnXoaDiaChi" style="text-decoration: none; text-transform: none; color: rgb(249,72,42)">Xóa</a>
+                                                        <a th:href="@{/thietlapmacdinh(id=${lstDiaChi.id})}" id="macdinh"
+                                                           class="btn btn-link btnUpDateTrangThai" style="text-decoration: none; text-transform: none; color: black">Thiết lập mặc
                                                             định</a>
                                                     </div>
                                                 </div>
@@ -385,8 +385,8 @@
                                                 <a id="huycapnhatdiachi" href="#"
                                                    style="color: #808080; text-decoration: none; text-transform: none; margin-right: 50px; font-weight: 550; ">Hủy</a>
                                                 <button type="submit" id="btnThemDiaChi"
-                                                        style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 40%; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">
-                                                    THÊM ĐỊA CHỈ
+                                                        style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: auto; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">
+                                                    Thêm địa chỉ
                                                 </button>
                                             </div>
                                         </form>
@@ -466,8 +466,8 @@
                                                 <a id="huycapnhatdiachi2" href="#"
                                                    style="color: #808080; text-decoration: none; text-transform: none; margin-right: 50px; font-weight: 550; ">Hủy</a>
                                                 <button type="submit" id="btnCapNhatDiaChi"
-                                                        style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 40%; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">
-                                                    CẬP NHẬT ĐỊA CHỈ
+                                                        style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: auto; height: 50px; border-radius: 10px; border-color: rgb(249,72,42);">
+                                                    Cập nhật
                                                 </button>
                                             </div>
                                         </form>
@@ -605,7 +605,7 @@
                                                 <th>Tổng tiền</th>
                                                 <th style="white-space: nowrap;">Ngày giao dự kiến</th>
                                                 <th>Trạng thái</th>
-                                                <th>Hành động</th>
+                                                <th>Thao tác</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -635,6 +635,7 @@
                                             </tr>
                                             </tbody>
                                         </table>
+                                        <img th:if="${#lists.isEmpty(lstHoaDon)}" src="../dist/img/no_product.png" style="margin-left: 28%" alt="">
                                         <!--                                        <div class="d-flex flex-row-reverse">-->
                                         <!--                                            <nav aria-label="Page navigation example"-->
                                         <!--                                                 th:if="${lstHoaDon.totalPages>1}">-->
@@ -669,7 +670,7 @@
                                                 <th>Tổng tiền</th>
                                                 <th style="white-space: nowrap;">Ngày giao dự kiến</th>
                                                 <th>Trạng thái</th>
-                                                <th>Hành động</th>
+                                                <th>Thao tác</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -744,6 +745,7 @@
                                             </tr>
                                             </tbody>
                                         </table>
+                                        <img th:if="${#lists.isEmpty(lstHoaDon0)}" src="../dist/img/no_product.png" style="margin-left: 28%" alt="">
                                     </div>
 
                                     <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel"
@@ -758,7 +760,7 @@
                                                 <th>Tổng tiền</th>
                                                 <th style="white-space: nowrap;">Ngày giao dự kiến</th>
                                                 <th>Trạng thái</th>
-                                                <!--                                                <th>Hành động</th>-->
+                                                <!--                                                <th>Thao tác</th>-->
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -786,6 +788,7 @@
                                             </tr>
                                             </tbody>
                                         </table>
+                                        <img th:if="${#lists.isEmpty(lstHoaDon1)}" src="../dist/img/no_product.png" style="margin-left: 28%" alt="">
                                     </div>
                                     <div class="tab-pane fade" id="disabled-tab-pane1"
                                          role="tabpanel"
@@ -800,7 +803,7 @@
                                                 <th>Tổng tiền</th>
                                                 <th style="white-space: nowrap;">Ngày giao dự kiến</th>
                                                 <th>Trạng thái</th>
-                                                <!--                                                <th>Hành động</th>-->
+                                                <!--                                                <th>Thao tác</th>-->
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -828,6 +831,7 @@
                                             </tr>
                                             </tbody>
                                         </table>
+                                        <img th:if="${#lists.isEmpty(lstHoaDon2)}" src="../dist/img/no_product.png" style="margin-left: 28%" alt="">
                                     </div>
                                     <div class="tab-pane fade" id="disabled-tab-pane2"
                                          role="tabpanel"
@@ -842,7 +846,7 @@
                                                 <th>Tổng tiền</th>
                                                 <th style="white-space: nowrap;">Ngày giao dự kiến</th>
                                                 <th>Trạng thái</th>
-                                                <!--                                                <th>Hành động</th>-->
+                                                <!--                                                <th>Thao tác</th>-->
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -870,6 +874,7 @@
                                             </tr>
                                             </tbody>
                                         </table>
+                                        <img th:if="${#lists.isEmpty(lstHoaDon3)}" src="../dist/img/no_product.png" style="margin-left: 28%" alt="">
                                     </div>
                                     <div class="tab-pane fade" id="disabled-tab-pane3"
                                          role="tabpanel"
@@ -884,7 +889,7 @@
                                                 <th>Tổng tiền</th>
                                                 <th style="white-space: nowrap;">Ngày giao dự kiến</th>
                                                 <th>Trạng thái</th>
-                                                <!--                                                <th>Hành động</th>-->
+                                                <!--                                                <th>Thao tác</th>-->
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -912,6 +917,7 @@
                                             </tr>
                                             </tbody>
                                         </table>
+                                        <img th:if="${#lists.isEmpty(lstHoaDon4)}" src="../dist/img/no_product.png" style="margin-left: 28%" alt="">
                                     </div>
                                     <div class="tab-pane fade" id="disabled-tab-pane4"
                                          role="tabpanel"
@@ -926,7 +932,7 @@
                                                 <th>Tổng tiền</th>
                                                 <th style="white-space: nowrap;">Ngày nhận hàng</th>
                                                 <th>Trạng thái</th>
-                                                <th>Hành động</th>
+                                                <th>Thao tác</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -956,6 +962,7 @@
                                             </tr>
                                             </tbody>
                                         </table>
+                                        <img th:if="${#lists.isEmpty(lstHoaDon5)}" src="../dist/img/no_product.png" style="margin-left: 28%" alt="">
                                     </div>
                                     <div class="tab-pane fade" id="disabled-tab-pane5"
                                          role="tabpanel"
@@ -970,7 +977,7 @@
                                                 <th>Tổng tiền</th>
                                                 <!--                                                <th style="white-space: nowrap;">Ngày giao dự kiến</th>-->
                                                 <th>Trạng thái</th>
-                                                <th>Hành động</th>
+                                                <th>Thao tác</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -1000,6 +1007,7 @@
                                             </tr>
                                             </tbody>
                                         </table>
+                                        <img th:if="${#lists.isEmpty(lstHoaDon6)}" src="../dist/img/no_product.png" style="margin-left: 28%" alt="">
                                     </div>
                                     <!--                                    <div class="tab-pane fade" id="disabled-tab-pane2"-->
                                     <!--                                         role="tabpanel"-->
@@ -1089,7 +1097,7 @@
 
         Toast.fire({
             icon: "success",
-            title: "Lưu thành công!"
+            title: "Lưu thay đổi!"
         });
     }
     if (repurchase === false) {
@@ -1282,6 +1290,8 @@
             ngaysinhError.innerText = 'Tuổi phải từ 70 trở xuống';
             document.getElementById('ngaysinh').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('ngaysinh').style.borderColor = '#dee2e6';
         }
 
         if (inputTenNd === "") {
@@ -1300,6 +1310,8 @@
             tenError.innerText = 'Họ và tên không được quá 50 ký tự';
             document.getElementById('hovaten').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('hovaten').style.borderColor = '#dee2e6';
         }
 
         if (inputCccd === '') {
@@ -1314,6 +1326,8 @@
             cccdError.innerText = 'CCCD đã tồn tại';
             document.getElementById('cccd').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('cccd').style.borderColor = '#dee2e6';
         }
 
         if (inputEmail === "") {
@@ -1336,6 +1350,8 @@
             emailError.innerText = 'Email không được quá 254 ký tự';
             document.getElementById('email').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('email').style.borderColor = '#dee2e6';
         }
 
         if (inputSdt === "") {
@@ -1350,6 +1366,8 @@
             sdtError.innerText = 'Số điện thoại đã tồn tại';
             document.getElementById('sodienthoai').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('sodienthoai').style.borderColor = '#dee2e6';
         }
 
         if (!isValid) {
@@ -1396,6 +1414,8 @@
             tennguoinhanError.innerText = 'Họ và tên không được quá 50 ký tự';
             document.getElementById('hotennguoinhan').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('hotennguoinhan').style.borderColor = '#dee2e6';
         }
 
         if (inputSdt === "") {
@@ -1406,6 +1426,8 @@
             sdtError.innerText = "Số điện thoại không hợp lệ";
             document.getElementById('sdtnguoinhan').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('sdtnguoinhan').style.borderColor = '#dee2e6';
         }
 
         if (inputTenDuong === "") {
@@ -1424,6 +1446,8 @@
             tenduongError.innerText = 'Địa chỉ không được ít hon 5 ký tự';
             document.getElementById('tenduong').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('tenduong').style.borderColor = '#dee2e6';
         }
 
         if (tinhthanhSelect === '' || quanhuyenSelect === '' || xaphuongSelect === '') {
@@ -1472,6 +1496,8 @@
             tennguoinhanError2.innerText = 'Họ và tên không được quá 50 ký tự';
             document.getElementById('hotennguoinhan2').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('hotennguoinhan2').style.borderColor = '#dee2e6';
         }
 
         if (inputTenDuong2 === "") {
@@ -1488,8 +1514,10 @@
             isValid = false;
         } else if (inputTenDuong2.length < 5) {
             tenduongError2.innerText = 'Địa chỉ không được ít hơn 5 ký tự';
-            document.getElementById('tenduong').style.borderColor = 'red';
+            document.getElementById('tenduong2').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('tenduong2').style.borderColor = '#dee2e6';
         }
 
         if (inputSdt2 === "") {
@@ -1500,6 +1528,8 @@
             sdtError2.innerText = "Số điện thoại không hợp lệ";
             document.getElementById('sdtnguoinhan2').style.borderColor = 'red';
             isValid = false;
+        } else {
+            document.getElementById('sdtnguoinhan2').style.borderColor = '#dee2e6';
         }
         sessionStorage.setItem('activeTab', 'v-pills-profile');
         return isValid;
@@ -1695,6 +1725,7 @@
         // Validate input
         if (lydohuy === '') {
             lydohuyError.textContent = 'Vui lòng nhập lý do hủy đơn hàng.';
+            document.getElementById('lydohuyInput').style.borderColor = 'red';
             return false;
         }
 
