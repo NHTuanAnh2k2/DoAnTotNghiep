@@ -96,7 +96,7 @@
                                                         <span id="tenError" style="color: red;"></span>
                                                     </p>
                                                 </div>
-                                                <div>
+                                                <div style="margin-left: 55px;">
                                                     <p style="margin-left: 20px;"> <span style="color: red">*</span> <strong> Ngày sinh: </strong>
                                                         <input type="date" class="form-control"
                                                                style="width: 550px" id="ngaysinh"
@@ -116,7 +116,7 @@
                                                         <span id="cccdError" style="color: red;"></span>
                                                     </p>
                                                 </div>
-                                                <div>
+                                                <div style="margin-left: 55px;">
                                                     <p style="margin-left: 20px;"> <span style="color: red">*</span> <strong>Giới tính:</strong>
                                                         <br>
                                                         <input type="radio" style="margin-top: 10px"
@@ -136,7 +136,7 @@
                                                         <span id="emailError" style="color: red;"></span>
                                                     </p>
                                                 </div>
-                                                <div>
+                                                <div style="margin-left: 55px;">
                                                     <p style="margin-left: 20px;"> <span style="color: red">*</span> <strong> Số điện thoại: </strong>
                                                         <input placeholder="Số điện thoại" class="form-control" id="sodienthoai"
                                                                style="width: 550px" th:field="*{sodienthoai}">
@@ -157,7 +157,7 @@
                                                                   style="color: red;"></span>
                                                         </p>
                                                     </div>
-                                                    <div>
+                                                    <div style="margin-left: 55px;">
                                                         <p style="margin-left: 20px;"> <span style="color: red">*</span> <strong> Quận/Huyện: </strong>
                                                             <select class="form-select" th:field="*{quanhuyen}"
                                                                     style="width: 550px" id="district">
@@ -180,7 +180,7 @@
                                                                   style="color: red;"></span>
                                                         </p>
                                                     </div>
-                                                    <div>
+                                                    <div style="margin-left: 55px;">
                                                         <p style="margin-left: 20px;"> <span style="color: red">*</span> <strong> Số nhà/Ngõ/Đường: </strong>
                                                             <input placeholder="Số nhà/Ngõ/Đường" class="form-control"
                                                                    id="tenduong"
@@ -192,13 +192,9 @@
                                                 </div>
                                             </div>
                                             <button style="float: right; background-color: rgb(249,72,42);color: white; margin-right: 20px" type="submit" class="btn">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" style="padding-bottom: 4px"
-                                                     class="bi bi-plus" viewBox="0 0 16 16">
-                                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
-                                                </svg>
                                                 Thêm
                                             </button>
-                                            <a style="float: right; margin-right: 10px" th:href="@{/khachhang}" class="btn btn-outline-danger">Thoát</a>
+                                            <a style="float: right; margin-right: 10px" th:href="@{/khachhang}" class="btn btn-dark">Thoát</a>
                                         </div>
                                     </section>
                                 </div>

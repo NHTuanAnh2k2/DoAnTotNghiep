@@ -310,7 +310,7 @@
                     toast.onmouseleave = Swal.resumeTimer;
                 }
             });
-            
+
             await fetch('/dot-clear-session', { method: 'POST' }).then(() => {
                 // Sau khi xóa session thành công, hiển thị thông báo
                 Toast.fire({
@@ -357,6 +357,8 @@
     }
     function capnhattrangthaithanhcong() {
         if (localStorage.getItem('capnhattrangthaidot') === '1') {
+            // Reset trạng thái
+            localStorage.setItem('capnhattrangthaidot', '0');
             const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
@@ -368,14 +370,11 @@
                     toast.onmouseleave = Swal.resumeTimer;
                 }
             });
-
             Toast.fire({
                 icon: "success",
                 title: "Cập nhật thành công!"
             });
 
-            // Reset trạng thái
-            localStorage.setItem('capnhattrangthaidot', '0');
         }
     }
 </script>
