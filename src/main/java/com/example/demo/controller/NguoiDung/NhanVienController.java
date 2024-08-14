@@ -244,7 +244,7 @@ public class NhanVienController {
         NhanVien nhanVien1 = nhanVienRepository.findNhanVienByIdNd(nguoiDung1.getId());
         if (nhanVien1.getVaitro() == false) {
             if (!nguoiDung1.getId().equals(id)) {
-                return "redirect:/errorpage/admin";
+                return "redirect:/updateNhanVien/" + nhanVien1.getId();
             }
         }
         model.addAttribute("nd", nguoiDung.findById(id));

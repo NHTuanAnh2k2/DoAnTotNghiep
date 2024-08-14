@@ -127,6 +127,27 @@ public class DeGiayController {
         return "redirect:/updateCTSP/" + spctId;
     }
 
+    @PostMapping("/addDeGiaySuaAll")
+    public String addDeGiaySuaAll(@ModelAttribute("degiay") DeGiay deGiay, @RequestParam("spctId") Integer spctId, HttpSession session) {
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
+
+        String trimmedTenDeGiay = (deGiay.getTen() != null)
+                ? deGiay.getTen().trim().replaceAll("\\s+", " ")
+                : null;
+        LocalDateTime currentTime = LocalDateTime.now();
+        deGiay.setTen(trimmedTenDeGiay);
+        deGiay.setTrangthai(true);
+        deGiay.setNgaytao(currentTime);
+        deGiay.setLancapnhatcuoi(currentTime);
+        deGiay.setNguoitao(nv.getNguoidung().getHovaten());
+        deGiay.setNguoicapnhat(nv.getNguoidung().getHovaten());
+        deGiayImp.add(deGiay);
+        return "redirect:/updateAllCTSP/" + spctId;
+    }
+
     @ModelAttribute("dsdg")
     public List<DeGiay> getDS() {
         return deGiayImp.findAll();

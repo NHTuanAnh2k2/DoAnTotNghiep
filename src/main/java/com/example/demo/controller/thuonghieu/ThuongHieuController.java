@@ -128,4 +128,25 @@ public class ThuongHieuController {
         thuongHieuImp.add(thuongHieu);
         return "redirect:/updateCTSP/" + spctId;
     }
+
+    @PostMapping("/addThuongHieuSuaAll")
+    public String addThuongHieuSuaAll(@ModelAttribute("thuonghieu") ThuongHieu thuongHieu, @ModelAttribute("th") ThuocTinhInfo info, @RequestParam("spctId") Integer spctId, HttpSession session) {
+        String username = (String) session.getAttribute("adminDangnhap");
+        NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
+        List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
+        NhanVien nv = lstnvtimve.get(0);
+
+        String trimmedTenThuongHieu = (thuongHieu.getTen() != null)
+                ? thuongHieu.getTen().trim().replaceAll("\\s+", " ")
+                : null;
+        LocalDateTime currentTime = LocalDateTime.now();
+        thuongHieu.setTen(trimmedTenThuongHieu);
+        thuongHieu.setTrangthai(true);
+        thuongHieu.setNgaytao(currentTime);
+        thuongHieu.setLancapnhatcuoi(currentTime);
+        thuongHieu.setNguoitao(nv.getNguoidung().getHovaten());
+        thuongHieu.setNguoicapnhat(nv.getNguoidung().getHovaten());
+        thuongHieuImp.add(thuongHieu);
+        return "redirect:/updateAllCTSP/" + spctId;
+    }
 }

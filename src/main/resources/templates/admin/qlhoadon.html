@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>T&T</title>
-    <link rel="icon" type="image/png" href="../dist/img/logo_tt.png">
+    <title>FSPORT</title>
+    <link rel="icon" type="image/png" href="/dist/img/logo_bong2.jpg">
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -176,8 +176,9 @@
                             <div class="card">
                                 <div class="card-header">
                                     <h3 class="card-title">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" style="margin-right: 3px;"
-                                            fill="currentColor" class="bi bi-card-list" viewBox="0 0 16 16">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                            style="margin-right: 3px;" fill="currentColor" class="bi bi-card-list"
+                                            viewBox="0 0 16 16">
                                             <path
                                                 d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z" />
                                             <path
@@ -328,28 +329,43 @@
                                                 <table class="table table-bordered table-hover text-center">
                                                     <thead class="table table-danger">
                                                         <tr>
-                                                            <th style="vertical-align: middle; text-align: center;">STT</th>
-                                                            <th style="vertical-align: middle; text-align: center;">Mã hóa đơn</th>
-                                                            <th style="vertical-align: middle; text-align: center;">Mã nhân viên</th>
-                                                            <th style="vertical-align: middle; text-align: center;">Tên khách hàng</th>
-                                                            <th style="vertical-align: middle; text-align: center;">SĐT khách hàng</th>
-                                                            <th style="vertical-align: middle; text-align: center;">Loại hóa đơn</th>
-                                                            <th style="vertical-align: middle; text-align: center;">Tổng tiền</th>
-                                                            <th style="vertical-align: middle; text-align: center;">Ngày tạo</th>
-                                                            <th style="vertical-align: middle; text-align: center;">Trạng thái</th>
-                                                            <th style="vertical-align: middle; text-align: center;" colspan="2">Thao tác</th>
+                                                            <th style="vertical-align: middle; text-align: center;">STT
+                                                            </th>
+                                                            <th style="vertical-align: middle; text-align: center;">Mã
+                                                                hóa đơn</th>
+                                                            <th style="vertical-align: middle; text-align: center;">Mã
+                                                                nhân viên</th>
+                                                            <th style="vertical-align: middle; text-align: center;">Tên
+                                                                khách hàng</th>
+                                                            <th style="vertical-align: middle; text-align: center;">SĐT
+                                                                khách hàng</th>
+                                                            <th style="vertical-align: middle; text-align: center;">Loại
+                                                                hóa đơn</th>
+                                                            <th style="vertical-align: middle; text-align: center;">Tổng
+                                                                tiền</th>
+                                                            <th style="vertical-align: middle; text-align: center;">Ngày
+                                                                tạo</th>
+                                                            <th style="vertical-align: middle; text-align: center;">
+                                                                Trạng thái</th>
+                                                            <th style="vertical-align: middle; text-align: center;"
+                                                                colspan="2">Thao tác</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr th:each="a:${lst}">
-                                                            <td style="vertical-align: middle; text-align: center;" th:text="${aStat.index+1}"></td>
-                                                            <td style="vertical-align: middle; text-align: center;" th:text="${a.mahoadon}"></td>
-                                                            <td style="vertical-align: middle; text-align: center;" th:text="${a.nhanvien.manhanvien}"></td>
+                                                            <td style="vertical-align: middle; text-align: center;"
+                                                                th:text="${aStat.index+1}"></td>
+                                                            <td style="vertical-align: middle; text-align: center;"
+                                                                th:text="${a.mahoadon}"></td>
+                                                            <td style="vertical-align: middle; text-align: center;"
+                                                                th:text="${a.nhanvien.manhanvien}"></td>
                                                             <td style="vertical-align: middle; text-align: center;"
                                                                 th:text="${a.khachhang==null?'Khách lẻ':a.khachhang.nguoidung.hovaten}">
                                                             </td>
-                                                            <td style="vertical-align: middle; text-align: center;" th:text="${a.sdt==null?'Khách lẻ':a.sdt}"></td>
-                                                            <td style="vertical-align: middle; text-align: center;" th:text="${a.loaihoadon==true?'Online':'Tại quầy'}">
+                                                            <td style="vertical-align: middle; text-align: center;"
+                                                                th:text="${a.sdt==null?'Khách lẻ':a.sdt}"></td>
+                                                            <td style="vertical-align: middle; text-align: center;"
+                                                                th:text="${a.loaihoadon==true?'Online':'Tại quầy'}">
                                                             </td>
                                                             <td style="vertical-align: middle; text-align: center;"
                                                                 th:text="${a.tongtien==null?'0 ₫':#numbers.formatDecimal(a.tongtien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}">
@@ -357,22 +373,52 @@
                                                             <td style="vertical-align: middle; text-align: center;"
                                                                 th:text="${ #dates.format(a.ngaytao, 'dd-MM-yyyy HH:mm:ss')}">
                                                             </td>
-                                                            <td style="vertical-align: middle; text-align: center;" th:if="${a.trangthai==0}">Chờ xác nhận</td>
-                                                            <td style="vertical-align: middle; text-align: center;" th:if="${a.trangthai==1}">Đã xác nhận</td>
-                                                            <td style="vertical-align: middle; text-align: center;" th:if="${a.trangthai==2}">Chờ giao hàng</td>
-                                                            <td style="vertical-align: middle; text-align: center;" th:if="${a.trangthai==3}">Đang giao hàng</td>
-                                                            <td style="vertical-align: middle; text-align: center;" th:if="${a.trangthai==4}">Đã thanh toán</td>
-                                                            <td style="vertical-align: middle; text-align: center;" th:if="${a.trangthai==5}">Đã hoàn thành</td>
-                                                            <td style="vertical-align: middle; text-align: center;" th:if="${a.trangthai==6}">Đã hủy</td>
-                                                            <td style="vertical-align: middle; text-align: center;" th:if="${a.trangthai==7}">Hàng chờ</td>
+                                                            <td style="vertical-align: middle; text-align: center;"
+                                                                th:if="${a.trangthai==0}">Chờ xác nhận</td>
+                                                            <td style="vertical-align: middle; text-align: center;"
+                                                                th:if="${a.trangthai==1}">Đã xác nhận</td>
+                                                            <td style="vertical-align: middle; text-align: center;"
+                                                                th:if="${a.trangthai==2}">Chờ giao hàng</td>
+                                                            <td style="vertical-align: middle; text-align: center;"
+                                                                th:if="${a.trangthai==3}">Đang giao hàng</td>
+                                                            <td style="vertical-align: middle; text-align: center;"
+                                                                th:if="${a.trangthai==4}">Đã thanh toán</td>
+                                                            <td style="vertical-align: middle; text-align: center;"
+                                                                th:if="${a.trangthai==5}">Đã hoàn thành</td>
+                                                            <td style="vertical-align: middle; text-align: center;"
+                                                                th:if="${a.trangthai==6}">Đã hủy</td>
+                                                            <td style="vertical-align: middle; text-align: center;"
+                                                                th:if="${a.trangthai==7}">Hàng chờ</td>
                                                             <td style="vertical-align: middle; text-align: center;">
-                                                                <button type="button" class="btn btn-warning" th:if= "${a.tongtien!=null}">
-                                                                    <a th:href="@{chi-tiet/{id}(id=${a.id})}"><i class="bi bi-eye"></i></a>
+                                                                <button type="button" class="btn"
+                                                                    th:if="${a.tongtien!=null}">
+                                                                    <a th:href="@{chi-tiet/{id}(id=${a.id})}"
+                                                                        style="color:rgb(249,72,42);">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="25" height="25" fill="currentColor"
+                                                                            class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
+                                                                            <path
+                                                                                d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
+                                                                        </svg>
+
+                                                                    </a>
                                                                 </button>
-                                                                
-                                                                <button type="button" class="btn btn-danger" th:if= "${a.tongtien==null}">
-                                                                    <a ><i
-                                                                            class="bi bi-eye-slash"></i></a>
+
+                                                                <button type="button" class="btn"
+                                                                    th:if="${a.tongtien==null}">
+                                                                    <a style="color:rgb(128, 128, 128);">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="25" height="25" fill="currentColor"
+                                                                            class="bi bi-eye-slash-fill"
+                                                                            viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7 7 0 0 0 2.79-.588M5.21 3.088A7 7 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474z" />
+                                                                            <path
+                                                                                d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z" />
+                                                                        </svg>
+                                                                    </a>
                                                                 </button>
                                                             </td>
                                                         </tr>

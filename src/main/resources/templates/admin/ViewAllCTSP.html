@@ -112,8 +112,8 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <form method="post" enctype="multipart/form-data" th:object="${hehe}"
-                                      th:action="@{/updateCTSP/{id}(id=${hehe.id})}"
+                                <form method="post" enctype="multipart/form-data" th:object="${AllCTSP}"
+                                      th:action="@{/updateAllCTSP/{id}(id=${AllCTSP.id})}"
                                       name="updateProduct" onsubmit="return validateForm()">
                                     <div class="d-flex">
                                         <p style="font-weight: bold">
@@ -236,10 +236,10 @@
                                         </p>
                                         <p style="margin-left:92px; font-weight: bold">
                                             <span style="color: red">* </span>Màu sắc:
-<!--                                            <select th:field="*{mausac.id}" class="form-control" style="width:482px">-->
-<!--                                                <option th:each="ms : ${ms}" th:value="${ms.id}"-->
-<!--                                                        th:text="${ms.ten}"></option>-->
-<!--                                            </select>-->
+                                            <!--                                            <select th:field="*{mausac.id}" class="form-control" style="width:482px">-->
+                                            <!--                                                <option th:each="ms : ${ms}" th:value="${ms.id}"-->
+                                            <!--                                                        th:text="${ms.ten}"></option>-->
+                                            <!--                                            </select>-->
                                             <select id="mausac-select"  th:field="*{mausac.id}" class="form-control" style="width:482px">
                                                 <option th:each="ms : ${ms}" th:value="${ms.id}"
                                                         th:text="${ms.ten}" th:data-color="${ms.ten}"></option>
@@ -294,7 +294,7 @@
                                             <div class="modal-body">
                                                 <form id="addFormThuongHieu" name="addThuongHieu" th:method="post"
                                                       th:object="${thuonghieu}"
-                                                      th:action="@{/addThuongHieuSua}"
+                                                      th:action="@{/addThuongHieuSuaAll}"
                                                       onsubmit="return validateTrungThuongHieu()">
                                                     <p style="font-weight: bold">
                                                         <span style="color: red">* </span>
@@ -304,7 +304,7 @@
                                                     <div style="color: red; font-weight: initial;font-style: italic"
                                                          id="errorTenThuongHieu"></div>
                                                     </p>
-                                                    <input type="hidden" name="spctId" th:value="${hehe.id}">
+                                                    <input type="hidden" name="spctId" th:value="${AllCTSP.id}">
                                                     <button id="submitButtonThuongHieu" class="btn"
                                                             style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
                                                         Thêm
@@ -328,7 +328,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 <form id="addFormChatLieu" name="addChatLieu" th:method="post"
-                                                      th:action="@{/addChatLieuSua}" th:object="${chatlieu}"
+                                                      th:action="@{/addChatLieuSuaAll}" th:object="${chatlieu}"
                                                       onsubmit="return validateTrungChatLieu()">
                                                     <p style="font-weight: bold">
                                                         <span style="color: red">* </span>
@@ -338,7 +338,7 @@
                                                     <div style="color: red; font-weight: initial;font-style: italic"
                                                          id="errorTenChatLieu"></div>
                                                     </p>
-                                                    <input type="hidden" name="spctId" th:value="${hehe.id}">
+                                                    <input type="hidden" name="spctId" th:value="${AllCTSP.id}">
                                                     <button class="btn"
                                                             style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
                                                         Thêm
@@ -362,7 +362,7 @@
                                             <div class="modal-body">
                                                 <form id="addFormDeGiay" name="addDeGiay" th:method="post"
                                                       th:object="${degiay}"
-                                                      th:action="@{/addDeGiaySua}"
+                                                      th:action="@{/addDeGiaySuaAll}"
                                                       onsubmit="return validateTrungDeGiay()">
                                                     <p style="font-weight: bold">
                                                         <span style="color: red">* </span>
@@ -372,7 +372,7 @@
                                                     <div style="color: red; font-weight: initial;font-style: italic"
                                                          id="errorTenDeGiay"></div>
                                                     </p>
-                                                    <input type="hidden" name="spctId" th:value="${hehe.id}">
+                                                    <input type="hidden" name="spctId" th:value="${AllCTSP.id}">
                                                     <button id="submitButtonDeGiay" class="btn"
                                                             style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
                                                         Thêm
@@ -395,7 +395,7 @@
                                             <div class="modal-body">
                                                 <form id="addFormKichCo" name="addKichCo"
                                                       onsubmit="return validateTrungKichCo()"
-                                                      method="post" th:action="@{/addKichCoSua}"
+                                                      method="post" th:action="@{/addKichCoSuaAll}"
                                                       th:object="${kichco}">
                                                     <p style="font-weight: bold">
                                                         <span style="color: red">* </span>Tên kích cỡ:
@@ -404,7 +404,7 @@
                                                     <div style="color: red; font-weight: initial;font-style: italic"
                                                          id="errorTenKichCo"></div>
                                                     </p>
-                                                    <input type="hidden" name="spctId" th:value="${hehe.id}">
+                                                    <input type="hidden" name="spctId" th:value="${AllCTSP.id}">
                                                     <button id="submitButtonKichCo" class="btn"
                                                             style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
                                                         Thêm
@@ -429,7 +429,7 @@
                                             <div class="modal-body">
                                                 <form id="addFormMauSac" th:method="post" name="addMauSac"
                                                       th:object="${mausac}"
-                                                      th:action="@{/addMauSacSua}"
+                                                      th:action="@{/addMauSacSuaAll}"
                                                       onsubmit="return validateTrungMauSac()">
                                                     <p style="font-weight: bold">
                                                         <span style="color: red">* </span>
@@ -438,7 +438,7 @@
                                                                class="form-control"
                                                                th:field="*{ten}"/>
                                                     </p>
-                                                    <input type="hidden" name="spctId" th:value="${hehe.id}">
+                                                    <input type="hidden" name="spctId" th:value="${AllCTSP.id}">
                                                     <button id="submitButtonMauSac" class="btn"
                                                             style="margin-left: 400px;background-color:rgb(249,72,42);color: white">
                                                         Thêm

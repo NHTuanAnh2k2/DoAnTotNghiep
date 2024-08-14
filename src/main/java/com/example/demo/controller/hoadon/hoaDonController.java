@@ -1056,9 +1056,11 @@ public class hoaDonController {
             }
             PhieuGiamGiaChiTiet phieuGiamGiaChiTietTim = new PhieuGiamGiaChiTiet();
             List<PhieuGiamGiaChiTiet> lstpg = daoPGGCT.timListPhieuTheoHD(hdset);
-            phieuGiamGiaChiTietTim = lstpg.get(0);
-            phieuGiamGiaChiTietTim.setTiengiam(sotiengiam);
-            daoPGGCTRepo.save(phieuGiamGiaChiTietTim);
+            if (lstpg.size() > 0) {
+                phieuGiamGiaChiTietTim = lstpg.get(0);
+                phieuGiamGiaChiTietTim.setTiengiam(sotiengiam);
+                daoPGGCTRepo.save(phieuGiamGiaChiTietTim);
+            }
             BigDecimal tongTT = (tongTienSP.add(hdset.getPhivanchuyen())).subtract(sotiengiam);
             hdset.setTongtien(tongTT);
             dao.capNhatHD(hdset);
@@ -1122,9 +1124,11 @@ public class hoaDonController {
         hdset.setTongtien(tongTT);
         PhieuGiamGiaChiTiet phieuGiamGiaChiTietTim = new PhieuGiamGiaChiTiet();
         List<PhieuGiamGiaChiTiet> lstpg = daoPGGCT.timListPhieuTheoHD(hdset);
-        phieuGiamGiaChiTietTim = lstpg.get(0);
-        phieuGiamGiaChiTietTim.setTiengiam(sotiengiam);
-        daoPGGCTRepo.save(phieuGiamGiaChiTietTim);
+        if (lstpg.size() > 0) {
+            phieuGiamGiaChiTietTim = lstpg.get(0);
+            phieuGiamGiaChiTietTim.setTiengiam(sotiengiam);
+            daoPGGCTRepo.save(phieuGiamGiaChiTietTim);
+        }
         dao.capNhatHD(hdset);
         redirectAttributes.addFlashAttribute("addProductSuccsess", true);
         return "redirect:/hoa-don/showDetail";
@@ -1159,6 +1163,10 @@ public class hoaDonController {
         Boolean GioiTinh = Boolean.valueOf(lstData.get(6));
         BigDecimal KhoangGia = BigDecimal.valueOf(Double.valueOf(lstData.get(7)));
         List<SanPhamChiTiet> lst = daoSPCT.timSPCTHDCT(ten, ChatLieu, ThuongHieu, De, KichCo, MauSac, GioiTinh, KhoangGia);
+        System.out.println("kkkkkkkkkkkkkk");
+        System.out.println(ten);
+        System.out.println(KhoangGia);
+        System.out.println(lst.size());
         return ResponseEntity.ok(lst);
     }
 
@@ -1212,9 +1220,11 @@ public class hoaDonController {
         hd.setTongtien(tongTT);
         PhieuGiamGiaChiTiet phieuGiamGiaChiTietTim = new PhieuGiamGiaChiTiet();
         List<PhieuGiamGiaChiTiet> lst = daoPGGCT.timListPhieuTheoHD(hd);
-        phieuGiamGiaChiTietTim = lst.get(0);
-        phieuGiamGiaChiTietTim.setTiengiam(sotiengiam);
-        daoPGGCTRepo.save(phieuGiamGiaChiTietTim);
+        if (lst.size() > 0) {
+            phieuGiamGiaChiTietTim = lst.get(0);
+            phieuGiamGiaChiTietTim.setTiengiam(sotiengiam);
+            daoPGGCTRepo.save(phieuGiamGiaChiTietTim);
+        }
         dao.capNhatHD(hd);
         redirectAttributes.addFlashAttribute("updateSLSuccsess", true);
         return "redirect:/hoa-don/showDetail";
@@ -1279,9 +1289,11 @@ public class hoaDonController {
                 hd.setTongtien(tongTT);
                 PhieuGiamGiaChiTiet phieuGiamGiaChiTietTim = new PhieuGiamGiaChiTiet();
                 List<PhieuGiamGiaChiTiet> lst = daoPGGCT.timListPhieuTheoHD(hd);
-                phieuGiamGiaChiTietTim = lst.get(0);
-                phieuGiamGiaChiTietTim.setTiengiam(sotiengiam);
-                daoPGGCTRepo.save(phieuGiamGiaChiTietTim);
+                if (lst.size() > 0) {
+                    phieuGiamGiaChiTietTim = lst.get(0);
+                    phieuGiamGiaChiTietTim.setTiengiam(sotiengiam);
+                    daoPGGCTRepo.save(phieuGiamGiaChiTietTim);
+                }
                 dao.capNhatHD(hd);
                 redirectAttributes.addFlashAttribute("updateSLSuccsess", true);
                 return "redirect:/hoa-don/showDetail";
@@ -1332,9 +1344,12 @@ public class hoaDonController {
         hd.setTongtien(tongTT);
         PhieuGiamGiaChiTiet phieuGiamGiaChiTietTim = new PhieuGiamGiaChiTiet();
         List<PhieuGiamGiaChiTiet> lst = daoPGGCT.timListPhieuTheoHD(hd);
-        phieuGiamGiaChiTietTim = lst.get(0);
-        phieuGiamGiaChiTietTim.setTiengiam(sotiengiam);
-        daoPGGCTRepo.save(phieuGiamGiaChiTietTim);
+        if (lst.size() > 0) {
+            phieuGiamGiaChiTietTim = lst.get(0);
+            phieuGiamGiaChiTietTim.setTiengiam(sotiengiam);
+            daoPGGCTRepo.save(phieuGiamGiaChiTietTim);
+        }
+
         dao.capNhatHD(hd);
         redirectAttributes.addFlashAttribute("updateSLSuccsess", true);
         return "redirect:/hoa-don/showDetail";

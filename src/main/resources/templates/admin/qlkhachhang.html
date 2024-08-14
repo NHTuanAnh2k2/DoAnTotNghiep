@@ -7,6 +7,7 @@
         /*white-space: nowrap;*/
         /*overflow: hidden;*/
         /*text-overflow: ellipsis;*/
+        padding: 10px;
     }
 
     .tdDiaChi {
@@ -15,6 +16,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+
     th {
         white-space: nowrap;
     }
@@ -57,7 +59,7 @@
                             <div class="card">
                                 <div class="card-header">
                                     <form th:action="@{/khachhang/timkiem}" id="searchForm" method="get">
-                                        <h3 class="card-title">
+                                        <h3 class="card-title" style="font-weight: bold">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
                                                  fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
                                                 <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
@@ -65,25 +67,27 @@
                                             Bộ lọc
                                         </h3>
                                         <br>
-                                        <hr class="border border-danger border-2 opacity-50">
-                                        <div class="row g-3">
-                                            <div class=" align-items-center col-lg-6 col-md-6">
+                                        <hr class="border border-danger border opacity-50">
+                                        <div class="row g-3 mb-3">
+                                            <div class=" align-items-center col-lg-6 col-md-6" style="width: 920px;">
                                                 <div class="col-auto">
                                                     <label class="col-form-label">Tìm kiếm:</label>
                                                 </div>
                                                 <div class="col-auto">
                                                     <input th:value="${searchInput}" name="searchInput" id="searchInput"
+                                                           style="width: 100%"
                                                            type="text" class="form-control"
                                                            placeholder="Nhập tên, mã hoặc số điện thoại">
                                                 </div>
                                             </div>
-                                            <div class="align-items-center col-lg-6 col-md-6">
+                                            <div class="align-items-center col-lg-6 col-md-6" style="width: 200px">
                                                 <div class="col-auto">
-                                                    <label class="col-form-label">Trạng thái khách hàng:</label>
+                                                    <label class="col-form-label">Trạng thái:</label>
                                                 </div>
                                                 <div class="col-auto">
                                                     <select class="form-select" th:value="${searchOption}"
-                                                            name="searchOption" id="searchOption" style="width: 200px">
+                                                            name="searchOption" id="searchOption"
+                                                            style="color: rgb(249,72,42); font-weight: bold; width: 200px">
                                                         <option th:selected="${searchOption == '' ? 'true' : 'false'}"
                                                                 value="">Tất cả
                                                         </option>
@@ -114,7 +118,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">
+                                <h3 class="card-title" style="font-weight: bold">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
                                          class="bi bi-card-list" viewBox="0 0 16 16">
                                         <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"/>
@@ -122,15 +126,21 @@
                                     </svg>
                                     Danh sách khách hàng
                                 </h3>
-                                <a th:href="@{/khachhang/add}" class="card-title btn btn-primary"
-                                   style="margin-left: 850px">Thêm khách hàng</a>
+                                <a th:href="@{/khachhang/add}" class="btn"
+                                   style="margin-left: 850px; background-color: rgb(249,72,42);color: white">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" style="padding-bottom: 4px"
+                                         class="bi bi-plus" viewBox="0 0 16 16">
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                    </svg>
+                                    Thêm khách hàng
+                                </a>
                             </div>
 
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <table id="example2" class="table table-bordered table-hover text-center">
-                                    <thead class="table table-danger">
-                                    <tr>
+                                <table id="example2" style="width: 100%" class="table-bordered table-hover text-center">
+                                    <thead style="background-color:rgb(249,72,42);height: 50px;color: white">
+                                    <tr style="vertical-align: middle; text-align: center;">
                                         <th>STT</th>
                                         <th>Mã khách hàng</th>
                                         <th style="max-width: 100px">Tên khách hàng</th>
@@ -138,30 +148,33 @@
                                         <th>Ngày sinh</th>
                                         <th>Địa chỉ</th>
                                         <th>Trạng thái</th>
-                                        <th>Action</th>
+                                        <th>Thao tác</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody >
                                     <tr th:each="kh,stt:${lstKhachHang}">
                                         <td class="tdSameWidth" th:text="${stt.index+1}"></td>
-                                        <td class="tdSameWidth" th:text="${kh.khachhang.makhachhang}"></td>
-                                        <td class="tdSameWidth" style="width: 150px" th:text="${kh.khachhang.nguoidung.hovaten}"></td>
+                                        <th class="tdSameWidth" th:text="${kh.khachhang.makhachhang}"></th>
+                                        <td class="tdSameWidth" style="width: 150px"
+                                            th:text="${kh.khachhang.nguoidung.hovaten}"></td>
                                         <td class="tdSameWidth" th:text="${kh.khachhang.nguoidung.sodienthoai}"></td>
                                         <td class="tdSameWidth"
                                             th:text="${#dates.format(kh.khachhang.nguoidung.ngaysinh, 'dd/MM/yyyy')}"></td>
                                         <td th:if="${#strings.isEmpty(kh.diachi.tenduong) and #strings.isEmpty(kh.diachi.xaphuong) and #strings.isEmpty(kh.diachi.quanhuyen) and #strings.isEmpty(kh.diachi.tinhthanhpho)}"
                                             class="tdDiaChi"
                                             th:text="'Chưa có địa chỉ'"></td>
-                                        <td th:unless="${#strings.isEmpty(kh.diachi.tenduong) and #strings.isEmpty(kh.diachi.xaphuong) and #strings.isEmpty(kh.diachi.quanhuyen) and #strings.isEmpty(kh.diachi.tinhthanhpho)}"
+                                        <td style="padding: 10px" th:unless="${#strings.isEmpty(kh.diachi.tenduong) and #strings.isEmpty(kh.diachi.xaphuong) and #strings.isEmpty(kh.diachi.quanhuyen) and #strings.isEmpty(kh.diachi.tinhthanhpho)}"
                                             class="tdDiaChi"
                                             th:text="${kh.diachi.tenduong + ', ' + kh.diachi.xaphuong + ', ' + kh.diachi.quanhuyen + ', ' + kh.diachi.tinhthanhpho}"></td>
-                                        <td th:if="${kh.khachhang.trangthai == true}" class="tdSameWidth">
+                                        <td style="font-size: medium;" th:if="${kh.khachhang.trangthai == true}" class="tdSameWidth">
                                             <a th:href="@{/khachhang/updatetrangthai/{id}(id=${kh.diachi.id})}"
-                                               style="width: 170px" class="btn btn-outline-success updateTrangThai">Đang hoạt động</a>
+                                               style="width: 120px; text-decoration: none" class="badge badge-success updateTrangThai">Đang
+                                                hoạt động</a>
                                         </td>
                                         <td th:unless="${kh.khachhang.trangthai}" class="tdSameWidth">
                                             <a th:href="@{/khachhang/updatetrangthai/{id}(id=${kh.diachi.id})}"
-                                               style="width: 170px" class="btn btn-outline-danger updateTrangThai">Ngừng hoạt động</a>
+                                               style="width: 120px; text-decoration: none" class="badge badge-danger updateTrangThai">Ngừng
+                                                hoạt động</a>
                                         </td>
                                         <td>
                                             <!--                                            <a th:href="@{/khachhang/detail/{id}(id=${kh.diachi.id})}" class="btn btn-outline-danger col">-->
@@ -171,16 +184,16 @@
                                             <!--                                                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>-->
                                             <!--                                                </svg>-->
                                             <!--                                            </a>-->
-<!--                                            <a th:href="@{/khachhang/updatetrangthai/{id}(id=${kh.diachi.id})}"-->
-<!--                                               class="btn btn-outline-info updateTrangThai">-->
-<!--                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"-->
-<!--                                                     fill="currentColor" class="bi bi-vector-pen" viewBox="0 0 16 16">-->
-<!--                                                    <path fill-rule="evenodd"-->
-<!--                                                          d="M10.646.646a.5.5 0 0 1 .708 0l4 4a.5.5 0 0 1 0 .708l-1.902 1.902-.829 3.313a1.5 1.5 0 0 1-1.024 1.073L1.254 14.746 4.358 4.4A1.5 1.5 0 0 1 5.43 3.377l3.313-.828zm-1.8 2.908-3.173.793a.5.5 0 0 0-.358.342l-2.57 8.565 8.567-2.57a.5.5 0 0 0 .34-.357l.794-3.174-3.6-3.6z"/>-->
-<!--                                                    <path fill-rule="evenodd"-->
-<!--                                                          d="M2.832 13.228 8 9a1 1 0 1 0-1-1l-4.228 5.168-.026.086z"/>-->
-<!--                                                </svg>-->
-<!--                                            </a>-->
+                                            <!--                                            <a th:href="@{/khachhang/updatetrangthai/{id}(id=${kh.diachi.id})}"-->
+                                            <!--                                               class="btn btn-outline-info updateTrangThai">-->
+                                            <!--                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"-->
+                                            <!--                                                     fill="currentColor" class="bi bi-vector-pen" viewBox="0 0 16 16">-->
+                                            <!--                                                    <path fill-rule="evenodd"-->
+                                            <!--                                                          d="M10.646.646a.5.5 0 0 1 .708 0l4 4a.5.5 0 0 1 0 .708l-1.902 1.902-.829 3.313a1.5 1.5 0 0 1-1.024 1.073L1.254 14.746 4.358 4.4A1.5 1.5 0 0 1 5.43 3.377l3.313-.828zm-1.8 2.908-3.173.793a.5.5 0 0 0-.358.342l-2.57 8.565 8.567-2.57a.5.5 0 0 0 .34-.357l.794-3.174-3.6-3.6z"/>-->
+                                            <!--                                                    <path fill-rule="evenodd"-->
+                                            <!--                                                          d="M2.832 13.228 8 9a1 1 0 1 0-1-1l-4.228 5.168-.026.086z"/>-->
+                                            <!--                                                </svg>-->
+                                            <!--                                            </a>-->
 
                                             <a th:href="@{/khachhang/update/{id}(id=${kh.diachi.id})}" id=""
                                                style="color:rgb(249,72,42)">
