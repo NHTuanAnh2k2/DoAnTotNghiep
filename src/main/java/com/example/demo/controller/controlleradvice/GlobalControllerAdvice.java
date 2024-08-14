@@ -37,19 +37,19 @@ public class GlobalControllerAdvice {
         }
         if (nd != null) {
             String fullName = nd.getHovaten();
-            if (fullName.length() > 15) {
+            if (fullName.length() > 14) {
                 // Tách tên thành các phần riêng biệt
                 String[] parts = fullName.split("\\s+");
                 // Lấy phần tên cuối cùng
                 String lastName = parts[parts.length - 1];
                 //nếu tên mà > 11 thì cắt lấy 11 kí tự
-                if (lastName.length() > 15) {
-                    lastName = lastName.substring(0, 15);
+                if (lastName.length() > 14) {
+                    lastName = lastName.substring(0, 14);
                 }
                 // Kiểm tra nếu phần tên đệm cộng với phần tên cuối cùng nhỏ hơn 11 ký tự
                 if (parts.length > 1) {
                     String middleName = parts[parts.length - 2];
-                    if ((middleName + " " + lastName).length() <= 15) {
+                    if ((middleName + " " + lastName).length() <= 14) {
                         fullName = middleName + " " + lastName;
                     } else {
                         fullName = lastName;
