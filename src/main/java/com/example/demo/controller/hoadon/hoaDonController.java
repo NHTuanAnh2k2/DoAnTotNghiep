@@ -1163,6 +1163,10 @@ public class hoaDonController {
         Boolean GioiTinh = Boolean.valueOf(lstData.get(6));
         BigDecimal KhoangGia = BigDecimal.valueOf(Double.valueOf(lstData.get(7)));
         List<SanPhamChiTiet> lst = daoSPCT.timSPCTHDCT(ten, ChatLieu, ThuongHieu, De, KichCo, MauSac, GioiTinh, KhoangGia);
+        System.out.println("kkkkkkkkkkkkkk");
+        System.out.println(ten);
+        System.out.println(KhoangGia);
+        System.out.println(lst.size());
         return ResponseEntity.ok(lst);
     }
 
