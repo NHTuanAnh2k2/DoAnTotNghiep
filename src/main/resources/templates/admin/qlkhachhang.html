@@ -17,6 +17,13 @@
         text-overflow: ellipsis;
     }
 
+    .tdHoTen {
+        max-width: 150px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
     th {
         white-space: nowrap;
     }
@@ -155,7 +162,7 @@
                                     <tr th:each="kh,stt:${lstKhachHang}">
                                         <td class="tdSameWidth" th:text="${stt.index+1}"></td>
                                         <th class="tdSameWidth" th:text="${kh.khachhang.makhachhang}"></th>
-                                        <td class="tdSameWidth" style="width: 150px"
+                                        <td class="tdSameWidth tdHoTen" style="width: 150px"
                                             th:text="${kh.khachhang.nguoidung.hovaten}"></td>
                                         <td class="tdSameWidth" th:text="${kh.khachhang.nguoidung.sodienthoai}"></td>
                                         <td class="tdSameWidth"
