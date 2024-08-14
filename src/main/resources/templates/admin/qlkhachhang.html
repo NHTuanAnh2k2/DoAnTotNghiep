@@ -76,7 +76,7 @@
                                         <br>
                                         <hr class="border border-danger border opacity-50">
                                         <div class="row g-3 mb-3">
-                                            <div class=" align-items-center col-lg-6 col-md-6" style="width: 920px;">
+                                            <div class=" align-items-center col-lg-6 col-md-6" style="width: 960px;">
                                                 <div class="col-auto">
                                                     <label class="col-form-label">Tìm kiếm:</label>
                                                 </div>
@@ -107,16 +107,19 @@
                                                     </select>
                                                 </div>
                                             </div>
+
+                                        </div>
                                     </form>
                                 </div>
+                                <!-- /.card -->
                             </div>
-                            <!-- /.card -->
+                            <!-- /.col -->
                         </div>
-                        <!-- /.col -->
+                        <!-- /.row -->
                     </div>
-                    <!-- /.row -->
                 </div>
-                <!-- /.container-fluid -->
+            </div>
+                    <!-- /.container-fluid -->
         </section>
         <!-- Main content -->
         <section class="content">
@@ -125,7 +128,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title" style="font-weight: bold">
+                                <h3 class="card-title" style="margin-top: 10px;font-weight: bold">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
                                          class="bi bi-card-list" viewBox="0 0 16 16">
                                         <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"/>
@@ -134,8 +137,8 @@
                                     Danh sách khách hàng
                                 </h3>
                                 <a th:href="@{/khachhang/add}" class="btn"
-                                   style="margin-left: 850px; background-color: rgb(249,72,42);color: white">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" style="padding-bottom: 4px"
+                                   style="margin-left: 1015px; background-color: rgb(249,72,42);color: white;margin-top: -60px">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                                          class="bi bi-plus" viewBox="0 0 16 16">
                                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
                                     </svg>
@@ -151,14 +154,14 @@
                                         <th>STT</th>
                                         <th>Mã khách hàng</th>
                                         <th style="max-width: 100px">Tên khách hàng</th>
-                                        <th>SĐT</th>
+                                        <th>Số điện thoại</th>
                                         <th>Ngày sinh</th>
                                         <th>Địa chỉ</th>
                                         <th>Trạng thái</th>
                                         <th>Thao tác</th>
                                     </tr>
                                     </thead>
-                                    <tbody >
+                                    <tbody>
                                     <tr th:each="kh,stt:${lstKhachHang}">
                                         <td class="tdSameWidth" th:text="${stt.index+1}"></td>
                                         <th class="tdSameWidth" th:text="${kh.khachhang.makhachhang}"></th>
@@ -170,17 +173,21 @@
                                         <td th:if="${#strings.isEmpty(kh.diachi.tenduong) and #strings.isEmpty(kh.diachi.xaphuong) and #strings.isEmpty(kh.diachi.quanhuyen) and #strings.isEmpty(kh.diachi.tinhthanhpho)}"
                                             class="tdDiaChi"
                                             th:text="'Chưa có địa chỉ'"></td>
-                                        <td style="padding: 10px" th:unless="${#strings.isEmpty(kh.diachi.tenduong) and #strings.isEmpty(kh.diachi.xaphuong) and #strings.isEmpty(kh.diachi.quanhuyen) and #strings.isEmpty(kh.diachi.tinhthanhpho)}"
+                                        <td style="padding: 10px"
+                                            th:unless="${#strings.isEmpty(kh.diachi.tenduong) and #strings.isEmpty(kh.diachi.xaphuong) and #strings.isEmpty(kh.diachi.quanhuyen) and #strings.isEmpty(kh.diachi.tinhthanhpho)}"
                                             class="tdDiaChi"
                                             th:text="${kh.diachi.tenduong + ', ' + kh.diachi.xaphuong + ', ' + kh.diachi.quanhuyen + ', ' + kh.diachi.tinhthanhpho}"></td>
-                                        <td style="font-size: medium;" th:if="${kh.khachhang.trangthai == true}" class="tdSameWidth">
+                                        <td style="font-size: medium;" th:if="${kh.khachhang.trangthai == true}"
+                                            class="tdSameWidth">
                                             <a th:href="@{/khachhang/updatetrangthai/{id}(id=${kh.diachi.id})}"
-                                               style="width: 120px; text-decoration: none" class="badge badge-success updateTrangThai">Đang
+                                               style="width: 120px; text-decoration: none"
+                                               class="badge badge-success updateTrangThai">Đang
                                                 hoạt động</a>
                                         </td>
                                         <td th:unless="${kh.khachhang.trangthai}" class="tdSameWidth">
                                             <a th:href="@{/khachhang/updatetrangthai/{id}(id=${kh.diachi.id})}"
-                                               style="width: 120px; text-decoration: none" class="badge badge-danger updateTrangThai">Ngừng
+                                               style="width: 120px; text-decoration: none"
+                                               class="badge badge-danger updateTrangThai">Ngừng
                                                 hoạt động</a>
                                         </td>
                                         <td>
@@ -270,7 +277,7 @@
 
         Toast.fire({
             icon: "success",
-            title: "Sửa thành công!"
+            title: "Cập nhật thành công!"
         });
     }
     if (success === true) {
@@ -288,7 +295,7 @@
 
         Toast.fire({
             icon: "success",
-            title: "Sửa thành công!"
+            title: "Cập nhật thành công!"
         });
     }
 
