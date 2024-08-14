@@ -1358,7 +1358,7 @@
 
         // Sử dụng SweetAlert2 để xác nhận trước khi gửi form
         Swal.fire({
-            title: 'Bạn có muốn sửa không không?',
+            title: 'Bạn có muốn cập nhật không không?',
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: 'Có',
@@ -1380,7 +1380,7 @@
                 // Submit form
                 setTimeout(function () {
                     // Lưu thông báo vào sessionStorage
-                    sessionStorage.setItem('successMessageSuaGia', 'Sửa thành công!');
+                    sessionStorage.setItem('successMessageSuaGia', 'Cập nhật thành công!');
                     document.getElementById("submitid").submit();
                 });
             }
