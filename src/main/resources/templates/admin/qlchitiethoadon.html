@@ -207,7 +207,15 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>QUẢN LÝ CHI TIẾT HÓA ĐƠN</h1>
+                            <h1>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                    class="bi bi-bookmark-dash-fill" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6 6a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z" />
+                                </svg>
+
+                                QUẢN LÝ CHI TIẾT HÓA ĐƠN
+                            </h1>
                             <!--                        <h5 class="m-0" style="color: grey">< Đơn hàng</h5>-->
                             <!--                        &lt;!&ndash;Tên hóa đơn&ndash;&gt;-->
                             <!--                        <p><h2 class="m-0">HD123456</h2> <h5 class="m-0" style="color: grey">25/11/2023 15:40 </h5></p>-->
@@ -1217,7 +1225,8 @@
                                         <h3>
                                             Thông tin sản phẩm đã mua
                                         </h3>
-                                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                        <button type="button" class="btn text-white"
+                                            style="background-color: rgb(249,72,42);" data-bs-toggle="modal"
                                             data-bs-target="#modalThemSanPhamHD" id="changeSP"
                                             th:classappend="${trangThaiHienTai!=0?'disabled':''}">+ Thêm sản
                                             phẩm </button>

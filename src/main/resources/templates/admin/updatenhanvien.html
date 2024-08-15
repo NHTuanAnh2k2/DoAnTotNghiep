@@ -115,7 +115,8 @@
                                             <div class="d-flex">
                                                 <div class="align-items-center col-lg-6 col-md-6">
                                                     <div class="col-auto">
-                                                        <label class="col-form-label">Tên nhân viên:</label>
+                                                        <label class="col-form-label">
+                                                            <span style="color: red">* </span>Tên nhân viên:</label>
                                                     </div>
                                                     <div class="col-auto">
                                                         <input placeholder="Tên nhân viên" id="inputTen" name="name" th:field="*{hovaten}" th:errorclass="is-invalid" class="form-control">
@@ -126,7 +127,7 @@
                                                 </div>
                                                 <div class="align-items-center col-lg-6 col-md-6">
                                                     <div class="col-auto">
-                                                        <label class="col-form-label">Ngày sinh:</label>
+                                                        <label class="col-form-label"> <span style="color: red">* </span>Ngày sinh:</label>
                                                     </div>
                                                     <div class="col-auto">
                                                         <input class="form-control" id="inputNgSinh"  onkeydown="return false" type="date" th:field="*{ngaysinh}"  placeholder="dd/MM/yyyy" th:errorclass="is-invalid">
@@ -139,7 +140,7 @@
                                             <div class="d-flex">
                                                 <div class="align-items-center col-lg-6 col-md-6">
                                                     <div class="col-auto">
-                                                        <label class="col-form-label">Căn cước công dân:</label>
+                                                        <label class="col-form-label"> <span style="color: red">* </span>Căn cước công dân:</label>
                                                     </div>
                                                     <div class="col-auto">
                                                         <input class="form-control" placeholder="Căn cước công dân" id="inputCCCD" name="citizenID" th:field="*{cccd}" th:errorclass="is-invalid">
@@ -150,7 +151,7 @@
                                                 </div>
                                                 <div class="align-items-center col-lg-6 col-md-6">
                                                     <div class="col-auto">
-                                                        <label class="col-form-label">Giới tính:</label>
+                                                        <label class="col-form-label"> <span style="color: red">* </span>Giới tính:</label>
                                                     </div>
                                                     <div class="col-auto">
                                                         <input type="radio" value="true" id="radioGT" th:field="*{gioitinh}" style="margin-top: 10px">Nam
@@ -164,7 +165,7 @@
                                             <div class="d-flex">
                                                 <div class="align-items-center col-lg-6 col-md-6">
                                                     <div class="col-auto">
-                                                        <label class="col-form-label">Email:</label>
+                                                        <label class="col-form-label"> <span style="color: red">* </span>Email:</label>
                                                     </div>
                                                     <div class="col-auto">
                                                         <input class="form-control" id="inputEmail" placeholder="Email" th:field="*{email}" th:errorclass="is-invalid">
@@ -175,7 +176,7 @@
                                                 </div>
                                                 <div class="align-items-center col-lg-6 col-md-6">
                                                     <div class="col-auto">
-                                                        <label class="col-form-label">Số điện thoại:</label>
+                                                        <label class="col-form-label"> <span style="color: red">* </span>Số điện thoại:</label>
                                                     </div>
                                                     <div class="col-auto">
                                                         <input class="form-control" id="inputSdt" placeholder="Số điện thoại" th:field="*{sodienthoai}" th:errorclass="is-invalid">
@@ -189,7 +190,7 @@
                                                 <div class="d-flex">
                                                     <div class="align-items-center col-lg-6 col-md-6">
                                                         <div class="col-auto">
-                                                            <label class="col-form-label">Tỉnh/Thành phố:</label>
+                                                            <label class="col-form-label"> <span style="color: red">* </span>Tỉnh/Thành phố:</label>
                                                         </div>
                                                         <div class="col-auto">
                                                             <select class="form-control form-select form-select-sm mb-3" id="city" th:field="*{tinhthanhpho}"  aria-label=".form-select-sm">
@@ -202,7 +203,7 @@
                                                     </div>
                                                     <div class="align-items-center col-lg-6 col-md-6">
                                                         <div class="col-auto">
-                                                            <label class="col-form-label">Quận/Huyện:</label>
+                                                            <label class="col-form-label"> <span style="color: red">* </span>Quận/Huyện:</label>
                                                         </div>
                                                         <div class="col-auto">
                                                             <select class="form-control form-select form-select-sm mb-3" id="district"  th:field="*{quanhuyen}" aria-label=".form-select-sm">
@@ -218,7 +219,7 @@
                                                 <div class="d-flex">
                                                     <div class="align-items-center col-lg-6 col-md-6">
                                                         <div class="col-auto">
-                                                            <label class="col-form-label">Xã/Phường:</label>
+                                                            <label class="col-form-label"> <span style="color: red">* </span>Xã/Phường:</label>
                                                         </div>
                                                         <div class="col-auto">
                                                             <select class="form-control form-select form-select-sm" id="ward"  th:field="*{xaphuong}" aria-label=".form-select-sm">
@@ -231,7 +232,7 @@
                                                     </div>
                                                     <div class="align-items-center col-lg-6 col-md-6">
                                                         <div class="col-auto">
-                                                            <label class="col-form-label">Địa chỉ cụ thể:</label>
+                                                            <label class="col-form-label"> <span style="color: red">* </span>Địa chỉ cụ thể:</label>
                                                         </div>
                                                         <div class="col-auto">
                                                             <input class="form-control" th:field="*{tenduong}" id="inputDuong" placeholder="Tên Đường" th:errorclass="is-invalid">
@@ -247,7 +248,7 @@
                                                 <div class="d-flex">
                                                     <div class="align-items-center col-lg-6 col-md-6">
                                                         <div class="col-auto">
-                                                            <label class="col-form-label">Vai trò:</label>
+                                                            <label class="col-form-label"> <span style="color: red">* </span>Vai trò:</label>
                                                         </div>
                                                         <div class="col-auto">
                                                             <input type="radio" value="true" id="radioVaitro"  th:field="*{vaitro}" style="margin-top: 10px"  checked>Quản lý
@@ -256,7 +257,7 @@
                                                     </div>
                                                     <div class="align-items-center col-lg-6 col-md-6">
                                                         <div class="col-auto">
-                                                            <label class="col-form-label">Trạng thái:</label>
+                                                            <label class="col-form-label"> <span style="color: red">* </span>Trạng thái:</label>
                                                         </div>
                                                         <div class="col-auto">
                                                             <select class="form-control form-select form-select-sm" th:field="*{trangthai}" aria-label=".form-select-sm">
@@ -267,8 +268,8 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button th:if="${adminRole == true}" type="submit" class="btn btn-primary" style="margin-top: 20px"  >Cập nhật nhân viên</button>
-                                            <button type="button" class="btn btn-danger" style="margin-top: 20px"  onclick="goBack()">Thoát</button>
+                                            <button type="button" class="btn btn-dark" style="margin-top: 20px;margin-left: 995px"  onclick="goBack()">Thoát</button>
+                                            <button th:if="${adminRole == true}" type="submit" class="btn" style="margin-top: 20px;background-color: rgb(249,72,42);color: white"  >Cập nhật</button>
                                         </form>
                                     </div>
                                 </section>

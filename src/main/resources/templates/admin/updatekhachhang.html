@@ -94,7 +94,7 @@
                                                         <span id="tenError" style="color: red;"></span>
                                                     </p>
                                                 </div>
-                                                <div>
+                                                <div style="margin-left: 55px;">
                                                     <p style="margin-left: 20px;"> <span style="color: red">*</span> <strong> Ngày sinh: </strong>
                                                         <input type="date" class="form-control" onkeydown="return false"
                                                                style="width: 550px" th:field="*{ngaysinh}" id="ngaysinh">
@@ -111,7 +111,7 @@
                                                         <span id="cccdError" style="color: red;"></span>
                                                     </p>
                                                 </div>
-                                                <div>
+                                                <div style="margin-left: 55px;">
                                                     <p style="margin-left: 20px;"> <span style="color: red">*</span> <strong> Giới tính:</strong>
                                                         <br>
                                                         <input type="radio" style="margin-top: 10px"
@@ -131,7 +131,7 @@
                                                         <span id="emailError" style="color: red;"></span>
                                                     </p>
                                                 </div>
-                                                <div>
+                                                <div style="margin-left: 55px;">
                                                     <p style="margin-left: 20px;"> <span style="color: red">*</span> <strong> Số điện thoại: </strong>
                                                         <input placeholder="Số điện thoại" class="form-control" id="sodienthoai"
                                                                style="width: 550px" th:field="*{sodienthoai}">
@@ -152,7 +152,7 @@
                                                             <span id="tinhthanhError" style="color: red;"></span>
                                                         </p>
                                                     </div>
-                                                    <div>
+                                                    <div style="margin-left: 55px;">
                                                         <p style="margin-left: 20px;"> <span style="color: red">*</span> <strong> Quận/Huyện: </strong>
                                                             <select class="form-select" th:field="*{quanhuyen}"
                                                                     style="width: 550px" id="district">
@@ -175,7 +175,7 @@
                                                             <span id="xaError" style="color: red;"></span>
                                                         </p>
                                                     </div>
-                                                    <div>
+                                                    <div style="margin-left: 55px;">
                                                         <p style="margin-left: 20px;"> <span style="color: red">*</span> <strong> Số nhà/Ngõ/Đường: </strong>
                                                             <input placeholder="Số nhà/Ngõ/Đường" class="form-control"
                                                                    id="tenduong"
@@ -185,7 +185,7 @@
                                                     </div>
                                                 </div>
                                                 <button style="float: right; background-color: rgb(249,72,42);color: white; margin-right: 20px" type="submit" class="btn" id="btnUpdate" disabled>Cập nhật</button>
-                                                <a style="float: right; margin-right: 10px" th:href="@{/khachhang}" class="btn btn-outline-danger">Thoát</a>
+                                                <a style="float: right; margin-right: 10px" th:href="@{/khachhang}" class="btn btn-dark">Thoát</a>
                                             </div>
                                     </section>
                                 </div>
@@ -489,7 +489,7 @@
 
     function saveDiaChi() {
         Swal.fire({
-            title: 'Bạn có muốn sửa không?',
+            title: 'Bạn có muốn cập nhật không?',
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: 'Có',
