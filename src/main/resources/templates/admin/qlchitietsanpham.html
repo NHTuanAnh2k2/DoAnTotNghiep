@@ -425,10 +425,7 @@
         } else if (soluong <= 0) {
             soluongError.innerText = "Số lượng phải lớn hơn 0.";
             return false; // Ngăn form được gửi đi
-        } else if (soluong > 100) {
-            soluongError.innerText = "Số lượng không được vượt quá 100.";
-            return false; // Ngăn form được gửi đi
-        } else {
+        }  else {
             soluongError.innerText = ""; // Xóa thông báo lỗi nếu có
         }
 

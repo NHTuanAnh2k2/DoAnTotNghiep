@@ -307,9 +307,6 @@
         if (inputMa.trim() === "") {
             errorMa.innerText = "Vui lòng nhập tên đế giày.";
             return false; // Ngăn form được gửi đi
-        } else if (inputMa.trim().length <= 3) {
-            errorMa.innerText = "Tên đế giày phải dài hơn 3 ký tự.";
-            return false; // Ngăn form được gửi đi
         } else if (inputMa.trim().length > 20) {
             errorMa.innerText = "Tên đế giày không được vượt quá 20 ký tự.";
             return false; // Ngăn form được gửi đi
@@ -453,15 +450,11 @@
 // Kiểm tra tính hợp lệ
         if (!ten) {
             errorMessage.style.display = 'block';
-            errorMessage.innerText="Tên đế giày không được để trống";
+            errorMessage.innerText = "Tên đế giày không được để trống";
             return;
         }
 
-        if (ten.length < 3) {
-            lengthErrorMessage.style.display = 'block';
-            lengthErrorMessage.innerText = 'Tên đế giày phải dài hơn 3 ký tự.';
-            return;
-        } else if (ten.length > 20) {
+        if (ten.length > 20) {
             lengthErrorMessage.style.display = 'block';
             lengthErrorMessage.innerText = 'Tên đế giày không được vượt quá 20 ký tự.';
             return;
@@ -477,7 +470,7 @@
             .then(exists => {
                 if (exists) {
                     duplicateErrorMessage.style.display = 'block';
-                    duplicateErrorMessage.innerText='Tên đế giày không được trùng!';
+                    duplicateErrorMessage.innerText = 'Tên đế giày không được trùng!';
                     return;
                 }
 

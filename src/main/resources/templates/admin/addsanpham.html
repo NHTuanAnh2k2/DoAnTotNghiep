@@ -1328,7 +1328,7 @@
             document.getElementById("soluongRangeError").style.display = "none";
             document.getElementById("giatienError").style.display = "none";
             return;
-        } else if (parseInt(soluong) < 1 || parseInt(soluong) > 100) {
+        } else if (parseInt(soluong) < 1 || parseInt(soluong) > 10000) {
             document.getElementById("soluongRangeError").style.display = "inline";
             document.getElementById("soluongError").style.display = "none";
             document.getElementById("giatienError").style.display = "none";
@@ -1508,11 +1508,8 @@
         if (inputMaTenSP.trim() === "") {
             errorMaTenSP.innerText = "Vui lòng nhập tên sản phẩm.";
             return false; // Ngăn form được gửi đi
-        } else if (inputMaTenSP.trim().length <= 3) {
-            errorMaTenSP.innerText = "Tên sản phẩm phải dài hơn 3 ký tự.";
-            return false; // Ngăn form được gửi đi
-        } else if (inputMaTenSP.trim().length > 20) {
-            errorMaTenSP.innerText = "Tên sản phẩm không được vượt quá 20 ký tự.";
+        }  else if (inputMaTenSP.trim().length > 50) {
+            errorMaTenSP.innerText = "Tên sản phẩm không được vượt quá 50 ký tự.";
             return false; // Ngăn form được gửi đi
         } else if (specialCharPattern.test(inputMaTenSP.trim())) {
             errorMaTenSP.innerText = "Tên sản phẩm không được chứa ký tự đặc biệt.";
@@ -1552,9 +1549,6 @@
         // Kiểm tra xem trường "Tên thương hiệu" có trống không
         if (inputMaThuongHieu.trim() === "") {
             errorMaThuongHieu.innerText = "Vui lòng nhập tên thương hiệu.";
-            return false; // Ngăn form được gửi đi
-        } else if (inputMaThuongHieu.trim().length <= 3) {
-            errorMaThuongHieu.innerText = "Tên thương hiệu phải dài hơn 3 ký tự.";
             return false; // Ngăn form được gửi đi
         } else if (inputMaThuongHieu.trim().length > 20) {
             errorMaThuongHieu.innerText = "Tên thương hiệu không được vượt quá 20 ký tự.";
@@ -1598,9 +1592,6 @@
         if (inputMaChatLieu.trim() === "") {
             errorMaChatLieu.innerText = "Vui lòng nhập tên chất liệu.";
             return false; // Ngăn form được gửi đi
-        } else if (inputMaChatLieu.trim().length <= 3) {
-            errorMaChatLieu.innerText = "Tên chất liệu phải dài hơn 3 ký tự.";
-            return false; // Ngăn form được gửi đi
         } else if (inputMaChatLieu.trim().length > 20) {
             errorMaChatLieu.innerText = "Tên chất liệu không được vượt quá 20 ký tự.";
             return false; // Ngăn form được gửi đi
@@ -1641,9 +1632,6 @@
         // Kiểm tra xem trường "Tên đế giày" có trống không
         if (inputMaDeGiay.trim() === "") {
             errorMaDeGiay.innerText = "Vui lòng nhập tên đế giày.";
-            return false; // Ngăn form được gửi đi
-        } else if (inputMaDeGiay.trim().length <= 3) {
-            errorMaDeGiay.innerText = "Tên đế giày phải dài hơn 3 ký tự.";
             return false; // Ngăn form được gửi đi
         } else if (inputMaDeGiay.trim().length > 20) {
             errorMaDeGiay.innerText = "Tên đế giày không được vượt quá 20 ký tự.";
