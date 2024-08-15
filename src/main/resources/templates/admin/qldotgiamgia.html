@@ -49,16 +49,14 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                                 class="bi bi-bookmark-dash-fill" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd"
-                                      d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6 6a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z"/>
-                            </svg>
-                            QUẢN LÝ ĐỢT GIẢM GIÁ
-                        </h1>
+                <div class="row mb-5 mt-2">
+                    <div class="col-sm-6 d-flex align-items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                             class="bi bi-bookmark-dash-fill" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                  d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6 6a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z"/>
+                        </svg>
+                        <h1 style="margin-left: 10px;">QUẢN LÝ ĐỢT GIẢM GIÁ</h1>
                     </div>
                 </div>
             </div><!-- /.container-fluid -->
@@ -70,41 +68,38 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">
-                                    <svg style="fill: #0a0e14;" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
+                                <div class="d-flex align-items-center mb-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
                                         <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
                                     </svg>
-                                    Bộ lọc
-                                </h3>
-                                <br>
+                                    <h3 style="margin-left: 10px; padding-top: 8px;">Bộ lọc</h3>
+                                </div>
                                 <form id="formSearch" th:action="@{/admin/hien-thi-dot-giam-gia}" method="post">
                                     <div class="input-group">
                                         <span class="input-group-text">
-                                            <svg style="height: 25px; width: 30px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 512">
+                                            <svg style="height: 25px; width: 45px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 512">
                                                 <path d="M220.6 130.3l-67.2 28.2V43.2L98.7 233.5l54.7-24.2v130.3l67.2-209.3zm-83.2-96.7l-1.3 4.7-15.2 52.9C80.6 106.7 52 145.8 52 191.5c0 52.3 34.3 95.9 83.4 105.5v53.6C57.5 340.1 0 272.4 0 191.6c0-80.5 59.8-147.2 137.4-158zm311.4 447.2c-11.2 11.2-23.1 12.3-28.6 10.5-5.4-1.8-27.1-19.9-60.4-44.4-33.3-24.6-33.6-35.7-43-56.7-9.4-20.9-30.4-42.6-57.5-52.4l-9.7-14.7c-24.7 16.9-53 26.9-81.3 28.7l2.1-6.6 15.9-49.5c46.5-11.9 80.9-54 80.9-104.2 0-54.5-38.4-102.1-96-107.1V32.3C254.4 37.4 320 106.8 320 191.6c0 33.6-11.2 64.7-29 90.4l14.6 9.6c9.8 27.1 31.5 48 52.4 57.4s32.2 9.7 56.8 43c24.6 33.2 42.7 54.9 44.5 60.3s.7 17.3-10.5 28.5zm-9.9-17.9c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8z"/>
                                             </svg>
                                         </span>
-                                        <input th:value="${keySearch}" type="search" class="form-control" placeholder="Tìm đợt giảm giá theo tên" name="keySearch" aria-label="Username" aria-describedby="basic-addon1">
+                                        <input th:value="${keySearch}" type="search" class="form-control" placeholder="Tìm đợt giảm giá theo tên" name="keySearch" style="height: 46px;">
                                     </div>
                                     <br>
                                     <div class="row mb-4">
-                                        <div class="col-lg-5 d-flex justify-content-between">
+                                        <div class="col-lg-12 d-flex justify-content-evenly">
                                             <div class="form123">
-                                                <input onkeydown="return false" id="tungaySearch" name="tungaySearch" th:value="${tungay}" type="datetime-local" class="form-control" style="width: 205px;" onchange="submitFormSearch()">
+                                                <input onkeydown="return false" id="tungaySearch" name="tungaySearch" th:value="${tungay}" type="datetime-local" class="form-control" style="width: 205px; height: 46px;" onchange="submitFormSearch()">
                                                 <label>Từ ngày</label>
                                             </div>
                                             <div class="form123">
-                                                <input onkeydown="return false" id="denngaySearch" name="denngaySearch" th:value="${denngay}" type="datetime-local" class="form-control" style="width: 205px;" onchange="submitFormSearch()">
+                                                <input onkeydown="return false" id="denngaySearch" name="denngaySearch" th:value="${denngay}" type="datetime-local" class="form-control" style="width: 205px; height: 46px;" onchange="submitFormSearch()">
                                                 <label>Đến ngày</label>
                                             </div>
-                                        </div>
-                                        <div class="col-lg-7 d-flex justify-content-between">
                                             <div class="d-flex align-items-center">
                                                 <div class="d-flex align-items-center me-2">
                                                     <p style="font-weight: bold; margin: 0;">Trạng thái</p>
                                                 </div>
                                                 <div>
-                                                    <select name="ttSearch" class="form-select" style="color: orange; font-weight: bold;" onchange="submitFormSearch()">
+                                                    <select name="ttSearch" class="form-select" style="color: orange; font-weight: bold; height: 46px;" onchange="submitFormSearch()">
                                                         <option value="3" th:selected="${tt == null}">Tất cả</option>
                                                         <option value="0" th:selected="${tt != null && tt == 0}">Chưa kích hoạt</option>
                                                         <option value="1" th:selected="${tt != null && tt == 1}">Đang kích hoạt</option>
@@ -134,59 +129,77 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
                                          class="bi bi-card-list" viewBox="0 0 16 16">
                                         <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"/>
                                         <path d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8m0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0M4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"/>
                                     </svg>
-                                    Danh sách đợt giảm giá
-                                </h3>
-                                <a th:href="@{/admin/xem-them-dot-giam-gia}" class="card-title btn btn-primary" style="margin-left: 800px;">+ Thêm mới</a>
+                                    <h5 style="margin-left: 10px; padding-top: 6px;">Danh sách đợt giảm giá</h5>
+                                </div>
+                                <a th:href="@{/admin/xem-them-dot-giam-gia}">
+                                    <button type="button" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 130px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                        </svg> Thêm mới
+                                    </button>
+                                </a>
                             </div>
 
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <input type="hidden" name="trangthaihientai">
-                                <table id="example2" class="table align-middle text-center table-bordered table-hover">
+                                <table id="example2" class="table table-bordered table-hover">
                                     <thead class="table table-danger">
                                     <tr>
-                                        <th>STT</th>
-                                        <th>Tên</th>
-                                        <th>Giá trị giảm</th>
-                                        <th>Thời gian</th>
-                                        <th>Trạng thái</th>
-                                        <th>Thao tác</th>
+                                        <th style="vertical-align: middle; text-align: center;">STT</th>
+                                        <th style="vertical-align: middle; text-align: center;">Tên</th>
+                                        <th style="vertical-align: middle; text-align: center;">Giá trị giảm</th>
+                                        <th style="vertical-align: middle; text-align: center;">Thời gian</th>
+                                        <th style="vertical-align: middle; text-align: center;">Trạng thái</th>
+                                        <th style="vertical-align: middle; text-align: center;">Thao tác</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr th:each="pgg,stt:${pageDGG.content}" th:attr="data-id=${pgg.id}">
-                                        <td th:text="${stt.index+1}"></td>
-                                        <td th:text="${pgg.tendot}"></td>
-                                        <td th:text="${pgg.giatrigiam}+' %'" style="text-align: center;"></td>
-                                        <td th:utext="${#dates.format(pgg.ngaybatdau, 'dd-MM-yyyy HH:mm') + '<br/>' + #dates.format(pgg.ngayketthuc, 'dd-MM-yyyy HH:mm')}"></td>
-                                        <td class="status-cell">
+                                        <td th:text="${stt.index+1}" style="vertical-align: middle; text-align: center;"></td>
+                                        <td th:text="${pgg.tendot}" style="vertical-align: middle; text-align: center;"></td>
+                                        <td th:text="${pgg.giatrigiam}+' %'" style="vertical-align: middle; text-align: center;"></td>
+                                        <td th:utext="${#dates.format(pgg.ngaybatdau, 'dd-MM-yyyy HH:mm') + '<br/>' + #dates.format(pgg.ngayketthuc, 'dd-MM-yyyy HH:mm')}" style="vertical-align: middle; text-align: center;"></td>
+                                        <td class="status-cell" style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
                                             <a th:href="@{/admin/cap-nhat-trang-thai-dot-giam-gia/{Id}(Id=${pgg.id})}" style="text-decoration: none;" onclick="return hoiTrangThai(event, this)">
                                                 <div th:if="${pgg.trangthai == 0}">
-                                                    <p style=" font-family: 'Times New Roman'; font-size: 12px; border-radius: 14px; background-color: orange; padding: 2px 5px 2px 5px; color: white;">Chưa kích hoạt</p>
+                                                    <button style=" border: none; margin: 0;"
+                                                            th:classappend="'badge badge-warning'">
+                                                        <span th:text="'Chưa kích hoạt'"></span>
+                                                    </button>
                                                 </div>
                                             </a>
                                             <a th:href="@{/admin/cap-nhat-trang-thai-dot-giam-gia/{Id}(Id=${pgg.id})}" style="text-decoration: none;" onclick="return hoiTrangThai(event, this)">
                                                 <div th:if="${pgg.trangthai == 1}">
-                                                    <p style=" font-family: 'Times New Roman'; font-size: 12px; border-radius: 14px; background-color: #00bb00; padding: 2px 5px 2px 5px; color: white;">Đang kích hoạt</p>
+                                                    <button style=" border: none; margin: 0;"
+                                                            th:classappend="'badge badge-success'">
+                                                        <span th:text="'Đang kích hoạt'"></span>
+                                                    </button>
                                                 </div>
                                             </a>
                                             <div th:if="${ pgg.trangthai == 2}">
                                                 <div th:if="${pgg.ngayketthuc.before(#dates.createNow().getTime())}">
                                                     <!-- Nội dung bạn muốn hiển thị khi pgg.ngayketthuc là thời gian trong quá khứ -->
-                                                    <p style=" font-family: 'Times New Roman'; font-size: 12px; border-radius: 14px; background-color: crimson; padding: 2px 5px 2px 5px; color: white;">Đã ngừng</p>
+                                                    <button disabled style=" border: none; margin: 0;"
+                                                            th:classappend="'badge badge-danger'">
+                                                        <span th:text="'Ngừng kích hoạt'"></span>
+                                                    </button>
                                                 </div>
                                                 <div th:if="${pgg.ngayketthuc.after(#dates.createNow().getTime())}">
                                                     <!-- Nội dung bạn muốn hiển thị khi pgg.ngayketthuc là thời gian trong tương lai -->
                                                     <a th:href="@{/admin/cap-nhat-trang-thai-dot-giam-gia/{Id}(Id=${pgg.id})}" style="text-decoration: none;" onclick="return hoiTrangThai2(event, this)">
                                                         <div>
-                                                            <p style=" font-family: 'Times New Roman'; font-size: 12px; border-radius: 14px; background-color: crimson; padding: 2px 5px 2px 5px; color: white;">Đã ngừng</p>
+                                                            <button style=" border: none; margin: 0;"
+                                                                    th:classappend="'badge badge-danger'">
+                                                                <span th:text="'Ngừng kích hoạt'"></span>
+                                                            </button>
                                                         </div>
                                                     </a>
                                                 </div>
@@ -194,7 +207,7 @@
                                             </div>
 
                                         </td>
-                                        <td>
+                                        <td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
                                             <a th:href="@{/admin/xem-cap-nhat-dot-giam-gia/{Id}(Id=${pgg.id})}" style="color:rgb(249,72,42)">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
                                                      fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
@@ -403,29 +416,37 @@
         const baseUrl = '/admin/cap-nhat-trang-thai-dot-giam-gia';
         const url = `${baseUrl}/${id}`;
         if (status === 0) {
-            return `<a href="${url}" style="text-decoration: none;" onclick="return hoiTrangThai(event, this)">\n` +
-                '    <div>\n' +
-                '        <p style="font-family: \'Times New Roman\'; font-size: 12px; border-radius: 14px; background-color: orange; padding: 2px 5px 2px 5px; color: white;">Chưa kích hoạt</p>\n' +
-                '    </div>\n' +
-                '</a>';
+            return `<a href="${url}" style="text-decoration: none;" onclick="return hoiTrangThai(event, this)">
+               <div>
+                    <button style="border: none; margin: 0;" class="badge badge-warning">
+                        <span>Chưa kích hoạt</span>
+                    </button>
+                </div>
+                </a>`;
         } else if (status === 1) {
-            return `<a href="${url}" style="text-decoration: none;" onclick="return hoiTrangThai(event, this)">\n` +
-                '    <div>\n' +
-                '        <p style="font-family: \'Times New Roman\'; font-size: 12px; border-radius: 14px; background-color: #00bb00; padding: 2px 5px 2px 5px; color: white;">Đang kích hoạt</p>\n' +
-                '    </div>\n' +
-                '</a>';
+            return `<a href="${url}" style="text-decoration: none;" onclick="return hoiTrangThai(event, this)">
+                <div>
+                    <button style="border: none; margin: 0;" class="badge badge-success">
+                        <span>Đang kích hoạt</span>
+                    </button>
+                </div>
+                </a>`;
         } else if (status === 2) {
             var dateNow = new Date();
             if(dateNow.getTime() < ngayketthuc.getTime()){
-                return `<a href="${url}" style="text-decoration: none;" onclick="return hoiTrangThai2(event, this)">\n` +
-                    '    <div>\n' +
-                    '        <p style="font-family: \'Times New Roman\'; font-size: 12px; border-radius: 14px; background-color: crimson; padding: 2px 5px 2px 5px; color: white;">Đã ngừng</p>\n' +
-                    '    </div>\n' +
-                    '</a>';
+                return `<a href="${url}" style="text-decoration: none;" onclick="return hoiTrangThai2(event, this)">
+                    <div>
+                        <button style="border: none; margin: 0;" class="badge badge-danger">
+                            <span>Ngừng kích hoạt</span>
+                        </button>
+                    </div>
+                    </a>`;
             } else {
-                return '<div>\n' +
-                    '    <p style="font-family: \'Times New Roman\'; font-size: 12px; border-radius: 14px; background-color: crimson; padding: 2px 5px 2px 5px; color: white;">Đã ngừng</p>\n' +
-                    '</div>';
+                return `<div>
+                    <button disabled style="border: none; margin: 0;" class="badge badge-danger">
+                        <span>Ngừng kích hoạt</span>
+                    </button>
+                    </div>`;
             }
         }
 

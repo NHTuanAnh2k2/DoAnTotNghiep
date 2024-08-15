@@ -53,7 +53,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
+                <div class="row mb-5 mt-2">
                     <div class="col-sm-6 d-flex align-items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
                              class="bi bi-bookmark-dash-fill" viewBox="0 0 16 16">
@@ -173,11 +173,13 @@
                                     </svg>
                                     <h5 style="margin-left: 10px; padding-top: 6px;">Danh sách phiếu giảm giá</h5>
                                 </div>
-                                <div>
-                                    <a th:href="@{/admin/xem-them-phieu-giam-gia}" style="padding-left: 918px;">
-                                        <button style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42);">+ Thêm mới</button>
-                                    </a>
-                                </div>
+                                <a th:href="@{/admin/xem-them-phieu-giam-gia}">
+                                    <button type="button" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 130px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                        </svg> Thêm mới
+                                    </button>
+                                </a>
                             </div>
 
                             <!-- /.card-header -->
@@ -205,63 +207,78 @@
                                             <td th:text="${stt.index+1}" style="vertical-align: middle; text-align: center;"></td>
                                             <td th:text="${pgg.macode}" style="vertical-align: middle; text-align: center;"></td>
                                             <td th:text="${pgg.tenphieu}" style="vertical-align: middle; text-align: center;"></td>
-                                            <td style="vertical-align: middle; text-align: center;">
+                                            <td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
                                                 <div th:if="${pgg.loaiphieu}">
-                                                    <p th:text="${pgg.giatrigiam}+' %'"></p>
+                                                    <p th:text="${pgg.giatrigiam}+' %'" style="margin: 0;"></p>
                                                 </div>
                                                 <div th:if="${not pgg.loaiphieu}">
-                                                    <p th:text="${#numbers.formatDecimal(pgg.giatrigiam, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}"></p>
+                                                    <p th:text="${#numbers.formatDecimal(pgg.giatrigiam, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}" style="margin: 0;"></p>
                                                 </div>
                                             </td>
                                             <td class="soluong-cell" th:text="${pgg.soluong}" style="vertical-align: middle; text-align: center;"></td>
-                                            <td th:text="${#numbers.formatDecimal(pgg.dontoithieu, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}" style="vertical-align: middle; text-align: center;"></td>
+                                            <td style="position: relative; text-align: center; height: 100%; padding: 0;">
+                                                <div th:if="${pgg.dontoithieu == null or pgg.dontoithieu <= 0}" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%;">
+                                                    <p style="margin: 0;" th:utext="'Không giới' + '<br/>' + 'hạn'"></p>
+                                                </div>
+                                                <div th:if="${pgg.dontoithieu > 0}" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%;">
+                                                    <p th:text="${#numbers.formatDecimal(pgg.dontoithieu, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}" style="margin: 0;"></p>
+                                                </div>
+                                            </td>
                                             <td style="position: relative; text-align: center; height: 100%; padding: 0;">
                                                 <div th:if="${pgg.giatrigiamtoida == null or pgg.giatrigiamtoida <= 0}" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%;">
-                                                    <p style="margin: 0;">Không giới hạn</p>
+                                                    <p style="margin: 0;" th:utext="'Không giới' + '<br/>' + 'hạn'"></p>
                                                 </div>
                                                 <div th:if="${pgg.giatrigiamtoida > 0}" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%;">
                                                     <p th:text="${#numbers.formatDecimal(pgg.giatrigiamtoida, 0, 'COMMA', 0, 'POINT') + '&#x20ab;'}" style="margin: 0;"></p>
                                                 </div>
                                             </td>
                                             <td th:utext="${#dates.format(pgg.ngaybatdau, 'dd-MM-yyyy HH:mm') + '<br/>' + #dates.format(pgg.ngayketthuc, 'dd-MM-yyyy HH:mm')}" style="vertical-align: middle; text-align: center;"></td>
-                                            <td>
-                                                <div th:if="${pgg.kieuphieu}">
-                                                    <p style=" font-family: 'Times New Roman'; font-size: 12px; border-radius: 14px; background-color: deepskyblue; color: white;">Cá nhân</p>
-                                                </div>
-                                                <div th:if="${not pgg.kieuphieu}">
-                                                    <p style=" font-family: 'Times New Roman'; font-size: 12px; border-radius: 14px; background-color: plum; color: white;">Công khai</p>
-                                                </div>
+                                            <td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
+                                                <button disabled style=" border: none; margin: 0;"
+                                                        th:classappend="${pgg.kieuphieu == true ? 'badge badge-secondary' : 'badge badge-primary'}">
+                                                        <span th:text="${pgg.kieuphieu == true ? 'Cá nhân' : 'Công khai'}"></span>
+                                                </button>
                                             </td>
-                                            <td class="status-cell">
+                                            <td class="status-cell" style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
                                                 <a th:href="@{/admin/cap-nhat-trang-thai-phieu-giam-gia/{Id}(Id=${pgg.id})}" style="text-decoration: none;" onclick="return hoiTrangThai(event, this)">
                                                     <div th:if="${pgg.trangthai == 0}" >
-                                                        <p style=" font-family: 'Times New Roman'; font-size: 12px; border-radius: 14px; background-color: orange; padding: 2px 5px 2px 5px; color: white;">Chưa kích hoạt</p>
+                                                        <button style=" border: none; margin: 0;"
+                                                                th:classappend="'badge badge-warning'">
+                                                            <span th:text="'Chưa kích hoạt'"></span>
+                                                        </button>
                                                     </div>
                                                 </a>
                                                 <a th:href="@{/admin/cap-nhat-trang-thai-phieu-giam-gia/{Id}(Id=${pgg.id})}" style="text-decoration: none;" onclick="return hoiTrangThai(event, this)">
                                                     <div th:if="${pgg.trangthai == 1}">
-                                                        <p style=" font-family: 'Times New Roman'; font-size: 12px; border-radius: 14px; background-color: #00bb00; padding: 2px 5px 2px 5px; color: white;">Đang kích hoạt</p>
+                                                        <button style=" border: none; margin: 0;"
+                                                                th:classappend="'badge badge-success'">
+                                                            <span th:text="'Đang kích hoạt'"></span>
+                                                        </button>
                                                     </div>
                                                 </a>
                                                 <div th:if="${ pgg.trangthai == 2}">
                                                     <div th:if="${pgg.ngayketthuc.before(#dates.createNow().getTime()) || pgg.soluong==0}">
                                                         <!-- Nội dung bạn muốn hiển thị khi pgg.ngayketthuc là thời gian trong quá khứ -->
-                                                        <p style=" font-family: 'Times New Roman'; font-size: 12px; border-radius: 14px; background-color: crimson; padding: 2px 5px 2px 5px; color: white;">Đã ngừng</p>
+                                                        <button disabled style=" border: none; margin: 0;"
+                                                                th:classappend="'badge badge-danger'">
+                                                            <span th:text="'Ngừng kích hoạt'"></span>
+                                                        </button>
                                                     </div>
                                                     <div th:if="${pgg.ngayketthuc.after(#dates.createNow().getTime()) && pgg.soluong>0}">
                                                         <!-- Nội dung bạn muốn hiển thị khi pgg.ngayketthuc là thời gian trong tương lai -->
                                                         <a th:href="@{/admin/cap-nhat-trang-thai-phieu-giam-gia/{Id}(Id=${pgg.id})}" style="text-decoration: none;" onclick="return hoiTrangThai2(event, this)">
-                                                            <div>
-                                                                <p style=" font-family: 'Times New Roman'; font-size: 12px; border-radius: 14px; background-color: crimson; padding: 2px 5px 2px 5px; color: white;">Đã ngừng</p>
-                                                            </div>
+                                                            <button style=" border: none; margin: 0;"
+                                                                    th:classappend="'badge badge-danger'">
+                                                                <span th:text="'Ngừng kích hoạt'"></span>
+                                                            </button>
                                                         </a>
                                                     </div>
 
                                                 </div>
 
                                             </td>
-                                            <td>
-                                                <a th:href="@{/admin/xem-cap-nhat-phieu-giam-gia/{Id}(Id=${pgg.id})}" style="color:rgb(249,72,42)">
+                                            <td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
+                                                <a th:href="@{/admin/xem-cap-nhat-phieu-giam-gia/{Id}(Id=${pgg.id})}" style="color:rgb(249,72,42); margin: 0;">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
                                                          fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                                         <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
@@ -488,29 +505,37 @@
         const baseUrl = '/admin/cap-nhat-trang-thai-phieu-giam-gia';
         const url = `${baseUrl}/${id}`;
         if (status === 0) {
-            return `<a href="${url}" style="text-decoration: none;" onclick="return hoiTrangThai(event, this)">\n` +
-                '    <div>\n' +
-                '        <p style="font-family: \'Times New Roman\'; font-size: 12px; border-radius: 14px; background-color: orange; padding: 2px 5px 2px 5px; color: white;">Chưa kích hoạt</p>\n' +
-                '    </div>\n' +
-                '</a>';
+            return `<a href="${url}" style="text-decoration: none;" onclick="return hoiTrangThai(event, this)">
+                <div>
+                    <button style="border: none; margin: 0;" class="badge badge-warning">
+                        <span>Chưa kích hoạt</span>
+                    </button>
+                </div>
+            </a>`;
         } else if (status === 1) {
-            return `<a href="${url}" style="text-decoration: none;" onclick="return hoiTrangThai(event, this)">\n` +
-                '    <div>\n' +
-                '        <p style="font-family: \'Times New Roman\'; font-size: 12px; border-radius: 14px; background-color: #00bb00; padding: 2px 5px 2px 5px; color: white;">Đang kích hoạt</p>\n' +
-                '    </div>\n' +
-                '</a>';
+            return `<a href="${url}" style="text-decoration: none;" onclick="return hoiTrangThai(event, this)">
+                <div>
+                    <button style="border: none; margin: 0;" class="badge badge-success">
+                        <span>Đang kích hoạt</span>
+                    </button>
+                </div>
+            </a>`;
         } else if (status === 2) {
-            var dateNow = new Date();
-            if(soluong > 0 && dateNow.getTime() < ngayketthuc.getTime()){
-                return `<a href="${url}" style="text-decoration: none;" onclick="return hoiTrangThai2(event, this)">\n` +
-                    '    <div>\n' +
-                    '        <p style="font-family: \'Times New Roman\'; font-size: 12px; border-radius: 14px; background-color: crimson; padding: 2px 5px 2px 5px; color: white;">Đã ngừng</p>\n' +
-                    '    </div>\n' +
-                    '</a>';
+            const dateNow = new Date();
+            if (soluong > 0 && dateNow.getTime() < ngayketthuc.getTime()) {
+                return `<a href="${url}" style="text-decoration: none;" onclick="return hoiTrangThai2(event, this)">
+                    <div>
+                        <button style="border: none; margin: 0;" class="badge badge-danger">
+                            <span>Ngừng kích hoạt</span>
+                        </button>
+                    </div>
+                </a>`;
             } else {
-                return '<div>\n' +
-                    '    <p style="font-family: \'Times New Roman\'; font-size: 12px; border-radius: 14px; background-color: crimson; padding: 2px 5px 2px 5px; color: white;">Đã ngừng</p>\n' +
-                    '</div>';
+                return `<div>
+                    <button disabled style="border: none; margin: 0;" class="badge badge-danger">
+                        <span>Ngừng kích hoạt</span>
+                    </button>
+                </div>`;
             }
         }
 

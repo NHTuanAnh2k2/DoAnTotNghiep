@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.*;
@@ -145,7 +146,7 @@ public class PhieuGiamGiaController {
             if(phieuGiamGia.getMacode()=="" || phieuGiamGia.getMacode().isEmpty()){
                 int doDaiChuoi = 10;
                 // Chuỗi chứa tất cả các ký tự có thể có trong chuỗi ngẫu nhiên
-                String kiTu = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                String kiTu = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
                 // Tạo đối tượng Random
                 Random random = new Random();
                 // StringBuilder để xây dựng chuỗi ngẫu nhiên
@@ -216,7 +217,7 @@ public class PhieuGiamGiaController {
             if(phieuGiamGia.getMacode()=="" || phieuGiamGia.getMacode().isEmpty()){
                 int doDaiChuoi = 10;
                 // Chuỗi chứa tất cả các ký tự có thể có trong chuỗi ngẫu nhiên
-                String kiTu = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                String kiTu = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
                 // Tạo đối tượng Random
                 Random random = new Random();
                 // StringBuilder để xây dựng chuỗi ngẫu nhiên
@@ -269,6 +270,8 @@ public class PhieuGiamGiaController {
     @GetMapping("/admin/xem-cap-nhat-phieu-giam-gia/{Id}")
     public String ChiTietPhieuGiamGia(@PathVariable("Id") Integer Id, Model model, HttpSession session){
         PhieuGiamGia phieuGiamGia= phieuGiamGiaImp.findPhieuGiamGiaById(Id);
+        phieuGiamGia.setGiatrigiamtoida(phieuGiamGia.getGiatrigiamtoida().setScale(0, BigDecimal.ROUND_DOWN));
+        phieuGiamGia.setDontoithieu(phieuGiamGia.getDontoithieu().setScale(0, BigDecimal.ROUND_DOWN));
         List<KhachHangPhieuGiam> lstKHPG= new ArrayList<>();
         if(phieuGiamGia.getKieuphieu()==true){
             lstKHPG=khachHangPhieuGiamImp.findKhachHangPhieuGiamByIdPhieugiamgia(phieuGiamGia.getId());
