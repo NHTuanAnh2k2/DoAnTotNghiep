@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <nav th:replace="~{/layoutadmin/head.html}"></nav>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
-    .form123{
+    .form123 {
         position: relative;
     }
+
     .form123 label {
         position: absolute;
         top: 50%;
@@ -20,7 +24,8 @@
         pointer-events: none;
         transition: .5s;
     }
-    .form123 input{
+
+    .form123 input {
         width: 100%;
         font-size: 16px;
         color: black;
@@ -28,434 +33,478 @@
         background: transparent;
         outline: none;
     }
-    .form123 input~label{
+
+    .form123 input~label {
         top: 0;
         font-size: 12px;
         background: white;
     }
 </style>
+
 <body class="hold-transition sidebar-mini">
-<div class="wrapper">
-    <!-- Navbar -->
-    <nav th:replace="~{/layoutadmin/navbar.html}"></nav>
-    <!-- End navbar -->
+    <div class="wrapper">
+        <!-- Navbar -->
+        <nav th:replace="~{/layoutadmin/navbar.html}"></nav>
+        <!-- End navbar -->
 
-    <!--Menu bán hàng -->
-    <nav th:replace="~{/layoutadmin/menu.html}"></nav>
-    <!--end-->
+        <!--Menu bán hàng -->
+        <nav th:replace="~{/layoutadmin/menu.html}"></nav>
+        <!--end-->
 
-    <!--Nội dung -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-5 mt-2">
-                    <div class="col-sm-6 d-flex align-items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
-                             class="bi bi-bookmark-dash-fill" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd"
-                                  d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6 6a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z"/>
-                        </svg>
-                        <h1 style="margin-left: 10px;">QUẢN LÝ ĐỢT GIẢM GIÁ</h1>
+        <!--Nội dung -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-5 mt-2">
+                        <div class="col-sm-6 d-flex align-items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                                class="bi bi-bookmark-dash-fill" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6 6a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z" />
+                            </svg>
+                            <h1 style="margin-left: 10px;">QUẢN LÝ ĐỢT GIẢM GIÁ</h1>
+                        </div>
                     </div>
-                </div>
-            </div><!-- /.container-fluid -->
-        </section>
-        <!---filter-->
-        <section class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="d-flex align-items-center mb-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
-                                        <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
-                                    </svg>
-                                    <h3 style="margin-left: 10px; padding-top: 8px;">Bộ lọc</h3>
-                                </div>
-                                <form id="formSearch" th:action="@{/admin/hien-thi-dot-giam-gia}" method="post">
-                                    <div class="input-group">
-                                        <span class="input-group-text">
-                                            <svg style="height: 25px; width: 45px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 512">
-                                                <path d="M220.6 130.3l-67.2 28.2V43.2L98.7 233.5l54.7-24.2v130.3l67.2-209.3zm-83.2-96.7l-1.3 4.7-15.2 52.9C80.6 106.7 52 145.8 52 191.5c0 52.3 34.3 95.9 83.4 105.5v53.6C57.5 340.1 0 272.4 0 191.6c0-80.5 59.8-147.2 137.4-158zm311.4 447.2c-11.2 11.2-23.1 12.3-28.6 10.5-5.4-1.8-27.1-19.9-60.4-44.4-33.3-24.6-33.6-35.7-43-56.7-9.4-20.9-30.4-42.6-57.5-52.4l-9.7-14.7c-24.7 16.9-53 26.9-81.3 28.7l2.1-6.6 15.9-49.5c46.5-11.9 80.9-54 80.9-104.2 0-54.5-38.4-102.1-96-107.1V32.3C254.4 37.4 320 106.8 320 191.6c0 33.6-11.2 64.7-29 90.4l14.6 9.6c9.8 27.1 31.5 48 52.4 57.4s32.2 9.7 56.8 43c24.6 33.2 42.7 54.9 44.5 60.3s.7 17.3-10.5 28.5zm-9.9-17.9c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8z"/>
-                                            </svg>
-                                        </span>
-                                        <input th:value="${keySearch}" type="search" class="form-control" placeholder="Tìm đợt giảm giá theo tên" name="keySearch" style="height: 46px;">
+                </div><!-- /.container-fluid -->
+            </section>
+            <!---filter-->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+                                            fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
+                                            <path
+                                                d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z" />
+                                        </svg>
+                                        <h3 style="margin-left: 10px; padding-top: 8px;">Bộ lọc</h3>
                                     </div>
-                                    <br>
-                                    <div class="row mb-4">
-                                        <div class="col-lg-12 d-flex justify-content-evenly">
-                                            <div class="form123">
-                                                <input onkeydown="return false" id="tungaySearch" name="tungaySearch" th:value="${tungay}" type="datetime-local" class="form-control" style="width: 205px; height: 46px;" onchange="submitFormSearch()">
-                                                <label>Từ ngày</label>
-                                            </div>
-                                            <div class="form123">
-                                                <input onkeydown="return false" id="denngaySearch" name="denngaySearch" th:value="${denngay}" type="datetime-local" class="form-control" style="width: 205px; height: 46px;" onchange="submitFormSearch()">
-                                                <label>Đến ngày</label>
-                                            </div>
-                                            <div class="d-flex align-items-center">
-                                                <div class="d-flex align-items-center me-2">
-                                                    <p style="font-weight: bold; margin: 0;">Trạng thái</p>
+                                    <form id="formSearch" th:action="@{/admin/hien-thi-dot-giam-gia}" method="post">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <svg style="height: 25px; width: 45px;"
+                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 512">
+                                                    <path
+                                                        d="M220.6 130.3l-67.2 28.2V43.2L98.7 233.5l54.7-24.2v130.3l67.2-209.3zm-83.2-96.7l-1.3 4.7-15.2 52.9C80.6 106.7 52 145.8 52 191.5c0 52.3 34.3 95.9 83.4 105.5v53.6C57.5 340.1 0 272.4 0 191.6c0-80.5 59.8-147.2 137.4-158zm311.4 447.2c-11.2 11.2-23.1 12.3-28.6 10.5-5.4-1.8-27.1-19.9-60.4-44.4-33.3-24.6-33.6-35.7-43-56.7-9.4-20.9-30.4-42.6-57.5-52.4l-9.7-14.7c-24.7 16.9-53 26.9-81.3 28.7l2.1-6.6 15.9-49.5c46.5-11.9 80.9-54 80.9-104.2 0-54.5-38.4-102.1-96-107.1V32.3C254.4 37.4 320 106.8 320 191.6c0 33.6-11.2 64.7-29 90.4l14.6 9.6c9.8 27.1 31.5 48 52.4 57.4s32.2 9.7 56.8 43c24.6 33.2 42.7 54.9 44.5 60.3s.7 17.3-10.5 28.5zm-9.9-17.9c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8z" />
+                                                </svg>
+                                            </span>
+                                            <input th:value="${keySearch}" type="search" class="form-control"
+                                                placeholder="Tìm đợt giảm giá theo tên" name="keySearch"
+                                                style="height: 46px;">
+                                        </div>
+                                        <br>
+                                        <div class="row mb-4">
+                                            <div class="col-lg-12 d-flex justify-content-evenly">
+                                                <div class="form123">
+                                                    <input onkeydown="return false" id="tungaySearch"
+                                                        name="tungaySearch" th:value="${tungay}" type="datetime-local"
+                                                        class="form-control" style="width: 205px; height: 46px;"
+                                                        onchange="submitFormSearch()">
+                                                    <label>Từ ngày</label>
                                                 </div>
-                                                <div>
-                                                    <select name="ttSearch" class="form-select" style="color: orange; font-weight: bold; height: 46px;" onchange="submitFormSearch()">
-                                                        <option value="3" th:selected="${tt == null}">Tất cả</option>
-                                                        <option value="0" th:selected="${tt != null && tt == 0}">Chưa kích hoạt</option>
-                                                        <option value="1" th:selected="${tt != null && tt == 1}">Đang kích hoạt</option>
-                                                        <option value="2" th:selected="${tt != null && tt == 2}">Đã ngừng</option>
-                                                    </select>
+                                                <div class="form123">
+                                                    <input onkeydown="return false" id="denngaySearch"
+                                                        name="denngaySearch" th:value="${denngay}" type="datetime-local"
+                                                        class="form-control" style="width: 205px; height: 46px;"
+                                                        onchange="submitFormSearch()">
+                                                    <label>Đến ngày</label>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="d-flex align-items-center me-2">
+                                                        <p style="font-weight: bold; margin: 0;">Trạng thái</p>
+                                                    </div>
+                                                    <div>
+                                                        <select name="ttSearch" class="form-select"
+                                                            style="color: orange; font-weight: bold; height: 46px;"
+                                                            onchange="submitFormSearch()">
+                                                            <option value="3" th:selected="${tt == null}">Tất cả
+                                                            </option>
+                                                            <option value="0" th:selected="${tt != null && tt == 0}">
+                                                                Chưa kích hoạt</option>
+                                                            <option value="1" th:selected="${tt != null && tt == 1}">
+                                                                Đang kích hoạt</option>
+                                                            <option value="2" th:selected="${tt != null && tt == 2}">Đã
+                                                                ngừng</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
+
                             </div>
+                            <!-- /.card -->
+
 
                         </div>
-                        <!-- /.card -->
-
-
+                        <!-- /.col -->
                     </div>
-                    <!-- /.col -->
+                    <!-- /.row -->
                 </div>
-                <!-- /.row -->
-            </div>
-            <!-- /.container-fluid -->
-        </section>
-        <!-- Main content -->
-        <section class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <div class="d-flex align-items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
-                                         class="bi bi-card-list" viewBox="0 0 16 16">
-                                        <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"/>
-                                        <path d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8m0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0M4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"/>
-                                    </svg>
-                                    <h5 style="margin-left: 10px; padding-top: 6px;">Danh sách đợt giảm giá</h5>
-                                </div>
-                                <div>
-                                    <a th:href="@{/admin/xem-them-dot-giam-gia}" style="margin-left: 770px;">
-                                        <button type="button" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 130px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                <!-- /.container-fluid -->
+            </section>
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+                                            fill="currentColor" class="bi bi-card-list" viewBox="0 0 16 16">
+                                            <path
+                                                d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z" />
+                                            <path
+                                                d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8m0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0M4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0" />
+                                        </svg>
+                                        <h5 style="margin-left: 10px; padding-top: 6px;">Danh sách đợt giảm giá</h5>
+                                    </div>
+
+                                    <a th:href="@{/admin/xem-them-dot-giam-gia}" class="ms-auto">
+                                        <button type="button"
+                                            style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 130px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                                             </svg> Thêm mới
                                         </button>
                                     </a>
-                                </div>
-                              
-                            </div>
 
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <input type="hidden" name="trangthaihientai">
-                                <table id="example2" class="table table-bordered table-hover">
-                                    <thead class="table table-danger">
-                                    <tr>
-                                        <th style="vertical-align: middle; text-align: center;">STT</th>
-                                        <th style="vertical-align: middle; text-align: center;">Tên</th>
-                                        <th style="vertical-align: middle; text-align: center;">Giá trị giảm</th>
-                                        <th style="vertical-align: middle; text-align: center;">Thời gian</th>
-                                        <th style="vertical-align: middle; text-align: center;">Trạng thái</th>
-                                        <th style="vertical-align: middle; text-align: center;">Thao tác</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:each="pgg,stt:${pageDGG.content}" th:attr="data-id=${pgg.id}">
-                                        <td th:text="${stt.index+1}" style="vertical-align: middle; text-align: center;"></td>
-                                        <td th:text="${pgg.tendot}" style="vertical-align: middle; text-align: center;"></td>
-                                        <td th:text="${pgg.giatrigiam}+' %'" style="vertical-align: middle; text-align: center;"></td>
-                                        <td th:utext="${#dates.format(pgg.ngaybatdau, 'dd-MM-yyyy HH:mm') + '<br/>' + #dates.format(pgg.ngayketthuc, 'dd-MM-yyyy HH:mm')}" style="vertical-align: middle; text-align: center;"></td>
-                                        <td class="status-cell" style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
-                                            <a th:href="@{/admin/cap-nhat-trang-thai-dot-giam-gia/{Id}(Id=${pgg.id})}" style="text-decoration: none;" onclick="return hoiTrangThai(event, this)">
-                                                <div th:if="${pgg.trangthai == 0}">
-                                                    <button style=" border: none; margin: 0;"
-                                                            th:classappend="'badge badge-warning'">
-                                                        <span th:text="'Chưa kích hoạt'"></span>
-                                                    </button>
-                                                </div>
-                                            </a>
-                                            <a th:href="@{/admin/cap-nhat-trang-thai-dot-giam-gia/{Id}(Id=${pgg.id})}" style="text-decoration: none;" onclick="return hoiTrangThai(event, this)">
-                                                <div th:if="${pgg.trangthai == 1}">
-                                                    <button style=" border: none; margin: 0;"
-                                                            th:classappend="'badge badge-success'">
-                                                        <span th:text="'Đang kích hoạt'"></span>
-                                                    </button>
-                                                </div>
-                                            </a>
-                                            <div th:if="${ pgg.trangthai == 2}">
-                                                <div th:if="${pgg.ngayketthuc.before(#dates.createNow().getTime())}">
-                                                    <!-- Nội dung bạn muốn hiển thị khi pgg.ngayketthuc là thời gian trong quá khứ -->
-                                                    <button disabled style=" border: none; margin: 0;"
-                                                            th:classappend="'badge badge-danger'">
-                                                        <span th:text="'Ngừng kích hoạt'"></span>
-                                                    </button>
-                                                </div>
-                                                <div th:if="${pgg.ngayketthuc.after(#dates.createNow().getTime())}">
-                                                    <!-- Nội dung bạn muốn hiển thị khi pgg.ngayketthuc là thời gian trong tương lai -->
-                                                    <a th:href="@{/admin/cap-nhat-trang-thai-dot-giam-gia/{Id}(Id=${pgg.id})}" style="text-decoration: none;" onclick="return hoiTrangThai2(event, this)">
-                                                        <div>
+
+                                </div>
+
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    <input type="hidden" name="trangthaihientai">
+                                    <table id="example2" class="table table-bordered table-hover">
+                                        <thead class="table table-danger">
+                                            <tr>
+                                                <th style="vertical-align: middle; text-align: center;">STT</th>
+                                                <th style="vertical-align: middle; text-align: center;">Tên</th>
+                                                <th style="vertical-align: middle; text-align: center;">Giá trị giảm
+                                                </th>
+                                                <th style="vertical-align: middle; text-align: center;">Thời gian</th>
+                                                <th style="vertical-align: middle; text-align: center;">Trạng thái</th>
+                                                <th style="vertical-align: middle; text-align: center;">Thao tác</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="pgg,stt:${pageDGG.content}" th:attr="data-id=${pgg.id}">
+                                                <td th:text="${stt.index+1}"
+                                                    style="vertical-align: middle; text-align: center;"></td>
+                                                <td th:text="${pgg.tendot}"
+                                                    style="vertical-align: middle; text-align: center;"></td>
+                                                <td th:text="${pgg.giatrigiam}+' %'"
+                                                    style="vertical-align: middle; text-align: center;"></td>
+                                                <td th:utext="${#dates.format(pgg.ngaybatdau, 'dd-MM-yyyy HH:mm') + '<br/>' + #dates.format(pgg.ngayketthuc, 'dd-MM-yyyy HH:mm')}"
+                                                    style="vertical-align: middle; text-align: center;"></td>
+                                                <td class="status-cell"
+                                                    style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
+                                                    <a th:href="@{/admin/cap-nhat-trang-thai-dot-giam-gia/{Id}(Id=${pgg.id})}"
+                                                        style="text-decoration: none;"
+                                                        onclick="return hoiTrangThai(event, this)">
+                                                        <div th:if="${pgg.trangthai == 0}">
                                                             <button style=" border: none; margin: 0;"
-                                                                    th:classappend="'badge badge-danger'">
-                                                                <span th:text="'Ngừng kích hoạt'"></span>
+                                                                th:classappend="'badge badge-warning'">
+                                                                <span th:text="'Chưa kích hoạt'"></span>
                                                             </button>
                                                         </div>
                                                     </a>
-                                                </div>
-<!--                                                <p style=" font-family: 'Times New Roman'; font-size: 12px; border-radius: 14px; background-color: crimson; padding: 2px 5px 2px 5px; color: white;">Đã ngừng</p>-->
-                                            </div>
+                                                    <a th:href="@{/admin/cap-nhat-trang-thai-dot-giam-gia/{Id}(Id=${pgg.id})}"
+                                                        style="text-decoration: none;"
+                                                        onclick="return hoiTrangThai(event, this)">
+                                                        <div th:if="${pgg.trangthai == 1}">
+                                                            <button style=" border: none; margin: 0;"
+                                                                th:classappend="'badge badge-success'">
+                                                                <span th:text="'Đang kích hoạt'"></span>
+                                                            </button>
+                                                        </div>
+                                                    </a>
+                                                    <div th:if="${ pgg.trangthai == 2}">
+                                                        <div
+                                                            th:if="${pgg.ngayketthuc.before(#dates.createNow().getTime())}">
+                                                            <!-- Nội dung bạn muốn hiển thị khi pgg.ngayketthuc là thời gian trong quá khứ -->
+                                                            <button disabled style=" border: none; margin: 0;"
+                                                                th:classappend="'badge badge-danger'">
+                                                                <span th:text="'Ngừng kích hoạt'"></span>
+                                                            </button>
+                                                        </div>
+                                                        <div
+                                                            th:if="${pgg.ngayketthuc.after(#dates.createNow().getTime())}">
+                                                            <!-- Nội dung bạn muốn hiển thị khi pgg.ngayketthuc là thời gian trong tương lai -->
+                                                            <a th:href="@{/admin/cap-nhat-trang-thai-dot-giam-gia/{Id}(Id=${pgg.id})}"
+                                                                style="text-decoration: none;"
+                                                                onclick="return hoiTrangThai2(event, this)">
+                                                                <div>
+                                                                    <button style=" border: none; margin: 0;"
+                                                                        th:classappend="'badge badge-danger'">
+                                                                        <span th:text="'Ngừng kích hoạt'"></span>
+                                                                    </button>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                        <!--                                                <p style=" font-family: 'Times New Roman'; font-size: 12px; border-radius: 14px; background-color: crimson; padding: 2px 5px 2px 5px; color: white;">Đã ngừng</p>-->
+                                                    </div>
 
-                                        </td>
-                                        <td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
-                                            <a th:href="@{/admin/xem-cap-nhat-dot-giam-gia/{Id}(Id=${pgg.id})}" style="color:rgb(249,72,42)">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
-                                                     fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
-                                                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
-                                                </svg>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                                                </td>
+                                                <td
+                                                    style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
+                                                    <a th:href="@{/admin/xem-cap-nhat-dot-giam-gia/{Id}(Id=${pgg.id})}"
+                                                        style="color:rgb(249,72,42)">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                                                            fill="currentColor" class="bi bi-eye-fill"
+                                                            viewBox="0 0 16 16">
+                                                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
+                                                            <path
+                                                                d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
+                                                        </svg>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
                             </div>
-                            <!-- /.card-body -->
+                            <!-- /.card -->
+
+
                         </div>
-                        <!-- /.card -->
-
-
+                        <!-- /.col -->
                     </div>
-                    <!-- /.col -->
+                    <!-- /.row -->
                 </div>
-                <!-- /.row -->
-            </div>
-            <!-- /.container-fluid -->
-        </section>
-        <!-- /.content -->
+                <!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+        </div>
+        <!--end-->
+        <nav th:replace="~{/layoutadmin/footer.html}"></nav>
     </div>
+
     <!--end-->
-    <nav th:replace="~{/layoutadmin/footer.html}"></nav>
-</div>
 
-<!--end-->
-
-<script>
-    // var table = document.getElementById("example2");
-    // for (var i = 1; i < table.rows.length; i++) {
-    //     var datetime1 = table.rows[i].cells[6].innerHTML;
-    //     var formattedDateTime1 = formatDateTime(datetime1);
-    //
-    //     var datetime2 = table.rows[i].cells[7].innerHTML;
-    //     var formattedDateTime2 = formatDateTime(datetime2);
-    //
-    //     table.rows[i].cells[6].innerHTML = formattedDateTime1;
-    //     table.rows[i].cells[7].innerHTML = formattedDateTime2;
-    // }
-    function formatDateTime(datetimeString) {
-        var date = new Date(datetimeString);
-        var day = date.getDate();
-        var month = date.getMonth() + 1;
-        var year = date.getFullYear();
-        var hours = date.getHours().toString().padStart(2, '0');
-        var minutes = date.getMinutes().toString().padStart(2, '0');
-        return `${day}/${month}/${year} ${hours}:${minutes}`;
-    }
-    function submitFormSearch() {
-        document.getElementById("formSearch").submit();
-    }
-    function compareDateTime(dateTime1, dateTime2) {
-        if (!dateTime1 || !dateTime2) {
-            return false;
+    <script>
+        // var table = document.getElementById("example2");
+        // for (var i = 1; i < table.rows.length; i++) {
+        //     var datetime1 = table.rows[i].cells[6].innerHTML;
+        //     var formattedDateTime1 = formatDateTime(datetime1);
+        //
+        //     var datetime2 = table.rows[i].cells[7].innerHTML;
+        //     var formattedDateTime2 = formatDateTime(datetime2);
+        //
+        //     table.rows[i].cells[6].innerHTML = formattedDateTime1;
+        //     table.rows[i].cells[7].innerHTML = formattedDateTime2;
+        // }
+        function formatDateTime(datetimeString) {
+            var date = new Date(datetimeString);
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+            var hours = date.getHours().toString().padStart(2, '0');
+            var minutes = date.getMinutes().toString().padStart(2, '0');
+            return `${day}/${month}/${year} ${hours}:${minutes}`;
         }
-        var date1 = new Date(dateTime1);
-        var date2 = new Date(dateTime2);
-
-        return date1.getTime() > date2.getTime();
-    }
-    function hoiTrangThai() {
-        if (confirm('Bạn chắc chắn muốn ngừng đợt giảm giá này không?')) {
-            return true;
-        } else {
-            return false;
+        function submitFormSearch() {
+            document.getElementById("formSearch").submit();
         }
-    }
-    async function themthanhcong() {
-        const response = await fetch('/them-dot-thanh-cong');
-        const data = await response.json();
-        console.log(data);
-        if (data === 1) {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
-                }
-            });
+        function compareDateTime(dateTime1, dateTime2) {
+            if (!dateTime1 || !dateTime2) {
+                return false;
+            }
+            var date1 = new Date(dateTime1);
+            var date2 = new Date(dateTime2);
 
-            await fetch('/dot-clear-session', { method: 'POST' }).then(() => {
-                // Sau khi xóa session thành công, hiển thị thông báo
-                Toast.fire({
-                    icon: "success",
-                    title: "Thêm thành công!"
+            return date1.getTime() > date2.getTime();
+        }
+        function hoiTrangThai() {
+            if (confirm('Bạn chắc chắn muốn ngừng đợt giảm giá này không?')) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        async function themthanhcong() {
+            const response = await fetch('/them-dot-thanh-cong');
+            const data = await response.json();
+            console.log(data);
+            if (data === 1) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
                 });
-            });
+
+                await fetch('/dot-clear-session', { method: 'POST' }).then(() => {
+                    // Sau khi xóa session thành công, hiển thị thông báo
+                    Toast.fire({
+                        icon: "success",
+                        title: "Thêm thành công!"
+                    });
+                });
+            }
         }
-    }
-    themthanhcong();
-    async function capnhatthanhcong() {
-        const response = await fetch('/cap-nhat-dot-thanh-cong');
-        const data = await response.json();
-        console.log(data);
-        if (data === 1) {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
+        themthanhcong();
+        async function capnhatthanhcong() {
+            const response = await fetch('/cap-nhat-dot-thanh-cong');
+            const data = await response.json();
+            console.log(data);
+            if (data === 1) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                await fetch('/dot-clear-session', { method: 'POST' }).then(() => {
+                    // Sau khi xóa session thành công, hiển thị thông báo
+                    Toast.fire({
+                        icon: "success",
+                        title: "Cập nhật thành công!"
+                    });
+                });
+            }
+        }
+        capnhatthanhcong();
+        function hoiTrangThai(event, element) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Bạn có chắc chắn muốn ngừng kích hoạt đợt giảm giá này không?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Có',
+                cancelButtonText: 'Không'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    localStorage.setItem('capnhattrangthaidot', '1');
+                    console.log("Navigating to: " + element.href);
+                    window.location.href = element.href; // Điều hướng đến URL khi người dùng xác nhận
                 }
             });
-
-            await fetch('/dot-clear-session', { method: 'POST' }).then(() => {
-                // Sau khi xóa session thành công, hiển thị thông báo
+            return false;
+        }
+        function hoiTrangThai2(event, element) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Bạn có chắc chắn muốn tái kích hoạt đợt giảm giá này không?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Có',
+                cancelButtonText: 'Không'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    localStorage.setItem('capnhattrangthaidot', '1');
+                    console.log("Navigating to: " + element.href);
+                    window.location.href = element.href; // Điều hướng đến URL khi người dùng xác nhận
+                }
+            });
+            return false;
+        }
+        function capnhattrangthaithanhcong() {
+            if (localStorage.getItem('capnhattrangthaidot') === '1') {
+                // Reset trạng thái
+                localStorage.setItem('capnhattrangthaidot', '0');
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
                 Toast.fire({
                     icon: "success",
                     title: "Cập nhật thành công!"
                 });
-            });
+
+            }
         }
-    }
-    capnhatthanhcong();
-    function hoiTrangThai(event, element) {
-        event.preventDefault();
-        Swal.fire({
-            title: 'Bạn có chắc chắn muốn ngừng kích hoạt đợt giảm giá này không?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Có',
-            cancelButtonText: 'Không'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                localStorage.setItem('capnhattrangthaidot', '1');
-                console.log("Navigating to: " + element.href);
-                window.location.href = element.href; // Điều hướng đến URL khi người dùng xác nhận
-            }
+    </script>
+    <script>
+        const eventSource = new EventSource('/dot-discounts-stream');
+
+        eventSource.addEventListener('dot-discount-update', function (event) {
+            const data = JSON.parse(event.data);
+            updateStatusColumn(data);
         });
-        return false;
-    }
-    function hoiTrangThai2(event, element) {
-        event.preventDefault();
-        Swal.fire({
-            title: 'Bạn có chắc chắn muốn tái kích hoạt đợt giảm giá này không?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Có',
-            cancelButtonText: 'Không'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                localStorage.setItem('capnhattrangthaidot', '1');
-                console.log("Navigating to: " + element.href);
-                window.location.href = element.href; // Điều hướng đến URL khi người dùng xác nhận
-            }
-        });
-        return false;
-    }
-    function capnhattrangthaithanhcong() {
-        if (localStorage.getItem('capnhattrangthaidot') === '1') {
-            // Reset trạng thái
-            localStorage.setItem('capnhattrangthaidot', '0');
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
+
+        function updateStatusColumn(discount) {
+            const rowId = discount.id;
+            const status = discount.trangthai;
+            const ngayketthuc = new Date(discount.ngayketthuc);
+            const row = document.querySelector('[data-id="' + rowId + '"]');
+            if (row) {
+                const statusCell = row.querySelector('.status-cell');
+                if (statusCell) {
+                    statusCell.innerHTML = getStatusHtml(rowId, status, ngayketthuc);
                 }
-            });
-            Toast.fire({
-                icon: "success",
-                title: "Cập nhật thành công!"
-            });
-
-        }
-    }
-</script>
-<script>
-    const eventSource = new EventSource('/dot-discounts-stream');
-
-    eventSource.addEventListener('dot-discount-update', function(event) {
-        const data = JSON.parse(event.data);
-        updateStatusColumn(data);
-    });
-
-    function updateStatusColumn(discount) {
-        const rowId = discount.id;
-        const status = discount.trangthai;
-        const ngayketthuc= new Date(discount.ngayketthuc);
-        const row = document.querySelector('[data-id="' + rowId + '"]');
-        if (row) {
-            const statusCell = row.querySelector('.status-cell');
-            if (statusCell) {
-                statusCell.innerHTML = getStatusHtml(rowId,status,ngayketthuc);
             }
         }
-    }
 
-    function getStatusHtml(id,status,ngayketthuc) {
-        const baseUrl = '/admin/cap-nhat-trang-thai-dot-giam-gia';
-        const url = `${baseUrl}/${id}`;
-        if (status === 0) {
-            return `<a href="${url}" style="text-decoration: none;" onclick="return hoiTrangThai(event, this)">
+        function getStatusHtml(id, status, ngayketthuc) {
+            const baseUrl = '/admin/cap-nhat-trang-thai-dot-giam-gia';
+            const url = `${baseUrl}/${id}`;
+            if (status === 0) {
+                return `<a href="${url}" style="text-decoration: none;" onclick="return hoiTrangThai(event, this)">
                <div>
                     <button style="border: none; margin: 0;" class="badge badge-warning">
                         <span>Chưa kích hoạt</span>
                     </button>
                 </div>
                 </a>`;
-        } else if (status === 1) {
-            return `<a href="${url}" style="text-decoration: none;" onclick="return hoiTrangThai(event, this)">
+            } else if (status === 1) {
+                return `<a href="${url}" style="text-decoration: none;" onclick="return hoiTrangThai(event, this)">
                 <div>
                     <button style="border: none; margin: 0;" class="badge badge-success">
                         <span>Đang kích hoạt</span>
                     </button>
                 </div>
                 </a>`;
-        } else if (status === 2) {
-            var dateNow = new Date();
-            if(dateNow.getTime() < ngayketthuc.getTime()){
-                return `<a href="${url}" style="text-decoration: none;" onclick="return hoiTrangThai2(event, this)">
+            } else if (status === 2) {
+                var dateNow = new Date();
+                if (dateNow.getTime() < ngayketthuc.getTime()) {
+                    return `<a href="${url}" style="text-decoration: none;" onclick="return hoiTrangThai2(event, this)">
                     <div>
                         <button style="border: none; margin: 0;" class="badge badge-danger">
                             <span>Ngừng kích hoạt</span>
                         </button>
                     </div>
                     </a>`;
-            } else {
-                return `<div>
+                } else {
+                    return `<div>
                     <button disabled style="border: none; margin: 0;" class="badge badge-danger">
                         <span>Ngừng kích hoạt</span>
                     </button>
                     </div>`;
+                }
             }
-        }
 
-    }
-</script>
-<!--script-->
-<nav th:replace="~{/layoutadmin/script.html}"></nav>
+        }
+    </script>
+    <!--script-->
+    <nav th:replace="~{/layoutadmin/script.html}"></nav>
 </body>
+
 </html>
