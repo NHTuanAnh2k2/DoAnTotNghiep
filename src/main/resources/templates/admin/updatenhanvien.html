@@ -108,7 +108,7 @@
                                                         <img id="uploadedImage1" th:if="*{anh != null}" th:src="@{'/upload' + *{anh.substring(anh.lastIndexOf('upload') + 6)}}">
                                                     </div>
                                                     <div class="file-input-wrapper" th:if="${adminRole == false}">
-                                                        <img th:src="${adminAvatar}" class="rounded-circle" width="100%" alt="">
+                                                        <img th:src="@{'/upload' + ${adminAvatar.substring(adminAvatar.lastIndexOf('upload') + 6)}}" class="rounded-circle" width="100%" alt="">
                                                     </div>
                                                 </div>
                                             </section>
