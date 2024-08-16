@@ -54,8 +54,8 @@ public class NhanVienController {
     public String listnv(Model model,@ModelAttribute("nds") NhanVienSearch nd, HttpSession session) {
         List<DiaChi> page = diaChi.getAll();
         List<NhanVien> listnv = nhanVien.getAll();
-        model.addAttribute("items1", page);
-        model.addAttribute("items2", listnv);
+        NhanVien superAdmin = nhanVienRepository.findNhanVienById(1);
+        listnv.remove(superAdmin);
 
         String username = (String) session.getAttribute("adminDangnhap");
         if (username != null) {
@@ -65,6 +65,9 @@ public class NhanVienController {
                 model.addAttribute("nv", nv);
             }
         }
+
+        model.addAttribute("items1", page);
+        model.addAttribute("items2", listnv);
         return "admin/qlnhanvien";
     }
     @GetMapping("/admin/timkiem")
@@ -247,6 +250,9 @@ public class NhanVienController {
                 return "redirect:/updateNhanVien/" + nhanVien1.getId();
             }
         }
+        if (id == 1) {
+            return "redirect:/admin/qlnhanvien";
+        }
         model.addAttribute("nd", nguoiDung.findById(id));
         model.addAttribute("dc",diaChi.search(id));
         model.addAttribute("nv",nhanVien.search(id));
@@ -254,6 +260,7 @@ public class NhanVienController {
         List<NhanVien> listnv = nhanVien.getAll1(id);
         model.addAttribute("items1", page);
         model.addAttribute("items2", listnv);
+        model.addAttribute("adminId", nhanVien1.getId());
         return "admin/updatenhanvien";
     }
     @PostMapping("/updateNhanVien/{id}")

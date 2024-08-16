@@ -205,7 +205,7 @@ public class DangNhapController {
             NguoiDung nguoiDung = khachHangService.findNguoiDungByTaikhoan(userName);
             String token = userManager.getToken(nguoiDung.getTaikhoan());
             if (session != null) {
-                session.removeAttribute("userDangnhap");
+                session.removeAttribute("userDangnhap");    
                 userManager.logoutUser(nguoiDung.getTaikhoan(), token);
                 System.out.println("Danh sách người dùng đang đăng nhập: " + userManager.getLoggedInUsers());
             }
