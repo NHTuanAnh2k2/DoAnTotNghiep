@@ -17,6 +17,9 @@ import java.util.Optional;
 
 @Repository
 public interface NhanVienRepository extends JpaRepository<NhanVien, Integer> {
+    @Query("SELECT n FROM NhanVien n WHERE n.id = :id")
+    NhanVien findNhanVienById(Integer id);
+
     @Query("SELECT new com.example.demo.info.NhanVienNVInfo(nd.id, nv.manhanvien, nd.hovaten," +
             "nd.sodienthoai, nd.ngaysinh, dc.tinhthanhpho, dc.quanhuyen, dc.xaphuong, dc.tenduong, nv.vaitro, nv.trangthai)" +
             "FROM NhanVien nv " +
