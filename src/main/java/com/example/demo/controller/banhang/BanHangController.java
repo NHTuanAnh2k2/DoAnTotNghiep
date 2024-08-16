@@ -261,8 +261,6 @@ public class BanHangController {
                 }
             }
         }
-        System.out.println("aaaaaaaaaaaa");
-        System.out.println(discounts);
         return ResponseEntity.ok(discounts);
     }
 
