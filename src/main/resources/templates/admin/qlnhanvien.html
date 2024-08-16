@@ -187,8 +187,8 @@
                             </div>
 
                             <div th:if="${nv}" class="card-body">
-                                <table id="example3" style="width: 100%" class="table table-bordered table-hover text-center">
-                                    <thead class="table table-danger">
+                                <table id="example3" style="width: 100%" class="table-bordered table-hover text-center">
+                                    <thead style="background-color:rgb(249,72,42);height: 50px;color: white">
                                     <tr>
                                         <th>STT</th>
                                         <th style="white-space: nowrap;">Mã nhân viên</th>
@@ -199,33 +199,33 @@
                                         <th style="white-space: nowrap;">Địa chỉ</th>
                                         <th>Vai trò</th>
                                         <th style="white-space: nowrap;">Trạng thái</th>
-                                        <th style=" white-space: nowrap;">Hành động</th>
+                                        <th style=" white-space: nowrap;">Thao tác</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr th:each="nv,stt:${nv}">
                                         <td th:text="${stt.index+1}"></td>
-                                        <td style="white-space: nowrap;" th:text="${nv.manhanvien}"></td>
-                                        <td style="white-space: nowrap;" th:text="${nv.hovaten}"></td>
-                                        <td style="white-space: nowrap;" th:text="${nv.sdt}"></td>
-                                        <td style="white-space: nowrap;" th:text="${#dates.format(nv.ngaysinh, 'dd-MM-yyyy')}"></td>
+                                        <td style="white-space: nowrap; padding: 10px 0 10px 0" th:text="${nv.manhanvien}"></td>
+                                        <td style="white-space: nowrap; padding: 10px 0 10px 0" th:text="${nv.hovaten}"></td>
+                                        <td style="white-space: nowrap; padding: 10px 0 10px 0" th:text="${nv.sdt}"></td>
+                                        <td style="white-space: nowrap; padding: 10px 0 10px 0" th:text="${#dates.format(nv.ngaysinh, 'dd-MM-yyyy')}"></td>
                                         <!--                                        <td style="white-space: nowrap;" th:text="${items2[i].nguoidung.gioitinh ? 'Nam' : 'Nữ'}"></td>-->
-                                        <td><span th:if="${#strings.length(nv.tenduong + ' ' + nv.xaphuong + ' ' + nv.quanhuyen + ' ' + nv.tinhthanh) > 20}" th:text="${#strings.substring(nv.tenduong + ' ' + nv.xaphuong + ' ' + nv.quanhuyen + ' ' + nv.tinhthanh, 0, 20)} + '...'"></span>
+                                        <td style="padding: 10px 0 10px 0"><span th:if="${#strings.length(nv.tenduong + ' ' + nv.xaphuong + ' ' + nv.quanhuyen + ' ' + nv.tinhthanh) > 20}" th:text="${#strings.substring(nv.tenduong + ' ' + nv.xaphuong + ' ' + nv.quanhuyen + ' ' + nv.tinhthanh, 0, 20)} + '...'"></span>
                                             <span th:unless="${#strings.length(nv.tenduong + ' ' + nv.xaphuong + ' ' + nv.quanhuyen + ' ' + nv.tinhthanh) > 20}" th:text="${nv.tenduong + ' ' + nv.xaphuong + ' ' + nv.quanhuyen + ' ' + nv.tinhthanh}"></span></td>
-                                        <td th:if="${nv.vaitro == true}" style="white-space: nowrap;">
-                                            <b class="btn btn-success">Quản lý</b>
+                                        <td th:if="${nv.vaitro == true}" style="white-space: nowrap; padding: 10px 0 10px 0">
+                                            <b class="badge badge-secondary" style="width: 70px">Quản lý</b>
                                         </td>
-                                        <td th:unless="${nv.vaitro}" style="white-space: nowrap;">
-                                            <a class="btn btn-info">Nhân viên</a>
+                                        <td th:unless="${nv.vaitro}" style="white-space: nowrap; padding: 10px 0 10px 0">
+                                            <a class="badge badge-warning" style="width: 70px;text-decoration: none">Nhân viên</a>
                                         </td>
-                                        <td th:if="${nv.trangthai == true}" style="white-space: nowrap;">
-                                            <a class="btn btn-outline-success">Làm việc</a>
+                                        <td th:if="${nv.trangthai == true}" style="white-space: nowrap; padding: 10px 0 10px 0">
+                                            <a class="badge badge-success" style="width: 70px;text-decoration: none">Làm việc</a>
                                         </td>
-                                        <td th:unless="${nv.trangthai}" style="white-space: nowrap;">
-                                            <a class="btn btn-outline-danger">Nghỉ làm</a>
+                                        <td th:unless="${nv.trangthai}" style="white-space: nowrap; padding: 10px 0 10px 0">
+                                            <a class="badge badge-danger" style="width: 70px;text-decoration: none">Nghỉ làm</a>
                                         </td>
                                         <td style="white-space: nowrap; " >
-                                            <a th:href="@{/updateNhanVien/{id}(id=${nv.id})}" style="color:rgb(249,72,42);">
+                                            <a th:href="@{/updateNhanVien/{id}(id=${nv.id})}" style="color:rgb(249,72,42); padding: 10px 0 10px 0">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
                                                      fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
