@@ -44,6 +44,14 @@
     .theachuyentt {
         cursor: pointer;
     }
+    table#example2 thead {
+        background-color: rgb(249, 72, 42) !important;
+        color: white !important;
+    }
+    table#example2 thead th {
+        background-color: inherit !important; /* Kế thừa màu nền từ thead */
+        color: inherit !important; /* Kế thừa màu chữ từ thead */
+    }
 </style>
 
 <body class="hold-transition sidebar-mini">
@@ -232,18 +240,15 @@
                                 <div class="card-body">
                                     <input type="hidden" name="trangthaihientai">
                                     <table id="example2" class="table table-bordered table-hover">
-                                        <thead class="table table-danger">
+                                        <thead>
                                             <tr>
                                                 <th style="vertical-align: middle; text-align: center;">STT</th>
                                                 <th style="vertical-align: middle; text-align: center;">Mã</th>
                                                 <th style="vertical-align: middle; text-align: center;">Tên</th>
                                                 <th style="vertical-align: middle; text-align: center;">Giá trị</th>
-                                                <th style="vertical-align: middle; text-align: center;">Số<br />lượng
-                                                </th>
-                                                <th style="vertical-align: middle; text-align: center;">Đơn
-                                                    tối<br />thiểu</th>
-                                                <th style="vertical-align: middle; text-align: center;">Giảm tối<br />đa
-                                                </th>
+                                                <th style="vertical-align: middle; text-align: center;">Số<br />lượng</th>
+                                                <th style="vertical-align: middle; text-align: center;">Đơn tối<br />thiểu</th>
+                                                <th style="vertical-align: middle; text-align: center;">Giảm tối<br />đa</th>
                                                 <th style="vertical-align: middle; text-align: center;">Thời gian</th>
                                                 <th style="vertical-align: middle; text-align: center;">Kiểu</th>
                                                 <th style="vertical-align: middle; text-align: center;">Trạng thái</th>

@@ -68,7 +68,7 @@
     /* Styling the checkbox when it's checked */
     .checkbox:checked {
         background-color: rgb(249,72,42);
-        border: 1px solid rgb(249,72,42);
+        border: 1px solid black;
     }
     .checkbox:checked::after {
         content: '';
@@ -80,6 +80,15 @@
         border: solid white;
         border-width: 0 2px 2px 0;
         transform: rotate(45deg);
+    }
+    table#tableKhachHang thead {
+        background-color: rgb(249, 72, 42) !important;
+        height: 50px;
+        color: white !important;
+    }
+    table#tableKhachHang thead th {
+        background-color: inherit !important; /* Kế thừa màu nền từ thead */
+        color: inherit !important; /* Kế thừa màu chữ từ thead */
     }
 </style>
 <body class="hold-transition sidebar-mini">
@@ -256,12 +265,14 @@
                                 </form>
                                 <div class="table-responsive" style="margin-top: 10px; padding-bottom: 15px; max-height: 500px;">
                                     <table id="tableKhachHang" class="table table-bordered table-hover align-middle text-center">
-                                        <thead class="table table-danger sticky-thead">
-                                        <th></th>
-                                        <th>STT</th>
-                                        <th>Tên</th>
-                                        <th>Số điện thoại</th>
-                                        <th>Email</th>
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>STT</th>
+                                                <th>Tên</th>
+                                                <th>Số điện thoại</th>
+                                                <th>Email</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
 <!--                                        <tr th:each="kh,stt:${lstKH}">-->

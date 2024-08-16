@@ -39,6 +39,15 @@
         font-size: 12px;
         background: white;
     }
+    table#example2 thead {
+        background-color: rgb(249, 72, 42) !important;
+        height: 50px;
+        color: white !important;
+    }
+    table#example2 thead th {
+        background-color: inherit !important; /* Kế thừa màu nền từ thead */
+        color: inherit !important; /* Kế thừa màu chữ từ thead */
+    }
 </style>
 
 <body class="hold-transition sidebar-mini">
@@ -184,7 +193,7 @@
                                 <div class="card-body">
                                     <input type="hidden" name="trangthaihientai">
                                     <table id="example2" class="table table-bordered table-hover">
-                                        <thead class="table table-danger">
+                                        <thead>
                                             <tr>
                                                 <th style="vertical-align: middle; text-align: center;">STT</th>
                                                 <th style="vertical-align: middle; text-align: center;">Tên</th>

@@ -67,7 +67,7 @@
     /* Styling the checkbox when it's checked */
     .checkbox:checked {
         background-color: rgb(249,72,42);
-        border: 1px solid rgb(249,72,42);
+        border: 1px solid black;
     }
     .checkbox:checked::after {
         content: '';
@@ -85,6 +85,24 @@
         height: 30px; /* Điều chỉnh chiều cao của input nếu cần */
         border: none; /* Loại bỏ đường viền nếu cần */
         outline: none; /* Loại bỏ outline nếu cần */
+    }
+    table#productTable thead {
+        background-color: rgb(249, 72, 42) !important;
+        height: 50px;
+        color: white !important;
+    }
+    table#productTable thead th {
+        background-color: inherit !important; /* Kế thừa màu nền từ thead */
+        color: inherit !important; /* Kế thừa màu chữ từ thead */
+    }
+    table#detailTable thead {
+        background-color: rgb(249, 72, 42) !important;
+        height: 50px;
+        color: white !important;
+    }
+    table#detailTable thead th {
+        background-color: inherit !important; /* Kế thừa màu nền từ thead */
+        color: inherit !important; /* Kế thừa màu chữ từ thead */
     }
 </style>
 <body class="hold-transition sidebar-mini">
@@ -214,12 +232,14 @@
                                     </div>
                                 </form>
                                 <div class="table-responsive" style="margin-top: 10px; padding-bottom: 15px; max-height: 400px;">
-                                    <table id="productTable" class="table table-bordered table-hover">
-                                        <thead class="table table-danger align-middle text-center sticky-thead">
-                                        <th></th>
-                                        <th>STT</th>
-                                        <th>Mã sản phẩm</th>
-                                        <th>Tên sản phẩm</th>
+                                    <table id="productTable" class="table table-bordered align-middle text-center table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>STT</th>
+                                                <th>Mã sản phẩm</th>
+                                                <th>Tên sản phẩm</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
                                         </tbody>
