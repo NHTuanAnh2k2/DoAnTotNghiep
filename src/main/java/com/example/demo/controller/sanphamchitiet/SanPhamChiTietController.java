@@ -68,6 +68,20 @@ public class SanPhamChiTietController {
     @Autowired
     NguoiDungRepository daoNguoiDung;
 
+    //Cập nhật trạng thái sản phẩm chi tiết
+
+    @PostMapping("/chi-tiet-san-pham/updateTrangThai/{id}")
+    public String updateTrangThaiCTSP(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        SanPhamChiTiet spct = sanPhamChiTietRepository.findById(id).orElse(null);
+        if (spct != null) {
+            spct.setTrangthai(!spct.getTrangthai());
+            sanPhamChiTietRepository.save(spct);
+            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật trạng thái thành công!");
+        }
+        return "redirect:/detailsanpham/" + id;
+    }
+
+
     @GetMapping("/allSPCT")
     public String allSPCT(Model model, @ModelAttribute("search") SanPhamChiTietInfo info) {
         List<SanPhamChiTiet> list;

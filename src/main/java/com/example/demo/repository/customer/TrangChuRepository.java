@@ -20,6 +20,7 @@ public interface TrangChuRepository extends JpaRepository<SanPham, Integer> {
            SanPhamChiTietGrouped AS (
                SELECT IdSanPham, SUM(soluong) AS tongSoLuong, MIN(giatien) AS giatien
                FROM SanPhamChiTiet
+               WHERE trangthai = 1 -- Lọc sản phẩm chi tiết có trạng thái true
                GROUP BY IdSanPham
            ),
            KichCoCount AS (

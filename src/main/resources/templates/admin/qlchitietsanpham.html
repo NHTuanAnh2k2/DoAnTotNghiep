@@ -241,11 +241,10 @@
                                         <th>Số lượng</th>
                                         <th>Giá tiền</th>
                                         <th>Thương hiệu</th>
-                                        <th>Chất liệu</th>
-                                        <th>Đế giày</th>
                                         <th>Kích cỡ</th>
                                         <th>Màu sắc</th>
-                                        <th>Hành động</th>
+                                        <th>Trạng thái</th>
+                                        <th>Thao tác</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -312,13 +311,24 @@
     </span>
                                         </td>
                                         <td th:text="${spct.thuonghieu.ten}"></td>
-                                        <td th:text="${spct.chatlieu.ten}"></td>
-                                        <td th:text="${spct.degiay.ten}"></td>
+<!--                                        <td th:text="${spct.chatlieu.ten}"></td>-->
+<!--                                        <td th:text="${spct.degiay.ten}"></td>-->
                                         <td th:text="${spct.kichco.ten}"></td>
 <!--                                        <td th:text="${spct.mausac.ten}"></td>-->
+
                                         <td>
                                             <input type="color" th:value="${spct.mausac.ten}" class="form-control" disabled>
 <!--                                            <p th:text="${spct.mausac.ten}" style="color: red">-->
+                                        </td>
+                                        <td>
+                                            <form name="updateTrangThaiForm"
+                                                  th:action="@{/chi-tiet-san-pham/updateTrangThai/{id}(id=${spct.id})}" method="post"
+                                                  onsubmit="return confirmUpdateKichCo(this);">
+                                                <button type="submit" style=" border: none;"
+                                                        th:classappend="${spct.trangthai == true ? 'badge badge-success' : 'badge badge-danger'}">
+                                                    <span th:text="${spct.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></span>
+                                                </button>
+                                            </form>
                                         </td>
                                         <td>
                                             <a th:href="@{/updateCTSP/{id}(id=${spct.id})}"
@@ -594,4 +604,75 @@
             }
         });
     });
+</script>
+
+<!--message1-->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const successMessage = sessionStorage.getItem('successMessage');
+        if (successMessage) {
+            // Hiển thị thông báo ở góc bên phải màn hình
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: successMessage
+            });
+
+            // Xóa thông báo khỏi sessionStorage sau khi hiển thị
+            sessionStorage.removeItem('successMessage');
+        }
+    });
+</script>
+
+
+<script>
+    function confirmUpdateKichCo(form) {
+        Swal.fire({
+            title: 'Bạn có muốn cập nhật không?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không',
+            // width: '500px',
+            customClass: {
+                confirmButton: 'custom-confirm-button', // Thêm lớp tùy chỉnh cho nút "Có"
+                cancelButton: 'custom-cancel-button'    // Thêm lớp tùy chỉnh cho nút "Không" nếu cần
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và submit form sau một khoảng thời gian
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                setTimeout(function () {
+                    // Lưu thông báo vào sessionStorage
+                    sessionStorage.setItem('successMessage', 'Cập nhật trạng thái thành công!');
+                    // Submit form cụ thể
+                    form.submit();
+                }, 500); // Điều chỉnh thời gian delay nếu cần
+            }
+        });
+
+        // Ngăn form được gửi đi ngay lập tức
+        return false;
+    }
 </script>

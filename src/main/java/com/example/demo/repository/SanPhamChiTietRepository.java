@@ -27,10 +27,10 @@ public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, 
             """)
     List<SanPhamChiTiet> listAllSize(@Param("id") Integer id);
 // ẩn màu
-    @Query(value = """
-        SELECT s FROM SanPhamChiTiet s WHERE s.sanpham.id = :id AND s.kichco.ten LIKE %:ten%
-        """)
-    List<SanPhamChiTiet> listMauSac(@Param("id") Integer id, @Param("ten") String ten);
+//    @Query(value = """
+//        SELECT s FROM SanPhamChiTiet s WHERE s.sanpham.id = :id AND s.kichco.ten LIKE %:ten%
+//        """)
+//    List<SanPhamChiTiet> listMauSac(@Param("id") Integer id, @Param("ten") String ten);
 
     // search theo biến thể sản phẩm
     @Query("SELECT spct FROM SanPhamChiTiet spct WHERE spct.sanpham = :sanPham " +

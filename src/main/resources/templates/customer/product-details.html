@@ -486,7 +486,7 @@
                                     <span style="margin-right: 10px;">Màu sắc:</span>
                                     <div th:each="color, iterStat : ${colors}">
                                         <div style="margin-right: 10px">
-                                            <button class="btn color-button"
+                                            <button type="button" class="btn color-button"
                                                     th:classappend="${iterStat.index == 0} ? 'btn-border-thick' : 'btn-border-thin'"
                                                     th:data-color="${color}"
                                                     th:style="'background-color:' + ${color} + ';border-color:' + (${iterStat.index == 0} ? 'black' : ${color})"
@@ -501,8 +501,8 @@
                                     <div th:each="size, iterStat : ${sizes}">
                                         <div style="margin-right: 10px">
 
-                                            <button class="btn size-button"
-                                                    th:classappend="${iterStat.index == 0} ? 'btn-border-thick' : 'btn-border-thin'"
+                                            <button type="button" class="btn size-button"
+                                                    th:classappend="${size == defaultSize} ? 'btn-border-thick' : 'btn-border-thin'"
                                                     style="border-color: black" th:id="${size}"
                                                     th:text="${size}" th:data-size="${size}"
                                                     th:onclick="'changeButtonBackground(this); selectSize(this); mauAn(this)'"></button>
@@ -568,7 +568,7 @@
                                 <div class="d-flex align-items-center">
                                     <span style="margin-right: 10px;">Số lượng:</span>
                                     <div>
-                                        <input type="number" size="4" name="quantity" id="quantityInput" value="0"
+                                        <input type="number" size="4" name="quantity" id="quantityInput" value="1"
                                                min="1" class="tc line-item-qty item-quantity bg-white form-control"
                                                style="width:100px" oninput="validateQuantity()">
                                     </div>
@@ -927,6 +927,35 @@
         }
     });
 
+    document.addEventListener('DOMContentLoaded', async function () {
+        var color = document.getElementById("selectedColor").value;
+        const idSPAn = document.getElementById('idSPAn').value;
+        var chuoighep = idSPAn + '-' + color; // Ví dụ: '123-black'
+        const countSize = await getSizeColor(chuoighep);
+        const allSize = await getAllSize(idSPAn);
+        console.log("countSize:", countSize);
+        console.log("allSize:", allSize);
+        console.log("color:", color);
+        console.log("idan:", idSPAn);
+        console.log("chuoighep:", chuoighep);
+        // Lấy các giá trị có trong list1 nhưng không có trong list2
+        let uniqueInList1 = countSize.filter(value => !allSize.includes(value));
+
+        // Lấy các giá trị có trong list2 nhưng không có trong list1
+        let uniqueInList2 = allSize.filter(value => !countSize.includes(value));
+
+        // Kết hợp các giá trị duy nhất từ cả hai danh sách
+        let uniqueValues = uniqueInList1.concat(uniqueInList2);
+
+        uniqueValues.forEach(idSize => {
+            let elementToDisable = document.getElementById(idSize);
+            if (elementToDisable) {
+                elementToDisable.disabled = true; // Cú pháp chính xác để disable
+            }
+
+        });
+    });
+
     function updateImagesAndPrice() {
         const color = document.querySelector('.btn-border-thick[data-color]') ? document.querySelector('.btn-border-thick[data-color]').getAttribute('data-color') : null;
         const size = document.querySelector('.btn-border-thick[data-size]') ? document.querySelector('.btn-border-thick[data-size]').getAttribute('data-size') : null;
@@ -1073,15 +1102,15 @@
         // Lấy các giá trị có trong list1 nhưng không có trong list2
         let uniqueInList1 = countSize.filter(value => !allSize.includes(value));
 
-// Lấy các giá trị có trong list2 nhưng không có trong list1
+        // Lấy các giá trị có trong list2 nhưng không có trong list1
         let uniqueInList2 = allSize.filter(value => !countSize.includes(value));
 
-// Kết hợp các giá trị duy nhất từ cả hai danh sách
+        // Kết hợp các giá trị duy nhất từ cả hai danh sách
         let uniqueValues = uniqueInList1.concat(uniqueInList2);
         // Chuyển list2 thành Set để dễ kiểm tra sự tồn tại
         const set2 = new Set(allSize);
 
-// Tìm các giá trị trùng lặp
+        // Tìm các giá trị trùng lặp
         const commonElements = countSize.filter(item => set2.has(item));
         commonElements.forEach(idSize => {
             let elementToDisable = document.getElementById(idSize);
@@ -1100,6 +1129,15 @@
         });
     }
 
+    function selectSizeById(sizeId) {
+        const element = document.getElementById(sizeId); // Lấy button theo id
+        if (element) {
+            element.classList.remove('btn-border-thin');
+            element.classList.add('btn-border-thick');
+            element.style.borderColor = 'black'; // Set border color to black when selected
+        }
+    }
+
     async function changeButtonBackground(element) {
 
 
@@ -1108,10 +1146,11 @@
 
         if (isColorButton) {
             const colorButtons = document.querySelectorAll('.btn[data-color]');
+            const sizeButtons = document.querySelectorAll('.btn[data-size]');
             const isSelected = element.classList.contains('btn-border-thick');
 
-
             if (!isSelected) {
+                // Bỏ chọn tất cả các nút màu và cập nhật viền
                 colorButtons.forEach(button => {
                     button.classList.remove('btn-border-thick');
                     button.classList.add('btn-border-thin');
@@ -1120,7 +1159,30 @@
                 element.classList.remove('btn-border-thin');
                 element.classList.add('btn-border-thick');
                 element.style.borderColor = 'black'; // Set border color to black when selected
+
+                // Bỏ chọn tất cả các kích thước
+                sizeButtons.forEach(button => {
+                    button.classList.remove('btn-border-thick');
+                    button.classList.add('btn-border-thin');
+                    button.style.borderColor = button.getAttribute('data-size'); // Hoặc thiết lập lại viền theo ý bạn
+                });
+                //Chọn kích thước mong muốn
+                var color = element.dataset.color;
+                const idSPAn = document.getElementById('idSPAn').value;
+                var chuoighep = idSPAn + '-' + color; // Ví dụ: '123-black'
+                const countSize = await getSizeColor(chuoighep);
+                const allSize = await getAllSize(idSPAn);
+
+                const set2 = new Set(allSize);
+
+                const commonElements = countSize.filter(item => set2.has(item));
+                const firstElement = commonElements[0];
+                selectSizeById(firstElement);
+                document.getElementById("selectedSize").value = firstElement;
             }
+
+
+
         } else if (isSizeButton) {
             const sizeButtons = document.querySelectorAll('.btn[data-size]');
             const isSelected = element.classList.contains('btn-border-thick');
@@ -1146,10 +1208,12 @@
 <script>
     function selectColor(element) {
         document.getElementById("selectedColor").value = element.getAttribute("data-color");
+
     }
 
     function selectSize(element) {
         document.getElementById("selectedSize").value = element.getAttribute("data-size");
+
     }
 </script>
 <!--validate soluong-->

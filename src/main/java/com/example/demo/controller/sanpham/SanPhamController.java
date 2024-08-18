@@ -84,6 +84,22 @@ public class SanPhamController {
         return chuoiNgauNhien.toString();
     }
 
+    @PostMapping("/san-pham/updateTrangThai/{id}")
+    public String updateTrangThaiCTSP(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        SanPham sp = sanPhamRepositoty.findById(id).orElse(null);
+        if (sp != null) {
+            sp.setTrangthai(!sp.getTrangthai());
+            sanPhamRepositoty.save(sp);
+            List<SanPhamChiTiet> lstSPCT = sanPhamChiTietRepository.findBySanPhamId(sp.getId());
+            for(SanPhamChiTiet s : lstSPCT){
+                s.setTrangthai(!s.getTrangthai());
+                sanPhamChiTietRepository.save(s);
+            }
+            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật trạng thái thành công!");
+        }
+        return "redirect:/listsanpham";
+    }
+
     @PostMapping("/addTenSPModal")
     public String addTenSPModel(Model model, @ModelAttribute("sanpham") SanPham sanPham, HttpSession session) {
         String username = (String) session.getAttribute("adminDangnhap");
@@ -184,9 +200,20 @@ public class SanPhamController {
         model.addAttribute("motas", mota);
         model.addAttribute("gioitinh", gioitinh);
         model.addAttribute("selectedThuongHieu", idThuongHieu.getId());
+        model.addAttribute("selectedDeGiay", idDeGiay.getId());
         model.addAttribute("selectedChatLieu", idChatLieu.getId());
-        model.addAttribute("gioitinh", gioitinh);
+//        model.addAttribute("gioitinh", gioitinh);
         model.addAttribute("kichCoNames", kichCoNames);
+
+        //Hiển thị sau khi sửa đồng gía và số lượng
+        session.setAttribute("selectedTensp",tensp);
+        session.setAttribute("motas",mota);
+        session.setAttribute("gioitinh",gioitinh);
+        session.setAttribute("selectedThuongHieu",idThuongHieu.getId());
+        session.setAttribute("selectedChatLieu",idChatLieu.getId());
+        session.setAttribute("selectedDeGiay", idDeGiay.getId());
+
+
         SanPham sanPham = sanPhamRepositoty.findById(tensp).orElse(null);
         if (sanPham == null) {
             return "redirect:/error";
@@ -462,8 +489,8 @@ public class SanPhamController {
             Model model,
             @RequestParam("soluong") Integer soluong,
             @RequestParam("giatien") BigDecimal giatien,
-            @RequestParam("choncheckbox") String[] choncheckbox
-    ) {
+            @RequestParam("choncheckbox") String[] choncheckbox,
+            HttpSession session) {
         List<String> listString = Arrays.asList(choncheckbox);
         List<Integer> listInt = new ArrayList<>();
         for (String s : listString) {
@@ -479,6 +506,22 @@ public class SanPhamController {
                 }
             }
         }
+        Integer selectedTensp= (Integer) session.getAttribute("selectedTensp");
+        String motas= (String) session.getAttribute("motas");
+        Boolean gioitinh = (Boolean) session.getAttribute("gioitinh");
+        Integer selectedThuongHieu = (Integer) session.getAttribute("selectedThuongHieu");
+        Integer selectedChatLieu = (Integer) session.getAttribute("selectedChatLieu");
+        Integer selectedDeGiay = (Integer) session.getAttribute("selectedDeGiay");
+
+        model.addAttribute("selectedTensp",selectedTensp);
+        model.addAttribute("motas",motas);
+        model.addAttribute("gioitinh",gioitinh);
+        model.addAttribute("selectedThuongHieu",selectedThuongHieu);
+        model.addAttribute("selectedChatLieu",selectedChatLieu);
+        model.addAttribute("selectedDeGiay",selectedDeGiay);
+
+
+
         model.addAttribute("sanphamchitiet", sanPhamChiTietList);
         return "forward:/viewaddSPPOST";
     }

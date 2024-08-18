@@ -169,7 +169,11 @@ public class GioHangController {
             boolean foundInCart = false;
             for (GioHangChiTiet item : gioHangService.getListGioHangKhongTK()) {
                 if (item.getSanphamchitiet().equals(sanPhamChiTiet)) {
-                    item.setSoluong(item.getSoluong() + quantity);
+                    if((item.getSoluong() + quantity) > sanPhamChiTiet.getSoluong()){
+                        item.setSoluong(sanPhamChiTiet.getSoluong());
+                    }else{
+                        item.setSoluong(item.getSoluong() + quantity);
+                    }
                     foundInCart = true;
                     break;
                 }
@@ -226,8 +230,14 @@ public class GioHangController {
                 List<GioHangChiTiet> gioHangChiTietList = gioHangChiTietRepository.findGioHangChiTietByGiohang(gioHang.getId());
                 for (GioHangChiTiet item : gioHangChiTietList) {
                     if (item.getSanphamchitiet().equals(sanPhamChiTiet)) {
-                        item.setSoluong(item.getSoluong() + quantity);
-                        gioHangChiTietRepository.save(item);
+                        if((item.getSoluong() + quantity) > sanPhamChiTiet.getSoluong()){
+                            item.setSoluong(sanPhamChiTiet.getSoluong());
+                            gioHangChiTietRepository.save(item);
+                        }else{
+                            item.setSoluong(item.getSoluong() + quantity);
+                            gioHangChiTietRepository.save(item);
+                        }
+
                         foundInCart = true;
                         break;
                     }

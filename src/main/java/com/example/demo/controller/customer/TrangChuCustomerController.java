@@ -228,12 +228,13 @@ public class TrangChuCustomerController {
         }
         // Lấy giá trị giảm giá cho từng sản phẩm chi tiết
         for (SanPhamChiTiet spct : sanPham.getSpct()) {
-            if (!sizes.contains(spct.getKichco().getTen())) {
-                sizes.add(spct.getKichco().getTen());
-            }
             if (!colors.contains(spct.getMausac().getTen())) {
                 colors.add(spct.getMausac().getTen());
             }
+            if (!sizes.contains(spct.getKichco().getTen())) {
+                sizes.add(spct.getKichco().getTen());
+            }
+
             if ((color == null || color.equals(spct.getMausac().getTen())) && (size == null || size.equals(spct.getKichco().getTen()))) {
                 selectedPrice = spct.getGiatien();
                 selectedQuantity = spct.getSoluong();
@@ -253,9 +254,14 @@ public class TrangChuCustomerController {
         if (colors.size() > 0) {
             defaultColor = colors.get(0);
         }
-        if (sizes.size() > 0) {
-            defaultSize = sizes.get(0);
+//        if (sizes.size() > 0) {
+//            defaultSize = sizes.get(0);
+//        }
+        List<SanPhamChiTiet> lstSizeTheoMau = sanPhamChiTietRepository.listSizeColor(sanPham.getId(), colors.get(0));
+        if(lstSizeTheoMau.size()>0){
+            defaultSize = lstSizeTheoMau.get(0).getKichco().getTen();
         }
+
         System.out.println("AAAAAAAAAAAAA");
         System.out.println("BBBBBBBBBB:"+selectedDiscount);
         model.addAttribute("selectedDiscount", selectedDiscount); // Thêm giảm giá đã chọn vào model

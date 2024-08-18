@@ -139,7 +139,7 @@
                                         <th>Tên sản phẩm</th>
                                         <th>Số lượng tồn</th>
                                         <th>Ngày tạo</th>
-<!--                                        <th>Trạng thái</th>-->
+                                        <th>Trạng thái</th>
                                         <th>Thao tác</th>
                                     </tr>
                                     </thead>
@@ -158,14 +158,20 @@
                                         <td>
                                             <span th:text="${#temporals.format(sp[2], 'dd-MM-yyyy HH:mm:ss')}"></span>
                                         </td>
-                                        <!--trạng thái cũ-->
-                                        <!--                                        <td>-->
-                                        <!--                                            <button id="statusBtn_[[${sp[0]}]]" style="border-radius: 5px"-->
-                                        <!--                                                    class="btn-xs"-->
-                                        <!--                                                    th:classappend="${sp[4] ? 'btn-custom-info' : 'btn-custom-warning'}"-->
-                                        <!--                                                    th:text="${sp[4] ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}"></button>-->
-                                        <!--                                        </td>-->
-                                        <!--trạng thái mới-->
+                                        <td>
+                                            <form name="updateTrangThaiForm"
+                                                  th:action="@{/san-pham/updateTrangThai/{id}(id=${sp[0]})}" method="post"
+                                                  onsubmit="return confirmUpdateKichCo(this);">
+                                                <button id="statusBtn_[[${sp[0]}]]" style=" border: none;"
+                                                        class="btn-xs"
+                                                        th:classappend="${sp[4] == true ? 'badge badge-success' : 'badge badge-danger'}"
+                                                        th:text="${sp[4] == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}">
+
+                                                </button>
+                                            </form>
+
+                                        </td>
+<!--                                        trạng thái mới-->
 <!--                                        <td>-->
 <!--                                            <a>-->
 <!--                                                <div th:if="${sp[4] == 0}">-->
@@ -465,4 +471,44 @@
         });
     }
 
+</script>
+<script>
+    function confirmUpdateKichCo(form) {
+        Swal.fire({
+            title: 'Bạn có muốn cập nhật không?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không',
+            // width: '500px',
+            customClass: {
+                confirmButton: 'custom-confirm-button', // Thêm lớp tùy chỉnh cho nút "Có"
+                cancelButton: 'custom-cancel-button'    // Thêm lớp tùy chỉnh cho nút "Không" nếu cần
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng nhấn Có, hiển thị thông báo thành công và submit form sau một khoảng thời gian
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                setTimeout(function () {
+                    // Lưu thông báo vào sessionStorage
+                    sessionStorage.setItem('successMessage', 'Cập nhật trạng thái thành công!');
+                    // Submit form cụ thể
+                    form.submit();
+                }, 500); // Điều chỉnh thời gian delay nếu cần
+            }
+        });
+
+        // Ngăn form được gửi đi ngay lập tức
+        return false;
+    }
 </script>
