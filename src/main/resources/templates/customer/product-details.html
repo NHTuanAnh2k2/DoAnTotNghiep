@@ -442,7 +442,8 @@
                     <div class="singl-pro-title" th:data-product-id="${sanpham.id}">
                         <h3>
                             <span th:text="${sanpham.tensanpham}"></span>
-                            <span id="product-maspct" th:text="${selectedMaSPCT == null ? 'Không tồn tại' : '[' + selectedMaSPCT + ']'}"></span>
+                            <span id="product-maspct"
+                                  th:text="${selectedMaSPCT == null ? 'Không tồn tại' : '[' + selectedMaSPCT + ']'}"></span>
                         </h3>
                         <div class="d-flex">
                             <h6>Thương hiệu:
@@ -480,16 +481,17 @@
                             <input type="hidden" name="selectedColor" id="selectedColor" th:value="${defaultColor}">
                             <input type="hidden" name="selectedSize" id="selectedSize" th:value="${defaultSize}">
                             <div th:id="'product-details-' + ${sanpham.id}" th:data-color="${defaultColor}">
+                                <input type="hidden" th:value="${sanpham.id}" id="idSPAn">
                                 <div class="d-flex align-items-center">
                                     <span style="margin-right: 10px;">Màu sắc:</span>
                                     <div th:each="color, iterStat : ${colors}">
                                         <div style="margin-right: 10px">
-                                            <a class="btn color-button"
-                                               th:classappend="${iterStat.index == 0} ? 'btn-border-thick' : 'btn-border-thin'"
-                                               th:data-color="${color}"
-                                               th:style="'background-color:' + ${color} + ';border-color:' + (${iterStat.index == 0} ? 'black' : ${color})"
-                                               th:aria-label="${color}"
-                                               th:onclick="'changeButtonBackground(this); selectColor(this)'"></a>
+                                            <button class="btn color-button"
+                                                    th:classappend="${iterStat.index == 0} ? 'btn-border-thick' : 'btn-border-thin'"
+                                                    th:data-color="${color}"
+                                                    th:style="'background-color:' + ${color} + ';border-color:' + (${iterStat.index == 0} ? 'black' : ${color})"
+                                                    th:aria-label="${color}"
+                                                    th:onclick="'changeButtonBackground(this); selectColor(this); sizeAn(this)'"></button>
                                         </div>
                                     </div>
                                 </div>
@@ -498,11 +500,12 @@
                                     <span style="margin-right: 10px;">Kích cỡ:</span>
                                     <div th:each="size, iterStat : ${sizes}">
                                         <div style="margin-right: 10px">
-                                            <a class="btn size-button"
-                                               th:classappend="${iterStat.index == 0} ? 'btn-border-thick' : 'btn-border-thin'"
-                                               style="border-color: black"
-                                               th:text="${size}" th:data-size="${size}"
-                                               th:onclick="'changeButtonBackground(this); selectSize(this)'"></a>
+
+                                            <button class="btn size-button"
+                                                    th:classappend="${iterStat.index == 0} ? 'btn-border-thick' : 'btn-border-thin'"
+                                                    style="border-color: black" th:id="${size}"
+                                                    th:text="${size}" th:data-size="${size}"
+                                                    th:onclick="'changeButtonBackground(this); selectSize(this); mauAn(this)'"></button>
                                         </div>
                                     </div>
                                     <a class="btn" style="border-color: black" th:href="@{#}" data-bs-toggle="modal"
@@ -576,11 +579,11 @@
                                 <span th:text="${selectedIdspct}" id="idan" style="display: none;"></span>
                                 <hr>
                                 <div class="d-flex">
-<!--                                    <button type="submit" th:formaction="@{/muangay}" class="btn btn-dark"-->
-<!--                                            id="muangaycart"-->
-<!--                                            style="width: 220px; height: 50px; line-height: 40px">-->
-<!--                                        <i class="bi bi-plus-square-fill" style="font-size: 20px"></i> MUA NGAY-->
-<!--                                    </button>-->
+                                                                        <button type="submit" th:formaction="@{/muangay}" class="btn btn-dark"
+                                                                                id="muangaycart"
+                                                                                style="width: 220px; height: 50px; line-height: 40px">
+                                                                            <i class="bi bi-plus-square-fill" style="font-size: 20px"></i> MUA NGAY
+                                                                        </button>
 
                                     <button type="submit" th:formaction=@{/add-to-cart} id="add-to-cart-btn"
                                             class="btn btn"
@@ -595,7 +598,8 @@
                         <br>
                         <br>
                         <ul style="list-style-type: disc;">
-                            <li style="font-style: italic; color: red;">Miễn phí vận chuyển toàn quốc cho đơn hàng từ 2 triệu trở lên
+                            <li style="font-style: italic; color: red;">Miễn phí vận chuyển toàn quốc cho đơn hàng từ 2
+                                triệu trở lên
                             </li>
                             <li style="font-style: italic; color: red;">Giao hàng nhanh trong 2 giờ trong nội thành Hà
                                 Nội
@@ -1035,22 +1039,77 @@
                 const addToCartButton = document.querySelector('#add-to-cart-btn');
                 const muangaycart = document.querySelector('#muangaycart');
                 if (isAnyFieldMissing || parseInt(newQuantity) === 0) {
-                    addToCartButton.disabled = true;
+                    // addToCartButton.disabled = true;
                     muangaycart.disabled = true;
                 } else {
-                    addToCartButton.disabled = false;
+                    // addToCartButton.disabled = false;
                     muangaycart.disabled = false;
                 }
             });
     }
 
-    function changeButtonBackground(element) {
+    async function getSizeColor(chuoighep) {
+        const encodedChuoighep = encodeURIComponent(chuoighep);
+        const response = await fetch(`/hien-thi-size-color/${encodedChuoighep}`);
+        return await response.json();
+    }
+
+    async function getAllSize(Id) {
+        const response = await fetch(`/hien-thi-all-size/${Id}`);
+        return await response.json();
+    }
+
+    async function sizeAn(element) {
+        var color = element.dataset.color;
+        const idSPAn = document.getElementById('idSPAn').value;
+        var chuoighep = idSPAn + '-' + color; // Ví dụ: '123-black'
+        const countSize = await getSizeColor(chuoighep);
+        const allSize = await getAllSize(idSPAn);
+        console.log("countSize:", countSize);
+        console.log("allSize:", allSize);
+        console.log("color:", color);
+        console.log("idan:", idSPAn);
+        console.log("chuoighep:", chuoighep);
+        // Lấy các giá trị có trong list1 nhưng không có trong list2
+        let uniqueInList1 = countSize.filter(value => !allSize.includes(value));
+
+// Lấy các giá trị có trong list2 nhưng không có trong list1
+        let uniqueInList2 = allSize.filter(value => !countSize.includes(value));
+
+// Kết hợp các giá trị duy nhất từ cả hai danh sách
+        let uniqueValues = uniqueInList1.concat(uniqueInList2);
+        // Chuyển list2 thành Set để dễ kiểm tra sự tồn tại
+        const set2 = new Set(allSize);
+
+// Tìm các giá trị trùng lặp
+        const commonElements = countSize.filter(item => set2.has(item));
+        commonElements.forEach(idSize => {
+            let elementToDisable = document.getElementById(idSize);
+            if (elementToDisable) {
+                elementToDisable.disabled = false; // Cú pháp chính xác để disable
+            }
+
+        });
+        console.log("sizeDuyNhat:", uniqueValues)
+        uniqueValues.forEach(idSize => {
+            let elementToDisable = document.getElementById(idSize);
+            if (elementToDisable) {
+                elementToDisable.disabled = true; // Cú pháp chính xác để disable
+            }
+
+        });
+    }
+
+    async function changeButtonBackground(element) {
+
+
         const isColorButton = element.hasAttribute('data-color');
         const isSizeButton = element.hasAttribute('data-size');
 
         if (isColorButton) {
             const colorButtons = document.querySelectorAll('.btn[data-color]');
             const isSelected = element.classList.contains('btn-border-thick');
+
 
             if (!isSelected) {
                 colorButtons.forEach(button => {
@@ -1271,10 +1330,10 @@
                             title: 'Số lượng nhập vào vượt quá số lượng có sẵn trong kho'
                         });
                         // document.getElementById('muangaycart').disabled = true;
-                        document.getElementById('add-to-cart-btn').disabled = true;
+                        // document.getElementById('add-to-cart-btn').disabled = true;
                     } else {
                         // document.getElementById('muangaycart').disabled = false;
-                        document.getElementById('add-to-cart-btn').disabled = false;
+                        // document.getElementById('add-to-cart-btn').disabled = false;
                     }
                 })
                 .catch(error => {
@@ -1285,7 +1344,7 @@
                         text: 'Đã xảy ra lỗi, vui lòng thử lại sau!'
                     });
                     // document.getElementById('muangaycart').disabled = true;
-                    document.getElementById('add-to-cart-btn').disabled = true;
+                    // document.getElementById('add-to-cart-btn').disabled = true;
                 });
         }
     }
@@ -1323,7 +1382,7 @@
             toast: true,
             position: "top-end",
             showConfirmButton: false,
-            timer: 3000,
+            timer: 1500,
             timerProgressBar: true,
             didOpen: (toast) => {
                 toast.onmouseenter = Swal.stopTimer;

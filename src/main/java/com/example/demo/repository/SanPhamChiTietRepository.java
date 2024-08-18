@@ -9,12 +9,28 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
 import java.math.BigDecimal;
 import java.util.List;
 
 
 @Repository
 public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, Integer> {
+    // ẩn size
+    @Query(value = """
+        SELECT s FROM SanPhamChiTiet s WHERE s.sanpham.id = :id AND s.mausac.ten LIKE %:ten%
+        """)
+    List<SanPhamChiTiet> listSizeColor(@Param("id") Integer id, @Param("ten") String ten);
+    // ẩn size
+    @Query(value = """
+            SELECT s FROM SanPhamChiTiet s WHERE s.sanpham.id = :id 
+            """)
+    List<SanPhamChiTiet> listAllSize(@Param("id") Integer id);
+// ẩn màu
+    @Query(value = """
+        SELECT s FROM SanPhamChiTiet s WHERE s.sanpham.id = :id AND s.kichco.ten LIKE %:ten%
+        """)
+    List<SanPhamChiTiet> listMauSac(@Param("id") Integer id, @Param("ten") String ten);
 
     // search theo biến thể sản phẩm
     @Query("SELECT spct FROM SanPhamChiTiet spct WHERE spct.sanpham = :sanPham " +

@@ -145,11 +145,11 @@ public class ThanhToanController {
         // Tính tổng số lượng sản phẩm và tổng tiền
         int totalQuantity = 0;
         BigDecimal totalAmount = (BigDecimal) session.getAttribute("totalAmount");
-//        for (GioHangChiTiet item : cartItems) {
-//            totalQuantity += item.getSoluong();
+        for (GioHangChiTiet item : cartItems) {
+            totalQuantity += item.getSoluong();
 //            BigDecimal giatien = sanPhamChiTietRepository.findPriceByProductId(item.getSanphamchitiet().getId());
 //            totalAmount = totalAmount.add(giatien.multiply(BigDecimal.valueOf(item.getSoluong())));
-//        }
+        }
         Map<Integer, BigDecimal> discountedPrices = (Map<Integer, BigDecimal>) session.getAttribute("discountedPrices");
         model.addAttribute("token", token);
         session.setAttribute("tokenTT", token);

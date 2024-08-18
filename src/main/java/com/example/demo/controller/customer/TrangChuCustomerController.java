@@ -3,10 +3,7 @@ package com.example.demo.controller.customer;
 import com.example.demo.entity.*;
 import com.example.demo.info.SanPhamCustomerInfo;
 import com.example.demo.info.TaiKhoanTokenInfo;
-import com.example.demo.repository.AnhRepository;
-import com.example.demo.repository.KichCoRepository;
-import com.example.demo.repository.SanPhamChiTietRepository;
-import com.example.demo.repository.SanPhamRepositoty;
+import com.example.demo.repository.*;
 import com.example.demo.repository.customer.TrangChuRepository;
 import com.example.demo.repository.giohang.GioHangChiTietRepository;
 import com.example.demo.repository.giohang.GioHangRepository;
@@ -80,6 +77,9 @@ public class TrangChuCustomerController {
 
     @Autowired
     HttpServletRequest request;
+
+    @Autowired
+    SanPhamDotGiamRepository sanPhamDotGiamRepository;
 
     public List<TaiKhoanTokenInfo> taiKhoanTokenInfos = new ArrayList<>();
 
@@ -213,15 +213,18 @@ public class TrangChuCustomerController {
         String defaultSize = null;
         Integer selectedDiscount = null; // Biến để lưu giá trị giảm giá đã chọn
         Map<Integer, Integer> sanPhamChiTietGiamGia = new HashMap<>(); // Map để lưu giảm giá cho từng sản phẩm chi tiết
-        for (SanPhamChiTiet spct : sanPham.getSpct()) {
-            int giamGia = 0;
-            for (SanPhamDotGiam spdg : spct.getSanphamdotgiam()) {
-                DotGiamGia dotGiamGia = spdg.getDotgiamgia();
-                if (dotGiamGia != null) {
-                    giamGia = dotGiamGia.getGiatrigiam(); // Giả sử giatrigiam là giá trị giảm
-                }
-            }
-            sanPhamChiTietGiamGia.put(spct.getId(), giamGia);
+//        for (SanPhamChiTiet spct : sanPham.getSpct()) {
+//            int giamGia = 0;
+//            for (SanPhamDotGiam spdg : spct.getSanphamdotgiam()) {
+//                DotGiamGia dotGiamGia = spdg.getDotgiamgia();
+//                if (dotGiamGia != null) {
+//                    giamGia = dotGiamGia.getGiatrigiam(); // Giả sử giatrigiam là giá trị giảm
+//                }
+//            }
+//            sanPhamChiTietGiamGia.put(spct.getId(), giamGia);
+//        }
+        for (SanPhamDotGiam s:sanPhamDotGiamRepository.ListDotGiamDangHD()) {
+            sanPhamChiTietGiamGia.put(s.getSanphamchitiet().getId(), s.getDotgiamgia().getGiatrigiam());
         }
         // Lấy giá trị giảm giá cho từng sản phẩm chi tiết
         for (SanPhamChiTiet spct : sanPham.getSpct()) {
@@ -240,7 +243,11 @@ public class TrangChuCustomerController {
                 selectedMaSPCT = spct.getMasanphamchitiet();
                 selectedIdspct = spct.getId();
                 selectedDiscount = sanPhamChiTietGiamGia.get(selectedIdspct); // Lấy giá trị giảm giá
-                selectedPriceMoi = selectedPrice.subtract(selectedPrice.multiply(BigDecimal.valueOf(selectedDiscount)).divide(BigDecimal.valueOf(100)));
+                if(selectedDiscount!=null){
+                    selectedPriceMoi = selectedPrice.subtract(selectedPrice.multiply(BigDecimal.valueOf(selectedDiscount)).divide(BigDecimal.valueOf(100)));
+                }else {
+                    selectedPriceMoi=spct.getGiatien();
+                }
             }
         }
         if (colors.size() > 0) {
@@ -249,7 +256,8 @@ public class TrangChuCustomerController {
         if (sizes.size() > 0) {
             defaultSize = sizes.get(0);
         }
-
+        System.out.println("AAAAAAAAAAAAA");
+        System.out.println("BBBBBBBBBB:"+selectedDiscount);
         model.addAttribute("selectedDiscount", selectedDiscount); // Thêm giảm giá đã chọn vào model
         model.addAttribute("selectedPriceMoi", selectedPriceMoi); // Thêm giảm giá đã chọn vào model
         model.addAttribute("sanPhamChiTietGiamGia", sanPhamChiTietGiamGia); // Thêm giảm giá vào model

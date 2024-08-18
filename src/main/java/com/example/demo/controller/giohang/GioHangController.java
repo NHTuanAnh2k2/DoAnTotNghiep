@@ -4,6 +4,7 @@ import com.example.demo.entity.*;
 import com.example.demo.info.TaiKhoanTokenInfo;
 import com.example.demo.info.token.UserManager;
 import com.example.demo.repository.SanPhamChiTietRepository;
+import com.example.demo.repository.SanPhamDotGiamRepository;
 import com.example.demo.repository.giohang.GioHangChiTietRepository;
 import com.example.demo.repository.giohang.GioHangRepository;
 import com.example.demo.repository.giohang.KhachHangGioHangRepository;
@@ -49,6 +50,9 @@ public class GioHangController {
     @Autowired
     HttpSession session;
 
+    @Autowired
+    SanPhamDotGiamRepository sanPhamDotGiamRepository;
+
     private static int nextItemId = 1;
 
     public synchronized int generateUniqueItemId() {
@@ -57,7 +61,7 @@ public class GioHangController {
 
     @GetMapping("/cart")
     public String cart(Model model, HttpSession session) {
-        List<GioHangChiTiet> cartItems = null;
+        List<GioHangChiTiet> cartItems = new ArrayList<>();
         List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
         String token = (String) session.getAttribute("token");
         System.out.println("KKKKKK" + token);
@@ -92,20 +96,25 @@ public class GioHangController {
             totalQuantity += item.getSoluong();
             SanPhamChiTiet sanPhamChiTiet = item.getSanphamchitiet();
             BigDecimal giatien = sanPhamChiTiet.getGiatien();
-            int discountValue = 0;
+
 
             // Lấy giá trị giảm giá nếu có
-            for (SanPhamDotGiam spdg : sanPhamChiTiet.getSanphamdotgiam()) {
-                DotGiamGia dotGiamGia = spdg.getDotgiamgia();
-                if (dotGiamGia != null) {
-                    discountValue = dotGiamGia.getGiatrigiam();
-                }
+//            for (SanPhamDotGiam spdg : sanPhamChiTiet.getSanphamdotgiam()) {
+//                DotGiamGia dotGiamGia = spdg.getDotgiamgia();
+//                if (dotGiamGia != null) {
+//                    discountValue = dotGiamGia.getGiatrigiam();
+//                }
+//            }
+            SanPhamDotGiam s = sanPhamDotGiamRepository.findDotGiamSPCT(sanPhamChiTiet.getId());
+            if (s != null) {
+                BigDecimal discountedPrice = giatien.subtract(giatien.multiply(BigDecimal.valueOf(s.getDotgiamgia().getGiatrigiam())).divide(BigDecimal.valueOf(100)));
+                discountedPrices.put(sanPhamChiTiet.getId(), discountedPrice); // Lưu giá sau khi giảm với idspct
+                totalAmount = totalAmount.add(discountedPrice.multiply(BigDecimal.valueOf(item.getSoluong())));
+            } else {
+                discountedPrices.put(sanPhamChiTiet.getId(), sanPhamChiTiet.getGiatien());
+                totalAmount = totalAmount.add(sanPhamChiTiet.getGiatien().multiply(BigDecimal.valueOf(item.getSoluong())));
             }
-
             // Tính toán giá tiền sau khi giảm giá
-            BigDecimal discountedPrice = giatien.subtract(giatien.multiply(BigDecimal.valueOf(discountValue)).divide(BigDecimal.valueOf(100)));
-            discountedPrices.put(sanPhamChiTiet.getId(), discountedPrice); // Lưu giá sau khi giảm với idspct
-            totalAmount = totalAmount.add(discountedPrice.multiply(BigDecimal.valueOf(item.getSoluong())));
         }
 
         // Dùng cho phiếu giảm giá
@@ -121,9 +130,9 @@ public class GioHangController {
         model.addAttribute("token", token);
         model.addAttribute("lstPGG", lstPGG);
         model.addAttribute("discountedPrices", discountedPrices); // Truyền Map vào model
-        session.setAttribute("discountedPrices",discountedPrices);
+        session.setAttribute("discountedPrices", discountedPrices);
         model.addAttribute("totalAmount", totalAmount);
-        session.setAttribute("totalAmount",totalAmount);
+        session.setAttribute("totalAmount", totalAmount);
         model.addAttribute("totalQuantity", totalQuantity);
         model.addAttribute("cartItems", cartItems);
         return "customer/cart";
@@ -239,82 +248,22 @@ public class GioHangController {
                           @RequestParam Integer quantity,
                           Model model,
                           HttpSession session,
-                          @RequestParam(value = "tokenDN") String tokenDN) {
+                          @RequestParam(value = "tokenDN") String tokenDN,
+                          @RequestParam(value = "giathucCTSP") BigDecimal giathucCTSP
+    ) {
         // Tìm sản phẩm chi tiết dựa trên màu sắc và kích cỡ
         SanPhamChiTiet sanPhamChiTiet = sanPhamChiTietRepository.findBySanPhamIdAndColorAndSize(id, selectedColor, selectedSize);
-        List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
-        if (taiKhoanTokenInfos == null || taiKhoanTokenInfos.isEmpty()) {
-            boolean foundInCart = false;
-            for (GioHangChiTiet item : gioHangService.getListGioHangKhongTK()) {
-                if (item.getSanphamchitiet().equals(sanPhamChiTiet)) {
-                    item.setSoluong(item.getSoluong() + quantity);
-                    foundInCart = true;
-                    break;
-                }
-            }
-            if (!foundInCart) {
-                GioHangChiTiet newItem = new GioHangChiTiet();
-                newItem.setId(generateUniqueItemId()); // Cấp phát id duy nhất
-                newItem.setSanphamchitiet(sanPhamChiTiet);
-                newItem.setSoluong(quantity);
-                newItem.setNgaytao(new Date());
-                newItem.setTrangthai(true);
-                gioHangService.addGioHangChiTiet(newItem);
-            }
-            session.setAttribute("cartItems", gioHangService.getListGioHangKhongTK());
-            return "redirect:/view-thanh-toan";
-        } else {
-            KhachHang khachHang = null;
-            for (TaiKhoanTokenInfo listTK : taiKhoanTokenInfos) {
-                if (tokenDN != null && tokenDN.equals(listTK.getToken())) {
-                    khachHang = khachHangGioHangRepository.findByNguoidung(listTK.getId());
-                    break;
-                }
-            }
-            // Kiểm tra xem khách hàng đã có giỏ hàng hay chưa
-            GioHang gioHang = gioHangRepository.findByIdKhachHang(khachHang.getId());
-            if (gioHang == null) {
-                // Nếu không có giỏ hàng, tạo giỏ hàng mới
-                LocalDateTime currentTime = LocalDateTime.now();
-                GioHang gioHang1 = new GioHang();
-                gioHang1.setKhachhang(khachHang);
-                gioHang1.setNgaytao(currentTime);
-                gioHang1.setTrangthai(true);
-                gioHangRepository.save(gioHang1); // Lưu giỏ hàng mới
-                // Lấy lại giỏ hàng vừa tạo
-                GioHang gioHang2 = gioHangRepository.findByIdKhachHang(khachHang.getId());
-                GioHangChiTiet newItem = new GioHangChiTiet();
-                newItem.setSanphamchitiet(sanPhamChiTiet);
-                newItem.setSoluong(quantity);
-                newItem.setNgaytao(new Date());
-                newItem.setTrangthai(true);
-                newItem.setGiohang(gioHang2);
-                gioHangChiTietRepository.save(newItem);
-            } else {
-                // Nếu đã có giỏ hàng, thêm sản phẩm vào giỏ hàng
-                GioHangChiTiet newItem = new GioHangChiTiet();
-                newItem.setSanphamchitiet(sanPhamChiTiet);
-                newItem.setSoluong(quantity);
-                newItem.setNgaytao(new Date());
-                newItem.setTrangthai(true);
-                newItem.setGiohang(gioHang);
+        sanPhamChiTiet.setSoluong(quantity);
+        SanPhamDotGiam sanPhamDotGiam = sanPhamDotGiamRepository.findDotGiamSPCT(sanPhamChiTiet.getId());
+        if (sanPhamDotGiam == null) {
 
-                boolean foundInCart = false;
-                List<GioHangChiTiet> gioHangChiTietList = gioHangChiTietRepository.findGioHangChiTietByGiohang(gioHang.getId());
-                for (GioHangChiTiet item : gioHangChiTietList) {
-                    if (item.getSanphamchitiet().equals(sanPhamChiTiet)) {
-                        item.setSoluong(item.getSoluong() + quantity);
-                        gioHangChiTietRepository.save(item);
-                        foundInCart = true;
-                        break;
-                    }
-                }
-                if (!foundInCart) {
-                    gioHangChiTietRepository.save(newItem);
-                }
-            }
-            return "redirect:/view-thanh-toan";
+        } else {
+            Integer phanTram = sanPhamDotGiam.getDotgiamgia().getGiatrigiam();
+            BigDecimal giaTienSauGiam = sanPhamChiTiet.getGiatien().subtract(sanPhamChiTiet.getGiatien()
+                    .multiply(BigDecimal.valueOf(phanTram)).divide(BigDecimal.valueOf(100)));
+            sanPhamChiTiet.setGiatien(giaTienSauGiam);
         }
+        return "redirect:/view-thanh-toan";
     }
 
     @GetMapping("/delete/cart/{id}")
