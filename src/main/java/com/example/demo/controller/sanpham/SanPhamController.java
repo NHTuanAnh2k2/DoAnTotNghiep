@@ -135,9 +135,21 @@ public class SanPhamController {
         String trimmedKey = (info.getKey() != null) ? info.getKey().trim().replaceAll("\\s+", " ") : null;
         boolean isKeyEmpty = (trimmedKey == null || trimmedKey.isEmpty());
         boolean isTrangthaiNull = (info.getTrangthai() == null);
-
+        List<SanPham> listSanPham = sanPhamRepositoty.findAll();
+        for (SanPham sp : listSanPham) {
+            List<SanPhamChiTiet> listSPCT = sanPhamChiTietRepository.findBySanPhamId(sp.getId());
+            int soluong = 0;
+            for (SanPhamChiTiet spct : listSPCT) {
+                soluong = soluong + spct.getSoluong();
+            }
+            if (soluong <= 0) {
+                sp.setTrangthai(false);
+                sanPhamRepositoty.save(sp);
+            }
+        }
         if (isKeyEmpty && isTrangthaiNull) {
             list = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc();
+
         } else {
             list = sanPhamRepositoty.findByMasanphamAndTenSanPhamAndTrangThai("%" + trimmedKey + "%", "%" + trimmedKey + "%", info.getTrangthai());
         }
@@ -315,8 +327,15 @@ public class SanPhamController {
 
     @GetMapping("/detailsanpham/{id}")
     public String detailsanpham(@PathVariable Integer id, Model model, @ModelAttribute("search") SanPhamChiTietInfo info) {
-        SanPham sanPham = sanPhamRepositoty.findById(id).orElse(null);
+        List<SanPhamChiTiet> listSPCT = sanPhamChiTietRepository.findBySanPhamId(id);
+        for (SanPhamChiTiet spct : listSPCT) {
+            if (spct.getSoluong()<=0){
+                spct.setTrangthai(false);
+                sanPhamChiTietRepository.save(spct);
+            }
+        }
 
+        SanPham sanPham = sanPhamRepositoty.findById(id).orElse(null);
         if (sanPham == null) {
             // Xử lý trường hợp sản phẩm không tồn tại
             return "redirect:/error"; // Hoặc một trang thông báo lỗi nào đó

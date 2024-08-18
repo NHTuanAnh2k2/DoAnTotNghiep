@@ -149,6 +149,7 @@ public class TrangChuCustomerController {
     @GetMapping("/detailsanphamCustomer/{id}")
     public String detailsanphamCustomer(@PathVariable Integer id, @RequestParam(required = false) String color, @RequestParam(required = false)
             String size, Model model, HttpSession session) {
+
         List<GioHangChiTiet> cartItems = new ArrayList<>();
         String token = (String) session.getAttribute("token");
         NguoiDung nguoiDung = null;
@@ -192,9 +193,11 @@ public class TrangChuCustomerController {
         model.addAttribute("sanphamchitiet", sanPhamChiTiet);
         List<String> danhSachAnh = new ArrayList<>();
         for (SanPhamChiTiet spct : sanPham.getSpct()) {
-            for (Anh anh : spct.getAnh()) {
-                if (color == null || color.equals(spct.getMausac().getTen())) {
-                    danhSachAnh.add(anh.getTenanh());
+            if (spct.getTrangthai() == true) {
+                for (Anh anh : spct.getAnh()) {
+                    if (color == null || color.equals(spct.getMausac().getTen())) {
+                        danhSachAnh.add(anh.getTenanh());
+                    }
                 }
             }
         }
@@ -223,33 +226,37 @@ public class TrangChuCustomerController {
 //            }
 //            sanPhamChiTietGiamGia.put(spct.getId(), giamGia);
 //        }
-        for (SanPhamDotGiam s:sanPhamDotGiamRepository.ListDotGiamDangHD()) {
+        for (SanPhamDotGiam s : sanPhamDotGiamRepository.ListDotGiamDangHD()) {
             sanPhamChiTietGiamGia.put(s.getSanphamchitiet().getId(), s.getDotgiamgia().getGiatrigiam());
         }
         // Lấy giá trị giảm giá cho từng sản phẩm chi tiết
         for (SanPhamChiTiet spct : sanPham.getSpct()) {
-            if (!colors.contains(spct.getMausac().getTen())) {
-                colors.add(spct.getMausac().getTen());
-            }
-            if (!sizes.contains(spct.getKichco().getTen())) {
-                sizes.add(spct.getKichco().getTen());
+            if (spct.getTrangthai() == true) {
+                if (!colors.contains(spct.getMausac().getTen())) {
+                    colors.add(spct.getMausac().getTen());
+                }
+                if (!sizes.contains(spct.getKichco().getTen())) {
+                    sizes.add(spct.getKichco().getTen());
+                }
+                if ((color == null || color.equals(spct.getMausac().getTen())) && (size == null || size.equals(spct.getKichco().getTen()))) {
+                    selectedPrice = spct.getGiatien();
+                    selectedQuantity = spct.getSoluong();
+                    selectedThuongHieu = spct.getThuonghieu().getTen();
+                    selectedChatLieu = spct.getChatlieu().getTen();
+                    selectedDeGiay = spct.getDegiay().getTen();
+                    selectedMaSPCT = spct.getMasanphamchitiet();
+                    selectedIdspct = spct.getId();
+                    selectedDiscount = sanPhamChiTietGiamGia.get(selectedIdspct); // Lấy giá trị giảm giá
+                    if (selectedDiscount != null) {
+                        selectedPriceMoi = selectedPrice.subtract(selectedPrice.multiply(BigDecimal.valueOf(selectedDiscount)).divide(BigDecimal.valueOf(100)));
+                    } else {
+                        selectedPriceMoi = spct.getGiatien();
+                    }
+                }
+
             }
 
-            if ((color == null || color.equals(spct.getMausac().getTen())) && (size == null || size.equals(spct.getKichco().getTen()))) {
-                selectedPrice = spct.getGiatien();
-                selectedQuantity = spct.getSoluong();
-                selectedThuongHieu = spct.getThuonghieu().getTen();
-                selectedChatLieu = spct.getChatlieu().getTen();
-                selectedDeGiay = spct.getDegiay().getTen();
-                selectedMaSPCT = spct.getMasanphamchitiet();
-                selectedIdspct = spct.getId();
-                selectedDiscount = sanPhamChiTietGiamGia.get(selectedIdspct); // Lấy giá trị giảm giá
-                if(selectedDiscount!=null){
-                    selectedPriceMoi = selectedPrice.subtract(selectedPrice.multiply(BigDecimal.valueOf(selectedDiscount)).divide(BigDecimal.valueOf(100)));
-                }else {
-                    selectedPriceMoi=spct.getGiatien();
-                }
-            }
+
         }
         if (colors.size() > 0) {
             defaultColor = colors.get(0);
@@ -258,12 +265,12 @@ public class TrangChuCustomerController {
 //            defaultSize = sizes.get(0);
 //        }
         List<SanPhamChiTiet> lstSizeTheoMau = sanPhamChiTietRepository.listSizeColor(sanPham.getId(), colors.get(0));
-        if(lstSizeTheoMau.size()>0){
+        if (lstSizeTheoMau.size() > 0) {
             defaultSize = lstSizeTheoMau.get(0).getKichco().getTen();
         }
 
         System.out.println("AAAAAAAAAAAAA");
-        System.out.println("BBBBBBBBBB:"+selectedDiscount);
+        System.out.println("BBBBBBBBBB:" + selectedDiscount);
         model.addAttribute("selectedDiscount", selectedDiscount); // Thêm giảm giá đã chọn vào model
         model.addAttribute("selectedPriceMoi", selectedPriceMoi); // Thêm giảm giá đã chọn vào model
         model.addAttribute("sanPhamChiTietGiamGia", sanPhamChiTietGiamGia); // Thêm giảm giá vào model
