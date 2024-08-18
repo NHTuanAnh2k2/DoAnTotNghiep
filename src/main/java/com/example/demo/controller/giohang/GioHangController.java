@@ -1,8 +1,11 @@
 package com.example.demo.controller.giohang;
 
 import com.example.demo.entity.*;
+import com.example.demo.info.DiaChiThanhToanNoTaiKhoanOnline;
 import com.example.demo.info.TaiKhoanTokenInfo;
 import com.example.demo.info.token.UserManager;
+import com.example.demo.repository.DiaChiRepository;
+import com.example.demo.repository.KhachHangPhieuGiamRepository;
 import com.example.demo.repository.SanPhamChiTietRepository;
 import com.example.demo.repository.SanPhamDotGiamRepository;
 import com.example.demo.repository.giohang.GioHangChiTietRepository;
@@ -49,6 +52,11 @@ public class GioHangController {
     GioHangService gioHangService;
     @Autowired
     HttpSession session;
+    @Autowired
+    DiaChiRepository diaChiRepository;
+
+    @Autowired
+    KhachHangPhieuGiamRepository khachHangPhieuGiamRepository;
 
     @Autowired
     SanPhamDotGiamRepository sanPhamDotGiamRepository;
@@ -257,10 +265,10 @@ public class GioHangController {
                           @RequestParam String selectedSize,
                           @RequestParam Integer quantity,
                           Model model,
-                          HttpSession session,
-                          @RequestParam(value = "tokenDN") String tokenDN,
-                          @RequestParam(value = "giathucCTSP") BigDecimal giathucCTSP
-    ) {
+                          @ModelAttribute("diachikotaikhoan") DiaChiThanhToanNoTaiKhoanOnline diachikotaikhoan,
+                          HttpSession session) {
+
+        List<GioHangChiTiet> lstsoLuongTrongGio = new ArrayList<>();
         // Tìm sản phẩm chi tiết dựa trên màu sắc và kích cỡ
         SanPhamChiTiet sanPhamChiTiet = sanPhamChiTietRepository.findBySanPhamIdAndColorAndSize(id, selectedColor, selectedSize);
         sanPhamChiTiet.setSoluong(quantity);
@@ -273,7 +281,100 @@ public class GioHangController {
                     .multiply(BigDecimal.valueOf(phanTram)).divide(BigDecimal.valueOf(100)));
             sanPhamChiTiet.setGiatien(giaTienSauGiam);
         }
-        return "redirect:/view-thanh-toan";
+        List<GioHangChiTiet> cartItems = new ArrayList<>();
+        GioHangChiTiet gioHangChiTiet= new GioHangChiTiet();
+
+        gioHangChiTiet.setSanphamchitiet(sanPhamChiTiet);
+        gioHangChiTiet.setId(generateUniqueItemId()); // Cấp phát id duy nhất
+        gioHangChiTiet.setSoluong(sanPhamChiTiet.getSoluong());
+        cartItems.add(gioHangChiTiet);
+
+        String token = (String) session.getAttribute("token");
+        NguoiDung nguoiDung = null;
+        KhachHang khachHang = null;
+        GioHang gioHang = null;
+        List<PhieuGiamGia> lst = phieuGiamGiaImp.findAll();
+        List<PhieuGiamGia> lstPGG = new ArrayList<>();
+        for (PhieuGiamGia p : lst) {
+            if (p.getTrangthai() == 1 && p.getKieuphieu() == false) {
+                lstPGG.add(p);
+            }
+        }
+        // Kiểm tra xem người dùng đã đăng nhập hay chưa
+        if (token != null) {
+            // Lấy danh sách token từ session
+            List<TaiKhoanTokenInfo> taiKhoanTokenInfos = (List<TaiKhoanTokenInfo>) session.getAttribute("taiKhoanTokenInfos");
+            if (taiKhoanTokenInfos != null) {
+                // Tìm người dùng từ danh sách token
+                for (TaiKhoanTokenInfo tkInfo : taiKhoanTokenInfos) {
+                    if (tkInfo.getToken().equals(token)) {
+                        Integer userId = tkInfo.getId();
+                        nguoiDung = nguoiDungGioHangRepository.findById(userId).orElse(null);
+                        break;
+                    }
+                }
+                if (nguoiDung != null) {
+                    model.addAttribute("tenKH",nguoiDung.getHovaten());
+                    model.addAttribute("emailKH",nguoiDung.getEmail());
+                    List<DiaChi> lstDC = diaChiRepository.findDiaChiByIdNd(nguoiDung.getId());
+                    for(DiaChi dc: lstDC){
+                        if(dc.getTrangthai()== true){
+                            session.setAttribute("diachimacdinh",dc);
+                            break;
+                        }
+                    }
+                    if (lstDC.size() > 0) {
+                        model.addAttribute("lstDC", lstDC);
+                    }
+                    // Lấy giỏ hàng của người dùng đã đăng nhập
+                    khachHang = khachHangGioHangRepository.findByNguoidung(nguoiDung.getId());
+                    if (khachHang != null) {
+                        List<KhachHangPhieuGiam> allKHPG = khachHangPhieuGiamRepository.findKhachHangPhieuGiamByIdKhachHang(khachHang.getId());
+                        if (allKHPG.size() > 0) {
+                            for (KhachHangPhieuGiam j : allKHPG) {
+                                PhieuGiamGia p = new PhieuGiamGia();
+                                p = phieuGiamGiaImp.findPhieuGiamGiaById(j.getPhieugiamgia().getId());
+                                lstPGG.add(p);
+                            }
+                        }
+                        gioHang = gioHangRepository.findByKhachhang(khachHang);
+                        if (gioHang != null) {
+                            lstsoLuongTrongGio = gioHang.getGioHangChiTietList();
+                        }
+
+                        session.setAttribute("lstPGG", lstPGG);
+                        model.addAttribute("lstPGG", lstPGG);
+                    }
+                }
+            }
+        } else {
+            // Giỏ hàng của người dùng chưa đăng nhập
+            lstsoLuongTrongGio = (List<GioHangChiTiet>) session.getAttribute("cartItems");
+            if (lstsoLuongTrongGio == null) {
+                lstsoLuongTrongGio = new ArrayList<>();
+            }
+            session.setAttribute("lstPGG", lstPGG);
+            model.addAttribute("lstPGG", lstPGG);
+        }
+        // Tính tổng số lượng sản phẩm và tổng tiền
+        int totalQuantity = 0;
+        //Nhớ sửa cái này theo đúng////
+        BigDecimal totalAmount = sanPhamChiTiet.getGiatien().multiply(new BigDecimal(sanPhamChiTiet.getSoluong()));
+        for (GioHangChiTiet item : lstsoLuongTrongGio) {
+            totalQuantity += item.getSoluong();
+//            BigDecimal giatien = sanPhamChiTietRepository.findPriceByProductId(item.getSanphamchitiet().getId());
+//            totalAmount = totalAmount.add(giatien.multiply(BigDecimal.valueOf(item.getSoluong())));
+        }
+        Map<Integer, BigDecimal> discountedPrices = new HashMap<>();
+        discountedPrices.put(sanPhamChiTiet.getId(),sanPhamChiTiet.getGiatien());
+        model.addAttribute("token", token);
+        session.setAttribute("tokenTT", token);
+        model.addAttribute("totalAmount", totalAmount);
+        model.addAttribute("discountedPrices", discountedPrices);
+        model.addAttribute("totalQuantity", totalQuantity);
+        model.addAttribute("cartItems", cartItems);
+        return "customer/thanhtoan";
+
     }
 
     @GetMapping("/delete/cart/{id}")
