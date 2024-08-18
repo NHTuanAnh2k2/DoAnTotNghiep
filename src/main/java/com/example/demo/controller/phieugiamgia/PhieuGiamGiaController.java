@@ -261,6 +261,7 @@ public class PhieuGiamGiaController {
 //            for(KhachHang e :lstKH){
 //                emailService.sendEmail(e.getNguoidung().getEmail(), subject,body);
 //            }
+            //tuan anh
             checkthem=1;
             session.setAttribute("themthanhcong",checkthem);
             return "redirect:/admin/hien-thi-phieu-giam-gia";
