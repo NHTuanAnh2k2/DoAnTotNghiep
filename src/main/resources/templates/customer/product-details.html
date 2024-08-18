@@ -635,7 +635,7 @@
                                              th:src="@{'/upload' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
                                              class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
                                     </a>
-                                    <div class="tag-n-s" th:if="${sp[9] != null}">
+                                    <div class="tag-n-s" th:if="${sp[9] != 0}">
                                         <span th:text="${sp[9] + '%'}"></span>
                                     </div>
                                     <!--                                    <div class="actions-btn">-->
@@ -717,7 +717,7 @@
                                              th:src="@{'/upload' + ${sp[6].substring(sp[6].lastIndexOf('upload') + 6)}}"
                                              class="d-block w-100 carousel-img rounded-3" alt="Ảnh">
                                     </a>
-                                    <div class="tag-n-s" th:if="${sp[9] != null}">
+                                    <div class="tag-n-s" th:if="${sp[9] != 0}">
                                         <span th:text="${sp[9] + '%'}"></span>
                                     </div>
                                     <!--                                    <div class="actions-btn">-->
@@ -779,16 +779,16 @@
         </div>
     </div>
 </section>
-<div id="coupon-noti" data-toggle="modal" data-target="#modalCoupons" class="noti-icon has-item">
-    <!-- Nội dung của coupon-noti -->
-    <span class=""><i class="fa fa-gift fa-lg"></i> Danh sách mã Coupon</span>
-</div>
-<div id="coupon-notizalo" data-toggle="modal" data-target="#modalCoupons" class="noti-icon has-item">
-    <!-- Nội dung của coupon-noti -->
-    <a target="_blank">
-        <span class=""><img alt="Zalo" style="width:50px" src="../dist/img/zalo.png"/></span>
-    </a>
-</div>
+<!--<div id="coupon-noti" data-toggle="modal" data-target="#modalCoupons" class="noti-icon has-item">-->
+<!--    &lt;!&ndash; Nội dung của coupon-noti &ndash;&gt;-->
+<!--    <span class=""><i class="fa fa-gift fa-lg"></i> Danh sách mã Coupon</span>-->
+<!--</div>-->
+<!--<div id="coupon-notizalo" data-toggle="modal" data-target="#modalCoupons" class="noti-icon has-item">-->
+<!--    &lt;!&ndash; Nội dung của coupon-noti &ndash;&gt;-->
+<!--    <a target="_blank">-->
+<!--        <span class=""><img alt="Zalo" style="width:50px" src="../dist/img/zalo.png"/></span>-->
+<!--    </a>-->
+<!--</div>-->
 
 <!-- footer section start -->
 <nav th:replace="~{/layout/footer.html}"></nav>
@@ -1068,10 +1068,10 @@
                 const addToCartButton = document.querySelector('#add-to-cart-btn');
                 const muangaycart = document.querySelector('#muangaycart');
                 if (isAnyFieldMissing || parseInt(newQuantity) === 0) {
-                    // addToCartButton.disabled = true;
+                    addToCartButton.disabled = true;
                     muangaycart.disabled = true;
                 } else {
-                    // addToCartButton.disabled = false;
+                    addToCartButton.disabled = false;
                     muangaycart.disabled = false;
                 }
             });

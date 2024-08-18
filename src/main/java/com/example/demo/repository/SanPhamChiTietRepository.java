@@ -18,9 +18,10 @@ import java.util.List;
 public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, Integer> {
     // ẩn size
     @Query(value = """
-        SELECT s FROM SanPhamChiTiet s WHERE s.sanpham.id = :id AND s.mausac.ten LIKE %:ten%
-        """)
+            SELECT s FROM SanPhamChiTiet s WHERE s.sanpham.id = :id AND s.mausac.ten LIKE %:ten%
+            """)
     List<SanPhamChiTiet> listSizeColor(@Param("id") Integer id, @Param("ten") String ten);
+
     // ẩn size
     @Query(value = """
             SELECT s FROM SanPhamChiTiet s WHERE s.sanpham.id = :id 
@@ -131,18 +132,20 @@ public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, 
                            ROW_NUMBER() OVER (PARTITION BY spct.IdSanPham ORDER BY anh.tenanh DESC) AS row_num
                     FROM Anh anh
                     JOIN SanPhamChiTiet spct ON anh.IdSanPhamChiTiet = spct.id
+                    WHERE spct.trangthai = 1
                 ),
                 SanPhamChiTietGrouped AS (
                     SELECT IdSanPham, SUM(soluong) AS tongSoLuong, MIN(giatien) AS giatien
                     FROM SanPhamChiTiet
-                    WHERE gioitinh = 1
+                    WHERE gioitinh = 1 AND trangthai = 1
                     GROUP BY IdSanPham
                 ),
                 SoLuongThuongHieu AS (
-                    SELECT IdSanPham, th.ten AS tenThuongHieu, COUNT(*) AS soLuongThuongHieu
+                    SELECT spct.IdSanPham, th.ten AS tenThuongHieu, COUNT(*) AS soLuongThuongHieu
                     FROM SanPhamChiTiet spct
                     JOIN ThuongHieu th ON spct.IdThuongHieu = th.Id
-                    GROUP BY IdSanPham, th.ten
+                    WHERE spct.trangthai = 1
+                    GROUP BY spct.IdSanPham, th.ten
                 )
                 SELECT slth.tenThuongHieu, SUM(slth.soLuongThuongHieu) AS tongSoLuongThuongHieu
                 FROM SanPham sp
@@ -154,6 +157,7 @@ public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, 
             """, nativeQuery = true)
     List<Object[]> findSoLuongThuongHieuGrouped();
 
+
     //đếm số lương kichconam
     @Query(value = """
                 WITH AnhDaiDien AS (
@@ -161,18 +165,20 @@ public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, 
                            ROW_NUMBER() OVER (PARTITION BY spct.IdSanPham ORDER BY anh.tenanh DESC) AS row_num
                     FROM Anh anh
                     JOIN SanPhamChiTiet spct ON anh.IdSanPhamChiTiet = spct.id
+                    WHERE spct.trangthai = 1
                 ),
                 SanPhamChiTietGrouped AS (
                     SELECT IdSanPham, SUM(soluong) AS tongSoLuong, MIN(giatien) AS giatien
                     FROM SanPhamChiTiet
-                    WHERE gioitinh = 1
+                    WHERE gioitinh = 1 AND trangthai = 1
                     GROUP BY IdSanPham
                 ),
                 SoLuongKichCo AS (
-                    SELECT IdSanPham, kc.ten AS tenKichCo, COUNT(*) AS soLuongKichCo
+                    SELECT spct.IdSanPham, kc.ten AS tenKichCo, COUNT(*) AS soLuongKichCo
                     FROM SanPhamChiTiet spct
                     JOIN KichCo kc ON spct.IdKichCo = kc.Id
-                    GROUP BY IdSanPham, kc.ten
+                    WHERE spct.trangthai = 1
+                    GROUP BY spct.IdSanPham, kc.ten
                 )
                 SELECT slkc.tenKichCo, SUM(slkc.soLuongKichCo) AS tongSoLuongKichCo
                 FROM SanPham sp
@@ -184,6 +190,7 @@ public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, 
             """, nativeQuery = true)
     List<Object[]> findSoLuongKichCoGrouped();
 
+
     //đếm số lương thuonghieunu
     @Query(value = """
                 WITH AnhDaiDien AS (
@@ -191,18 +198,20 @@ public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, 
                            ROW_NUMBER() OVER (PARTITION BY spct.IdSanPham ORDER BY anh.tenanh DESC) AS row_num
                     FROM Anh anh
                     JOIN SanPhamChiTiet spct ON anh.IdSanPhamChiTiet = spct.id
+                    WHERE spct.trangthai = 1
                 ),
                 SanPhamChiTietGrouped AS (
                     SELECT IdSanPham, SUM(soluong) AS tongSoLuong, MIN(giatien) AS giatien
                     FROM SanPhamChiTiet
-                    WHERE gioitinh = 0
+                    WHERE gioitinh = 0 AND trangthai = 1
                     GROUP BY IdSanPham
                 ),
                 SoLuongThuongHieu AS (
-                    SELECT IdSanPham, th.ten AS tenThuongHieu, COUNT(*) AS soLuongThuongHieu
+                    SELECT spct.IdSanPham, th.ten AS tenThuongHieu, COUNT(*) AS soLuongThuongHieu
                     FROM SanPhamChiTiet spct
                     JOIN ThuongHieu th ON spct.IdThuongHieu = th.Id
-                    GROUP BY IdSanPham, th.ten
+                    WHERE spct.trangthai = 1
+                    GROUP BY spct.IdSanPham, th.ten
                 )
                 SELECT slth.tenThuongHieu, SUM(slth.soLuongThuongHieu) AS tongSoLuongThuongHieu
                 FROM SanPham sp
@@ -221,18 +230,20 @@ public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, 
                            ROW_NUMBER() OVER (PARTITION BY spct.IdSanPham ORDER BY anh.tenanh DESC) AS row_num
                     FROM Anh anh
                     JOIN SanPhamChiTiet spct ON anh.IdSanPhamChiTiet = spct.id
+                    WHERE spct.trangthai = 1
                 ),
                 SanPhamChiTietGrouped AS (
                     SELECT IdSanPham, SUM(soluong) AS tongSoLuong, MIN(giatien) AS giatien
                     FROM SanPhamChiTiet
-                    WHERE gioitinh = 0
+                    WHERE gioitinh = 0 AND trangthai = 1
                     GROUP BY IdSanPham
                 ),
                 SoLuongKichCo AS (
-                    SELECT IdSanPham, kc.ten AS tenKichCo, COUNT(*) AS soLuongKichCo
+                    SELECT spct.IdSanPham, kc.ten AS tenKichCo, COUNT(*) AS soLuongKichCo
                     FROM SanPhamChiTiet spct
                     JOIN KichCo kc ON spct.IdKichCo = kc.Id
-                    GROUP BY IdSanPham, kc.ten
+                    WHERE spct.trangthai = 1
+                    GROUP BY spct.IdSanPham, kc.ten
                 )
                 SELECT slkc.tenKichCo, SUM(slkc.soLuongKichCo) AS tongSoLuongKichCo
                 FROM SanPham sp
