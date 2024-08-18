@@ -4,56 +4,106 @@ import com.example.demo.entity.SanPham;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
 @Repository
 public interface TrangChuRepository extends JpaRepository<SanPham, Integer> {
     // top sp mới nhất của trang chủ
-    @Query(nativeQuery = true, value = """
-           WITH AnhDaiDien AS (
-               SELECT spct.IdSanPham, anh.tenanh,
-                      ROW_NUMBER() OVER (PARTITION BY spct.IdSanPham ORDER BY anh.tenanh DESC ) AS row_num
-               FROM Anh anh
-               JOIN SanPhamChiTiet spct ON anh.IdSanPhamChiTiet = spct.id
-           ),
-           SanPhamChiTietGrouped AS (
-               SELECT IdSanPham, SUM(soluong) AS tongSoLuong, MIN(giatien) AS giatien
-               FROM SanPhamChiTiet
-               WHERE trangthai = 1 -- Lọc sản phẩm chi tiết có trạng thái true
-               GROUP BY IdSanPham
-           ),
-           KichCoCount AS (
-               SELECT spct.IdSanPham, COUNT(DISTINCT kc.id) AS soLuongKichCo
-               FROM SanPhamChiTiet spct
-               JOIN KichCo kc ON spct.IdKichCo = kc.id
-               GROUP BY spct.IdSanPham
-           ),
-           MauSacCount AS (
-               SELECT spct.IdSanPham, COUNT(DISTINCT ms.id) AS soLuongMauSac
-               FROM SanPhamChiTiet spct
-               JOIN MauSac ms ON spct.IdMauSac = ms.id
-               GROUP BY spct.IdSanPham
-           ),
-           GiamGia AS (
-               SELECT spct.IdSanPham, MAX(dg.giatrigiam) AS giaGiam
-               FROM SanPhamDotGiam spdg
-               JOIN DotGiamGia dg ON spdg.iddotgiam = dg.id
-               JOIN SanPhamChiTiet spct ON spdg.idchitietsanpham = spct.id
-               WHERE dg.trangthai = 1 -- Giả sử bạn chỉ muốn giảm giá còn hiệu lực
-               GROUP BY spct.IdSanPham
-           )
-           SELECT sp.id, sp.tensanpham, sp.ngaytao, spctg.tongSoLuong, sp.trangthai, spctg.giatien, anhdd.tenanh, kc.soLuongKichCo, ms.soLuongMauSac, giamgia.giaGiam
-           FROM SanPham sp
-           JOIN SanPhamChiTietGrouped spctg ON sp.id = spctg.IdSanPham
-           JOIN AnhDaiDien anhdd ON sp.id = anhdd.IdSanPham AND anhdd.row_num = 1
-           JOIN KichCoCount kc ON sp.id = kc.IdSanPham
-           JOIN MauSacCount ms ON sp.id = ms.IdSanPham
-           LEFT JOIN GiamGia giamgia ON sp.id = giamgia.IdSanPham
-           ORDER BY sp.ngaytao DESC, spctg.tongSoLuong DESC;
-        """)
-    List<Object[]> topspmoinhattrangchu();
+//    @Query(nativeQuery = true, value = """
+//           WITH AnhDaiDien AS (
+//               SELECT spct.IdSanPham, anh.tenanh,
+//                      ROW_NUMBER() OVER (PARTITION BY spct.IdSanPham ORDER BY anh.tenanh DESC ) AS row_num
+//               FROM Anh anh
+//               JOIN SanPhamChiTiet spct ON anh.IdSanPhamChiTiet = spct.id
+//           ),
+//           SanPhamChiTietGrouped AS (
+//               SELECT IdSanPham, SUM(soluong) AS tongSoLuong, MIN(giatien) AS giatien
+//               FROM SanPhamChiTiet
+//               WHERE trangthai = 1 -- Lọc sản phẩm chi tiết có trạng thái true
+//               GROUP BY IdSanPham
+//           ),
+//           KichCoCount AS (
+//               SELECT spct.IdSanPham, COUNT(DISTINCT kc.id) AS soLuongKichCo
+//               FROM SanPhamChiTiet spct
+//               JOIN KichCo kc ON spct.IdKichCo = kc.id
+//               GROUP BY spct.IdSanPham
+//           ),
+//           MauSacCount AS (
+//               SELECT spct.IdSanPham, COUNT(DISTINCT ms.id) AS soLuongMauSac
+//               FROM SanPhamChiTiet spct
+//               JOIN MauSac ms ON spct.IdMauSac = ms.id
+//               GROUP BY spct.IdSanPham
+//           ),
+//           GiamGia AS (
+//               SELECT spct.IdSanPham, MAX(dg.giatrigiam) AS giaGiam
+//               FROM SanPhamDotGiam spdg
+//               JOIN DotGiamGia dg ON spdg.iddotgiam = dg.id
+//               JOIN SanPhamChiTiet spct ON spdg.idchitietsanpham = spct.id
+//               WHERE dg.trangthai = 1 -- Giả sử bạn chỉ muốn giảm giá còn hiệu lực
+//               GROUP BY spct.IdSanPham
+//           )
+//           SELECT sp.id, sp.tensanpham, sp.ngaytao, spctg.tongSoLuong, sp.trangthai, spctg.giatien, anhdd.tenanh, kc.soLuongKichCo, ms.soLuongMauSac, giamgia.giaGiam
+//           FROM SanPham sp
+//           JOIN SanPhamChiTietGrouped spctg ON sp.id = spctg.IdSanPham
+//           JOIN AnhDaiDien anhdd ON sp.id = anhdd.IdSanPham AND anhdd.row_num = 1
+//           JOIN KichCoCount kc ON sp.id = kc.IdSanPham
+//           JOIN MauSacCount ms ON sp.id = ms.IdSanPham
+//           LEFT JOIN GiamGia giamgia ON sp.id = giamgia.IdSanPham
+//           ORDER BY sp.ngaytao DESC, spctg.tongSoLuong DESC;
+//        """)
+//    List<Object[]> topspmoinhattrangchu();
 
+    @Query(nativeQuery = true, value = """
+    WITH AnhDaiDien AS (
+        SELECT spct.IdSanPham, anh.tenanh,
+               ROW_NUMBER() OVER (PARTITION BY spct.IdSanPham ORDER BY anh.tenanh DESC) AS row_num
+        FROM Anh anh
+        JOIN SanPhamChiTiet spct ON anh.IdSanPhamChiTiet = spct.id
+        WHERE spct.trangthai = 1 -- Chỉ chọn sản phẩm chi tiết có trạng thái = 1
+    ),
+    SanPhamChiTietGrouped AS (
+        SELECT spct.IdSanPham, spct.id AS idSanPhamChiTiet, SUM(spct.soluong) AS tongSoLuong, 
+               MIN(spct.giatien) AS giatien, COALESCE(MAX(dg.giatrigiam), 0) AS giaGiam
+        FROM SanPhamChiTiet spct
+        LEFT JOIN SanPhamDotGiam spdg ON spct.id = spdg.idchitietsanpham
+        LEFT JOIN DotGiamGia dg ON spdg.iddotgiam = dg.id AND dg.trangthai = 1 -- Lọc giảm giá có hiệu lực
+        WHERE spct.trangthai = 1 -- Lọc sản phẩm chi tiết có trạng thái true
+        GROUP BY spct.IdSanPham, spct.id
+    ),
+    KichCoCount AS (
+        SELECT spct.IdSanPham, COUNT(DISTINCT kc.id) AS soLuongKichCo
+        FROM SanPhamChiTiet spct
+        JOIN KichCo kc ON spct.IdKichCo = kc.id
+        WHERE spct.trangthai = 1 -- Chỉ chọn sản phẩm chi tiết có trạng thái = 1
+        GROUP BY spct.IdSanPham
+    ),
+    MauSacCount AS (
+        SELECT spct.IdSanPham, COUNT(DISTINCT ms.id) AS soLuongMauSac
+        FROM SanPhamChiTiet spct
+        JOIN MauSac ms ON spct.IdMauSac = ms.id
+        WHERE spct.trangthai = 1 -- Chỉ chọn sản phẩm chi tiết có trạng thái = 1
+        GROUP BY spct.IdSanPham
+    ),
+    RankedSanPhamChiTietGrouped AS (
+        SELECT IdSanPham, idSanPhamChiTiet, giatien, tongSoLuong, giaGiam,
+               ROW_NUMBER() OVER (PARTITION BY IdSanPham ORDER BY giaGiam DESC) AS rn
+        FROM SanPhamChiTietGrouped
+    )
+    SELECT sp.id, sp.tensanpham, sp.ngaytao, spctg.tongSoLuong, sp.trangthai, spctg.giatien, 
+           anhdd.tenanh, kc.soLuongKichCo, ms.soLuongMauSac, spctg.giaGiam
+    FROM SanPham sp
+    JOIN RankedSanPhamChiTietGrouped spctg ON sp.id = spctg.IdSanPham AND spctg.rn = 1
+    JOIN AnhDaiDien anhdd ON sp.id = anhdd.IdSanPham AND anhdd.row_num = 1
+    LEFT JOIN KichCoCount kc ON sp.id = kc.IdSanPham
+    LEFT JOIN MauSacCount ms ON sp.id = ms.IdSanPham
+    WHERE EXISTS (
+        SELECT 1 
+        FROM SanPhamChiTiet spct 
+        WHERE spct.IdSanPham = sp.id AND spct.trangthai = 1
+    ) -- Đảm bảo sản phẩm chỉ hiển thị nếu có sản phẩm chi tiết có trạng thái = 1
+    ORDER BY sp.ngaytao DESC, spctg.tongSoLuong DESC;
+""")
+    List<Object[]> topspmoinhattrangchu();
 
 
     //top sp bán chạy nhất

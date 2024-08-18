@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -71,14 +72,30 @@ public class SanPhamChiTietController {
     //Cập nhật trạng thái sản phẩm chi tiết
 
     @PostMapping("/chi-tiet-san-pham/updateTrangThai/{id}")
-    public String updateTrangThaiCTSP(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+    public String updateTrangThaiCTSP(@PathVariable Integer id) {
         SanPhamChiTiet spct = sanPhamChiTietRepository.findById(id).orElse(null);
         if (spct != null) {
             spct.setTrangthai(!spct.getTrangthai());
             sanPhamChiTietRepository.save(spct);
-            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật trạng thái thành công!");
         }
-        return "redirect:/detailsanpham/" + id;
+        List<SanPhamChiTiet> listSPCT = sanPhamChiTietRepository.findBySanPhamId(spct.getSanpham().getId());
+        int check = 1;
+        for (SanPhamChiTiet spct1 : listSPCT) {
+            if (spct1.getTrangthai() == false) {
+                check = 2;
+            }
+            if (spct1.getTrangthai() == true) {
+                check = 1;
+            }
+        }
+        if (check == 2) {
+            SanPham sanPham = sanPhamRepositoty.findById(spct.getSanpham().getId()).orElse(null);
+            if (sanPham != null) {
+                sanPham.setTrangthai(false);
+                sanPhamRepositoty.save(sanPham);
+            }
+        }
+        return "redirect:/detailsanpham/" + spct.getSanpham().getId();
     }
 
 
@@ -194,12 +211,12 @@ public class SanPhamChiTietController {
 
     @GetMapping("/updateAllCTSP/{id}")
     public String viewupdateAllCTSP(@PathVariable Integer id, Model model,
-                                 @ModelAttribute("thuonghieu") ThuongHieu thuongHieu,
-                                 @ModelAttribute("chatlieu") ChatLieu chatLieu,
-                                 @ModelAttribute("kichco") KichCo kichCo,
-                                 @ModelAttribute("degiay") DeGiay deGiay,
-                                 @ModelAttribute("mausac") MauSac mauSac,
-                                 @ModelAttribute("tim") ThuocTinhInfo info
+                                    @ModelAttribute("thuonghieu") ThuongHieu thuongHieu,
+                                    @ModelAttribute("chatlieu") ChatLieu chatLieu,
+                                    @ModelAttribute("kichco") KichCo kichCo,
+                                    @ModelAttribute("degiay") DeGiay deGiay,
+                                    @ModelAttribute("mausac") MauSac mauSac,
+                                    @ModelAttribute("tim") ThuocTinhInfo info
 
     ) {
         //dùng cho validate
@@ -312,12 +329,11 @@ public class SanPhamChiTietController {
     }
 
 
-
     @PostMapping("/updateAllCTSP/{id}")
     public String updateAllCTSP(@PathVariable Integer id, @ModelAttribute("AllCTSP") SanPhamChiTiet sanPhamChiTiet,
-                             @RequestParam(name = "anhs", required = false) List<MultipartFile> anhFiles,
-                             @RequestParam(name = "spctIds") Integer spctId,
-                             RedirectAttributes redirectAttributes, HttpSession session) {
+                                @RequestParam(name = "anhs", required = false) List<MultipartFile> anhFiles,
+                                @RequestParam(name = "spctIds") Integer spctId,
+                                RedirectAttributes redirectAttributes, HttpSession session) {
         String username = (String) session.getAttribute("adminDangnhap");
         NguoiDung ndung = daoNguoiDung.findNguoiDungByTaikhoan(username);
         List<NhanVien> lstnvtimve = nhanvienRPo.findByNguoidung(ndung);
