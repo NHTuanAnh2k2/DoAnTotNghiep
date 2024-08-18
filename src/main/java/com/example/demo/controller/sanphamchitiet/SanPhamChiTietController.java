@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -112,6 +113,12 @@ public class SanPhamChiTietController {
                     info.getTrangthai()
             );
         }
+        for (SanPhamChiTiet chiTiet : list) {
+            chiTiet.setSanphamdotgiam(chiTiet.getSanphamdotgiam().stream()
+                    .filter(dotGiam -> dotGiam.getDotgiamgia().getTrangthai() == 1)
+                    .collect(Collectors.toList()));
+        }
+
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuRepository.getAll();
         List<MauSac> listMauSac = mauSacRepository.getAll();

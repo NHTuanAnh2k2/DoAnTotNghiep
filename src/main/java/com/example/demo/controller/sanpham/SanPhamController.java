@@ -15,11 +15,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -91,7 +93,7 @@ public class SanPhamController {
             sp.setTrangthai(!sp.getTrangthai());
             sanPhamRepositoty.save(sp);
             List<SanPhamChiTiet> lstSPCT = sanPhamChiTietRepository.findBySanPhamId(sp.getId());
-            for(SanPhamChiTiet s : lstSPCT){
+            for (SanPhamChiTiet s : lstSPCT) {
                 s.setTrangthai(!s.getTrangthai());
                 sanPhamChiTietRepository.save(s);
             }
@@ -206,11 +208,11 @@ public class SanPhamController {
         model.addAttribute("kichCoNames", kichCoNames);
 
         //Hiển thị sau khi sửa đồng gía và số lượng
-        session.setAttribute("selectedTensp",tensp);
-        session.setAttribute("motas",mota);
-        session.setAttribute("gioitinh",gioitinh);
-        session.setAttribute("selectedThuongHieu",idThuongHieu.getId());
-        session.setAttribute("selectedChatLieu",idChatLieu.getId());
+        session.setAttribute("selectedTensp", tensp);
+        session.setAttribute("motas", mota);
+        session.setAttribute("gioitinh", gioitinh);
+        session.setAttribute("selectedThuongHieu", idThuongHieu.getId());
+        session.setAttribute("selectedChatLieu", idChatLieu.getId());
         session.setAttribute("selectedDeGiay", idDeGiay.getId());
 
 
@@ -348,6 +350,7 @@ public class SanPhamController {
                     info.getTrangthai()
             );
         }
+
         List<SanPham> listSanPham = sanPhamImp.findAll();
         List<ThuongHieu> listThuongHieu = thuongHieuRepository.getAll();
         List<MauSac> listMauSac = mauSacRepository.getAll();
@@ -356,6 +359,13 @@ public class SanPhamController {
         List<ChatLieu> listChatLieu = chatLieuRepository.getAll();
         model.addAttribute("sanpham", sanPham);
         model.addAttribute("sanphamchitiet", listSanPhamChiTiet);
+
+        for (SanPhamChiTiet chiTiet : listSanPhamChiTiet) {
+            chiTiet.setSanphamdotgiam(chiTiet.getSanphamdotgiam().stream()
+                    .filter(dotGiam -> dotGiam.getDotgiamgia().getTrangthai() == 1)
+                    .collect(Collectors.toList()));
+        }
+
         model.addAttribute("sp", listSanPham);
         model.addAttribute("th", listThuongHieu);
         model.addAttribute("ms", listMauSac);
@@ -506,20 +516,19 @@ public class SanPhamController {
                 }
             }
         }
-        Integer selectedTensp= (Integer) session.getAttribute("selectedTensp");
-        String motas= (String) session.getAttribute("motas");
+        Integer selectedTensp = (Integer) session.getAttribute("selectedTensp");
+        String motas = (String) session.getAttribute("motas");
         Boolean gioitinh = (Boolean) session.getAttribute("gioitinh");
         Integer selectedThuongHieu = (Integer) session.getAttribute("selectedThuongHieu");
         Integer selectedChatLieu = (Integer) session.getAttribute("selectedChatLieu");
         Integer selectedDeGiay = (Integer) session.getAttribute("selectedDeGiay");
 
-        model.addAttribute("selectedTensp",selectedTensp);
-        model.addAttribute("motas",motas);
-        model.addAttribute("gioitinh",gioitinh);
-        model.addAttribute("selectedThuongHieu",selectedThuongHieu);
-        model.addAttribute("selectedChatLieu",selectedChatLieu);
-        model.addAttribute("selectedDeGiay",selectedDeGiay);
-
+        model.addAttribute("selectedTensp", selectedTensp);
+        model.addAttribute("motas", motas);
+        model.addAttribute("gioitinh", gioitinh);
+        model.addAttribute("selectedThuongHieu", selectedThuongHieu);
+        model.addAttribute("selectedChatLieu", selectedChatLieu);
+        model.addAttribute("selectedDeGiay", selectedDeGiay);
 
 
         model.addAttribute("sanphamchitiet", sanPhamChiTietList);
