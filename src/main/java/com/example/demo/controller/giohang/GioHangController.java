@@ -373,6 +373,7 @@ public class GioHangController {
         model.addAttribute("discountedPrices", discountedPrices);
         model.addAttribute("totalQuantity", totalQuantity);
         model.addAttribute("cartItems", cartItems);
+        session.setAttribute("lstMuaNgay",cartItems);
         return "customer/thanhtoan";
 
     }

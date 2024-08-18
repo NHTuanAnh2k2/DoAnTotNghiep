@@ -450,6 +450,10 @@
 
             }
         }
+        // Gọi hàm kiểm tra trạng thái sau khi trang được tải
+        document.addEventListener('DOMContentLoaded', (event) => {
+            capnhattrangthaithanhcong();
+        });
     </script>
     <script>
         const eventSource = new EventSource('/dot-discounts-stream');

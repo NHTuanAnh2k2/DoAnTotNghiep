@@ -271,8 +271,12 @@ public class PhieuGiamGiaController {
     @GetMapping("/admin/xem-cap-nhat-phieu-giam-gia/{Id}")
     public String ChiTietPhieuGiamGia(@PathVariable("Id") Integer Id, Model model, HttpSession session){
         PhieuGiamGia phieuGiamGia= phieuGiamGiaImp.findPhieuGiamGiaById(Id);
-        phieuGiamGia.setGiatrigiamtoida(phieuGiamGia.getGiatrigiamtoida().setScale(0, BigDecimal.ROUND_DOWN));
-        phieuGiamGia.setDontoithieu(phieuGiamGia.getDontoithieu().setScale(0, BigDecimal.ROUND_DOWN));
+        if(phieuGiamGia.getGiatrigiamtoida() != null){
+            phieuGiamGia.setGiatrigiamtoida(phieuGiamGia.getGiatrigiamtoida().setScale(0, BigDecimal.ROUND_DOWN));
+        }
+        if(phieuGiamGia.getDontoithieu() != null){
+            phieuGiamGia.setDontoithieu(phieuGiamGia.getDontoithieu().setScale(0, BigDecimal.ROUND_DOWN));
+        }
         List<KhachHangPhieuGiam> lstKHPG= new ArrayList<>();
         if(phieuGiamGia.getKieuphieu()==true){
             lstKHPG=khachHangPhieuGiamImp.findKhachHangPhieuGiamByIdPhieugiamgia(phieuGiamGia.getId());

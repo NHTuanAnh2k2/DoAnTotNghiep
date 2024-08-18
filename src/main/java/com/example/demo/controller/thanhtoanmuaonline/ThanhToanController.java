@@ -176,6 +176,8 @@ public class ThanhToanController {
                                          @RequestParam("sotiengiam") String sotiengiam,
                                          @RequestParam("laydiachidaluu") String laydiachidaluu,
                                          HttpSession session, Model model) {
+        int totalQuantity = 0;
+        List<GioHangChiTiet> lstMuaNgay= (List<GioHangChiTiet>) session.getAttribute("lstMuaNgay");
         String token = (String) session.getAttribute("token");
         NguoiDung nguoiDung = null;
         KhachHang khachHang = null;
@@ -247,40 +249,74 @@ public class ThanhToanController {
                         //Thêm hóa đơn ci tiết
                         gioHang = gioHangRepository.findByKhachhang(khachHang);
                         List<GioHangChiTiet> lstGHCT = gioHang.getGioHangChiTietList();
-
                         HoaDon hdMoiThem = daoHD.timBanGhiDuocTaoGanNhat();
-                        IDHDCamOn = hdMoiThem.getId();
-                        MaHDCamOn = hdMoiThem.getMahoadon();
-                        for (GioHangChiTiet g : lstGHCT) {
-                            HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
-                            hoaDonChiTiet.setHoadon(hdMoiThem);
-                            hoaDonChiTiet.setSanphamchitiet(g.getSanphamchitiet());
+                        if(lstMuaNgay != null){
+                            IDHDCamOn = hdMoiThem.getId();
+                            MaHDCamOn = hdMoiThem.getMahoadon();
+                            for(GioHangChiTiet g : lstMuaNgay){
+                                HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
+                                hoaDonChiTiet.setHoadon(hdMoiThem);
+                                hoaDonChiTiet.setSanphamchitiet(g.getSanphamchitiet());
 
-                            List<SanPhamDotGiam> lst = SPdotgiamRepo.findBySanphamchitiet(g.getSanphamchitiet());
-                            Integer discounts = 0;
-                            Integer discountbacks = 0;
-                            if (lst.size() > 0) {
-                                for (SanPhamDotGiam a : lst
-                                ) {
-                                    if (a.getDotgiamgia().getTrangthai() == 1) {
-                                        discounts = a.getDotgiamgia().getGiatrigiam();
-                                        discountbacks = 100 - discounts;
+                                List<SanPhamDotGiam> lst = SPdotgiamRepo.findBySanphamchitiet(g.getSanphamchitiet());
+                                Integer discounts = 0;
+                                Integer discountbacks = 0;
+                                if (lst.size() > 0) {
+                                    for (SanPhamDotGiam a : lst
+                                    ) {
+                                        if (a.getDotgiamgia().getTrangthai() == 1) {
+                                            discounts = a.getDotgiamgia().getGiatrigiam();
+                                            discountbacks = 100 - discounts;
+                                        }
                                     }
                                 }
-                            }
-                            if (discounts > 0) {
-                                hoaDonChiTiet.setGiasanpham((g.getSanphamchitiet().getGiatien().divide(new BigDecimal("100"))).multiply(new BigDecimal(discountbacks+"")));
-                            } else {
-                                hoaDonChiTiet.setGiasanpham(g.getSanphamchitiet().getGiatien());
-                            }
+                                if (discounts > 0) {
+                                    hoaDonChiTiet.setGiasanpham((g.getSanphamchitiet().getGiatien().divide(new BigDecimal("100"))).multiply(new BigDecimal(discountbacks+"")));
+                                } else {
+                                    hoaDonChiTiet.setGiasanpham(g.getSanphamchitiet().getGiatien());
+                                }
 
-                            hoaDonChiTiet.setSoluong(g.getSoluong());
-                            hoaDonChiTiet.setTrangthai(true);
-                            hoaDonChiTietImp.capnhat(hoaDonChiTiet);
+                                hoaDonChiTiet.setSoluong(g.getSoluong());
+                                hoaDonChiTiet.setTrangthai(true);
+                                hoaDonChiTietImp.capnhat(hoaDonChiTiet);
+                                session.removeAttribute("lstMuaNgay");
+                                totalQuantity= totalQuantity + lstGHCT.size();
+                            }
+                        }else{
+                            IDHDCamOn = hdMoiThem.getId();
+                            MaHDCamOn = hdMoiThem.getMahoadon();
+                            for (GioHangChiTiet g : lstGHCT) {
+                                HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
+                                hoaDonChiTiet.setHoadon(hdMoiThem);
+                                hoaDonChiTiet.setSanphamchitiet(g.getSanphamchitiet());
+
+                                List<SanPhamDotGiam> lst = SPdotgiamRepo.findBySanphamchitiet(g.getSanphamchitiet());
+                                Integer discounts = 0;
+                                Integer discountbacks = 0;
+                                if (lst.size() > 0) {
+                                    for (SanPhamDotGiam a : lst
+                                    ) {
+                                        if (a.getDotgiamgia().getTrangthai() == 1) {
+                                            discounts = a.getDotgiamgia().getGiatrigiam();
+                                            discountbacks = 100 - discounts;
+                                        }
+                                    }
+                                }
+                                if (discounts > 0) {
+                                    hoaDonChiTiet.setGiasanpham((g.getSanphamchitiet().getGiatien().divide(new BigDecimal("100"))).multiply(new BigDecimal(discountbacks+"")));
+                                } else {
+                                    hoaDonChiTiet.setGiasanpham(g.getSanphamchitiet().getGiatien());
+                                }
+
+                                hoaDonChiTiet.setSoluong(g.getSoluong());
+                                hoaDonChiTiet.setTrangthai(true);
+                                hoaDonChiTietImp.capnhat(hoaDonChiTiet);
+                            }
+                            //Xóa đối tượng trong list gio hàng
+                            gioHangChiTietRepository.deleteGioHangChiTietTT(gioHang.getId());
                         }
-                        //Xóa đối tượng trong list gio hàng
-                        gioHangChiTietRepository.deleteGioHangChiTietTT(gioHang.getId());
-                        //Xác định khách dùng phiếu giả hay không
+
+                        //Xác định khách dùng phiếu giảm hay không
                         if (maCodeGiam.equals("khong")) {
 
                         } else {
@@ -359,6 +395,7 @@ public class ThanhToanController {
             }
             model.addAttribute("MaHDCamOn",MaHDCamOn);
             model.addAttribute("IDHDCamOn",IDHDCamOn);
+            model.addAttribute("totalQuantity", totalQuantity);
             return "customer/camondathang";
         } else {
             //Hóa đơn
@@ -412,36 +449,70 @@ public class ThanhToanController {
             HoaDon hdMoiThem = daoHD.timBanGhiDuocTaoGanNhat();
             IDHDCamOn = hdMoiThem.getId();
             MaHDCamOn = hdMoiThem.getMahoadon();
-            for (GioHangChiTiet g : lstGHCT) {
-                HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
-                hoaDonChiTiet.setHoadon(hdMoiThem);
-                hoaDonChiTiet.setSanphamchitiet(g.getSanphamchitiet());
+            if(lstMuaNgay != null){
+                for(GioHangChiTiet g : lstMuaNgay){
+                    HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
+                    hoaDonChiTiet.setHoadon(hdMoiThem);
+                    hoaDonChiTiet.setSanphamchitiet(g.getSanphamchitiet());
 
-                List<SanPhamDotGiam> lst = SPdotgiamRepo.findBySanphamchitiet(g.getSanphamchitiet());
-                Integer discounts = 0;
-                Integer discountbacks = 0;
-                if (lst.size() > 0) {
-                    for (SanPhamDotGiam a : lst
-                    ) {
-                        if (a.getDotgiamgia().getTrangthai() == 1) {
-                            discounts = a.getDotgiamgia().getGiatrigiam();
-                            discountbacks = 100 - discounts;
+                    List<SanPhamDotGiam> lst = SPdotgiamRepo.findBySanphamchitiet(g.getSanphamchitiet());
+                    Integer discounts = 0;
+                    Integer discountbacks = 0;
+                    if (lst.size() > 0) {
+                        for (SanPhamDotGiam a : lst
+                        ) {
+                            if (a.getDotgiamgia().getTrangthai() == 1) {
+                                discounts = a.getDotgiamgia().getGiatrigiam();
+                                discountbacks = 100 - discounts;
+                            }
                         }
                     }
-                }
-                if (discounts > 0) {
-                    hoaDonChiTiet.setGiasanpham((g.getSanphamchitiet().getGiatien().divide(new BigDecimal("100"))).multiply(new BigDecimal(discountbacks+"")));
-                } else {
-                    hoaDonChiTiet.setGiasanpham(g.getSanphamchitiet().getGiatien());
-                }
+                    if (discounts > 0) {
+                        hoaDonChiTiet.setGiasanpham((g.getSanphamchitiet().getGiatien().divide(new BigDecimal("100"))).multiply(new BigDecimal(discountbacks+"")));
+                    } else {
+                        hoaDonChiTiet.setGiasanpham(g.getSanphamchitiet().getGiatien());
+                    }
 
-                hoaDonChiTiet.setSoluong(g.getSoluong());
-                hoaDonChiTiet.setTrangthai(true);
-                hoaDonChiTietImp.capnhat(hoaDonChiTiet);
+                    hoaDonChiTiet.setSoluong(g.getSoluong());
+                    hoaDonChiTiet.setTrangthai(true);
+                    hoaDonChiTietImp.capnhat(hoaDonChiTiet);
+                }
+                totalQuantity= totalQuantity + lstGHCT.size();
+                session.removeAttribute("lstMuaNgay");
 
+            }else{
+                for (GioHangChiTiet g : lstGHCT) {
+                    HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
+                    hoaDonChiTiet.setHoadon(hdMoiThem);
+                    hoaDonChiTiet.setSanphamchitiet(g.getSanphamchitiet());
+
+                    List<SanPhamDotGiam> lst = SPdotgiamRepo.findBySanphamchitiet(g.getSanphamchitiet());
+                    Integer discounts = 0;
+                    Integer discountbacks = 0;
+                    if (lst.size() > 0) {
+                        for (SanPhamDotGiam a : lst
+                        ) {
+                            if (a.getDotgiamgia().getTrangthai() == 1) {
+                                discounts = a.getDotgiamgia().getGiatrigiam();
+                                discountbacks = 100 - discounts;
+                            }
+                        }
+                    }
+                    if (discounts > 0) {
+                        hoaDonChiTiet.setGiasanpham((g.getSanphamchitiet().getGiatien().divide(new BigDecimal("100"))).multiply(new BigDecimal(discountbacks+"")));
+                    } else {
+                        hoaDonChiTiet.setGiasanpham(g.getSanphamchitiet().getGiatien());
+                    }
+
+                    hoaDonChiTiet.setSoluong(g.getSoluong());
+                    hoaDonChiTiet.setTrangthai(true);
+                    hoaDonChiTietImp.capnhat(hoaDonChiTiet);
+
+                }
+                //Xóa đối tượng trong list gio hàng
+                gioHangService.clearListGioHangKhongTK();
             }
-            //Xóa đối tượng trong list gio hàng
-            gioHangService.clearListGioHangKhongTK();
+
             //Xác định khách dùng phiếu giả hay không
             if (maCodeGiam.equals("khong")) {
 
@@ -490,6 +561,7 @@ public class ThanhToanController {
 
             model.addAttribute("MaHDCamOn",MaHDCamOn);
             model.addAttribute("IDHDCamOn",IDHDCamOn);
+            model.addAttribute("totalQuantity", totalQuantity);
             return "customer/camondathang";
         }
 
