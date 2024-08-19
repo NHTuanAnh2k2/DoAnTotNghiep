@@ -463,9 +463,14 @@
                 isGiaTriValid = false;
             }
         }else if(loaiPhieu === "false"){
-            if(inputGiaTri < 1){
+            if(inputGiaTri <= 10000){
                 document.getElementById("inputGiaTri").style.border="1.2px solid red";
-                errorGiaTri.innerText = "Giá trị giảm phải lớn hơn 0!";
+                errorGiaTri.innerText = "Giá trị giảm phải lớn hơn 10 ngàn!";
+                isGiaTriValid = false;
+            }
+            if(inputGiaTri >= 100000000){
+                document.getElementById("inputGiaTri").style.border="1.2px solid red";
+                errorGiaTri.innerText = "Giá trị giảm phải nhỏ hơn 100 triệu!";
                 isGiaTriValid = false;
             }
         }
@@ -477,9 +482,13 @@
         var errorToiThieu=document.getElementById("errorToiThieu");
         var isToiThieuValid = true;
         if (inputToiThieu !== "") {
-            if(inputToiThieu < 1){
+            if(inputToiThieu <= 10000){
                 document.getElementById("inputToiThieu").style.border="1.2px solid red";
-                errorToiThieu.innerText = "Hóa đơn tối thiểu phải lớn hơn 0!";
+                errorToiThieu.innerText = "Hóa đơn tối thiểu phải lớn hơn 10 ngàn!";
+                isGiaTriValid = false;
+            }else if(inputToiThieu >= 100000000) {
+                document.getElementById("inputToiThieu").style.border="1.2px solid red";
+                errorToiThieu.innerText = "Hóa đơn tối thiểu phải nhỏ hơn 100 triệu!";
                 isGiaTriValid = false;
             }else{
                 document.getElementById("inputToiThieu").style.border="";
@@ -493,9 +502,13 @@
         var errorToiDa=document.getElementById("errorToiDa");
         var isToiDaValid = true;
         if (inputToiDa !== "") {
-            if(inputToiDa < 1){
+            if(inputToiDa <= 10000){
                 document.getElementById("inputToiDa").style.border="1.2px solid red";
-                errorToiDa.innerText = "Giá trị giảm tối đa phải lớn hơn 0!";
+                errorToiDa.innerText = "Giá trị giảm tối đa phải lớn hơn 10 ngàn!";
+                isToiDaValid = false;
+            }else if(inputToiDa >= 100000000){
+                document.getElementById("inputToiDa").style.border="1.2px solid red";
+                errorToiDa.innerText = "Giá trị giảm tối đa phải nhỏ hơn 100 triệu!";
                 isToiDaValid = false;
             }else{
                 document.getElementById("inputToiDa").style.border="";
@@ -527,20 +540,21 @@
             document.getElementById("inputSoLuong").style.border="";
             errorSoLuong.innerText = "";
         }
-        var inputTuNgay=document.getElementById("inputTuNgay").value;
-        var inputDenNgay=document.getElementById("inputDenNgay").value;
+        const inputTuNgay=document.getElementById("inputTuNgay").value;
+        const inputDenNgay=document.getElementById("inputDenNgay").value;
+        // Tạo đối tượng Date từ chuỗi datetime-local
         var errorDenNgay=document.getElementById("errorDenNgay");
         var errorTuNgay=document.getElementById("errorTuNgay");
         var isTuNgayValid = true;
         var isDenNgayValid = true;
-        var dateNow = new Date();
+        const dateNow = new Date();
         if(!inputTuNgay){
             document.getElementById("inputTuNgay").style.border="1.2px solid red";
             errorTuNgay.innerText="Ngày bắt đầu không được bỏ trống!";
             isTuNgayValid= false;
         }
         if(inputTuNgay){
-            var date1 = new Date(inputTuNgay);
+            const date1 = new Date(inputTuNgay);
             if(date1.getTime()< dateNow.getTime()){
                 document.getElementById("inputTuNgay").style.border="1.2px solid red";
                 errorTuNgay.innerText="Ngày giờ bắt đầu phải lớn hơn hoặc bằng ngày giờ hiện tại!";
