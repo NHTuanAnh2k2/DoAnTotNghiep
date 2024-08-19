@@ -184,6 +184,25 @@
         z-index: 1;
         /* Đảm bảo gạch ngang nằm trên chữ */
     }
+    table#bangthemsanpham thead {
+        background-color: rgb(249, 72, 42) !important;
+        height: 50px;
+        color: white !important;
+    }
+
+    table#bangthemsanpham thead th {
+        background-color: inherit !important;
+        /* Kế thừa màu nền từ thead */
+        color: inherit !important;
+        /* Kế thừa màu chữ từ thead */
+    }
+    .color-input2 {
+        width: 90px;
+        height: 25px; /* Điều chỉnh chiều cao của input nếu cần */
+        border: none; /* Loại bỏ đường viền nếu cần */
+        outline: none; /* Loại bỏ outline nếu cần */
+        padding: 0;
+    }
 </style>
 
 <body class="hold-transition sidebar-mini layout-fixed" style="font-family: 'Bahnschrift'">
@@ -205,20 +224,14 @@
         <div class="content-wrapper">
             <div class="content-header">
                 <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                                    class="bi bi-bookmark-dash-fill" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd"
-                                        d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6 6a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z" />
-                                </svg>
-
-                                QUẢN LÝ CHI TIẾT HÓA ĐƠN
-                            </h1>
-                            <!--                        <h5 class="m-0" style="color: grey">< Đơn hàng</h5>-->
-                            <!--                        &lt;!&ndash;Tên hóa đơn&ndash;&gt;-->
-                            <!--                        <p><h2 class="m-0">HD123456</h2> <h5 class="m-0" style="color: grey">25/11/2023 15:40 </h5></p>-->
+                    <div class="row mb-5 mt-2">
+                        <div class="col-sm-6 d-flex align-items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                                 class="bi bi-bookmark-dash-fill" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                      d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6 6a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z" />
+                            </svg>
+                            <h1 style="margin-left: 10px;">QUẢN LÝ CHI TIẾT HÓA ĐƠN</h1>
                         </div>
                         <div class="col-sm-6">
 
@@ -236,13 +249,12 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="card" style="height: 350px;">
-                                    <div class="card-header">
-                                        <hr class="border border-danger border-2 opacity-50">
+                                    <div class="card-body">
                                         <!--smkds-->
-                                        <div class="container">
+                                        <div>
                                             <div class="row">
                                                 <div class="col">
-                                                    <div id="timeline" class="timeline">
+                                                    <div id="timeline" class="timeline mt-3">
                                                         <div class="timeline-item" th:each="a:${lstlichsu}">
                                                             <h1 th:if="${a.trangthai==0}"><i
                                                                     class="bi bi-check-circle"></i></h1>
@@ -270,40 +282,90 @@
                                                     </div>
                                                     <p></p>
                                                     <div class="d-flex justify-content-between">
-                                                        <div>
+                                                        <div class="ps-2">
+                                                            <button type="button" th:if="${trangThaiHienTai<2}"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#huy"
+                                                                    style="margin-right:10px; background-color: red;color: white; padding: 5px 10px; width: 60px; height: 40px; border-radius: 10px; border-color: red; font-weight: bold;">
+                                                                Hủy
+                                                            </button>
+<!--                                                            <button class="btn btn-danger " th:if="${trangThaiHienTai<2}"-->
+<!--                                                                data-bs-toggle="modal"-->
+<!--                                                                data-bs-target="#huy">Hủy</button>-->
+                                                            <button type="button" th:if="${trangThaiHienTai > 0 and trangThaiHienTai < 2 and lstphuongThucTT[0].trangthai!=true}"
+                                                                    data-bs-toggle="modal" data-bs-target="#quaylai"
+                                                                    style="margin-right:10px; background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
+                                                                Quay lại
+                                                            </button>
 
+<!--                                                            <button class="btn btn-warning"-->
+<!--                                                                th:if="${trangThaiHienTai > 0 and trangThaiHienTai < 2 and lstphuongThucTT[0].trangthai!=true}"-->
+<!--                                                                data-bs-toggle="modal" data-bs-target="#quaylai">Quay-->
+<!--                                                                lại</button>-->
+                                                            <button type="button" th:if="${trangThaiHienTai==0}"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#xacnhan"
+                                                                    style="margin-right:10px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                                Xác nhận
+                                                            </button>
 
-                                                            <button class="btn btn-danger" th:if="${trangThaiHienTai<2}"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#huy">Hủy</button>
-                                                            <button class="btn btn-warning"
-                                                                th:if="${trangThaiHienTai > 0 and trangThaiHienTai < 2 and lstphuongThucTT[0].trangthai!=true}"
-                                                                data-bs-toggle="modal" data-bs-target="#quaylai">Quay
-                                                                lại</button>
-                                                            <button th:if="${trangThaiHienTai==0}"
-                                                                class="btn btn-primary" data-bs-toggle="modal"
-                                                                data-bs-target="#xacnhan">Xác
-                                                                nhận</button>
-                                                            <button th:if="${trangThaiHienTai==1}"
-                                                                class="btn btn-primary" data-bs-toggle="modal"
-                                                                data-bs-target="#chogiao">Chờ
-                                                                giao</button>
-                                                            <button th:if="${trangThaiHienTai==2}"
-                                                                class="btn btn-primary" data-bs-toggle="modal"
-                                                                data-bs-target="#vanchuyen">Vận
-                                                                chuyển</button>
-                                                            <button th:if="${trangThaiHienTai==3}"
-                                                                class="btn btn-primary" data-bs-toggle="modal"
-                                                                data-bs-target="#thanhtoan">Thanh
-                                                                toán</button>
-                                                            <button th:if="${trangThaiHienTai==4}"
-                                                                class="btn btn-primary" data-bs-toggle="modal"
-                                                                data-bs-target="#hoanthanh">Hoàn
-                                                                thành</button>
+<!--                                                            <button th:if="${trangThaiHienTai==0}"-->
+<!--                                                                class="btn btn-primary" data-bs-toggle="modal"-->
+<!--                                                                data-bs-target="#xacnhan">Xác-->
+<!--                                                                nhận</button>-->
+                                                            <button type="button" th:if="${trangThaiHienTai==1}"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#chogiao"
+                                                                    style="margin-right:10px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                                Chờ giao
+                                                            </button>
+
+<!--                                                            <button th:if="${trangThaiHienTai==1}"-->
+<!--                                                                class="btn btn-primary" data-bs-toggle="modal"-->
+<!--                                                                data-bs-target="#chogiao">Chờ-->
+<!--                                                                giao</button>-->
+                                                            <button type="button" th:if="${trangThaiHienTai==2}"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#vanchuyen"
+                                                                    style="margin-right:10px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                                Giao hàng
+                                                            </button>
+
+<!--                                                            <button th:if="${trangThaiHienTai==2}"-->
+<!--                                                                class="btn btn-primary" data-bs-toggle="modal"-->
+<!--                                                                data-bs-target="#vanchuyen">Vận-->
+<!--                                                                chuyển</button>-->
+                                                            <button type="button" th:if="${trangThaiHienTai==3}"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#thanhtoan"
+                                                                    style="margin-right:10px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                                Thanh toán
+                                                            </button>
+
+<!--                                                            <button th:if="${trangThaiHienTai==3}"-->
+<!--                                                                class="btn btn-primary" data-bs-toggle="modal"-->
+<!--                                                                data-bs-target="#thanhtoan">Thanh-->
+<!--                                                                toán</button>-->
+                                                            <button type="button" th:if="${trangThaiHienTai==4}"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#hoanthanh"
+                                                                    style="margin-right:10px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                                Hoàn thành
+                                                            </button>
+
+<!--                                                            <button th:if="${trangThaiHienTai==4}"-->
+<!--                                                                class="btn btn-primary" data-bs-toggle="modal"-->
+<!--                                                                data-bs-target="#hoanthanh">Hoàn-->
+<!--                                                                thành</button>-->
                                                         </div>
-                                                        <button class="btn btn-dark" data-bs-toggle="modal"
-                                                            data-bs-target="#lichsu">Lịch
-                                                            sử</button>
+                                                        <button type="button"
+                                                                data-bs-toggle="modal" data-bs-target="#lichsu"
+                                                                style="margin-right:10px; background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
+                                                            Lịch sử
+                                                        </button>
+<!--                                                        <button class="btn btn-dark" data-bs-toggle="modal"-->
+<!--                                                            data-bs-target="#lichsu">Lịch-->
+<!--                                                            sử</button>-->
                                                         <!-- Button trigger modal lịch sử -->
                                                     </div>
                                                     <!-- Modal lịch sử -->
@@ -313,7 +375,7 @@
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                                                        Lịch sử</h1>
+                                                                        Lịch sử hóa đơn</h1>
                                                                     <button type="button" class="btn-close"
                                                                         data-bs-dismiss="modal"
                                                                         aria-label="Close"></button>
@@ -321,13 +383,13 @@
                                                                 <div class="modal-body">
                                                                     <table id="example2"
                                                                         class="table table-bordered table-hover text-center">
-                                                                        <thead class="table table-danger">
+                                                                        <thead style="background-color: rgb(249, 72, 42) !important; color: white !important; height: 50px;">
                                                                             <tr>
-                                                                                <th>STT</th>
-                                                                                <th>Trạng thái</th>
-                                                                                <th>Ngày xác nhận</th>
-                                                                                <th>Người xác nhận</th>
-                                                                                <th>Ghi chú</th>
+                                                                                <th style="vertical-align: middle; text-align: center; background-color: inherit !important; color: inherit !important;">STT</th>
+                                                                                <th style="vertical-align: middle; text-align: center; background-color: inherit !important; color: inherit !important;">Trạng thái</th>
+                                                                                <th style="vertical-align: middle; text-align: center; background-color: inherit !important; color: inherit !important;">Ngày xác nhận</th>
+                                                                                <th style="vertical-align: middle; text-align: center; background-color: inherit !important; color: inherit !important;">Người xác nhận</th>
+                                                                                <th style="vertical-align: middle; text-align: center; background-color: inherit !important; color: inherit !important;">Ghi chú</th>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
@@ -359,8 +421,11 @@
                                                                     </table>
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Thoát</button>
+                                                                    <button type="button" data-bs-dismiss="modal" style="background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+                                                                            <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
+                                                                        </svg> Thoát
+                                                                    </button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -394,12 +459,21 @@
                                                                         </p>
 
                                                                         <div class="d-flex flex-row-reverse">
-                                                                            <button type="submit" id="xacnhanbtn"
-                                                                                disabled class="btn btn-primary">Xác
-                                                                                nhận</button>
-                                                                            <button type="button"
-                                                                                class="btn btn-secondary ms-1"
-                                                                                data-bs-dismiss="modal">Hủy</button>
+
+<!--                                                                            <button type="submit" id="xacnhanbtn"-->
+<!--                                                                                disabled class="btn btn-primary">Xác-->
+<!--                                                                                nhận</button>-->
+                                                                            <button disabled type="submit" id="xacnhanbtn" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-hand-index-thumb" viewBox="0 0 16 16">
+                                                                                    <path d="M6.75 1a.75.75 0 0 1 .75.75V8a.5.5 0 0 0 1 0V5.467l.086-.004c.317-.012.637-.008.816.027.134.027.294.096.448.182.077.042.15.147.15.314V8a.5.5 0 0 0 1 0V6.435l.106-.01c.316-.024.584-.01.708.04.118.046.3.207.486.43.081.096.15.19.2.259V8.5a.5.5 0 1 0 1 0v-1h.342a1 1 0 0 1 .995 1.1l-.271 2.715a2.5 2.5 0 0 1-.317.991l-1.395 2.442a.5.5 0 0 1-.434.252H6.118a.5.5 0 0 1-.447-.276l-1.232-2.465-2.512-4.185a.517.517 0 0 1 .809-.631l2.41 2.41A.5.5 0 0 0 6 9.5V1.75A.75.75 0 0 1 6.75 1M8.5 4.466V1.75a1.75 1.75 0 1 0-3.5 0v6.543L3.443 6.736A1.517 1.517 0 0 0 1.07 8.588l2.491 4.153 1.215 2.43A1.5 1.5 0 0 0 6.118 16h6.302a1.5 1.5 0 0 0 1.302-.756l1.395-2.441a3.5 3.5 0 0 0 .444-1.389l.271-2.715a2 2 0 0 0-1.99-2.199h-.581a5 5 0 0 0-.195-.248c-.191-.229-.51-.568-.88-.716-.364-.146-.846-.132-1.158-.108l-.132.012a1.26 1.26 0 0 0-.56-.642 2.6 2.6 0 0 0-.738-.288c-.31-.062-.739-.058-1.05-.046zm2.094 2.025"/>
+                                                                                </svg> Xác nhận
+                                                                            </button>
+
+                                                                            <button type="button" data-bs-dismiss="modal" style="margin-right:15px; background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+                                                                                    <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
+                                                                                </svg> Thoát
+                                                                            </button>
 
                                                                         </div>
                                                                     </form>
@@ -414,7 +488,7 @@
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                                                        Hủy đơn</h1>
+                                                                        Hủy đơn hàng</h1>
                                                                     <button type="button" class="btn-close"
                                                                         data-bs-dismiss="modal"
                                                                         aria-label="Close"></button>
@@ -435,12 +509,24 @@
                                                                         </p>
 
                                                                         <div class="d-flex flex-row-reverse">
-                                                                            <button type="submit" id="huybtn" disabled
-                                                                                class="btn btn-primary">Xác
-                                                                                nhận</button>
-                                                                            <button type="button"
-                                                                                class="btn btn-secondary ms-1"
-                                                                                data-bs-dismiss="modal">Hủy</button>
+<!--                                                                            <button type="submit" id="huybtn" disabled-->
+<!--                                                                                class="btn btn-primary">Xác-->
+<!--                                                                                nhận</button>-->
+<!--                                                                            <button type="button"-->
+<!--                                                                                class="btn btn-secondary ms-1"-->
+<!--                                                                                data-bs-dismiss="modal">Hủy</button>-->
+
+                                                                            <button disabled type="submit" id="huybtn" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-hand-index-thumb" viewBox="0 0 16 16">
+                                                                                    <path d="M6.75 1a.75.75 0 0 1 .75.75V8a.5.5 0 0 0 1 0V5.467l.086-.004c.317-.012.637-.008.816.027.134.027.294.096.448.182.077.042.15.147.15.314V8a.5.5 0 0 0 1 0V6.435l.106-.01c.316-.024.584-.01.708.04.118.046.3.207.486.43.081.096.15.19.2.259V8.5a.5.5 0 1 0 1 0v-1h.342a1 1 0 0 1 .995 1.1l-.271 2.715a2.5 2.5 0 0 1-.317.991l-1.395 2.442a.5.5 0 0 1-.434.252H6.118a.5.5 0 0 1-.447-.276l-1.232-2.465-2.512-4.185a.517.517 0 0 1 .809-.631l2.41 2.41A.5.5 0 0 0 6 9.5V1.75A.75.75 0 0 1 6.75 1M8.5 4.466V1.75a1.75 1.75 0 1 0-3.5 0v6.543L3.443 6.736A1.517 1.517 0 0 0 1.07 8.588l2.491 4.153 1.215 2.43A1.5 1.5 0 0 0 6.118 16h6.302a1.5 1.5 0 0 0 1.302-.756l1.395-2.441a3.5 3.5 0 0 0 .444-1.389l.271-2.715a2 2 0 0 0-1.99-2.199h-.581a5 5 0 0 0-.195-.248c-.191-.229-.51-.568-.88-.716-.364-.146-.846-.132-1.158-.108l-.132.012a1.26 1.26 0 0 0-.56-.642 2.6 2.6 0 0 0-.738-.288c-.31-.062-.739-.058-1.05-.046zm2.094 2.025"/>
+                                                                                </svg> Xác nhận
+                                                                            </button>
+
+                                                                            <button type="button" data-bs-dismiss="modal" style="margin-right:15px; background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+                                                                                    <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
+                                                                                </svg> Thoát
+                                                                            </button>
 
                                                                         </div>
                                                                     </form>
@@ -456,7 +542,7 @@
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                                                        Quay lại</h1>
+                                                                        Quay lại trạng thái trước đó</h1>
                                                                     <button type="button" class="btn-close"
                                                                         data-bs-dismiss="modal"
                                                                         aria-label="Close"></button>
@@ -477,12 +563,24 @@
                                                                         </p>
 
                                                                         <div class="d-flex flex-row-reverse">
-                                                                            <button type="submit" id="quaylaibtn"
-                                                                                disabled class="btn btn-primary">Xác
-                                                                                nhận</button>
-                                                                            <button type="button"
-                                                                                class="btn btn-secondary ms-1"
-                                                                                data-bs-dismiss="modal">Hủy</button>
+<!--                                                                            <button type="submit" id="quaylaibtn"-->
+<!--                                                                                disabled class="btn btn-primary">Xác-->
+<!--                                                                                nhận</button>-->
+<!--                                                                            <button type="button"-->
+<!--                                                                                class="btn btn-secondary ms-1"-->
+<!--                                                                                data-bs-dismiss="modal">Hủy</button>-->
+
+                                                                            <button disabled type="submit" id="quaylaibtn" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-hand-index-thumb" viewBox="0 0 16 16">
+                                                                                    <path d="M6.75 1a.75.75 0 0 1 .75.75V8a.5.5 0 0 0 1 0V5.467l.086-.004c.317-.012.637-.008.816.027.134.027.294.096.448.182.077.042.15.147.15.314V8a.5.5 0 0 0 1 0V6.435l.106-.01c.316-.024.584-.01.708.04.118.046.3.207.486.43.081.096.15.19.2.259V8.5a.5.5 0 1 0 1 0v-1h.342a1 1 0 0 1 .995 1.1l-.271 2.715a2.5 2.5 0 0 1-.317.991l-1.395 2.442a.5.5 0 0 1-.434.252H6.118a.5.5 0 0 1-.447-.276l-1.232-2.465-2.512-4.185a.517.517 0 0 1 .809-.631l2.41 2.41A.5.5 0 0 0 6 9.5V1.75A.75.75 0 0 1 6.75 1M8.5 4.466V1.75a1.75 1.75 0 1 0-3.5 0v6.543L3.443 6.736A1.517 1.517 0 0 0 1.07 8.588l2.491 4.153 1.215 2.43A1.5 1.5 0 0 0 6.118 16h6.302a1.5 1.5 0 0 0 1.302-.756l1.395-2.441a3.5 3.5 0 0 0 .444-1.389l.271-2.715a2 2 0 0 0-1.99-2.199h-.581a5 5 0 0 0-.195-.248c-.191-.229-.51-.568-.88-.716-.364-.146-.846-.132-1.158-.108l-.132.012a1.26 1.26 0 0 0-.56-.642 2.6 2.6 0 0 0-.738-.288c-.31-.062-.739-.058-1.05-.046zm2.094 2.025"/>
+                                                                                </svg> Xác nhận
+                                                                            </button>
+
+                                                                            <button type="button" data-bs-dismiss="modal" style="margin-right:15px; background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+                                                                                    <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
+                                                                                </svg> Thoát
+                                                                            </button>
 
                                                                         </div>
                                                                     </form>
@@ -524,11 +622,16 @@
                                                     </div> -->
                                                     <div class="modal fade" id="chogiao" aria-hidden="true"
                                                         aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
-                                                        <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    Chờ giao đơn
+                                                                    <h1 class="modal-title fs-5">
+                                                                        Chờ giao đơn hàng</h1>
+                                                                    <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close"></button>
                                                                 </div>
+
                                                                 <div class="modal-body">
                                                                     <form th:action="@{xac-nhan-don}" method="get"
                                                                         th:object="${ghichu}">
@@ -546,13 +649,25 @@
 
 
                                                                         <div class="d-flex flex-row-reverse">
-                                                                            <button type="submit" id="chogiaobtn"
-                                                                                onclick="xacnhanngaygiao()" disabled
-                                                                                class="btn btn-primary">Xác
-                                                                                nhận</button>
-                                                                            <button type="button"
-                                                                                class="btn btn-secondary ms-1"
-                                                                                data-bs-dismiss="modal">Hủy</button>
+<!--                                                                            <button type="submit" id="chogiaobtn"-->
+<!--                                                                                onclick="xacnhanngaygiao()" disabled-->
+<!--                                                                                class="btn btn-primary">Xác-->
+<!--                                                                                nhận</button>-->
+<!--                                                                            <button type="button"-->
+<!--                                                                                class="btn btn-secondary ms-1"-->
+<!--                                                                                data-bs-dismiss="modal">Hủy</button>-->
+                                                                            <button disabled type="submit" id="chogiaobtn"
+                                                                                    onclick="xacnhanngaygiao()" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-hand-index-thumb" viewBox="0 0 16 16">
+                                                                                    <path d="M6.75 1a.75.75 0 0 1 .75.75V8a.5.5 0 0 0 1 0V5.467l.086-.004c.317-.012.637-.008.816.027.134.027.294.096.448.182.077.042.15.147.15.314V8a.5.5 0 0 0 1 0V6.435l.106-.01c.316-.024.584-.01.708.04.118.046.3.207.486.43.081.096.15.19.2.259V8.5a.5.5 0 1 0 1 0v-1h.342a1 1 0 0 1 .995 1.1l-.271 2.715a2.5 2.5 0 0 1-.317.991l-1.395 2.442a.5.5 0 0 1-.434.252H6.118a.5.5 0 0 1-.447-.276l-1.232-2.465-2.512-4.185a.517.517 0 0 1 .809-.631l2.41 2.41A.5.5 0 0 0 6 9.5V1.75A.75.75 0 0 1 6.75 1M8.5 4.466V1.75a1.75 1.75 0 1 0-3.5 0v6.543L3.443 6.736A1.517 1.517 0 0 0 1.07 8.588l2.491 4.153 1.215 2.43A1.5 1.5 0 0 0 6.118 16h6.302a1.5 1.5 0 0 0 1.302-.756l1.395-2.441a3.5 3.5 0 0 0 .444-1.389l.271-2.715a2 2 0 0 0-1.99-2.199h-.581a5 5 0 0 0-.195-.248c-.191-.229-.51-.568-.88-.716-.364-.146-.846-.132-1.158-.108l-.132.012a1.26 1.26 0 0 0-.56-.642 2.6 2.6 0 0 0-.738-.288c-.31-.062-.739-.058-1.05-.046zm2.094 2.025"/>
+                                                                                </svg> Xác nhận
+                                                                            </button>
+
+                                                                            <button type="button" data-bs-dismiss="modal" style="margin-right:15px; background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+                                                                                    <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
+                                                                                </svg> Thoát
+                                                                            </button>
 
                                                                         </div>
                                                                     </form>
@@ -568,7 +683,7 @@
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                                                        Vận chuyển</h1>
+                                                                        Giao hàng</h1>
                                                                     <button type="button" class="btn-close"
                                                                         data-bs-dismiss="modal"
                                                                         aria-label="Close"></button>
@@ -591,12 +706,25 @@
 
 
                                                                         <div class="d-flex flex-row-reverse">
-                                                                            <button type="submit" id="vanchuyenbtn"
-                                                                                disabled class="btn btn-primary">Xác
-                                                                                nhận</button>
-                                                                            <button type="button"
-                                                                                class="btn btn-secondary ms-1"
-                                                                                data-bs-dismiss="modal">Hủy</button>
+<!--                                                                            <button type="submit" id="vanchuyenbtn"-->
+<!--                                                                                disabled class="btn btn-primary">Xác-->
+<!--                                                                                nhận</button>-->
+<!--                                                                            <button type="button"-->
+<!--                                                                                class="btn btn-secondary ms-1"-->
+<!--                                                                                data-bs-dismiss="modal">Hủy</button>-->
+
+                                                                            <button disabled type="submit" id="vanchuyenbtn"
+                                                                                     style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-hand-index-thumb" viewBox="0 0 16 16">
+                                                                                    <path d="M6.75 1a.75.75 0 0 1 .75.75V8a.5.5 0 0 0 1 0V5.467l.086-.004c.317-.012.637-.008.816.027.134.027.294.096.448.182.077.042.15.147.15.314V8a.5.5 0 0 0 1 0V6.435l.106-.01c.316-.024.584-.01.708.04.118.046.3.207.486.43.081.096.15.19.2.259V8.5a.5.5 0 1 0 1 0v-1h.342a1 1 0 0 1 .995 1.1l-.271 2.715a2.5 2.5 0 0 1-.317.991l-1.395 2.442a.5.5 0 0 1-.434.252H6.118a.5.5 0 0 1-.447-.276l-1.232-2.465-2.512-4.185a.517.517 0 0 1 .809-.631l2.41 2.41A.5.5 0 0 0 6 9.5V1.75A.75.75 0 0 1 6.75 1M8.5 4.466V1.75a1.75 1.75 0 1 0-3.5 0v6.543L3.443 6.736A1.517 1.517 0 0 0 1.07 8.588l2.491 4.153 1.215 2.43A1.5 1.5 0 0 0 6.118 16h6.302a1.5 1.5 0 0 0 1.302-.756l1.395-2.441a3.5 3.5 0 0 0 .444-1.389l.271-2.715a2 2 0 0 0-1.99-2.199h-.581a5 5 0 0 0-.195-.248c-.191-.229-.51-.568-.88-.716-.364-.146-.846-.132-1.158-.108l-.132.012a1.26 1.26 0 0 0-.56-.642 2.6 2.6 0 0 0-.738-.288c-.31-.062-.739-.058-1.05-.046zm2.094 2.025"/>
+                                                                                </svg> Xác nhận
+                                                                            </button>
+
+                                                                            <button type="button" data-bs-dismiss="modal" style="margin-right:15px; background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+                                                                                    <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
+                                                                                </svg> Thoát
+                                                                            </button>
 
                                                                         </div>
                                                                     </form>
@@ -613,7 +741,7 @@
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                                                        Thanh toán</h1>
+                                                                        Thanh toán đơn hàng</h1>
                                                                     <button type="button" class="btn-close"
                                                                         data-bs-dismiss="modal"
                                                                         aria-label="Close"></button>
@@ -634,12 +762,26 @@
                                                                         </p>
 
                                                                         <div class="d-flex flex-row-reverse">
-                                                                            <button type="submit" id="thanhtoanbtn"
-                                                                                disabled class="btn btn-primary">Xác
-                                                                                nhận</button>
-                                                                            <button type="button"
-                                                                                class="btn btn-secondary ms-1"
-                                                                                data-bs-dismiss="modal">Hủy</button>
+<!--                                                                            <button type="submit" id="thanhtoanbtn"-->
+<!--                                                                                disabled class="btn btn-primary">Xác-->
+<!--                                                                                nhận</button>-->
+<!--                                                                            <button type="button"-->
+<!--                                                                                class="btn btn-secondary ms-1"-->
+<!--                                                                                data-bs-dismiss="modal">Hủy</button>-->
+
+                                                                            <button disabled type="submit" id="thanhtoanbtn"
+                                                                                    style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-hand-index-thumb" viewBox="0 0 16 16">
+                                                                                    <path d="M6.75 1a.75.75 0 0 1 .75.75V8a.5.5 0 0 0 1 0V5.467l.086-.004c.317-.012.637-.008.816.027.134.027.294.096.448.182.077.042.15.147.15.314V8a.5.5 0 0 0 1 0V6.435l.106-.01c.316-.024.584-.01.708.04.118.046.3.207.486.43.081.096.15.19.2.259V8.5a.5.5 0 1 0 1 0v-1h.342a1 1 0 0 1 .995 1.1l-.271 2.715a2.5 2.5 0 0 1-.317.991l-1.395 2.442a.5.5 0 0 1-.434.252H6.118a.5.5 0 0 1-.447-.276l-1.232-2.465-2.512-4.185a.517.517 0 0 1 .809-.631l2.41 2.41A.5.5 0 0 0 6 9.5V1.75A.75.75 0 0 1 6.75 1M8.5 4.466V1.75a1.75 1.75 0 1 0-3.5 0v6.543L3.443 6.736A1.517 1.517 0 0 0 1.07 8.588l2.491 4.153 1.215 2.43A1.5 1.5 0 0 0 6.118 16h6.302a1.5 1.5 0 0 0 1.302-.756l1.395-2.441a3.5 3.5 0 0 0 .444-1.389l.271-2.715a2 2 0 0 0-1.99-2.199h-.581a5 5 0 0 0-.195-.248c-.191-.229-.51-.568-.88-.716-.364-.146-.846-.132-1.158-.108l-.132.012a1.26 1.26 0 0 0-.56-.642 2.6 2.6 0 0 0-.738-.288c-.31-.062-.739-.058-1.05-.046zm2.094 2.025"/>
+                                                                                </svg> Xác nhận
+                                                                            </button>
+
+                                                                            <button type="button" data-bs-dismiss="modal" style="margin-right:15px; background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+                                                                                    <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
+                                                                                </svg> Thoát
+                                                                            </button>
+
 
                                                                         </div>
                                                                     </form>
@@ -679,7 +821,7 @@
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                                                        Hoàn thành đơn</h1>
+                                                                        Hoàn thành đơn hàng</h1>
                                                                     <button type="button" class="btn-close"
                                                                         data-bs-dismiss="modal"
                                                                         aria-label="Close"></button>
@@ -700,12 +842,24 @@
                                                                         </p>
 
                                                                         <div class="d-flex flex-row-reverse">
-                                                                            <button type="submit" id="hoanthanhbtn"
-                                                                                disabled class="btn btn-primary">Xác
-                                                                                nhận</button>
-                                                                            <button type="button"
-                                                                                class="btn btn-secondary ms-1"
-                                                                                data-bs-dismiss="modal">Hủy</button>
+<!--                                                                            <button type="submit" id="hoanthanhbtn"-->
+<!--                                                                                disabled class="btn btn-primary">Xác-->
+<!--                                                                                nhận</button>-->
+<!--                                                                            <button type="button"-->
+<!--                                                                                class="btn btn-secondary ms-1"-->
+<!--                                                                                data-bs-dismiss="modal">Hủy</button>-->
+                                                                            <button disabled type="submit" id="hoanthanhbtn"
+                                                                                    style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-hand-index-thumb" viewBox="0 0 16 16">
+                                                                                    <path d="M6.75 1a.75.75 0 0 1 .75.75V8a.5.5 0 0 0 1 0V5.467l.086-.004c.317-.012.637-.008.816.027.134.027.294.096.448.182.077.042.15.147.15.314V8a.5.5 0 0 0 1 0V6.435l.106-.01c.316-.024.584-.01.708.04.118.046.3.207.486.43.081.096.15.19.2.259V8.5a.5.5 0 1 0 1 0v-1h.342a1 1 0 0 1 .995 1.1l-.271 2.715a2.5 2.5 0 0 1-.317.991l-1.395 2.442a.5.5 0 0 1-.434.252H6.118a.5.5 0 0 1-.447-.276l-1.232-2.465-2.512-4.185a.517.517 0 0 1 .809-.631l2.41 2.41A.5.5 0 0 0 6 9.5V1.75A.75.75 0 0 1 6.75 1M8.5 4.466V1.75a1.75 1.75 0 1 0-3.5 0v6.543L3.443 6.736A1.517 1.517 0 0 0 1.07 8.588l2.491 4.153 1.215 2.43A1.5 1.5 0 0 0 6.118 16h6.302a1.5 1.5 0 0 0 1.302-.756l1.395-2.441a3.5 3.5 0 0 0 .444-1.389l.271-2.715a2 2 0 0 0-1.99-2.199h-.581a5 5 0 0 0-.195-.248c-.191-.229-.51-.568-.88-.716-.364-.146-.846-.132-1.158-.108l-.132.012a1.26 1.26 0 0 0-.56-.642 2.6 2.6 0 0 0-.738-.288c-.31-.062-.739-.058-1.05-.046zm2.094 2.025"/>
+                                                                                </svg> Xác nhận
+                                                                            </button>
+
+                                                                            <button type="button" data-bs-dismiss="modal" style="margin-right:15px; background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+                                                                                    <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
+                                                                                </svg> Thoát
+                                                                            </button>
 
                                                                         </div>
                                                                     </form>
@@ -741,49 +895,55 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <hr class="border border-danger border-2 opacity-50">
                                         <!--smkds-->
                                         <h3>Lịch sử thanh toán</h3>
+                                        <hr class="border border-danger border-2 opacity-50">
                                         <table id="example2" class="table table-bordered table-hover text-center">
-                                            <thead class="table table-danger">
+                                            <thead style="background-color: rgb(249, 72, 42) !important; color: white !important; height: 50px;">
                                                 <tr>
-                                                    <th>STT</th>
-                                                    <th>Mã giao dịch</th>
-                                                    <th>Số tiền</th>
-                                                    <th>Trạng thái</th>
-                                                    <th>Thời gian</th>
-                                                    <th>Loại giao dịch</th>
-                                                    <th>Phương thức thanh toán</th>
-                                                    <th>Ghi chú</th>
-                                                    <th>Người xác nhận</th>
+                                                    <th style="vertical-align: middle; text-align: center; background-color: inherit !important; color: inherit !important;">STT</th>
+                                                    <th style="vertical-align: middle; text-align: center; background-color: inherit !important; color: inherit !important;">Mã giao dịch</th>
+                                                    <th style="vertical-align: middle; text-align: center; background-color: inherit !important; color: inherit !important;">Số tiền</th>
+                                                    <th style="vertical-align: middle; text-align: center; background-color: inherit !important; color: inherit !important;">Trạng thái</th>
+                                                    <th style="vertical-align: middle; text-align: center; background-color: inherit !important; color: inherit !important;">Thời gian</th>
+                                                    <th style="vertical-align: middle; text-align: center; background-color: inherit !important; color: inherit !important;">Loại giao dịch</th>
+                                                    <th style="vertical-align: middle; text-align: center; background-color: inherit !important; color: inherit !important;">Phương thức thanh toán</th>
+                                                    <th style="vertical-align: middle; text-align: center; background-color: inherit !important; color: inherit !important;">Ghi chú</th>
+                                                    <th style="vertical-align: middle; text-align: center; background-color: inherit !important; color: inherit !important;">Người xác nhận</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr th:each="a:${lstphuongThucTT}">
-                                                    <td th:text="${aStat.index+1}"></td>
-                                                    <td th:text="${a.magiaodichvnpay}"></td>
-                                                    <td
+                                                    <td th:text="${aStat.index+1}" style="vertical-align: middle; text-align: center;"></td>
+                                                    <td th:text="${a.magiaodichvnpay}" style="vertical-align: middle; text-align: center;"></td>
+                                                    <td style="vertical-align: middle; text-align: center;"
                                                         th:text="${#numbers.formatDecimal(a.tongtien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}">
                                                     </td>
-                                                    <td>
-                                                        <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;"
-                                                            th:text="${a.trangthai==true?'Thành công':'Chưa thành công'}">
-                                                        </p>
+                                                    <td style="vertical-align: middle; text-align: center;">
+<!--                                                        <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;"-->
+<!--                                                            th:text="${a.trangthai==true?'Thành công':'Chưa thành công'}">-->
+<!--                                                        </p>-->
+                                                        <h5><span class="badge text-bg-primary" th:text="${a.trangthai == true ? 'Đã thanh toán' : 'Chưa thanh toán'}">
+                                                        </span></h5>
                                                     </td>
-                                                    <td th:text="${ #dates.format(a.ngaytao, 'dd-MM-yyyy HH:mm:ss')}">
+                                                    <td style="vertical-align: middle; text-align: center;" th:text="${ #dates.format(a.ngaytao, 'dd-MM-yyyy HH:mm:ss')}">
                                                     </td>
-                                                    <td>
-                                                        <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;"
-                                                            th:text="${a.tenphuongthuc}"></p>
+                                                    <td style="vertical-align: middle; text-align: center;">
+<!--                                                        <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;"-->
+<!--                                                            th:text="${a.tenphuongthuc}"></p>-->
+                                                        <h5><span class="badge text-bg-primary" th:text="${a.tenphuongthuc}">
+                                                        </span></h5>
                                                     </td>
-                                                    <td>
-                                                        <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;"
-                                                            th:text="${a.mota}"></p>
+                                                    <td style="vertical-align: middle; text-align: center;">
+<!--                                                        <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;"-->
+<!--                                                            th:text="${a.mota}"></p>-->
+                                                        <h5><span class="badge text-bg-primary" th:text="${a.mota}">
+                                                        </span></h5>
                                                     </td>
                                                     <td></td>
                                                     <td></td>
                                                 </tr>
-                                                </tfoot>
+                                            </tbody>
                                         </table>
                                         <!--smkds-->
                                     </div>
@@ -807,16 +967,23 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-12">
-                                    <div class="card" style="height: 326px;">
+                                    <div class="card" style="height: 330px;">
                                         <div class="card-header">
-                                            <div class="d-flex justify-content-between align-content-center">
-                                                <h4 th:text="${'Thông tin đơn hàng: '+hoaDonDT.mahoadon}">
-                                                </h4>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h4 class="mb-0" th:text="${'Thông tin đơn hàng: '+hoaDonDT.mahoadon}"></h4>
                                                 <div>
-                                                    <button type="button" class="btn btn-outline-secondary"
-                                                        data-bs-toggle="modal" data-bs-target="#modalThayDoiHoaDon"
-                                                        th:classappend="${trangThaiHienTai!=0?'disabled':''}">Thay
-                                                        đổi thông tin</button>
+<!--                                                    <button type="button" class="btn btn-outline-secondary"-->
+<!--                                                        data-bs-toggle="modal" data-bs-target="#modalThayDoiHoaDon"-->
+<!--                                                        th:classappend="${trangThaiHienTai!=0?'disabled':''}">Thay-->
+<!--                                                        đổi thông tin</button>-->
+                                                    <button type="button" data-bs-toggle="modal" data-bs-target="#modalThayDoiHoaDon"
+                                                            th:disabled="${trangThaiHienTai != 0 ? 'true' : null}"
+                                                            style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 180px; height: 35px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+                                                            <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"/>
+                                                            <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
+                                                        </svg> Thay đổi thông tin
+                                                    </button>
                                                     <!-- <button type="button" class="btn btn-outline-secondary"
                                                         id="changeNV" data-bs-toggle="modal"
                                                         data-bs-target="#modalChuyenNhanVien"
@@ -828,100 +995,107 @@
                                                 <!-- Modal -->
                                                 <div class="modal fade" id="modalThayDoiHoaDon" tabindex="-1"
                                                     aria-labelledby="exampleModalThayDoiHoaDon" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-scrollable">
+                                                    <div class="modal-dialog modal-dialog-scrollable modal-lg">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h3 class="modal-title fs-5"
+                                                                <h1 class="modal-title fs-5"
                                                                     id="exampleModalThayDoiHoaDon">Thay đổi thông tin
-                                                                    hóa đơn</h3>
+                                                                    hóa đơn</h1>
                                                                 <button type="button" class="btn-close"
                                                                     data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
                                                                 <form class="row g-3" th:action="@{ChangesTTHD}"
                                                                     method="post" th:object="${thayDoiTT}">
-                                                                    <div class="col-md-12">
-                                                                        <label class="form-label">Tên khách
-                                                                            hàng:</label>
+                                                                    <div class="form-floating mb-3">
                                                                         <input type="text" class="form-control"
-                                                                            id="TTTK_ten" th:field="*{ten}">
+                                                                               id="TTTK_ten" th:field="*{ten}">
+                                                                        <label for="TTTK_ten">Họ và tên</label>
                                                                         <i style="color: red; size: 1px;"
-                                                                            id="TTTK_ten_regex"></i>
-
+                                                                           id="TTTK_ten_regex"></i>
                                                                     </div>
-                                                                    <div class="col-md-12">
-                                                                        <label class="form-label">Số điện thoại:</label>
+
+                                                                    <div class="form-floating mb-3">
                                                                         <input type="text" class="form-control"
-                                                                            id="TTTK_sdt" th:field="*{sdt}">
+                                                                               id="TTTK_sdt" th:field="*{sdt}">
+                                                                        <label for="TTTK_sdt">Số điện thoại</label>
                                                                         <i style="color: red;" id="TTTK_sdt_regex"></i>
                                                                     </div>
-                                                                    <div class="col-md-4">
-                                                                        <label class="form-label">Tỉnh/Thành
-                                                                            Phố:</label>
-                                                                        <select class="form-select form-select-sm mb-3"
-                                                                            id="city" th:field="*{tinh}">
-                                                                            <option th:value="*{tinh}" th:text="*{tinh}"
-                                                                                selected>
-                                                                                Chọn tỉnh thành</option>
-                                                                        </select>
+                                                                    <div class="d-flex justify-content-between mb-3">
+                                                                        <div class="form-floating" style="padding-right: 5px; width: 250px;">
+                                                                            <select class="form-select form-select-sm mb-3"
+                                                                                    id="city" th:field="*{tinh}">
+                                                                                <option th:value="*{tinh}" th:text="*{tinh}"
+                                                                                        selected>
+                                                                                    Chọn tỉnh thành</option>
+                                                                            </select>
+                                                                            <label for="city">Tỉnh/thành phố</label>
+                                                                        </div>
+                                                                        <div class="form-floating" style="padding-right: 5px; width: 250px;">
+                                                                            <select class="form-select form-select-sm"
+                                                                                    id="district" th:field="*{huyen}">
+                                                                                <option th:value="*{huyen}"
+                                                                                        th:text="*{huyen}" selected>Chọn quận
+                                                                                    huyện</option>
+                                                                            </select>
+                                                                            <label for="district">Quận/Huyện</label>
+                                                                            <i style="color: red;"
+                                                                               id="TTTK_district_regex"></i>
+                                                                        </div>
+                                                                        <div class="form-floating" style="padding-right: 5px; width: 250px;">
+                                                                            <select class="form-select form-select-sm"
+                                                                                    id="ward" th:field="*{xa}">
+                                                                                <option th:value="*{xa}" th:text="*{xa}"
+                                                                                        selected>
+                                                                                    Chọn phường xã</option>
+                                                                            </select>
+                                                                            <label for="ward">Quận/Huyện</label>
+                                                                            <i style="color: red;" id="TTTK_ward_regex"></i>
+                                                                        </div>
+                                                                    </div>
 
-
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <label class="form-label">Quận/Huyện:</label>
-                                                                        <select class="form-select form-select-sm"
-                                                                            id="district" th:field="*{huyen}">
-                                                                            <option th:value="*{huyen}"
-                                                                                th:text="*{huyen}" selected>Chọn quận
-                                                                                huyện</option>
-                                                                        </select>
-                                                                        <i style="color: red;"
-                                                                            id="TTTK_district_regex"></i>
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <label class="form-label">Phường/Xã: </label>
-                                                                        <select class="form-select form-select-sm"
-                                                                            id="ward" th:field="*{xa}">
-                                                                            <option th:value="*{xa}" th:text="*{xa}"
-                                                                                selected>
-                                                                                Chọn phường xã</option>
-                                                                        </select>
-                                                                        <i style="color: red;" id="TTTK_ward_regex"></i>
-                                                                    </div>
-                                                                    <div class="col-12">
-                                                                        <label class="form-label">Địa chỉ cụ
-                                                                            thể:</label>
+                                                                    <div class="form-floating mb-3">
                                                                         <input type="text" class="form-control"
-                                                                            id="TTTK_diachi" th:field="*{diachiCT}">
+                                                                               id="TTTK_diachi" th:field="*{diachiCT}">
+                                                                        <label for="TTTK_diachi">Địa chỉ cụ
+                                                                            thể</label>
                                                                         <i style="color: red;"
-                                                                            id="TTTK_diachi_regex"></i>
+                                                                           id="TTTK_diachi_regex"></i>
                                                                     </div>
-                                                                    <div class="col-12">
-                                                                        <label class="form-label">Phí giao hàng:</label>
+                                                                    <div class="form-floating mb-3">
                                                                         <input type="text" class="form-control"
-                                                                            oninput="showcasst('phigiaoHang')"
-                                                                            id="phigiaoHang" th:field="*{phigiao}"
-                                                                            th:value="${phigiao}">
+                                                                               oninput="showcasst('phigiaoHang')"
+                                                                               id="phigiaoHang" th:field="*{phigiao}"
+                                                                               th:value="${phigiao}">
+                                                                        <label for="phigiaoHang">Phí giao hàng</label>
                                                                         <i style="color: red;"
-                                                                            id="TTTK_phigiao_regex"></i>
-
+                                                                           id="TTTK_phigiao_regex"></i>
                                                                     </div>
-                                                                    <div class="col-12">
-                                                                        <label class="form-label">Ghi chú:</label>
+                                                                    <div class="form-floating mb-5">
                                                                         <textarea class="form-control" id="ghichus"
-                                                                            th:field="*{ghichu}" rows="3"></textarea>
+                                                                                  th:field="*{ghichu}" rows="3"></textarea>
+                                                                        <label for="ghichus">Ghi chú</label>
                                                                         <i style="color: red;"
-                                                                            id="TTTK_ghichus_regex"></i>
+                                                                           id="TTTK_ghichus_regex"></i>
                                                                     </div>
-                                                                    <button onclick="return validateForm()"
-                                                                        type="submit" class="btn btn-primary">Xác
-                                                                        nhận</button>
-                                                                </form>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-bs-dismiss="modal">Hủy</button>
+                                                                    <div class="d-flex justify-content-end align-items-center">
+<!--                                                                        <button onclick="return validateForm()"-->
+<!--                                                                                type="submit" class="btn btn-primary">Xác-->
+<!--                                                                            nhận</button>-->
+                                                                        <button data-bs-dismiss="modal" type="button" style="background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+                                                                                <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
+                                                                            </svg> Thoát
+                                                                        </button>
+                                                                        <button onclick="return validateForm()" type="submit" style="margin-left:15px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 130px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+                                                                                <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"/>
+                                                                                <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
+                                                                            </svg> Cập nhật
+                                                                        </button>
+                                                                    </div>
 
+                                                                </form>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1012,108 +1186,156 @@
                                                 <!--Kết thúc modal thay đổi nhân viên-->
                                             </div>
                                             <hr class="border border-danger border-2 opacity-50">
-                                            <div class="row g-3">
+                                            <div class="row">
                                                 <div class="col-lg-7 col-md-7">
-                                                    <div class="d-flex justify-content-start">
-                                                        <h6 style="font-family: 'Times New Roman'; font-weight: bold">
+                                                    <div class="d-flex align-items-center mb-1">
+                                                        <h6 style="font-weight: bold; margin: 0;">
                                                             Trạng thái:</h6>
-                                                        <p th:if="${hoaDonDT.trangthai==0}"
-                                                            style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
-                                                            Chờ xác nhận</p>
-                                                        <p th:if="${hoaDonDT.trangthai==1}"
-                                                            style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
-                                                            Đã xác nhận</p>
-                                                        <p th:if="${hoaDonDT.trangthai==2}"
-                                                            style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
-                                                            Chờ giao hàng</p>
-                                                        <p th:if="${hoaDonDT.trangthai==3}"
-                                                            style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
-                                                            Đang giao hàng</p>
-                                                        <p th:if="${hoaDonDT.trangthai==4}"
-                                                            style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
-                                                            Đã thanh toán</p>
-                                                        <p th:if="${hoaDonDT.trangthai==5}"
-                                                            style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
-                                                            Đã hoàn thành</p>
-                                                        <p th:if="${hoaDonDT.trangthai==6}"
-                                                            style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
-                                                            Đã hủy</p>
+                                                        <div style="margin-top: 5px;">
+                                                            <h5 th:if="${hoaDonDT.trangthai==0}" style="margin-left: 10px;">
+                                                                <span class="badge text-bg-primary">Chờ xác nhận</span>
+                                                            </h5>
+<!--                                                            <p th:if="${hoaDonDT.trangthai==0}"-->
+<!--                                                               style=" font-size: 15px; border-radius: 14px;  padding: 3px 15px 3px 15px; color: white;">-->
+<!--                                                                Chờ xác nhận</p>-->
+<!--                                                            <p th:if="${hoaDonDT.trangthai==1}"-->
+<!--                                                               style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">-->
+<!--                                                                </p>-->
+                                                            <h5 th:if="${hoaDonDT.trangthai==1}" style="margin-left: 10px;">
+                                                                <span class="badge text-bg-primary">Đã xác nhận</span>
+                                                            </h5>
+<!--                                                            <p th:if="${hoaDonDT.trangthai==2}"-->
+<!--                                                               style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">-->
+<!--                                                                </p>-->
+                                                            <h5 th:if="${hoaDonDT.trangthai==2}" style="margin-left: 10px;">
+                                                                <span class="badge text-bg-primary">Chờ giao hàng</span>
+                                                            </h5>
+<!--                                                            <p th:if="${hoaDonDT.trangthai==3}"-->
+<!--                                                               style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">-->
+<!--                                                                </p>-->
+                                                            <h5 th:if="${hoaDonDT.trangthai==3}" style="margin-left: 10px;">
+                                                                <span class="badge text-bg-primary">Đang giao hàng</span>
+                                                            </h5>
+<!--                                                            <p th:if="${hoaDonDT.trangthai==4}"-->
+<!--                                                               style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">-->
+<!--                                                                </p>-->
+                                                            <h5 th:if="${hoaDonDT.trangthai==4}" style="margin-left: 10px;">
+                                                                <span class="badge text-bg-primary">Đã thanh toán</span>
+                                                            </h5>
+<!--                                                            <p th:if="${hoaDonDT.trangthai==5}"-->
+<!--                                                               style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">-->
+<!--                                                                </p>-->
+                                                            <h5 th:if="${hoaDonDT.trangthai==5}" style="margin-left: 10px;">
+                                                                <span class="badge text-bg-primary">Đã hoàn thành</span>
+                                                            </h5>
+<!--                                                            <p th:if="${hoaDonDT.trangthai==6}"-->
+<!--                                                               style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">-->
+<!--                                                                Đã hủy</p>-->
+                                                            <h5 th:if="${hoaDonDT.trangthai==6}" style="margin-left: 10px;">
+                                                                <span class="badge text-bg-primary">Đã hủy</span>
+                                                            </h5>
+                                                        </div>
                                                     </div>
-                                                    <div class="d-flex justify-content-start">
-                                                        <h6 style="font-family: 'Times New Roman'; font-weight: bold">
+                                                    <div class="d-flex align-items-center mb-1">
+                                                        <h6 style="font-weight: bold; margin: 0;">
                                                             Loại:</h6>
-                                                        <p th:if="${hoaDonDT.loaihoadon==true}"
-                                                            style="margin-left: 50px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
-                                                            Online</p>
-                                                        <p th:if="${hoaDonDT.loaihoadon==false}"
-                                                            style="margin-left: 50px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
-                                                            Offline</p>
+                                                        <div style="margin-top: 5px;">
+                                                            <h5 th:if="${hoaDonDT.loaihoadon==true}" style="margin-left: 10px;">
+                                                                <span class="badge text-bg-primary">Online</span>
+                                                            </h5>
+                                                            <h5 th:if="${hoaDonDT.loaihoadon==false}" style="margin-left: 10px;">
+                                                                <span class="badge text-bg-primary">Offline</span>
+                                                            </h5>
+                                                        </div>
+<!--                                                        <p th:if="${hoaDonDT.loaihoadon==true}"-->
+<!--                                                            style="margin-left: 50px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">-->
+<!--                                                            </p>-->
+<!--                                                        <p th:if="${hoaDonDT.loaihoadon==false}"-->
+<!--                                                            style="margin-left: 50px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">-->
+<!--                                                            Offline</p>-->
                                                     </div>
-                                                    <div class="d-flex justify-content-start">
-                                                        <h6 style="font-family: 'Times New Roman'; font-weight: bold">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <h6 style="font-weight: bold; margin: 0;">
                                                             Địa chỉ:</h6>
                                                         <p th:text="${hoaDonDT.diachi}"
-                                                            style="margin-left: 34px; font-family: 'Times New Roman'; font-size: 15px;">
+                                                            style="margin-left: 10px; margin-top: 0; font-size: 15px; margin-bottom: 0;">
                                                         </p>
                                                     </div>
-                                                    <div class="d-flex justify-content-start">
-                                                        <h6 style="font-family: 'Times New Roman'; font-weight: bold">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <h6 style="font-weight: bold; margin: 0;">
                                                             Ngày tạo:</h6>
                                                         <p th:text="${ #dates.format(hoaDonDT.ngaytao, 'dd-MM-yyyy HH:mm:ss')}"
-                                                            style="margin-left: 20px; font-family: 'Times New Roman'; font-size: 15px;">
+                                                           style="margin-left: 10px; margin-top: 0; font-size: 15px; margin-bottom: 0;">
                                                         </p>
                                                     </div>
-                                                    <div class="d-flex justify-content-start">
-                                                        <h6 style="font-family: 'Times New Roman'; font-weight: bold">
+                                                    <div class="d-flex align-items-center mb-1">
+                                                        <h6 style="font-weight: bold; margin: 0;">
                                                             Ghi chú:</h6>
                                                         <p th:text="${hoaDonDT.ghichu}"
-                                                            style=" margin-left: 24px;font-family: 'Times New Roman'; font-size: 15px;">
+                                                           style="margin-left: 10px; margin-top: 0; font-size: 15px; margin-bottom: 0;">
                                                         </p>
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <h6 style="font-weight: bold; margin: 0;">
+                                                            Hình thức giao:</h6>
+                                                        <div style="margin-top: 5px;">
+                                                            <h5 th:if="${hoaDonDT.hoatoc==true}" style="margin-left: 10px;">
+                                                                <span class="badge text-bg-primary">Hỏa tốc</span>
+                                                            </h5>
+                                                            <h5 th:if="${hoaDonDT.hoatoc==false}" style="margin-left: 10px;">
+                                                                <span class="badge text-bg-primary">Thông thường</span>
+                                                            </h5>
+                                                        </div>
+<!--                                                        <p th:text="${hoaDonDT.hoatoc==true?'Hỏa tốc':'Thông thường'}"-->
+<!--                                                           style="margin-left: 75px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">-->
+<!--                                                        </p>-->
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-5 col-md-5">
-                                                    <div class="d-flex justify-content-start">
-                                                        <h6 style="font-family: 'Times New Roman'; font-weight: bold">
+                                                    <div class="d-flex align-items-center mb-1">
+                                                        <h6 style="font-weight: bold; margin: 0;">
                                                             Loại giao dịch:</h6>
-                                                        <p th:text="${phuongThucTT.tenphuongthuc}"
-                                                            style="margin-left: 79px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
-                                                        </p>
+<!--                                                        <p th:text="${phuongThucTT.tenphuongthuc}"-->
+<!--                                                            style="margin-left: 79px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">-->
+<!--                                                        </p>-->
+                                                        <div style="margin-top: 5px;">
+                                                            <h5 style="margin-left: 10px;">
+                                                                <span class="badge text-bg-primary" th:text="${phuongThucTT.tenphuongthuc}"></span>
+                                                            </h5>
+                                                        </div>
                                                     </div>
-                                                    <div class="d-flex justify-content-start">
-                                                        <h6 style="font-family: 'Times New Roman'; font-weight: bold">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <h6 style="font-weight: bold; margin: 0;">
                                                             Phương thức thanh toán:</h6>
-                                                        <p th:text="${phuongThucTT.mota}"
-                                                            style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
-                                                        </p>
+<!--                                                        <p th:text="${phuongThucTT.mota}"-->
+<!--                                                            style="margin-left: 10px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">-->
+<!--                                                        </p>-->
+                                                        <div style="margin-top: 5px;">
+                                                            <h5 style="margin-left: 10px;">
+                                                                <span class="badge text-bg-primary" th:text="${phuongThucTT.mota}"></span>
+                                                            </h5>
+                                                        </div>
                                                     </div>
-                                                    <div class="d-flex justify-content-start">
-                                                        <h6 style="font-family: 'Times New Roman'; font-weight: bold">
+                                                    <div class="d-flex align-items-center mb-3">
+                                                        <h6 style="font-weight: bold; margin: 0;">
                                                             Tên khách hàng:</h6>
                                                         <p th:text="${hoaDonDT.tennguoinhan}"
-                                                            style="margin-left: 70px; font-family: 'Times New Roman'; font-size: 15px;">
+                                                           style="margin-left: 10px; margin-top: 0; font-size: 15px; margin-bottom: 0;">
                                                         </p>
                                                     </div>
-                                                    <div class="d-flex justify-content-start">
-                                                        <h6 style="font-family: 'Times New Roman'; font-weight: bold">Số
+                                                    <div class="d-flex align-items-center mb-3">
+                                                        <h6 style="font-weight: bold; margin: 0;">Số
                                                             điện thoại:</h6>
                                                         <p th:text="${hoaDonDT.sdt}"
-                                                            style="margin-left: 90px; font-family: 'Times New Roman'; font-size: 15px;">
+                                                           style="margin-left: 10px; margin-top: 0; font-size: 15px; margin-bottom: 0;">
                                                         </p>
                                                     </div>
-                                                    <div class="d-flex justify-content-start">
-                                                        <h6 style="font-family: 'Times New Roman'; font-weight: bold">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <h6 style="font-weight: bold; margin: 0;">
                                                             Ngày giao dự kiến:</h6>
                                                         <p th:text="${hoaDonDT.ngaygiaodukien==null?' -------':#dates.format(hoaDonDT.ngaygiaodukien, 'dd-MM-yyyy')}"
-                                                            style="margin-left: 53px; font-family: 'Times New Roman'; font-size: 15px;">
+                                                           style="margin-left: 10px; margin-top: 0; font-size: 15px; margin-bottom: 0;">>
                                                             25/12/2024</p>
-                                                    </div>
-                                                    <div class="d-flex justify-content-start">
-                                                        <h6 style="font-family: 'Times New Roman'; font-weight: bold">
-                                                            Hình thức giao:</h6>
-
-                                                        <p th:text="${hoaDonDT.hoatoc==true?'Hỏa tốc':'Thông thường'}"
-                                                            style="margin-left: 75px; font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;">
-                                                        </p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1135,38 +1357,38 @@
                         <div>
                             <div class="row">
                                 <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h3>Chi phí đơn hàng</h3>
+                                    <div class="card" style="height: 330px;">
+                                        <div class="card-body">
+                                            <h3 style="margin-top: 0;">Chi phí đơn hàng</h3>
                                             <hr class="border border-danger border-2 opacity-50">
-                                            <div class="d-flex justify-content-between">
-                                                <h6 style="font-family: 'Times New Roman'; font-weight: bold">Tổng tiền
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <h6 style="font-weight: bold; margin: 0;">Tổng tiền
                                                     đơn hàng:</h6>
                                                 <p th:text="${#numbers.formatDecimal(tongTienSP, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
-                                                    style="font-family: 'Times New Roman'; font-size: 16px; color: red">
+                                                   style=" margin-top: 0; font-size: 17px; margin-bottom: 0; color: red;">
                                                 </p>
                                             </div>
-                                            <div class="d-flex justify-content-between">
-                                                <h6 style="font-family: 'Times New Roman'; font-weight: bold">Phí giao
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <h6 style="font-weight: bold; margin: 0;">Phí giao
                                                     hàng:</h6>
                                                 <p th:text="${#numbers.formatDecimal(hoaDonDT.phivanchuyen, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
-                                                    style="font-family: 'Times New Roman'; font-size: 16px;">
+                                                   style=" margin-top: 0; font-size: 17px; margin-bottom: 0;">
                                                 </p>
                                             </div>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <h6 style="font-family: 'Times New Roman'; font-weight: bold">Phiếu giảm
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <h6 style="font-weight: bold; margin: 0;">Phiếu giảm
                                                     giá
                                                     :</h6>
 
                                                 <span th:if="${phieuGiamCT.id!=null}">
                                                     <p th:text="${phieuGiamCT.phieugiamgia.loaiphieu==false?#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiam, 0, 'COMMA', 0, 'POINT')+'&#x20ab;':phieuGiamCT.phieugiamgia.giatrigiam+' %, tối đa '+#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiamtoida, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
-                                                        style="font-family: 'Times New Roman'; font-size: 16px; margin-top: 10px;">
+                                                       style=" margin-top: 0; font-size: 17px; margin-bottom: 0;">
                                                     </p>
                                                 </span>
 
                                                 <span th:if="${phieuGiamCT.id==null}">
                                                     <span class="applied-reduction-code"
-                                                        style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px;">
+                                                        style="font-size: 17px; border-radius: 14px; margin-bottom: 0; margin-top: 0;">
                                                         <svg width="16" height="15" xmlns="http://www.w3.org/2000/svg"
                                                             class="applied-reduction-code-icon" fill="#CE4549">
                                                             <path
@@ -1174,31 +1396,35 @@
                                                             </path>
                                                         </svg>
                                                         <span class="applied-reduction-code-information"
-                                                            style="background-color: #D3D3D3;">Không áp dụng
+                                                            style="background-color: #D3D3D3; margin-bottom: 0; margin-top: 0;">Không áp dụng
                                                             !</span>
                                                     </span>
                                                 </span>
-                                                <button class="btn btn-light" style="margin-bottom: 0px;"
+                                                <button type="button" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 130px; height: 35px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold; margin-bottom: 0; margin-top: 0;"
                                                     th:if="${hoaDonDT.loaihoadon==false}" data-bs-toggle="modal"
                                                     id="chonMaGiam"
                                                     th:classappend="${trangThaiHienTai!=0?'disabled':''}"
                                                     data-bs-target="#staticBackdrop" onclick="showmagiam()">
-                                                    Chọn mã</button>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-all" viewBox="0 0 16 16">
+                                                        <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0"/>
+                                                        <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708"/>
+                                                    </svg>
+                                                    Chọn phiếu</button>
                                             </div>
-                                            <div class="d-flex justify-content-between">
-                                                <h6 style="font-family: 'Times New Roman'; font-weight: bold">Tổng tiền
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <h6 style="font-weight: bold; margin: 0;">Tổng tiền
                                                     giảm
                                                     :</h6>
                                                 <p th:text="${phieuGiamCT.tiengiam!=null?#numbers.formatDecimal(phieuGiamCT.tiengiam, 0, 'COMMA', 0, 'POINT')+'&#x20ab;':#numbers.formatDecimal(0, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
-                                                    style="font-family: 'Times New Roman'; font-size: 16px;">
+                                                   style=" margin-top: 0; font-size: 17px; margin-bottom: 0;">
                                                 </p>
                                             </div>
                                             <hr class="border border-danger border-2 opacity-50">
-                                            <div class="d-flex justify-content-between">
-                                                <h6 style="font-family: 'Times New Roman'; font-weight: bold">Tổng tiền
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <h6 style="font-weight: bold; margin: 0;">Tổng tiền
                                                     thanh toán:</h6>
                                                 <p th:text="${#numbers.formatDecimal(hoaDonDT.tongtien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
-                                                    style="font-family: 'Times New Roman'; font-size: 16px; color: red;">
+                                                   style=" margin-top: 0; font-size: 17px; margin-bottom: 0; color: red;">
                                                 </p>
                                             </div>
                                         </div>
@@ -1221,15 +1447,26 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <div class="d-flex justify-content-between align-content-center">
+                                    <div class="d-flex justify-content-between align-content-center mt-2">
                                         <h3>
                                             Thông tin sản phẩm đã mua
                                         </h3>
-                                        <button type="button" class="btn text-white"
-                                            style="background-color: rgb(249,72,42);" data-bs-toggle="modal"
-                                            data-bs-target="#modalThemSanPhamHD" id="changeSP"
-                                            th:classappend="${trangThaiHienTai!=0?'disabled':''}">+ Thêm sản
-                                            phẩm </button>
+                                        <button type="button" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 190px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modalThemSanPhamHD" id="changeSP"
+                                                th:disabled="${trangThaiHienTai!=0?'true': null}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                                 class="bi bi-plus" viewBox="0 0 16 16">
+                                                <path
+                                                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                            </svg>
+                                            Thêm sản phẩm
+                                        </button>
+<!--                                        <button type="button" class="btn text-white"-->
+<!--                                            style="background-color: rgb(249,72,42);" data-bs-toggle="modal"-->
+<!--                                            data-bs-target="#modalThemSanPhamHD" id="changeSP"-->
+<!--                                            th:classappend="${trangThaiHienTai!=0?'disabled':''}">+ Thêm sản-->
+<!--                                            phẩm </button>-->
                                         <!--Modal thêm sản phẩm vào hóa đơn-->
                                         <!-- Modal -->
                                         <div class="modal fade" id="modalThemSanPhamHD" tabindex="-1"
@@ -1238,7 +1475,7 @@
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h3 class="modal-title fs-5" id="exampleModalThemSanPhamHD">Thêm
-                                                            sản phẩm vào đơn hàng</h3>
+                                                            sản phẩm vào hóa đơn</h3>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
@@ -1247,26 +1484,32 @@
                                                             <div class="d-flex justify-content-between">
                                                                 <nav class="navbar bg-body-tertiary">
                                                                     <form>
-                                                                        <div class="d-flex align-items-center">
+                                                                        <div class="d-flex align-items-center mb-2">
                                                                             <input class="form-control me-2"
                                                                                 type="search" id="tensp"
                                                                                 placeholder="Nhập tên sản phẩm..."
                                                                                 aria-label="Search"
                                                                                 style="width: 984px;">
-                                                                            <button type="button" id="reloadsp"
-                                                                                class="btn btn-outline-warning"><i
-                                                                                    class="bi bi-arrow-clockwise"></i></button>
+                                                                            <a type="button" id="reloadsp" style="color: rgb(249,72,42); font-weight: bold; margin-left: 15px;">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+                                                                                    <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"/>
+                                                                                    <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
+                                                                                </svg>
+                                                                            </a>
+<!--                                                                            <button type="button" id="reloadsp"-->
+<!--                                                                                class="btn btn-outline-warning"><i-->
+<!--                                                                                    class="bi bi-arrow-clockwise"></i></button>-->
                                                                         </div>
                                                                         <!--Bộ lọc-->
                                                                         <div class="align-items-center">
-                                                                            <div class="d-flex justify-content-around">
+                                                                            <div class="d-flex justify-content-around mb-2">
                                                                                 <div>
                                                                                     <label class="col-form-label">Chất
                                                                                         liệu</label>
                                                                                     <select class="form-select"
                                                                                         onchange="SearchSPHDCT()"
                                                                                         id="chatlieu"
-                                                                                        style="width: 120px;">
+                                                                                        style="width: 130px;">
                                                                                         <option value="all" selected>
                                                                                             ----</option>
                                                                                         <option
@@ -1283,7 +1526,7 @@
                                                                                     <select class="form-select"
                                                                                         onchange="SearchSPHDCT()"
                                                                                         id="thuonghieu"
-                                                                                        style="width: 120px;">
+                                                                                        style="width: 130px;">
                                                                                         <option value="all" selected>
                                                                                             ----</option>
                                                                                         <option
@@ -1300,7 +1543,7 @@
                                                                                     <select class="form-select"
                                                                                         onchange="SearchSPHDCT()"
                                                                                         id="degiay"
-                                                                                        style="width: 120px;">
+                                                                                        style="width: 130px;">
                                                                                         <option value="all" selected>
                                                                                             ----</option>
                                                                                         <option th:each="a:${dsDe}"
@@ -1316,7 +1559,7 @@
                                                                                     <select class="form-select"
                                                                                         onchange="SearchSPHDCT()"
                                                                                         id="kichco"
-                                                                                        style="width: 120px;">
+                                                                                        style="width: 130px;">
                                                                                         <option value="all" selected>
                                                                                             ----</option>
                                                                                         <option th:each="a:${dsKichCo}"
@@ -1332,7 +1575,7 @@
                                                                                     <select class="form-select"
                                                                                         onchange="SearchSPHDCT()"
                                                                                         id="mausac"
-                                                                                        style="width: 120px;">
+                                                                                        style="width: 130px;">
                                                                                         <option value="all" selected>
                                                                                             ----</option>
                                                                                         <option th:each="a:${dsMauSac}"
@@ -1352,7 +1595,7 @@
                                                                                     tính</label>
                                                                                 <select class="form-select"
                                                                                     onchange="SearchSPHDCT()"
-                                                                                    id="gioitinh" style="width: 120px;">
+                                                                                    id="gioitinh" style="width: 130px;">
 
                                                                                     <option value="true">Nam</option>
                                                                                     <option value="false">Nữ</option>
@@ -1378,8 +1621,8 @@
                                                                 </nav>
                                                             </div>
                                                             <br>
-                                                            <table class="table table-bordered table-hover text-center">
-                                                                <thead class="table table-danger">
+                                                            <table id="bangthemsanpham" class="table table-bordered table-hover text-center">
+                                                                <thead>
                                                                     <tr>
                                                                         <th>STT</th>
                                                                         <th>Ảnh sản phẩm</th>
@@ -1427,23 +1670,23 @@
                                     </div>
                                     <hr class="border border-danger border-2 opacity-50">
                                     <div class="card-body">
-                                        <table class="table align-middle table-bordered table-hover">
-                                            <thead class="table table-danger">
+                                        <table class="table table-bordered table-hover">
+                                            <thead class="text-center" style="background-color: rgb(249, 72, 42) !important; height: 50px; color: white !important;">
                                                 <tr>
-                                                    <th>STT</th>
-                                                    <th>Ảnh sản phẩm</th>
-                                                    <th>Thông tin sản phẩm</th>
-                                                    <th>Màu sắc</th>
-                                                    <th>Số lượng</th>
-                                                    <th>Tổng tiền</th>
-                                                    <th>Trạng thái</th>
-                                                    <th colspan="2">Thao tác</th>
+                                                    <th style="background-color: inherit !important; color: inherit !important;">STT</th>
+                                                    <th style="background-color: inherit !important; color: inherit !important;">Ảnh sản phẩm</th>
+                                                    <th style="background-color: inherit !important; color: inherit !important;">Thông tin sản phẩm</th>
+                                                    <th style="background-color: inherit !important; color: inherit !important;">Màu sắc</th>
+                                                    <th style="background-color: inherit !important; color: inherit !important;">Số lượng</th>
+                                                    <th style="background-color: inherit !important; color: inherit !important;">Tổng tiền</th>
+                                                    <th style="background-color: inherit !important; color: inherit !important;">Trạng thái</th>
+                                                    <th style="background-color: inherit !important; color: inherit !important;">Thao tác</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr th:each="a:${pageSPHD}">
-                                                    <td th:text="${aStat.index+1}" style="vertical-align: middle;"></td>
-                                                    <td style="vertical-align: middle;">
+                                                    <td th:text="${aStat.index+1}" class="text-center" style="vertical-align: middle;"></td>
+                                                    <td style="vertical-align: middle; text-align: center;">
                                                         <div class="image-container">
                                                             <img th:src="@{${a.sanphamchitiet.anh[0].tenanh}}" alt=""
                                                                 style="height: 100px; width: 100px;">
@@ -1459,67 +1702,92 @@
                                                         <p th:text="${a.sanphamchitiet.sanpham.tensanpham}"
                                                             style="font-family: 'Times New Roman'; font-size: 15px; font-weight: bold;">
                                                         </p>
-                                                        <p th:text="${#numbers.formatDecimal(a.giasanpham, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
-                                                            style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
-                                                        </p>
-                                                        <p class="strikethrough"
-                                                            th:if="${a.giasanpham!=a.sanphamchitiet.giatien}"
-                                                            th:text="${#numbers.formatDecimal(a.sanphamchitiet.giatien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
-                                                            style="font-family: 'Times New Roman'; font-size: 15px; color: black;font-weight: bold;">
-                                                        </p>
-
+                                                        <div class="d-flex justify-content-center align-items-center">
+                                                            <p th:text="${#numbers.formatDecimal(a.giasanpham, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                               style="margin-right: 7px; font-size: 18px; color: red;font-weight: bold;">
+                                                            </p>
+                                                            <p class="strikethrough"
+                                                               th:if="${a.giasanpham!=a.sanphamchitiet.giatien}"
+                                                               th:text="${#numbers.formatDecimal(a.sanphamchitiet.giatien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                               style="margin-left: 7px; font-size: 18px; color: black;font-weight: bold;">
+                                                            </p>
+                                                        </div>
                                                         <p th:text="${'Size: '+a.sanphamchitiet.kichco.ten}"
                                                             style="font-family: 'Times New Roman'; font-size: 15px;font-weight: bold;">
                                                         </p>
                                                     </td>
 
-                                                    <td style="vertical-align: middle;">
-                                                        <p th:text="${a.sanphamchitiet.mausac.ten}"
-                                                            th:style="'background-color: ' + ${a.sanphamchitiet.mausac.ten} + '; color: white; padding: 3px 15px; border-radius: 14px;'">
-                                                        </p>
-                                                    </td>
-
-                                                    <td style="vertical-align: middle;"><input
-                                                            th:name="${a.sanphamchitiet.id}"
-                                                            class="form-control form-control-sm" type="text"
-                                                            th:id="${a.id}" oninput="changeQuantity(event)"
-                                                            aria-label=".form-control-sm example" style="width: 100px;"
-                                                            th:value="${a.soluong}"
-                                                            th:readonly="${trangThaiHienTai != 0}"></td>
-
-                                                    <td style="vertical-align: middle;">
-                                                        <p th:text="${#numbers.formatDecimal(a.giasanpham*a.soluong, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
-                                                            style="font-family: 'Times New Roman'; font-size: 15px; color: red;font-weight: bold;">
-                                                        </p>
+                                                    <td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
+                                                        <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                                            <input style="margin: 0;" type="color" class="color-input2" th:value="${a.sanphamchitiet.mausac.ten}">
+                                                        </div>
 
                                                     </td>
-                                                    <td style="vertical-align: middle;">
-                                                        <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;"
-                                                            th:text="${a.trangthai==true?'Thành công':'Thất bại'}"></p>
+
+                                                    <td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
+                                                        <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                                            <input th:name="${a.sanphamchitiet.id}" class="form-control" style="width: 90px; height: 40px; text-align: center;" type="text"
+                                                                   th:id="${a.id}" oninput="changeQuantity(event)"
+                                                                   aria-label=".form-control-sm example"
+                                                                   th:value="${a.soluong}"
+                                                                   th:readonly="${trangThaiHienTai != 0}">
+                                                        </div>
                                                     </td>
-                                                    <td style="vertical-align: middle;">
+
+                                                    <td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
+                                                        <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                                            <p th:text="${#numbers.formatDecimal(a.giasanpham*a.soluong, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
+                                                               style="font-size: 18px; color: red; font-weight: bold; margin: 0;">
+                                                            </p>
+                                                        </div>
+                                                    </td>
+                                                    <td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
+                                                        <h5 style="margin: 0;" th:if="${a.trangthai==true}"><span class="badge text-bg-success">Thành công</span></h5>
+                                                        <h5 style="margin: 0;" th:if="${a.trangthai==false}"><span class="badge text-bg-danger">Thất bại</span></h5>
+<!--                                                        <p style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: #007bff; padding: 3px 15px 3px 15px; color: white;"-->
+<!--                                                            th:text="${a.trangthai==true?'Thành công':'Thất bại'}"></p>-->
+                                                    </td>
+                                                    <td style="vertical-align: middle;" class="text-center">
+
+<!--                                                        <a th:if="${trangThaiHienTai==0}"-->
+<!--                                                            th:href="@{http://localhost:8080/hoa-don/delete-sp-hdct/{id}(id=${a.id})}">-->
+<!--                                                            <button class="btn btn-danger"-->
+<!--                                                                onclick="return confirm('Bạn có muốn xóa sản phẩm này không?')"-->
+<!--                                                                type="button"><i class="bi bi-trash3"></i></button></a>-->
 
                                                         <a th:if="${trangThaiHienTai==0}"
-                                                            th:href="@{http://localhost:8080/hoa-don/delete-sp-hdct/{id}(id=${a.id})}">
-                                                            <button class="btn btn-danger"
-                                                                onclick="return confirm('Bạn có muốn xóa sản phẩm này không?')"
-                                                                type="button"><i class="bi bi-trash3"></i></button></a>
+                                                           th:href="@{http://localhost:8080/hoa-don/delete-sp-hdct/{id}(id=${a.id})}"
+                                                            onclick="return confirm('Bạn có muốn xóa sản phẩm này không?')">
+                                                            <i style="color:rgb(249,72,42); font-weight: bold; font-size: 25px;" class="bi bi-trash3"></i></a>
+
+                                                        <a style="cursor: default;" th:if="${trangThaiHienTai!=0}">
+                                                            <i style="color:rgb(249,72,42); font-weight: bold; font-size: 25px;" class="bi bi-trash3"></i></a>
+
+<!--                                                        <button class="btn btn-danger" th:if="${trangThaiHienTai!=0}"-->
+<!--                                                            disabled type="button"><i class="bi bi-trash3"></i></button>-->
 
 
-                                                        <button class="btn btn-danger" th:if="${trangThaiHienTai!=0}"
-                                                            disabled type="button"><i class="bi bi-trash3"></i></button>
+<!--                                                        <button class="btn btn-warning" th:if="${trangThaiHienTai!=0}"-->
+<!--                                                            disabled type="button"><i-->
+<!--                                                                class="bi bi-arrow-clockwise bi-warning"></i></button>-->
+                                                        <a style="cursor: default;" th:if="${trangThaiHienTai!=0}">
+                                                            <i style="color:rgb(249,72,42); font-weight: bold; font-size: 25px;" class="bi bi-arrow-repeat"></i>
+                                                        </a>
 
+<!--                                                        <a th:if="${trangThaiHienTai==0}" th:id="${a.id+'fsport'}"-->
+<!--                                                            th:href="@{http://localhost:8080/hoa-don/update-sp-hdct/{id}/{sl}(id=${a.id},sl=${a.soluong})}">-->
+<!--                                                            <button class="btn btn-warning"-->
+<!--                                                                onclick="return confirm('Bạn có muốn cập nhật lại sản phẩm này không?')"-->
+<!--                                                                type="button"><i-->
+<!--                                                                    class="bi bi-arrow-clockwise bi-warning"></i></button></a>-->
 
-                                                        <button class="btn btn-warning" th:if="${trangThaiHienTai!=0}"
-                                                            disabled type="button"><i
-                                                                class="bi bi-arrow-clockwise bi-warning"></i></button>
+                                                        <a style="margin-left: 15px;"
+                                                           th:if="${trangThaiHienTai==0}" th:id="${a.id+'fsport'}"
+                                                           th:href="@{http://localhost:8080/hoa-don/update-sp-hdct/{id}/{sl}(id=${a.id},sl=${a.soluong})}"
+                                                           onclick="return confirm('Bạn có muốn cập nhật lại sản phẩm này không?')">
+                                                            <i style="color:rgb(249,72,42); font-weight: bold; font-size: 25px;" class="bi bi-arrow-repeat"></i>
+                                                        </a>
 
-                                                        <a th:if="${trangThaiHienTai==0}" th:id="${a.id+'fsport'}"
-                                                            th:href="@{http://localhost:8080/hoa-don/update-sp-hdct/{id}/{sl}(id=${a.id},sl=${a.soluong})}">
-                                                            <button class="btn btn-warning"
-                                                                onclick="return confirm('Bạn có muốn cập nhật lại sản phẩm này không?')"
-                                                                type="button"><i
-                                                                    class="bi bi-arrow-clockwise bi-warning"></i></button></a>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -2164,26 +2432,24 @@
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
-                                   <td style="vertical-align: middle;">
-                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: ${hd.mausac.ten}; padding: 3px 15px 3px 15px; color: white;">
-                                       ${hd.mausac.ten}
-                                        </p>
+                                   <td style="text-align: center; vertical-align: middle; padding: 0;">
+                                        <input type="color" value="${hd.mausac.ten}" class="color-input2" style="margin: auto; display: block;" disabled>
                                     </td>
-                                   <td style="vertical-align: middle;">
-                                  
+                                   <td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
+
                                       ${hd.trangthai == true ?
-                                `
-                                      <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
-                                       Đang kinh doanh
-                                        </p>
+                            `
+                                      <button disabled style="border: none; margin: 0;" class="badge badge-success">
+                  <span>Đang kinh doanh</span>
+              </button>
                                      `
-                                :
-                                `
-                                      <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color:  rgb(128,128,128); padding: 3px 15px 3px 15px; color: white;">
-                                       Ngừng kinh doanh
-                                        </p>
+                            :
+                            `
+                                      <button disabled style="border: none; margin: 0;" class="badge badge-danger">
+                  <span>Ngừng kinh doanh</span>
+              </button>
                                      `
-                            }
+                        }
 
                                     </td>
                                    <td style="vertical-align: middle;">
@@ -2264,26 +2530,24 @@
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
-                                  <td style="vertical-align: middle;">
-                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: ${hd.mausac.ten}; padding: 3px 15px 3px 15px; color: white;">
-                                       ${hd.mausac.ten}
-                                        </p>
+                                  <td style="text-align: center; vertical-align: middle; padding: 0;">
+                                        <input type="color" value="${hd.mausac.ten}" class="color-input2" style="margin: auto; display: block;" disabled>
                                     </td>
-                                   <td style="vertical-align: middle;">
-                                 
+                                   <td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
+
                                       ${hd.trangthai == true ?
-                                `
-                                      <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
-                                       Đang kinh doanh
-                                        </p>
+                            `
+                                      <button disabled style="border: none; margin: 0;" class="badge badge-success">
+                  <span>Đang kinh doanh</span>
+              </button>
                                      `
-                                :
-                                `
-                                      <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color:  rgb(128,128,128); padding: 3px 15px 3px 15px; color: white;">
-                                       Ngừng kinh doanh
-                                        </p>
+                            :
+                            `
+                                      <button disabled style="border: none; margin: 0;" class="badge badge-danger">
+                  <span>Ngừng kinh doanh</span>
+              </button>
                                      `
-                            }
+                        }
 
                                     </td>
                                    <td style="vertical-align: middle;">
@@ -2320,6 +2584,13 @@
 
 
         reloadSP.onclick = function () {
+            document.getElementById("tensp").value= '';
+            document.getElementById("chatlieu").selectedIndex = 0;
+            document.getElementById("thuonghieu").selectedIndex = 0;
+            document.getElementById("degiay").selectedIndex = 0;
+            document.getElementById("kichco").selectedIndex = 0;
+            document.getElementById("mausac").selectedIndex = 0;
+            document.getElementById("gioitinh").selectedIndex = 0;
             const pageSPChanges = localStorage.getItem("pageSPChanges") ?? 0;
             const urlPage = `/hoa-don/viewSPChanges?pageSPChanges=${pageSPChanges}`;
 
@@ -2353,26 +2624,24 @@
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
-                                  <td style="vertical-align: middle;">
-                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: ${hd.mausac.ten}; padding: 3px 15px 3px 15px; color: white;">
-                                       ${hd.mausac.ten}
-                                        </p>
+                                  <td style="text-align: center; vertical-align: middle; padding: 0;">
+                                        <input type="color" value="${hd.mausac.ten}" class="color-input2" style="margin: auto; display: block;" disabled>
                                     </td>
-                                   <td style="vertical-align: middle;">
-                                 
+                                   <td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
+
                                       ${hd.trangthai == true ?
-                                `
-                                      <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
-                                       Đang kinh doanh
-                                        </p>
+                            `
+                                      <button disabled style="border: none; margin: 0;" class="badge badge-success">
+                  <span>Đang kinh doanh</span>
+              </button>
                                      `
-                                :
-                                `
-                                      <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color:  rgb(128,128,128); padding: 3px 15px 3px 15px; color: white;">
-                                       Ngừng kinh doanh
-                                        </p>
+                            :
+                            `
+                                      <button disabled style="border: none; margin: 0;" class="badge badge-danger">
+                  <span>Ngừng kinh doanh</span>
+              </button>
                                      `
-                            }
+                        }
 
                                     </td>
                                    <td style="vertical-align: middle;">
@@ -2457,26 +2726,24 @@
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
-                                   <td style="vertical-align: middle;">
-                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: ${hd.mausac.ten}; padding: 3px 15px 3px 15px; color: white;">
-                                       ${hd.mausac.ten}
-                                        </p>
+                                   <td style="text-align: center; vertical-align: middle; padding: 0;">
+                                        <input type="color" value="${hd.mausac.ten}" class="color-input2" style="margin: auto; display: block;" disabled>
                                     </td>
-                                   <td style="vertical-align: middle;">
-                                  
+                                   <td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
+
                                       ${hd.trangthai == true ?
-                                `
-                                      <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
-                                       Đang kinh doanh
-                                        </p>
+                            `
+                                      <button disabled style="border: none; margin: 0;" class="badge badge-success">
+                  <span>Đang kinh doanh</span>
+              </button>
                                      `
-                                :
-                                `
-                                      <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color:  rgb(128,128,128); padding: 3px 15px 3px 15px; color: white;">
-                                       Ngừng kinh doanh
-                                        </p>
+                            :
+                            `
+                                      <button disabled style="border: none; margin: 0;" class="badge badge-danger">
+                  <span>Ngừng kinh doanh</span>
+              </button>
                                      `
-                            }
+                        }
 
                                     </td>
                                    <td style="vertical-align: middle;">
@@ -2557,27 +2824,25 @@
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
-                                  <td style="vertical-align: middle;">
-                                   
-  ${hd.trangthai == true ?
-                                `
-                                      <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
-                                       Đang kinh doanh
-                                        </p>
-                                     `
-                                :
-                                `
-                                      <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color:  rgb(128,128,128); padding: 3px 15px 3px 15px; color: white;">
-                                       Ngừng kinh doanh
-                                        </p>
-                                     `
-                            }
-
+                                  <td style="text-align: center; vertical-align: middle; padding: 0;">
+                                        <input type="color" value="${hd.mausac.ten}" class="color-input2" style="margin: auto; display: block;" disabled>
                                     </td>
-                                   <td style="vertical-align: middle;">
-                                    <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
-                                        ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
-                                        </p>
+                                   <td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
+
+                                      ${hd.trangthai == true ?
+                            `
+                                      <button disabled style="border: none; margin: 0;" class="badge badge-success">
+                  <span>Đang kinh doanh</span>
+              </button>
+                                     `
+                            :
+                            `
+                                      <button disabled style="border: none; margin: 0;" class="badge badge-danger">
+                  <span>Ngừng kinh doanh</span>
+              </button>
+                                     `
+                        }
+
                                     </td>
                                    <td style="vertical-align: middle;">
                                     ${hd.trangthai == true ? `
@@ -2659,27 +2924,25 @@
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
-                                  <td style="vertical-align: middle;">
-                                  
-                                      ${hd.trangthai == true ?
-                                `
-                                      <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
-                                       Đang kinh doanh
-                                        </p>
-                                     `
-                                :
-                                `
-                                      <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color:  rgb(128,128,128); padding: 3px 15px 3px 15px; color: white;">
-                                       Ngừng kinh doanh
-                                        </p>
-                                     `
-                            }
-
+                                  <td style="text-align: center; vertical-align: middle; padding: 0;">
+                                        <input type="color" value="${hd.mausac.ten}" class="color-input2" style="margin: auto; display: block;" disabled>
                                     </td>
-                                   <td style="vertical-align: middle;">
-                                    <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
-                                        ${hd.trangthai == true ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
-                                        </p>
+                                   <td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
+
+                                      ${hd.trangthai == true ?
+                            `
+                                      <button disabled style="border: none; margin: 0;" class="badge badge-success">
+                  <span>Đang kinh doanh</span>
+              </button>
+                                     `
+                            :
+                            `
+                                      <button disabled style="border: none; margin: 0;" class="badge badge-danger">
+                  <span>Ngừng kinh doanh</span>
+              </button>
+                                     `
+                        }
+
                                     </td>
                                    <td style="vertical-align: middle;">
                                    ${hd.trangthai == true ? `
@@ -2763,26 +3026,24 @@
                                    <td style="vertical-align: middle;">${hd.sanpham.tensanpham}</td>
                                    <td style="vertical-align: middle;">${hd.soluong}</td>
                                    <td style="vertical-align: middle;">${hd.kichco.ten}</td>
-                                   <td style="vertical-align: middle;">
-                                     <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: ${hd.mausac.ten}; padding: 3px 15px 3px 15px; color: white;">
-                                       ${hd.mausac.ten}
-                                        </p>
+                                   <td style="text-align: center; vertical-align: middle; padding: 0;">
+                                        <input type="color" value="${hd.mausac.ten}" class="color-input2" style="margin: auto; display: block;" disabled>
                                     </td>
-                                   <td style="vertical-align: middle;">
-                                  
+                                   <td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
+
                                       ${hd.trangthai == true ?
-                                `
-                                      <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color: green; padding: 3px 15px 3px 15px; color: white;">
-                                       Đang kinh doanh
-                                        </p>
+                            `
+                                      <button disabled style="border: none; margin: 0;" class="badge badge-success">
+                  <span>Đang kinh doanh</span>
+              </button>
                                      `
-                                :
-                                `
-                                      <p  style="font-family: 'Times New Roman'; font-size: 15px; border-radius: 14px; background-color:  rgb(128,128,128); padding: 3px 15px 3px 15px; color: white;">
-                                       Ngừng kinh doanh
-                                        </p>
+                            :
+                            `
+                                      <button disabled style="border: none; margin: 0;" class="badge badge-danger">
+                  <span>Ngừng kinh doanh</span>
+              </button>
                                      `
-                            }
+                        }
 
                                     </td>
                                    <td style="vertical-align: middle;">
