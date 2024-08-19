@@ -1382,13 +1382,13 @@
 
                                                 <span th:if="${phieuGiamCT.id!=null}">
                                                     <p th:text="${phieuGiamCT.phieugiamgia.loaiphieu==false?#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiam, 0, 'COMMA', 0, 'POINT')+'&#x20ab;':phieuGiamCT.phieugiamgia.giatrigiam+' %, tối đa '+#numbers.formatDecimal(phieuGiamCT.phieugiamgia.giatrigiamtoida, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"
-                                                       style=" margin-top: 0; font-size: 17px; margin-bottom: 0;">
+                                                       style=" margin-top: 0; font-size: 14px; margin-bottom: 0; font-weight: bold;">
                                                     </p>
                                                 </span>
 
                                                 <span th:if="${phieuGiamCT.id==null}">
                                                     <span class="applied-reduction-code"
-                                                        style="font-size: 17px; border-radius: 14px; margin-bottom: 0; margin-top: 0;">
+                                                        style="font-size: 14px; border-radius: 14px; margin-bottom: 0; margin-top: 0; font-weight: bold;">
                                                         <svg width="16" height="15" xmlns="http://www.w3.org/2000/svg"
                                                             class="applied-reduction-code-icon" fill="#CE4549">
                                                             <path
@@ -1400,10 +1400,11 @@
                                                             !</span>
                                                     </span>
                                                 </span>
-                                                <button type="button" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 130px; height: 35px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold; margin-bottom: 0; margin-top: 0;"
+                                                <button type="button" style="background-color: rgb(249,72,42);color: white; width: 110px; height: 30px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold; margin-bottom: 0; margin-top: 0; font-size: 14px;"
                                                     th:if="${hoaDonDT.loaihoadon==false}" data-bs-toggle="modal"
                                                     id="chonMaGiam"
-                                                    th:classappend="${trangThaiHienTai!=0?'disabled':''}"
+                                                   
+                                                    th:disabled="${trangThaiHienTai!=0?'true': null}"
                                                     data-bs-target="#staticBackdrop" onclick="showmagiam()">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-all" viewBox="0 0 16 16">
                                                         <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0"/>
