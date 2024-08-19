@@ -249,7 +249,7 @@
                                             <label><span style="color: red">* </span>Tên sản phẩm:</label>
                                             <select class="form-control select2 select2-primary"
                                                     data-dropdown-css-class="select2-primary"
-                                                    style="width: 1000px;"
+                                                    style="width: 1140px;"
                                                     name="tensp" data-placeholder="Nhập tên sản phẩm"
                                                     onchange="clearErrorMessageTenSP()">
                                                 <option style="font-family: 'Bahnschrift'"></option>
@@ -291,7 +291,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label><span style="color: red">* </span>Mô tả:</label>
-                                        <textarea style="width: 1000px;" rows="4" cols="164" class="form-control" name="mota"
+                                        <textarea style="width: 1140px;" rows="4" cols="164" class="form-control" name="mota"
                                                   th:text="${motas}"
                                                   oninput="clearErrorMessageMoTa()"></textarea>
                                         <span id="motaError"
@@ -748,7 +748,7 @@
                                 <input type="number" class="form-control" name="soluong" id="soluongInput" min="1"
                                        max="100">
                                 <span id="soluongError" style="color: red; display: none; font-style: italic">Vui lòng nhập số lượng.</span>
-                                <span id="soluongRangeError" style="color: red; display: none;font-style: italic">Vui lòng nhập số lượng từ 1 đến 100.</span>
+                                <span id="soluongRangeError" style="color: red; display: none;font-style: italic">Số lượng phải nhỏ hơn 10000</span>
                             </p>
                             <p>Đơn giá:
                                 <input class="form-control" name="giatienDisplay" id="giatienInput"

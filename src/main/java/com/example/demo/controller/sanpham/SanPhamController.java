@@ -138,13 +138,16 @@ public class SanPhamController {
         List<SanPham> listSanPham = sanPhamRepositoty.findAll();
         for (SanPham sp : listSanPham) {
             List<SanPhamChiTiet> listSPCT = sanPhamChiTietRepository.findBySanPhamId(sp.getId());
-            int soluong = 0;
-            for (SanPhamChiTiet spct : listSPCT) {
-                soluong = soluong + spct.getSoluong();
-            }
-            if (soluong <= 0) {
-                sp.setTrangthai(false);
-                sanPhamRepositoty.save(sp);
+
+            if (listSPCT != null && !listSPCT.isEmpty()) {
+                int soluong = 0;
+                for (SanPhamChiTiet spct : listSPCT) {
+                    soluong = soluong + spct.getSoluong();
+                }
+                if (soluong <= 0) {
+                    sp.setTrangthai(false);
+                    sanPhamRepositoty.save(sp);
+                }
             }
         }
         if (isKeyEmpty && isTrangthaiNull) {
@@ -329,7 +332,7 @@ public class SanPhamController {
     public String detailsanpham(@PathVariable Integer id, Model model, @ModelAttribute("search") SanPhamChiTietInfo info) {
         List<SanPhamChiTiet> listSPCT = sanPhamChiTietRepository.findBySanPhamId(id);
         for (SanPhamChiTiet spct : listSPCT) {
-            if (spct.getSoluong()<=0){
+            if (spct.getSoluong() <= 0) {
                 spct.setTrangthai(false);
                 sanPhamChiTietRepository.save(spct);
             }
