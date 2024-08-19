@@ -95,6 +95,13 @@ public class SanPhamChiTietController {
                 sanPhamRepositoty.save(sanPham);
             }
         }
+        if (check == 1) {
+            SanPham sanPham = sanPhamRepositoty.findById(spct.getSanpham().getId()).orElse(null);
+            if (sanPham != null) {
+                sanPham.setTrangthai(true);
+                sanPhamRepositoty.save(sanPham);
+            }
+        }
         return "redirect:/detailsanpham/" + spct.getSanpham().getId();
     }
 
