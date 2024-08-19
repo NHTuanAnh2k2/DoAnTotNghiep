@@ -74,6 +74,7 @@ public class ThanhToanController {
 
     @RequestMapping("/view-thanh-toan")
     public String viewthanhtoan(Model model, @ModelAttribute("diachikotaikhoan") DiaChiThanhToanNoTaiKhoanOnline diachikotaikhoan, HttpSession session) {
+        String anhKH= null;
         List<GioHangChiTiet> cartItems = new ArrayList<>();
         String token = (String) session.getAttribute("token");
         NguoiDung nguoiDung = null;
@@ -100,6 +101,7 @@ public class ThanhToanController {
                     }
                 }
                 if (nguoiDung != null) {
+                    anhKH= nguoiDung.getAnh();
                     model.addAttribute("tenKH",nguoiDung.getHovaten());
                     model.addAttribute("emailKH",nguoiDung.getEmail());
                     List<DiaChi> lstDC = diaChiRepository.findDiaChiByIdNd(nguoiDung.getId());
@@ -157,6 +159,7 @@ public class ThanhToanController {
         model.addAttribute("discountedPrices", discountedPrices);
         model.addAttribute("totalQuantity", totalQuantity);
         model.addAttribute("cartItems", cartItems);
+        model.addAttribute("anhKH",anhKH);
         return "customer/thanhtoan";
     }
 

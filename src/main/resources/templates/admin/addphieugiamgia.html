@@ -531,6 +531,10 @@
                 document.getElementById("inputSoLuong").style.border="1.2px solid red";
                 errorSoLuong.innerText = "Số lượng phải lớn hơn 0!";
                 isSoLuongValid = false;
+            }else if(inputSoLuong >=10000){
+                document.getElementById("inputSoLuong").style.border="1.2px solid red";
+                errorSoLuong.innerText = "Số lượng phải nhỏ hơn 10 ngàn!";
+                isSoLuongValid = false;
             }else{
                 document.getElementById("inputSoLuong").style.border="";
                 errorSoLuong.innerText = "";

@@ -269,6 +269,7 @@ public class GioHangController {
                           HttpSession session) {
 
         List<GioHangChiTiet> lstsoLuongTrongGio = new ArrayList<>();
+        String anhKH= null;
         // Tìm sản phẩm chi tiết dựa trên màu sắc và kích cỡ
         SanPhamChiTiet sanPhamChiTiet = sanPhamChiTietRepository.findBySanPhamIdAndColorAndSize(id, selectedColor, selectedSize);
         sanPhamChiTiet.setSoluong(quantity);
@@ -314,6 +315,7 @@ public class GioHangController {
                     }
                 }
                 if (nguoiDung != null) {
+                    anhKH=nguoiDung.getAnh();
                     model.addAttribute("tenKH",nguoiDung.getHovaten());
                     model.addAttribute("emailKH",nguoiDung.getEmail());
                     List<DiaChi> lstDC = diaChiRepository.findDiaChiByIdNd(nguoiDung.getId());
@@ -374,6 +376,7 @@ public class GioHangController {
         model.addAttribute("totalQuantity", totalQuantity);
         model.addAttribute("cartItems", cartItems);
         session.setAttribute("lstMuaNgay",cartItems);
+        model.addAttribute("anhKH",nguoiDung.getAnh());
         return "customer/thanhtoan";
 
     }

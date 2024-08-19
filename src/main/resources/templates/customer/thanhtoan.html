@@ -255,9 +255,14 @@
             <h6 style="margin-top: 50px;">THÔNG TIN GIAO HÀNG</h6>
             <div class="d-flex justify-content-start mt-4">
                 <div style="margin-right: 15px;">
-                    <img src="../dist/img/user7-128x128.jpg" style="border-radius: 7px;" width="70px" height="70px">
+                    <img th:if="${anhKH != null}"
+                         th:src="@{'/upload' + ${anhKH.substring(anhKH.lastIndexOf('upload') + 6)}}"
+                         style="border-radius: 40%;" width="70px" height="70px">
+                    <img th:if="${anhKH == null}"
+                         src="../upload/anhmacdinhkhachhang.jpg"
+                         style="border-radius: 40%;" width="70px" height="70px">
                 </div>
-                <p style="padding-top: 7px;" th:if="${token} !=''" th:text="${tenKH} + ' (' +${emailKH}+ ')'">
+                <p style="padding-top: 20px; font-size: 16px; font-weight: bold;" th:if="${token} !=''" th:text="${tenKH} + ' (' +${emailKH}+ ')'">
 
 <!--                    Văn Hoa Nguyễn (nguyeenxvawnhoa@gmail.com)-->
 <!--                    <br>-->
