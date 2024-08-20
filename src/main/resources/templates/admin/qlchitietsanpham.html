@@ -47,7 +47,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
                              class="bi bi-bookmark-dash-fill" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
-                                  d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6 6a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z" />
+                                  d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6 6a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z"/>
                         </svg>
                         <h1 style="margin-left: 10px; margin-top: 5px;">QUẢN LÝ BIẾN THỂ SẢN PHẨM</h1>
                     </div>
@@ -55,118 +55,137 @@
             </div><!-- /.container-fluid -->
         </section>
         <!--        <section class="content">-->
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="d-flex align-items-center mb-3">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
-                                                 fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
-                                                <path
-                                                        d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z" />
-                                            </svg>
-                                            <h3 style="margin-left: 10px; padding-top: 8px;">Bộ lọc</h3>
-                                        </div>
-                                        <hr class="border border-danger border opacity-50">
-                                        <form th:method="get" th:object="${search}" id="searchForm">
-                                            <div class="mb-3">
-                                                <label>Tìm kiếm:</label>
-                                                <input style="height: 50px;" type="text" placeholder="Tìm kiếm theo tên sản phẩm hoặc mã sản phẩm chi tiết" class="form-control"
-                                                       name="key" th:value="${fillSearch}" onblur="submitForm()">
-                                            </div>
-                                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                                <div>
-                                                    <label>Thương hiệu:</label>
-                                                    <select class="form-control" name="idThuongHieu"
-                                                            style="color: rgb(249,72,42); font-weight: bold;width: 150px; height: 45px;" onchange="submitForm()">
-                                                        <option value="" th:selected="${fillThuongHieu == null}">Tất cả</option>
-                                                        <option th:each="thuonghieu : ${th}"
-                                                                th:value="${thuonghieu.id}"
-                                                                th:selected="${thuonghieu.id == fillThuongHieu}"
-                                                                th:text="${thuonghieu.ten}">
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                                <div>
-                                                    <label>Đế giày:</label>
-                                                    <select class="form-control" name="idDeGiay"
-                                                            style="color: rgb(249,72,42); font-weight: bold;width: 150px; height: 45px;" onchange="submitForm()">
-                                                        <option value="" th:selected="${fillDeGiay == null}">Tất cả</option>
-                                                        <option th:each="degiay : ${dg}"
-                                                                th:value="${degiay.id}"
-                                                                th:selected="${degiay.id == fillDeGiay}"
-                                                                th:text="${degiay.ten}">
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                                <div>
-                                                    <label>Kích cỡ:</label>
-                                                    <select class="form-control" name="idKichCo"
-                                                            style="color: rgb(249,72,42); font-weight: bold;width: 150px; height: 45px;" onchange="submitForm()">
-                                                        <option value="" th:selected="${fillKichCo == null}">Tất cả</option>
-                                                        <option th:each="kichco : ${kc}"
-                                                                th:value="${kichco.id}"
-                                                                th:selected="${kichco.id == fillKichCo}"
-                                                                th:text="${kichco.ten}">
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                                <div>
-                                                    <label>Màu sắc:</label>
-                                                    <select id="mausac-select" class="form-control" name="idMauSac"
-                                                            style="color: rgb(249,72,42); font-weight: bold; width: 150px; height: 45px;" onchange="submitForm()">
-                                                        <option value="" th:selected="${fillMauSac == null}">Tất cả</option>
-                                                        <option th:each="mausac : ${ms}"
-                                                                th:value="${mausac.id}"
-                                                                th:selected="${mausac.id == fillMauSac}"
-                                                                th:text="${mausac.ten}"
-                                                                th:data-color="${mausac.ten}"></option>
-                                                    </select>
-                                                </div>
-                                                <div>
-                                                    <label>Chất liệu:</label>
-                                                    <select class="form-control" name="idChatLieu"
-                                                            style="color: rgb(249,72,42); font-weight: bold; width: 150px; height: 45px;" onchange="submitForm()">
-                                                        <option value="" th:selected="${fillChatLieu == null}">Tất cả</option>
-                                                        <option th:each="chatlieu : ${cl}"
-                                                                th:value="${chatlieu.id}"
-                                                                th:selected="${chatlieu.id == fillChatLieu}"
-                                                                th:text="${chatlieu.ten}">
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                                <div>
-                                                    <label>Giới tính:</label>
-                                                    <select id="statusSelect" class="form-control" name="gioitinh"
-                                                            style="color: rgb(249,72,42); font-weight: bold;width: 150px; height: 45px;" onchange="submitForm()">
-                                                        <option value="" th:selected="${fillGioiTinh == null}">Tất cả</option>
-                                                        <option value="true" th:selected="${fillGioiTinh != null && fillGioiTinh}">Nam</option>
-                                                        <option value="false" th:selected="${fillGioiTinh != null && !fillGioiTinh}">Nữ</option>
-                                                    </select>
-                                                </div>
-                                                <div>
-                                                    <label>Trạng thái:</label>
-                                                    <select id="" class="form-control" name="trangthai"
-                                                            style="color: rgb(249,72,42); font-weight: bold;width: 150px; height: 45px;" onchange="submitForm()">
-                                                        <option value="" th:selected="${fillTrangThai == null}">Tất cả</option>
-                                                        <option value="true" th:selected="${fillTrangThai != null && fillTrangThai}">Đang kinh doanh</option>
-                                                        <option value="false" th:selected="${fillTrangThai != null && !fillTrangThai}">Ngừng kinh doanh</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </form>
-
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="d-flex align-items-center mb-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+                                     fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
+                                    <path
+                                            d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
+                                </svg>
+                                <h3 style="margin-left: 10px; padding-top: 8px;">Bộ lọc</h3>
+                            </div>
+                            <hr class="border border-danger border opacity-50">
+                            <form th:method="get" th:object="${search}" id="searchForm">
+                                <div class="mb-3">
+                                    <label>Tìm kiếm:</label>
+                                    <input style="height: 50px;" type="text"
+                                           placeholder="Tìm kiếm theo tên sản phẩm hoặc mã sản phẩm chi tiết"
+                                           class="form-control"
+                                           name="key" th:value="${fillSearch}" onblur="submitForm()">
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <label>Thương hiệu:</label>
+                                        <select class="form-control" name="idThuongHieu"
+                                                style="color: rgb(249,72,42); font-weight: bold;width: 150px; height: 45px;"
+                                                onchange="submitForm()">
+                                            <option value="" th:selected="${fillThuongHieu == null}">Tất cả</option>
+                                            <option th:each="thuonghieu : ${th}"
+                                                    th:value="${thuonghieu.id}"
+                                                    th:selected="${thuonghieu.id == fillThuongHieu}"
+                                                    th:text="${thuonghieu.ten}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label>Đế giày:</label>
+                                        <select class="form-control" name="idDeGiay"
+                                                style="color: rgb(249,72,42); font-weight: bold;width: 150px; height: 45px;"
+                                                onchange="submitForm()">
+                                            <option value="" th:selected="${fillDeGiay == null}">Tất cả</option>
+                                            <option th:each="degiay : ${dg}"
+                                                    th:value="${degiay.id}"
+                                                    th:selected="${degiay.id == fillDeGiay}"
+                                                    th:text="${degiay.ten}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label>Kích cỡ:</label>
+                                        <select class="form-control" name="idKichCo"
+                                                style="color: rgb(249,72,42); font-weight: bold;width: 150px; height: 45px;"
+                                                onchange="submitForm()">
+                                            <option value="" th:selected="${fillKichCo == null}">Tất cả</option>
+                                            <option th:each="kichco : ${kc}"
+                                                    th:value="${kichco.id}"
+                                                    th:selected="${kichco.id == fillKichCo}"
+                                                    th:text="${kichco.ten}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label>Màu sắc:</label>
+                                        <select id="mausac-select" class="form-control" name="idMauSac"
+                                                style="color: rgb(249,72,42); font-weight: bold; width: 150px; height: 45px;"
+                                                onchange="submitForm()">
+                                            <option value="" th:selected="${fillMauSac == null}">Tất cả</option>
+                                            <option th:each="mausac : ${ms}"
+                                                    th:value="${mausac.id}"
+                                                    th:selected="${mausac.id == fillMauSac}"
+                                                    th:text="${mausac.ten}"
+                                                    th:data-color="${mausac.ten}"></option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label>Chất liệu:</label>
+                                        <select class="form-control" name="idChatLieu"
+                                                style="color: rgb(249,72,42); font-weight: bold; width: 150px; height: 45px;"
+                                                onchange="submitForm()">
+                                            <option value="" th:selected="${fillChatLieu == null}">Tất cả</option>
+                                            <option th:each="chatlieu : ${cl}"
+                                                    th:value="${chatlieu.id}"
+                                                    th:selected="${chatlieu.id == fillChatLieu}"
+                                                    th:text="${chatlieu.ten}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label>Giới tính:</label>
+                                        <select id="statusSelect" class="form-control" name="gioitinh"
+                                                style="color: rgb(249,72,42); font-weight: bold;width: 150px; height: 45px;"
+                                                onchange="submitForm()">
+                                            <option value="" th:selected="${fillGioiTinh == null}">Tất cả</option>
+                                            <option value="true" th:selected="${fillGioiTinh != null && fillGioiTinh}">
+                                                Nam
+                                            </option>
+                                            <option value="false"
+                                                    th:selected="${fillGioiTinh != null && !fillGioiTinh}">Nữ
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label>Trạng thái:</label>
+                                        <select id="" class="form-control" name="trangthai"
+                                                style="color: rgb(249,72,42); font-weight: bold;width: 150px; height: 45px;"
+                                                onchange="submitForm()">
+                                            <option value="" th:selected="${fillTrangThai == null}">Tất cả</option>
+                                            <option value="true"
+                                                    th:selected="${fillTrangThai != null && fillTrangThai}">Đang kinh
+                                                doanh
+                                            </option>
+                                            <option value="false"
+                                                    th:selected="${fillTrangThai != null && !fillTrangThai}">Ngừng kinh
+                                                doanh
+                                            </option>
+                                        </select>
                                     </div>
                                 </div>
-                                <!-- /.card -->
-                            </div>
-                            <!-- /.col -->
+                            </form>
+
                         </div>
-                        <!-- /.row -->
                     </div>
-                    <!-- /.container-fluid -->
-                </section>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+        </section>
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
@@ -175,26 +194,34 @@
                         <form th:method="post" th:action="@{/updateGiaAndSoLuongCTSP}" id="submitid"
                               onsubmit="return validateForm()" name="updateSLGT">
                             <div class="d-flex justify-content-end align-items-center mb-4 mt-4">
-                                <button id="editButton" class="btn disabled" type="button" data-bs-toggle="modal" data-bs-target="#chinhsuasoluongvagia"
+                                <button id="editButton" class="btn disabled" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#chinhsuasoluongvagia"
                                         style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 180px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                         class="bi bi-pencil-square" viewBox="0 0 16 16">
                                         <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                                    </svg> Chỉnh sửa chung</button>
+                                        <path fill-rule="evenodd"
+                                              d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                    </svg>
+                                    Chỉnh sửa chung
+                                </button>
                                 <a th:href="@{/allSPCT}">
-                                    <button type="button" style="margin-left:15px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 250px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-calendar2-check" viewBox="0 0 16 16">
+                                    <button type="button"
+                                            style="margin-left:15px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 250px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                             fill="currentColor" class="bi bi-calendar2-check" viewBox="0 0 16 16">
                                             <path d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
                                             <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z"/>
                                             <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5z"/>
-                                        </svg> Danh sách sản phẩm chi tiết
+                                        </svg>
+                                        Danh sách sản phẩm chi tiết
                                     </button>
                                 </a>
-<!--                                <a id="editButton" class="btn disabled"-->
-<!--                                   style="margin-left: 10px;margin-bottom: 15px;background-color:rgb(249,72,42);color: white"-->
-<!--                                   data-bs-toggle="modal" data-bs-target="#chinhsuasoluongvagia">Chỉnh sửa số lượng và-->
-<!--                                    giá-->
-<!--                                    chung</a>-->
+                                <!--                                <a id="editButton" class="btn disabled"-->
+                                <!--                                   style="margin-left: 10px;margin-bottom: 15px;background-color:rgb(249,72,42);color: white"-->
+                                <!--                                   data-bs-toggle="modal" data-bs-target="#chinhsuasoluongvagia">Chỉnh sửa số lượng và-->
+                                <!--                                    giá-->
+                                <!--                                    chung</a>-->
                             </div>
                             <div class="d-flex">
 
@@ -214,27 +241,36 @@
                                         <div class="modal-body">
                                             <p>Số lượng:
                                                 <input id="soluong" type="number" class="form-control" name="soluong">
-                                                <span id="soluongError" style="color: red; font-style: italic"></span>
+                                                <span id="soluongError" style="color: red"></span>
                                             </p>
                                             <p>Đơn giá:
                                                 <input id="giatien" class="form-control" name="giatienDisplay"
                                                        onkeyup="formatCurrency('giatien')">
                                                 <input type="hidden" name="giatien" id="giatienRawInput">
-                                                <span id="giatienError" style="color: red; font-style: italic"></span>
+                                                <span id="giatienError" style="color: red"></span>
                                             </p>
                                         </div>
 
                                         <div class="d-flex justify-content-end align-items-center mb-3">
-                                            <button data-bs-dismiss="modal" type="button" style="background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
-                                                    <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
-                                                </svg> Thoát
+                                            <button data-bs-dismiss="modal" type="button"
+                                                    style="background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                     fill="currentColor" class="bi bi-arrow-left-short"
+                                                     viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd"
+                                                          d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
+                                                </svg>
+                                                Thoát
                                             </button>
-                                            <button  onclick="layGiaTri2()" type="submit" style="margin-left:15px; margin-right: 15px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 130px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+                                            <button onclick="layGiaTri2()" type="submit"
+                                                    style="margin-left:15px; margin-right: 15px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 130px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                     fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
                                                     <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"/>
-                                                    <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
-                                                </svg> Cập nhật
+                                                    <path fill-rule="evenodd"
+                                                          d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
+                                                </svg>
+                                                Cập nhật
                                             </button>
                                         </div>
 
@@ -249,9 +285,9 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
                                          fill="currentColor" class="bi bi-card-list" viewBox="0 0 16 16">
                                         <path
-                                                d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z" />
+                                                d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"/>
                                         <path
-                                                d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8m0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0M4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0" />
+                                                d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8m0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0M4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"/>
                                     </svg>
                                     <h5 style="margin-left: 10px; padding-top: 12px;">Danh sách biến thể sản phẩm</h5>
                                 </div>
@@ -342,18 +378,20 @@
     </span>
                                         </td>
                                         <td th:text="${spct.thuonghieu.ten}"></td>
-<!--                                        <td th:text="${spct.chatlieu.ten}"></td>-->
-<!--                                        <td th:text="${spct.degiay.ten}"></td>-->
+                                        <!--                                        <td th:text="${spct.chatlieu.ten}"></td>-->
+                                        <!--                                        <td th:text="${spct.degiay.ten}"></td>-->
                                         <td th:text="${spct.kichco.ten}"></td>
-<!--                                        <td th:text="${spct.mausac.ten}"></td>-->
+                                        <!--                                        <td th:text="${spct.mausac.ten}"></td>-->
 
                                         <td>
-                                            <input type="color" th:value="${spct.mausac.ten}" class="form-control" disabled>
-<!--                                            <p th:text="${spct.mausac.ten}" style="color: red">-->
+                                            <input type="color" th:value="${spct.mausac.ten}" class="form-control"
+                                                   disabled>
+                                            <!--                                            <p th:text="${spct.mausac.ten}" style="color: red">-->
                                         </td>
                                         <td>
                                             <form name="updateTrangThaiForm"
-                                                  th:action="@{/chi-tiet-san-pham/updateTrangThai/{id}(id=${spct.id})}" method="post"
+                                                  th:action="@{/chi-tiet-san-pham/updateTrangThai/{id}(id=${spct.id})}"
+                                                  method="post"
                                                   onsubmit="return confirmUpdateKichCo(this);">
                                                 <button type="submit" style=" border: none;"
                                                         th:classappend="${spct.trangthai == true ? 'badge badge-success' : 'badge badge-danger'}">
@@ -458,34 +496,42 @@
         var giatien = document.getElementById("giatien").value;
         var giatienError = document.getElementById("giatienError");
 
-        // Kiểm tra trường "Số lượng"
         // Kiểm tra xem trường "Số lượng" có trống không
         if (soluong.trim() === "") {
-            soluongError.innerText = "Vui lòng nhập số lượng.";
+            soluongError.innerText = "Vui lòng nhập số lượng";
             return false; // Ngăn form được gửi đi
         } else if (soluong <= 0) {
-            soluongError.innerText = "Số lượng phải lớn hơn 0.";
+            soluongError.innerText = "Số lượng phải lớn hơn 0";
             return false; // Ngăn form được gửi đi
-        }  else {
+        } else if (soluong > 2147483647) {
+            soluongError.innerText = "Số lượng phải nhỏ hơn 2147483647";
+            return false; // Ngăn form được gửi đi
+        } else {
             soluongError.innerText = ""; // Xóa thông báo lỗi nếu có
         }
 
-
-        // Kiểm tra trường "Giá tiền"
+        giatien = giatien.replace(/[^0-9]/g, '');
+        var giatienValue = parseInt(giatien);
+        // Kiểm tra nếu giá trị rỗng
         if (giatien.trim() === "") {
             giatienError.innerText = "Vui lòng nhập giá tiền";
-            return false; // Ngăn form được gửi đi
+            return false;
         }
-            // else if (!(/^\d+$/.test(giatien))) {
-            //     giatienError.innerText = "Giá tiền chỉ được chứa số";
-            //     return false; // Ngăn form được gửi đi
-        // }
-        else if (giatien < 0) {
-            giatienError.innerText = "Giá tiền phải >= 0";
-            return false; // Ngăn form được gửi đi
-        } else {
+        // Kiểm tra giá trị <= 0
+        else if (giatienValue <= 0) {
+            giatienError.innerText = "Giá tiền phải lớn hơn 0";
+            return false;
+        }
+        // Kiểm tra giá trị > 922337203685477
+        else if (giatienValue > 922337203685477) {
+            giatienError.innerText = "Giá tiền không được vượt quá 922.337.203.685.477 ₫";
+            return false;
+        }
+        else {
             giatienError.innerText = ""; // Xóa thông báo lỗi nếu có
         }
+        // Cập nhật giá trị vào input ẩn để gửi lên server
+        document.getElementById('giatienRawInput').value = giatienValue;
 
         // Gọi hàm updateSLGT() nếu không có lỗi ở các trường trước đó
         return updateSLGT();
@@ -623,7 +669,7 @@
 
 <!--Màu sắc-->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const selectElement = document.getElementById('mausac-select');
         const options = selectElement.querySelectorAll('option');
 

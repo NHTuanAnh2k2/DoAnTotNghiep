@@ -234,7 +234,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
                              class="bi bi-bookmark-dash-fill" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
-                                  d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6 6a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z" />
+                                  d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6 6a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z"/>
                         </svg>
                         <h1 style="margin-left: 10px; margin-top: 5px;">THÊM SẢN PHẨM</h1>
                     </div>
@@ -260,8 +260,10 @@
                                             <span id="tenspError"
                                                   style="color: red; font-family: 'Bahnschrift';font-weight: bold"></span>
                                         </div>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#themtensp" style=" margin-left:10px; margin-top: 28px; background-color: rgb(249,72,42); color: white; padding: 5px 10px; width: 45px; height: 45px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#themtensp"
+                                                style=" margin-left:10px; margin-top: 28px; background-color: rgb(249,72,42); color: white; padding: 5px 10px; width: 45px; height: 45px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                 fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                                 <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
                                             </svg>
                                         </button>
@@ -269,20 +271,24 @@
                                     <div class="mb-3">
                                         <label><span style="color: red">* </span>Giới tính:</label>
                                         <div class="form-check d-inline-block" style="margin-left: 20px">
-                                            <input class="form-check-input" type="radio" name="gioitinh" style="width: 15px;height: 15px"
+                                            <input class="form-check-input" type="radio" name="gioitinh"
+                                                   style="width: 15px;height: 15px"
                                                    id="gioitinhNam" value="true"
                                                    th:checked="${gioitinh == null || gioitinh}"
                                                    onchange="clearErrorMessageGioiTinh()">
-                                            <label for="gioitinhNam" style="font-size: 15px; margin-left: -5px" class="form-check-label">
+                                            <label for="gioitinhNam" style="font-size: 15px; margin-left: -5px"
+                                                   class="form-check-label">
                                                 Nam
                                             </label>
                                         </div>
                                         <div class="form-check d-inline-block" style="margin-left: 20px;">
-                                            <input class="form-check-input" type="radio" name="gioitinh" style="width: 15px;height: 15px"
+                                            <input class="form-check-input" type="radio" name="gioitinh"
+                                                   style="width: 15px;height: 15px"
                                                    id="gioitinhNu" value="false"
                                                    th:checked="${gioitinh != null && !gioitinh}"
                                                    onchange="clearErrorMessageGioiTinh()">
-                                            <label for="gioitinhNu" style="font-size: 15px;margin-left: -5px" class="form-check-label">
+                                            <label for="gioitinhNu" style="font-size: 15px;margin-left: -5px"
+                                                   class="form-check-label">
                                                 Nữ
                                             </label>
                                         </div>
@@ -291,7 +297,8 @@
                                     </div>
                                     <div class="mb-3">
                                         <label><span style="color: red">* </span>Mô tả:</label>
-                                        <textarea style="width: 1140px;" rows="4" cols="164" class="form-control" name="mota"
+                                        <textarea style="width: 1140px;" rows="4" cols="164" class="form-control"
+                                                  name="mota"
                                                   th:text="${motas}"
                                                   oninput="clearErrorMessageMoTa()"></textarea>
                                         <span id="motaError"
@@ -313,8 +320,11 @@
                                                             th:selected="${th.id == selectedThuongHieu}"></option>
                                                 </select>
                                             </div>
-                                            <button type="button" data-bs-toggle="modal" data-bs-target="#themthuonghieu" style=" margin-left:10px; margin-top: 28px; background-color: rgb(249,72,42); color: white; padding: 5px 10px; width: 45px; height: 45px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                            <button type="button" data-bs-toggle="modal"
+                                                    data-bs-target="#themthuonghieu"
+                                                    style=" margin-left:10px; margin-top: 28px; background-color: rgb(249,72,42); color: white; padding: 5px 10px; width: 45px; height: 45px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                     fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
                                                 </svg>
                                             </button>
@@ -332,8 +342,10 @@
                                                             th:selected="${cl.id == selectedChatLieu}"></option>
                                                 </select>
                                             </div>
-                                            <button type="button" data-bs-toggle="modal" data-bs-target="#themchatlieu" style=" margin-left:10px; margin-top: 28px; background-color: rgb(249,72,42); color: white; padding: 5px 10px; width: 45px; height: 45px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                            <button type="button" data-bs-toggle="modal" data-bs-target="#themchatlieu"
+                                                    style=" margin-left:10px; margin-top: 28px; background-color: rgb(249,72,42); color: white; padding: 5px 10px; width: 45px; height: 45px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                     fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
                                                 </svg>
                                             </button>
@@ -350,8 +362,10 @@
                                                             th:selected="${dg.id == selectedDeGiay}"></option>
                                                 </select>
                                             </div>
-                                            <button type="button" data-bs-toggle="modal" data-bs-target="#themdegiay" style=" margin-left:10px; margin-top: 28px; background-color: rgb(249,72,42); color: white; padding: 5px 10px; width: 45px; height: 45px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                            <button type="button" data-bs-toggle="modal" data-bs-target="#themdegiay"
+                                                    style=" margin-left:10px; margin-top: 28px; background-color: rgb(249,72,42); color: white; padding: 5px 10px; width: 45px; height: 45px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                     fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
                                                 </svg>
                                             </button>
@@ -376,8 +390,10 @@
                                                 <span id="mausacError"
                                                       style="color: red;font-family: 'Bahnschrift';font-weight: bold"></span>
                                             </div>
-                                            <button type="button" data-bs-toggle="modal" data-bs-target="#themmausac" style=" margin-left:10px; margin-top: 28px; background-color: rgb(249,72,42); color: white; padding: 5px 10px; width: 45px; height: 45px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                            <button type="button" data-bs-toggle="modal" data-bs-target="#themmausac"
+                                                    style=" margin-left:10px; margin-top: 28px; background-color: rgb(249,72,42); color: white; padding: 5px 10px; width: 45px; height: 45px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                     fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
                                                 </svg>
                                             </button>
@@ -393,12 +409,17 @@
                                                     </div>
                                                 </div>
                                                 <p id="kichcoError"
-                                                      style="color: red;font-family: 'Bahnschrift';font-weight: bold"></p>
-                                                <button type="button" data-bs-toggle="modal" data-bs-target="#themkichco2" style=" margin-left:10px; margin-top: 7px; background-color: rgb(249,72,42); color: white; padding: 5px 10px; width: 100px; height: 45px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                   style="color: red;font-family: 'Bahnschrift';font-weight: bold"></p>
+                                                <button type="button" data-bs-toggle="modal"
+                                                        data-bs-target="#themkichco2"
+                                                        style=" margin-left:10px; margin-top: 7px; background-color: rgb(249,72,42); color: white; padding: 5px 10px; width: 100px; height: 45px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
                                                     Chọn size
                                                 </button>
-                                                <button type="button" data-bs-toggle="modal" data-bs-target="#themnhanhkichco" style=" margin-left:10px; margin-top: 7px; background-color: rgb(249,72,42); color: white; padding: 5px 10px; width: 45px; height: 45px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                                <button type="button" data-bs-toggle="modal"
+                                                        data-bs-target="#themnhanhkichco"
+                                                        style=" margin-left:10px; margin-top: 7px; background-color: rgb(249,72,42); color: white; padding: 5px 10px; width: 45px; height: 45px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                         fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
                                                     </svg>
                                                 </button>
@@ -407,21 +428,25 @@
                                         <!--kích cỡ-->
 
                                         <!--end-->
-                                        <div class="d-flex justify-content-end align-items-center" style="margin-right: 15px;">
-                                            <button type="submit" style=" background-color: rgb(249,72,42); color: white; padding: 5px 10px; width: 120px; height: 45px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                        <div class="d-flex justify-content-end align-items-center"
+                                             style="margin-right: 15px;">
+                                            <button type="submit"
+                                                    style=" background-color: rgb(249,72,42); color: white; padding: 5px 10px; width: 120px; height: 45px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                     fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
-                                                </svg> Thêm
+                                                </svg>
+                                                Thêm
                                             </button>
                                         </div>
-<!--                                        <button type="submit" class="btn"-->
-<!--                                                style="margin-left: 22px;margin-bottom: 20px;margin-top: 30px; width: 110px;background-color: white; color: black;border-color: black">-->
-<!--                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"-->
-<!--                                                 fill="currentColor" class="bi bi-node-plus-fill" viewBox="0 0 16 16">-->
-<!--                                                <path d="M11 13a5 5 0 1 0-4.975-5.5H4A1.5 1.5 0 0 0 2.5 6h-1A1.5 1.5 0 0 0 0 7.5v1A1.5 1.5 0 0 0 1.5 10h1A1.5 1.5 0 0 0 4 8.5h2.025A5 5 0 0 0 11 13m.5-7.5v2h2a.5.5 0 0 1 0 1h-2v2a.5.5 0 0 1-1 0v-2h-2a.5.5 0 0 1 0-1h2v-2a.5.5 0 0 1 1 0"/>-->
-<!--                                            </svg>-->
-<!--                                            Thêm-->
-<!--                                        </button>-->
+                                        <!--                                        <button type="submit" class="btn"-->
+                                        <!--                                                style="margin-left: 22px;margin-bottom: 20px;margin-top: 30px; width: 110px;background-color: white; color: black;border-color: black">-->
+                                        <!--                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"-->
+                                        <!--                                                 fill="currentColor" class="bi bi-node-plus-fill" viewBox="0 0 16 16">-->
+                                        <!--                                                <path d="M11 13a5 5 0 1 0-4.975-5.5H4A1.5 1.5 0 0 0 2.5 6h-1A1.5 1.5 0 0 0 0 7.5v1A1.5 1.5 0 0 0 1.5 10h1A1.5 1.5 0 0 0 4 8.5h2.025A5 5 0 0 0 11 13m.5-7.5v2h2a.5.5 0 0 1 0 1h-2v2a.5.5 0 0 1-1 0v-2h-2a.5.5 0 0 1 0-1h2v-2a.5.5 0 0 1 1 0"/>-->
+                                        <!--                                            </svg>-->
+                                        <!--                                            Thêm-->
+                                        <!--                                        </button>-->
                                     </div>
                                 </div>
                             </div>
@@ -480,21 +505,29 @@
                                                  id="errorTenThuongHieu"></div>
                                             </p>
                                             <div class="d-flex justify-content-end align-items-center mt-5">
-                                                <button data-bs-dismiss="modal" type="button" style="background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
-                                                        <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
-                                                    </svg> Thoát
+                                                <button data-bs-dismiss="modal" type="button"
+                                                        style="background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                         fill="currentColor" class="bi bi-arrow-left-short"
+                                                         viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd"
+                                                              d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
+                                                    </svg>
+                                                    Thoát
                                                 </button>
-                                                <button id="submitButtonThuongHieu" type="submit" style="margin-left:15px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                                <button id="submitButtonThuongHieu" type="submit"
+                                                        style="margin-left:15px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                         fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
-                                                    </svg> Thêm
+                                                    </svg>
+                                                    Thêm
                                                 </button>
                                             </div>
-<!--                                            <button id="submitButtonThuongHieu" class="btn"-->
-<!--                                                    style="margin-left: 400px;background-color:rgb(249,72,42);color: white">-->
-<!--                                                Thêm-->
-<!--                                            </button>-->
+                                            <!--                                            <button id="submitButtonThuongHieu" class="btn"-->
+                                            <!--                                                    style="margin-left: 400px;background-color:rgb(249,72,42);color: white">-->
+                                            <!--                                                Thêm-->
+                                            <!--                                            </button>-->
                                         </form>
 
                                     </div>
@@ -524,22 +557,30 @@
                                             </p>
 
                                             <div class="d-flex justify-content-end align-items-center mt-5">
-                                                <button data-bs-dismiss="modal" type="button" style="background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
-                                                        <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
-                                                    </svg> Thoát
+                                                <button data-bs-dismiss="modal" type="button"
+                                                        style="background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                         fill="currentColor" class="bi bi-arrow-left-short"
+                                                         viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd"
+                                                              d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
+                                                    </svg>
+                                                    Thoát
                                                 </button>
-                                                <button type="submit" style="margin-left:15px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                                <button type="submit"
+                                                        style="margin-left:15px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                         fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
-                                                    </svg> Thêm
+                                                    </svg>
+                                                    Thêm
                                                 </button>
                                             </div>
 
-<!--                                            <button class="btn"-->
-<!--                                                    style="margin-left: 400px;background-color:rgb(249,72,42);color: white">-->
-<!--                                                Thêm-->
-<!--                                            </button>-->
+                                            <!--                                            <button class="btn"-->
+                                            <!--                                                    style="margin-left: 400px;background-color:rgb(249,72,42);color: white">-->
+                                            <!--                                                Thêm-->
+                                            <!--                                            </button>-->
                                         </form>
                                     </div>
                                 </div>
@@ -567,22 +608,30 @@
                                             </p>
 
                                             <div class="d-flex justify-content-end align-items-center mt-5">
-                                                <button data-bs-dismiss="modal" type="button" style="background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
-                                                        <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
-                                                    </svg> Thoát
+                                                <button data-bs-dismiss="modal" type="button"
+                                                        style="background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                         fill="currentColor" class="bi bi-arrow-left-short"
+                                                         viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd"
+                                                              d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
+                                                    </svg>
+                                                    Thoát
                                                 </button>
-                                                <button id="submitButtonDeGiay" type="submit" style="margin-left:15px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                                <button id="submitButtonDeGiay" type="submit"
+                                                        style="margin-left:15px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                         fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
-                                                    </svg> Thêm
+                                                    </svg>
+                                                    Thêm
                                                 </button>
                                             </div>
 
-<!--                                            <button id="submitButtonDeGiay" class="btn"-->
-<!--                                                    style="margin-left: 400px;background-color:rgb(249,72,42);color: white">-->
-<!--                                                Thêm-->
-<!--                                            </button>-->
+                                            <!--                                            <button id="submitButtonDeGiay" class="btn"-->
+                                            <!--                                                    style="margin-left: 400px;background-color:rgb(249,72,42);color: white">-->
+                                            <!--                                                Thêm-->
+                                            <!--                                            </button>-->
                                         </form>
                                     </div>
                                 </div>
@@ -611,22 +660,30 @@
                                             </p>
 
                                             <div class="d-flex justify-content-end align-items-center mt-5">
-                                                <button data-bs-dismiss="modal" type="button" style="background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
-                                                        <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
-                                                    </svg> Thoát
+                                                <button data-bs-dismiss="modal" type="button"
+                                                        style="background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                         fill="currentColor" class="bi bi-arrow-left-short"
+                                                         viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd"
+                                                              d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
+                                                    </svg>
+                                                    Thoát
                                                 </button>
-                                                <button id="submitButtonKichCo" type="submit" style="margin-left:15px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                                <button id="submitButtonKichCo" type="submit"
+                                                        style="margin-left:15px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                         fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
-                                                    </svg> Thêm
+                                                    </svg>
+                                                    Thêm
                                                 </button>
                                             </div>
 
-<!--                                            <button id="submitButtonKichCo" class="btn"-->
-<!--                                                    style="margin-left: 400px;background-color:rgb(249,72,42);color: white">-->
-<!--                                                Thêm-->
-<!--                                            </button>-->
+                                            <!--                                            <button id="submitButtonKichCo" class="btn"-->
+                                            <!--                                                    style="margin-left: 400px;background-color:rgb(249,72,42);color: white">-->
+                                            <!--                                                Thêm-->
+                                            <!--                                            </button>-->
                                         </form>
                                     </div>
                                 </div>
@@ -654,22 +711,30 @@
 
 
                                             <div class="d-flex justify-content-end align-items-center mt-5">
-                                                <button data-bs-dismiss="modal" type="button" style="background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
-                                                        <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
-                                                    </svg> Thoát
+                                                <button data-bs-dismiss="modal" type="button"
+                                                        style="background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                         fill="currentColor" class="bi bi-arrow-left-short"
+                                                         viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd"
+                                                              d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
+                                                    </svg>
+                                                    Thoát
                                                 </button>
-                                                <button id="submitButtonMauSac" type="submit" style="margin-left:15px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                                <button id="submitButtonMauSac" type="submit"
+                                                        style="margin-left:15px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                         fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
-                                                    </svg> Thêm
+                                                    </svg>
+                                                    Thêm
                                                 </button>
                                             </div>
 
-<!--                                            <button id="submitButtonMauSac" class="btn"-->
-<!--                                                    style="margin-left: 400px;background-color:rgb(249,72,42);color: white">-->
-<!--                                                Thêm-->
-<!--                                            </button>-->
+                                            <!--                                            <button id="submitButtonMauSac" class="btn"-->
+                                            <!--                                                    style="margin-left: 400px;background-color:rgb(249,72,42);color: white">-->
+                                            <!--                                                Thêm-->
+                                            <!--                                            </button>-->
                                         </form>
                                     </div>
                                 </div>
@@ -699,23 +764,31 @@
 
 
                                             <div class="d-flex justify-content-end align-items-center mt-5">
-                                                <button data-bs-dismiss="modal" type="button" style="background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
-                                                        <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
-                                                    </svg> Thoát
+                                                <button data-bs-dismiss="modal" type="button"
+                                                        style="background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                         fill="currentColor" class="bi bi-arrow-left-short"
+                                                         viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd"
+                                                              d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
+                                                    </svg>
+                                                    Thoát
                                                 </button>
-                                                <button id="submitButtonTenSP" type="submit" style="margin-left:15px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                                <button id="submitButtonTenSP" type="submit"
+                                                        style="margin-left:15px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                         fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
-                                                    </svg> Thêm
+                                                    </svg>
+                                                    Thêm
                                                 </button>
                                             </div>
 
 
-<!--                                            <button id="submitButtonTenSP" class="btn"-->
-<!--                                                    style="margin-left: 400px;background-color:rgb(249,72,42);color: white">-->
-<!--                                                Thêm-->
-<!--                                            </button>-->
+                                            <!--                                            <button id="submitButtonTenSP" class="btn"-->
+                                            <!--                                                    style="margin-left: 400px;background-color:rgb(249,72,42);color: white">-->
+                                            <!--                                                Thêm-->
+                                            <!--                                            </button>-->
                                         </form>
                                     </div>
                                 </div>
@@ -747,37 +820,44 @@
                             <p>Số lượng:
                                 <input type="number" class="form-control" name="soluong" id="soluongInput" min="1"
                                        max="100">
-                                <span id="soluongError" style="color: red; display: none; font-style: italic">Vui lòng nhập số lượng.</span>
-                                <span id="soluongRangeError" style="color: red; display: none;font-style: italic">Số lượng phải nhỏ hơn 10000</span>
+                                <span id="soluongError" style="color: red"></span>
                             </p>
                             <p>Đơn giá:
                                 <input class="form-control" name="giatienDisplay" id="giatienInput"
                                        onkeyup="formatCurrency('giatienInput')">
                                 <input type="hidden" name="giatien" id="giatienRawInput">
-                                <span id="giatienError" style="color: red; display: none;font-style: italic">Vui lòng nhập giá tiền.</span>
+                                <span id="giatienError" style="color: red"></span>
                             </p>
                         </div>
 
 
                         <div class="d-flex justify-content-end align-items-center mb-3">
-                            <button data-bs-dismiss="modal" type="button" style="background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
-                                </svg> Thoát
+                            <button data-bs-dismiss="modal" type="button"
+                                    style="background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                     class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                          d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
+                                </svg>
+                                Thoát
                             </button>
-                            <button onclick="validateAndSubmit()" type="button" style="margin-left:15px; margin-right: 15px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 130px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+                            <button onclick="validateAndSubmit()" type="button"
+                                    style="margin-left:15px; margin-right: 15px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 130px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                     class="bi bi-arrow-repeat" viewBox="0 0 16 16">
                                     <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"/>
-                                    <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
-                                </svg> Cập nhật
+                                    <path fill-rule="evenodd"
+                                          d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
+                                </svg>
+                                Cập nhật
                             </button>
                         </div>
 
-<!--                        <p style="margin-left: 400px">-->
-<!--                            <button style="background-color:rgb(249,72,42);border-color: rgb(249,72,42);color: white"-->
-<!--                                    type="button" class="btn btn-primary" onclick="validateAndSubmit()">Cập nhật-->
-<!--                            </button>-->
-<!--                        </p>-->
+                        <!--                        <p style="margin-left: 400px">-->
+                        <!--                            <button style="background-color:rgb(249,72,42);border-color: rgb(249,72,42);color: white"-->
+                        <!--                                    type="button" class="btn btn-primary" onclick="validateAndSubmit()">Cập nhật-->
+                        <!--                            </button>-->
+                        <!--                        </p>-->
                     </div>
                 </div>
             </form>
@@ -789,25 +869,33 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
                          fill="currentColor" class="bi bi-card-list" viewBox="0 0 16 16">
                         <path
-                                d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z" />
+                                d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"/>
                         <path
-                                d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8m0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0M4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0" />
+                                d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8m0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0M4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"/>
                     </svg>
                     <h5 style="margin-left: 10px; padding-top: 12px;">Danh sách biến thể sản phẩm</h5>
                 </div>
                 <div class="d-flex align-items-center ms-auto">
-                    <button id="editButton" class="btn disabled" type="button" data-bs-toggle="modal" data-bs-target="#chinhsuasoluongvagia"
+                    <button id="editButton" class="btn disabled" type="button" data-bs-toggle="modal"
+                            data-bs-target="#chinhsuasoluongvagia"
                             style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 180px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                             class="bi bi-pencil-square" viewBox="0 0 16 16">
                             <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                        </svg> Chỉnh sửa chung</button>
+                            <path fill-rule="evenodd"
+                                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                        </svg>
+                        Chỉnh sửa chung
+                    </button>
 
                     <button id="submitButton" type="submit"
                             style="margin-left: 15px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-all" viewBox="0 0 16 16">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-check-all" viewBox="0 0 16 16">
                             <path d="M8.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992zm-.92 5.14.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486z"/>
-                        </svg>Hoàn tất</button>
+                        </svg>
+                        Hoàn tất
+                    </button>
                 </div>
 
             </div>
@@ -1404,29 +1492,43 @@
     function validateAndSubmit() {
         var soluong = document.getElementById("soluongInput").value.trim();
         var giatien = document.getElementsByName("giatienDisplay")[0].value.trim();
+        var soluongError = document.getElementById("soluongError");
+        var giatienError = document.getElementById("giatienError");
 
         // Kiểm tra nếu số lượng và giá tiền không hợp lệ
-        if (soluong === "") {
-            document.getElementById("soluongError").style.display = "inline";
-            document.getElementById("soluongRangeError").style.display = "none";
-            document.getElementById("giatienError").style.display = "none";
-            return;
-        } else if (parseInt(soluong) < 1 || parseInt(soluong) > 10000) {
-            document.getElementById("soluongRangeError").style.display = "inline";
-            document.getElementById("soluongError").style.display = "none";
-            document.getElementById("giatienError").style.display = "none";
-            return;
+        if (soluong.trim() === "") {
+            soluongError.innerText = "Vui lòng nhập số lượng";
+            return false;
+        } else if (soluong <= 0) {
+            soluongError.innerText = "Số lượng phải lớn hơn 0";
+            return false; // Ngăn form được gửi đi
+        } else if (soluong > 2147483647) {
+            soluongError.innerText = "Số lượng phải nhỏ hơn 2147483647";
+            return false; // Ngăn form được gửi đi
         } else {
-            document.getElementById("soluongError").style.display = "none";
-            document.getElementById("soluongRangeError").style.display = "none";
+            soluongError.innerText = ""; // Xóa thông báo lỗi nếu có
         }
-
-        if (giatien === "") {
-            document.getElementById("giatienError").style.display = "inline";
-            return;
+        giatien = giatien.replace(/[^0-9]/g, '');
+        var giatienValue = parseInt(giatien);
+        // Kiểm tra nếu giá trị rỗng
+        if (giatien.trim() === "") {
+            giatienError.innerText = "Vui lòng nhập giá tiền";
+            return false;
+        }
+        // Kiểm tra giá trị <= 0
+        else if (giatienValue <= 0) {
+            giatienError.innerText = "Giá tiền phải lớn hơn 0";
+            return false;
+        }
+        // Kiểm tra giá trị > 922337203685477
+        else if (giatienValue > 922337203685477) {
+            giatienError.innerText = "Giá tiền không được vượt quá 922.337.203.685.477 ₫";
+            return false;
         } else {
-            document.getElementById("giatienError").style.display = "none";
+            giatienError.innerText = ""; // Xóa thông báo lỗi nếu có
         }
+        // Cập nhật giá trị vào input ẩn để gửi lên server
+        document.getElementById('giatienRawInput').value = giatienValue;
 
         // Lưu giá trị từ checkbox vào form trước khi submit
         if (giaTriTuCheckbox.length > 0) {
@@ -1591,7 +1693,7 @@
         if (inputMaTenSP.trim() === "") {
             errorMaTenSP.innerText = "Vui lòng nhập tên sản phẩm.";
             return false; // Ngăn form được gửi đi
-        }  else if (inputMaTenSP.trim().length > 50) {
+        } else if (inputMaTenSP.trim().length > 50) {
             errorMaTenSP.innerText = "Tên sản phẩm không được vượt quá 50 ký tự.";
             return false; // Ngăn form được gửi đi
         } else if (specialCharPattern.test(inputMaTenSP.trim())) {

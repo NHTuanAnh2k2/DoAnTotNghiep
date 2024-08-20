@@ -79,7 +79,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
                              class="bi bi-bookmark-dash-fill" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
-                                  d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6 6a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z" />
+                                  d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6 6a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z"/>
                         </svg>
                         <h1 style="margin-left: 10px;">CẬP NHẬT CHI TIẾT SẢN PHẨM</h1>
                     </div>
@@ -106,12 +106,13 @@
                                     <div class="d-flex">
                                         <p style="font-weight: bold">
                                             <span style="color: red">* </span>Tên sản phẩm:
-                                            <input class="form-control" style="width:550px" th:field="*{sanpham.tensanpham}" readonly>
+                                            <input class="form-control" style="width:550px"
+                                                   th:field="*{sanpham.tensanpham}" readonly>
                                             <input type="hidden" th:field="*{sanpham.id}">
                                         </p>
                                         <p id="errorSanPham" class="error-message"
                                            style="display: none; color: red;"></p>
-                                        <p style="margin-left: 92px;font-weight: bold" >
+                                        <p style="margin-left: 92px;font-weight: bold">
                                             <span style="color: red">* </span>Số lượng:
                                             <input type="number" class="form-control" style="width:550px"
                                                    th:field="*{soluong}">
@@ -228,7 +229,8 @@
                                             <!--                                                <option th:each="ms : ${ms}" th:value="${ms.id}"-->
                                             <!--                                                        th:text="${ms.ten}"></option>-->
                                             <!--                                            </select>-->
-                                            <select id="mausac-select"  th:field="*{mausac.id}" class="form-control" style="width:482px">
+                                            <select id="mausac-select" th:field="*{mausac.id}" class="form-control"
+                                                    style="width:482px">
                                                 <option th:each="ms : ${ms}" th:value="${ms.id}"
                                                         th:text="${ms.ten}" th:data-color="${ms.ten}"></option>
                                             </select>
@@ -539,31 +541,34 @@
 
         // Validate từng trường
         if (tensanpham == "") {
-            displayError("errorSanPham", "Vui lòng nhập tên sản phẩm.");
+            displayError("errorSanPham", "Vui lòng nhập tên sản phẩm");
             isValid = false;
         }
 
         if (soluong == "") {
-            displayError("errorSoLuong", "Vui lòng nhập số lượng sản phẩm.");
+            displayError("errorSoLuong", "Vui lòng nhập số lượng sản phẩm");
             isValid = false;
         } else if (soluong <= 0) {
-            displayError("errorSoLuong", "Số lượng sản phẩm phải lớn hơn 0.");
+            displayError("errorSoLuong", "Số lượng sản phẩm phải lớn hơn 0");
+            isValid = false;
+        } else if (soluong > 2147483647) {
+            displayError("errorSoLuong", "Số lượng phải nhỏ hơn 2147483647");
             isValid = false;
         }
 
         if (giatien == "") {
-            displayError("errorGiaTien", "Vui lòng nhập giá tiền sản phẩm.");
+            displayError("errorGiaTien", "Vui lòng nhập giá tiền sản phẩm");
             isValid = false;
         } else if (giatien <= 0) {
-            displayError("errorGiaTien", "Giá tiền sản phẩm phải lớn hơn 0.");
+            displayError("errorGiaTien", "Giá tiền sản phẩm phải lớn hơn 0");
             isValid = false;
         }
 
-        if (mota == "") {
-            displayError("errorMoTa", "Vui lòng nhập mô tả sản phẩm.");
+        if (mota.trim() == "") {
+            displayError("errorMoTa", "Vui lòng nhập mô tả sản phẩm");
             isValid = false;
         } else if (mota.length > 500) {
-            displayError("errorMoTa", "Mô tả sản phẩm không được vượt quá 500 ký tự.");
+            displayError("errorMoTa", "Mô tả sản phẩm không được vượt quá 500 ký tự");
             isValid = false;
         }
 
@@ -685,7 +690,7 @@
         if (inputMaChatLieu.trim() === "") {
             errorMaChatLieu.innerText = "Vui lòng nhập tên chất liệu.";
             return false; // Ngăn form được gửi đi
-        }else if (inputMaChatLieu.trim().length > 20) {
+        } else if (inputMaChatLieu.trim().length > 20) {
             errorMaChatLieu.innerText = "Tên chất liệu không được vượt quá 20 ký tự.";
             return false; // Ngăn form được gửi đi
         } else if (specialCharPattern.test(inputMaChatLieu.trim())) {
@@ -726,7 +731,7 @@
         if (inputMaDeGiay.trim() === "") {
             errorMaDeGiay.innerText = "Vui lòng nhập tên đế giày.";
             return false; // Ngăn form được gửi đi
-        }else if (inputMaDeGiay.trim().length > 20) {
+        } else if (inputMaDeGiay.trim().length > 20) {
             errorMaDeGiay.innerText = "Tên đế giày không được vượt quá 20 ký tự.";
             return false; // Ngăn form được gửi đi
         } else if (specialCharPattern.test(inputMaDeGiay.trim())) {
@@ -1027,7 +1032,7 @@
 
 <!--Màu sắc-->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const selectElement = document.getElementById('mausac-select');
         const options = selectElement.querySelectorAll('option');
 
