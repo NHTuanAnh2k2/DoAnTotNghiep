@@ -371,9 +371,9 @@
             lengthErrorMessage.style.display = 'block';
             lengthErrorMessage.innerText = 'Tên sản phẩm phải dài hơn 3 ký tự.';
             return;
-        } else if (ten.length > 20) {
+        } else if (ten.length > 50) {
             lengthErrorMessage.style.display = 'block';
-            lengthErrorMessage.innerText = 'Tên sản phẩm không được vượt quá 20 ký tự.';
+            lengthErrorMessage.innerText = 'Tên sản phẩm không được vượt quá 50 ký tự.';
             return;
         }else if (specialCharPattern.test(ten)) {
             lengthErrorMessage.style.display = 'block';
