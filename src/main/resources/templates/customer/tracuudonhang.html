@@ -3,9 +3,20 @@
 <!--thư viện-->
 <nav th:replace="~{/layout/head.html}"></nav>
 <style>
-  #fsport {
-    color: rgb(232, 62, 0);
-  }
+    table#example2 thead {
+        background-color: rgb(249, 72, 42) !important;
+        height: 50px;
+        color: white !important;
+    }
+
+    table#example2 thead th {
+        background-color: inherit !important; /* Kế thừa màu nền từ thead */
+        color: inherit !important; /* Kế thừa màu chữ từ thead */
+    }
+
+    #fsport {
+        color: rgb(232, 62, 0);
+    }
 </style>
 <!--end-->
 <body style="font-family: 'Bahnschrift'">
@@ -14,67 +25,71 @@
 <nav th:replace="~{/layout/header.html}"></nav>
 <!-- header end -->
 <section style="margin-bottom: 50px">
-<div class="container login-container" style="margin-top: 50px; margin-left: 200px; width: 1000px;">
-  <div class="row">
-    <div class="col-md-6 tabcontent" style="margin-top: 100px;">
-      <form id="formTraCuu" th:action="@{/customer/timkiem}" method="get">
-        <div class="form-group form123">
-          <h3 style="font-size: larger;" class="mb-3">Tra cứu đơn hàng của bạn</h3>
-          <input type="text" class="form-control" id="searchInput" name="searchInput" th:value="${searchInput}"
-                 placeholder="Hãy nhập mã hóa đơn, số điện thoại hoặc email của bạn">
-        </div>
+    <div class="container login-container" style="margin-top: 50px; margin-left: 200px; width: 1000px;">
+        <div class="row">
+            <div class="col-md-6 tabcontent" style="margin-top: 100px;">
+                <form id="formTraCuu" th:action="@{/customer/timkiem}" method="get">
+                    <div class="form-group form123">
+                        <h3 style="font-size: larger;" class="mb-3">Tra cứu đơn hàng của bạn</h3>
+                        <input type="text" class="form-control" id="searchInput" name="searchInput"
+                               th:value="${searchInput}"
+                               placeholder="Hãy nhập mã hóa đơn, số điện thoại hoặc email của bạn">
+                    </div>
 
-        <button type="submit" style="background-color: rgb(249,72,42);color: white; margin-top: 20px" class="btn
-                        btn-custom-login btn-block">Tra cứu</button>
-        <hr>
-      </form>
+                    <button type="submit" style="background-color: rgb(249,72,42);color: white; margin-top: 20px"
+                            class="btn
+                        btn-custom-login btn-block">Tra cứu
+                    </button>
+                    <hr>
+                </form>
+            </div>
+            <div class="col-md-6" style="padding-left: 200px;">
+                <h1 id="fsport">FSPORT</h1>
+                <img style="width: 300px;"
+                     src="https://th.bing.com/th/id/OIP.dzJLe__iQNWmmAkZKCltRAHaF-?rs=1&pid=ImgDetMain">
+            </div>
+        </div>
     </div>
-    <div class="col-md-6" style="padding-left: 200px;">
-      <h1 id="fsport">FSPORT</h1>
-      <img style="width: 300px;"
-           src="https://th.bing.com/th/id/OIP.dzJLe__iQNWmmAkZKCltRAHaF-?rs=1&pid=ImgDetMain">
+    <br> <br>
+    <div class=" container">
+        <div class="container" th:if="${lstHoaDon}">
+            <table id="example2" class="table table-bordered table-hover text-center">
+                <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Mã hóa đơn</th>
+                    <th>Tên người nhận</th>
+                    <th>Số điện thoại</th>
+                    <th>Tổng tiền</th>
+                    <th style="white-space: nowrap;">Ngày giao dự kiến</th>
+                    <th>Thao tác</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="hd,stt:${lstHoaDon}">
+                    <td th:text="${stt.index+1}"></td>
+                    <td th:text="${hd.mahoadon}"></td>
+                    <td th:text="${hd.tennguoinhan}"></td>
+                    <td th:text="${hd.sdt}"></td>
+                    <td th:text="${#numbers.formatDecimal(hd.tongtien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"></td>
+                    <td th:text="${#dates.format(hd.ngaygiaodukien, 'dd/MM/yyyy')}"></td>
+                    <td>
+                        <a th:href="@{/customer/detail-don-hang(id=${hd.id})}" id=""
+                           style="color:rgb(249,72,42)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                                 fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                            </svg>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <img th:if="${#lists.isEmpty(lstHoaDon)}" src="../dist/img/no_product.png"
+                 style="width: 500px; margin-left: 30%" alt="">
+        </div>
     </div>
-  </div>
-</div>
-<br> <br>
-<div class=" container">
-  <div class="container" th:if="${lstHoaDon}">
-    <table class="table table-bordered table-hover text-center">
-      <thead class="table table-danger">
-      <tr>
-        <th>STT</th>
-        <th>Mã hóa đơn</th>
-        <th>Tên người nhận</th>
-        <th>Số điện thoại</th>
-        <th>Tổng tiền</th>
-        <th style="white-space: nowrap;">Ngày giao dự kiến</th>
-        <th>Hành động</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="hd,stt:${lstHoaDon}">
-        <td th:text="${stt.index+1}"></td>
-        <td th:text="${hd.mahoadon}"></td>
-        <td th:text="${hd.tennguoinhan}"></td>
-        <td th:text="${hd.sdt}"></td>
-        <td th:text="${#numbers.formatDecimal(hd.tongtien, 0, 'COMMA', 0, 'POINT')+'&#x20ab;'}"></td>
-        <td th:text="${#dates.format(hd.ngaygiaodukien, 'dd/MM/yyyy')}"></td>
-        <td>
-          <a th:href="@{/customer/detail-don-hang(id=${hd.id})}" id=""
-             style="color:rgb(249,72,42)">
-            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
-                 fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-              <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
-              <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
-            </svg>
-          </a>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-    <img th:if="${#lists.isEmpty(lstHoaDon)}" src="../dist/img/no_product.png" style="width: 500px; margin-left: 30%" alt="">
-  </div>
-</div>
 </section>
 <nav th:replace="~{/layout/footer.html}"></nav>
 <!-- footer end -->

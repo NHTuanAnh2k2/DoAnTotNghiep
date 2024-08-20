@@ -4,6 +4,16 @@
 <nav th:replace="~{/layout/head.html}"></nav>
 <!--end-->
 <style>
+    table#example2 thead {
+        background-color: rgb(249, 72, 42) !important;
+        height: 50px;
+        color: white !important;
+    }
+    table#example2 thead th {
+        background-color: inherit !important; /* Kế thừa màu nền từ thead */
+        color: inherit !important; /* Kế thừa màu chữ từ thead */
+    }
+
     .thongtintaikhoan p {
         font-size: 16px;
         line-height: 25px;
@@ -594,9 +604,8 @@
                                     <div class="tab-pane fade show active" id="home-tab-pane"
                                          role="tabpanel"
                                          aria-labelledby="home-tab" tabindex="0">
-                                        <table id="example2"
-                                               class="table table-bordered table-hover text-center dataTables_wrapper dt-bootstrap4 no-footer">
-                                            <thead class="table table-danger">
+                                        <table id="example2" class="table table-bordered table-hover text-center">
+                                            <thead>
                                             <tr>
                                                 <th>STT</th>
                                                 <th>Mã hóa đơn</th>
@@ -660,8 +669,8 @@
                                     </div>
                                     <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel"
                                          aria-labelledby="profile-tab" tabindex="0">
-                                        <table class="table table-bordered table-hover text-center">
-                                            <thead class="table table-danger">
+                                        <table id="example2" class="table table-bordered table-hover text-center">
+                                            <thead>
                                             <tr>
                                                 <th>STT</th>
                                                 <th>Mã hóa đơn</th>
@@ -750,8 +759,8 @@
 
                                     <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel"
                                          aria-labelledby="contact-tab" tabindex="0">
-                                        <table class="table table-bordered table-hover text-center">
-                                            <thead class="table table-danger">
+                                        <table id="example2" class="table table-bordered table-hover text-center">
+                                            <thead>
                                             <tr>
                                                 <th>STT</th>
                                                 <th>Mã hóa đơn</th>
@@ -793,8 +802,8 @@
                                     <div class="tab-pane fade" id="disabled-tab-pane1"
                                          role="tabpanel"
                                          aria-labelledby="disabled-tab" tabindex="0">
-                                        <table class="table table-bordered table-hover text-center">
-                                            <thead class="table table-danger">
+                                        <table id="example2" class="table table-bordered table-hover text-center">
+                                            <thead>
                                             <tr>
                                                 <th>STT</th>
                                                 <th>Mã hóa đơn</th>
@@ -836,8 +845,8 @@
                                     <div class="tab-pane fade" id="disabled-tab-pane2"
                                          role="tabpanel"
                                          aria-labelledby="disabled-tab" tabindex="0">
-                                        <table class="table table-bordered table-hover text-center">
-                                            <thead class="table table-danger">
+                                        <table id="example2" class="table table-bordered table-hover text-center">
+                                            <thead>
                                             <tr>
                                                 <th>STT</th>
                                                 <th>Mã hóa đơn</th>
@@ -879,8 +888,8 @@
                                     <div class="tab-pane fade" id="disabled-tab-pane3"
                                          role="tabpanel"
                                          aria-labelledby="disabled-tab" tabindex="0">
-                                        <table class="table table-bordered table-hover text-center">
-                                            <thead class="table table-danger">
+                                        <table id="example2" class="table table-bordered table-hover text-center">
+                                            <thead>
                                             <tr>
                                                 <th>STT</th>
                                                 <th>Mã hóa đơn</th>
@@ -922,8 +931,8 @@
                                     <div class="tab-pane fade" id="disabled-tab-pane4"
                                          role="tabpanel"
                                          aria-labelledby="disabled-tab" tabindex="0">
-                                        <table class="table table-bordered table-hover text-center">
-                                            <thead class="table table-danger">
+                                        <table id="example2" class="table table-bordered table-hover text-center">
+                                            <thead>
                                             <tr>
                                                 <th>STT</th>
                                                 <th>Mã hóa đơn</th>
@@ -967,8 +976,8 @@
                                     <div class="tab-pane fade" id="disabled-tab-pane5"
                                          role="tabpanel"
                                          aria-labelledby="disabled-tab" tabindex="0">
-                                        <table class="table table-bordered table-hover text-center">
-                                            <thead class="table table-danger">
+                                        <table id="example2" class="table table-bordered table-hover text-center">
+                                            <thead>
                                             <tr>
                                                 <th>STT</th>
                                                 <th>Mã hóa đơn</th>
