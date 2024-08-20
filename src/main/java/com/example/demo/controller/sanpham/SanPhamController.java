@@ -129,40 +129,6 @@ public class SanPhamController {
     }
 
 
-    @GetMapping("/listsanpham")
-    public String hienthi(Model model, @ModelAttribute("tim") SanPhamInfo info) {
-        List<Object[]> list;
-        String trimmedKey = (info.getKey() != null) ? info.getKey().trim().replaceAll("\\s+", " ") : null;
-        boolean isKeyEmpty = (trimmedKey == null || trimmedKey.isEmpty());
-        boolean isTrangthaiNull = (info.getTrangthai() == null);
-        List<SanPham> listSanPham = sanPhamRepositoty.findAll();
-        for (SanPham sp : listSanPham) {
-            List<SanPhamChiTiet> listSPCT = sanPhamChiTietRepository.findBySanPhamId(sp.getId());
-
-            if (listSPCT != null && !listSPCT.isEmpty()) {
-                int soluong = 0;
-                for (SanPhamChiTiet spct : listSPCT) {
-                    soluong = soluong + spct.getSoluong();
-                }
-                if (soluong <= 0) {
-                    sp.setTrangthai(false);
-                    sanPhamRepositoty.save(sp);
-                }
-            }
-        }
-        if (isKeyEmpty && isTrangthaiNull) {
-            list = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc();
-
-        } else {
-            list = sanPhamRepositoty.findByMasanphamAndTenSanPhamAndTrangThai("%" + trimmedKey + "%", "%" + trimmedKey + "%", info.getTrangthai());
-        }
-        model.addAttribute("list", list);
-        model.addAttribute("fillSearch", trimmedKey);
-        model.addAttribute("fillTrangThai", info.getTrangthai());
-        return "admin/qlsanpham";
-    }
-
-
     @RequestMapping(value = {"/viewaddSPGET", "/viewaddSPPOST"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String viewaddSP(Model model, @RequestParam(defaultValue = "0") int p,
                             @ModelAttribute("thuonghieu") ThuongHieu thuongHieu,
@@ -194,6 +160,40 @@ public class SanPhamController {
 
     List<SanPhamChiTiet> sanPhamChiTietList = new ArrayList<>();
 
+
+    @GetMapping("/listsanpham")
+    public String hienthi(Model model, @ModelAttribute("tim") SanPhamInfo info) {
+        List<Object[]> list;
+        String trimmedKey = (info.getKey() != null) ? info.getKey().trim().replaceAll("\\s+", " ") : null;
+        boolean isKeyEmpty = (trimmedKey == null || trimmedKey.isEmpty());
+        boolean isTrangthaiNull = (info.getTrangthai() == null);
+        List<SanPham> listSanPham = sanPhamRepositoty.findAll();
+        for (SanPham sp : listSanPham) {
+            List<SanPhamChiTiet> listSPCT = sanPhamChiTietRepository.findBySanPhamId(sp.getId());
+
+            if (listSPCT != null && !listSPCT.isEmpty()) {
+                int soluong = 0;
+                for (SanPhamChiTiet spct : listSPCT) {
+                    soluong = soluong + spct.getSoluong();
+                }
+                if (soluong <= 0) {
+                    sp.setTrangthai(false);
+                    sanPhamRepositoty.save(sp);
+                }
+            }
+        }
+        if (isKeyEmpty && isTrangthaiNull) {
+            list = sanPhamRepositoty.findProductsWithTotalQuantityOrderByDateDesc();
+
+        } else {
+            list = sanPhamRepositoty.findByMasanphamAndTenSanPhamAndTrangThai("%" + trimmedKey + "%", "%" + trimmedKey + "%", info.getTrangthai());
+        }
+        model.addAttribute("list", list);
+        model.addAttribute("fillSearch", trimmedKey);
+        model.addAttribute("fillTrangThai", info.getTrangthai());
+        sanPhamChiTietList.clear();
+        return "admin/qlsanpham";
+    }
 
     @PostMapping("/addProduct")
     public String addProduct(@RequestParam(defaultValue = "0") int p, Model model,
@@ -443,9 +443,11 @@ public class SanPhamController {
                         spctList.getChatlieu(), spctList.getDegiay(), spctList.getSanpham());
                 if (spctTim != null) {
                     spctTim.setSoluong(spctTim.getSoluong() + spctList.getSoluong());
-                    for (Anh anh : spctList.getAnh()) {
-                        anh.setSanphamchitiet(spctTim);
-                        anhRepository.save(anh);
+                    if (spctList.getAnh() != null) {
+                        for (Anh anh : spctList.getAnh()) {
+                            anh.setSanphamchitiet(spctTim);
+                            anhRepository.save(anh);
+                        }
                     }
                     sanPhamChiTietRepository.save(spctTim);
                 } else {
@@ -459,11 +461,17 @@ public class SanPhamController {
             SanPhamChiTiet spct = sanPhamChiTietRepository.findById(spctId).orElse(null);
             if (spct != null) {
                 MultipartFile anhFile1 = anhFiles1.get(i);
-                addAnh(spct, anhFile1);
+                if (!anhFile1.isEmpty()) {
+                    addAnh(spct, anhFile1);
+                }
                 MultipartFile anhFile2 = anhFiles2.get(i);
-                addAnh(spct, anhFile2);
+                if (!anhFile2.isEmpty()) {
+                    addAnh(spct, anhFile2);
+                }
                 MultipartFile anhFile3 = anhFiles3.get(i);
-                addAnh(spct, anhFile3);
+                if (!anhFile3.isEmpty()) {
+                    addAnh(spct, anhFile3);
+                }
             }
         }
         redirectAttributes.addFlashAttribute("success", true);
