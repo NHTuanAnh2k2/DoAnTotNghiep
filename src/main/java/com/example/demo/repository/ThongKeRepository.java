@@ -291,27 +291,40 @@ public interface ThongKeRepository extends JpaRepository<HoaDon, Integer> {
             "    SELECT DATEADD(DAY, 1, SaleDay)\n" +
             "    FROM DateRange\n" +
             "    WHERE SaleDay < CAST(GETDATE() AS DATE)\n" +
+            "),\n" +
+            "SalesData AS (\n" +
+            "    SELECT CAST(hd.LanCapNhatCuoi AS DATE) AS SaleDay,\n" +
+            "           SUM(hd.TongTien) AS total_money,  -- Tổng tiền tính một lần cho mỗi hóa đơn\n" +
+            "           COUNT(hd.Id) AS total_invoices     -- Đếm số hóa đơn trong ngày\n" +
+            "    FROM HoaDon hd\n" +
+            "    WHERE hd.LanCapNhatCuoi >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE))\n" +
+            "          AND hd.LanCapNhatCuoi < DATEADD(DAY, 1, CAST(GETDATE() AS DATE))\n" +
+            "          AND hd.TrangThai = 5\n" +
+            "    GROUP BY CAST(hd.LanCapNhatCuoi AS DATE)\n" +
+            "),\n" +
+            "QuantityData AS (\n" +
+            "    SELECT CAST(hd.LanCapNhatCuoi AS DATE) AS SaleDay,\n" +
+            "           SUM(ct.SoLuong) AS total_quantity_sold -- Tổng số lượng bán được\n" +
+            "    FROM HoaDon hd\n" +
+            "    JOIN HoaDonChiTiet ct ON hd.Id = ct.IdHoaDon\n" +
+            "    WHERE hd.LanCapNhatCuoi >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE))\n" +
+            "          AND hd.LanCapNhatCuoi < DATEADD(DAY, 1, CAST(GETDATE() AS DATE))\n" +
+            "          AND hd.TrangThai = 5\n" +
+            "    GROUP BY CAST(hd.LanCapNhatCuoi AS DATE)\n" +
             ")\n" +
-            "SELECT d.SaleDay,\n" +
-            "       COALESCE(SUM(sales.total_quantity_sold), 0) AS total_quantity_sold,\n" +
-            "       COALESCE(SUM(sales.total_money), 0) AS total_money_sold\n" +
-            "FROM DateRange d\n" +
+            "SELECT \n" +
+            "    d.SaleDay,\n" +
+            "    COALESCE(qd.total_quantity_sold, 0) AS total_quantity_sold,\n" +
+            "    COALESCE(sd.total_money, 0) AS total_invoices\n" +
+            "FROM \n" +
+            "    DateRange d\n" +
             "LEFT JOIN \n" +
-            "    (SELECT CAST(hd.LanCapNhatCuoi AS DATE) AS sale_day,\n" +
-            "            SUM(ct.SoLuong) AS total_quantity_sold,\n" +
-            "            SUM(hd.TongTien) AS total_money,\n" +
-            "            hd.Id AS IdHoaDon\n" +
-            "     FROM HoaDon hd\n" +
-            "     JOIN HoaDonChiTiet ct ON hd.Id = ct.IdHoaDon\n" +
-            "     WHERE hd.LanCapNhatCuoi >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE))\n" +
-            "           AND hd.LanCapNhatCuoi < DATEADD(DAY, 1, CAST(GETDATE() AS DATE))\n" +
-            "           AND hd.TrangThai = 5\n" +
-            "     GROUP BY hd.Id, CAST(hd.LanCapNhatCuoi AS DATE)\n" +
-            "    ) AS sales\n" +
-            "    ON d.SaleDay = sales.sale_day\n" +
-            "GROUP BY d.SaleDay\n" +
-            "ORDER BY d.SaleDay\n" +
-            "OPTION (MAXRECURSION 7);\n",nativeQuery = true)
+            "    SalesData sd ON d.SaleDay = sd.SaleDay\n" +
+            "LEFT JOIN \n" +
+            "    QuantityData qd ON d.SaleDay = qd.SaleDay\n" +
+            "ORDER BY \n" +
+            "    d.SaleDay\n" +
+            "OPTION (MAXRECURSION 7);",nativeQuery = true)
     List<Object[]> dayex();
     //ok
     //ok
@@ -321,32 +334,40 @@ public interface ThongKeRepository extends JpaRepository<HoaDon, Integer> {
             "    SELECT FORMAT(DATEADD(MONTH, 1, CAST(SaleMonth + '-01' AS DATE)), 'yyyy-MM')\n" +
             "    FROM MonthRange\n" +
             "    WHERE DATEADD(MONTH, 1, CAST(SaleMonth + '-01' AS DATE)) < GETDATE()\n" +
+            "),\n" +
+            "SalesData AS (\n" +
+            "    SELECT FORMAT(DATEADD(MONTH, DATEDIFF(MONTH, 0, hd.LanCapNhatCuoi), 0), 'yyyy-MM') AS SaleMonth,\n" +
+            "           SUM(hd.TongTien) AS total_money, -- Tổng tiền chỉ tính một lần cho mỗi hóa đơn\n" +
+            "           COUNT(hd.Id) AS invoice_count     -- Đếm số hóa đơn trong tháng\n" +
+            "    FROM HoaDon hd\n" +
+            "    WHERE hd.LanCapNhatCuoi >= DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()) - 12, 0)\n" +
+            "          AND hd.LanCapNhatCuoi < GETDATE()\n" +
+            "          AND hd.TrangThai = 5\n" +
+            "    GROUP BY FORMAT(DATEADD(MONTH, DATEDIFF(MONTH, 0, hd.LanCapNhatCuoi), 0), 'yyyy-MM')\n" +
+            "),\n" +
+            "QuantityData AS (\n" +
+            "    SELECT FORMAT(DATEADD(MONTH, DATEDIFF(MONTH, 0, hd.LanCapNhatCuoi), 0), 'yyyy-MM') AS SaleMonth,\n" +
+            "           SUM(ct.SoLuong) AS total_quantity_sold -- Tổng số lượng bán được\n" +
+            "    FROM HoaDon hd\n" +
+            "    JOIN HoaDonChiTiet ct ON hd.Id = ct.IdHoaDon\n" +
+            "    WHERE hd.LanCapNhatCuoi >= DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()) - 12, 0)\n" +
+            "          AND hd.LanCapNhatCuoi < GETDATE()\n" +
+            "          AND hd.TrangThai = 5\n" +
+            "    GROUP BY FORMAT(DATEADD(MONTH, DATEDIFF(MONTH, 0, hd.LanCapNhatCuoi), 0), 'yyyy-MM')\n" +
             ")\n" +
-            "\n" +
             "SELECT \n" +
             "    m.SaleMonth,\n" +
-            "    COALESCE(SUM(sales.total_quantity_sold), 0) AS total_quantity_sold,\n" +
-            "    COALESCE(SUM(sales.total_money), 0) AS total_money_sold\n" +
+            "    COALESCE(qd.total_quantity_sold, 0) AS total_quantity_sold,\n" +
+            "    COALESCE(sd.total_money, 0) AS total_money_sold\n" +
             "FROM \n" +
             "    MonthRange m\n" +
             "LEFT JOIN \n" +
-            "    (SELECT FORMAT(DATEADD(MONTH, DATEDIFF(MONTH, 0, hd.LanCapNhatCuoi), 0), 'yyyy-MM') AS SaleMonth,\n" +
-            "            SUM(ct.SoLuong) AS total_quantity_sold,\n" +
-            "            SUM(hd.TongTien) AS total_money,\n" +
-            "            hd.Id AS IdHoaDon\n" +
-            "     FROM HoaDon hd\n" +
-            "     JOIN HoaDonChiTiet ct ON hd.Id = ct.IdHoaDon\n" +
-            "     WHERE hd.LanCapNhatCuoi >= DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()) - 12, 0)\n" +
-            "           AND hd.LanCapNhatCuoi < GETDATE()\n" +
-            "           AND hd.TrangThai = 5\n" +
-            "     GROUP BY hd.Id, FORMAT(DATEADD(MONTH, DATEDIFF(MONTH, 0, hd.LanCapNhatCuoi), 0), 'yyyy-MM')\n" +
-            "    ) AS sales\n" +
-            "ON m.SaleMonth = sales.SaleMonth\n" +
-            "GROUP BY \n" +
-            "    m.SaleMonth\n" +
+            "    SalesData sd ON m.SaleMonth = sd.SaleMonth\n" +
+            "LEFT JOIN \n" +
+            "    QuantityData qd ON m.SaleMonth = qd.SaleMonth\n" +
             "ORDER BY \n" +
             "    m.SaleMonth\n" +
-            "OPTION (MAXRECURSION 0);\n",nativeQuery = true)
+            "OPTION (MAXRECURSION 0);",nativeQuery = true)
     List<Object[]> thangex();
     @Query(value = "WITH YearRange AS (\n" +
             "    SELECT DATEPART(YEAR, DATEADD(YEAR, -4, GETDATE())) AS SaleYear\n" +
@@ -354,31 +375,39 @@ public interface ThongKeRepository extends JpaRepository<HoaDon, Integer> {
             "    SELECT SaleYear + 1\n" +
             "    FROM YearRange\n" +
             "    WHERE SaleYear < DATEPART(YEAR, GETDATE())\n" +
+            "),\n" +
+            "SalesData AS (\n" +
+            "    SELECT DATEPART(YEAR, hd.LanCapNhatCuoi) AS SaleYear,\n" +
+            "           SUM(hd.TongTien) AS total_money,  -- Tổng tiền tính một lần cho mỗi hóa đơn\n" +
+            "           COUNT(hd.Id) AS total_invoices     -- Đếm số hóa đơn trong năm\n" +
+            "    FROM HoaDon hd\n" +
+            "    WHERE hd.LanCapNhatCuoi >= DATEADD(YEAR, -5, GETDATE())\n" +
+            "          AND hd.LanCapNhatCuoi < GETDATE()\n" +
+            "          AND hd.TrangThai = 5\n" +
+            "    GROUP BY DATEPART(YEAR, hd.LanCapNhatCuoi)\n" +
+            "),\n" +
+            "QuantityData AS (\n" +
+            "    SELECT DATEPART(YEAR, hd.LanCapNhatCuoi) AS SaleYear,\n" +
+            "           SUM(ct.SoLuong) AS total_quantity_sold -- Tổng số lượng bán được\n" +
+            "    FROM HoaDon hd\n" +
+            "    JOIN HoaDonChiTiet ct ON hd.Id = ct.IdHoaDon\n" +
+            "    WHERE hd.LanCapNhatCuoi >= DATEADD(YEAR, -5, GETDATE())\n" +
+            "          AND hd.LanCapNhatCuoi < GETDATE()\n" +
+            "          AND hd.TrangThai = 5\n" +
+            "    GROUP BY DATEPART(YEAR, hd.LanCapNhatCuoi)\n" +
             ")\n" +
-            "\n" +
             "SELECT \n" +
             "    y.SaleYear,\n" +
-            "    COALESCE(SUM(sales.total_quantity_sold), 0) AS total_quantity_sold,\n" +
-            "    COALESCE(SUM(sales.total_money), 0) AS total_money_sold\n" +
+            "    COALESCE(qd.total_quantity_sold, 0) AS total_quantity_sold,\n" +
+            "    COALESCE(sd.total_money, 0) AS total_invoices\n" +
             "FROM \n" +
             "    YearRange y\n" +
             "LEFT JOIN \n" +
-            "    (SELECT DATEPART(YEAR, hd.LanCapNhatCuoi) AS SaleYear,\n" +
-            "            SUM(ct.SoLuong) AS total_quantity_sold,\n" +
-            "            SUM(hd.TongTien) AS total_money,\n" +
-            "            hd.Id AS IdHoaDon\n" +
-            "     FROM HoaDon hd\n" +
-            "     JOIN HoaDonChiTiet ct ON hd.Id = ct.IdHoaDon\n" +
-            "     WHERE hd.LanCapNhatCuoi >= DATEADD(YEAR, -5, GETDATE())\n" +
-            "           AND hd.LanCapNhatCuoi < GETDATE()\n" +
-            "           AND hd.TrangThai = 5\n" +
-            "     GROUP BY hd.Id, DATEPART(YEAR, hd.LanCapNhatCuoi)\n" +
-            "    ) AS sales\n" +
-            "ON y.SaleYear = sales.SaleYear\n" +
-            "GROUP BY \n" +
-            "    y.SaleYear\n" +
+            "    SalesData sd ON y.SaleYear = sd.SaleYear\n" +
+            "LEFT JOIN \n" +
+            "    QuantityData qd ON y.SaleYear = qd.SaleYear\n" +
             "ORDER BY \n" +
-            "    y.SaleYear;\n",nativeQuery = true)
+            "    y.SaleYear;",nativeQuery = true)
     List<Object[]> namex();
 
     @Query(value = "WITH DateRange AS (" +

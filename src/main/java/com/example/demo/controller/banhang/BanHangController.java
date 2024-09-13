@@ -742,8 +742,11 @@ public class BanHangController {
 
             }
         }
+        System.out.println("bcbcbc");
+        System.out.println(phieugiamsaoluu.getMacode());
         phieugiamsaoluu = result.getPhieugiamgia();
-
+        System.out.println("abcabc");
+        System.out.println(phieugiamsaoluu.getMacode());
 
         return ResponseEntity.ok(result);
     }
@@ -970,6 +973,7 @@ public class BanHangController {
                 redirectAttributes.addFlashAttribute("checkHangCho", true);
             }
             hoaDonCheckBill = hdset;
+            phieugiamsaoluu = new PhieuGiamGia();
             return "redirect:/hoa-don/ban-hang";
         }
         // thanh toán đơn có giao hàng
@@ -1150,10 +1154,12 @@ public class BanHangController {
             }
             redirectAttributes.addFlashAttribute("orderSuccess", false);
             hoaDonCheckBill = hdset1;
+            phieugiamsaoluu = new PhieuGiamGia();
             return "redirect:/hoa-don/ban-hang";
 
         }
         redirectAttributes.addFlashAttribute("orderSuccess", false);
+        phieugiamsaoluu = new PhieuGiamGia();
         return "redirect:/hoa-don/ban-hang";
     }
 

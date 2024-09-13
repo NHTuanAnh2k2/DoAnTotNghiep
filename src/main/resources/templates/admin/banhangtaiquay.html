@@ -185,27 +185,39 @@
         color: inherit !important;
         /* Kế thừa màu chữ từ thead */
     }
+
     .color-input1 {
         width: 50px;
-        height: 25px; /* Điều chỉnh chiều cao của input nếu cần */
-        border: none; /* Loại bỏ đường viền nếu cần */
-        outline: none; /* Loại bỏ outline nếu cần */
+        height: 25px;
+        /* Điều chỉnh chiều cao của input nếu cần */
+        border: none;
+        /* Loại bỏ đường viền nếu cần */
+        outline: none;
+        /* Loại bỏ outline nếu cần */
     }
+
     .color-input2 {
         width: 90px;
-        height: 25px; /* Điều chỉnh chiều cao của input nếu cần */
-        border: none; /* Loại bỏ đường viền nếu cần */
-        outline: none; /* Loại bỏ outline nếu cần */
+        height: 25px;
+        /* Điều chỉnh chiều cao của input nếu cần */
+        border: none;
+        /* Loại bỏ đường viền nếu cần */
+        outline: none;
+        /* Loại bỏ outline nếu cần */
         padding: 0;
     }
+
     table#bangthanhtoan thead {
         background-color: rgb(249, 72, 42) !important;
         height: 40px;
         color: white !important;
     }
+
     table#bangthanhtoan thead th {
-        background-color: inherit !important; /* Kế thừa màu nền từ thead */
-        color: inherit !important; /* Kế thừa màu chữ từ thead */
+        background-color: inherit !important;
+        /* Kế thừa màu nền từ thead */
+        color: inherit !important;
+        /* Kế thừa màu chữ từ thead */
     }
 </style>
 <script src="../sweetalert2/dist/sweetalert2.min.js/"></script>
@@ -247,7 +259,9 @@
             </section>
             <!-- Nút để tạo hóa đơn -->
             <div class="d-flex justify-content-end align-items-center pe-2">
-                <button type="button" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 160px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;" onclick="taoNewHD()">
+                <button type="button"
+                    style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 160px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;"
+                    onclick="taoNewHD()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                         class="bi bi-plus" viewBox="0 0 16 16">
                         <path
@@ -255,13 +269,17 @@
                     </svg>
                     Tạo hóa đơn
                 </button>
-                <button onclick="showHDtrangcho()" type="button" style="margin-left: 10px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 160px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;"
+                <button onclick="showHDtrangcho()" type="button"
+                    style="margin-left: 10px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 160px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;"
                     data-bs-toggle="modal" data-bs-target="#trancho"><i class="bi bi-hourglass-split"></i> Hóa đơn chờ
                 </button>
                 <a href="http://localhost:8080/hoa-don/hien-thi">
-                    <button type="button" style="margin-left: 10px;background-color: rgb(249,72,42); color: white; padding: 5px 10px; width: 190px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-view-list" viewBox="0 0 16 16">
-                            <path d="M3 4.5h10a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2m0 1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1zM1 2a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 2m0 12a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 14"/>
+                    <button type="button"
+                        style="margin-left: 10px;background-color: rgb(249,72,42); color: white; padding: 5px 10px; width: 190px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                            class="bi bi-view-list" viewBox="0 0 16 16">
+                            <path
+                                d="M3 4.5h10a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2m0 1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1zM1 2a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 2m0 12a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 14" />
                         </svg>
                         Danh sách hóa đơn
                     </button>
@@ -282,7 +300,9 @@
                     <h5 style="margin-left: 10px; padding-top: 12px;">Sản phẩm</h5>
                 </div>
                 <div class="d-flex align-items-center pe-2">
-                    <button type="button" style="background-color: black;color: white; padding: 5px 10px; width: 190px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;" id="start-scan">
+                    <button type="button"
+                        style="background-color: black;color: white; padding: 5px 10px; width: 190px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;"
+                        id="start-scan">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-qr-code-scan" viewBox="0 0 16 16">
                             <path
@@ -296,7 +316,8 @@
                         Quét QR sản phẩm
                     </button>
 
-                    <button type="button" style="margin-left: 10px;background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 190px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;"
+                    <button type="button"
+                        style="margin-left: 10px;background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 190px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;"
                         data-bs-toggle="modal" data-bs-target="#modalThemSanPhamHD" id="changeSP">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-plus" viewBox="0 0 16 16">
@@ -333,11 +354,11 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" data-bs-dismiss="modal"
-                                    style="background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold">
+                                style="background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                     class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+                                    class="bi bi-arrow-left-short" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd"
-                                          d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5" />
+                                        d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5" />
                                 </svg> Thoát
                             </button>
                         </div>
@@ -419,26 +440,33 @@
                             </div>
                             <br>
                             <div class="d-flex justify-content-between">
-                                <button type="button" id="tienmat" onclick="xacnhanphuongthuc(1)" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 220px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-currency-exchange" viewBox="0 0 16 16">
-                                        <path d="M0 5a5 5 0 0 0 4.027 4.905 6.5 6.5 0 0 1 .544-2.073C3.695 7.536 3.132 6.864 3 5.91h-.5v-.426h.466V5.05q-.001-.07.004-.135H2.5v-.427h.511C3.236 3.24 4.213 2.5 5.681 2.5c.316 0 .59.031.819.085v.733a3.5 3.5 0 0 0-.815-.082c-.919 0-1.538.466-1.734 1.252h1.917v.427h-1.98q-.004.07-.003.147v.422h1.983v.427H3.93c.118.602.468 1.03 1.005 1.229a6.5 6.5 0 0 1 4.97-3.113A5.002 5.002 0 0 0 0 5m16 5.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0m-7.75 1.322c.069.835.746 1.485 1.964 1.562V14h.54v-.62c1.259-.086 1.996-.74 1.996-1.69 0-.865-.563-1.31-1.57-1.54l-.426-.1V8.374c.54.06.884.347.966.745h.948c-.07-.804-.779-1.433-1.914-1.502V7h-.54v.629c-1.076.103-1.808.732-1.808 1.622 0 .787.544 1.288 1.45 1.493l.358.085v1.78c-.554-.08-.92-.376-1.003-.787zm1.96-1.895c-.532-.12-.82-.364-.82-.732 0-.41.311-.719.824-.809v1.54h-.005zm.622 1.044c.645.145.943.38.943.796 0 .474-.37.8-1.02.86v-1.674z"/>
+                                <button type="button" id="tienmat" onclick="xacnhanphuongthuc(1)"
+                                    style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 220px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                        class="bi bi-currency-exchange" viewBox="0 0 16 16">
+                                        <path
+                                            d="M0 5a5 5 0 0 0 4.027 4.905 6.5 6.5 0 0 1 .544-2.073C3.695 7.536 3.132 6.864 3 5.91h-.5v-.426h.466V5.05q-.001-.07.004-.135H2.5v-.427h.511C3.236 3.24 4.213 2.5 5.681 2.5c.316 0 .59.031.819.085v.733a3.5 3.5 0 0 0-.815-.082c-.919 0-1.538.466-1.734 1.252h1.917v.427h-1.98q-.004.07-.003.147v.422h1.983v.427H3.93c.118.602.468 1.03 1.005 1.229a6.5 6.5 0 0 1 4.97-3.113A5.002 5.002 0 0 0 0 5m16 5.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0m-7.75 1.322c.069.835.746 1.485 1.964 1.562V14h.54v-.62c1.259-.086 1.996-.74 1.996-1.69 0-.865-.563-1.31-1.57-1.54l-.426-.1V8.374c.54.06.884.347.966.745h.948c-.07-.804-.779-1.433-1.914-1.502V7h-.54v.629c-1.076.103-1.808.732-1.808 1.622 0 .787.544 1.288 1.45 1.493l.358.085v1.78c-.554-.08-.92-.376-1.003-.787zm1.96-1.895c-.532-.12-.82-.364-.82-.732 0-.41.311-.719.824-.809v1.54h-.005zm.622 1.044c.645.145.943.38.943.796 0 .474-.37.8-1.02.86v-1.674z" />
                                     </svg> Tiền mặt
                                 </button>
-<!--                                <button class="btn" style="width: 217px;background-color: rgb(249,72,42);color: white"-->
-<!--                                    id="tienmat" onclick="xacnhanphuongthuc(1)">Tiền-->
-<!--                                    mặt</button>-->
-                                <button type="button" id="chuyenkhoan" onclick="xacnhanphuongthuc(0)" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 220px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-credit-card-fill" viewBox="0 0 16 16">
-                                        <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v1H0zm0 3v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7zm3 2h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1a1 1 0 0 1 1-1"/>
+                                <!--                                <button class="btn" style="width: 217px;background-color: rgb(249,72,42);color: white"-->
+                                <!--                                    id="tienmat" onclick="xacnhanphuongthuc(1)">Tiền-->
+                                <!--                                    mặt</button>-->
+                                <button type="button" id="chuyenkhoan" onclick="xacnhanphuongthuc(0)"
+                                    style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 220px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                        class="bi bi-credit-card-fill" viewBox="0 0 16 16">
+                                        <path
+                                            d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v1H0zm0 3v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7zm3 2h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1a1 1 0 0 1 1-1" />
                                     </svg> Chuyển khoản
                                 </button>
-<!--                                <button-->
-<!--                                    style="margin-left: 15px;width: 217px;background-color: rgb(249,72,42);color: white"-->
-<!--                                    id="chuyenkhoan" class="btn" onclick="xacnhanphuongthuc(0)">Chuyển-->
-<!--                                    khoản</button>-->
+                                <!--                                <button-->
+                                <!--                                    style="margin-left: 15px;width: 217px;background-color: rgb(249,72,42);color: white"-->
+                                <!--                                    id="chuyenkhoan" class="btn" onclick="xacnhanphuongthuc(0)">Chuyển-->
+                                <!--                                    khoản</button>-->
                             </div>
                             <br>
-                            <table id="bangthanhtoan" style="width: 100%" class="table-bordered table-hover text-center">
+                            <table id="bangthanhtoan" style="width: 100%"
+                                class="table-bordered table-hover text-center">
                                 <thead>
                                     <tr>
                                         <th>STT</th>
@@ -473,18 +501,24 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" data-bs-dismiss="modal" style="background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
+                            <button type="button" data-bs-dismiss="modal"
+                                style="background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                    class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5" />
                                 </svg> Thoát
                             </button>
-                            <button type="button" data-bs-dismiss="modal" id="xacnhanPT" onclick="xacnhanPTTT()" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-hand-index-thumb" viewBox="0 0 16 16">
-                                    <path d="M6.75 1a.75.75 0 0 1 .75.75V8a.5.5 0 0 0 1 0V5.467l.086-.004c.317-.012.637-.008.816.027.134.027.294.096.448.182.077.042.15.147.15.314V8a.5.5 0 0 0 1 0V6.435l.106-.01c.316-.024.584-.01.708.04.118.046.3.207.486.43.081.096.15.19.2.259V8.5a.5.5 0 1 0 1 0v-1h.342a1 1 0 0 1 .995 1.1l-.271 2.715a2.5 2.5 0 0 1-.317.991l-1.395 2.442a.5.5 0 0 1-.434.252H6.118a.5.5 0 0 1-.447-.276l-1.232-2.465-2.512-4.185a.517.517 0 0 1 .809-.631l2.41 2.41A.5.5 0 0 0 6 9.5V1.75A.75.75 0 0 1 6.75 1M8.5 4.466V1.75a1.75 1.75 0 1 0-3.5 0v6.543L3.443 6.736A1.517 1.517 0 0 0 1.07 8.588l2.491 4.153 1.215 2.43A1.5 1.5 0 0 0 6.118 16h6.302a1.5 1.5 0 0 0 1.302-.756l1.395-2.441a3.5 3.5 0 0 0 .444-1.389l.271-2.715a2 2 0 0 0-1.99-2.199h-.581a5 5 0 0 0-.195-.248c-.191-.229-.51-.568-.88-.716-.364-.146-.846-.132-1.158-.108l-.132.012a1.26 1.26 0 0 0-.56-.642 2.6 2.6 0 0 0-.738-.288c-.31-.062-.739-.058-1.05-.046zm2.094 2.025"/>
+                            <button type="button" data-bs-dismiss="modal" id="xacnhanPT" onclick="xacnhanPTTT()"
+                                style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 120px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                    class="bi bi-hand-index-thumb" viewBox="0 0 16 16">
+                                    <path
+                                        d="M6.75 1a.75.75 0 0 1 .75.75V8a.5.5 0 0 0 1 0V5.467l.086-.004c.317-.012.637-.008.816.027.134.027.294.096.448.182.077.042.15.147.15.314V8a.5.5 0 0 0 1 0V6.435l.106-.01c.316-.024.584-.01.708.04.118.046.3.207.486.43.081.096.15.19.2.259V8.5a.5.5 0 1 0 1 0v-1h.342a1 1 0 0 1 .995 1.1l-.271 2.715a2.5 2.5 0 0 1-.317.991l-1.395 2.442a.5.5 0 0 1-.434.252H6.118a.5.5 0 0 1-.447-.276l-1.232-2.465-2.512-4.185a.517.517 0 0 1 .809-.631l2.41 2.41A.5.5 0 0 0 6 9.5V1.75A.75.75 0 0 1 6.75 1M8.5 4.466V1.75a1.75 1.75 0 1 0-3.5 0v6.543L3.443 6.736A1.517 1.517 0 0 0 1.07 8.588l2.491 4.153 1.215 2.43A1.5 1.5 0 0 0 6.118 16h6.302a1.5 1.5 0 0 0 1.302-.756l1.395-2.441a3.5 3.5 0 0 0 .444-1.389l.271-2.715a2 2 0 0 0-1.99-2.199h-.581a5 5 0 0 0-.195-.248c-.191-.229-.51-.568-.88-.716-.364-.146-.846-.132-1.158-.108l-.132.012a1.26 1.26 0 0 0-.56-.642 2.6 2.6 0 0 0-.738-.288c-.31-.062-.739-.058-1.05-.046zm2.094 2.025" />
                                 </svg> Xác nhận
                             </button>
-<!--                            <button type="button" class="btn" style="background-color: rgb(249,72,42);color: white"-->
-<!--                                data-bs-dismiss="modal" id="xacnhanPT" onclick="xacnhanPTTT()">Xác nhận</button>-->
+                            <!--                            <button type="button" class="btn" style="background-color: rgb(249,72,42);color: white"-->
+                            <!--                                data-bs-dismiss="modal" id="xacnhanPT" onclick="xacnhanPTTT()">Xác nhận</button>-->
 
                         </div>
                     </div>
@@ -514,12 +548,17 @@
                                                 <input style="width: 400px;" class="form-control me-2" type="search"
                                                     placeholder="Nhập họ tên hoặc số điện thoại..." aria-label="Search"
                                                     id="searchNV">
-<!--                                                <button type="button" id="reloadnv" class="btn btn-outline-warning"><i-->
-<!--                                                        class="bi bi-arrow-clockwise"></i></button>-->
-                                                <a type="button" id="reloadnv" style="color: rgb(249,72,42); font-weight: bold; margin-left: 15px;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
-                                                        <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"/>
-                                                        <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
+                                                <!--                                                <button type="button" id="reloadnv" class="btn btn-outline-warning"><i-->
+                                                <!--                                                        class="bi bi-arrow-clockwise"></i></button>-->
+                                                <a type="button" id="reloadnv"
+                                                    style="color: rgb(249,72,42); font-weight: bold; margin-left: 15px;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+                                                        fill="currentColor" class="bi bi-arrow-repeat"
+                                                        viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9" />
+                                                        <path fill-rule="evenodd"
+                                                            d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z" />
                                                     </svg>
                                                 </a>
                                             </form>
@@ -588,12 +627,17 @@
                                                 <input class="form-control me-2" type="search" id="tensp"
                                                     placeholder="Nhập tên sản phẩm..." aria-label="Search"
                                                     style="width: 984px;">
-<!--                                                <button type="button"  class="btn btn-outline-warning"><i-->
-<!--                                                        class="bi bi-arrow-clockwise"></i></button>-->
-                                                <a type="button" id="reloadsp" style="color: rgb(249,72,42); font-weight: bold; margin-left: 15px;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
-                                                        <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"/>
-                                                        <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
+                                                <!--                                                <button type="button"  class="btn btn-outline-warning"><i-->
+                                                <!--                                                        class="bi bi-arrow-clockwise"></i></button>-->
+                                                <a type="button" id="reloadsp"
+                                                    style="color: rgb(249,72,42); font-weight: bold; margin-left: 15px;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+                                                        fill="currentColor" class="bi bi-arrow-repeat"
+                                                        viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9" />
+                                                        <path fill-rule="evenodd"
+                                                            d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z" />
                                                     </svg>
                                                 </a>
                                             </div>
@@ -775,25 +819,26 @@
                                 th:object="${AddKHNhanh}" method="post">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" placeholder="Nhập họ và tên" id="TTTK_ten"
-                                           th:field="*{ten}">
+                                        th:field="*{ten}">
                                     <label for="TTTK_ten">Họ và tên</label>
                                     <i style="color: red; size: 1px;" id="TTTK_ten_regex"></i>
                                 </div>
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" placeholder="Nhập số điện thoại"
-                                           id="TTTK_sdt" th:field="*{sdt}">
+                                        id="TTTK_sdt" th:field="*{sdt}">
                                     <label for="TTTK_sdt">Số điện thoại</label>
                                     <i style="color: red;" id="TTTK_sdt_regex"></i>
                                 </div>
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" placeholder="Nhập email" id="TTTK_email"
-                                           th:field="*{email}">
+                                        th:field="*{email}">
                                     <label for="TTTK_email">Email</label>
                                     <i style="color: red;" id="TTTK_email_regex"></i>
                                 </div>
                                 <div class="d-flex justify-content-between mb-3">
                                     <div class="form-floating" style="padding-right: 5px; width: 240px;">
-                                        <select class="form-select" id="city" th:field="*{tinh}" aria-label="Floating label select example">
+                                        <select class="form-select" id="city" th:field="*{tinh}"
+                                            aria-label="Floating label select example">
                                             <option value="chọn tỉnh" th:text="*{tinh}" selected>Tỉnh/Thành phố</option>
                                         </select>
                                         <label for="city">Tỉnh/thành phố</label>
@@ -801,7 +846,8 @@
                                     </div>
 
                                     <div class="form-floating" style="padding-right: 5px; width: 240px;">
-                                        <select class="form-select" id="district" th:field="*{huyen}" aria-label="Floating label select example">
+                                        <select class="form-select" id="district" th:field="*{huyen}"
+                                            aria-label="Floating label select example">
                                             <option value="chọn huyện" th:text="*{huyen}" selected>Quận/huyện</option>
                                         </select>
                                         <label for="district">Quận/huyện</label>
@@ -809,7 +855,8 @@
                                     </div>
 
                                     <div class="form-floating" style=" width: 240px;">
-                                        <select class="form-select" id="ward" th:field="*{xa}" aria-label="Floating label select example">
+                                        <select class="form-select" id="ward" th:field="*{xa}"
+                                            aria-label="Floating label select example">
                                             <option value="chọn xã" th:text="*{xa}" selected>Phường/xã</option>
                                         </select>
                                         <label for="ward">Phường/xã</label>
@@ -818,8 +865,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <div class="form-floating">
-                                    <textarea class="form-control" placeholder="Số nhà/đường" id="TTTK_diachi"
-                                              th:field="*{diachi}"></textarea>
+                                        <textarea class="form-control" placeholder="Số nhà/đường" id="TTTK_diachi"
+                                            th:field="*{diachi}"></textarea>
                                         <label for="TTTK_diachi">Số nhà/đường</label>
                                     </div>
                                     <i style="color: red;" id="TTTK_diachi_regex"></i>
@@ -836,16 +883,22 @@
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-end">
-                                    <button type="button" data-bs-dismiss="modal" style="background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
-                                            <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
+                                    <button type="button" data-bs-dismiss="modal"
+                                        style="background-color: black;color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: black; font-weight: bold;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd"
+                                                d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5" />
                                         </svg> Thoát
                                     </button>
-<!--                                    <button type="submit" class="btn" onclick="return validateForms()"-->
-<!--                                        style="background-color: rgb(249,72,42);color: white">Thêm nhanh</button>-->
-                                    <button type="submit" onclick="return validateForms()" style="margin-left: 15px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                    <!--                                    <button type="submit" class="btn" onclick="return validateForms()"-->
+                                    <!--                                        style="background-color: rgb(249,72,42);color: white">Thêm nhanh</button>-->
+                                    <button type="submit" onclick="return validateForms()"
+                                        style="margin-left: 15px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 100px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                            <path
+                                                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                                         </svg> Thêm
                                     </button>
                                 </div>
@@ -884,26 +937,33 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center ps-3">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                             class="bi bi-person" viewBox="0 0 16 16">
+                            class="bi bi-person" viewBox="0 0 16 16">
                             <path
-                                    d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
+                                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
                         </svg>
                         <h5 style="margin-left: 10px; padding-top: 12px;">Tài khoản</h5>
                     </div>
                     <div class="d-flex align-items-center pe-2">
-                        <button type="button" style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 180px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;"
-                                data-bs-toggle="modal" data-bs-target="#modalChuyenNhanVien" id="changeNV">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-clipboard2-check" viewBox="0 0 16 16">
-                                <path d="M9.5 0a.5.5 0 0 1 .5.5.5.5 0 0 0 .5.5.5.5 0 0 1 .5.5V2a.5.5 0 0 1-.5.5h-5A.5.5 0 0 1 5 2v-.5a.5.5 0 0 1 .5-.5.5.5 0 0 0 .5-.5.5.5 0 0 1 .5-.5z"/>
-                                <path d="M3 2.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 0 0-1h-.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1H12a.5.5 0 0 0 0 1h.5a.5.5 0 0 1 .5.5v12a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5z"/>
-                                <path d="M10.854 7.854a.5.5 0 0 0-.708-.708L7.5 9.793 6.354 8.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0z"/>
+                        <button type="button"
+                            style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 180px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;"
+                            data-bs-toggle="modal" data-bs-target="#modalChuyenNhanVien" id="changeNV">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                class="bi bi-clipboard2-check" viewBox="0 0 16 16">
+                                <path
+                                    d="M9.5 0a.5.5 0 0 1 .5.5.5.5 0 0 0 .5.5.5.5 0 0 1 .5.5V2a.5.5 0 0 1-.5.5h-5A.5.5 0 0 1 5 2v-.5a.5.5 0 0 1 .5-.5.5.5 0 0 0 .5-.5.5.5 0 0 1 .5-.5z" />
+                                <path
+                                    d="M3 2.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 0 0-1h-.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1H12a.5.5 0 0 0 0 1h.5a.5.5 0 0 1 .5.5v12a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5z" />
+                                <path
+                                    d="M10.854 7.854a.5.5 0 0 0-.708-.708L7.5 9.793 6.354 8.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0z" />
                             </svg>
                             Chọn tài khoản
                         </button>
-                        <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                id="themKHS" style=" margin-left: 10px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 180px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" id="themKHS"
+                            style=" margin-left: 10px; background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 180px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                class="bi bi-plus" viewBox="0 0 16 16">
+                                <path
+                                    d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                             </svg>
                             Thêm khách hàng
                         </button>
@@ -918,9 +978,9 @@
                 <div class="d-flex justify-content-start">
                     <div class="d-flex align-items-center ps-3">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                             class="bi bi-person" viewBox="0 0 16 16">
+                            class="bi bi-person" viewBox="0 0 16 16">
                             <path
-                                    d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
+                                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
                         </svg>
                         <h5 style="margin-left: 10px; padding-top: 12px;">Khách hàng</h5>
                     </div>
@@ -932,27 +992,27 @@
                             <form id="thongtingiaohangform" th:object="${thongtingiaohang}" method="post" action="">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" placeholder="Nhập họ và tên"
-                                           id="thongtingiao_ten" th:field="*{ten}">
+                                        id="thongtingiao_ten" th:field="*{ten}">
                                     <label for="thongtingiao_ten">Họ và tên</label>
                                     <i style="color: red;" id="regexTen"></i>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <div class="form-floating" style="width: 290px;">
                                         <input type="text" class="form-control" placeholder="Nhập số điện thoại"
-                                               id="thongtingiao_sdt" th:field="*{sdt}">
+                                            id="thongtingiao_sdt" th:field="*{sdt}">
                                         <label for="thongtingiao_sdt">Số điện thoại</label>
                                         <i style="color: red;" id="regexsdt"></i>
                                     </div>
                                     <div class="form-floating" style="width: 430px;">
                                         <input type="text" class="form-control" placeholder="Nhập email"
-                                               id="thongtingiao_email" th:field="*{email}">
+                                            id="thongtingiao_email" th:field="*{email}">
                                         <label for="thongtingiao_email">Email</label>
                                         <i style="color: red;" id="regexemail"></i>
                                     </div>
                                 </div>
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" placeholder="Nhập địa chỉ"
-                                           id="thongtingiao_diachi" th:field="*{diachi}">
+                                        id="thongtingiao_diachi" th:field="*{diachi}">
                                     <label for="thongtingiao_diachi">Địa chỉ cụ thể</label>
                                     <i style="color: red;" id="regexdiachi"></i>
                                 </div>
@@ -977,7 +1037,7 @@
 
                                     <div class="form-floating" style="width: 250px;">
                                         <select class="form-select" id="xaphuong" th:field="*{xa}"
-                                                onchange="feanddate()">
+                                            onchange="feanddate()">
                                             <option value="Phường / xã" th:text="*{xa}" selected>
                                                 Phường / xã</option>
                                         </select>
@@ -988,13 +1048,13 @@
                                 </div>
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" placeholder="Phí vận chuyển" readonly
-                                           oninput="showcassts('phigiaohang')" id="phigiaohang" th:field="*{phivanchuyen}">
+                                        oninput="showcassts('phigiaohang')" id="phigiaohang" th:field="*{phivanchuyen}">
                                     <label for="phigiaohang">Phí vận chuyển</label>
                                     <i style="color: red;" id="regexship"></i>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <textarea class="form-control" placeholder="Ghi chú" id="floatingTextarea2Disabled" style="height: 100px"
-                                              th:field="*{ghichu}" ></textarea>
+                                    <textarea class="form-control" placeholder="Ghi chú" id="floatingTextarea2Disabled"
+                                        style="height: 100px" th:field="*{ghichu}"></textarea>
                                     <label for="floatingTextarea2Disabled">Ghi chú</label>
                                 </div>
 
@@ -1027,9 +1087,9 @@
 
                         <div class="d-flex align-items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                                 class="bi bi-bucket" viewBox="0 0 16 16">
+                                class="bi bi-bucket" viewBox="0 0 16 16">
                                 <path
-                                        d="M2.522 5H2a.5.5 0 0 0-.494.574l1.372 9.149A1.5 1.5 0 0 0 4.36 16h7.278a1.5 1.5 0 0 0 1.483-1.277l1.373-9.149A.5.5 0 0 0 14 5h-.522A5.5 5.5 0 0 0 2.522 5m1.005 0a4.5 4.5 0 0 1 8.945 0zm9.892 1-1.286 8.574a.5.5 0 0 1-.494.426H4.36a.5.5 0 0 1-.494-.426L2.58 6h10.838z" />
+                                    d="M2.522 5H2a.5.5 0 0 0-.494.574l1.372 9.149A1.5 1.5 0 0 0 4.36 16h7.278a1.5 1.5 0 0 0 1.483-1.277l1.373-9.149A.5.5 0 0 0 14 5h-.522A5.5 5.5 0 0 0 2.522 5m1.005 0a4.5 4.5 0 0 1 8.945 0zm9.892 1-1.286 8.574a.5.5 0 0 1-.494.426H4.36a.5.5 0 0 1-.494-.426L2.58 6h10.838z" />
                             </svg>
                             <h5 style="margin-left: 10px; padding-top: 12px;">Thông tin thanh toán</h5>
                         </div>
@@ -1065,11 +1125,13 @@
                                 <span class="applied-reduction-code-information" id="maGiamFill"
                                     style="background-color: #D3D3D3;">Chưa có phiếu giảm phù hợp!</span>
                             </span>
-                            <button type="button"  data-bs-toggle="modal"
-                                id="chonMaGiam" data-bs-target="#staticBackdrop" onclick="showmagiam()">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-all" viewBox="0 0 16 16">
-                                    <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0"/>
-                                    <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708"/>
+                            <button type="button" data-bs-toggle="modal" id="chonMaGiam"
+                                data-bs-target="#staticBackdrop" onclick="showmagiam()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-check2-all" viewBox="0 0 16 16">
+                                    <path
+                                        d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0" />
+                                    <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708" />
                                 </svg>
                                 Chọn phiếu giảm</button>
                         </div>
@@ -1096,10 +1158,13 @@
                         </div>
 
                         <p class="d-flex justify-content-end">
-                            <button style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 200px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;" type="button" disabled id="xacnhanthanhtoanhoadon"
-                                onclick="handleLinkClick()">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-hand-index" viewBox="0 0 16 16">
-                                    <path d="M6.75 1a.75.75 0 0 1 .75.75V8a.5.5 0 0 0 1 0V5.467l.086-.004c.317-.012.637-.008.816.027.134.027.294.096.448.182.077.042.15.147.15.314V8a.5.5 0 1 0 1 0V6.435l.106-.01c.316-.024.584-.01.708.04.118.046.3.207.486.43.081.096.15.19.2.259V8.5a.5.5 0 0 0 1 0v-1h.342a1 1 0 0 1 .995 1.1l-.271 2.715a2.5 2.5 0 0 1-.317.991l-1.395 2.442a.5.5 0 0 1-.434.252H6.035a.5.5 0 0 1-.416-.223l-1.433-2.15a1.5 1.5 0 0 1-.243-.666l-.345-3.105a.5.5 0 0 1 .399-.546L5 8.11V9a.5.5 0 0 0 1 0V1.75A.75.75 0 0 1 6.75 1M8.5 4.466V1.75a1.75 1.75 0 1 0-3.5 0v5.34l-1.2.24a1.5 1.5 0 0 0-1.196 1.636l.345 3.106a2.5 2.5 0 0 0 .405 1.11l1.433 2.15A1.5 1.5 0 0 0 6.035 16h6.385a1.5 1.5 0 0 0 1.302-.756l1.395-2.441a3.5 3.5 0 0 0 .444-1.389l.271-2.715a2 2 0 0 0-1.99-2.199h-.581a5 5 0 0 0-.195-.248c-.191-.229-.51-.568-.88-.716-.364-.146-.846-.132-1.158-.108l-.132.012a1.26 1.26 0 0 0-.56-.642 2.6 2.6 0 0 0-.738-.288c-.31-.062-.739-.058-1.05-.046zm2.094 2.025"/>
+                            <button
+                                style="background-color: rgb(249,72,42);color: white; padding: 5px 10px; width: 200px; height: 40px; border-radius: 10px; border-color: rgb(249,72,42); font-weight: bold;"
+                                type="button" disabled id="xacnhanthanhtoanhoadon" onclick="handleLinkClick()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                    class="bi bi-hand-index" viewBox="0 0 16 16">
+                                    <path
+                                        d="M6.75 1a.75.75 0 0 1 .75.75V8a.5.5 0 0 0 1 0V5.467l.086-.004c.317-.012.637-.008.816.027.134.027.294.096.448.182.077.042.15.147.15.314V8a.5.5 0 1 0 1 0V6.435l.106-.01c.316-.024.584-.01.708.04.118.046.3.207.486.43.081.096.15.19.2.259V8.5a.5.5 0 0 0 1 0v-1h.342a1 1 0 0 1 .995 1.1l-.271 2.715a2.5 2.5 0 0 1-.317.991l-1.395 2.442a.5.5 0 0 1-.434.252H6.035a.5.5 0 0 1-.416-.223l-1.433-2.15a1.5 1.5 0 0 1-.243-.666l-.345-3.105a.5.5 0 0 1 .399-.546L5 8.11V9a.5.5 0 0 0 1 0V1.75A.75.75 0 0 1 6.75 1M8.5 4.466V1.75a1.75 1.75 0 1 0-3.5 0v5.34l-1.2.24a1.5 1.5 0 0 0-1.196 1.636l.345 3.106a2.5 2.5 0 0 0 .405 1.11l1.433 2.15A1.5 1.5 0 0 0 6.035 16h6.385a1.5 1.5 0 0 0 1.302-.756l1.395-2.441a3.5 3.5 0 0 0 .444-1.389l.271-2.715a2 2 0 0 0-1.99-2.199h-.581a5 5 0 0 0-.195-.248c-.191-.229-.51-.568-.88-.716-.364-.146-.846-.132-1.158-.108l-.132.012a1.26 1.26 0 0 0-.56-.642 2.6 2.6 0 0 0-.738-.288c-.31-.062-.739-.058-1.05-.046zm2.094 2.025" />
                                 </svg>
                                 Xác nhận thanh toán</button>
                         </p>
@@ -1288,9 +1353,9 @@
  <td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
     <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
         ${discounts > 0
-                                ? `<p style="color: red; font-weight: bold; margin: 0;">${((hd.sanphamchitiet.giatien / 100 * (100 - discounts)) * hd.soluong).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>`
-                                : `<p style="color: red; font-weight: bold; margin: 0;">${(hd.soluong * hd.sanphamchitiet.giatien).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>`
-                            }
+                                    ? `<p style="color: red; font-weight: bold; margin: 0;">${((hd.sanphamchitiet.giatien / 100 * (100 - discounts)) * hd.soluong).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>`
+                                    : `<p style="color: red; font-weight: bold; margin: 0;">${(hd.soluong * hd.sanphamchitiet.giatien).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>`
+                                }
     </div>
 </td>
 
@@ -1578,50 +1643,97 @@ tabindex="0">
                             }
                             stt++;
                             htmlTR += `
-                            <tr>
-            <td class="text-center" style="vertical-align: middle;">
-                <span style="margin-left: 7px">${stt}</span>
-            </td>
-              <td>
+                <tr>
+<td class="text-center" style="vertical-align: middle;">
+    <span>${stt}</span>
+</td>
+                   <td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
                    <div class="image-container">
-                       <img src="${hd.sanphamchitiet.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
+                       <img src="${hd.sanphamchitiet.anh[0].tenanh}" alt="" style="height: 120px; width: 120px;">
                        ${discounts > 0 ? `<div class="discount-badge">${discounts}%</div>` : ''}
                    </div>
                </td>
-            <td style="vertical-align: middle;">
-                <p style="font-weight: bold">${hd.sanphamchitiet.sanpham.tensanpham}</p>
-               ${discounts > 0 ? ` <p style="color: red;font-weight: bold">${(hd.sanphamchitiet.giatien / 100 * (100 - discounts)).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
-      <p class="strikethrough" style="color: black;font-weight: bold">${hd.sanphamchitiet.giatien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+<td style="vertical-align: middle;">
+    <p style="font-weight: bold">${hd.sanphamchitiet.sanpham.tensanpham}</p>
+     ${discounts > 0 ? ` <div class="d-flex justify-content-center align-items-center">
+    <p class="strikethrough" style="color: black;font-weight: bold">${hd.sanphamchitiet.giatien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+    <p style="color: red;font-weight: bold; margin-left: 15px;">${(hd.sanphamchitiet.giatien / 100 * (100 - discounts)).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+</div>
      ` : ` <p style="color: red;font-weight: bold">${hd.sanphamchitiet.giatien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>`}
-  
-                <p> Size: ${hd.sanphamchitiet.kichco.ten}</p>
-            </td>
-            <td style="vertical-align: middle;">
-                <input class="form-control" style="width: 120px;height: 30px; margin-left: 20%;" type="text" id="${hd.id}" value="${hd.soluong}" oninput="changeQuantity(event)">
-            </td>
-            <td style="color: red;font-weight: bold;vertical-align: middle;">
-                ${discounts > 0 ? ` <p style="color: red;font-weight: bold">${((hd.sanphamchitiet.giatien / 100 * (100 - discounts)) * hd.soluong).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
-     ` : ` <p style="color: red;font-weight: bold">${(hd.soluong * hd.sanphamchitiet.giatien).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>`}
-           
-                </td>
-            
-            <td style="vertical-align: middle;">
-                                                           <a href="http://localhost:8080/ban-hang-tai-quay/delete/${hd.id}"
-                                                            >
-                                                            <button class="btn btn-danger"
-                                                                onclick="return confirm('Bạn có muốn xóa sản phẩm này không?')"
-                                                                type="button"><i class="bi bi-trash3"></i></button></a>
+    <div class="d-flex justify-content-center align-items-center" style="gap: 10px;">
+    <p style="margin: 0;">Size: ${hd.sanphamchitiet.kichco.ten}  -  Màu sắc:</p>
+    <input type="color" value="${hd.sanphamchitiet.mausac.ten}" class="color-input1" disabled style="margin: 0;">
+</div>
+</td>
+<td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
+    <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+        <input class="form-control" style="width: 90px; height: 40px; text-align: center;" type="text" id="${hd.id}" value="${hd.soluong}" oninput="changeQuantity(event)" name="${hd.sanphamchitiet.id}">
+    </div>
+</td>
+ <td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
+    <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+        ${discounts > 0
+                                    ? `<p style="color: red; font-weight: bold; margin: 0;">${((hd.sanphamchitiet.giatien / 100 * (100 - discounts)) * hd.soluong).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>`
+                                    : `<p style="color: red; font-weight: bold; margin: 0;">${(hd.soluong * hd.sanphamchitiet.giatien).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>`
+                                }
+    </div>
+</td>
+
+<td style="vertical-align: middle;">
+                                               <a href="http://localhost:8080/ban-hang-tai-quay/delete/${hd.id}" onclick="return confirm('Bạn có muốn xóa sản phẩm này không?')">
+                                                <i style="color:rgb(249,72,42); font-weight: bold; font-size: 25px;" class="bi bi-trash3"></i></a>
+                                                    <a style="margin-left: 15px;" href="http://localhost:8080/ban-hang-tai-quay/update/${hd.id}/${hd.soluong}" id="${hd.id + 'fsport'}" onclick="return confirm('Bạn có muốn cập nhật lại sản phẩm này không?')">
+                                                    <i style="color:rgb(249,72,42); font-weight: bold; font-size: 25px;" class="bi bi-arrow-repeat"></i>
+                                                </a>
+</td>
+</tr>
+                `;
+
+                            //                         htmlTR += `
+                            //                         <tr>
+                            //         <td class="text-center" style="vertical-align: middle;">
+                            //             <span style="margin-left: 7px">${stt}</span>
+                            //         </td>
+                            //           <td>
+                            //                <div class="image-container">
+                            //                    <img src="${hd.sanphamchitiet.anh[0].tenanh}" alt="" style="height: 100px; width: 100px;">
+                            //                    ${discounts > 0 ? `<div class="discount-badge">${discounts}%</div>` : ''}
+                            //                </div>
+                            //            </td>
+                            //         <td style="vertical-align: middle;">
+                            //             <p style="font-weight: bold">${hd.sanphamchitiet.sanpham.tensanpham}</p>
+                            //            ${discounts > 0 ? ` <p style="color: red;font-weight: bold">${(hd.sanphamchitiet.giatien / 100 * (100 - discounts)).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+                            //   <p class="strikethrough" style="color: black;font-weight: bold">${hd.sanphamchitiet.giatien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+                            //  ` : ` <p style="color: red;font-weight: bold">${hd.sanphamchitiet.giatien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>`}
+
+                            //             <p> Size: ${hd.sanphamchitiet.kichco.ten}</p>
+                            //         </td>
+                            //         <td style="vertical-align: middle;">
+                            //             <input class="form-control" style="width: 120px;height: 30px; margin-left: 20%;" type="text" id="${hd.id}" value="${hd.soluong}" oninput="changeQuantity(event)">
+                            //         </td>
+                            //         <td style="color: red;font-weight: bold;vertical-align: middle;">
+                            //             ${discounts > 0 ? ` <p style="color: red;font-weight: bold">${((hd.sanphamchitiet.giatien / 100 * (100 - discounts)) * hd.soluong).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+                            //  ` : ` <p style="color: red;font-weight: bold">${(hd.soluong * hd.sanphamchitiet.giatien).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>`}
+
+                            //             </td>
+
+                            //         <td style="vertical-align: middle;">
+                            //                                                        <a href="http://localhost:8080/ban-hang-tai-quay/delete/${hd.id}"
+                            //                                                         >
+                            //                                                         <button class="btn btn-danger"
+                            //                                                             onclick="return confirm('Bạn có muốn xóa sản phẩm này không?')"
+                            //                                                             type="button"><i class="bi bi-trash3"></i></button></a>
 
 
-                                                                <a href="http://localhost:8080/ban-hang-tai-quay/update/${hd.id}/${hd.soluong}" id="${hd.id + 'fsport'}"
-                                                            >
-                                                            <button class="btn btn-warning"
-                                                                onclick="return confirm('Bạn có muốn cập nhật lại sản phẩm này không?')"
-                                                                type="button"><i
-                                                                    class="bi bi-arrow-clockwise bi-warning"></i></button></a>
-            </td>
-        </tr>
-                            `;
+                            //                                                             <a href="http://localhost:8080/ban-hang-tai-quay/update/${hd.id}/${hd.soluong}" id="${hd.id + 'fsport'}"
+                            //                                                         >
+                            //                                                         <button class="btn btn-warning"
+                            //                                                             onclick="return confirm('Bạn có muốn cập nhật lại sản phẩm này không?')"
+                            //                                                             type="button"><i
+                            //                                                                 class="bi bi-arrow-clockwise bi-warning"></i></button></a>
+                            //         </td>
+                            //     </tr>
+                            //                         `;
                         }
 
                         html = `
@@ -1629,16 +1741,16 @@ tabindex="0">
 id="tatCaHoaDon-tab-pane" role="tabpanel" aria-labelledby="tatCaHoaDon-tab"
 tabindex="0">
 <table style="width: 100%" class="table">
-    <thead style="height: 50px">
-        <tr>
-            <th>STT</th>
-            <th>Ảnh</th>
-            <th>Sản phẩm</th>
-            <th>Số lượng</th>
-            <th>Tổng tiền</th>
-            <th>Thao tác</th>
-        </tr>
-    </thead>
+    <thead style="background-color: rgb(249, 72, 42) !important; height: 50px; color: white !important;">
+<tr>
+<th style="background-color: inherit !important; color: inherit !important;">STT</th>
+<th style="background-color: inherit !important; color: inherit !important;">Ảnh</th>
+<th style="background-color: inherit !important; color: inherit !important;">Sản phẩm</th>
+<th style="background-color: inherit !important; color: inherit !important;">Số lượng</th>
+<th style="background-color: inherit !important; color: inherit !important;">Tổng tiền</th>
+<th style="background-color: inherit !important; color: inherit !important;">Thao tác</th>
+</tr>
+</thead>
     <tbody id="boddydssp">`+ htmlTR + `
 
     </tbody>
@@ -1896,18 +2008,18 @@ tabindex="0">
                                    <td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
 
                                       ${hd.trangthai == true ?
-                            `
+                                `
                                       <button disabled style="border: none; margin: 0;" class="badge badge-success">
                   <span>Đang kinh doanh</span>
               </button>
                                      `
-                            :
-                            `
+                                :
+                                `
                                       <button disabled style="border: none; margin: 0;" class="badge badge-danger">
                   <span>Ngừng kinh doanh</span>
               </button>
                                      `
-                        }
+                            }
 
                                     </td>
                                    <td style="vertical-align: middle;">
@@ -1985,18 +2097,18 @@ tabindex="0">
                                    <td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
 
                                       ${hd.trangthai == true ?
-                            `
+                                `
                                       <button disabled style="border: none; margin: 0;" class="badge badge-success">
                   <span>Đang kinh doanh</span>
               </button>
                                      `
-                            :
-                            `
+                                :
+                                `
                                       <button disabled style="border: none; margin: 0;" class="badge badge-danger">
                   <span>Ngừng kinh doanh</span>
               </button>
                                      `
-                        }
+                            }
 
                                     </td>
                                    <td style="vertical-align: middle;">
@@ -2027,7 +2139,7 @@ tabindex="0">
 
 
         reloadSP.onclick = function () {
-            document.getElementById("tensp").value= '';
+            document.getElementById("tensp").value = '';
             document.getElementById("chatlieu").selectedIndex = 0;
             document.getElementById("thuonghieu").selectedIndex = 0;
             document.getElementById("degiay").selectedIndex = 0;
@@ -2074,18 +2186,18 @@ tabindex="0">
                                    <td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
 
                                       ${hd.trangthai == true ?
-                            `
+                                `
                                       <button disabled style="border: none; margin: 0;" class="badge badge-success">
                   <span>Đang kinh doanh</span>
               </button>
                                      `
-                            :
-                            `
+                                :
+                                `
                                       <button disabled style="border: none; margin: 0;" class="badge badge-danger">
                   <span>Ngừng kinh doanh</span>
               </button>
                                      `
-                        }
+                            }
 
                                     </td>
                                    <td style="vertical-align: middle;">
@@ -2170,18 +2282,18 @@ tabindex="0">
                                    <td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
 
                                       ${hd.trangthai == true ?
-                            `
+                                `
                                       <button disabled style="border: none; margin: 0;" class="badge badge-success">
                   <span>Đang kinh doanh</span>
               </button>
                                      `
-                            :
-                            `
+                                :
+                                `
                                       <button disabled style="border: none; margin: 0;" class="badge badge-danger">
                   <span>Ngừng kinh doanh</span>
               </button>
                                      `
-                        }
+                            }
 
                                     </td>
                                    <td style="vertical-align: middle;">
@@ -2263,18 +2375,18 @@ tabindex="0">
                                    <td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
 
                                       ${hd.trangthai == true ?
-                            `
+                                `
                                       <button disabled style="border: none; margin: 0;" class="badge badge-success">
                   <span>Đang kinh doanh</span>
               </button>
                                      `
-                            :
-                            `
+                                :
+                                `
                                       <button disabled style="border: none; margin: 0;" class="badge badge-danger">
                   <span>Ngừng kinh doanh</span>
               </button>
                                      `
-                        }
+                            }
 
                                     </td>
                                    <td style="vertical-align: middle;">
@@ -2357,18 +2469,18 @@ tabindex="0">
                                    <td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
 
                                       ${hd.trangthai == true ?
-                            `
+                                `
                                       <button disabled style="border: none; margin: 0;" class="badge badge-success">
                   <span>Đang kinh doanh</span>
               </button>
                                      `
-                            :
-                            `
+                                :
+                                `
                                       <button disabled style="border: none; margin: 0;" class="badge badge-danger">
                   <span>Ngừng kinh doanh</span>
               </button>
                                      `
-                        }
+                            }
 
                                     </td>
                                    <td style="vertical-align: middle;">
@@ -2453,18 +2565,18 @@ tabindex="0">
                                    <td style="display: table-cell; vertical-align: middle; text-align: center; padding: 0;">
 
                                       ${hd.trangthai == true ?
-                            `
+                                `
                                       <button disabled style="border: none; margin: 0;" class="badge badge-success">
                   <span>Đang kinh doanh</span>
               </button>
                                      `
-                            :
-                            `
+                                :
+                                `
                                       <button disabled style="border: none; margin: 0;" class="badge badge-danger">
                   <span>Ngừng kinh doanh</span>
               </button>
                                      `
-                        }
+                            }
 
                                     </td>
                                    <td style="vertical-align: middle;">
@@ -2542,7 +2654,7 @@ tabindex="0">
         var navNV = document.getElementById('navNV');
 
         reload.onclick = function () {
-            document.getElementById("searchNV").value='';
+            document.getElementById("searchNV").value = '';
             const pageNVChanges = localStorage.getItem("pageNVChanges") ?? 0;
             const url = `/ban-hang-tai-quay/viewNVChanges?pageNVChanges=${pageNVChanges}`;
             fetch(url)
